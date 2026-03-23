@@ -1,0 +1,59 @@
+project:
+  name: video-pipeline-scheduler-experiments
+  description: Experimental benchmark suite for heterogeneous CPU/GPU video analytics scheduling.
+
+hardware_target:
+  gpu_model: NVIDIA GeForce RTX 3060
+  cpu_model: Intel Core i7-14700K
+  ram_gb: 32
+  deadline_s: 3
+
+protocol:
+  warmup_s: 30
+  measurement_s: 180
+  repeats: 5
+  metric_interval_s: 1
+
+scenarios:
+  baseline:
+    description: 6 streams, decode -> detection (YOLOv8s) -> visualization
+    streams: 6
+    min_objects: 0
+    max_objects: 20
+  stream_scaling:
+    description: Increase streams from 1 to 12 to find saturation
+    stream_range: [1, 12]
+    min_objects: 0
+    max_objects: 20
+  complex_pipeline:
+    description: decode -> detection -> tracking -> classification -> recording
+    streams: 6
+    min_objects: 5
+    max_objects: 35
+  dynamic_workload:
+    description: Variable object count from 0 to 50+
+    streams: 6
+    min_objects: 0
+    max_objects: 60
+  heterogeneous_distribution:
+    description: Compare GPU-only, CPU-only, and hybrid placements
+    streams: 6
+    min_objects: 5
+    max_objects: 30
+
+systems:
+  deepstream:
+    label: NVIDIA DeepStream SDK
+    command: bash scripts/run_system_template.sh --system deepstream --scenario {scenario} --duration {duration_s} --streams {streams} --min-objects {min_objects} --max-objects {max_objects} --output {output_dir}/frames.csv
+  savant:
+    label: Savant
+    command: bash scripts/run_system_template.sh --system savant --scenario {scenario} --duration {duration_s} --streams {streams} --min-objects {min_objects} --max-objects {max_objects} --output {output_dir}/frames.csv
+  openvino_gva:
+    label: Intel OpenVINO + GVA
+    command: bash scripts/run_system_template.sh --system openvino_gva --scenario {scenario} --duration {duration_s} --streams {streams} --min-objects {min_objects} --max-objects {max_objects} --output {output_dir}/frames.csv
+  gstreamer_custom:
+    label: GStreamer + custom plugin
+    command: bash scripts/run_system_template.sh --system gstreamer_custom --scenario {scenario} --duration {duration_s} --streams {streams} --min-objects {min_objects} --max-objects {max_objects} --output {output_dir}/frames.csv
+  custom_cpp_cuda_qt:
+    label: Custom C++ + CUDA + Qt
+    command: bash scripts/run_system_template.sh --system custom_cpp_cuda_qt --scenario {scenario} --duration {duration_s} --streams {streams} --min-objects {min_objects} --max-objects {max_objects} --output {output_dir}/frames.csv

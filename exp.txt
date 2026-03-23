@@ -1,0 +1,111 @@
+\section{Recommendations for Conducting Experiments}
+
+\subsection{Experimental Platform}
+
+This section presents recommendations for experimental verification of the analysis results. The hardware for conducting experiments:
+\begin{itemize}
+    \item \textbf{GPU}: NVIDIA RTX 3060 
+    \item \textbf{CPU}: Intel Core i7-14700K 
+    \item \textbf{Number of streams}: 6 video streams (H.264/H.265, 1080p, 25--30~fps).
+    \item \textbf{Deadline}: 3 seconds end-to-end latency.
+\end{itemize}
+
+This configuration enables investigation of heterogeneous task distribution between a powerful multi-core CPU and a professional GPU. The conditions are typical for a small video surveillance system.
+
+\subsection{Test Scenarios}
+
+\textbf{Scenario 1: Baseline.} Processing 6 streams of 1080p@30\,fps with a simple pipeline: decoding $\rightarrow$ detection (YOLOv8s) $\rightarrow$ visualization. The goal is to determine the maximum throughput and baseline latency of each system.
+
+\textbf{Scenario 2: Stream scaling.} Gradually increasing the number of streams from 1 to 12 with a fixed model. Measuring the GPU and CPU saturation point for each system.
+
+\textbf{Scenario 3: Complex pipeline.} 6 streams with a pipeline: decoding $\rightarrow$ detection $\rightarrow$ tracking (DeepSORT) $\rightarrow$ classification $\rightarrow$ recording. Evaluating the impact of pipeline complexity on workload distribution.
+
+\textbf{Scenario 4: Dynamic workload.} Using video recordings with a variable number of objects (from 0 to 50+). Evaluating the system's ability to adapt to workload spikes.
+
+\textbf{Scenario 5: Heterogeneous distribution.} Forcing assignment of different pipeline stages to CPU/GPU. Comparing GPU-only, CPU-only, and hybrid placement configurations.
+
+\subsection{Metrics to Collect}
+
+For each scenario, the following metrics must be collected.
+
+\begin{table}[H]
+\centering
+\footnotesize
+\caption{List of metrics for the experimental study.}
+\label{tab:metrics}
+\begin{tabular}{|p{2.0cm}|p{1.0cm}|p{2.5cm}|p{1.2cm}|}
+\hline
+\textbf{Metric} & \textbf{Unit} & \textbf{Measurement tool} & \textbf{Frequency} \\
+\hline
+Throughput (FPS) & frames/s & Built-in system counters & Every second \\
+\hline
+End-to-end latency & ms & Timestamps (input--output) & Per frame \\
+\hline
+GPU utilization & \% & nvidia-smi, NVML & Every second \\
+\hline
+GPU memory usage & MB & nvidia-smi, NVML & Every second \\
+\hline
+CPU utilization (per core) & \% & mpstat, perf & Every second \\
+\hline
+CPU memory usage & MB & /proc/meminfo, top & Every second \\
+\hline
+Queue lengths & items & Custom probes & Every second \\
+\hline
+SLO violation rate & \% & Count of frames with latency $>$ 3\,s & Final \\
+\hline
+Power consumption & W & nvidia-smi (GPU), RAPL (CPU) & Every second \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Systems for Experimental Comparison}
+
+Given the available hardware (NVIDIA RTX 2000) and research objectives, the experimental comparison should focus on the following systems:
+
+\begin{enumerate}
+    \item \textbf{NVIDIA DeepStream SDK}---as a baseline with the highest performance on NVIDIA GPUs.
+    \item \textbf{Savant}---as a high-level wrapper over DeepStream with a Python interface. Compare the overhead of Savant relative to native DeepStream.
+    \item \textbf{Intel OpenVINO + GVA}---for investigating heterogeneous distribution. Evaluate CPU inference efficiency on i7-14700K.
+    \item \textbf{GStreamer + custom plugin}---as a minimal base for implementing a custom adaptive scheduler.
+    \item \textbf{Custom implementation (C++ + CUDA + Qt)}---an adaptive scheduler prototype implementing HEFT/QL-HEFT algorithms with resource utilization monitoring.
+\end{enumerate}
+
+\subsection{Experimental Protocol}
+
+To ensure reproducibility of results, the following protocol is recommended:
+
+\begin{enumerate}
+    \item \textbf{Data preparation}: create a set of test video recordings (6 files, 1080p, H.264/H.265, 5 minutes each) with different content. Use standard datasets (MOT17, UA-DETRAC) for reproducibility.
+
+    \item \textbf{Warm-up phase}: 30 seconds of operation before beginning measurements to stabilize GPU caches and TensorRT JIT compilation.
+
+    \item \textbf{Measurement phase}: 3 minutes of stable operation with continuous metric collection.
+
+    \item \textbf{Repetition}: repeat each experiment 5 times. Compute the mean and standard deviation.
+
+    \item \textbf{Background control}: disable all background processes, lock GPU frequency (nvidia-smi -lgc), disable CPU boost.
+
+    \item \textbf{Logging}: record all metrics in CSV files with timestamps for subsequent analysis in Python (pandas + matplotlib).
+\end{enumerate}
+
+\subsection{Data Collection and Analysis Tooling}
+
+For automating metric collection, it is recommended to develop a C++ wrapper. It should use the NVML API for GPU metrics and \texttt{/proc/stat} for CPU. The wrapper records metrics to CSV files with millisecond precision in parallel with the main pipeline.
+
+For DeepStream and Savant, the use of GStreamer pad probes for measuring per-stage latency is recommended. For OpenVINO---OpenVINO Profiling Tools. For the custom implementation---built-in timers based on \texttt{std::chrono::high\_resolution\_clock} and CUDA Events for GPU operations.
+
+Data analysis is recommended using Python (pandas for processing, matplotlib/seaborn for visualization). Key plots: FPS and latency time series, latency distribution histograms, CPU/GPU utilization diagrams, and summary bar charts comparing systems.
+
+\subsection{Expected Results and Hypotheses}
+
+Based on the conducted literature analysis, the following hypotheses are formulated for experimental verification.
+
+\textbf{Hypothesis 1.} Adaptive DAG scheduling accounting for CPU and GPU utilization will reduce the SLO violation rate by 20--40\% compared to static DeepStream scheduling when processing 6 streams with a 3-second deadline. This estimate is based on the results of Lin et al.~\cite{Ref6}, demonstrating a 27--57\% reduction in turnaround time with RL-based scheduling.
+
+\textbf{Hypothesis 2.} Hybrid task placement (decoding on NVDEC, inference on GPU, tracking and post-processing on CPU) will increase throughput by 10--25\% compared to a GPU-only configuration. This estimate is consistent with the results of He et al.~\cite{Ref8}, which showed a 15.2\% improvement in GPU utilization with heterogeneous orchestration.
+
+\textbf{Hypothesis 3.} Under dynamic workloads, an adaptive scheduler with an RL component will provide more stable latency (lower variance) than static scheduling. This is consistent with the results of Shen et al.~\cite{Ref7} on the advantages of RL-based scheduling under uncertainty.
+
+\subsection{Section Summary}
+
+This section presented recommendations for experimental verification, including a description of the hardware, five test scenarios, nine metrics, and an experimental protocol. Based on the analysis, three hypotheses were formulated for experimental verification in the next stage of this research.

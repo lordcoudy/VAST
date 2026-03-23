@@ -1,0 +1,50 @@
+# Savant module pinned to release line v0.5.17 (DeepStream 7.0).
+# Compatible image tag used by this project:
+# ghcr.io/insight-platform/savant-deepstream:0.5.17-7.0
+
+name: benchmark_savant_peoplenet_v0517
+
+parameters:
+  # Keep output disabled for benchmark mode; metrics are captured externally.
+  output_frame: null
+  batch_size: 1
+
+pipeline:
+  source:
+    element: uridecodebin
+    properties:
+      # Injected by run_system_template.sh
+      uri: ${oc.env:VIDEO_URI, 'file:///workspace/project/data/videos/stream01.mp4'}
+
+  elements:
+    - element: nvinfer@detector
+      name: peoplenet
+      model:
+        format: etlt
+        remote:
+          url: s3://savant-data/models/peoplenet/peoplenet_pruned_v2.0.zip
+          checksum_url: s3://savant-data/models/peoplenet/peoplenet_pruned_v2.0.md5
+          parameters:
+            endpoint: https://eu-central-1.linodeobjects.com
+        model_file: resnet34_peoplenet_pruned.etlt
+        batch_size: ${parameters.batch_size}
+        input:
+          layer_name: input_1
+          shape: [3, 544, 960]
+          scale_factor: 0.0039215697906911373
+        output:
+          layer_names: [output_bbox/BiasAdd, output_cov/Sigmoid]
+          num_detected_classes: 3
+          objects:
+            - class_id: 0
+              label: person
+            - class_id: 2
+              label: face
+              selector:
+                kwargs:
+                  confidence_threshold: 0.1
+                  min_width: 16
+                  min_height: 16
+
+  sink:
+    - element: devnull_sink
