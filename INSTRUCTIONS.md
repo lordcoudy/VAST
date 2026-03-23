@@ -7,7 +7,7 @@ This instruction explains how to install dependencies and run the experiment pro
 Primary target used by the experiment design:
 - GPU: NVIDIA RTX 3060
 - CPU: Intel Core i7-14700K
-- RAM: 32 GB
+- RAM: 22 GB
 
 ## Supported OS Paths
 
@@ -45,7 +45,7 @@ After setup, these paths are expected and used automatically:
   - `data/videos/stream05.mp4`
   - `data/videos/stream06.mp4`
 - OpenVINO IR model:
-  - `models/openvino/public/person-vehicle-bike-detection-crossroad-0078/FP16/person-vehicle-bike-detection-crossroad-0078.xml`
+  - `models/openvino/public/intel/person-vehicle-bike-detection-crossroad-0078/FP16/person-vehicle-bike-detection-crossroad-0078.xml`
 
 These are created by:
 
@@ -135,7 +135,7 @@ python scripts/check_system.py
 Expected on target device:
 - GPU contains RTX 3060
 - CPU contains i7-14700K
-- RAM close to 32 GB
+- RAM close to 22 GB
 
 ## Run Experiments
 
@@ -210,6 +210,11 @@ Useful template environment variables:
 
 Run this on target to execute real paths:
 
-python3 scripts/setup_target.py
-bash scripts/prepare_assets.sh
-REAL_DRY_RUN=0 USE_STUB_FALLBACK=0 python run_experiments.py --systems deepstream savant openvino_gva gstreamer_custom custom_cpp_cuda_qt --scenarios baseline --repeats 1 --warmup 0 --measurement 30
+
+    python3 scripts/setup_target.py
+
+
+    bash scripts/prepare_assets.sh
+
+
+    REAL_DRY_RUN=0 USE_STUB_FALLBACK=0 python run_experiments.py --systems deepstream savant openvino_gva gstreamer_custom custom_cpp_cuda_qt --scenarios baseline --repeats 1 --warmup 0 --measurement 30

@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import os
 import subprocess
 import sys
 import time
@@ -139,6 +140,21 @@ def run_one(
     collector.stop()
     collector.join(timeout=2)
 
+    strict_real_mode = os.environ.get("REAL_DRY_RUN", "1") == "0" and os.environ.get("USE_STUB_FALLBACK", "1") == "0"
+    if strict_real_mode:
+        if completed.returncode != 0:
+            raise RuntimeError(
+                f"Real-mode execution failed for system={system_key}, scenario={scenario_key}, "
+                f"repeat={repeat_index} with exit code {completed.returncode}. "
+                f"Inspect run directory: {scenario_dir}"
+            )
+        if not frames_path.exists():
+            raise RuntimeError(
+                f"Real-mode execution completed without frames output for system={system_key}, "
+                f"scenario={scenario_key}, repeat={repeat_index}. Expected: {frames_path}. "
+                f"Ensure the underlying pipeline writes frames.csv."
+            )
+
     summary = summarize_frames(frames_path, deadline_s)
     result = {
         "timestamp": datetime.now(timezone.utc).isoformat(),
@@ -193,7 +209,16 @@ def main() -> None:
     parser.add_argument("--measurement", type=int, default=-1, help="Override measurement seconds")
     parser.add_argument("--warmup", type=int, default=-1, help="Override warmup seconds")
     parser.add_argument("--output-root", default="runs")
+    parser.add_argument(
+        "--strict-real-mode",
+        action="store_true",
+        help="Require REAL_DRY_RUN=0 and USE_STUB_FALLBACK=0 for this run",
+    )
     args = parser.parse_args()
+
+    if args.strict_real_mode:
+        os.environ["REAL_DRY_RUN"] = "0"
+        os.environ["USE_STUB_FALLBACK"] = "0"
 
     cfg = load_config(Path(args.config))
 

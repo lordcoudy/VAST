@@ -18,9 +18,11 @@ DEADLINE_MS="3000"
 
 USE_STUB_FALLBACK="${USE_STUB_FALLBACK:-1}"
 REAL_DRY_RUN="${REAL_DRY_RUN:-1}"
+STARTUP_GRACE_S="${STARTUP_GRACE_S:-180}"
+CMD_TIMEOUT_S="${CMD_TIMEOUT_S:-}"
 
 VIDEO_LAYOUT_DIR="${VIDEO_LAYOUT_DIR:-$PROJECT_DIR/data/videos}"
-OPENVINO_MODEL_XML_DEFAULT="$PROJECT_DIR/models/openvino/public/person-vehicle-bike-detection-crossroad-0078/FP16/person-vehicle-bike-detection-crossroad-0078.xml"
+OPENVINO_MODEL_XML_DEFAULT="$PROJECT_DIR/models/openvino/public/intel/person-vehicle-bike-detection-crossroad-0078/FP16/person-vehicle-bike-detection-crossroad-0078.xml"
 
 log() { echo "[template] $*"; }
 warn() { echo "[template][warning] $*" >&2; }
@@ -60,6 +62,7 @@ fi
 
 OUTPUT_DIR="$(dirname "$OUTPUT_FILE")"
 mkdir -p "$OUTPUT_DIR"
+OUTPUT_DIR="$(cd "$OUTPUT_DIR" && pwd)"
 
 pick_video_for_stream() {
   local idx="$1"
@@ -79,13 +82,23 @@ ensure_common_assets() {
 }
 
 fallback_stub() {
+  local py_bin="python"
   if [[ "$USE_STUB_FALLBACK" != "1" ]]; then
     warn "Fallback disabled and real command cannot be executed"
     return 1
   fi
 
+  if ! command -v "$py_bin" >/dev/null 2>&1; then
+    py_bin="python3"
+  fi
+
+  if ! command -v "$py_bin" >/dev/null 2>&1; then
+    warn "Neither python nor python3 is available for fallback stub"
+    return 1
+  fi
+
   warn "Falling back to workload stub for system=$SYSTEM"
-  python "$PROJECT_DIR/scripts/workload_stub.py" \
+  "$py_bin" "$PROJECT_DIR/scripts/workload_stub.py" \
     --system "$SYSTEM" \
     --scenario "$SCENARIO" \
     --duration "$DURATION_S" \
@@ -96,9 +109,26 @@ fallback_stub() {
     --deadline-ms "$DEADLINE_MS"
 }
 
+ensure_docker_image_local() {
+  local image="$1"
+
+  if docker image inspect "$image" >/dev/null 2>&1; then
+    return 0
+  fi
+
+  if [[ "$REAL_DRY_RUN" == "1" ]]; then
+    warn "Docker image is not present locally and REAL_DRY_RUN=1: $image"
+    return 1
+  fi
+
+  log "Docker image not present locally; pulling once before timed run: $image"
+  docker pull "$image"
+}
+
 run_or_echo() {
   local cmd="$1"
   local rc
+  local effective_timeout
 
   log "command: $cmd"
   if [[ "$REAL_DRY_RUN" == "1" ]]; then
@@ -106,13 +136,21 @@ run_or_echo() {
     return 1
   fi
 
+  if [[ -n "$CMD_TIMEOUT_S" ]]; then
+    effective_timeout="$CMD_TIMEOUT_S"
+  elif [[ "$DURATION_S" =~ ^[0-9]+$ && "$STARTUP_GRACE_S" =~ ^[0-9]+$ ]]; then
+    effective_timeout="$((DURATION_S + STARTUP_GRACE_S))"
+  else
+    effective_timeout="$DURATION_S"
+  fi
+
   if command -v timeout >/dev/null 2>&1; then
     set +e
-    timeout --signal=INT "$DURATION_S" bash -lc "$cmd"
+    timeout --signal=INT "$effective_timeout" bash -lc "$cmd"
     rc=$?
     set -e
     if [[ "$rc" -eq 124 ]]; then
-      log "Command stopped by timeout after ${DURATION_S}s"
+      log "Command stopped by timeout after ${effective_timeout}s"
       return 0
     fi
     return "$rc"
@@ -133,12 +171,13 @@ run_deepstream() {
     uris+=" file:///workspace/project/data/videos/$(basename "$v")"
   done
 
-  local cmd="docker run --rm --gpus all -v '$PROJECT_DIR':/workspace/project -v '$OUTPUT_DIR':/results '$image' bash -lc 'deepstream-test3-app${uris}'"
+  local cmd="docker run --rm --gpus all --entrypoint bash -v '$PROJECT_DIR':/workspace/project -v '$OUTPUT_DIR':/results '$image' -lc 'cd /opt/nvidia/deepstream/deepstream/sources/apps/sample_apps/deepstream-test3 && deepstream-test3-app${uris}'"
 
   if ! command -v docker >/dev/null 2>&1; then
     warn "docker not found for DeepStream"
     return 1
   fi
+  ensure_docker_image_local "$image" || return 1
   run_or_echo "$cmd"
 }
 
@@ -153,24 +192,31 @@ run_savant() {
   if [[ "$output_rel" == "$OUTPUT_DIR" ]]; then
     output_rel="results"
   fi
-  local cmd="docker run --rm --gpus all -e VIDEO_URI='file://$source' -e OUTPUT_DIR='/workspace/project/$output_rel' -v '$PROJECT_DIR':/workspace/project '$image' bash -lc 'python -m savant.entrypoint $module'"
+  local cmd="docker run --rm --gpus all --entrypoint bash -e VIDEO_URI='file://$source' -e OUTPUT_DIR='/workspace/project/$output_rel' -v '$PROJECT_DIR':/workspace/project '$image' -lc 'python -m savant.entrypoint $module'"
 
   if ! command -v docker >/dev/null 2>&1; then
     warn "docker not found for Savant"
     return 1
   fi
+  ensure_docker_image_local "$image" || return 1
   run_or_echo "$cmd"
 }
 
 run_openvino_gva() {
   local model_xml="${OPENVINO_MODEL_XML:-$OPENVINO_MODEL_XML_DEFAULT}"
+  local legacy_model_xml="$PROJECT_DIR/models/openvino/public/person-vehicle-bike-detection-crossroad-0078/FP16/person-vehicle-bike-detection-crossroad-0078.xml"
   local source
 
   ensure_common_assets || return 1
   if [[ ! -f "$model_xml" ]]; then
-    warn "Missing OpenVINO model XML: $model_xml"
-    warn "Run: bash scripts/prepare_assets.sh"
-    return 1
+    if [[ -f "$legacy_model_xml" ]]; then
+      model_xml="$legacy_model_xml"
+      warn "Using legacy OpenVINO model XML path: $model_xml"
+    else
+      warn "Missing OpenVINO model XML: $model_xml"
+      warn "Run: bash scripts/prepare_assets.sh"
+      return 1
+    fi
   fi
 
   if command -v gst-inspect-1.0 >/dev/null 2>&1; then

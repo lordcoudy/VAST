@@ -3,7 +3,7 @@
 This project scaffolds the experimental study described in exp.txt for the target platform:
 - GPU: NVIDIA RTX 3060
 - CPU: Intel Core i7-14700K
-- RAM: 32 GB
+- RAM: 22 GB
 - SLO deadline: 3 seconds end-to-end latency
 
 It includes:
@@ -48,7 +48,7 @@ python3 scripts/setup_target.py
 
 Asset paths used by real templates:
 - Videos: `data/videos/stream01.mp4` ... `data/videos/stream06.mp4`
-- OpenVINO model: `models/openvino/public/person-vehicle-bike-detection-crossroad-0078/FP16/person-vehicle-bike-detection-crossroad-0078.xml`
+- OpenVINO model: `models/openvino/public/intel/person-vehicle-bike-detection-crossroad-0078/FP16/person-vehicle-bike-detection-crossroad-0078.xml`
 - Savant module: `deploy/savant/module.yml` (pinned for image `ghcr.io/insight-platform/savant-deepstream:0.5.17-7.0`)
 
 Pinned system defaults:

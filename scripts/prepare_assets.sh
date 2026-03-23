@@ -9,6 +9,21 @@ PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 VIDEO_DIR="$PROJECT_DIR/data/videos"
 MODEL_ROOT="$PROJECT_DIR/models/openvino"
 OMZ_MODEL_NAME="person-vehicle-bike-detection-crossroad-0078"
+OMZ_DOWNLOAD_RETRIES="${OMZ_DOWNLOAD_RETRIES:-4}"
+OMZ_RETRY_SLEEP_S="${OMZ_RETRY_SLEEP_S:-15}"
+
+resolve_model_xml_path() {
+  local candidate
+  for candidate in \
+    "$MODEL_ROOT/public/intel/$OMZ_MODEL_NAME/FP16/$OMZ_MODEL_NAME.xml" \
+    "$MODEL_ROOT/public/$OMZ_MODEL_NAME/FP16/$OMZ_MODEL_NAME.xml"; do
+    if [[ -f "$candidate" ]]; then
+      printf "%s" "$candidate"
+      return 0
+    fi
+  done
+  return 1
+}
 
 VIDEO_DURATION_S="${VIDEO_DURATION_S:-300}"
 VIDEO_WIDTH="${VIDEO_WIDTH:-1920}"
@@ -64,9 +79,9 @@ EOF
 }
 
 ensure_openvino_model() {
-  local model_xml="$MODEL_ROOT/public/$OMZ_MODEL_NAME/FP16/$OMZ_MODEL_NAME.xml"
+  local model_xml=""
 
-  if [[ -f "$model_xml" ]]; then
+  if model_xml="$(resolve_model_xml_path)"; then
     log "OpenVINO model already present: $model_xml"
     return 0
   fi
@@ -77,29 +92,53 @@ ensure_openvino_model() {
   fi
 
   mkdir -p "$MODEL_ROOT/public" "$MODEL_ROOT/cache"
-  log "Downloading Open Model Zoo model: $OMZ_MODEL_NAME"
-  omz_downloader \
-    --name "$OMZ_MODEL_NAME" \
-    --output_dir "$MODEL_ROOT/public" \
-    --cache_dir "$MODEL_ROOT/cache"
+  local attempt=1
+  local ok=0
+  while [[ "$attempt" -le "$OMZ_DOWNLOAD_RETRIES" ]]; do
+    log "Downloading Open Model Zoo model: $OMZ_MODEL_NAME (attempt ${attempt}/${OMZ_DOWNLOAD_RETRIES})"
+    if omz_downloader \
+      --name "$OMZ_MODEL_NAME" \
+      --output_dir "$MODEL_ROOT/public" \
+      --cache_dir "$MODEL_ROOT/cache"; then
+      ok=1
+      break
+    fi
 
-  if [[ -f "$model_xml" ]]; then
+    if [[ "$attempt" -lt "$OMZ_DOWNLOAD_RETRIES" ]]; then
+      warn "Download attempt ${attempt}/${OMZ_DOWNLOAD_RETRIES} failed; retrying in ${OMZ_RETRY_SLEEP_S}s"
+      sleep "$OMZ_RETRY_SLEEP_S"
+    fi
+    attempt=$((attempt + 1))
+  done
+
+  if [[ "$ok" -ne 1 ]]; then
+    warn "Failed to download $OMZ_MODEL_NAME after ${OMZ_DOWNLOAD_RETRIES} attempts"
+    return 1
+  fi
+
+  if model_xml="$(resolve_model_xml_path)"; then
     log "OpenVINO model ready: $model_xml"
   else
-    warn "Model download finished but expected XML is missing: $model_xml"
+    warn "Model download finished but expected XML is missing in both canonical and legacy paths"
     return 1
   fi
 }
 
 main() {
+  local model_xml=""
   ensure_video_layout
   ensure_openvino_model
+
+  if ! model_xml="$(resolve_model_xml_path)"; then
+    warn "Unable to resolve OpenVINO model XML path after preparation"
+    return 1
+  fi
 
   cat <<EOF
 
 Prepared assets:
 - Video layout: $VIDEO_DIR/layout.txt
-- OpenVINO model: $MODEL_ROOT/public/$OMZ_MODEL_NAME/FP16/$OMZ_MODEL_NAME.xml
+- OpenVINO model: $model_xml
 
 EOF
 }
