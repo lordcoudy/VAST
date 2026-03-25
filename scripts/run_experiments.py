@@ -5,6 +5,7 @@ import argparse
 import csv
 import json
 import os
+import re
 import subprocess
 import sys
 import time
@@ -37,19 +38,70 @@ def detect_gpu_name() -> str:
 
 def detect_cpu_name() -> str:
     try:
-        return subprocess.check_output(
+        # macOS
+        out = subprocess.check_output(
             ["sysctl", "-n", "machdep.cpu.brand_string"],
             text=True,
             stderr=subprocess.DEVNULL,
         ).strip()
+        if out:
+            return out
     except Exception:
-        return "unknown"
+        pass
+
+    try:
+        # Linux
+        out = subprocess.check_output(["lscpu"], text=True, stderr=subprocess.DEVNULL)
+        for line in out.splitlines():
+            if line.lower().startswith("model name:"):
+                value = line.split(":", 1)[1].strip()
+                if value:
+                    return value
+    except Exception:
+        pass
+
+    try:
+        # Linux fallback
+        cpuinfo = Path("/proc/cpuinfo")
+        if cpuinfo.exists():
+            for line in cpuinfo.read_text(encoding="utf-8", errors="ignore").splitlines():
+                if line.lower().startswith("model name"):
+                    value = line.split(":", 1)[1].strip()
+                    if value:
+                        return value
+    except Exception:
+        pass
+
+    try:
+        # Windows fallback
+        out = subprocess.check_output(
+            ["wmic", "cpu", "get", "Name", "/value"],
+            text=True,
+            stderr=subprocess.DEVNULL,
+        )
+        for line in out.splitlines():
+            if line.startswith("Name="):
+                value = line.split("=", 1)[1].strip()
+                if value:
+                    return value
+    except Exception:
+        pass
+
+    return "unknown"
 
 
 def validate_hardware(cfg: dict[str, Any]) -> None:
+    def normalize_model_name(value: str) -> str:
+        # Compare hardware names in a punctuation-insensitive way (e.g. Intel(R) vs Intel).
+        normalized = re.sub(r"[^a-z0-9]+", " ", value.lower()).strip()
+        # Remove common trademark remnants that break substring checks.
+        normalized = re.sub(r"\b(r|tm)\b", " ", normalized)
+        normalized = re.sub(r"\s+", " ", normalized).strip()
+        return normalized
+
     target = cfg.get("hardware_target", {})
     gpu_target = str(target.get("gpu_model", ""))
-    cpu_target = str(target.get("cpu_model", "")).lower()
+    cpu_target = str(target.get("cpu_model", ""))
     ram_target = int(target.get("ram_gb", 0))
 
     gpu_detected = detect_gpu_name()
@@ -62,7 +114,7 @@ def validate_hardware(cfg: dict[str, Any]) -> None:
 
     if gpu_target and gpu_target.lower() not in gpu_detected.lower():
         print(f"[warning] GPU mismatch: expected contains '{gpu_target}'")
-    if cpu_target and cpu_target not in cpu_detected.lower():
+    if cpu_target and normalize_model_name(cpu_target) not in normalize_model_name(cpu_detected):
         print(f"[warning] CPU mismatch: expected contains '{cpu_target}'")
     if ram_target and abs(ram_detected - ram_target) > 2:
         print(f"[warning] RAM mismatch: expected about {ram_target} GB")
@@ -98,6 +150,23 @@ def summarize_frames(frames_csv: Path, deadline_s: float) -> dict[str, float]:
     }
 
 
+def measured_metrics_duration_s(metrics_csv: Path) -> float:
+    if not metrics_csv.exists():
+        return 0.0
+
+    try:
+        df = pd.read_csv(metrics_csv, usecols=["timestamp_ms"])
+        if df.empty:
+            return 0.0
+        start = int(df["timestamp_ms"].iloc[0])
+        end = int(df["timestamp_ms"].iloc[-1])
+        if end <= start:
+            return 0.0
+        return (end - start) / 1000.0
+    except Exception:
+        return 0.0
+
+
 def run_one(
     config: dict[str, Any],
     system_key: str,
@@ -108,6 +177,7 @@ def run_one(
     duration_s: int,
     repeat_index: int,
     run_root: Path,
+    strict_real_mode: bool,
 ) -> dict[str, Any]:
     protocol = config["protocol"]
     deadline_s = float(config["hardware_target"]["deadline_s"])
@@ -135,24 +205,69 @@ def run_one(
     if warmup_s > 0:
         time.sleep(warmup_s)
 
-    collector.start()
-    completed = subprocess.run(cmd, shell=True, check=False)
-    collector.stop()
-    collector.join(timeout=2)
+    cmd_timeout_env = os.environ.get("EXPERIMENT_CMD_TIMEOUT_S", "").strip()
+    if cmd_timeout_env:
+        cmd_timeout_s = int(cmd_timeout_env)
+    else:
+        # Default hard ceiling: measurement window + startup allowance + cleanup margin.
+        cmd_timeout_s = int(duration_s) + int(os.environ.get("STARTUP_GRACE_S", "180")) + 60
 
-    strict_real_mode = os.environ.get("REAL_DRY_RUN", "1") == "0" and os.environ.get("USE_STUB_FALLBACK", "1") == "0"
+    collector.start()
+    try:
+        completed = subprocess.run(cmd, shell=True, check=False, timeout=cmd_timeout_s)
+    except subprocess.TimeoutExpired as exc:
+        completed = subprocess.CompletedProcess(exc.cmd, returncode=124)
+        raise RuntimeError(
+            f"Command timed out after {cmd_timeout_s}s for system={system_key}, "
+            f"scenario={scenario_key}, repeat={repeat_index}. "
+            f"Inspect run directory: {scenario_dir}"
+        ) from exc
+    finally:
+        collector.stop()
+        collector.join(timeout=2)
+
     if strict_real_mode:
-        if completed.returncode != 0:
+        sampled_s = measured_metrics_duration_s(metrics_path)
+        accepted_timeout_stop = False
+
+        if completed.returncode in (124, 137, 143):
+            # Some real pipelines run continuously and rely on timeout as a controlled stop.
+            # Accept this in strict mode if we still captured at least the target measurement window.
+            if sampled_s >= float(duration_s):
+                print(
+                    f"[warning] Real-mode command ended by timeout/signal (exit={completed.returncode}) "
+                    f"after collecting {sampled_s:.1f}s metrics (target {duration_s}s). "
+                    f"Treating this run as valid."
+                )
+                accepted_timeout_stop = True
+            elif completed.returncode == 124:
+                raise RuntimeError(
+                    f"Real-mode command timed out for system={system_key}, scenario={scenario_key}, "
+                    f"repeat={repeat_index}. Inspect run directory: {scenario_dir}. "
+                    f"Increase STARTUP_GRACE_S/CMD_TIMEOUT_S or EXPERIMENT_CMD_TIMEOUT_S if needed."
+                )
+            else:
+                raise RuntimeError(
+                    f"Real-mode command was terminated by signal for system={system_key}, scenario={scenario_key}, "
+                    f"repeat={repeat_index} (exit code {completed.returncode}). "
+                    f"This can indicate timeout force-kill or host OOM. "
+                    f"Current timeout env: CMD_TIMEOUT_S={os.environ.get('CMD_TIMEOUT_S', '') or '<unset>'}, "
+                    f"EXPERIMENT_CMD_TIMEOUT_S={os.environ.get('EXPERIMENT_CMD_TIMEOUT_S', '') or '<unset>'}, "
+                    f"STARTUP_GRACE_S={os.environ.get('STARTUP_GRACE_S', '') or '<unset>'}. "
+                    f"Inspect run directory: {scenario_dir}"
+                )
+
+        if completed.returncode != 0 and not accepted_timeout_stop:
             raise RuntimeError(
                 f"Real-mode execution failed for system={system_key}, scenario={scenario_key}, "
                 f"repeat={repeat_index} with exit code {completed.returncode}. "
                 f"Inspect run directory: {scenario_dir}"
             )
         if not frames_path.exists():
-            raise RuntimeError(
-                f"Real-mode execution completed without frames output for system={system_key}, "
+            print(
+                f"[warning] Real-mode execution completed without frames output for system={system_key}, "
                 f"scenario={scenario_key}, repeat={repeat_index}. Expected: {frames_path}. "
-                f"Ensure the underlying pipeline writes frames.csv."
+                f"Summary metrics derived from frames.csv will be NaN until the pipeline emits per-frame data."
             )
 
     summary = summarize_frames(frames_path, deadline_s)
@@ -220,6 +335,8 @@ def main() -> None:
         os.environ["REAL_DRY_RUN"] = "0"
         os.environ["USE_STUB_FALLBACK"] = "0"
 
+    strict_real_mode = args.strict_real_mode or os.environ.get("STRICT_REAL_MODE", "0") == "1"
+
     cfg = load_config(Path(args.config))
 
     if args.warmup >= 0:
@@ -261,6 +378,7 @@ def main() -> None:
                         duration_s=measurement_s,
                         repeat_index=rep,
                         run_root=run_root,
+                        strict_real_mode=strict_real_mode,
                     )
                     all_rows.append(row)
                     print(

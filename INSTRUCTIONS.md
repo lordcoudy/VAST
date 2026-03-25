@@ -137,6 +137,23 @@ Expected on target device:
 - CPU contains i7-14700K
 - RAM close to 22 GB
 
+## OpenVINO GVA Plugin Install (gvadetect)
+
+If `openvino_gva` fails with `gvadetect element is unavailable`, install DL Streamer plugins in the same Linux/WSL environment where experiments run:
+
+```bash
+bash scripts/install_openvino_dlstreamer.sh
+```
+
+For a Windows host running commands through WSL, run:
+
+```bash
+wsl -e bash -lc "cd /mnt/e/STUDY/VAST; bash scripts/install_openvino_dlstreamer.sh"
+```
+
+The script performs a verification check and exits non-zero unless `gst-inspect-1.0 gvadetect` is visible.
+If apt packages are unavailable for your Ubuntu release, the script automatically falls back to extracting DL Streamer runtime from `intel/dlstreamer:latest` and configures environment variables under `/etc/profile.d/vast_dlstreamer.sh`.
+
 ## Run Experiments
 
 Smoke test:
@@ -204,6 +221,8 @@ Useful template environment variables:
 - `DEEPSTREAM_IMAGE`, `DEEPSTREAM_CONFIG`
 - `SAVANT_IMAGE`, `SAVANT_MODULE`, `SAVANT_SOURCE`
 - `OPENVINO_MODEL_XML`, `OPENVINO_SOURCE`
+- `OPENVINO_GVA_IMAGE` (default: `intel/dlstreamer:latest`)
+- `OPENVINO_GVA_USE_CONTAINER` (`1` by default; set `0` to force host runtime path)
 - `GST_CUSTOM_PLUGIN`, `GST_CUSTOM_SOURCE`
 - `CUSTOM_APP_BIN`
 
@@ -217,4 +236,4 @@ Run this on target to execute real paths:
     bash scripts/prepare_assets.sh
 
 
-    REAL_DRY_RUN=0 USE_STUB_FALLBACK=0 python run_experiments.py --systems deepstream savant openvino_gva gstreamer_custom custom_cpp_cuda_qt --scenarios baseline --repeats 1 --warmup 0 --measurement 30
+    wsl -e bash -lc "cd /mnt/e/STUDY/VAST; source .venv/bin/activate; STARTUP_GRACE_S=60 CMD_TIMEOUT_S=240 CMD_KILL_AFTER_S=10 EXPERIMENT_CMD_TIMEOUT_S=260 REAL_DRY_RUN=0 USE_STUB_FALLBACK=0 python ./scripts/run_experiments.py --strict-real-mode --systems deepstream savant openvino_gva gstreamer_custom custom_cpp_cuda_qt --scenarios baseline --repeats 1 --warmup 0 --measurement 30"
