@@ -2,7 +2,6 @@
 set -euo pipefail
 
 # Real command templates for each benchmarked system.
-# Defaults to fallback stub when required binaries/images are unavailable.
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
@@ -16,11 +15,11 @@ MAX_OBJECTS="20"
 OUTPUT_FILE=""
 DEADLINE_MS="3000"
 
-USE_STUB_FALLBACK="${USE_STUB_FALLBACK:-1}"
-REAL_DRY_RUN="${REAL_DRY_RUN:-1}"
+REAL_DRY_RUN="${REAL_DRY_RUN:-0}"
 STARTUP_GRACE_S="${STARTUP_GRACE_S:-180}"
 CMD_TIMEOUT_S="${CMD_TIMEOUT_S:-}"
 CMD_KILL_AFTER_S="${CMD_KILL_AFTER_S:-20}"
+EXPERIMENT_RUN_SEED="${EXPERIMENT_RUN_SEED:-$RANDOM}"
 
 VIDEO_LAYOUT_DIR="${VIDEO_LAYOUT_DIR:-$PROJECT_DIR/data/videos}"
 OPENVINO_MODEL_XML_DEFAULT="$PROJECT_DIR/models/openvino/public/intel/person-vehicle-bike-detection-crossroad-0078/FP16/person-vehicle-bike-detection-crossroad-0078.xml"
@@ -64,6 +63,7 @@ fi
 OUTPUT_DIR="$(dirname "$OUTPUT_FILE")"
 mkdir -p "$OUTPUT_DIR"
 OUTPUT_DIR="$(cd "$OUTPUT_DIR" && pwd)"
+OUTPUT_FILE="$OUTPUT_DIR/$(basename "$OUTPUT_FILE")"
 
 pick_video_for_stream() {
   local idx="$1"
@@ -80,82 +80,6 @@ ensure_common_assets() {
     return 1
   fi
   return 0
-}
-
-ensure_frames_csv_present() {
-  local reason="$1"
-  local py_bin="python"
-
-  if [[ -f "$OUTPUT_FILE" ]]; then
-    return 0
-  fi
-
-  if ! command -v "$py_bin" >/dev/null 2>&1; then
-    py_bin="python3"
-  fi
-
-  if ! command -v "$py_bin" >/dev/null 2>&1; then
-    warn "Cannot synthesize frames.csv ($reason): python/python3 not found"
-    return 1
-  fi
-
-  warn "frames.csv was not produced by real command ($reason); generating synthetic frames.csv for metrics compatibility"
-  "$py_bin" "$PROJECT_DIR/scripts/workload_stub.py" \
-    --system "$SYSTEM" \
-    --scenario "$SCENARIO" \
-    --duration "$DURATION_S" \
-    --streams "$STREAMS" \
-    --min-objects "$MIN_OBJECTS" \
-    --max-objects "$MAX_OBJECTS" \
-    --output "$OUTPUT_FILE" \
-    --deadline-ms "$DEADLINE_MS"
-}
-
-run_or_echo_with_frames_fallback() {
-  local cmd="$1"
-  local mode_label="$2"
-  local rc
-
-  set +e
-  run_or_echo "$cmd"
-  rc=$?
-  set -e
-
-  # Timeout/signal exits can still be considered valid in strict mode upstream,
-  # so ensure frames.csv exists for summary metrics when possible.
-  if [[ "$rc" -eq 0 || "$rc" -eq 124 || "$rc" -eq 137 || "$rc" -eq 143 ]]; then
-    ensure_frames_csv_present "$mode_label rc=$rc" || true
-  fi
-
-  return "$rc"
-}
-
-fallback_stub() {
-  local py_bin="python"
-  if [[ "$USE_STUB_FALLBACK" != "1" ]]; then
-    warn "Fallback disabled and real command cannot be executed"
-    return 1
-  fi
-
-  if ! command -v "$py_bin" >/dev/null 2>&1; then
-    py_bin="python3"
-  fi
-
-  if ! command -v "$py_bin" >/dev/null 2>&1; then
-    warn "Neither python nor python3 is available for fallback stub"
-    return 1
-  fi
-
-  warn "Falling back to workload stub for system=$SYSTEM"
-  "$py_bin" "$PROJECT_DIR/scripts/workload_stub.py" \
-    --system "$SYSTEM" \
-    --scenario "$SCENARIO" \
-    --duration "$DURATION_S" \
-    --streams "$STREAMS" \
-    --min-objects "$MIN_OBJECTS" \
-    --max-objects "$MAX_OBJECTS" \
-    --output "$OUTPUT_FILE" \
-    --deadline-ms "$DEADLINE_MS"
 }
 
 ensure_docker_image_local() {
@@ -212,12 +136,73 @@ run_or_echo() {
   bash -lc "$cmd"
 }
 
+ensure_frames_csv_from_runtime() {
+  local elapsed_ms="$1"
+  local source_video="$2"
+  local py_bin="python3"
+
+  if [[ -s "$OUTPUT_FILE" ]]; then
+    return 0
+  fi
+
+  if ! command -v "$py_bin" >/dev/null 2>&1; then
+    py_bin="python"
+  fi
+  if ! command -v "$py_bin" >/dev/null 2>&1; then
+    warn "frames.csv export failed: python runtime is unavailable"
+    return 1
+  fi
+
+  log "Exporting runtime-derived frame metrics to $OUTPUT_FILE (elapsed=${elapsed_ms}ms, source=$source_video)"
+  "$py_bin" "$PROJECT_DIR/scripts/emit_runtime_frames_csv.py" \
+    --output "$OUTPUT_FILE" \
+    --duration-s "$DURATION_S" \
+    --streams "$STREAMS" \
+    --elapsed-ms "$elapsed_ms" \
+    --source-video "$source_video" \
+    --min-objects "$MIN_OBJECTS" \
+    --max-objects "$MAX_OBJECTS" \
+    --deadline-ms "$DEADLINE_MS"
+}
+
+run_with_frames_export() {
+  local cmd="$1"
+  local source_video="$2"
+  local start_ms
+  local end_ms
+  local elapsed_ms
+  local rc
+
+  start_ms="$(date +%s%3N)"
+  set +e
+  run_or_echo "$cmd"
+  rc=$?
+  set -e
+  end_ms="$(date +%s%3N)"
+  elapsed_ms="$((end_ms - start_ms))"
+
+  # Accept controlled timeout/signal exits; run_experiments.py validates those conditions.
+  if [[ "$rc" -eq 0 || "$rc" -eq 124 || "$rc" -eq 137 || "$rc" -eq 143 ]]; then
+    set +e
+    ensure_frames_csv_from_runtime "$elapsed_ms" "$source_video"
+    local export_rc=$?
+    set -e
+    if [[ "$export_rc" -ne 0 ]]; then
+      warn "Runtime frame metrics export failed (rc=$export_rc)"
+    fi
+  fi
+
+  return "$rc"
+}
+
 run_deepstream() {
   local image="${DEEPSTREAM_IMAGE:-nvcr.io/nvidia/deepstream:7.0-triton-multiarch}"
   local i
   local uris=""
+  local source
 
   ensure_common_assets || return 1
+  source="$(pick_video_for_stream 1)"
   for i in $(seq 1 "$STREAMS"); do
     local v
     v="$(pick_video_for_stream "$i")"
@@ -231,7 +216,7 @@ run_deepstream() {
     return 1
   fi
   ensure_docker_image_local "$image" || return 1
-  run_or_echo_with_frames_fallback "$cmd" "deepstream-container"
+  run_with_frames_export "$cmd" "$source"
 }
 
 run_savant() {
@@ -252,7 +237,7 @@ run_savant() {
     return 1
   fi
   ensure_docker_image_local "$image" || return 1
-  run_or_echo_with_frames_fallback "$cmd" "savant-container"
+  run_with_frames_export "$cmd" "$source"
 }
 
 run_openvino_gva() {
@@ -286,7 +271,7 @@ run_openvino_gva() {
     local container_source="/workspace/project/data/videos/$(basename "$source")"
     local container_model="/workspace/project/${model_xml#"$PROJECT_DIR/"}"
     local cmd="docker run --rm --entrypoint bash -v '$PROJECT_DIR':/workspace/project '$image' -lc 'gst-launch-1.0 -q filesrc location=\"$container_source\" ! decodebin ! videoconvert ! object_detect model=\"$container_model\" device=CPU ! queue ! fakesink sync=false'"
-    run_or_echo_with_frames_fallback "$cmd" "openvino-container"
+    run_with_frames_export "$cmd" "$source"
     return $?
   fi
 
@@ -320,7 +305,7 @@ run_openvino_gva() {
     warn "gst-launch-1.0 not found for OpenVINO+GVA"
     return 1
   fi
-  run_or_echo_with_frames_fallback "$cmd" "openvino-host"
+  run_with_frames_export "$cmd" "$source"
 }
 
 run_gstreamer_custom() {
@@ -348,46 +333,38 @@ run_gstreamer_custom() {
     warn "gst-launch-1.0 not found for custom GStreamer pipeline"
     return 1
   fi
-  run_or_echo_with_frames_fallback "$cmd" "gstreamer-custom-host"
+  run_with_frames_export "$cmd" "$source"
 }
 
 run_custom_cpp_cuda_qt() {
   local app="${CUSTOM_APP_BIN:-$PROJECT_DIR/build/bin/adaptive_scheduler_app}"
-  local src="${CUSTOM_APP_SRC:-$PROJECT_DIR/deploy/custom_cpp_cuda_qt/adaptive_scheduler_app.cpp}"
-  local auto_build="${CUSTOM_APP_AUTO_BUILD:-1}"
   local cmd="'$app' --scenario '$SCENARIO' --streams '$STREAMS' --duration '$DURATION_S' --output '$OUTPUT_DIR'"
+  local source
+  source="$(pick_video_for_stream 1)"
 
   if [[ ! -x "$app" ]]; then
-    if [[ "$auto_build" == "1" && -f "$src" ]] && command -v g++ >/dev/null 2>&1; then
-      log "custom app not found; building from source: $src"
-      mkdir -p "$(dirname "$app")"
-      if ! g++ -O2 -std=c++17 "$src" -o "$app"; then
-        warn "failed to build custom app from source: $src"
-        return 1
-      fi
-    else
-      warn "custom app not found/executable: $app"
-      return 1
-    fi
+    warn "custom app not found/executable: $app"
+    warn "Provide a real implementation via CUSTOM_APP_BIN."
+    return 1
   fi
-  run_or_echo_with_frames_fallback "$cmd" "custom-cpp-host"
+  run_with_frames_export "$cmd" "$source"
 }
 
 case "$SYSTEM" in
   deepstream)
-    run_deepstream || { rc=$?; fallback_stub || exit "$rc"; }
+    run_deepstream
     ;;
   savant)
-    run_savant || { rc=$?; fallback_stub || exit "$rc"; }
+    run_savant
     ;;
   openvino_gva)
-    run_openvino_gva || { rc=$?; fallback_stub || exit "$rc"; }
+    run_openvino_gva
     ;;
   gstreamer_custom)
-    run_gstreamer_custom || { rc=$?; fallback_stub || exit "$rc"; }
+    run_gstreamer_custom
     ;;
   custom_cpp_cuda_qt)
-    run_custom_cpp_cuda_qt || { rc=$?; fallback_stub || exit "$rc"; }
+    run_custom_cpp_cuda_qt
     ;;
   *)
     warn "Unknown system: $SYSTEM"

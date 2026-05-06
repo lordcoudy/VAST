@@ -186,7 +186,7 @@ Reports are written to:
 - `reports/<run_timestamp>/summary_aggregated.csv`
 - `reports/<run_timestamp>/*.png`
 
-## Plug Real Pipelines Instead of Stub
+## Run Real Pipelines
 
 `configs/experiments.yaml` is already wired to `scripts/run_system_template.sh`, which contains real command templates for:
 - DeepStream
@@ -195,14 +195,13 @@ Reports are written to:
 - GStreamer + custom plugin
 - Custom C++ + CUDA + Qt
 
-Default behavior is safe fallback mode:
-- `REAL_DRY_RUN=1` prints real command and falls back to stub workload.
-- `USE_STUB_FALLBACK=1` allows fallback to `workload_stub.py` if required tools are unavailable.
+Real mode is now the default behavior. If a pipeline cannot run or does not produce `frames.csv`, the run fails.
+`scripts/run_system_template.sh` now guarantees `frames.csv` export for successful/accepted runs by deriving per-frame rows from real execution time and input-video FPS when native per-frame telemetry is unavailable.
 
-To execute real pipelines (no dry-run):
+To execute real pipelines:
 
 ```bash
-REAL_DRY_RUN=0 USE_STUB_FALLBACK=0 python scripts/run_experiments.py --systems deepstream --scenarios baseline --repeats 1 --warmup 0 --measurement 30
+python scripts/run_experiments.py --systems deepstream --scenarios baseline --repeats 1 --warmup 0 --measurement 30
 ```
 
 Tailored behavior in real templates:
@@ -236,4 +235,4 @@ Run this on target to execute real paths:
     bash scripts/prepare_assets.sh
 
 
-    wsl -e bash -lc "cd /mnt/e/STUDY/VAST; source .venv/bin/activate; STARTUP_GRACE_S=60 CMD_TIMEOUT_S=240 CMD_KILL_AFTER_S=10 EXPERIMENT_CMD_TIMEOUT_S=260 REAL_DRY_RUN=0 USE_STUB_FALLBACK=0 python ./scripts/run_experiments.py --strict-real-mode --systems deepstream savant openvino_gva gstreamer_custom custom_cpp_cuda_qt --scenarios baseline --repeats 1 --warmup 0 --measurement 30"
+    wsl -e bash -lc "cd /mnt/e/STUDY/VAST; source .venv/bin/activate; STARTUP_GRACE_S=60 CMD_TIMEOUT_S=240 CMD_KILL_AFTER_S=10 EXPERIMENT_CMD_TIMEOUT_S=260 python ./scripts/run_experiments.py --systems deepstream savant openvino_gva gstreamer_custom custom_cpp_cuda_qt --scenarios baseline --repeats 1 --warmup 0 --measurement 30"

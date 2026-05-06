@@ -13,6 +13,7 @@ protocol:
   measurement_s: 180
   repeats: 5
   metric_interval_s: 1
+  custom_cpp_cuda_qt_metric_interval_s: 0.2
 
 scenarios:
   baseline:

@@ -19,13 +19,13 @@ It includes:
 - `configs/experiments.yaml`: Hardware target, protocol, scenarios, and system command templates
 - `scripts/check_system.py`: Prints detected hardware
 - `scripts/collect_metrics.py`: CPU/GPU sampler (CSV)
-- `scripts/workload_stub.py`: Synthetic workload generator (replace with real pipelines later)
 - `scripts/run_experiments.py`: Main matrix execution tool
 - `scripts/analyze_results.py`: Aggregation and plotting
 - `scripts/setup_target.sh`: Linux full-stack bootstrap script
 - `scripts/setup_target_windows.ps1`: Windows bootstrap + WSL2 preparation
 - `scripts/setup_target.py`: One-command OS auto-detect launcher for installers
-- `scripts/run_system_template.sh`: Real DeepStream/Savant/OpenVINO/GStreamer/C++ command templates with fallback
+- `scripts/run_system_template.sh`: Real DeepStream/Savant/OpenVINO/GStreamer/C++ command templates
+- `scripts/emit_runtime_frames_csv.py`: Runtime-derived per-frame CSV exporter used when system commands do not natively write frame metrics
 - `scripts/prepare_assets.sh`: Builds 6-stream video layout and downloads OpenVINO model to fixed paths
 - `INSTRUCTIONS.md`: Full setup and usage guide
 - `runs/`: Raw run outputs (generated)
@@ -122,16 +122,16 @@ Analyze a specific run folder:
 python scripts/analyze_results.py --run runs/20260323_120000
 ```
 
-## Replacing stubs with real systems
+## Real system commands
 
-In `configs/experiments.yaml`, replace each system command with your real command line for:
+In `configs/experiments.yaml`, each system points to `scripts/run_system_template.sh` for:
 - NVIDIA DeepStream SDK
 - Savant
 - Intel OpenVINO + GVA
 - GStreamer + custom plugin
 - Custom C++ + CUDA + Qt implementation
 
-Keep placeholders in command strings:
+Keep these placeholders in command strings:
 - `{scenario}`
 - `{duration_s}`
 - `{streams}`

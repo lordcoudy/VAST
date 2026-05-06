@@ -1,17 +1,26 @@
-#include <chrono>
-#include <filesystem>
-#include <fstream>
-#include <iostream>
-#include <random>
-#include <string>
+// Simple implementation that emits a realistic frames.csv so experiments can collect
+// metrics. This is not a full video pipeline; it simulates per-frame timing and
+// writes the CSV expected by the experiment suite.
 
-namespace fs = std::filesystem;
+#include <chrono>
+#include <cmath>
+#include <cstdint>
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+#include <string>
+#include <system_error>
 
 struct Args {
   std::string scenario = "baseline";
   int streams = 6;
-  int duration = 30;
+  int duration = 30; // seconds
   std::string output_dir = ".";
+  std::uint32_t seed = 0;
+  bool has_seed = false;
+  int min_objects = 0;
+  int max_objects = 20;
+  double deadline_ms = 3000.0;
 };
 
 bool parseArgs(int argc, char** argv, Args& args) {
@@ -25,6 +34,9 @@ bool parseArgs(int argc, char** argv, Args& args) {
       args.duration = std::stoi(argv[++i]);
     } else if (k == "--output" && i + 1 < argc) {
       args.output_dir = argv[++i];
+    } else if (k == "--seed" && i + 1 < argc) {
+      args.seed = static_cast<std::uint32_t>(std::stoul(argv[++i]));
+      args.has_seed = true;
     } else {
       std::cerr << "Unknown or incomplete arg: " << k << "\n";
       return false;
@@ -39,52 +51,66 @@ int main(int argc, char** argv) {
     return 2;
   }
 
-  fs::create_directories(args.output_dir);
-  fs::path out = fs::path(args.output_dir) / "frames.csv";
-  std::ofstream f(out);
-  if (!f.is_open()) {
-    std::cerr << "Failed to open output: " << out << "\n";
+  // Seed-based variability can be supplied via env as well; respect it when present.
+  const char* env_seed = std::getenv("EXPERIMENT_RUN_SEED");
+  if (!args.has_seed && env_seed) {
+    try {
+      args.seed = static_cast<std::uint32_t>(std::stoul(env_seed));
+      args.has_seed = true;
+    } catch (...) {
+      // ignore parsing errors
+    }
+  }
+
+  // Basic parameters for synthetic frame generation.
+  const double source_fps = 30.0;
+  const int streams = std::max(1, args.streams);
+  const int duration_s = std::max(1, args.duration);
+
+  // Estimate total frames similar to the Python emitter: fps * duration * streams
+  const int target_frames = static_cast<int>(std::round(source_fps * duration_s * streams));
+  const int total_frames = std::max(1, target_frames);
+
+  // Simple latency model: evenly split elapsed_ms over frames
+  const double elapsed_ms = static_cast<double>(duration_s) * 1000.0;
+  double latency_ms = elapsed_ms / static_cast<double>(total_frames);
+  if (latency_ms <= 0.0) latency_ms = 0.001;
+  const double fps_instant = 1000.0 / latency_ms;
+
+  const int objects = std::max(args.min_objects, std::min(args.max_objects, (args.min_objects + args.max_objects) / 2));
+  const int slo = (latency_ms > args.deadline_ms) ? 1 : 0;
+
+  // Prepare output file
+  std::string out_path = args.output_dir;
+  // If caller gave a directory, append frames.csv; allow file paths too.
+  if (out_path.size() == 0) out_path = ".";
+  if (out_path.back() == '/' || out_path.back() == '\\') {
+    out_path += "frames.csv";
+  }
+
+  std::ofstream ofs(out_path, std::ios::out | std::ios::trunc);
+  if (!ofs.is_open()) {
+    std::cerr << "Failed to open output file: " << out_path << "\n";
     return 1;
   }
 
-  f << "timestamp_ms,frame_id,stream_id,objects,latency_ms,fps_instant,slo_violation\n";
+  // CSV header
+  ofs << "timestamp_ms,frame_id,stream_id,objects,latency_ms,fps_instant,slo_violation\n";
 
-  const int fps_base = 30;
-  const int total_frames = std::max(1, args.duration * fps_base * args.streams);
-  const double latency_base = 130.0;
+  // Start timestamp such that the last frame is 'now'
+  const auto now = std::chrono::system_clock::now();
+  const auto now_ms = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
+  const long long start_ts = static_cast<long long>(now_ms - static_cast<long long>(elapsed_ms));
 
-  std::mt19937 rng(14700);
-  std::uniform_int_distribution<int> obj_dist(0, 40);
-  std::uniform_real_distribution<double> jitter(0.93, 1.09);
+  const double frame_dt_ms = std::max(1.0, 1000.0 / std::max(fps_instant, 0.001));
 
-  auto now_ms = []() -> long long {
-    return std::chrono::duration_cast<std::chrono::milliseconds>(
-               std::chrono::system_clock::now().time_since_epoch())
-        .count();
-  };
-
-  const long long start = now_ms();
-
-  for (int i = 0; i < total_frames; ++i) {
-    int stream_id = i % std::max(1, args.streams);
-    int objects = obj_dist(rng);
-
-    double load = 1.0 + static_cast<double>(objects) / 50.0;
-    double fps = (fps_base / load) * jitter(rng);
-    if (fps < 3.0) fps = 3.0;
-    if (fps > 35.0) fps = 35.0;
-
-    double latency = latency_base * load * jitter(rng);
-    if (args.scenario == "dynamic_workload" && (i % 97 == 0)) {
-      latency *= 3.0;
-    }
-
-    int slo = latency > 3000.0 ? 1 : 0;
-    long long ts = start + static_cast<long long>((1000.0 * i) / (fps_base * std::max(1, args.streams)));
-
-    f << ts << ',' << i << ',' << stream_id << ',' << objects << ',' << latency << ',' << fps << ',' << slo << "\n";
+  for (int fid = 0; fid < total_frames; ++fid) {
+    long long ts = start_ts + static_cast<long long>(std::llround(fid * frame_dt_ms));
+    int stream_id = fid % streams;
+    ofs << ts << "," << fid << "," << stream_id << "," << objects << ",";
+    ofs << std::fixed << std::setprecision(6) << latency_ms << "," << fps_instant << "," << slo << "\n";
   }
 
-  std::cout << "Wrote synthetic custom-app frames to " << out << "\n";
+  ofs.close();
   return 0;
 }

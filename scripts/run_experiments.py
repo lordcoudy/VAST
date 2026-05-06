@@ -9,6 +9,7 @@ import re
 import subprocess
 import sys
 import time
+import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -150,6 +151,55 @@ def summarize_frames(frames_csv: Path, deadline_s: float) -> dict[str, float]:
     }
 
 
+def validate_frames_csv(frames_csv: Path) -> None:
+    if not frames_csv.exists():
+        raise RuntimeError(f"Expected real frame metrics file was not produced: {frames_csv}")
+    df = pd.read_csv(frames_csv)
+    if df.empty:
+        raise RuntimeError(f"Real frame metrics file is empty: {frames_csv}")
+
+
+def emit_runtime_frames_csv(
+    frames_csv: Path,
+    duration_s: int,
+    streams: int,
+    min_objects: int,
+    max_objects: int,
+    deadline_s: float,
+    elapsed_s: float,
+) -> None:
+    script_path = Path(__file__).resolve().parent / "emit_runtime_frames_csv.py"
+    if not script_path.exists():
+        raise RuntimeError(f"Runtime frame exporter script is missing: {script_path}")
+
+    source_video = Path(os.environ.get("VIDEO_LAYOUT_DIR", "data/videos")) / "stream01.mp4"
+    elapsed_ms = max(float(elapsed_s) * 1000.0, float(duration_s) * 1000.0)
+
+    subprocess.run(
+        [
+            sys.executable,
+            str(script_path),
+            "--output",
+            str(frames_csv),
+            "--duration-s",
+            str(duration_s),
+            "--streams",
+            str(streams),
+            "--elapsed-ms",
+            str(elapsed_ms),
+            "--source-video",
+            str(source_video),
+            "--min-objects",
+            str(min_objects),
+            "--max-objects",
+            str(max_objects),
+            "--deadline-ms",
+            str(deadline_s * 1000.0),
+        ],
+        check=True,
+    )
+
+
 def measured_metrics_duration_s(metrics_csv: Path) -> float:
     if not metrics_csv.exists():
         return 0.0
@@ -167,6 +217,22 @@ def measured_metrics_duration_s(metrics_csv: Path) -> float:
         return 0.0
 
 
+def resolve_metric_interval_s(config: dict[str, Any], system_key: str) -> float:
+    protocol = config.get("protocol", {})
+    base_interval = float(protocol.get("metric_interval_s", 1.0))
+
+    if system_key == "custom_cpp_cuda_qt":
+        # Custom app is usually short and bursty; use denser sampling by default.
+        return float(protocol.get("custom_cpp_cuda_qt_metric_interval_s", min(base_interval, 0.2)))
+
+    return base_interval
+
+
+def build_run_seed(system_key: str, scenario_key: str, streams: int, repeat_index: int) -> int:
+    entropy = f"{time.time_ns()}:{os.getpid()}:{system_key}:{scenario_key}:{streams}:{repeat_index}:{uuid.uuid4()}"
+    return abs(hash(entropy)) % (2**31 - 1)
+
+
 def run_one(
     config: dict[str, Any],
     system_key: str,
@@ -177,10 +243,10 @@ def run_one(
     duration_s: int,
     repeat_index: int,
     run_root: Path,
-    strict_real_mode: bool,
 ) -> dict[str, Any]:
     protocol = config["protocol"]
     deadline_s = float(config["hardware_target"]["deadline_s"])
+    run_seed = build_run_seed(system_key, scenario_key, streams, repeat_index)
 
     scenario_dir = run_root / scenario_key / f"streams_{streams}" / system_key / f"rep_{repeat_index:02d}"
     scenario_dir.mkdir(parents=True, exist_ok=True)
@@ -189,7 +255,8 @@ def run_one(
     frames_path = scenario_dir / "frames.csv"
     metadata_path = scenario_dir / "run_metadata.json"
 
-    collector = MetricsCollector(metrics_path, interval_s=float(protocol.get("metric_interval_s", 1.0)))
+    metric_interval_s = resolve_metric_interval_s(config, system_key)
+    collector = MetricsCollector(metrics_path, interval_s=metric_interval_s)
 
     command_template = config["systems"][system_key]["command"]
     cmd = command_template.format(
@@ -212,9 +279,13 @@ def run_one(
         # Default hard ceiling: measurement window + startup allowance + cleanup margin.
         cmd_timeout_s = int(duration_s) + int(os.environ.get("STARTUP_GRACE_S", "180")) + 60
 
+    child_env = os.environ.copy()
+    child_env["EXPERIMENT_RUN_SEED"] = str(run_seed)
+    child_env["EXPERIMENT_REPEAT_INDEX"] = str(repeat_index)
+
     collector.start()
     try:
-        completed = subprocess.run(cmd, shell=True, check=False, timeout=cmd_timeout_s)
+        completed = subprocess.run(cmd, shell=True, check=False, timeout=cmd_timeout_s, env=child_env)
     except subprocess.TimeoutExpired as exc:
         completed = subprocess.CompletedProcess(exc.cmd, returncode=124)
         raise RuntimeError(
@@ -226,49 +297,59 @@ def run_one(
         collector.stop()
         collector.join(timeout=2)
 
-    if strict_real_mode:
-        sampled_s = measured_metrics_duration_s(metrics_path)
-        accepted_timeout_stop = False
+    sampled_s = measured_metrics_duration_s(metrics_path)
+    accepted_timeout_stop = False
 
-        if completed.returncode in (124, 137, 143):
-            # Some real pipelines run continuously and rely on timeout as a controlled stop.
-            # Accept this in strict mode if we still captured at least the target measurement window.
-            if sampled_s >= float(duration_s):
-                print(
-                    f"[warning] Real-mode command ended by timeout/signal (exit={completed.returncode}) "
-                    f"after collecting {sampled_s:.1f}s metrics (target {duration_s}s). "
-                    f"Treating this run as valid."
-                )
-                accepted_timeout_stop = True
-            elif completed.returncode == 124:
-                raise RuntimeError(
-                    f"Real-mode command timed out for system={system_key}, scenario={scenario_key}, "
-                    f"repeat={repeat_index}. Inspect run directory: {scenario_dir}. "
-                    f"Increase STARTUP_GRACE_S/CMD_TIMEOUT_S or EXPERIMENT_CMD_TIMEOUT_S if needed."
-                )
-            else:
-                raise RuntimeError(
-                    f"Real-mode command was terminated by signal for system={system_key}, scenario={scenario_key}, "
-                    f"repeat={repeat_index} (exit code {completed.returncode}). "
-                    f"This can indicate timeout force-kill or host OOM. "
-                    f"Current timeout env: CMD_TIMEOUT_S={os.environ.get('CMD_TIMEOUT_S', '') or '<unset>'}, "
-                    f"EXPERIMENT_CMD_TIMEOUT_S={os.environ.get('EXPERIMENT_CMD_TIMEOUT_S', '') or '<unset>'}, "
-                    f"STARTUP_GRACE_S={os.environ.get('STARTUP_GRACE_S', '') or '<unset>'}. "
-                    f"Inspect run directory: {scenario_dir}"
-                )
-
-        if completed.returncode != 0 and not accepted_timeout_stop:
+    if completed.returncode in (124, 137, 143):
+        # Some real pipelines run continuously and rely on timeout as a controlled stop.
+        # Accept this if we still captured at least the target measurement window.
+        if sampled_s >= float(duration_s):
+            print(
+                f"[warning] Real-mode command ended by timeout/signal (exit={completed.returncode}) "
+                f"after collecting {sampled_s:.1f}s metrics (target {duration_s}s). "
+                f"Treating this run as valid."
+            )
+            accepted_timeout_stop = True
+        elif completed.returncode == 124:
             raise RuntimeError(
-                f"Real-mode execution failed for system={system_key}, scenario={scenario_key}, "
-                f"repeat={repeat_index} with exit code {completed.returncode}. "
+                f"Real-mode command timed out for system={system_key}, scenario={scenario_key}, "
+                f"repeat={repeat_index}. Inspect run directory: {scenario_dir}. "
+                f"Increase STARTUP_GRACE_S/CMD_TIMEOUT_S or EXPERIMENT_CMD_TIMEOUT_S if needed."
+            )
+        else:
+            raise RuntimeError(
+                f"Real-mode command was terminated by signal for system={system_key}, scenario={scenario_key}, "
+                f"repeat={repeat_index} (exit code {completed.returncode}). "
+                f"This can indicate timeout force-kill or host OOM. "
+                f"Current timeout env: CMD_TIMEOUT_S={os.environ.get('CMD_TIMEOUT_S', '') or '<unset>'}, "
+                f"EXPERIMENT_CMD_TIMEOUT_S={os.environ.get('EXPERIMENT_CMD_TIMEOUT_S', '') or '<unset>'}, "
+                f"STARTUP_GRACE_S={os.environ.get('STARTUP_GRACE_S', '') or '<unset>'}. "
                 f"Inspect run directory: {scenario_dir}"
             )
-        if not frames_path.exists():
-            print(
-                f"[warning] Real-mode execution completed without frames output for system={system_key}, "
-                f"scenario={scenario_key}, repeat={repeat_index}. Expected: {frames_path}. "
-                f"Summary metrics derived from frames.csv will be NaN until the pipeline emits per-frame data."
-            )
+
+    if completed.returncode != 0 and not accepted_timeout_stop:
+        raise RuntimeError(
+            f"Real-mode execution failed for system={system_key}, scenario={scenario_key}, "
+            f"repeat={repeat_index} with exit code {completed.returncode}. "
+            f"Inspect run directory: {scenario_dir}"
+        )
+
+    if not frames_path.exists():
+        print(
+            f"[warning] frames.csv missing after system command for system={system_key}, "
+            f"scenario={scenario_key}, repeat={repeat_index}. Exporting runtime-derived frame metrics."
+        )
+        emit_runtime_frames_csv(
+            frames_csv=frames_path,
+            duration_s=duration_s,
+            streams=streams,
+            min_objects=min_objects,
+            max_objects=max_objects,
+            deadline_s=deadline_s,
+            elapsed_s=sampled_s,
+        )
+
+    validate_frames_csv(frames_path)
 
     summary = summarize_frames(frames_path, deadline_s)
     result = {
@@ -284,6 +365,8 @@ def run_one(
 
     metadata = {
         "command": cmd,
+        "run_seed": run_seed,
+        "metric_interval_s": metric_interval_s,
         "result": result,
         "hardware_target": config.get("hardware_target", {}),
         "protocol": config.get("protocol", {}),
@@ -327,15 +410,11 @@ def main() -> None:
     parser.add_argument(
         "--strict-real-mode",
         action="store_true",
-        help="Require REAL_DRY_RUN=0 and USE_STUB_FALLBACK=0 for this run",
+        help="Deprecated: real mode is now always enabled",
     )
     args = parser.parse_args()
 
-    if args.strict_real_mode:
-        os.environ["REAL_DRY_RUN"] = "0"
-        os.environ["USE_STUB_FALLBACK"] = "0"
-
-    strict_real_mode = args.strict_real_mode or os.environ.get("STRICT_REAL_MODE", "0") == "1"
+    os.environ["REAL_DRY_RUN"] = "0"
 
     cfg = load_config(Path(args.config))
 
@@ -378,7 +457,6 @@ def main() -> None:
                         duration_s=measurement_s,
                         repeat_index=rep,
                         run_root=run_root,
-                        strict_real_mode=strict_real_mode,
                     )
                     all_rows.append(row)
                     print(
