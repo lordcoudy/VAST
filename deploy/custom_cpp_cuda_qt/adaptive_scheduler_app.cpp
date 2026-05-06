@@ -6,6 +6,7 @@
 #include <cmath>
 #include <cstdint>
 #include <fstream>
+#include <filesystem>
 #include <iomanip>
 #include <iostream>
 #include <string>
@@ -81,14 +82,23 @@ int main(int argc, char** argv) {
   const int slo = (latency_ms > args.deadline_ms) ? 1 : 0;
 
   // Prepare output file
-  std::string out_path = args.output_dir;
-  // If caller gave a directory, append frames.csv; allow file paths too.
-  if (out_path.size() == 0) out_path = ".";
-  if (out_path.back() == '/' || out_path.back() == '\\') {
-    out_path += "frames.csv";
+  std::filesystem::path out_path = args.output_dir;
+  // If caller supplied a directory, ensure it exists and append frames.csv
+  if (out_path.empty()) out_path = ".";
+  if (args.output_dir.back() == '/' || args.output_dir.back() == '\\') {
+    std::filesystem::create_directories(out_path);
+    out_path /= "frames.csv";
+  } else {
+    // If output path ends with .csv assume it's a file, otherwise create parent directory
+    if (out_path.extension() == "") {
+      std::filesystem::create_directories(out_path);
+      out_path /= "frames.csv";
+    } else {
+      std::filesystem::create_directories(out_path.parent_path());
+    }
   }
 
-  std::ofstream ofs(out_path, std::ios::out | std::ios::trunc);
+  std::ofstream ofs(out_path.string(), std::ios::out | std::ios::trunc);
   if (!ofs.is_open()) {
     std::cerr << "Failed to open output file: " << out_path << "\n";
     return 1;
