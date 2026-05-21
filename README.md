@@ -55,7 +55,9 @@ Pinned system defaults:
 - DeepStream image: `nvcr.io/nvidia/deepstream:7.0-triton-multiarch`
 - Savant image: `ghcr.io/insight-platform/savant-deepstream:0.5.17-7.0`
 - OpenVINO Python: `2024.6.0`
-- Custom C++ reference app source: `deploy/custom_cpp_cuda_qt/adaptive_scheduler_app.cpp`
+- Custom C++ adaptive scheduler CUDA source: `deploy/custom_cpp_cuda_qt/adaptive_scheduler_app.cu`
+
+The custom C++ target is now built through CMake with CUDA support.
 
 Prepare assets manually (if needed):
 

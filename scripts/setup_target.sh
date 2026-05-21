@@ -12,11 +12,14 @@ SAVANT_IMAGE="${SAVANT_IMAGE:-ghcr.io/insight-platform/savant-deepstream:0.5.17-
 OPENVINO_PY_VERSION="${OPENVINO_PY_VERSION:-2024.6.0}"
 INSTALL_DOCKER="${INSTALL_DOCKER:-1}"
 INSTALL_GPU_STACK="${INSTALL_GPU_STACK:-1}"
+INSTALL_CUDA_TOOLKIT="${INSTALL_CUDA_TOOLKIT:-1}"
 INSTALL_OPENVINO="${INSTALL_OPENVINO:-1}"
 INSTALL_SAVANT="${INSTALL_SAVANT:-1}"
 INSTALL_DEEPSTREAM="${INSTALL_DEEPSTREAM:-1}"
 PREPARE_ASSETS="${PREPARE_ASSETS:-1}"
 BUILD_REFERENCE_CUSTOM_APP="${BUILD_REFERENCE_CUSTOM_APP:-1}"
+CUDA_ARCHITECTURES="${CUDA_ARCHITECTURES:-86}"
+CUDA_DEVEL_IMAGE="${CUDA_DEVEL_IMAGE:-nvidia/cuda:12.5.1-devel-ubuntu22.04}"
 
 log() {
   echo "[setup] $*"
@@ -52,6 +55,7 @@ install_base_packages() {
     gnupg \
     jq \
     lsb-release \
+    cmake \
     pkg-config \
     software-properties-common \
     unzip \
@@ -60,6 +64,21 @@ install_base_packages() {
     python3-dev \
     python3-pip \
     python3-venv
+}
+
+install_cuda_toolkit() {
+  if [[ "$INSTALL_CUDA_TOOLKIT" != "1" ]]; then
+    log "Skipping CUDA toolkit installation"
+    return
+  fi
+
+  if command -v nvcc >/dev/null 2>&1; then
+    log "CUDA toolkit already available"
+    return
+  fi
+
+  log "Installing NVIDIA CUDA toolkit"
+  sudo DEBIAN_FRONTEND=noninteractive apt-get install -y nvidia-cuda-toolkit
 }
 
 install_gstreamer_packages() {
@@ -150,27 +169,66 @@ setup_python_env() {
 
 build_reference_custom_app() {
   if [[ "$BUILD_REFERENCE_CUSTOM_APP" != "1" ]]; then
-    log "Skipping reference custom C++ app build"
+    log "Skipping custom CUDA app build"
     return
   fi
 
-  local src="$PROJECT_DIR/deploy/custom_cpp_cuda_qt/adaptive_scheduler_app.cpp"
-  local out_dir="$PROJECT_DIR/build/bin"
-  local out_bin="$out_dir/adaptive_scheduler_app"
+  local build_dir="$PROJECT_DIR/build/cmake"
+  local out_bin="$PROJECT_DIR/build/bin/adaptive_scheduler_app"
 
-  if [[ ! -f "$src" ]]; then
-    warn "Reference custom app source missing: $src"
+  if [[ ! -f "$PROJECT_DIR/CMakeLists.txt" ]]; then
+    warn "Missing root CMakeLists.txt, cannot build custom CUDA app"
     return
   fi
 
-  if ! command -v g++ >/dev/null 2>&1; then
-    warn "g++ not found, cannot build reference custom C++ app"
+  mkdir -p "$PROJECT_DIR/build/bin"
+
+  local host_nvcc
+  host_nvcc="$(command -v nvcc || true)"
+  if [[ -n "${CUDA_TOOLKIT_ROOT:-}" && -x "$CUDA_TOOLKIT_ROOT/bin/nvcc" ]]; then
+    host_nvcc="$CUDA_TOOLKIT_ROOT/bin/nvcc"
+  fi
+
+  if [[ -n "$host_nvcc" ]]; then
+    log "Building custom CUDA app with host nvcc: $host_nvcc"
+    local cmake_args=(
+      -S "$PROJECT_DIR"
+      -B "$build_dir"
+      -DCMAKE_BUILD_TYPE=Release
+      -DCMAKE_CUDA_ARCHITECTURES="$CUDA_ARCHITECTURES"
+      -DCMAKE_CUDA_COMPILER="$host_nvcc"
+    )
+    if [[ -n "${CUDA_TOOLKIT_ROOT:-}" ]]; then
+      cmake_args+=(-DCUDAToolkit_ROOT="$CUDA_TOOLKIT_ROOT")
+    fi
+    cmake "${cmake_args[@]}"
+    cmake --build "$build_dir" --target adaptive_scheduler_app --parallel "$(nproc)"
     return
   fi
 
-  mkdir -p "$out_dir"
-  log "Building reference custom C++ app -> $out_bin"
-  g++ -O2 -std=c++17 "$src" -o "$out_bin"
+  if ! command -v docker >/dev/null 2>&1; then
+    warn "nvcc not found and docker unavailable, cannot build custom CUDA app"
+    return
+  fi
+
+  log "Building custom CUDA app inside CUDA devel container: $CUDA_DEVEL_IMAGE"
+  docker run --rm \
+    -e HOST_UID="$(id -u)" \
+    -e HOST_GID="$(id -g)" \
+    -v "$PROJECT_DIR":/workspace/project \
+    -w /workspace/project \
+    "$CUDA_DEVEL_IMAGE" \
+    bash -lc '
+      set -euo pipefail
+      export DEBIAN_FRONTEND=noninteractive
+      apt-get update
+      apt-get install -y --no-install-recommends cmake build-essential make
+      cmake -S /workspace/project -B /workspace/project/build/cmake \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_CUDA_ARCHITECTURES='"$CUDA_ARCHITECTURES"'
+      cmake --build /workspace/project/build/cmake --target adaptive_scheduler_app --parallel "$(nproc)"
+      chown -R "${HOST_UID}:${HOST_GID}" /workspace/project/build
+    '
 }
 
 prepare_project_assets() {
@@ -239,6 +297,7 @@ main() {
   install_gstreamer_packages
   install_docker
   install_nvidia_container_toolkit
+  install_cuda_toolkit
   setup_python_env
   prepare_project_assets
   build_reference_custom_app

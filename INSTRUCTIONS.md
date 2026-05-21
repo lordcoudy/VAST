@@ -195,6 +195,8 @@ Reports are written to:
 - GStreamer + custom plugin
 - Custom C++ + CUDA + Qt
 
+The custom C++ target is built from `deploy/custom_cpp_cuda_qt/adaptive_scheduler_app.cu` through CMake with CUDA enabled.
+
 Real mode is now the default behavior. If a pipeline cannot run or does not produce `frames.csv`, the run fails.
 `scripts/run_system_template.sh` now guarantees `frames.csv` export for successful/accepted runs by deriving per-frame rows from real execution time and input-video FPS when native per-frame telemetry is unavailable.
 
@@ -209,7 +211,7 @@ Tailored behavior in real templates:
 - Savant: pinned to `ghcr.io/insight-platform/savant-deepstream:0.5.17-7.0` and uses module config at `/workspace/project/deploy/savant/module.yml`.
 - OpenVINO+GVA: pinned OpenVINO Python install `2024.6.0`, uses `gvadetect` with the exact OpenVINO model XML path above.
 - GStreamer custom: expects plugin in `build/lib` by default (`GST_PLUGIN_PATH`), and falls back to `identity` unless `GST_CUSTOM_STRICT=1`.
-- Custom C++: uses pinned project reference binary `build/bin/adaptive_scheduler_app` built from `deploy/custom_cpp_cuda_qt/adaptive_scheduler_app.cpp`.
+- Custom C++: uses pinned project adaptive scheduler binary `build/bin/adaptive_scheduler_app` built from the CUDA/CMake project.
 
 Savant module details:
 - File: `deploy/savant/module.yml`
@@ -224,6 +226,7 @@ Useful template environment variables:
 - `OPENVINO_GVA_USE_CONTAINER` (`1` by default; set `0` to force host runtime path)
 - `GST_CUSTOM_PLUGIN`, `GST_CUSTOM_SOURCE`
 - `CUSTOM_APP_BIN`
+- `CUDA_TOOLKIT_ROOT` (optional local CUDA toolkit root for the CMake build)
 
 
 Run this on target to execute real paths:
