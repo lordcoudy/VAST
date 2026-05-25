@@ -20,6 +20,7 @@ PREPARE_ASSETS="${PREPARE_ASSETS:-1}"
 BUILD_REFERENCE_CUSTOM_APP="${BUILD_REFERENCE_CUSTOM_APP:-1}"
 CUDA_ARCHITECTURES="${CUDA_ARCHITECTURES:-86}"
 CUDA_DEVEL_IMAGE="${CUDA_DEVEL_IMAGE:-nvidia/cuda:12.5.1-devel-ubuntu22.04}"
+DOCKER_PULL_TIMEOUT="${DOCKER_PULL_TIMEOUT:-1800}"
 
 log() {
   echo "[setup] $*"
@@ -33,6 +34,17 @@ require_cmd() {
   if ! command -v "$1" >/dev/null 2>&1; then
     echo "[error] Required command missing: $1" >&2
     exit 1
+  fi
+}
+
+run_with_timeout() {
+  local timeout_secs="$1"
+  shift
+
+  if [[ "$timeout_secs" =~ ^[0-9]+$ ]] && [[ "$timeout_secs" -gt 0 ]] && command -v timeout >/dev/null 2>&1; then
+    timeout "${timeout_secs}s" "$@"
+  else
+    "$@"
   fi
 }
 
@@ -253,8 +265,13 @@ pull_deepstream_image() {
   fi
 
   log "Attempting to pull DeepStream image: $DEEPSTREAM_IMAGE"
-  if ! docker pull "$DEEPSTREAM_IMAGE"; then
-    warn "DeepStream pull failed. You may need NVIDIA NGC login: docker login nvcr.io"
+  if ! run_with_timeout "$DOCKER_PULL_TIMEOUT" docker pull "$DEEPSTREAM_IMAGE"; then
+    if [[ "$DOCKER_PULL_TIMEOUT" =~ ^[0-9]+$ ]] && [[ "$DOCKER_PULL_TIMEOUT" -gt 0 ]]; then
+      warn "DeepStream pull timed out after ${DOCKER_PULL_TIMEOUT}s."
+    else
+      warn "DeepStream pull failed."
+    fi
+    warn "You may need NVIDIA NGC login: docker login nvcr.io"
   fi
 }
 
@@ -270,8 +287,13 @@ pull_savant_image() {
   fi
 
   log "Attempting to pull Savant image: $SAVANT_IMAGE"
-  if ! docker pull "$SAVANT_IMAGE"; then
-    warn "Savant image pull failed. Check image name/registry access."
+  if ! run_with_timeout "$DOCKER_PULL_TIMEOUT" docker pull "$SAVANT_IMAGE"; then
+    if [[ "$DOCKER_PULL_TIMEOUT" =~ ^[0-9]+$ ]] && [[ "$DOCKER_PULL_TIMEOUT" -gt 0 ]]; then
+      warn "Savant pull timed out after ${DOCKER_PULL_TIMEOUT}s."
+    else
+      warn "Savant image pull failed."
+    fi
+    warn "Check image name/registry access."
     warn "Alternative: clone https://github.com/insight-platform/Savant and follow its docs."
   fi
 }

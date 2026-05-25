@@ -548,7 +548,7 @@ class AdaptivePipeline {
     const auto interval = std::chrono::duration<double>(1.0 / std::max(1.0, args_.source_fps));
 
     for (int stream_id = 0; stream_id < stream_count_; ++stream_id) {
-      producers_.emplace_back([=, this] {
+      producers_.emplace_back([this, start_tp, interval, stream_id] {
         for (int frame_idx = 0; frame_idx < frames_per_stream_; ++frame_idx) {
           if (stop_requested_.load()) {
             break;
