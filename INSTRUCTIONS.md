@@ -72,8 +72,8 @@ What this script installs:
 - Python venv dependencies from requirements.txt
 - OpenVINO Python packages
 - Pull attempt for:
-  - DeepStream container image: nvcr.io/nvidia/deepstream:6.4-triton-multiarch
-  - Savant container image: ghcr.io/insight-platform/savant-deepstream:latest
+   - DeepStream container image: nvcr.io/nvidia/deepstream:7.0-triton-multiarch
+   - Savant container image: ghcr.io/insight-platform/savant-deepstream:0.5.17-7.0
 
 Notes:
 - DeepStream pull may require NGC login:
@@ -86,6 +86,7 @@ Optional environment variables for setup script:
 - `INSTALL_OPENVINO=0` skip OpenVINO Python packages
 - `INSTALL_DEEPSTREAM=0` skip DeepStream pull
 - `INSTALL_SAVANT=0` skip Savant pull
+- `DOCKER_PULL_TIMEOUT=1200` cap each image pull in seconds (0 disables the cap)
 - `DEEPSTREAM_IMAGE=...` custom image
 - `SAVANT_IMAGE=...` custom image
 
