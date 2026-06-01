@@ -13,13 +13,13 @@ OPENVINO_PY_VERSION="${OPENVINO_PY_VERSION:-2024.6.0}"
 INSTALL_DOCKER="${INSTALL_DOCKER:-1}"
 INSTALL_GPU_STACK="${INSTALL_GPU_STACK:-1}"
 INSTALL_CUDA_TOOLKIT="${INSTALL_CUDA_TOOLKIT:-1}"
-INSTALL_CUDA_TOOLKIT="${INSTALL_CUDA_TOOLKIT:-1}"
 INSTALL_OPENVINO="${INSTALL_OPENVINO:-1}"
 INSTALL_SAVANT="${INSTALL_SAVANT:-1}"
 INSTALL_DEEPSTREAM="${INSTALL_DEEPSTREAM:-1}"
 PREPARE_ASSETS="${PREPARE_ASSETS:-1}"
 BUILD_REFERENCE_CUSTOM_APP="${BUILD_REFERENCE_CUSTOM_APP:-1}"
 CUDA_ARCHITECTURES="${CUDA_ARCHITECTURES:-86}"
+DOCKER_PULL_TIMEOUT="${DOCKER_PULL_TIMEOUT:-1800}"
 
 log() {
   echo "[setup] $*"
@@ -189,14 +189,6 @@ build_reference_custom_app() {
   local out_bin="$PROJECT_DIR/build/bin/adaptive_scheduler_app"
 
   if [[ ! -f "$PROJECT_DIR/CMakeLists.txt" ]]; then
-    warn "Missing root CMakeLists.txt, cannot build custom CUDA app"
-    return
-  fi
-
-  local build_dir="$PROJECT_DIR/build/cmake"
-  local out_bin="$PROJECT_DIR/build/bin/adaptive_scheduler_app"
-
-  if [[ ! -f "$PROJECT_DIR/CMakeLists.txt" ]]; then
     warn "Missing root CMakeLists.txt, cannot build custom CUDA + Qt app"
     return
   fi
@@ -290,7 +282,6 @@ main() {
   install_docker
   install_nvidia_container_toolkit
   install_cuda_toolkit
-  install_cuda_toolkit
   setup_python_env
   prepare_project_assets
   build_reference_custom_app
@@ -305,7 +296,7 @@ Next actions:
 2) Activate venv: source .venv/bin/activate
 3) Verify project hardware check: python scripts/check_system.py
 4) Run smoke benchmark:
-   python scripts/run_experiments.py --systems deepstream --scenarios baseline --repeats 1 --warmup 0 --measurement 20
+   python scripts/run_experiments.py --mode smoke --run-kind local --systems custom_cpp_cuda_qt --scenarios baseline --repeats 1 --warmup 0 --measurement 5
 
 EOF
 }
