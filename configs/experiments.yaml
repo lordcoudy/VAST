@@ -1,6 +1,28 @@
+schema_version: 2
+
 project:
   name: video-pipeline-scheduler-experiments
   description: Experimental benchmark suite for heterogeneous CPU/GPU video analytics scheduling.
+
+benchmark:
+  dataset_manifest: configs/datasets.yaml
+  default_dataset:
+    smoke: smoke_testsrc
+    benchmark: mot17_uadetrac_public
+  telemetry_schema_version: 2
+  publishable_telemetry_sources: [native]
+  scheduler_policies: [cpu_only, gpu_only, static_hybrid, heft, ql_heft_frozen, ql_heft_online]
+  ql_heft_policy_artifact: policies/ql_heft_frozen.policy
+
+transport:
+  kind: gstreamer_rtp_udp
+  trace_metadata: rtp_header_extension
+  clock_sync: chrony
+  max_clock_offset_ms: 5
+  startup_grace_s: 5
+  role_ports:
+    edge_to_gpu_worker: 5600
+    gpu_worker_to_aggregator: 5700
 
 hardware_target:
   gpu_model: NVIDIA GeForce RTX 3060
@@ -17,44 +39,260 @@ protocol:
 
 scenarios:
   baseline:
-    description: 6 streams, decode -> detection (YOLOv8s) -> visualization
-    streams: 6
-    min_objects: 0
-    max_objects: 20
+    description: Single-host decode and detection baseline.
+    workload:
+      streams: 6
+      object_density:
+        min: 0
+        max: 20
+    pipeline: [decode, detect]
+    placement:
+      policy: local_gpu
+      stages:
+        decode: local
+        detect: local
+    network:
+      profile: local
+      latency_ms: 0
+      bandwidth_mbps: 0
+      packet_loss_percent: 0
+    distributed:
+      enabled: false
+
+  high_density_multistage:
+    description: Multi-stage high-density pipeline with tracking, classification, and recording.
+    workload:
+      streams: 8
+      object_density:
+        min: 20
+        max: 80
+    pipeline: [decode, detect, track, classify, record]
+    placement:
+      policy: local_gpu_multistage
+      stages:
+        decode: local
+        detect: local
+        track: local
+        classify: local
+        record: local
+    network:
+      profile: local
+      latency_ms: 0
+      bandwidth_mbps: 0
+      packet_loss_percent: 0
+    distributed:
+      enabled: false
+
+  bursty_workload:
+    description: Bursty workload with low, medium, and high object pressure variants.
+    workload:
+      streams: 6
+      burst_profile:
+        enabled: true
+        period_s: 30
+        peak_multiplier: 2.5
+      object_density:
+        min: 0
+        max: 30
+      variants:
+        - name: low
+          object_density:
+            min: 0
+            max: 20
+        - name: medium
+          object_density:
+            min: 10
+            max: 50
+        - name: high
+          object_density:
+            min: 30
+            max: 90
+    pipeline: [decode, detect, track]
+    placement:
+      policy: local_adaptive
+      stages:
+        decode: local
+        detect: local
+        track: local
+    network:
+      profile: local
+      latency_ms: 0
+      bandwidth_mbps: 0
+      packet_loss_percent: 0
+    distributed:
+      enabled: false
+
   stream_scaling:
-    description: Increase streams from 1 to 12 to find saturation
-    stream_range: [1, 12]
-    min_objects: 0
-    max_objects: 20
-  complex_pipeline:
-    description: decode -> detection -> tracking -> classification -> recording
-    streams: 6
-    min_objects: 5
-    max_objects: 35
-  dynamic_workload:
-    description: Variable object count from 0 to 50+
-    streams: 6
-    min_objects: 0
-    max_objects: 60
-  heterogeneous_distribution:
-    description: Compare GPU-only, CPU-only, and hybrid placements
-    streams: 6
-    min_objects: 5
-    max_objects: 30
+    description: Increase streams from 1 to 16 to find saturation.
+    workload:
+      stream_range: [1, 16]
+      object_density:
+        min: 0
+        max: 25
+    pipeline: [decode, detect]
+    placement:
+      policy: local_scaling
+      stages:
+        decode: local
+        detect: local
+    network:
+      profile: local
+      latency_ms: 0
+      bandwidth_mbps: 0
+      packet_loss_percent: 0
+    distributed:
+      enabled: false
+
+  edge_to_worker_distributed:
+    description: Edge decode with GPU worker detection.
+    workload:
+      streams: 6
+      object_density:
+        min: 5
+        max: 35
+    pipeline: [decode, detect, aggregate]
+    placement:
+      policy: edge_gpu_worker
+      stages:
+        decode: edge
+        detect: gpu_worker
+        aggregate: aggregator
+    network:
+      profile: lan
+      latency_ms: 5
+      jitter_ms: 2
+      bandwidth_mbps: 1000
+      packet_loss_percent: 0
+    distributed:
+      enabled: true
+      hosts_config: configs/hosts.yaml
+      launch_strategy: staged_rtp_roles
+      sync_project: true
+      collect_artifacts: [frames.csv, frame_events.csv, system_metrics.csv, network_metrics.csv, stdout.log, stderr.log]
+
+  edge_worker_aggregator_distributed:
+    description: Edge decode, worker inference, and aggregator recording.
+    workload:
+      streams: 8
+      object_density:
+        min: 10
+        max: 60
+    pipeline: [decode, detect, track, aggregate, record]
+    placement:
+      policy: edge_worker_aggregator
+      stages:
+        decode: edge
+        detect: gpu_worker
+        track: gpu_worker
+        aggregate: aggregator
+        record: aggregator
+    network:
+      profile: lan
+      latency_ms: 8
+      jitter_ms: 3
+      bandwidth_mbps: 1000
+      packet_loss_percent: 0.1
+    distributed:
+      enabled: true
+      hosts_config: configs/hosts.yaml
+      launch_strategy: staged_rtp_roles
+      sync_project: true
+      collect_artifacts: [frames.csv, frame_events.csv, system_metrics.csv, network_metrics.csv, stdout.log, stderr.log]
+
+  degraded_network_distributed:
+    description: Distributed pipeline under constrained bandwidth, jitter, and packet loss.
+    workload:
+      streams: 6
+      object_density:
+        min: 10
+        max: 50
+    pipeline: [decode, detect, track, aggregate]
+    placement:
+      policy: degraded_edge_cloud
+      stages:
+        decode: edge
+        detect: gpu_worker
+        track: gpu_worker
+        aggregate: aggregator
+    network:
+      profile: degraded_wan
+      latency_ms: 80
+      jitter_ms: 25
+      bandwidth_mbps: 80
+      packet_loss_percent: 1.5
+      acceptance:
+        latency_ms: [60, 140]
+        jitter_ms: [10, 60]
+        bandwidth_mbps: [20, 120]
+        packet_loss_percent: [0.5, 5]
+    distributed:
+      enabled: true
+      hosts_config: configs/hosts.yaml
+      launch_strategy: staged_rtp_roles
+      sync_project: true
+      collect_artifacts: [frames.csv, frame_events.csv, system_metrics.csv, network_metrics.csv, stdout.log, stderr.log]
+
+  hybrid_placement:
+    description: Compare CPU, GPU, and split placement strategies.
+    workload:
+      streams: 6
+      object_density:
+        min: 5
+        max: 40
+      variants:
+        - name: cpu
+          placement_policy: cpu_only
+        - name: gpu
+          placement_policy: gpu_only
+        - name: split
+          placement_policy: cpu_gpu_split
+    pipeline: [decode, detect, track, classify]
+    placement:
+      policy: hybrid_compare
+      stages:
+        decode: local
+        detect: local
+        track: local
+        classify: local
+    network:
+      profile: local
+      latency_ms: 0
+      bandwidth_mbps: 0
+      packet_loss_percent: 0
+    distributed:
+      enabled: false
 
 systems:
   deepstream:
     label: NVIDIA DeepStream SDK
+    detector: native_deepstream
+    backend: tensorrt
+    container_image: nvcr.io/nvidia/deepstream:7.0-triton-multiarch
+    supports_distributed: true
     command: bash scripts/run_system_template.sh --system deepstream --scenario {scenario} --duration {duration_s} --streams {streams} --min-objects {min_objects} --max-objects {max_objects} --output {output_dir}/frames.csv
   savant:
     label: Savant
+    detector: peoplenet
+    backend: deepstream_tensorrt
+    container_image: ghcr.io/insight-platform/savant-deepstream:0.5.17-7.0
+    supports_distributed: true
     command: bash scripts/run_system_template.sh --system savant --scenario {scenario} --duration {duration_s} --streams {streams} --min-objects {min_objects} --max-objects {max_objects} --output {output_dir}/frames.csv
   openvino_gva:
     label: Intel OpenVINO + GVA
+    detector: person-vehicle-bike-detection-crossroad-0078
+    backend: openvino_cpu
+    container_image: intel/dlstreamer:latest
+    supports_distributed: true
     command: bash scripts/run_system_template.sh --system openvino_gva --scenario {scenario} --duration {duration_s} --streams {streams} --min-objects {min_objects} --max-objects {max_objects} --output {output_dir}/frames.csv
   gstreamer_custom:
     label: GStreamer + custom plugin
+    detector: custom_gstreamer_native
+    backend: gstreamer
+    supports_distributed: true
     command: bash scripts/run_system_template.sh --system gstreamer_custom --scenario {scenario} --duration {duration_s} --streams {streams} --min-objects {min_objects} --max-objects {max_objects} --output {output_dir}/frames.csv
   custom_cpp_cuda_qt:
     label: Custom C++ + CUDA + Qt
+    detector: custom_cuda_signal
+    backend: cuda_qt
+    supports_distributed: true
     command: bash scripts/run_system_template.sh --system custom_cpp_cuda_qt --scenario {scenario} --duration {duration_s} --streams {streams} --min-objects {min_objects} --max-objects {max_objects} --output {output_dir}/frames.csv

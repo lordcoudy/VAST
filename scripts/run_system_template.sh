@@ -14,6 +14,19 @@ MIN_OBJECTS="0"
 MAX_OBJECTS="20"
 OUTPUT_FILE=""
 DEADLINE_MS="3000"
+HOST_ROLE="${EXPERIMENT_HOST_ROLE:-local}"
+PIPELINE_STAGES="${EXPERIMENT_PIPELINE_STAGES:-}"
+SCENARIO_JSON="${EXPERIMENT_SCENARIO_JSON:-}"
+BENCHMARK_MODE="${BENCHMARK_MODE:-benchmark}"
+RUN_ID="${EXPERIMENT_RUN_ID:-unassigned}"
+DETECTOR="${ADAPTER_DETECTOR:-$SYSTEM}"
+BACKEND="${ADAPTER_BACKEND:-$SYSTEM}"
+SCHEDULER_POLICY="${SCHEDULER_POLICY:-static_hybrid}"
+QL_HEFT_POLICY_ARTIFACT="${QL_HEFT_POLICY_ARTIFACT:-$PROJECT_DIR/policies/ql_heft_frozen.policy}"
+EXPERIMENT_DISTRIBUTED="${EXPERIMENT_DISTRIBUTED:-0}"
+RTP_INPUT_PORT="${EXPERIMENT_RTP_INPUT_PORT:-}"
+RTP_OUTPUT_HOST="${EXPERIMENT_RTP_OUTPUT_HOST:-}"
+RTP_OUTPUT_PORT="${EXPERIMENT_RTP_OUTPUT_PORT:-}"
 
 REAL_DRY_RUN="${REAL_DRY_RUN:-0}"
 STARTUP_GRACE_S="${STARTUP_GRACE_S:-180}"
@@ -26,6 +39,19 @@ OPENVINO_MODEL_XML_DEFAULT="$PROJECT_DIR/models/openvino/public/intel/person-veh
 
 log() { echo "[template] $*"; }
 warn() { echo "[template][warning] $*" >&2; }
+
+now_ms() {
+  local raw
+  raw="$(date +%s%3N 2>/dev/null || true)"
+  if [[ "$raw" =~ ^[0-9]+$ ]]; then
+    printf "%s" "$raw"
+    return 0
+  fi
+  python3 - <<'PY'
+import time
+print(int(time.time() * 1000))
+PY
+}
 
 usage() {
   cat <<EOF
@@ -46,6 +72,9 @@ while [[ $# -gt 0 ]]; do
     --max-objects) MAX_OBJECTS="$2"; shift 2 ;;
     --output) OUTPUT_FILE="$2"; shift 2 ;;
     --deadline-ms) DEADLINE_MS="$2"; shift 2 ;;
+    --host-role) HOST_ROLE="$2"; shift 2 ;;
+    --pipeline-stages) PIPELINE_STAGES="$2"; shift 2 ;;
+    --scenario-json) SCENARIO_JSON="$2"; shift 2 ;;
     -h|--help) usage; exit 0 ;;
     *)
       warn "Unknown argument: $1"
@@ -60,10 +89,22 @@ if [[ -z "$SYSTEM" || -z "$SCENARIO" || -z "$DURATION_S" || -z "$STREAMS" || -z 
   exit 2
 fi
 
+DETECTOR="${ADAPTER_DETECTOR:-$SYSTEM}"
+BACKEND="${ADAPTER_BACKEND:-$SYSTEM}"
+
 OUTPUT_DIR="$(dirname "$OUTPUT_FILE")"
 mkdir -p "$OUTPUT_DIR"
 OUTPUT_DIR="$(cd "$OUTPUT_DIR" && pwd)"
 OUTPUT_FILE="$OUTPUT_DIR/$(basename "$OUTPUT_FILE")"
+
+export EXPERIMENT_HOST_ROLE="$HOST_ROLE"
+export EXPERIMENT_PIPELINE_STAGES="$PIPELINE_STAGES"
+export EXPERIMENT_SCENARIO_JSON="$SCENARIO_JSON"
+export MIN_OBJECTS="$MIN_OBJECTS"
+export MAX_OBJECTS="$MAX_OBJECTS"
+export DEADLINE_MS="$DEADLINE_MS"
+
+log "mode=$BENCHMARK_MODE scenario=$SCENARIO role=$HOST_ROLE stages=${PIPELINE_STAGES:-all} streams=$STREAMS objects=${MIN_OBJECTS}-${MAX_OBJECTS}"
 
 pick_video_for_stream() {
   local idx="$1"
@@ -145,6 +186,11 @@ ensure_frames_csv_from_runtime() {
     return 0
   fi
 
+  if [[ "$BENCHMARK_MODE" != "smoke" ]]; then
+    warn "Native frames.csv telemetry is required in benchmark mode: $OUTPUT_FILE"
+    return 1
+  fi
+
   if ! command -v "$py_bin" >/dev/null 2>&1; then
     py_bin="python"
   fi
@@ -153,7 +199,7 @@ ensure_frames_csv_from_runtime() {
     return 1
   fi
 
-  log "Exporting runtime-derived frame metrics to $OUTPUT_FILE (elapsed=${elapsed_ms}ms, source=$source_video)"
+  log "Exporting synthetic smoke-only frame metrics to $OUTPUT_FILE (elapsed=${elapsed_ms}ms, source=$source_video)"
   "$py_bin" "$PROJECT_DIR/scripts/emit_runtime_frames_csv.py" \
     --output "$OUTPUT_FILE" \
     --duration-s "$DURATION_S" \
@@ -162,7 +208,10 @@ ensure_frames_csv_from_runtime() {
     --source-video "$source_video" \
     --min-objects "$MIN_OBJECTS" \
     --max-objects "$MAX_OBJECTS" \
-    --deadline-ms "$DEADLINE_MS"
+    --deadline-ms "$DEADLINE_MS" \
+    --run-id "$RUN_ID" \
+    --detector "$DETECTOR" \
+    --backend "$BACKEND"
 }
 
 run_with_frames_export() {
@@ -173,12 +222,12 @@ run_with_frames_export() {
   local elapsed_ms
   local rc
 
-  start_ms="$(date +%s%3N)"
+  start_ms="$(now_ms)"
   set +e
   run_or_echo "$cmd"
   rc=$?
   set -e
-  end_ms="$(date +%s%3N)"
+  end_ms="$(now_ms)"
   elapsed_ms="$((end_ms - start_ms))"
 
   # Accept controlled timeout/signal exits; run_experiments.py validates those conditions.
@@ -230,7 +279,14 @@ run_savant() {
   if [[ "$output_rel" == "$OUTPUT_DIR" ]]; then
     output_rel="results"
   fi
-  local cmd="docker run --rm --gpus all --entrypoint bash -e VIDEO_URI='file://$source' -e OUTPUT_DIR='/workspace/project/$output_rel' -v '$PROJECT_DIR':/workspace/project '$image' -lc 'python -m savant.entrypoint $module'"
+  local cmd=""
+  local i
+  for i in $(seq 1 "$STREAMS"); do
+    local stream_source
+    stream_source="/workspace/project/data/videos/$(basename "$(pick_video_for_stream "$i")")"
+    cmd+="docker run --rm --gpus all --entrypoint bash -e VIDEO_URI='file://$stream_source' -e OUTPUT_DIR='/workspace/project/$output_rel/stream_$i' -v '$PROJECT_DIR':/workspace/project '$image' -lc 'python -m savant.entrypoint $module' & "
+  done
+  cmd+="wait"
 
   if ! command -v docker >/dev/null 2>&1; then
     warn "docker not found for Savant"
@@ -270,7 +326,13 @@ run_openvino_gva() {
     ensure_docker_image_local "$image" || return 1
     local container_source="/workspace/project/data/videos/$(basename "$source")"
     local container_model="/workspace/project/${model_xml#"$PROJECT_DIR/"}"
-    local cmd="docker run --rm --entrypoint bash -v '$PROJECT_DIR':/workspace/project '$image' -lc 'gst-launch-1.0 -q filesrc location=\"$container_source\" ! decodebin ! videoconvert ! object_detect model=\"$container_model\" device=CPU ! queue ! fakesink sync=false'"
+    local branches=""
+    local i
+    for i in $(seq 1 "$STREAMS"); do
+      container_source="/workspace/project/data/videos/$(basename "$(pick_video_for_stream "$i")")"
+      branches+=" filesrc location=\"$container_source\" ! decodebin ! videoconvert ! object_detect model=\"$container_model\" device=CPU ! queue ! fakesink sync=false "
+    done
+    local cmd="docker run --rm --entrypoint bash -v '$PROJECT_DIR':/workspace/project '$image' -lc 'gst-launch-1.0 -q $branches'"
     run_with_frames_export "$cmd" "$source"
     return $?
   fi
@@ -299,7 +361,12 @@ run_openvino_gva() {
     fi
   fi
 
-  local cmd="GST_PLUGIN_PATH='$ov_gst_plugin_path' LD_LIBRARY_PATH='$ov_ld_library_path' GST_PLUGIN_SCANNER='$ov_gst_plugin_scanner' gst-launch-1.0 -q filesrc location='$source' ! decodebin ! videoconvert ! $ov_detect_element model='$model_xml' device=CPU ! queue ! fakesink sync=false"
+  local host_branches=""
+  local i
+  for i in $(seq 1 "$STREAMS"); do
+    host_branches+=" filesrc location='$(pick_video_for_stream "$i")' ! decodebin ! videoconvert ! $ov_detect_element model='$model_xml' device=CPU ! queue ! fakesink sync=false "
+  done
+  local cmd="GST_PLUGIN_PATH='$ov_gst_plugin_path' LD_LIBRARY_PATH='$ov_ld_library_path' GST_PLUGIN_SCANNER='$ov_gst_plugin_scanner' gst-launch-1.0 -q $host_branches"
 
   if ! command -v gst-launch-1.0 >/dev/null 2>&1; then
     warn "gst-launch-1.0 not found for OpenVINO+GVA"
@@ -327,7 +394,12 @@ run_gstreamer_custom() {
     fi
   fi
 
-  local cmd="GST_PLUGIN_PATH='$gst_plugin_path' gst-launch-1.0 -q filesrc location='$source' ! decodebin ! videoconvert ! $plugin ! fakesink sync=false"
+  local branches=""
+  local i
+  for i in $(seq 1 "$STREAMS"); do
+    branches+=" filesrc location='$(pick_video_for_stream "$i")' ! decodebin ! videoconvert ! $plugin ! fakesink sync=false "
+  done
+  local cmd="GST_PLUGIN_PATH='$gst_plugin_path' gst-launch-1.0 -q $branches"
 
   if ! command -v gst-launch-1.0 >/dev/null 2>&1; then
     warn "gst-launch-1.0 not found for custom GStreamer pipeline"
@@ -338,9 +410,22 @@ run_gstreamer_custom() {
 
 run_custom_cpp_cuda_qt() {
   local app="${CUSTOM_APP_BIN:-$PROJECT_DIR/build/bin/adaptive_scheduler_app}"
-  local cmd="'$app' --scenario '$SCENARIO' --streams '$STREAMS' --duration '$DURATION_S' --output '$OUTPUT_DIR'"
+  local cmd="QT_QPA_PLATFORM=offscreen '$app' --scenario '$SCENARIO' --streams '$STREAMS' --duration '$DURATION_S' --output '$OUTPUT_DIR' --policy '$SCHEDULER_POLICY' --policy-artifact '$QL_HEFT_POLICY_ARTIFACT' --run-id '$RUN_ID' --detector '$DETECTOR' --backend '$BACKEND' --min-objects '$MIN_OBJECTS' --max-objects '$MAX_OBJECTS' --deadline-ms '$DEADLINE_MS'"
   local source
   source="$(pick_video_for_stream 1)"
+
+  if [[ "$BENCHMARK_MODE" == "smoke" && "${CUSTOM_SMOKE_USE_BINARY:-0}" != "1" ]]; then
+    log "Using explicit synthetic custom adapter for smoke mode"
+    python3 "$PROJECT_DIR/scripts/custom_app_emitter.py" \
+      --scenario "$SCENARIO" \
+      --streams "$STREAMS" \
+      --duration "$DURATION_S" \
+      --output "$OUTPUT_DIR" \
+      --run-id "$RUN_ID" \
+      --detector "$DETECTOR" \
+      --backend "$BACKEND"
+    return $?
+  fi
 
   if [[ ! -x "$app" ]]; then
     warn "custom app not found/executable: $app"
@@ -349,6 +434,54 @@ run_custom_cpp_cuda_qt() {
   fi
   run_with_frames_export "$cmd" "$source"
 }
+
+run_distributed_rtp_smoke() {
+  local source
+  source="$(pick_video_for_stream 1)"
+  ensure_common_assets || return 1
+  if ! command -v gst-launch-1.0 >/dev/null 2>&1; then
+    warn "gst-launch-1.0 is required for RTP smoke transport"
+    return 1
+  fi
+
+  case "$HOST_ROLE" in
+    edge)
+      [[ -n "$RTP_OUTPUT_HOST" && -n "$RTP_OUTPUT_PORT" ]] || return 2
+      run_with_frames_export "gst-launch-1.0 -q -e filesrc location='$source' ! qtdemux ! h264parse ! rtph264pay pt=96 config-interval=1 ! udpsink host='$RTP_OUTPUT_HOST' port='$RTP_OUTPUT_PORT'" "$source"
+      ;;
+    gpu_worker)
+      [[ -n "$RTP_INPUT_PORT" && -n "$RTP_OUTPUT_HOST" && -n "$RTP_OUTPUT_PORT" ]] || return 2
+      run_with_frames_export "gst-launch-1.0 -q -e udpsrc port='$RTP_INPUT_PORT' caps='application/x-rtp,media=video,encoding-name=H264,payload=96' ! rtph264depay ! h264parse ! rtph264pay pt=96 config-interval=1 ! udpsink host='$RTP_OUTPUT_HOST' port='$RTP_OUTPUT_PORT'" "$source"
+      ;;
+    aggregator)
+      [[ -n "$RTP_INPUT_PORT" ]] || return 2
+      run_with_frames_export "gst-launch-1.0 -q -e udpsrc port='$RTP_INPUT_PORT' caps='application/x-rtp,media=video,encoding-name=H264,payload=96' ! rtph264depay ! decodebin ! fakesink sync=false" "$source"
+      ;;
+    *)
+      warn "Unsupported distributed role: $HOST_ROLE"
+      return 2
+      ;;
+  esac
+}
+
+run_distributed_adapter() {
+  local native_cmd="${DISTRIBUTED_NATIVE_CMD:-}"
+  if [[ -n "$native_cmd" ]]; then
+    run_with_frames_export "$native_cmd" "$(pick_video_for_stream 1)"
+    return $?
+  fi
+  if [[ "$BENCHMARK_MODE" != "smoke" ]]; then
+    warn "Set DISTRIBUTED_NATIVE_CMD for system=$SYSTEM role=$HOST_ROLE in benchmark mode"
+    return 1
+  fi
+  warn "Using RTP smoke bridge for system=$SYSTEM role=$HOST_ROLE"
+  run_distributed_rtp_smoke
+}
+
+if [[ "$EXPERIMENT_DISTRIBUTED" == "1" ]]; then
+  run_distributed_adapter
+  exit $?
+fi
 
 case "$SYSTEM" in
   deepstream)

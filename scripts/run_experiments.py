@@ -6,6 +6,7 @@ import csv
 import json
 import os
 import re
+import shlex
 import subprocess
 import sys
 import time
@@ -17,12 +18,97 @@ from typing import Any
 import pandas as pd
 import psutil
 import yaml
+from benchmark_contract import (
+    ContractError,
+    canonicalize_frames_csv,
+    git_manifest,
+    load_dataset,
+    sha256_file,
+    summarize_frames,
+    validate_frame_events,
+    write_json,
+)
 from collect_metrics import MetricsCollector
+from distributed_executor import (
+    build_distributed_plan,
+    load_hosts_config,
+    print_distributed_plan,
+    run_distributed,
+)
 
 
 def load_config(path: Path) -> dict[str, Any]:
     with path.open("r", encoding="utf-8") as f:
         return yaml.safe_load(f)
+
+
+def _object_profile(workload: dict[str, Any]) -> dict[str, int]:
+    profile = workload.get("object_density", {})
+    if profile is None:
+        profile = {}
+    return {
+        "min": int(profile.get("min", 0)),
+        "max": int(profile.get("max", 20)),
+    }
+
+
+def _scenario_duration_s(scenario: dict[str, Any], default_duration_s: int) -> int:
+    workload = scenario.get("workload", {})
+    override = workload.get("duration_s")
+    return int(default_duration_s if override in (None, "") else override)
+
+
+def normalize_scenario(name: str, raw: dict[str, Any]) -> dict[str, Any]:
+    if "workload" not in raw:
+        raise ValueError(
+            f"scenario '{name}' must use the new schema and include a 'workload' section"
+        )
+    workload = dict(raw.get("workload") or {})
+    pipeline = list(raw.get("pipeline") or [])
+    placement = dict(raw.get("placement") or {})
+    network = dict(raw.get("network") or {})
+    distributed = dict(raw.get("distributed") or {})
+
+    if not pipeline:
+        raise ValueError(f"scenario '{name}' must define a non-empty pipeline")
+    if "stages" not in placement:
+        placement["stages"] = {stage: "local" for stage in pipeline}
+    for stage in pipeline:
+        if stage not in placement["stages"]:
+            raise ValueError(f"scenario '{name}' placement is missing stage '{stage}'")
+
+    obj = _object_profile(workload)
+    if obj["min"] > obj["max"]:
+        raise ValueError(f"scenario '{name}' object_density min cannot exceed max")
+
+    if "stream_range" not in workload and "streams" not in workload:
+        raise ValueError(f"scenario '{name}' workload must define streams or stream_range")
+
+    return {
+        "name": name,
+        "description": raw.get("description", ""),
+        "workload": workload,
+        "pipeline": pipeline,
+        "placement": placement,
+        "network": network,
+        "distributed": distributed,
+    }
+
+
+def scenario_env_prefix(
+    scenario: dict[str, Any],
+    *,
+    role: str = "local",
+    extra: dict[str, str] | None = None,
+) -> str:
+    env = {
+        "EXPERIMENT_SCENARIO_JSON": json.dumps(scenario, separators=(",", ":")),
+        "EXPERIMENT_DISTRIBUTED": "1" if scenario.get("distributed", {}).get("enabled") else "0",
+        "EXPERIMENT_HOST_ROLE": role,
+        "EXPERIMENT_PIPELINE_STAGES": ",".join(scenario.get("pipeline", [])),
+    }
+    env.update(extra or {})
+    return " ".join(f"{k}={shlex.quote(v)}" for k, v in env.items())
 
 
 def detect_gpu_name() -> str:
@@ -121,44 +207,6 @@ def validate_hardware(cfg: dict[str, Any]) -> None:
         print(f"[warning] RAM mismatch: expected about {ram_target} GB")
 
 
-def summarize_frames(frames_csv: Path, deadline_s: float) -> dict[str, float]:
-    if not frames_csv.exists():
-        return {
-            "throughput_mean_fps": float("nan"),
-            "latency_p95_ms": float("nan"),
-            "slo_violation_rate_percent": float("nan"),
-            "frames": 0,
-        }
-
-    df = pd.read_csv(frames_csv)
-    if df.empty:
-        return {
-            "throughput_mean_fps": float("nan"),
-            "latency_p95_ms": float("nan"),
-            "slo_violation_rate_percent": float("nan"),
-            "frames": 0,
-        }
-
-    throughput = float(df["fps_instant"].mean())
-    p95 = float(df["latency_ms"].quantile(0.95))
-    slo_rate = float((df["latency_ms"] > deadline_s * 1000.0).mean() * 100.0)
-
-    return {
-        "throughput_mean_fps": round(throughput, 3),
-        "latency_p95_ms": round(p95, 3),
-        "slo_violation_rate_percent": round(slo_rate, 3),
-        "frames": int(df.shape[0]),
-    }
-
-
-def validate_frames_csv(frames_csv: Path) -> None:
-    if not frames_csv.exists():
-        raise RuntimeError(f"Expected real frame metrics file was not produced: {frames_csv}")
-    df = pd.read_csv(frames_csv)
-    if df.empty:
-        raise RuntimeError(f"Real frame metrics file is empty: {frames_csv}")
-
-
 def emit_runtime_frames_csv(
     frames_csv: Path,
     duration_s: int,
@@ -167,6 +215,9 @@ def emit_runtime_frames_csv(
     max_objects: int,
     deadline_s: float,
     elapsed_s: float,
+    run_id: str,
+    detector: str,
+    backend: str,
 ) -> None:
     script_path = Path(__file__).resolve().parent / "emit_runtime_frames_csv.py"
     if not script_path.exists():
@@ -195,6 +246,12 @@ def emit_runtime_frames_csv(
             str(max_objects),
             "--deadline-ms",
             str(deadline_s * 1000.0),
+            "--run-id",
+            run_id,
+            "--detector",
+            detector,
+            "--backend",
+            backend,
         ],
         check=True,
     )
@@ -228,6 +285,34 @@ def resolve_metric_interval_s(config: dict[str, Any], system_key: str) -> float:
     return base_interval
 
 
+def adapter_manifest(system_config: dict[str, Any]) -> dict[str, Any]:
+    image = str(system_config.get("container_image", "")).strip()
+    digest = ""
+    if image:
+        try:
+            digest = subprocess.check_output(
+                ["docker", "image", "inspect", "--format", "{{index .RepoDigests 0}}", image],
+                text=True,
+                stderr=subprocess.DEVNULL,
+            ).strip()
+        except Exception:
+            digest = "unavailable"
+    return {
+        "detector": system_config.get("detector", ""),
+        "backend": system_config.get("backend", ""),
+        "container_image": image,
+        "container_digest": digest,
+    }
+
+
+def detected_hardware_manifest() -> dict[str, Any]:
+    return {
+        "gpu_model": detect_gpu_name(),
+        "cpu_model": detect_cpu_name(),
+        "ram_gb": round(psutil.virtual_memory().total / (1024**3), 3),
+    }
+
+
 def build_run_seed(system_key: str, scenario_key: str, streams: int, repeat_index: int) -> int:
     entropy = f"{time.time_ns()}:{os.getpid()}:{system_key}:{scenario_key}:{streams}:{repeat_index}:{uuid.uuid4()}"
     return abs(hash(entropy)) % (2**31 - 1)
@@ -235,31 +320,61 @@ def build_run_seed(system_key: str, scenario_key: str, streams: int, repeat_inde
 
 def run_one(
     config: dict[str, Any],
+    hosts_config: dict[str, Any],
+    dataset: dict[str, Any],
     system_key: str,
-    scenario_key: str,
+    scenario: dict[str, Any],
     streams: int,
     min_objects: int,
     max_objects: int,
     duration_s: int,
     repeat_index: int,
     run_root: Path,
+    hosts_config_path: Path,
+    mode: str,
+    policy: str,
+    run_kind: str,
+    dry_run_plan: bool,
 ) -> dict[str, Any]:
     protocol = config["protocol"]
     deadline_s = float(config["hardware_target"]["deadline_s"])
+    scenario_key = scenario["name"]
     run_seed = build_run_seed(system_key, scenario_key, streams, repeat_index)
+    system_config = config["systems"][system_key]
+    detector = str(system_config.get("detector", system_key))
+    backend = str(system_config.get("backend", system_key))
+    variant_name = str(scenario.get("workload", {}).get("variant", "")).strip()
+    run_id = "-".join(
+        part
+        for part in (
+            run_root.name,
+            scenario_key,
+            variant_name,
+            f"streams{streams}",
+            system_key,
+            f"rep{repeat_index:02d}",
+        )
+        if part
+    )
 
-    scenario_dir = run_root / scenario_key / f"streams_{streams}" / system_key / f"rep_{repeat_index:02d}"
-    scenario_dir.mkdir(parents=True, exist_ok=True)
+    scenario_dir = run_root / scenario_key
+    if variant_name:
+        scenario_dir /= f"variant_{variant_name}"
+    scenario_dir = scenario_dir / f"streams_{streams}" / system_key / f"rep_{repeat_index:02d}"
+    if not dry_run_plan:
+        scenario_dir.mkdir(parents=True, exist_ok=True)
 
     metrics_path = scenario_dir / "system_metrics.csv"
     frames_path = scenario_dir / "frames.csv"
+    frame_events_path = scenario_dir / "frame_events.csv"
+    network_path = scenario_dir / "network_metrics.csv"
     metadata_path = scenario_dir / "run_metadata.json"
 
     metric_interval_s = resolve_metric_interval_s(config, system_key)
     collector = MetricsCollector(metrics_path, interval_s=metric_interval_s)
 
-    command_template = config["systems"][system_key]["command"]
-    cmd = command_template.format(
+    command_template = system_config["command"]
+    base_cmd = command_template.format(
         scenario=scenario_key,
         duration_s=duration_s,
         streams=streams,
@@ -267,6 +382,80 @@ def run_one(
         max_objects=max_objects,
         output_dir=scenario_dir,
     )
+    video_layout_dir = str(Path(dataset["streams"][0]["absolute_path"]).parent)
+    ql_heft_artifact = str(config.get("benchmark", {}).get("ql_heft_policy_artifact", ""))
+    command_env = {
+        "ADAPTER_BACKEND": backend,
+        "ADAPTER_DETECTOR": detector,
+        "BENCHMARK_MODE": mode,
+        "DATASET_NAME": dataset["name"],
+        "EXPERIMENT_RUN_ID": run_id,
+        "QL_HEFT_POLICY_ARTIFACT": ql_heft_artifact,
+        "SCHEDULER_POLICY": policy,
+        "VIDEO_LAYOUT_DIR": video_layout_dir,
+    }
+    cmd = f"{scenario_env_prefix(scenario, extra=command_env)} {base_cmd}"
+
+    scenario_distributed = bool(scenario.get("distributed", {}).get("enabled"))
+    distributed_enabled = scenario_distributed if run_kind == "auto" else run_kind == "distributed"
+    if distributed_enabled and not scenario_distributed:
+        raise ContractError(f"scenario '{scenario_key}' is not configured for distributed execution")
+    run_relpath = str(scenario_dir)
+    distributed_steps: list[dict[str, Any]] = []
+    if distributed_enabled:
+        distributed_steps = build_distributed_plan(
+            hosts_config=hosts_config,
+            scenario=scenario,
+            system_key=system_key,
+            command_template=command_template,
+            run_relpath=run_relpath,
+            duration_s=duration_s,
+            streams=streams,
+            min_objects=min_objects,
+            max_objects=max_objects,
+            transport=config.get("transport", {}),
+            mode=mode,
+            policy=policy,
+            dataset_name=dataset["name"],
+            run_id=run_id,
+            detector=detector,
+            backend=backend,
+        )
+
+    if dry_run_plan:
+        if distributed_enabled:
+            print_distributed_plan(distributed_steps)
+        else:
+            print(
+                f"[plan] local scenario={scenario_key} streams={streams} "
+                f"system={system_key} command={cmd}"
+            )
+        return {
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "system": system_key,
+            "scenario": scenario_key,
+            "repeat": repeat_index,
+            "exit_code": 0,
+            "status": "planned",
+            "skip_reason": "",
+            "streams": streams,
+            "duration_s": duration_s,
+            "scenario_variant": scenario.get("workload", {}).get("variant", ""),
+            "placement_policy": scenario.get("placement", {}).get("policy", ""),
+            "distributed": distributed_enabled,
+            "host_role": "plan",
+            "detector": detector,
+            "backend": backend,
+            "policy": policy,
+            "dataset": dataset["name"],
+            "throughput_fps": float("nan"),
+            "latency_p50_ms": float("nan"),
+            "latency_p95_ms": float("nan"),
+            "latency_p99_ms": float("nan"),
+            "slo_violation_rate_percent": float("nan"),
+            "frames": 0,
+            "telemetry_source": "",
+        }
 
     warmup_s = float(protocol.get("warmup_s", 0))
     if warmup_s > 0:
@@ -283,9 +472,29 @@ def run_one(
     child_env["EXPERIMENT_RUN_SEED"] = str(run_seed)
     child_env["EXPERIMENT_REPEAT_INDEX"] = str(repeat_index)
 
+    distributed_result = None
     collector.start()
     try:
-        completed = subprocess.run(cmd, shell=True, check=False, timeout=cmd_timeout_s, env=child_env)
+        if distributed_enabled:
+            sync_project = bool(scenario.get("distributed", {}).get("sync_project", True))
+            distributed_result = run_distributed(
+                steps=distributed_steps,
+                project_root=Path.cwd(),
+                local_run_dir=scenario_dir,
+                frames_csv=frames_path,
+                frame_events_csv=frame_events_path,
+                network_csv=network_path,
+                hosts_config=hosts_config,
+                network_profile=scenario.get("network", {}),
+                max_clock_offset_ms=float(config.get("transport", {}).get("max_clock_offset_ms", 5)),
+                sync_project=sync_project,
+                duration_s=duration_s,
+                startup_grace_s=int(config.get("transport", {}).get("startup_grace_s", 5)),
+                mode=mode,
+            )
+            completed = subprocess.CompletedProcess(cmd, distributed_result.exit_code)
+        else:
+            completed = subprocess.run(cmd, shell=True, check=False, timeout=cmd_timeout_s, env=child_env)
     except subprocess.TimeoutExpired as exc:
         completed = subprocess.CompletedProcess(exc.cmd, returncode=124)
         raise RuntimeError(
@@ -299,6 +508,56 @@ def run_one(
 
     sampled_s = measured_metrics_duration_s(metrics_path)
     accepted_timeout_stop = False
+
+    if distributed_result is not None and distributed_result.skipped:
+        result = {
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "system": system_key,
+            "scenario": scenario_key,
+            "repeat": repeat_index,
+            "exit_code": int(distributed_result.exit_code),
+            "status": "skipped",
+            "skip_reason": distributed_result.skip_reason,
+            "streams": streams,
+            "duration_s": duration_s,
+            "scenario_variant": variant_name,
+            "placement_policy": scenario.get("placement", {}).get("policy", ""),
+            "distributed": True,
+            "host_role": "distributed",
+            "detector": detector,
+            "backend": backend,
+            "policy": policy,
+            "dataset": dataset["name"],
+            "throughput_fps": float("nan"),
+            "latency_p50_ms": float("nan"),
+            "latency_p95_ms": float("nan"),
+            "latency_p99_ms": float("nan"),
+            "slo_violation_rate_percent": float("nan"),
+            "frames": 0,
+            "telemetry_source": "",
+        }
+        write_json(
+            metadata_path,
+            {
+                "schema_version": 2,
+                "result": result,
+                "resolved_scenario": scenario,
+                "dataset": dataset,
+                "git": git_manifest(Path.cwd()),
+                "adapter": adapter_manifest(system_config),
+                "detected_hardware": detected_hardware_manifest(),
+                "ql_heft_policy_artifact": {
+                    "path": ql_heft_artifact,
+                    "sha256": (
+                        sha256_file(Path(ql_heft_artifact))
+                        if ql_heft_artifact and Path(ql_heft_artifact).exists()
+                        else ""
+                    ),
+                },
+                "distributed_plan": distributed_steps,
+            },
+        )
+        return result
 
     if completed.returncode in (124, 137, 143):
         # Some real pipelines run continuously and rely on timeout as a controlled stop.
@@ -334,10 +593,10 @@ def run_one(
             f"Inspect run directory: {scenario_dir}"
         )
 
-    if not frames_path.exists():
+    if not frames_path.exists() and mode == "smoke":
         print(
             f"[warning] frames.csv missing after system command for system={system_key}, "
-            f"scenario={scenario_key}, repeat={repeat_index}. Exporting runtime-derived frame metrics."
+            f"scenario={scenario_key}, repeat={repeat_index}. Exporting synthetic smoke-only frame metrics."
         )
         emit_runtime_frames_csv(
             frames_csv=frames_path,
@@ -347,55 +606,111 @@ def run_one(
             max_objects=max_objects,
             deadline_s=deadline_s,
             elapsed_s=sampled_s,
+            run_id=run_id,
+            detector=detector,
+            backend=backend,
         )
-
-    validate_frames_csv(frames_path)
-
-    summary = summarize_frames(frames_path, deadline_s)
+    canonicalize_frames_csv(
+        frames_path,
+        mode=mode,
+        run_id=run_id,
+        detector=detector,
+        backend=backend,
+    )
+    if mode == "benchmark":
+        validate_frame_events(frame_events_path)
+    summary = summarize_frames(frames_path, deadline_s=deadline_s, measurement_s=duration_s)
     result = {
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "system": system_key,
         "scenario": scenario_key,
         "repeat": repeat_index,
         "exit_code": int(completed.returncode),
+        "status": "completed",
+        "skip_reason": "",
         "streams": streams,
         "duration_s": duration_s,
+        "scenario_variant": variant_name,
+        "placement_policy": scenario.get("placement", {}).get("policy", ""),
+        "distributed": distributed_enabled,
+        "host_role": "distributed" if distributed_enabled else "local",
+        "detector": detector,
+        "backend": backend,
+        "policy": policy,
+        "dataset": dataset["name"],
         **summary,
     }
 
     metadata = {
+        "schema_version": 2,
         "command": cmd,
+        "distributed_plan": [
+            {
+                "role": step["role"],
+                "host": step["host_label"],
+                "pipeline_stages": step["pipeline_stages"],
+                "remote_output_dir": step["remote_output_dir"],
+                "remote_command": step["remote_command"],
+            }
+            for step in distributed_steps
+        ],
         "run_seed": run_seed,
+        "mode": mode,
+        "policy": policy,
+        "dataset": dataset,
+        "git": git_manifest(Path.cwd()),
+        "adapter": adapter_manifest(system_config),
+        "detected_hardware": detected_hardware_manifest(),
+        "ql_heft_policy_artifact": {
+            "path": ql_heft_artifact,
+            "sha256": sha256_file(Path(ql_heft_artifact)) if ql_heft_artifact and Path(ql_heft_artifact).exists() else "",
+        },
+        "max_clock_offset_ms": (
+            distributed_result.max_clock_offset_ms if distributed_result is not None else 0.0
+        ),
         "metric_interval_s": metric_interval_s,
         "result": result,
+        "resolved_scenario": scenario,
+        "hosts_config": str(hosts_config_path),
         "hardware_target": config.get("hardware_target", {}),
         "protocol": config.get("protocol", {}),
     }
 
-    metadata_path.write_text(json.dumps(metadata, indent=2), encoding="utf-8")
+    write_json(metadata_path, metadata)
     return result
 
 
-def expand_scenario(config: dict[str, Any], scenario_key: str) -> list[dict[str, int]]:
-    scenario = config["scenarios"][scenario_key]
-    if "stream_range" in scenario:
-        start, end = scenario["stream_range"]
-        return [
-            {
-                "streams": s,
-                "min_objects": int(scenario.get("min_objects", 0)),
-                "max_objects": int(scenario.get("max_objects", 20)),
-            }
-            for s in range(int(start), int(end) + 1)
-        ]
+def expand_scenario(config: dict[str, Any], scenario_key: str) -> list[dict[str, Any]]:
+    scenario = normalize_scenario(scenario_key, config["scenarios"][scenario_key])
+    workload = scenario["workload"]
+    obj = _object_profile(workload)
+    variants = workload.get("variants") or [None]
+    stream_values: list[int]
+    if "stream_range" in workload:
+        start, end = workload["stream_range"]
+        stream_values = list(range(int(start), int(end) + 1))
+    else:
+        stream_values = [int(workload.get("streams", 6))]
 
-    return [
-        {
-            "streams": int(scenario.get("streams", 6)),
-            "min_objects": int(scenario.get("min_objects", 0)),
-            "max_objects": int(scenario.get("max_objects", 20)),
-        }
-    ]
+    expanded: list[dict[str, Any]] = []
+    for variant in variants:
+        variant_scenario = json.loads(json.dumps(scenario))
+        if isinstance(variant, dict):
+            variant_scenario["workload"].update(variant)
+            variant_scenario["workload"]["variant"] = str(variant.get("name", "variant"))
+            if "placement_policy" in variant:
+                variant_scenario["placement"]["policy"] = str(variant["placement_policy"])
+        for s in stream_values:
+            variant_obj = _object_profile(variant_scenario["workload"])
+            expanded.append(
+                {
+                    "scenario": variant_scenario,
+                    "streams": s,
+                    "min_objects": variant_obj["min"],
+                    "max_objects": variant_obj["max"],
+                }
+            )
+    return expanded
 
 
 def main() -> None:
@@ -407,6 +722,13 @@ def main() -> None:
     parser.add_argument("--measurement", type=int, default=-1, help="Override measurement seconds")
     parser.add_argument("--warmup", type=int, default=-1, help="Override warmup seconds")
     parser.add_argument("--output-root", default="runs")
+    parser.add_argument("--hosts-config", type=Path, default=Path("configs/hosts.yaml"))
+    parser.add_argument("--mode", choices=["smoke", "benchmark"], default="benchmark")
+    parser.add_argument("--dataset", default="")
+    parser.add_argument("--policy", default="static_hybrid")
+    parser.add_argument("--run-kind", choices=["auto", "local", "distributed"], default="auto")
+    parser.add_argument("--local-only", action="store_true", help="Deprecated alias for --run-kind local")
+    parser.add_argument("--dry-run-plan", action="store_true")
     parser.add_argument(
         "--strict-real-mode",
         action="store_true",
@@ -417,6 +739,22 @@ def main() -> None:
     os.environ["REAL_DRY_RUN"] = "0"
 
     cfg = load_config(Path(args.config))
+    if int(cfg.get("schema_version", 0)) != 2:
+        raise ContractError("configs/experiments.yaml must use schema_version: 2")
+    hosts_cfg = load_hosts_config(args.hosts_config)
+    policies = list(cfg.get("benchmark", {}).get("scheduler_policies") or [])
+    if args.policy not in policies:
+        raise ContractError(f"unknown scheduler policy '{args.policy}'; expected one of: {', '.join(policies)}")
+    run_kind = "local" if args.local_only else args.run_kind
+    default_datasets = cfg.get("benchmark", {}).get("default_dataset", {})
+    dataset_name = args.dataset or str(default_datasets.get(args.mode, ""))
+    dataset = load_dataset(
+        Path(cfg["benchmark"]["dataset_manifest"]),
+        dataset_name,
+        mode=args.mode,
+        project_root=Path.cwd(),
+        require_files=args.mode == "benchmark" and not args.dry_run_plan,
+    )
 
     if args.warmup >= 0:
         cfg["protocol"]["warmup_s"] = int(args.warmup)
@@ -430,7 +768,8 @@ def main() -> None:
     measurement_s = int(cfg["protocol"]["measurement_s"] if args.measurement < 0 else args.measurement)
 
     run_root = Path(args.output_root) / datetime.now().strftime("%Y%m%d_%H%M%S")
-    run_root.mkdir(parents=True, exist_ok=True)
+    if not args.dry_run_plan:
+        run_root.mkdir(parents=True, exist_ok=True)
 
     all_rows: list[dict[str, Any]] = []
 
@@ -449,21 +788,38 @@ def main() -> None:
                 for rep in range(1, repeats + 1):
                     row = run_one(
                         config=cfg,
+                        hosts_config=hosts_cfg,
+                        dataset=dataset,
                         system_key=system,
-                        scenario_key=scenario,
+                        scenario=variant["scenario"],
                         streams=variant["streams"],
                         min_objects=variant["min_objects"],
                         max_objects=variant["max_objects"],
-                        duration_s=measurement_s,
+                        duration_s=_scenario_duration_s(variant["scenario"], measurement_s),
                         repeat_index=rep,
                         run_root=run_root,
+                        hosts_config_path=args.hosts_config,
+                        mode=args.mode,
+                        policy=args.policy,
+                        run_kind=run_kind,
+                        dry_run_plan=args.dry_run_plan,
                     )
                     all_rows.append(row)
-                    print(
-                        f"[done] scenario={scenario} streams={variant['streams']} system={system} rep={rep} "
-                        f"fps={row['throughput_mean_fps']} p95={row['latency_p95_ms']} "
-                        f"slo={row['slo_violation_rate_percent']}%"
-                    )
+                    if row["status"] == "skipped":
+                        print(
+                            f"[skipped] scenario={scenario} streams={variant['streams']} "
+                            f"system={system} rep={rep} reason={row['skip_reason']}"
+                        )
+                    else:
+                        print(
+                            f"[done] scenario={scenario} streams={variant['streams']} system={system} rep={rep} "
+                            f"fps={row['throughput_fps']} p95={row['latency_p95_ms']} "
+                            f"slo={row['slo_violation_rate_percent']}%"
+                        )
+
+    if args.dry_run_plan:
+        print("[result] dry run plan complete")
+        return
 
     summary_csv = run_root / "summary.csv"
     with summary_csv.open("w", newline="", encoding="utf-8") as f:
@@ -473,12 +829,25 @@ def main() -> None:
             "scenario",
             "repeat",
             "exit_code",
+            "status",
+            "skip_reason",
             "streams",
             "duration_s",
-            "throughput_mean_fps",
+            "scenario_variant",
+            "placement_policy",
+            "distributed",
+            "host_role",
+            "detector",
+            "backend",
+            "policy",
+            "dataset",
+            "throughput_fps",
+            "latency_p50_ms",
             "latency_p95_ms",
+            "latency_p99_ms",
             "slo_violation_rate_percent",
             "frames",
+            "telemetry_source",
         ]
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
@@ -489,4 +858,8 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except ContractError as exc:
+        print(f"[error] {exc}", file=sys.stderr)
+        raise SystemExit(2) from exc

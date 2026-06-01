@@ -5,6 +5,7 @@ import argparse
 import csv
 import subprocess
 import time
+import uuid
 from pathlib import Path
 
 
@@ -41,7 +42,7 @@ def probe_video_fps(video_path: Path) -> float:
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Emit runtime-derived per-frame metrics to frames.csv"
+        description="Emit synthetic smoke-only per-frame metrics to frames.csv"
     )
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--duration-s", required=True, type=int)
@@ -51,6 +52,9 @@ def main() -> None:
     parser.add_argument("--min-objects", type=int, default=0)
     parser.add_argument("--max-objects", type=int, default=20)
     parser.add_argument("--deadline-ms", type=float, default=3000.0)
+    parser.add_argument("--run-id", default="")
+    parser.add_argument("--detector", default="synthetic")
+    parser.add_argument("--backend", default="synthetic")
     args = parser.parse_args()
 
     output = args.output
@@ -60,6 +64,7 @@ def main() -> None:
     duration_s = max(1, int(args.duration_s))
     elapsed_ms = max(float(args.elapsed_ms), 1.0)
     source_fps = probe_video_fps(args.source_video)
+    run_id = args.run_id or f"smoke-{uuid.uuid4()}"
 
     target_frames = int(round(source_fps * duration_s * streams))
     total_frames = max(1, target_frames)
@@ -69,8 +74,6 @@ def main() -> None:
         latency_ms = 0.001
     fps_instant = 1000.0 / latency_ms
     objects = max(args.min_objects, min(args.max_objects, (args.min_objects + args.max_objects) // 2))
-    slo = 1 if latency_ms > args.deadline_ms else 0
-
     start_ts = int(time.time() * 1000) - int(elapsed_ms)
     frame_dt_ms = max(1.0, 1000.0 / max(fps_instant, 0.001))
 
@@ -78,27 +81,38 @@ def main() -> None:
         writer = csv.writer(f)
         writer.writerow(
             [
-                "timestamp_ms",
-                "frame_id",
+                "schema_version",
+                "run_id",
+                "trace_id",
                 "stream_id",
+                "frame_id",
+                "ingress_timestamp_ms",
+                "egress_timestamp_ms",
+                "e2e_latency_ms",
                 "objects",
-                "latency_ms",
-                "fps_instant",
-                "slo_violation",
+                "detector",
+                "backend",
+                "telemetry_source",
             ]
         )
         for frame_id in range(total_frames):
-            ts = start_ts + int(frame_id * frame_dt_ms)
             stream_id = frame_id % streams
+            ingress_ts = start_ts + int(frame_id * frame_dt_ms)
+            egress_ts = ingress_ts + latency_ms
             writer.writerow(
                 [
-                    ts,
-                    frame_id,
+                    2,
+                    run_id,
+                    f"{run_id}:{stream_id}:{frame_id}",
                     stream_id,
-                    objects,
+                    frame_id,
+                    round(ingress_ts, 6),
+                    round(egress_ts, 6),
                     round(latency_ms, 6),
-                    round(fps_instant, 6),
-                    slo,
+                    objects,
+                    args.detector,
+                    args.backend,
+                    "synthetic",
                 ]
             )
 

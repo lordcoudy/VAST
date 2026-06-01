@@ -1,0 +1,35 @@
+schema_version: 1
+
+datasets:
+  smoke_testsrc:
+    kind: synthetic
+    description: Generated 1080p testsrc layout for installation and smoke checks only.
+    publishable: false
+    fps: 30
+    streams:
+      - path: data/videos/stream01.mp4
+      - path: data/videos/stream02.mp4
+      - path: data/videos/stream03.mp4
+      - path: data/videos/stream04.mp4
+      - path: data/videos/stream05.mp4
+      - path: data/videos/stream06.mp4
+
+  mot17_uadetrac_public:
+    kind: public_clips
+    description: Normalized 1080p benchmark clips prepared from MOT17 and UA-DETRAC.
+    publishable: true
+    fps: 30
+    preparation: docs/DATASETS.md
+    streams:
+      - path: data/benchmark/mot17_02.mp4
+        sha256: SET_AFTER_PREPARATION
+      - path: data/benchmark/mot17_04.mp4
+        sha256: SET_AFTER_PREPARATION
+      - path: data/benchmark/mot17_09.mp4
+        sha256: SET_AFTER_PREPARATION
+      - path: data/benchmark/uadetrac_mvi_20011.mp4
+        sha256: SET_AFTER_PREPARATION
+      - path: data/benchmark/uadetrac_mvi_40152.mp4
+        sha256: SET_AFTER_PREPARATION
+      - path: data/benchmark/uadetrac_mvi_40714.mp4
+        sha256: SET_AFTER_PREPARATION

@@ -21,6 +21,7 @@ class MetricSample:
     cpu_total_percent: float
     cpu_per_core_percent: str
     cpu_memory_mb: float
+    cpu_power_w: Optional[float]
 
 
 def _query_gpu() -> tuple[Optional[float], Optional[float], Optional[float]]:
@@ -38,6 +39,18 @@ def _query_gpu() -> tuple[Optional[float], Optional[float], Optional[float]]:
         return float(util), float(mem), float(power)
     except Exception:
         return None, None, None
+
+
+def _query_cpu_energy_uj() -> Optional[float]:
+    for path in (
+        Path("/sys/class/powercap/intel-rapl:0/energy_uj"),
+        Path("/sys/class/powercap/intel-rapl/intel-rapl:0/energy_uj"),
+    ):
+        try:
+            return float(path.read_text(encoding="utf-8").strip())
+        except Exception:
+            continue
+    return None
 
 
 class MetricsCollector(threading.Thread):
@@ -63,16 +76,28 @@ class MetricsCollector(threading.Thread):
                     "cpu_total_percent",
                     "cpu_per_core_percent",
                     "cpu_memory_mb",
+                    "cpu_power_w",
                 ]
             )
 
             psutil.cpu_percent(interval=None)
+            previous_energy_uj = _query_cpu_energy_uj()
+            previous_energy_ts = time.monotonic()
             while not self._stop_event.is_set():
                 ts = int(time.time() * 1000)
                 gpu_util, gpu_mem, gpu_power = _query_gpu()
                 cpu_per_core = psutil.cpu_percent(interval=None, percpu=True)
                 cpu_total = sum(cpu_per_core) / max(1, len(cpu_per_core))
                 cpu_mem_mb = psutil.virtual_memory().used / (1024 * 1024)
+                current_energy_uj = _query_cpu_energy_uj()
+                current_energy_ts = time.monotonic()
+                cpu_power_w = None
+                if previous_energy_uj is not None and current_energy_uj is not None:
+                    elapsed_s = current_energy_ts - previous_energy_ts
+                    if elapsed_s > 0 and current_energy_uj >= previous_energy_uj:
+                        cpu_power_w = (current_energy_uj - previous_energy_uj) / 1_000_000.0 / elapsed_s
+                previous_energy_uj = current_energy_uj
+                previous_energy_ts = current_energy_ts
 
                 writer.writerow(
                     [
@@ -83,6 +108,7 @@ class MetricsCollector(threading.Thread):
                         round(cpu_total, 3),
                         "|".join(f"{x:.2f}" for x in cpu_per_core),
                         round(cpu_mem_mb, 3),
+                        "" if cpu_power_w is None else round(cpu_power_w, 3),
                     ]
                 )
                 f.flush()

@@ -1,0 +1,44 @@
+hosts:
+  # For publishable distributed runs, set DISTRIBUTED_NATIVE_CMD in each role's
+  # env to the native RTP-aware command for the selected system. The common
+  # bridge is intentionally available only in --mode smoke.
+  - name: edge-node
+    address: edge01.example.net
+    user: vast
+    port: 22
+    project_path: /opt/vast
+    roles: [edge]
+    runtime:
+      docker: true
+      gpu: false
+    env:
+      VIDEO_LAYOUT_DIR: /opt/vast/data/videos
+    transport:
+      advertise_address: edge01.example.net
+
+  - name: gpu-worker
+    address: gpu01.example.net
+    user: vast
+    port: 22
+    project_path: /opt/vast
+    roles: [gpu_worker]
+    runtime:
+      docker: true
+      gpu: true
+    env:
+      NVIDIA_VISIBLE_DEVICES: all
+    transport:
+      advertise_address: gpu01.example.net
+
+  - name: aggregator
+    address: agg01.example.net
+    user: vast
+    port: 22
+    project_path: /opt/vast
+    roles: [aggregator]
+    runtime:
+      docker: true
+      gpu: false
+    env: {}
+    transport:
+      advertise_address: agg01.example.net

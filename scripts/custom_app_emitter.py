@@ -12,6 +12,9 @@ def main() -> int:
     p.add_argument("--streams", type=int, default=6)
     p.add_argument("--duration", type=int, default=30)
     p.add_argument("--output", required=True, help="Output directory (frames.csv will be created inside)")
+    p.add_argument("--run-id", default=os.environ.get("EXPERIMENT_RUN_ID", "smoke-custom"))
+    p.add_argument("--detector", default=os.environ.get("ADAPTER_DETECTOR", "synthetic"))
+    p.add_argument("--backend", default=os.environ.get("ADAPTER_BACKEND", "synthetic"))
     args = p.parse_args()
 
     project_root = Path(__file__).resolve().parent
@@ -52,6 +55,12 @@ def main() -> int:
         os.environ.get("MAX_OBJECTS", "20"),
         "--deadline-ms",
         os.environ.get("DEADLINE_MS", "3000"),
+        "--run-id",
+        args.run_id,
+        "--detector",
+        args.detector,
+        "--backend",
+        args.backend,
     ]
 
     try:

@@ -195,8 +195,10 @@ Reports are written to:
 - GStreamer + custom plugin
 - Custom C++ + CUDA + Qt
 
-Real mode is now the default behavior. If a pipeline cannot run or does not produce `frames.csv`, the run fails.
-`scripts/run_system_template.sh` now guarantees `frames.csv` export for successful/accepted runs by deriving per-frame rows from real execution time and input-video FPS when native per-frame telemetry is unavailable.
+`benchmark` mode is the default behavior. It accepts only native schema-v2
+`frames.csv` telemetry and fails when an adapter does not provide it.
+Runtime-derived rows are synthetic and available only with `--mode smoke`.
+Synthetic, skipped, and legacy rows are excluded from publishable analysis.
 
 To execute real pipelines:
 
@@ -209,7 +211,9 @@ Tailored behavior in real templates:
 - Savant: pinned to `ghcr.io/insight-platform/savant-deepstream:0.5.17-7.0` and uses module config at `/workspace/project/deploy/savant/module.yml`.
 - OpenVINO+GVA: pinned OpenVINO Python install `2024.6.0`, uses `gvadetect` with the exact OpenVINO model XML path above.
 - GStreamer custom: expects plugin in `build/lib` by default (`GST_PLUGIN_PATH`), and falls back to `identity` unless `GST_CUSTOM_STRICT=1`.
-- Custom C++: uses pinned project reference binary `build/bin/adaptive_scheduler_app` built from `deploy/custom_cpp_cuda_qt/adaptive_scheduler_app.cpp`.
+- Custom CUDA + Qt: builds `build/bin/adaptive_scheduler_app` from
+  `deploy/custom_cpp_cuda_qt/adaptive_scheduler_app.cu` through CMake and runs
+  its Qt dashboard with `QT_QPA_PLATFORM=offscreen`.
 
 Savant module details:
 - File: `deploy/savant/module.yml`
@@ -224,6 +228,62 @@ Useful template environment variables:
 - `OPENVINO_GVA_USE_CONTAINER` (`1` by default; set `0` to force host runtime path)
 - `GST_CUSTOM_PLUGIN`, `GST_CUSTOM_SOURCE`
 - `CUSTOM_APP_BIN`
+- `EXPERIMENT_SCENARIO_JSON`, `EXPERIMENT_DISTRIBUTED`, `EXPERIMENT_HOST_ROLE`, `EXPERIMENT_PIPELINE_STAGES`
+- `BENCHMARK_MODE`, `DATASET_NAME`, `EXPERIMENT_RUN_ID`
+- `SCHEDULER_POLICY`, `QL_HEFT_POLICY_ARTIFACT`
+- `DISTRIBUTED_NATIVE_CMD` for the native role-specific RTP command on each SSH host
+
+## Scenario Schema and Distributed Runs
+
+`configs/experiments.yaml` now uses structured scenario definitions:
+- `workload`: stream count/range, object density, burst profile, and optional variants
+- `pipeline`: ordered video analytics stages
+- `placement`: maps each stage to a logical role such as `local`, `edge`, `gpu_worker`, or `aggregator`
+  - `network`: records measured-network acceptance ranges
+- `distributed`: enables staged SSH orchestration with RTP endpoints
+
+Distributed host inventory lives in `configs/hosts.yaml`. Replace the placeholder hostnames with real SSH-accessible Linux/WSL hosts:
+
+```yaml
+hosts:
+  - name: edge-node
+    address: edge01.example.net
+    user: vast
+    port: 22
+    project_path: /opt/vast
+    roles: [edge]
+```
+
+Do not store SSH keys, passwords, or private credentials in the repository.
+
+Prepare and validate the public benchmark dataset:
+
+```bash
+python scripts/check_dataset.py --dataset mot17_uadetrac_public
+```
+
+Preview the resolved launch plan without creating a run:
+
+```bash
+python scripts/run_experiments.py --mode smoke --dry-run-plan --systems custom_cpp_cuda_qt --scenarios edge_to_worker_distributed --hosts-config configs/hosts.yaml --repeats 1 --measurement 5
+```
+
+Run on real hosts after `configs/hosts.yaml` is configured:
+
+```bash
+python scripts/run_experiments.py --mode benchmark --dataset mot17_uadetrac_public --systems custom_cpp_cuda_qt --scenarios edge_worker_aggregator_distributed --hosts-config configs/hosts.yaml --repeats 5
+```
+
+Distributed roles start as `aggregator`, `gpu_worker`, then `edge`. Preflight
+requires `chronyc`, `ping`, and `iperf3`. Network shaping is not applied. The
+degraded network scenario is skipped unless measured values match its configured
+acceptance ranges.
+
+Use `--run-kind local` to execute a scenario through the local path for smoke testing:
+
+```bash
+python scripts/run_experiments.py --mode smoke --run-kind local --systems custom_cpp_cuda_qt --scenarios baseline --repeats 1 --warmup 0 --measurement 5
+```
 
 
 Run this on target to execute real paths:
