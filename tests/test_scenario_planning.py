@@ -265,6 +265,15 @@ class ScenarioPlanningTests(unittest.TestCase):
             self.assertIn("-DVAST_BUILD_GSTREAMER_CUSTOM_PLUGIN=OFF", body)
             self.assertIn("-DVAST_BUILD_CUSTOM_CUDA_QT=OFF", body)
 
+    def test_native_probe_sets_string_properties_after_parse_launch(self) -> None:
+        body = (ROOT / "deploy" / "native_gst_probe" / "vast_native_gst_probe.cpp").read_text(encoding="utf-8")
+        self.assertNotIn("filesrc location=", body)
+        self.assertNotIn("udpsink host=", body)
+        self.assertIn("filesrc name=file_src", body)
+        self.assertIn("udpsink name=out_sink", body)
+        self.assertIn('set_string_property(pipeline, "file_src" + std::to_string(stream_id), "location"', body)
+        self.assertIn('set_string_property(pipeline, "out_sink" + std::to_string(stream_id), "host"', body)
+
     def test_single_server_preflight_records_loopback_metrics(self) -> None:
         hosts_config = {
             "hosts": [

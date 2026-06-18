@@ -181,19 +181,6 @@ class NativeProbeRuntime {
     return true;
   }
 
-  static std::string q(const std::string& value) {
-    std::string out = "'";
-    for (char c : value) {
-      if (c == '\'') {
-        out += "'\\''";
-      } else {
-        out += c;
-      }
-    }
-    out += "'";
-    return out;
-  }
-
   static std::vector<std::string> parse_json_string_array(const std::string& raw) {
     std::vector<std::string> values;
     std::string current;
@@ -473,6 +460,19 @@ class NativeProbeRuntime {
     return TRUE;
   }
 
+  static void set_string_property(
+      GstElement* pipeline,
+      const std::string& element_name,
+      const std::string& property_name,
+      const std::string& value) {
+    GstElement* element = gst_bin_get_by_name(GST_BIN(pipeline), element_name.c_str());
+    if (element == nullptr) {
+      throw std::runtime_error("missing property target element: " + element_name);
+    }
+    g_object_set(G_OBJECT(element), property_name.c_str(), value.c_str(), nullptr);
+    gst_object_unref(element);
+  }
+
   void add_probe(GstElement* pipeline, const std::string& element_name, const std::string& kind, int stream_id) {
     GstElement* element = gst_bin_get_by_name(GST_BIN(pipeline), element_name.c_str());
     if (element == nullptr) {
@@ -506,10 +506,10 @@ class NativeProbeRuntime {
 
   std::string edge_pipeline(int stream_id) const {
     std::ostringstream p;
-    p << "filesrc location=" << q(source_for_stream(stream_id))
+    p << "filesrc name=file_src" << stream_id
       << " ! decodebin ! videoconvert ! videorate ! video/x-raw,framerate=30/1"
       << " ! jpegenc ! rtpjpegpay pt=26 name=pay" << stream_id
-      << " ! udpsink host=" << q(args_.output_host) << " port=" << (args_.output_port_base + stream_id * args_.port_stride)
+      << " ! udpsink name=out_sink" << stream_id << " port=" << (args_.output_port_base + stream_id * args_.port_stride)
       << " sync=false async=false";
     return p.str();
   }
@@ -520,7 +520,7 @@ class NativeProbeRuntime {
       << " caps=\"application/x-rtp,media=(string)video,encoding-name=(string)JPEG,payload=(int)26\""
       << " ! rtpjpegdepay ! jpegdec ! videoconvert ! " << detect_bin()
       << " ! videoconvert ! jpegenc ! rtpjpegpay pt=26 name=pay" << stream_id
-      << " ! udpsink host=" << q(args_.output_host) << " port=" << (args_.output_port_base + stream_id * args_.port_stride)
+      << " ! udpsink name=out_sink" << stream_id << " port=" << (args_.output_port_base + stream_id * args_.port_stride)
       << " sync=false async=false";
     return p.str();
   }
@@ -535,7 +535,7 @@ class NativeProbeRuntime {
 
   std::string local_pipeline(int stream_id) const {
     std::ostringstream p;
-    p << "filesrc location=" << q(source_for_stream(stream_id))
+    p << "filesrc name=file_src" << stream_id
       << " ! decodebin ! videoconvert ! videorate ! video/x-raw,framerate=30/1"
       << " ! queue name=decode_probe" << stream_id
       << " ! " << detect_bin()
@@ -574,13 +574,17 @@ class NativeProbeRuntime {
       gst_bus_add_watch(bus, &NativeProbeRuntime::bus_callback, this);
       gst_object_unref(bus);
       if (args_.role == "edge") {
+        set_string_property(pipeline, "file_src" + std::to_string(stream_id), "location", source_for_stream(stream_id));
+        set_string_property(pipeline, "out_sink" + std::to_string(stream_id), "host", args_.output_host);
         add_probe(pipeline, "pay" + std::to_string(stream_id), "edge-pay", stream_id);
       } else if (args_.role == "gpu_worker") {
+        set_string_property(pipeline, "out_sink" + std::to_string(stream_id), "host", args_.output_host);
         add_probe(pipeline, "src" + std::to_string(stream_id), "input", stream_id);
         add_probe(pipeline, "pay" + std::to_string(stream_id), "worker-pay", stream_id);
       } else if (args_.role == "aggregator") {
         add_probe(pipeline, "src" + std::to_string(stream_id), "input", stream_id);
       } else if (args_.role == "local") {
+        set_string_property(pipeline, "file_src" + std::to_string(stream_id), "location", source_for_stream(stream_id));
         add_probe(pipeline, "decode_probe" + std::to_string(stream_id), "local-decode", stream_id);
         add_probe(pipeline, "detect_probe" + std::to_string(stream_id), "local-detect", stream_id);
         add_probe(pipeline, "aggregate_probe" + std::to_string(stream_id), "local-aggregate", stream_id);
