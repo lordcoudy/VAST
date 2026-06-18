@@ -9,6 +9,22 @@ import time
 from pathlib import Path
 from typing import Any
 
+try:
+    from savant.base.pyfunc import BasePyFuncPlugin
+except Exception:
+    class BasePyFuncPlugin:  # type: ignore[no-redef]
+        def __init__(self, **_: Any) -> None:
+            self.gst_element = None
+
+        def on_start(self) -> bool:
+            return True
+
+        def on_stop(self) -> bool:
+            return True
+
+        def process_buffer(self, buffer: Any) -> Any:
+            return buffer
+
 
 TRACE_EXTENSION_URI = "urn:vast:rtp-trace:v1"
 TRACE_EXTENSION_ID = 1
@@ -156,13 +172,18 @@ def object_count(min_objects: int, max_objects: int) -> int:
     return max(min_objects, min(max_objects, (min_objects + max_objects) // 2))
 
 
-def frame_identity(frame: Any) -> tuple[int, int]:
-    stream_id = int(os.environ.get("VAST_STREAM_ID", getattr(frame, "source_id", 0) or 0))
-    frame_id = int(getattr(frame, "pts", 0) or getattr(frame, "idx", 0) or 0)
+def frame_identity(frame_or_buffer: Any) -> tuple[int, int]:
+    stream_id = int(os.environ.get("VAST_STREAM_ID", getattr(frame_or_buffer, "source_id", 0) or 0))
+    frame_id = int(
+        getattr(frame_or_buffer, "pts", None)
+        or getattr(frame_or_buffer, "offset", None)
+        or getattr(frame_or_buffer, "idx", None)
+        or 0
+    )
     return stream_id, frame_id
 
 
-class SavantNativeDetectProbe:
+class SavantNativeDetectProbe(BasePyFuncPlugin):
     """Savant pyfunc hook that writes strict native detect events.
 
     The hook is intentionally small: Savant owns decode/detect execution, while this
@@ -171,26 +192,30 @@ class SavantNativeDetectProbe:
     """
 
     def __init__(self, stage: str, role: str, output_dir: str, run_id: str, **_: Any) -> None:
+        super().__init__()
         self.writer = NativeEventWriter(output_dir, run_id, stage, role)
 
-    def __call__(self, frame: Any, *args: Any, **kwargs: Any) -> Any:
+    def process_buffer(self, buffer: Any) -> Any:
         start_ms = now_ms()
-        stream_id = int(os.environ.get("VAST_STREAM_ID", getattr(frame, "source_id", 0) or 0))
-        frame_id = int(getattr(frame, "pts", 0) or 0)
-        trace_payload = getattr(frame, "vast_rtp_trace", None)
+        stream_id, frame_id = frame_identity(buffer)
+        trace_payload = getattr(buffer, "vast_rtp_trace", None)
         if isinstance(trace_payload, (bytes, bytearray)) and len(trace_payload) == TRACE_STRUCT.size:
             try:
                 stream_id, frame_id, _ = unpack_trace(bytes(trace_payload))
             except ValueError:
                 pass
         self.writer.write(stream_id, frame_id, start_ms, now_ms())
-        return frame
+        return buffer
 
-    def on_stop(self) -> None:
+    def __call__(self, frame: Any, *args: Any, **kwargs: Any) -> Any:
+        return self.process_buffer(frame)
+
+    def on_stop(self) -> bool:
         self.writer.close()
+        return True
 
 
-class SavantLocalTelemetryProbe:
+class SavantLocalTelemetryProbe(BasePyFuncPlugin):
     """Savant pyfunc hook that writes strict local benchmark telemetry."""
 
     def __init__(
@@ -205,6 +230,7 @@ class SavantLocalTelemetryProbe:
         role: str = "local",
         **_: Any,
     ) -> None:
+        super().__init__()
         resource = "gpu" if stage == "detect" else "cpu"
         self.stage = stage
         self.events = NativeEventWriter(output_dir, run_id, stage, role, resource=resource, shared=True)
@@ -214,9 +240,9 @@ class SavantLocalTelemetryProbe:
             else None
         )
 
-    def __call__(self, frame: Any, *args: Any, **kwargs: Any) -> Any:
+    def process_buffer(self, buffer: Any) -> Any:
         start_ms = now_ms()
-        stream_id, frame_id = frame_identity(frame)
+        stream_id, frame_id = frame_identity(buffer)
         key = (stream_id, frame_id)
         if self.stage == "decode":
             _LOCAL_INGRESS_MS[key] = start_ms
@@ -225,12 +251,16 @@ class SavantLocalTelemetryProbe:
         if self.stage == "aggregate" and self.frames is not None:
             ingress_ms = _LOCAL_INGRESS_MS.pop(key, start_ms)
             self.frames.write(stream_id, frame_id, ingress_ms, end_ms)
-        return frame
+        return buffer
 
-    def on_stop(self) -> None:
+    def __call__(self, frame: Any, *args: Any, **kwargs: Any) -> Any:
+        return self.process_buffer(frame)
+
+    def on_stop(self) -> bool:
         self.events.close()
         if self.frames is not None:
             self.frames.close()
+        return True
 
 
 def merge_csvs(paths: list[Path], output: Path, fieldnames: list[str]) -> int:

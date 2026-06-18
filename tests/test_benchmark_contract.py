@@ -22,7 +22,7 @@ from benchmark_contract import (
     validate_frame_events,
     validate_stage_trace_coverage,
 )
-from deploy.savant.native_probe import merge_local_outputs
+from deploy.savant.native_probe import BasePyFuncPlugin, SavantLocalTelemetryProbe, merge_local_outputs
 from distributed_executor import _combine_csv, parse_chrony_tracking, parse_iperf_output, parse_ping_output
 from rtp_trace import RtpTrace, pack_trace, unpack_trace
 
@@ -302,6 +302,50 @@ class BenchmarkContractTests(unittest.TestCase):
             )
             self.assertEqual(frames.shape[0], 2)
             self.assertEqual(events.shape[0], 6)
+
+    def test_savant_local_pyfunc_writes_native_rows_from_buffer(self) -> None:
+        class Buffer:
+            pts = 42
+            offset = 42
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            decode = SavantLocalTelemetryProbe(
+                stage="decode",
+                output_dir=str(root),
+                run_id="r",
+                detector="peoplenet",
+                backend="deepstream_tensorrt",
+                min_objects=1,
+                max_objects=3,
+            )
+            aggregate = SavantLocalTelemetryProbe(
+                stage="aggregate",
+                output_dir=str(root),
+                run_id="r",
+                detector="peoplenet",
+                backend="deepstream_tensorrt",
+                min_objects=1,
+                max_objects=3,
+            )
+
+            self.assertIsInstance(decode, BasePyFuncPlugin)
+            decode.process_buffer(Buffer())
+            aggregate.process_buffer(Buffer())
+            self.assertTrue(decode.on_stop())
+            self.assertTrue(aggregate.on_stop())
+
+            frames = canonicalize_frames_csv(
+                root / "frames.csv",
+                mode="benchmark",
+                run_id="r",
+                detector="peoplenet",
+                backend="deepstream_tensorrt",
+            )
+            events = validate_frame_events(root / "frame_events.csv")
+
+            self.assertEqual(frames.shape[0], 1)
+            self.assertEqual(set(events["stage"]), {"decode", "aggregate"})
 
     def test_throughput_uses_completed_frames_per_window(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
