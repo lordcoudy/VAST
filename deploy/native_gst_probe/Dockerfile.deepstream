@@ -1,0 +1,28 @@
+ARG BASE_IMAGE=nvcr.io/nvidia/deepstream:7.0-triton-multiarch
+FROM ${BASE_IMAGE}
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    ca-certificates \
+    cmake \
+    pkg-config \
+    libgstreamer1.0-dev \
+    libgstreamer-plugins-base1.0-dev \
+    gstreamer1.0-plugins-good \
+  && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /workspace/project
+
+COPY CMakeLists.txt /workspace/project/CMakeLists.txt
+COPY deploy/native_gst_probe /workspace/project/deploy/native_gst_probe
+
+RUN cmake -S /workspace/project -B /workspace/project/build/cmake \
+      -DVAST_BUILD_NATIVE_GST_PROBE=ON \
+      -DVAST_BUILD_CUSTOM_CUDA_QT=OFF \
+  && cmake --build /workspace/project/build/cmake --target vast_native_gst_probe --parallel \
+  && install -m 0755 /workspace/project/build/bin/vast_native_gst_probe /usr/local/bin/vast_native_gst_probe
+
+ENTRYPOINT ["/usr/local/bin/vast_native_gst_probe"]
+

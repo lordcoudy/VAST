@@ -27,6 +27,7 @@ EXPERIMENT_DISTRIBUTED="${EXPERIMENT_DISTRIBUTED:-0}"
 RTP_INPUT_PORT="${EXPERIMENT_RTP_INPUT_PORT:-}"
 RTP_OUTPUT_HOST="${EXPERIMENT_RTP_OUTPUT_HOST:-}"
 RTP_OUTPUT_PORT="${EXPERIMENT_RTP_OUTPUT_PORT:-}"
+RTP_PORT_STRIDE="${EXPERIMENT_RTP_PORT_STRIDE:-1}"
 
 REAL_DRY_RUN="${REAL_DRY_RUN:-0}"
 STARTUP_GRACE_S="${STARTUP_GRACE_S:-180}"
@@ -35,7 +36,11 @@ CMD_KILL_AFTER_S="${CMD_KILL_AFTER_S:-20}"
 EXPERIMENT_RUN_SEED="${EXPERIMENT_RUN_SEED:-$RANDOM}"
 
 VIDEO_LAYOUT_DIR="${VIDEO_LAYOUT_DIR:-$PROJECT_DIR/data/videos}"
+DATASET_STREAMS_JSON="${DATASET_STREAMS_JSON:-}"
 OPENVINO_MODEL_XML_DEFAULT="$PROJECT_DIR/models/openvino/public/intel/person-vehicle-bike-detection-crossroad-0078/FP16/person-vehicle-bike-detection-crossroad-0078.xml"
+NATIVE_PROBE_BIN="${NATIVE_PROBE_BIN:-$PROJECT_DIR/build/bin/vast_native_gst_probe}"
+DEEPSTREAM_NATIVE_PROBE_IMAGE="${DEEPSTREAM_NATIVE_PROBE_IMAGE:-vast/deepstream-native-probe:7.0}"
+SAVANT_NATIVE_PROBE_IMAGE="${SAVANT_NATIVE_PROBE_IMAGE:-vast/savant-native-probe:0.5.17-7.0}"
 
 log() { echo "[template] $*"; }
 warn() { echo "[template][warning] $*" >&2; }
@@ -108,6 +113,27 @@ log "mode=$BENCHMARK_MODE scenario=$SCENARIO role=$HOST_ROLE stages=${PIPELINE_S
 
 pick_video_for_stream() {
   local idx="$1"
+  if [[ -n "$DATASET_STREAMS_JSON" ]]; then
+    local py_bin="python3"
+    local selected=""
+    if ! command -v "$py_bin" >/dev/null 2>&1; then
+      py_bin="python"
+    fi
+    if command -v "$py_bin" >/dev/null 2>&1; then
+      selected="$(STREAM_INDEX="$idx" DATASET_STREAMS_JSON="$DATASET_STREAMS_JSON" PROJECT_DIR="$PROJECT_DIR" "$py_bin" -c 'import json, os, pathlib
+streams = json.loads(os.environ.get("DATASET_STREAMS_JSON", "[]") or "[]")
+if streams:
+    idx = max(1, int(os.environ.get("STREAM_INDEX", "1")))
+    raw = str(streams[(idx - 1) % len(streams)])
+    path = pathlib.Path(raw)
+    print(path if path.is_absolute() else pathlib.Path(os.environ["PROJECT_DIR"]) / path)
+' 2>/dev/null || true)"
+      if [[ -n "$selected" ]]; then
+        printf "%s" "$selected"
+        return 0
+      fi
+    fi
+  fi
   local six=$(( ((idx - 1) % 6) + 1 ))
   printf "%s/stream%02d.mp4" "$VIDEO_LAYOUT_DIR" "$six"
 }
@@ -435,6 +461,265 @@ run_custom_cpp_cuda_qt() {
   run_with_frames_export "$cmd" "$source"
 }
 
+shell_quote() {
+  printf "%q" "$1"
+}
+
+project_path_for_runtime() {
+  local path="$1"
+  if [[ "${NATIVE_PROBE_CONTAINERIZED:-0}" == "1" && "$path" == "$PROJECT_DIR"/* ]]; then
+    printf "/workspace/project/%s" "${path#"$PROJECT_DIR/"}"
+  else
+    printf "%s" "$path"
+  fi
+}
+
+native_probe_detect_bin() {
+  case "$SYSTEM" in
+    openvino_gva)
+      local model_xml
+      model_xml="$(project_path_for_runtime "${OPENVINO_MODEL_XML:-$OPENVINO_MODEL_XML_DEFAULT}")"
+      local element="${OPENVINO_GVA_DETECT_ELEMENT:-}"
+      if [[ "$REAL_DRY_RUN" != "1" && "${NATIVE_PROBE_CONTAINERIZED:-0}" != "1" && ! -f "$model_xml" ]]; then
+        warn "Missing OpenVINO model XML: $model_xml"
+        return 1
+      fi
+      if [[ -z "$element" ]]; then
+        if [[ "$REAL_DRY_RUN" == "1" ]]; then
+          element="gvadetect"
+        elif ! command -v gst-inspect-1.0 >/dev/null 2>&1; then
+          warn "OpenVINO strict distributed benchmark requires gst-inspect-1.0 and DL Streamer plugins"
+          return 1
+        fi
+        if [[ "$element" == "gvadetect" ]]; then
+          :
+        elif gst-inspect-1.0 gvadetect >/dev/null 2>&1; then
+          element="gvadetect"
+        elif gst-inspect-1.0 object_detect >/dev/null 2>&1; then
+          element="object_detect"
+        else
+          warn "OpenVINO strict distributed benchmark requires gvadetect or object_detect"
+          return 1
+        fi
+      fi
+      printf "%s model=%s device=CPU" "$element" "$(shell_quote "$model_xml")"
+      ;;
+    gstreamer_custom)
+      local plugin="${GST_CUSTOM_PLUGIN:-adaptivescheduler}"
+      local gst_plugin_path="${GST_PLUGIN_PATH:-$PROJECT_DIR/build/lib}"
+      if [[ "$REAL_DRY_RUN" == "1" ]]; then
+        printf "%s" "$plugin"
+        return 0
+      fi
+      if ! command -v gst-inspect-1.0 >/dev/null 2>&1; then
+        warn "Strict distributed benchmark requires gst-inspect-1.0 for custom GStreamer plugin validation"
+        return 1
+      fi
+      if ! GST_PLUGIN_PATH="$gst_plugin_path" GST_CUSTOM_STRICT=1 gst-inspect-1.0 "$plugin" >/dev/null 2>&1; then
+        warn "Strict distributed benchmark requires custom GStreamer plugin '$plugin' in GST_PLUGIN_PATH=$gst_plugin_path"
+        return 1
+      fi
+      printf "%s" "$plugin"
+      ;;
+    deepstream)
+      local config
+      config="$(project_path_for_runtime "${DEEPSTREAM_PGIE_CONFIG:-/opt/nvidia/deepstream/deepstream/samples/configs/deepstream-app/config_infer_primary.txt}")"
+      printf "nvvideoconvert ! video/x-raw(memory:NVMM),format=NV12 ! nvinfer config-file-path=%s ! nvvideoconvert ! video/x-raw" "$(shell_quote "$config")"
+      ;;
+    savant)
+      # The Savant derived image provides a framework module that exposes a GStreamer-compatible detector hook.
+      printf "%s" "${SAVANT_CANONICAL_DETECT_BIN:-vast_savant_detect}"
+      ;;
+    *)
+      printf "identity"
+      ;;
+  esac
+}
+
+native_probe_args() {
+  local output_dir="$1"
+  local detect_bin="$2"
+  local runtime_video_layout
+  runtime_video_layout="$(project_path_for_runtime "$VIDEO_LAYOUT_DIR")"
+  local args=(
+    --system "$SYSTEM"
+    --role "$HOST_ROLE"
+    --stages "$PIPELINE_STAGES"
+    --run-id "$RUN_ID"
+    --detector "$DETECTOR"
+    --backend "$BACKEND"
+    --output-dir "$output_dir"
+    --duration "$DURATION_S"
+    --streams "$STREAMS"
+    --video-layout-dir "$runtime_video_layout"
+    --detect-bin "$detect_bin"
+    --min-objects "$MIN_OBJECTS"
+    --max-objects "$MAX_OBJECTS"
+  )
+  if [[ -n "$RTP_INPUT_PORT" ]]; then
+    args+=(--input-port-base "$RTP_INPUT_PORT")
+  fi
+  if [[ -n "$RTP_OUTPUT_HOST" ]]; then
+    args+=(--output-host "$RTP_OUTPUT_HOST")
+  fi
+  if [[ -n "$RTP_OUTPUT_PORT" ]]; then
+    args+=(--output-port-base "$RTP_OUTPUT_PORT")
+  fi
+  args+=(--port-stride "$RTP_PORT_STRIDE")
+  printf " %q" "${args[@]}"
+}
+
+native_probe_env_prefix() {
+  local env_args=()
+  if [[ "$SYSTEM" == "gstreamer_custom" ]]; then
+    env_args+=("GST_PLUGIN_PATH=${GST_PLUGIN_PATH:-$PROJECT_DIR/build/lib}" "GST_CUSTOM_STRICT=1")
+  fi
+  if [[ ${#env_args[@]} -eq 0 ]]; then
+    return 0
+  fi
+  printf "%q " "${env_args[@]}"
+}
+
+container_output_dir() {
+  if [[ "$OUTPUT_DIR" == "$PROJECT_DIR" ]]; then
+    printf "/workspace/project"
+  elif [[ "$OUTPUT_DIR" == "$PROJECT_DIR"/* ]]; then
+    printf "/workspace/project/%s" "${OUTPUT_DIR#"$PROJECT_DIR/"}"
+  else
+    warn "Containerized strict probes require OUTPUT_DIR under PROJECT_DIR; using /workspace/project/runs/container_external"
+    printf "/workspace/project/runs/container_external"
+  fi
+}
+
+run_host_native_probe() {
+  local detect_bin
+  detect_bin="$(native_probe_detect_bin)" || return 1
+  if [[ "$REAL_DRY_RUN" != "1" && ! -x "$NATIVE_PROBE_BIN" ]]; then
+    warn "Strict distributed benchmark requires native probe binary: $NATIVE_PROBE_BIN"
+    warn "Build it with: cmake -S . -B build/cmake && cmake --build build/cmake --target vast_native_gst_probe"
+    return 1
+  fi
+  local cmd
+  cmd="$(native_probe_env_prefix)$(shell_quote "$NATIVE_PROBE_BIN")$(native_probe_args "$OUTPUT_DIR" "$detect_bin")"
+  run_or_echo "$cmd"
+}
+
+run_container_native_probe() {
+  local image="$1"
+  local detect_bin
+  if [[ "$REAL_DRY_RUN" != "1" ]]; then
+    if ! command -v docker >/dev/null 2>&1; then
+      warn "docker not found for strict distributed $SYSTEM probe"
+      return 1
+    fi
+  fi
+  if [[ "$REAL_DRY_RUN" != "1" ]] && ! docker image inspect "$image" >/dev/null 2>&1; then
+    warn "Strict distributed $SYSTEM benchmark requires derived native probe image: $image"
+    warn "Build images with: bash scripts/build_native_probe_images.sh"
+    return 1
+  fi
+  local container_output
+  container_output="$(container_output_dir)"
+  local cmd
+  local prev_containerized="${NATIVE_PROBE_CONTAINERIZED:-0}"
+  NATIVE_PROBE_CONTAINERIZED=1
+  if ! detect_bin="$(native_probe_detect_bin)"; then
+    NATIVE_PROBE_CONTAINERIZED="$prev_containerized"
+    return 1
+  fi
+  cmd="docker run --rm --network host --gpus all \
+    -e EXPERIMENT_RTP_INPUT_PORT='${RTP_INPUT_PORT}' \
+    -e EXPERIMENT_RTP_OUTPUT_HOST='${RTP_OUTPUT_HOST}' \
+    -e EXPERIMENT_RTP_OUTPUT_PORT='${RTP_OUTPUT_PORT}' \
+    -e EXPERIMENT_RTP_PORT_STRIDE='${RTP_PORT_STRIDE}' \
+    -e EXPERIMENT_RUN_ID='${RUN_ID}' \
+    -e EXPERIMENT_HOST_ROLE='${HOST_ROLE}' \
+    -e EXPERIMENT_PIPELINE_STAGES='${PIPELINE_STAGES}' \
+    -e ADAPTER_DETECTOR='${DETECTOR}' \
+    -e ADAPTER_BACKEND='${BACKEND}' \
+    -e DATASET_STREAMS_JSON='${DATASET_STREAMS_JSON}' \
+    -e GST_CUSTOM_STRICT='1' \
+    -v '$PROJECT_DIR':/workspace/project \
+    -w /workspace/project '$image' \
+    /usr/local/bin/vast_native_gst_probe$(native_probe_args "$container_output" "$detect_bin")"
+  NATIVE_PROBE_CONTAINERIZED="$prev_containerized"
+  run_or_echo "$cmd"
+}
+
+run_savant_framework_native_probe() {
+  if [[ "$HOST_ROLE" != "gpu_worker" ]]; then
+    run_container_native_probe "$SAVANT_NATIVE_PROBE_IMAGE"
+    return $?
+  fi
+  if [[ "$REAL_DRY_RUN" != "1" ]]; then
+    if ! command -v docker >/dev/null 2>&1; then
+      warn "docker not found for strict distributed Savant probe"
+      return 1
+    fi
+    if ! docker image inspect "$SAVANT_NATIVE_PROBE_IMAGE" >/dev/null 2>&1; then
+      warn "Strict distributed Savant benchmark requires derived native probe image: $SAVANT_NATIVE_PROBE_IMAGE"
+      warn "Build images with: bash scripts/build_native_probe_images.sh"
+      return 1
+    fi
+  fi
+  local container_output
+  local module
+  local inner
+  local prev_containerized="${NATIVE_PROBE_CONTAINERIZED:-0}"
+  container_output="$(container_output_dir)"
+  NATIVE_PROBE_CONTAINERIZED=1
+  module="$(project_path_for_runtime "${SAVANT_CANONICAL_MODULE:-$PROJECT_DIR/deploy/savant/canonical_distributed_module.yml}")"
+  NATIVE_PROBE_CONTAINERIZED="$prev_containerized"
+  inner="set -e; pids=''; for i in \$(seq 0 $((STREAMS - 1))); do in_port=\$(( ${RTP_INPUT_PORT:-5600} + i * ${RTP_PORT_STRIDE} )); out_port=\$(( ${RTP_OUTPUT_PORT:-5700} + i * ${RTP_PORT_STRIDE} )); VAST_STREAM_ID=\$i EXPERIMENT_RTP_INPUT_PORT=\$in_port EXPERIMENT_RTP_OUTPUT_PORT=\$out_port VAST_NATIVE_OUTPUT_DIR='${container_output}/streams/stream_'\$i python -m savant.entrypoint ${module} & pids=\"\$pids \$!\"; done; sleep ${DURATION_S}; for pid in \$pids; do kill -INT \$pid >/dev/null 2>&1 || true; done; wait || true"
+  local cmd
+  cmd="docker run --rm --network host --gpus all \
+    -e BENCHMARK_MODE='${BENCHMARK_MODE}' \
+    -e DATASET_NAME='${DATASET_NAME:-}' \
+    -e DATASET_STREAMS_JSON='${DATASET_STREAMS_JSON}' \
+    -e EXPERIMENT_RUN_ID='${RUN_ID}' \
+    -e EXPERIMENT_HOST_ROLE='${HOST_ROLE}' \
+    -e EXPERIMENT_PIPELINE_STAGES='${PIPELINE_STAGES}' \
+    -e EXPERIMENT_RTP_INPUT_PORT='${RTP_INPUT_PORT}' \
+    -e EXPERIMENT_RTP_OUTPUT_HOST='${RTP_OUTPUT_HOST}' \
+    -e EXPERIMENT_RTP_OUTPUT_PORT='${RTP_OUTPUT_PORT}' \
+    -e EXPERIMENT_RTP_PORT_STRIDE='${RTP_PORT_STRIDE}' \
+    -e ADAPTER_DETECTOR='${DETECTOR}' \
+    -e ADAPTER_BACKEND='${BACKEND}' \
+    -e VAST_NATIVE_OUTPUT_DIR='${container_output}' \
+    -e VAST_TRACE_EXTENSION_ID='1' \
+    -e MIN_OBJECTS='${MIN_OBJECTS}' \
+    -e MAX_OBJECTS='${MAX_OBJECTS}' \
+    -v '$PROJECT_DIR':/workspace/project \
+    -w /workspace/project '$SAVANT_NATIVE_PROBE_IMAGE' \
+    bash -lc $(shell_quote "$inner")"
+  run_or_echo "$cmd"
+}
+
+run_builtin_strict_distributed_adapter() {
+  if [[ "$SCENARIO" != "canonical_distributed" ]]; then
+    warn "Built-in strict distributed adapters currently support only canonical_distributed"
+    return 1
+  fi
+  case "$SYSTEM" in
+    openvino_gva|gstreamer_custom)
+      run_host_native_probe
+      ;;
+    deepstream)
+      run_container_native_probe "$DEEPSTREAM_NATIVE_PROBE_IMAGE"
+      ;;
+    savant)
+      run_savant_framework_native_probe
+      ;;
+    custom_cpp_cuda_qt)
+      run_custom_cpp_cuda_qt
+      ;;
+    *)
+      warn "No built-in strict distributed adapter for system=$SYSTEM"
+      return 1
+      ;;
+  esac
+}
+
 run_distributed_rtp_smoke() {
   local source
   source="$(pick_video_for_stream 1)"
@@ -465,14 +750,19 @@ run_distributed_rtp_smoke() {
 }
 
 run_distributed_adapter() {
-  local native_cmd="${DISTRIBUTED_NATIVE_CMD:-}"
+  local normalized_system
+  local normalized_role
+  normalized_system="$(printf "%s" "$SYSTEM" | tr '[:lower:]' '[:upper:]')"
+  normalized_role="$(printf "%s" "$HOST_ROLE" | tr '[:lower:]' '[:upper:]')"
+  local role_cmd_var="DISTRIBUTED_NATIVE_CMD_${normalized_system}_${normalized_role}"
+  local native_cmd="${!role_cmd_var:-${DISTRIBUTED_NATIVE_CMD:-}}"
   if [[ -n "$native_cmd" ]]; then
     run_with_frames_export "$native_cmd" "$(pick_video_for_stream 1)"
     return $?
   fi
-  if [[ "$BENCHMARK_MODE" != "smoke" ]]; then
-    warn "Set DISTRIBUTED_NATIVE_CMD for system=$SYSTEM role=$HOST_ROLE in benchmark mode"
-    return 1
+  if [[ "$BENCHMARK_MODE" == "benchmark" ]]; then
+    run_builtin_strict_distributed_adapter
+    return $?
   fi
   warn "Using RTP smoke bridge for system=$SYSTEM role=$HOST_ROLE"
   run_distributed_rtp_smoke

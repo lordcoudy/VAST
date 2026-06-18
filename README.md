@@ -111,9 +111,9 @@ Scenarios in `configs/experiments.yaml` use the structured schema:
 - `pipeline`: ordered stages such as `decode`, `detect`, `track`, `classify`, `record`, `aggregate`
 - `placement`: stage-to-role mapping and a placement policy label
 - `network`: latency, jitter, bandwidth, and packet-loss profile for distributed runs
-- `distributed`: enables SSH-based multi-host execution and artifact collection
+- `distributed`: enables SSH-based role execution and artifact collection
 
-Distributed scenarios use logical roles such as `edge`, `gpu_worker`, and `aggregator`. Map those roles to real SSH hosts in `configs/hosts.yaml`; keep SSH keys and credentials outside the repo.
+Distributed scenarios use logical roles such as `edge`, `gpu_worker`, and `aggregator`. Use `--run-kind single-server-distributed` to launch those roles over SSH on one server, or map roles to real SSH hosts in `configs/hosts.yaml` for `--run-kind distributed`; keep SSH keys and credentials outside the repo.
 
 ## 4) Run experiments
 
@@ -126,33 +126,45 @@ python scripts/run_experiments.py
 Run a synthetic custom scheduler smoke test:
 
 ```bash
-python scripts/run_experiments.py --mode smoke --run-kind local \
-  --systems custom_cpp_cuda_qt --scenarios baseline --repeats 1 --warmup 0 --measurement 5
+python scripts/run_experiments.py --mode smoke --run-kind heterogeneous \
+  --systems custom_cpp_cuda_qt --scenarios canonical_heterogeneous --repeats 1 --warmup 0 --measurement 5
 ```
 
-Preview local or distributed commands without executing them:
+Preview heterogeneous, single-server distributed, or multi-host distributed commands without executing them:
 
 ```bash
-python scripts/run_experiments.py --mode smoke --run-kind local --dry-run-plan \
-  --systems custom_cpp_cuda_qt --scenarios baseline --repeats 1 --measurement 5
-python scripts/run_experiments.py --mode smoke --dry-run-plan \
-  --systems custom_cpp_cuda_qt --scenarios edge_to_worker_distributed \
+python scripts/run_experiments.py --mode smoke --run-kind heterogeneous --dry-run-plan \
+  --systems custom_cpp_cuda_qt --scenarios canonical_heterogeneous --repeats 1 --measurement 5
+python scripts/run_experiments.py --mode smoke --run-kind single-server-distributed --dry-run-plan \
+  --systems custom_cpp_cuda_qt --scenarios canonical_distributed \
+  --single-server-host 127.0.0.1 --repeats 1 --measurement 5
+python scripts/run_experiments.py --mode smoke --run-kind distributed --dry-run-plan \
+  --systems custom_cpp_cuda_qt --scenarios canonical_distributed \
   --hosts-config configs/hosts.yaml --repeats 1 --measurement 5
 ```
 
-Validate the public dataset and run a publishable local benchmark:
+Validate the public dataset and run a publishable heterogeneous benchmark:
 
 ```bash
 python scripts/check_dataset.py --dataset mot17_uadetrac_public
 python scripts/run_experiments.py --mode benchmark --dataset mot17_uadetrac_public \
-  --run-kind local --systems all --scenarios baseline --repeats 5
+  --run-kind heterogeneous --systems all --scenarios canonical_heterogeneous --repeats 5
+```
+
+Run the same role-split profile through SSH on one server:
+
+```bash
+scripts/build_native_probe_images.sh
+python scripts/run_experiments.py --mode benchmark --dataset mot17_uadetrac_public \
+  --run-kind single-server-distributed --systems all --scenarios canonical_distributed \
+  --single-server-host 127.0.0.1 --repeats 5
 ```
 
 Run distributed benchmark commands after configuring the three SSH hosts:
 
 ```bash
 python scripts/run_experiments.py --mode benchmark --dataset mot17_uadetrac_public \
-  --run-kind distributed --systems all --scenarios edge_worker_aggregator_distributed \
+  --run-kind distributed --systems all --scenarios canonical_distributed \
   --hosts-config configs/hosts.yaml --repeats 5
 ```
 
@@ -201,8 +213,10 @@ The runner also exports scenario context to templates:
   and backend identity for every row.
 - `benchmark` mode rejects missing, legacy, and synthetic per-frame telemetry.
 - Distributed roles start in the order `aggregator -> gpu_worker -> edge`.
-- Distributed benchmark adapters must provide a native `DISTRIBUTED_NATIVE_CMD`
-  in host inventory; the common RTP bridge is smoke-only.
+- DeepStream, Savant, OpenVINO+GVA, and GStreamer custom have built-in strict
+  native commands for `canonical_distributed`; `DISTRIBUTED_NATIVE_CMD_*`
+  remains an override path for custom deployments. The common RTP bridge is
+  smoke-only.
 - Custom CUDA + Qt runs use `QT_QPA_PLATFORM=offscreen`; train the frozen policy
   with `python scripts/train_ql_heft.py`.
 - All run metadata, commands, dataset checksums, git state, and logs are stored per repetition.

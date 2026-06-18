@@ -1,0 +1,76 @@
+# Canonical strict distributed Savant worker module for pipeline [decode, detect, aggregate].
+# The edge role sends traced RTP/JPEG on EXPERIMENT_RTP_INPUT_PORT + stream_id.
+# The worker forwards traced RTP/JPEG to EXPERIMENT_RTP_OUTPUT_HOST:
+# EXPERIMENT_RTP_OUTPUT_PORT + stream_id after the Savant detector stage.
+
+name: vast_canonical_distributed_savant_v1
+
+parameters:
+  output_frame: null
+  batch_size: 1
+  input_port: ${oc.env:EXPERIMENT_RTP_INPUT_PORT, 5600}
+  output_host: ${oc.env:EXPERIMENT_RTP_OUTPUT_HOST, '127.0.0.1'}
+  output_port: ${oc.env:EXPERIMENT_RTP_OUTPUT_PORT, 5700}
+  output_dir: ${oc.env:VAST_NATIVE_OUTPUT_DIR, '/workspace/project/runs/savant_native'}
+  run_id: ${oc.env:EXPERIMENT_RUN_ID, 'savant-native'}
+
+pipeline:
+  source:
+    element: udpsrc
+    properties:
+      port: ${parameters.input_port}
+      caps: application/x-rtp,media=(string)video,encoding-name=(string)JPEG,payload=(int)26
+
+  elements:
+    - element: rtpjpegdepay
+    - element: jpegdec
+    - element: videoconvert
+    - element: pyfunc
+      module: deploy.savant.native_probe
+      class_name: SavantNativeDetectProbe
+      kwargs:
+        stage: detect
+        role: gpu_worker
+        output_dir: ${parameters.output_dir}
+        run_id: ${parameters.run_id}
+    - element: nvinfer@detector
+      name: peoplenet
+      model:
+        format: etlt
+        remote:
+          url: s3://savant-data/models/peoplenet/peoplenet_pruned_v2.0.zip
+          checksum_url: s3://savant-data/models/peoplenet/peoplenet_pruned_v2.0.md5
+          parameters:
+            endpoint: https://eu-central-1.linodeobjects.com
+        model_file: resnet34_peoplenet_pruned.etlt
+        batch_size: ${parameters.batch_size}
+        input:
+          layer_name: input_1
+          shape: [3, 544, 960]
+          scale_factor: 0.0039215697906911373
+        output:
+          layer_names: [output_bbox/BiasAdd, output_cov/Sigmoid]
+          num_detected_classes: 3
+          objects:
+            - class_id: 0
+              label: person
+            - class_id: 2
+              label: face
+              selector:
+                kwargs:
+                  confidence_threshold: 0.1
+                  min_width: 16
+                  min_height: 16
+    - element: videoconvert
+    - element: jpegenc
+    - element: rtpjpegpay
+      properties:
+        pt: 26
+
+  sink:
+    - element: udpsink
+      properties:
+        host: ${parameters.output_host}
+        port: ${parameters.output_port}
+        sync: false
+        async: false

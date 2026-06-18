@@ -181,28 +181,34 @@ setup_python_env() {
 
 build_reference_custom_app() {
   if [[ "$BUILD_REFERENCE_CUSTOM_APP" != "1" ]]; then
-    log "Skipping custom CUDA app build"
+    log "Skipping native probe/custom app build"
     return
   fi
 
   local build_dir="$PROJECT_DIR/build/cmake"
   local out_bin="$PROJECT_DIR/build/bin/adaptive_scheduler_app"
+  local probe_bin="$PROJECT_DIR/build/bin/vast_native_gst_probe"
 
   if [[ ! -f "$PROJECT_DIR/CMakeLists.txt" ]]; then
-    warn "Missing root CMakeLists.txt, cannot build custom CUDA + Qt app"
+    warn "Missing root CMakeLists.txt, cannot build native binaries"
     return
   fi
 
-  if ! command -v nvcc >/dev/null 2>&1; then
-    warn "nvcc not found, cannot build custom CUDA + Qt app"
-    return
-  fi
-
-  log "Building custom CUDA + Qt app -> $out_bin"
+  log "Configuring native benchmark binaries"
   cmake -S "$PROJECT_DIR" -B "$build_dir" \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_CUDA_ARCHITECTURES="$CUDA_ARCHITECTURES"
-  cmake --build "$build_dir" --target adaptive_scheduler_app --parallel "$(nproc)"
+  log "Building native GStreamer probe -> $probe_bin"
+  cmake --build "$build_dir" --target vast_native_gst_probe --parallel "$(nproc)" || \
+    warn "Native GStreamer probe build failed; strict distributed benchmark will fail until it is built"
+
+  if command -v nvcc >/dev/null 2>&1; then
+    log "Building custom CUDA + Qt app -> $out_bin"
+    cmake --build "$build_dir" --target adaptive_scheduler_app --parallel "$(nproc)" || \
+      warn "Custom CUDA + Qt app build failed"
+  else
+    warn "nvcc not found, skipping custom CUDA + Qt app"
+  fi
 }
 
 prepare_project_assets() {
@@ -296,7 +302,7 @@ Next actions:
 2) Activate venv: source .venv/bin/activate
 3) Verify project hardware check: python scripts/check_system.py
 4) Run smoke benchmark:
-   python scripts/run_experiments.py --mode smoke --run-kind local --systems custom_cpp_cuda_qt --scenarios baseline --repeats 1 --warmup 0 --measurement 5
+   python scripts/run_experiments.py --mode smoke --run-kind heterogeneous --systems custom_cpp_cuda_qt --scenarios canonical_heterogeneous --repeats 1 --warmup 0 --measurement 5
 
 EOF
 }

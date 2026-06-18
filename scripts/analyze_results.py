@@ -35,6 +35,8 @@ def normalize_summary(df: pd.DataFrame) -> pd.DataFrame:
         "scenario_variant": "",
         "placement_policy": "",
         "distributed": False,
+        "deployment_mode": "legacy",
+        "host_topology": "legacy",
         "host_role": "local",
         "detector": "legacy",
         "backend": "legacy",
@@ -88,6 +90,8 @@ def main() -> None:
         "policy",
         "placement_policy",
         "distributed",
+        "deployment_mode",
+        "host_topology",
         "dataset",
     ]
     agg = (

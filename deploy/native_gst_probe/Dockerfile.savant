@@ -1,0 +1,31 @@
+ARG BASE_IMAGE=ghcr.io/insight-platform/savant-deepstream:0.5.17-7.0
+FROM ${BASE_IMAGE}
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV SAVANT_CANONICAL_MODULE=/workspace/project/deploy/savant/canonical_distributed_module.yml
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    ca-certificates \
+    cmake \
+    pkg-config \
+    python3 \
+    libgstreamer1.0-dev \
+    libgstreamer-plugins-base1.0-dev \
+    gstreamer1.0-plugins-good \
+  && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /workspace/project
+
+COPY CMakeLists.txt /workspace/project/CMakeLists.txt
+COPY deploy/native_gst_probe /workspace/project/deploy/native_gst_probe
+COPY deploy/savant /workspace/project/deploy/savant
+
+RUN cmake -S /workspace/project -B /workspace/project/build/cmake \
+      -DVAST_BUILD_NATIVE_GST_PROBE=ON \
+      -DVAST_BUILD_CUSTOM_CUDA_QT=OFF \
+  && cmake --build /workspace/project/build/cmake --target vast_native_gst_probe --parallel \
+  && install -m 0755 /workspace/project/build/bin/vast_native_gst_probe /usr/local/bin/vast_native_gst_probe
+
+ENTRYPOINT ["/usr/local/bin/vast_native_gst_probe"]
+

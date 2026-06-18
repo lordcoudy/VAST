@@ -75,6 +75,7 @@ def load_dataset(
     mode: str,
     project_root: Path,
     require_files: bool,
+    allow_placeholder_checksums: bool = False,
 ) -> dict[str, Any]:
     with manifest_path.open("r", encoding="utf-8") as f:
         manifest = yaml.safe_load(f) or {}
@@ -99,7 +100,7 @@ def load_dataset(
             raise ContractError(f"dataset '{dataset_name}' contains a stream without path")
         abs_path = project_root / rel_path
         expected = str(stream.get("sha256", "")).strip()
-        if mode == "benchmark" and (not expected or expected.startswith("SET_")):
+        if mode == "benchmark" and not allow_placeholder_checksums and (not expected or expected.startswith("SET_")):
             raise ContractError(f"dataset '{dataset_name}' requires a real sha256 for {rel_path}")
         if require_files and not abs_path.exists():
             raise ContractError(f"dataset stream is missing: {abs_path}")
@@ -215,6 +216,34 @@ def validate_frame_events(path: Path) -> pd.DataFrame:
     if any(int(value) != TELEMETRY_SCHEMA_VERSION for value in df["schema_version"].unique()):
         raise ContractError(f"unsupported frame event schema version in {path}")
     return df[FRAME_EVENT_COLUMNS]
+
+
+def validate_stage_trace_coverage(
+    frames_path: Path,
+    frame_events_path: Path,
+    *,
+    required_stages: list[str],
+) -> None:
+    frames = canonicalize_frames_csv(
+        frames_path,
+        mode="benchmark",
+        run_id="",
+        detector="",
+        backend="",
+    )
+    events = validate_frame_events(frame_events_path)
+    frame_traces = set(frames["trace_id"].astype(str))
+    if not frame_traces:
+        raise ContractError(f"frames.csv has no trace_id values: {frames_path}")
+    for stage in required_stages:
+        stage_traces = set(events.loc[events["stage"].astype(str) == str(stage), "trace_id"].astype(str))
+        missing = frame_traces - stage_traces
+        if missing:
+            sample = ", ".join(sorted(missing)[:5])
+            raise ContractError(
+                f"missing native frame_events for stage '{stage}' "
+                f"on {len(missing)} completed frames; sample trace_id values: {sample}"
+            )
 
 
 def network_profile_matches(measured: dict[str, float], acceptance: dict[str, list[float]]) -> tuple[bool, str]:

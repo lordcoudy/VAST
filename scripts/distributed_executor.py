@@ -68,6 +68,22 @@ def _role_hosts(hosts_config: dict[str, Any]) -> dict[str, dict[str, Any]]:
     return role_map
 
 
+def _host_identity(host: dict[str, Any]) -> tuple[str, str, str]:
+    return (
+        str(host.get("user", "")).strip(),
+        str(host.get("address", "")).strip(),
+        str(host.get("port", "")).strip(),
+    )
+
+
+def _same_host_topology(role_map: dict[str, dict[str, Any]]) -> bool:
+    rtp_roles = [role for role in ("edge", "gpu_worker", "aggregator") if role in role_map]
+    if len(rtp_roles) < 2:
+        return False
+    identities = {_host_identity(role_map[role]) for role in rtp_roles}
+    return len(identities) == 1
+
+
 def _required_roles(scenario: dict[str, Any]) -> list[str]:
     roles = {str(role) for role in scenario.get("placement", {}).get("stages", {}).values()}
     return sorted(roles, key=lambda role: (ROLE_START_ORDER.get(role, 99), role))
@@ -94,6 +110,7 @@ def _transport_env(role_map: dict[str, dict[str, Any]], role: str, transport: di
     env = {
         "EXPERIMENT_TRANSPORT": str(transport.get("kind", "gstreamer_rtp_udp")),
         "EXPERIMENT_TRACE_METADATA": str(transport.get("trace_metadata", "rtp_header_extension")),
+        "EXPERIMENT_RTP_PORT_STRIDE": str(int(transport.get("stream_port_stride", 1))),
     }
     if role == "edge":
         env.update(
@@ -133,6 +150,7 @@ def build_distributed_plan(
     run_id: str = "plan",
     detector: str = "",
     backend: str = "",
+    extra_env: dict[str, str] | None = None,
 ) -> list[dict[str, Any]]:
     role_map = _role_hosts(hosts_config)
     required_roles = _required_roles(scenario)
@@ -175,6 +193,10 @@ def build_distributed_plan(
             "MIN_OBJECTS": str(min_objects),
             "MAX_OBJECTS": str(max_objects),
         }
+        env.update({str(k): str(v) for k, v in (extra_env or {}).items()})
+        env["EXPERIMENT_DISTRIBUTED"] = "1"
+        env["EXPERIMENT_HOST_ROLE"] = role
+        env["EXPERIMENT_PIPELINE_STAGES"] = role_stages
         env.update(_transport_env(role_map, role, transport))
         env.update({str(k): str(v) for k, v in (host.get("env", {}) or {}).items()})
         env_prefix = " ".join(f"{key}={shlex.quote(value)}" for key, value in env.items())
@@ -252,6 +274,29 @@ def _remote_capture(host: dict[str, Any], command: str, *, check: bool = True) -
     return completed.stdout
 
 
+def write_same_host_network_metrics(network_csv: Path) -> None:
+    rows = []
+    for source_role, target_role in (("edge", "gpu_worker"), ("gpu_worker", "aggregator")):
+        rows.append(
+            {
+                "timestamp_ms": int(time.time() * 1000),
+                "source_role": source_role,
+                "target_role": target_role,
+                "latency_ms": 0.0,
+                "jitter_ms": 0.0,
+                "packet_loss_percent": 0.0,
+                "bandwidth_mbps": 0.0,
+                "clock_offset_ms": 0.0,
+                "status": "same_host_loopback",
+            }
+        )
+    network_csv.parent.mkdir(parents=True, exist_ok=True)
+    with network_csv.open("w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=NETWORK_COLUMNS)
+        writer.writeheader()
+        writer.writerows(rows)
+
+
 def run_network_preflight(
     *,
     hosts_config: dict[str, Any],
@@ -263,6 +308,10 @@ def run_network_preflight(
     pairs = [("edge", "gpu_worker"), ("gpu_worker", "aggregator")]
     rows: list[dict[str, Any]] = []
     max_offset = 0.0
+    if _same_host_topology(role_map):
+        write_same_host_network_metrics(network_csv)
+        return DistributedResult(0, max_clock_offset_ms=0.0)
+
     for role, host in role_map.items():
         try:
             offset = parse_chrony_tracking(_remote_capture(host, "chronyc tracking"))
@@ -361,6 +410,10 @@ def _first_csv(role_dir: Path, name: str) -> Path | None:
     return next(role_dir.rglob(name), None)
 
 
+def _csvs(role_dir: Path, pattern: str) -> list[Path]:
+    return sorted(role_dir.rglob(pattern))
+
+
 def _combine_csv(paths: list[Path], output_csv: Path, fieldnames: list[str]) -> None:
     output_csv.parent.mkdir(parents=True, exist_ok=True)
     with output_csv.open("w", newline="", encoding="utf-8") as out_f:
@@ -396,6 +449,8 @@ def run_distributed(
     startup_grace_s: int,
     mode: str,
 ) -> DistributedResult:
+    role_map = _role_hosts(hosts_config)
+    same_host = _same_host_topology(role_map)
     preflight = run_network_preflight(
         hosts_config=hosts_config,
         network_csv=network_csv,
@@ -435,17 +490,20 @@ def run_distributed(
 
     role_dirs: dict[str, Path] = {}
     for step in steps:
-        role_dir = local_run_dir / "roles" / step["role"]
-        _collect_role_outputs(step, role_dir)
+        if same_host:
+            role_dir = Path(step["remote_output_dir"])
+        else:
+            role_dir = local_run_dir / "roles" / step["role"]
+            _collect_role_outputs(step, role_dir)
         role_dirs[step["role"]] = role_dir
 
     aggregator_frames = _first_csv(role_dirs["aggregator"], "frames.csv")
     if aggregator_frames is None:
         raise RuntimeError("aggregator did not produce E2E frames.csv")
     shutil.copyfile(aggregator_frames, frames_csv)
-    event_paths = [path for role_dir in role_dirs.values() if (path := _first_csv(role_dir, "frame_events.csv"))]
+    event_paths = [path for role_dir in role_dirs.values() for path in _csvs(role_dir, "frame_events*.csv")]
     if mode == "benchmark":
-        missing_events = [role for role, role_dir in role_dirs.items() if _first_csv(role_dir, "frame_events.csv") is None]
+        missing_events = [role for role, role_dir in role_dirs.items() if not _csvs(role_dir, "frame_events*.csv")]
         missing_metrics = [role for role, role_dir in role_dirs.items() if _first_csv(role_dir, "system_metrics.csv") is None]
         if missing_events:
             raise RuntimeError(f"distributed roles did not produce frame_events.csv: {', '.join(missing_events)}")

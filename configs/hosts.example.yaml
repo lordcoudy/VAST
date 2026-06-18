@@ -1,7 +1,9 @@
 hosts:
-  # For publishable distributed runs, set DISTRIBUTED_NATIVE_CMD in each role's
-  # env to the native RTP-aware command for the selected system. The common
-  # bridge is intentionally available only in --mode smoke.
+  # DeepStream, Savant, OpenVINO+GVA, and GStreamer custom have built-in strict
+  # native canonical_distributed role commands. Set
+  # DISTRIBUTED_NATIVE_CMD_<SYSTEM>_<ROLE> or DISTRIBUTED_NATIVE_CMD only when
+  # replacing those defaults with site-specific native RTP-aware commands.
+  # The common RTP bridge is intentionally available only in --mode smoke.
   - name: edge-node
     address: edge01.example.net
     user: vast

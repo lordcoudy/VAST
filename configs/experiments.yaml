@@ -13,6 +13,7 @@ benchmark:
   publishable_telemetry_sources: [native]
   scheduler_policies: [cpu_only, gpu_only, static_hybrid, heft, ql_heft_frozen, ql_heft_online]
   ql_heft_policy_artifact: policies/ql_heft_frozen.policy
+  default_seed: 20260323
 
 transport:
   kind: gstreamer_rtp_udp
@@ -23,6 +24,7 @@ transport:
   role_ports:
     edge_to_gpu_worker: 5600
     gpu_worker_to_aggregator: 5700
+  stream_port_stride: 1
 
 hardware_target:
   gpu_model: NVIDIA GeForce RTX 3060
@@ -38,6 +40,57 @@ protocol:
   custom_cpp_cuda_qt_metric_interval_s: 0.2
 
 scenarios:
+  canonical_heterogeneous:
+    description: Canonical single-server heterogeneous CPU/GPU benchmark profile.
+    workload:
+      seed_group: canonical_v1
+      streams: 6
+      object_density:
+        min: 5
+        max: 35
+    pipeline: [decode, detect, aggregate]
+    placement:
+      policy: canonical_local_cpu_gpu
+      stages:
+        decode: local
+        detect: local
+        aggregate: local
+    network:
+      profile: local
+      latency_ms: 0
+      bandwidth_mbps: 0
+      packet_loss_percent: 0
+    distributed:
+      enabled: false
+
+  canonical_distributed:
+    description: Canonical role-split benchmark profile matching canonical_heterogeneous workload and pipeline.
+    workload:
+      seed_group: canonical_v1
+      streams: 6
+      object_density:
+        min: 5
+        max: 35
+    pipeline: [decode, detect, aggregate]
+    placement:
+      policy: canonical_edge_worker_aggregator
+      stages:
+        decode: edge
+        detect: gpu_worker
+        aggregate: aggregator
+    network:
+      profile: lan
+      latency_ms: 5
+      jitter_ms: 2
+      bandwidth_mbps: 1000
+      packet_loss_percent: 0
+    distributed:
+      enabled: true
+      hosts_config: configs/hosts.yaml
+      launch_strategy: staged_rtp_roles
+      sync_project: true
+      collect_artifacts: [frames.csv, frame_events.csv, system_metrics.csv, network_metrics.csv, stdout.log, stderr.log]
+
   baseline:
     description: Single-host decode and detection baseline.
     workload:

@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import json
 import os
 import re
@@ -10,7 +11,7 @@ import shlex
 import subprocess
 import sys
 import time
-import uuid
+from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -26,6 +27,7 @@ from benchmark_contract import (
     sha256_file,
     summarize_frames,
     validate_frame_events,
+    validate_stage_trace_coverage,
     write_json,
 )
 from collect_metrics import MetricsCollector
@@ -40,6 +42,116 @@ from distributed_executor import (
 def load_config(path: Path) -> dict[str, Any]:
     with path.open("r", encoding="utf-8") as f:
         return yaml.safe_load(f)
+
+
+@dataclass(frozen=True)
+class ExecutionContext:
+    run_kind: str
+    deployment_mode: str
+    host_topology: str
+    distributed_enabled: bool
+    hosts_config: dict[str, Any]
+    hosts_config_path: Path
+    sync_project: bool
+
+
+def normalize_run_kind(run_kind: str, *, local_only: bool = False) -> str:
+    if local_only or run_kind == "local":
+        return "heterogeneous"
+    return run_kind
+
+
+def build_single_server_hosts_config(
+    *,
+    host: str,
+    user: str,
+    port: int,
+    project_path: Path,
+) -> dict[str, Any]:
+    entry: dict[str, Any] = {
+        "name": "single-server-localhost",
+        "address": host,
+        "project_path": str(project_path),
+        "roles": ["edge", "gpu_worker", "aggregator"],
+        "runtime": {"docker": True, "gpu": True},
+        "env": {},
+        "transport": {"advertise_address": host},
+    }
+    if user:
+        entry["user"] = user
+    if port > 0:
+        entry["port"] = port
+    return {"topology": "single_host_ssh", "hosts": [entry]}
+
+
+def resolve_execution_context(
+    *,
+    requested_run_kind: str,
+    scenario: dict[str, Any],
+    hosts_config: dict[str, Any],
+    hosts_config_path: Path,
+    single_server_host: str,
+    single_server_user: str,
+    single_server_port: int,
+    project_root: Path,
+) -> ExecutionContext:
+    scenario_key = scenario["name"]
+    scenario_distributed = bool(scenario.get("distributed", {}).get("enabled"))
+    actual = "distributed" if requested_run_kind == "auto" and scenario_distributed else requested_run_kind
+    if requested_run_kind == "auto" and not scenario_distributed:
+        actual = "heterogeneous"
+
+    if actual == "heterogeneous":
+        if scenario_distributed:
+            raise ContractError(
+                f"scenario '{scenario_key}' is configured for distributed execution; "
+                "use --run-kind single-server-distributed or --run-kind distributed"
+            )
+        return ExecutionContext(
+            run_kind=actual,
+            deployment_mode="heterogeneous",
+            host_topology="single_host",
+            distributed_enabled=False,
+            hosts_config=hosts_config,
+            hosts_config_path=hosts_config_path,
+            sync_project=False,
+        )
+
+    if actual == "single-server-distributed":
+        if not scenario_distributed:
+            raise ContractError(
+                f"scenario '{scenario_key}' is not configured for distributed execution; "
+                "use a distributed scenario such as canonical_distributed"
+            )
+        return ExecutionContext(
+            run_kind=actual,
+            deployment_mode="single-server-distributed",
+            host_topology="single_host_ssh",
+            distributed_enabled=True,
+            hosts_config=build_single_server_hosts_config(
+                host=single_server_host,
+                user=single_server_user,
+                port=single_server_port,
+                project_path=project_root,
+            ),
+            hosts_config_path=Path("<single-server-ssh>"),
+            sync_project=False,
+        )
+
+    if actual == "distributed":
+        if not scenario_distributed:
+            raise ContractError(f"scenario '{scenario_key}' is not configured for distributed execution")
+        return ExecutionContext(
+            run_kind=actual,
+            deployment_mode="distributed",
+            host_topology="multi_host_ssh",
+            distributed_enabled=True,
+            hosts_config=hosts_config,
+            hosts_config_path=hosts_config_path,
+            sync_project=bool(scenario.get("distributed", {}).get("sync_project", True)),
+        )
+
+    raise ContractError(f"unknown run kind '{requested_run_kind}'")
 
 
 def _object_profile(workload: dict[str, Any]) -> dict[str, int]:
@@ -99,11 +211,15 @@ def scenario_env_prefix(
     scenario: dict[str, Any],
     *,
     role: str = "local",
+    distributed: bool | None = None,
     extra: dict[str, str] | None = None,
 ) -> str:
+    distributed_enabled = (
+        bool(scenario.get("distributed", {}).get("enabled")) if distributed is None else bool(distributed)
+    )
     env = {
         "EXPERIMENT_SCENARIO_JSON": json.dumps(scenario, separators=(",", ":")),
-        "EXPERIMENT_DISTRIBUTED": "1" if scenario.get("distributed", {}).get("enabled") else "0",
+        "EXPERIMENT_DISTRIBUTED": "1" if distributed_enabled else "0",
         "EXPERIMENT_HOST_ROLE": role,
         "EXPERIMENT_PIPELINE_STAGES": ",".join(scenario.get("pipeline", [])),
     }
@@ -313,14 +429,29 @@ def detected_hardware_manifest() -> dict[str, Any]:
     }
 
 
-def build_run_seed(system_key: str, scenario_key: str, streams: int, repeat_index: int) -> int:
-    entropy = f"{time.time_ns()}:{os.getpid()}:{system_key}:{scenario_key}:{streams}:{repeat_index}:{uuid.uuid4()}"
-    return abs(hash(entropy)) % (2**31 - 1)
+def build_run_seed(
+    base_seed: int,
+    scenario_key: str,
+    variant_name: str,
+    streams: int,
+    repeat_index: int,
+) -> int:
+    payload = f"{base_seed}:{scenario_key}:{variant_name}:{streams}:{repeat_index}"
+    digest = hashlib.sha256(payload.encode("utf-8")).hexdigest()
+    return int(digest[:12], 16) % (2**31 - 1)
+
+
+def dataset_streams_json(dataset: dict[str, Any]) -> str:
+    streams = []
+    for stream in dataset.get("streams", []):
+        rel_path = str(stream.get("path", "")).strip()
+        abs_path = str(stream.get("absolute_path", "")).strip()
+        streams.append(rel_path or abs_path)
+    return json.dumps(streams, separators=(",", ":"))
 
 
 def run_one(
     config: dict[str, Any],
-    hosts_config: dict[str, Any],
     dataset: dict[str, Any],
     system_key: str,
     scenario: dict[str, Any],
@@ -330,20 +461,23 @@ def run_one(
     duration_s: int,
     repeat_index: int,
     run_root: Path,
-    hosts_config_path: Path,
+    execution_context: ExecutionContext,
     mode: str,
     policy: str,
-    run_kind: str,
+    base_seed: int,
     dry_run_plan: bool,
 ) -> dict[str, Any]:
     protocol = config["protocol"]
     deadline_s = float(config["hardware_target"]["deadline_s"])
     scenario_key = scenario["name"]
-    run_seed = build_run_seed(system_key, scenario_key, streams, repeat_index)
     system_config = config["systems"][system_key]
+    if execution_context.distributed_enabled and not bool(system_config.get("supports_distributed", False)):
+        raise ContractError(f"system '{system_key}' does not support distributed execution")
     detector = str(system_config.get("detector", system_key))
     backend = str(system_config.get("backend", system_key))
     variant_name = str(scenario.get("workload", {}).get("variant", "")).strip()
+    seed_key = str(scenario.get("workload", {}).get("seed_group", scenario_key))
+    run_seed = build_run_seed(base_seed, seed_key, variant_name, streams, repeat_index)
     run_id = "-".join(
         part
         for part in (
@@ -389,22 +523,25 @@ def run_one(
         "ADAPTER_DETECTOR": detector,
         "BENCHMARK_MODE": mode,
         "DATASET_NAME": dataset["name"],
+        "DATASET_STREAMS_JSON": dataset_streams_json(dataset),
+        "EXPERIMENT_REPEAT_INDEX": str(repeat_index),
         "EXPERIMENT_RUN_ID": run_id,
+        "EXPERIMENT_RUN_SEED": str(run_seed),
         "QL_HEFT_POLICY_ARTIFACT": ql_heft_artifact,
         "SCHEDULER_POLICY": policy,
         "VIDEO_LAYOUT_DIR": video_layout_dir,
     }
-    cmd = f"{scenario_env_prefix(scenario, extra=command_env)} {base_cmd}"
+    cmd = (
+        f"{scenario_env_prefix(scenario, distributed=execution_context.distributed_enabled, extra=command_env)} "
+        f"{base_cmd}"
+    )
 
-    scenario_distributed = bool(scenario.get("distributed", {}).get("enabled"))
-    distributed_enabled = scenario_distributed if run_kind == "auto" else run_kind == "distributed"
-    if distributed_enabled and not scenario_distributed:
-        raise ContractError(f"scenario '{scenario_key}' is not configured for distributed execution")
+    distributed_enabled = execution_context.distributed_enabled
     run_relpath = str(scenario_dir)
     distributed_steps: list[dict[str, Any]] = []
     if distributed_enabled:
         distributed_steps = build_distributed_plan(
-            hosts_config=hosts_config,
+            hosts_config=execution_context.hosts_config,
             scenario=scenario,
             system_key=system_key,
             command_template=command_template,
@@ -420,6 +557,7 @@ def run_one(
             run_id=run_id,
             detector=detector,
             backend=backend,
+            extra_env=command_env,
         )
 
     if dry_run_plan:
@@ -427,7 +565,7 @@ def run_one(
             print_distributed_plan(distributed_steps)
         else:
             print(
-                f"[plan] local scenario={scenario_key} streams={streams} "
+                f"[plan] {execution_context.deployment_mode} scenario={scenario_key} streams={streams} "
                 f"system={system_key} command={cmd}"
             )
         return {
@@ -443,6 +581,8 @@ def run_one(
             "scenario_variant": scenario.get("workload", {}).get("variant", ""),
             "placement_policy": scenario.get("placement", {}).get("policy", ""),
             "distributed": distributed_enabled,
+            "deployment_mode": execution_context.deployment_mode,
+            "host_topology": execution_context.host_topology,
             "host_role": "plan",
             "detector": detector,
             "backend": backend,
@@ -476,7 +616,6 @@ def run_one(
     collector.start()
     try:
         if distributed_enabled:
-            sync_project = bool(scenario.get("distributed", {}).get("sync_project", True))
             distributed_result = run_distributed(
                 steps=distributed_steps,
                 project_root=Path.cwd(),
@@ -484,10 +623,10 @@ def run_one(
                 frames_csv=frames_path,
                 frame_events_csv=frame_events_path,
                 network_csv=network_path,
-                hosts_config=hosts_config,
+                hosts_config=execution_context.hosts_config,
                 network_profile=scenario.get("network", {}),
                 max_clock_offset_ms=float(config.get("transport", {}).get("max_clock_offset_ms", 5)),
-                sync_project=sync_project,
+                sync_project=execution_context.sync_project,
                 duration_s=duration_s,
                 startup_grace_s=int(config.get("transport", {}).get("startup_grace_s", 5)),
                 mode=mode,
@@ -522,8 +661,10 @@ def run_one(
             "duration_s": duration_s,
             "scenario_variant": variant_name,
             "placement_policy": scenario.get("placement", {}).get("policy", ""),
-            "distributed": True,
-            "host_role": "distributed",
+            "distributed": distributed_enabled,
+            "deployment_mode": execution_context.deployment_mode,
+            "host_topology": execution_context.host_topology,
+            "host_role": "distributed" if distributed_enabled else "local",
             "detector": detector,
             "backend": backend,
             "policy": policy,
@@ -555,6 +696,8 @@ def run_one(
                     ),
                 },
                 "distributed_plan": distributed_steps,
+                "deployment_mode": execution_context.deployment_mode,
+                "host_topology": execution_context.host_topology,
             },
         )
         return result
@@ -619,6 +762,11 @@ def run_one(
     )
     if mode == "benchmark":
         validate_frame_events(frame_events_path)
+        validate_stage_trace_coverage(
+            frames_path,
+            frame_events_path,
+            required_stages=[str(stage) for stage in scenario.get("pipeline", [])],
+        )
     summary = summarize_frames(frames_path, deadline_s=deadline_s, measurement_s=duration_s)
     result = {
         "timestamp": datetime.now(timezone.utc).isoformat(),
@@ -633,6 +781,8 @@ def run_one(
         "scenario_variant": variant_name,
         "placement_policy": scenario.get("placement", {}).get("policy", ""),
         "distributed": distributed_enabled,
+        "deployment_mode": execution_context.deployment_mode,
+        "host_topology": execution_context.host_topology,
         "host_role": "distributed" if distributed_enabled else "local",
         "detector": detector,
         "backend": backend,
@@ -656,6 +806,8 @@ def run_one(
         ],
         "run_seed": run_seed,
         "mode": mode,
+        "deployment_mode": execution_context.deployment_mode,
+        "host_topology": execution_context.host_topology,
         "policy": policy,
         "dataset": dataset,
         "git": git_manifest(Path.cwd()),
@@ -671,7 +823,7 @@ def run_one(
         "metric_interval_s": metric_interval_s,
         "result": result,
         "resolved_scenario": scenario,
-        "hosts_config": str(hosts_config_path),
+        "hosts_config": str(execution_context.hosts_config_path),
         "hardware_target": config.get("hardware_target", {}),
         "protocol": config.get("protocol", {}),
     }
@@ -726,8 +878,16 @@ def main() -> None:
     parser.add_argument("--mode", choices=["smoke", "benchmark"], default="benchmark")
     parser.add_argument("--dataset", default="")
     parser.add_argument("--policy", default="static_hybrid")
-    parser.add_argument("--run-kind", choices=["auto", "local", "distributed"], default="auto")
+    parser.add_argument(
+        "--run-kind",
+        choices=["auto", "local", "heterogeneous", "single-server-distributed", "distributed"],
+        default="auto",
+    )
     parser.add_argument("--local-only", action="store_true", help="Deprecated alias for --run-kind local")
+    parser.add_argument("--single-server-host", default="127.0.0.1")
+    parser.add_argument("--single-server-port", type=int, default=22)
+    parser.add_argument("--single-server-user", default="")
+    parser.add_argument("--seed", type=int, default=None, help="Base seed shared across systems for a scenario/repeat")
     parser.add_argument("--dry-run-plan", action="store_true")
     parser.add_argument(
         "--strict-real-mode",
@@ -745,7 +905,13 @@ def main() -> None:
     policies = list(cfg.get("benchmark", {}).get("scheduler_policies") or [])
     if args.policy not in policies:
         raise ContractError(f"unknown scheduler policy '{args.policy}'; expected one of: {', '.join(policies)}")
-    run_kind = "local" if args.local_only else args.run_kind
+    run_kind = normalize_run_kind(args.run_kind, local_only=args.local_only)
+    if args.dry_run_plan and run_kind == "distributed" and not hosts_cfg.get("hosts"):
+        hosts_example = args.hosts_config.with_name("hosts.example.yaml")
+        if hosts_example.exists():
+            print(f"[warning] {args.hosts_config} is empty or missing; using {hosts_example} for dry-run planning")
+            hosts_cfg = load_hosts_config(hosts_example)
+    base_seed = int(args.seed if args.seed is not None else cfg.get("benchmark", {}).get("default_seed", 20260323))
     default_datasets = cfg.get("benchmark", {}).get("default_dataset", {})
     dataset_name = args.dataset or str(default_datasets.get(args.mode, ""))
     dataset = load_dataset(
@@ -754,6 +920,7 @@ def main() -> None:
         mode=args.mode,
         project_root=Path.cwd(),
         require_files=args.mode == "benchmark" and not args.dry_run_plan,
+        allow_placeholder_checksums=args.dry_run_plan,
     )
 
     if args.warmup >= 0:
@@ -785,10 +952,19 @@ def main() -> None:
                 sys.exit(2)
 
             for variant in scenario_variants:
+                execution_context = resolve_execution_context(
+                    requested_run_kind=run_kind,
+                    scenario=variant["scenario"],
+                    hosts_config=hosts_cfg,
+                    hosts_config_path=args.hosts_config,
+                    single_server_host=args.single_server_host,
+                    single_server_user=args.single_server_user,
+                    single_server_port=args.single_server_port,
+                    project_root=Path.cwd(),
+                )
                 for rep in range(1, repeats + 1):
                     row = run_one(
                         config=cfg,
-                        hosts_config=hosts_cfg,
                         dataset=dataset,
                         system_key=system,
                         scenario=variant["scenario"],
@@ -798,10 +974,10 @@ def main() -> None:
                         duration_s=_scenario_duration_s(variant["scenario"], measurement_s),
                         repeat_index=rep,
                         run_root=run_root,
-                        hosts_config_path=args.hosts_config,
+                        execution_context=execution_context,
                         mode=args.mode,
                         policy=args.policy,
-                        run_kind=run_kind,
+                        base_seed=base_seed,
                         dry_run_plan=args.dry_run_plan,
                     )
                     all_rows.append(row)
@@ -836,6 +1012,8 @@ def main() -> None:
             "scenario_variant",
             "placement_policy",
             "distributed",
+            "deployment_mode",
+            "host_topology",
             "host_role",
             "detector",
             "backend",

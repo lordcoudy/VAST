@@ -141,7 +141,7 @@ class BlockingQueue {
 };
 
 struct StageSpec {
-  const char* name;
+  std::string name;
   Resource preferred;
   float cpu_gain;
   float gpu_gain;
@@ -336,13 +336,67 @@ class AdaptivePipeline {
   int heavy_object_threshold_ = 32;
 
   void init_stages() {
-    stages_ = {
-        {"decode", Resource::Gpu, 0.95f, 1.05f, 0.08f},
-        {"detect", Resource::Gpu, 1.05f, 1.35f, 0.22f},
-        {"track", Resource::Cpu, 1.25f, 0.85f, 0.16f},
-        {"classify", Resource::Cpu, 1.05f, 0.70f, 0.11f},
-        {"visualize", Resource::Cpu, 0.90f, 0.65f, 0.06f},
-    };
+    const std::vector<std::string> requested = requested_pipeline_stages();
+    if (requested.empty()) {
+      stages_ = {
+          stage_spec_for_name("decode"),
+          stage_spec_for_name("detect"),
+          stage_spec_for_name("track"),
+          stage_spec_for_name("classify"),
+          stage_spec_for_name("visualize"),
+      };
+      return;
+    }
+
+    stages_.clear();
+    stages_.reserve(requested.size());
+    for (const auto& stage : requested) {
+      stages_.push_back(stage_spec_for_name(stage));
+    }
+    if (stages_.empty()) {
+      stages_.push_back(stage_spec_for_name("aggregate"));
+    }
+  }
+
+  static std::string trim_copy(const std::string& value) {
+    const auto first = value.find_first_not_of(" \t\r\n");
+    if (first == std::string::npos) {
+      return "";
+    }
+    const auto last = value.find_last_not_of(" \t\r\n");
+    return value.substr(first, last - first + 1);
+  }
+
+  static std::vector<std::string> split_csv(const std::string& value) {
+    std::vector<std::string> parts;
+    std::string current;
+    std::istringstream input(value);
+    while (std::getline(input, current, ',')) {
+      current = trim_copy(current);
+      if (!current.empty()) {
+        parts.push_back(current);
+      }
+    }
+    return parts;
+  }
+
+  static std::vector<std::string> requested_pipeline_stages() {
+    const char* raw = std::getenv("EXPERIMENT_PIPELINE_STAGES");
+    if (raw == nullptr) {
+      return {};
+    }
+    return split_csv(raw);
+  }
+
+  static StageSpec stage_spec_for_name(const std::string& name) {
+    if (name == "decode") return {"decode", Resource::Gpu, 0.95f, 1.05f, 0.08f};
+    if (name == "detect") return {"detect", Resource::Gpu, 1.05f, 1.35f, 0.22f};
+    if (name == "track") return {"track", Resource::Cpu, 1.25f, 0.85f, 0.16f};
+    if (name == "classify") return {"classify", Resource::Cpu, 1.05f, 0.70f, 0.11f};
+    if (name == "aggregate") return {"aggregate", Resource::Cpu, 0.88f, 0.62f, 0.05f};
+    if (name == "record") return {"record", Resource::Cpu, 0.82f, 0.55f, 0.04f};
+    if (name == "visualize") return {"visualize", Resource::Cpu, 0.90f, 0.65f, 0.06f};
+    return {name, Resource::Cpu, 1.00f, 0.70f, 0.05f};
   }
 
   void load_policy_artifact() {

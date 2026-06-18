@@ -14,13 +14,16 @@ sys.path.insert(0, str(ROOT / "scripts"))
 
 from benchmark_contract import (
     ContractError,
+    FRAME_EVENT_COLUMNS,
     canonicalize_frames_csv,
     load_dataset,
     network_profile_matches,
     summarize_frames,
     validate_frame_events,
+    validate_stage_trace_coverage,
 )
-from distributed_executor import parse_chrony_tracking, parse_iperf_output, parse_ping_output
+from distributed_executor import _combine_csv, parse_chrony_tracking, parse_iperf_output, parse_ping_output
+from rtp_trace import RtpTrace, pack_trace, unpack_trace
 
 
 class BenchmarkContractTests(unittest.TestCase):
@@ -43,12 +46,202 @@ class BenchmarkContractTests(unittest.TestCase):
             with self.assertRaises(ContractError):
                 canonicalize_frames_csv(path, mode="benchmark", run_id="r", detector="d", backend="b")
 
+    def test_benchmark_rejects_schema_v2_synthetic_csv(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "frames.csv"
+            pd.DataFrame(
+                [
+                    {
+                        "schema_version": 2,
+                        "run_id": "r",
+                        "trace_id": "r:0:1",
+                        "stream_id": 0,
+                        "frame_id": 1,
+                        "ingress_timestamp_ms": 100,
+                        "egress_timestamp_ms": 120,
+                        "e2e_latency_ms": 20,
+                        "objects": 1,
+                        "detector": "d",
+                        "backend": "b",
+                        "telemetry_source": "synthetic",
+                    }
+                ]
+            ).to_csv(path, index=False)
+            with self.assertRaises(ContractError):
+                canonicalize_frames_csv(path, mode="benchmark", run_id="r", detector="d", backend="b")
+
     def test_benchmark_requires_frame_event_contract(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "frame_events.csv"
             pd.DataFrame([{"schema_version": 2, "run_id": "r"}]).to_csv(path, index=False)
             with self.assertRaises(ContractError):
                 validate_frame_events(path)
+
+    def test_benchmark_rejects_missing_native_artifacts(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            with self.assertRaises(ContractError):
+                canonicalize_frames_csv(root / "frames.csv", mode="benchmark", run_id="r", detector="d", backend="b")
+            with self.assertRaises(ContractError):
+                validate_frame_events(root / "frame_events.csv")
+
+    def test_rtp_trace_roundtrip(self) -> None:
+        trace = RtpTrace(stream_id=3, frame_id=42, ingress_timestamp_ms=123456789)
+        self.assertEqual(unpack_trace(pack_trace(trace)), trace)
+
+    def test_native_frames_and_events_are_accepted(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            frames = root / "frames.csv"
+            events = root / "frame_events.csv"
+            pd.DataFrame(
+                [
+                    {
+                        "schema_version": 2,
+                        "run_id": "r",
+                        "trace_id": "r:0:1",
+                        "stream_id": 0,
+                        "frame_id": 1,
+                        "ingress_timestamp_ms": 100,
+                        "egress_timestamp_ms": 120,
+                        "e2e_latency_ms": 20,
+                        "objects": 1,
+                        "detector": "d",
+                        "backend": "b",
+                        "telemetry_source": "native",
+                    }
+                ]
+            ).to_csv(frames, index=False)
+            pd.DataFrame(
+                [
+                    {
+                        "schema_version": 2,
+                        "run_id": "r",
+                        "trace_id": "r:0:1",
+                        "stream_id": 0,
+                        "frame_id": 1,
+                        "stage": "aggregate",
+                        "role": "aggregator",
+                        "host": "localhost",
+                        "resource": "cpu",
+                        "queue_enter_timestamp_ms": 119,
+                        "stage_start_timestamp_ms": 119,
+                        "stage_end_timestamp_ms": 120,
+                        "queue_depth": 0,
+                        "estimated_cost_ms": 1,
+                        "policy_action": "native:cpu",
+                    }
+                ]
+            ).to_csv(events, index=False)
+
+            canonicalize_frames_csv(frames, mode="benchmark", run_id="r", detector="d", backend="b")
+            validate_frame_events(events)
+
+    def test_stage_trace_coverage_accepts_merged_role_events(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            frames = root / "frames.csv"
+            pd.DataFrame(
+                [
+                    {
+                        "schema_version": 2,
+                        "run_id": "r",
+                        "trace_id": "r:0:1",
+                        "stream_id": 0,
+                        "frame_id": 1,
+                        "ingress_timestamp_ms": 100,
+                        "egress_timestamp_ms": 130,
+                        "e2e_latency_ms": 30,
+                        "objects": 1,
+                        "detector": "d",
+                        "backend": "b",
+                        "telemetry_source": "native",
+                    }
+                ]
+            ).to_csv(frames, index=False)
+
+            role_rows = {
+                "edge": ("decode", 100, 110),
+                "gpu_worker": ("detect", 111, 125),
+                "aggregator": ("aggregate", 126, 130),
+            }
+            paths = []
+            for role, (stage, start, end) in role_rows.items():
+                path = root / "roles" / role / "frame_events.csv"
+                path.parent.mkdir(parents=True)
+                pd.DataFrame(
+                    [
+                        {
+                            "schema_version": 2,
+                            "run_id": "r",
+                            "trace_id": "r:0:1",
+                            "stream_id": 0,
+                            "frame_id": 1,
+                            "stage": stage,
+                            "role": role,
+                            "host": "localhost",
+                            "resource": "gpu" if role == "gpu_worker" else "cpu",
+                            "queue_enter_timestamp_ms": start,
+                            "stage_start_timestamp_ms": start,
+                            "stage_end_timestamp_ms": end,
+                            "queue_depth": 0,
+                            "estimated_cost_ms": end - start,
+                            "policy_action": f"native:{stage}",
+                        }
+                    ]
+                ).to_csv(path, index=False)
+                paths.append(path)
+
+            merged_events = root / "frame_events.csv"
+            _combine_csv(paths, merged_events, FRAME_EVENT_COLUMNS)
+            validate_stage_trace_coverage(frames, merged_events, required_stages=["decode", "detect", "aggregate"])
+
+    def test_stage_trace_coverage_rejects_missing_stage(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            frames = root / "frames.csv"
+            events = root / "frame_events.csv"
+            pd.DataFrame(
+                [
+                    {
+                        "schema_version": 2,
+                        "run_id": "r",
+                        "trace_id": "r:0:1",
+                        "stream_id": 0,
+                        "frame_id": 1,
+                        "ingress_timestamp_ms": 100,
+                        "egress_timestamp_ms": 130,
+                        "e2e_latency_ms": 30,
+                        "objects": 1,
+                        "detector": "d",
+                        "backend": "b",
+                        "telemetry_source": "native",
+                    }
+                ]
+            ).to_csv(frames, index=False)
+            pd.DataFrame(
+                [
+                    {
+                        "schema_version": 2,
+                        "run_id": "r",
+                        "trace_id": "r:0:1",
+                        "stream_id": 0,
+                        "frame_id": 1,
+                        "stage": "decode",
+                        "role": "edge",
+                        "host": "localhost",
+                        "resource": "cpu",
+                        "queue_enter_timestamp_ms": 100,
+                        "stage_start_timestamp_ms": 100,
+                        "stage_end_timestamp_ms": 110,
+                        "queue_depth": 0,
+                        "estimated_cost_ms": 10,
+                        "policy_action": "native:decode",
+                    }
+                ]
+            ).to_csv(events, index=False)
+            with self.assertRaises(ContractError):
+                validate_stage_trace_coverage(frames, events, required_stages=["decode", "detect", "aggregate"])
 
     def test_throughput_uses_completed_frames_per_window(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

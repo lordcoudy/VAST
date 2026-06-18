@@ -230,9 +230,11 @@ Useful template environment variables:
 - `GST_CUSTOM_PLUGIN`, `GST_CUSTOM_SOURCE`
 - `CUSTOM_APP_BIN`
 - `EXPERIMENT_SCENARIO_JSON`, `EXPERIMENT_DISTRIBUTED`, `EXPERIMENT_HOST_ROLE`, `EXPERIMENT_PIPELINE_STAGES`
-- `BENCHMARK_MODE`, `DATASET_NAME`, `EXPERIMENT_RUN_ID`
+- `BENCHMARK_MODE`, `DATASET_NAME`, `DATASET_STREAMS_JSON`, `EXPERIMENT_RUN_ID`, `EXPERIMENT_RUN_SEED`
 - `SCHEDULER_POLICY`, `QL_HEFT_POLICY_ARTIFACT`
-- `DISTRIBUTED_NATIVE_CMD` for the native role-specific RTP command on each SSH host
+- `NATIVE_PROBE_BIN`, `DEEPSTREAM_NATIVE_PROBE_IMAGE`, `SAVANT_NATIVE_PROBE_IMAGE`
+- `SAVANT_CANONICAL_MODULE`, `DEEPSTREAM_PGIE_CONFIG`, `GST_CUSTOM_STRICT`
+- `DISTRIBUTED_NATIVE_CMD_<SYSTEM>_<ROLE>` or `DISTRIBUTED_NATIVE_CMD` as override paths for native role-specific RTP commands
 
 ## Scenario Schema and Distributed Runs
 
@@ -257,6 +259,11 @@ hosts:
 
 Do not store SSH keys, passwords, or private credentials in the repository.
 
+Execution modes:
+- `--run-kind heterogeneous`: regular one-server CPU/GPU execution; `--run-kind local` remains a deprecated alias.
+- `--run-kind single-server-distributed`: launches `edge`, `gpu_worker`, and `aggregator` through SSH on one server and disables project rsync.
+- `--run-kind distributed`: launches roles on the hosts from `configs/hosts.yaml`.
+
 Prepare and validate the public benchmark dataset:
 
 ```bash
@@ -266,24 +273,39 @@ python scripts/check_dataset.py --dataset mot17_uadetrac_public
 Preview the resolved launch plan without creating a run:
 
 ```bash
-python scripts/run_experiments.py --mode smoke --dry-run-plan --systems custom_cpp_cuda_qt --scenarios edge_to_worker_distributed --hosts-config configs/hosts.yaml --repeats 1 --measurement 5
+python scripts/run_experiments.py --mode smoke --run-kind heterogeneous --dry-run-plan --systems custom_cpp_cuda_qt --scenarios canonical_heterogeneous --repeats 1 --measurement 5
+python scripts/run_experiments.py --mode smoke --run-kind single-server-distributed --dry-run-plan --systems custom_cpp_cuda_qt --scenarios canonical_distributed --single-server-host 127.0.0.1 --repeats 1 --measurement 5
+python scripts/run_experiments.py --mode smoke --run-kind distributed --dry-run-plan --systems custom_cpp_cuda_qt --scenarios canonical_distributed --hosts-config configs/hosts.yaml --repeats 1 --measurement 5
+```
+
+Build strict native probe images for DeepStream and Savant:
+
+```bash
+scripts/build_native_probe_images.sh
 ```
 
 Run on real hosts after `configs/hosts.yaml` is configured:
 
 ```bash
-python scripts/run_experiments.py --mode benchmark --dataset mot17_uadetrac_public --systems custom_cpp_cuda_qt --scenarios edge_worker_aggregator_distributed --hosts-config configs/hosts.yaml --repeats 5
+python scripts/run_experiments.py --mode benchmark --dataset mot17_uadetrac_public --run-kind distributed --systems deepstream savant openvino_gva gstreamer_custom --scenarios canonical_distributed --hosts-config configs/hosts.yaml --repeats 5
 ```
 
-Distributed roles start as `aggregator`, `gpu_worker`, then `edge`. Preflight
-requires `chronyc`, `ping`, and `iperf3`. Network shaping is not applied. The
-degraded network scenario is skipped unless measured values match its configured
-acceptance ranges.
+Distributed roles start as `aggregator`, `gpu_worker`, then `edge`. Multi-host
+preflight requires `chronyc`, `ping`, and `iperf3`. Single-server SSH topology
+writes `same_host_loopback` network metrics and skips chrony/iperf checks.
+Network shaping is not applied. The degraded network scenario is skipped unless
+measured values match its configured acceptance ranges.
+
+Canonical RTP transport uses one UDP port per stream:
+`edge_to_gpu_worker + stream_id * stream_port_stride` and
+`gpu_worker_to_aggregator + stream_id * stream_port_stride`. The strict trace
+header extension is id `1`, URI `urn:vast:rtp-trace:v1`, and contains
+`stream_id`, `frame_id`, and original ingress timestamp.
 
 Use `--run-kind local` to execute a scenario through the local path for smoke testing:
 
 ```bash
-python scripts/run_experiments.py --mode smoke --run-kind local --systems custom_cpp_cuda_qt --scenarios baseline --repeats 1 --warmup 0 --measurement 5
+python scripts/run_experiments.py --mode smoke --run-kind local --systems custom_cpp_cuda_qt --scenarios canonical_heterogeneous --repeats 1 --warmup 0 --measurement 5
 ```
 
 

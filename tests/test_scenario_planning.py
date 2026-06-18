@@ -2,14 +2,25 @@
 from __future__ import annotations
 
 import sys
+import tempfile
 import unittest
+import os
+import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
-from distributed_executor import build_distributed_plan
-from run_experiments import expand_scenario, load_config, normalize_scenario
+from distributed_executor import build_distributed_plan, run_network_preflight
+from run_experiments import (
+    build_run_seed,
+    expand_scenario,
+    load_config,
+    normalize_run_kind,
+    normalize_scenario,
+    resolve_execution_context,
+    scenario_env_prefix,
+)
 
 
 class ScenarioPlanningTests(unittest.TestCase):
@@ -35,6 +46,180 @@ class ScenarioPlanningTests(unittest.TestCase):
         policies = [v["scenario"]["placement"]["policy"] for v in variants]
 
         self.assertEqual(policies, ["cpu_only", "gpu_only", "cpu_gpu_split"])
+
+    def test_canonical_profiles_share_workload_and_pipeline(self) -> None:
+        cfg = load_config(ROOT / "configs" / "experiments.yaml")
+        local = normalize_scenario("canonical_heterogeneous", cfg["scenarios"]["canonical_heterogeneous"])
+        distributed = normalize_scenario("canonical_distributed", cfg["scenarios"]["canonical_distributed"])
+
+        self.assertEqual(local["workload"], distributed["workload"])
+        self.assertEqual(local["workload"]["seed_group"], "canonical_v1")
+        self.assertEqual(local["pipeline"], ["decode", "detect", "aggregate"])
+        self.assertEqual(local["pipeline"], distributed["pipeline"])
+        self.assertFalse(local["distributed"]["enabled"])
+        self.assertTrue(distributed["distributed"]["enabled"])
+
+    def test_heterogeneous_context_forces_distributed_env_off(self) -> None:
+        cfg = load_config(ROOT / "configs" / "experiments.yaml")
+        scenario = normalize_scenario("canonical_heterogeneous", cfg["scenarios"]["canonical_heterogeneous"])
+        context = resolve_execution_context(
+            requested_run_kind=normalize_run_kind("local"),
+            scenario=scenario,
+            hosts_config={"hosts": []},
+            hosts_config_path=ROOT / "configs" / "hosts.yaml",
+            single_server_host="127.0.0.1",
+            single_server_user="",
+            single_server_port=22,
+            project_root=ROOT,
+        )
+
+        env_prefix = scenario_env_prefix(scenario, distributed=context.distributed_enabled)
+        self.assertEqual(context.deployment_mode, "heterogeneous")
+        self.assertIn("EXPERIMENT_DISTRIBUTED=0", env_prefix)
+
+    def test_single_server_distributed_uses_localhost_without_sync(self) -> None:
+        cfg = load_config(ROOT / "configs" / "experiments.yaml")
+        scenario = normalize_scenario("canonical_distributed", cfg["scenarios"]["canonical_distributed"])
+        context = resolve_execution_context(
+            requested_run_kind="single-server-distributed",
+            scenario=scenario,
+            hosts_config={"hosts": []},
+            hosts_config_path=ROOT / "configs" / "hosts.yaml",
+            single_server_host="127.0.0.1",
+            single_server_user="",
+            single_server_port=22,
+            project_root=ROOT,
+        )
+        steps = build_distributed_plan(
+            hosts_config=context.hosts_config,
+            scenario=scenario,
+            system_key="custom_cpp_cuda_qt",
+            command_template=cfg["systems"]["custom_cpp_cuda_qt"]["command"],
+            run_relpath="runs/test/canonical_distributed/streams_6/custom/rep_01",
+            duration_s=5,
+            streams=6,
+            min_objects=5,
+            max_objects=35,
+        )
+
+        self.assertFalse(context.sync_project)
+        self.assertEqual(context.host_topology, "single_host_ssh")
+        self.assertEqual([s["role"] for s in steps], ["aggregator", "gpu_worker", "edge"])
+        self.assertTrue(all(s["host_label"] == "127.0.0.1" for s in steps))
+
+    def test_builtin_strict_systems_build_role_steps(self) -> None:
+        cfg = load_config(ROOT / "configs" / "experiments.yaml")
+        scenario = normalize_scenario("canonical_distributed", cfg["scenarios"]["canonical_distributed"])
+        context = resolve_execution_context(
+            requested_run_kind="single-server-distributed",
+            scenario=scenario,
+            hosts_config={"hosts": []},
+            hosts_config_path=ROOT / "configs" / "hosts.yaml",
+            single_server_host="127.0.0.1",
+            single_server_user="",
+            single_server_port=22,
+            project_root=ROOT,
+        )
+        for system in ("deepstream", "savant", "openvino_gva", "gstreamer_custom"):
+            steps = build_distributed_plan(
+                hosts_config=context.hosts_config,
+                scenario=scenario,
+                system_key=system,
+                command_template=cfg["systems"][system]["command"],
+                run_relpath=f"runs/test/canonical_distributed/streams_6/{system}/rep_01",
+                duration_s=5,
+                streams=6,
+                min_objects=5,
+                max_objects=35,
+                transport=cfg["transport"],
+                mode="benchmark",
+            )
+            self.assertEqual([s["role"] for s in steps], ["aggregator", "gpu_worker", "edge"])
+            self.assertTrue(all(f"--system {system}" in s["remote_command"] for s in steps))
+            self.assertTrue(all("EXPERIMENT_DISTRIBUTED=1" in s["remote_command"] for s in steps))
+            self.assertTrue(all("EXPERIMENT_RTP_PORT_STRIDE=1" in s["remote_command"] for s in steps))
+            self.assertTrue(all("DISTRIBUTED_NATIVE_CMD" not in s["remote_command"] for s in steps))
+
+    def test_builtin_strict_template_dry_run_commands(self) -> None:
+        expectations = {
+            "deepstream": ["vast/deepstream-native-probe:7.0", "nvinfer", "/usr/local/bin/vast_native_gst_probe"],
+            "savant": ["vast/savant-native-probe:0.5.17-7.0", "savant.entrypoint", "canonical_distributed_module.yml"],
+            "openvino_gva": ["vast_native_gst_probe", "gvadetect", "--input-port-base 5600"],
+            "gstreamer_custom": ["GST_CUSTOM_STRICT=1", "adaptivescheduler", "--input-port-base 5600"],
+        }
+        for system, expected in expectations.items():
+            env = os.environ.copy()
+            env.update(
+                {
+                    "REAL_DRY_RUN": "1",
+                    "BENCHMARK_MODE": "benchmark",
+                    "EXPERIMENT_DISTRIBUTED": "1",
+                    "EXPERIMENT_HOST_ROLE": "gpu_worker",
+                    "EXPERIMENT_PIPELINE_STAGES": "detect",
+                    "EXPERIMENT_RTP_INPUT_PORT": "5600",
+                    "EXPERIMENT_RTP_OUTPUT_HOST": "127.0.0.1",
+                    "EXPERIMENT_RTP_OUTPUT_PORT": "5700",
+                }
+            )
+            completed = subprocess.run(
+                [
+                    "bash",
+                    str(ROOT / "scripts" / "run_system_template.sh"),
+                    "--system",
+                    system,
+                    "--scenario",
+                    "canonical_distributed",
+                    "--duration",
+                    "5",
+                    "--streams",
+                    "2",
+                    "--min-objects",
+                    "5",
+                    "--max-objects",
+                    "35",
+                    "--output",
+                    str(ROOT / "runs" / "dry" / system / "frames.csv"),
+                ],
+                cwd=ROOT,
+                env=env,
+                text=True,
+                capture_output=True,
+                check=False,
+            )
+            output = completed.stdout + completed.stderr
+            self.assertEqual(completed.returncode, 1)
+            for fragment in expected:
+                self.assertIn(fragment, output)
+
+    def test_single_server_preflight_records_loopback_metrics(self) -> None:
+        hosts_config = {
+            "hosts": [
+                {
+                    "address": "127.0.0.1",
+                    "project_path": str(ROOT),
+                    "roles": ["edge", "gpu_worker", "aggregator"],
+                }
+            ]
+        }
+        with tempfile.TemporaryDirectory() as tmp:
+            network_csv = Path(tmp) / "network_metrics.csv"
+            result = run_network_preflight(
+                hosts_config=hosts_config,
+                network_csv=network_csv,
+                network_profile={},
+                max_clock_offset_ms=5,
+            )
+
+            self.assertFalse(result.skipped)
+            self.assertIn("same_host_loopback", network_csv.read_text(encoding="utf-8"))
+
+    def test_workload_seed_is_independent_of_system(self) -> None:
+        first = build_run_seed(20260323, "canonical_heterogeneous", "", 6, 1)
+        second = build_run_seed(20260323, "canonical_heterogeneous", "", 6, 1)
+        different_repeat = build_run_seed(20260323, "canonical_heterogeneous", "", 6, 2)
+
+        self.assertEqual(first, second)
+        self.assertNotEqual(first, different_repeat)
 
     def test_distributed_plan_maps_roles_to_hosts(self) -> None:
         cfg = load_config(ROOT / "configs" / "experiments.yaml")
