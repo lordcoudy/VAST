@@ -757,6 +757,16 @@ run_savant_local_native_probe() {
   module="$(project_path_for_runtime "${SAVANT_LOCAL_MODULE:-$SAVANT_LOCAL_MODULE_DEFAULT}")"
   NATIVE_PROBE_CONTAINERIZED="$prev_containerized"
 
+  savant_local_stream_source() {
+    local idx="$1"
+    local prev_containerized="${NATIVE_PROBE_CONTAINERIZED:-0}"
+    local source
+    source="$(pick_video_for_stream "$idx")"
+    NATIVE_PROBE_CONTAINERIZED=1
+    project_path_for_runtime "$source"
+    NATIVE_PROBE_CONTAINERIZED="$prev_containerized"
+  }
+
   if [[ "$REAL_DRY_RUN" != "1" ]]; then
     if ! command -v docker >/dev/null 2>&1; then
       warn "docker not found for strict local Savant probe"
@@ -775,16 +785,19 @@ run_savant_local_native_probe() {
     CMD_TIMEOUT_S="$((DURATION_S + (startup_windows * startup_wait_s) + (2 * shutdown_grace_s) + 60))"
   fi
 
-  cmd="set -e; pids=''; host_output=$(shell_quote "$OUTPUT_DIR"); streams='${STREAMS}'; startup_wait_s='${startup_wait_s}'; shutdown_grace_s='${shutdown_grace_s}'; \
+  cmd="set -e; pids=''; stream_pids=''; host_output=$(shell_quote "$OUTPUT_DIR"); streams='${STREAMS}'; startup_wait_s='${startup_wait_s}'; shutdown_grace_s='${shutdown_grace_s}'; \
 now_ms() { raw=\$(date +%s%3N 2>/dev/null || true); case \"\$raw\" in ''|*N*) python3 -c 'import time; print(int(time.time() * 1000))' ;; *) printf '%s\n' \"\$raw\" ;; esac; }; \
 mark_measurement_start() { mkdir -p \"\$host_output\"; now_ms > \"\$host_output/measurement_start_ms\"; echo \"[template] Savant local measurement window started\"; }; \
 mark_measurement_end() { mkdir -p \"\$host_output\"; now_ms > \"\$host_output/measurement_end_ms\"; echo \"[template] Savant local measurement window ended\"; }; \
 cleanup() { code=\"\${1:-0}\"; if [ -n \"\$pids\" ]; then for pid in \$pids; do kill -INT \"\$pid\" >/dev/null 2>&1 || true; done; for _ in \$(seq 1 \"\$shutdown_grace_s\"); do alive=0; for pid in \$pids; do kill -0 \"\$pid\" >/dev/null 2>&1 && alive=1 || true; done; [ \"\$alive\" -eq 0 ] && break; sleep 1; done; for pid in \$pids; do kill -TERM \"\$pid\" >/dev/null 2>&1 || true; done; sleep 2; for pid in \$pids; do kill -KILL \"\$pid\" >/dev/null 2>&1 || true; done; wait >/dev/null 2>&1 || true; pids=''; fi; return \"\$code\"; }; \
 trap 'cleanup 130; exit 130' INT TERM; \
-wait_for_csv_rows() { path=\"\$1\"; min_rows=\"\$2\"; label=\"\$3\"; deadline=\$((SECONDS + startup_wait_s)); while :; do rows=0; [ -f \"\$path\" ] && rows=\$(wc -l < \"\$path\" 2>/dev/null || echo 0); if [ \"\$rows\" -ge \"\$min_rows\" ]; then echo \"[template] \$label ready rows=\$rows\"; return 0; fi; if [ \"\$SECONDS\" -ge \"\$deadline\" ]; then echo \"[template][warning] \$label did not become ready after \${startup_wait_s}s\" >&2; return 1; fi; sleep 1; done; }; \
-wait_for_telemetry() { deadline=\$((SECONDS + startup_wait_s)); while :; do ready=0; for i in \$(seq 0 \$((streams - 1))); do path=\"\$host_output/streams/stream_\$i/frames.csv\"; rows=0; [ -f \"\$path\" ] && rows=\$(wc -l < \"\$path\" 2>/dev/null || echo 0); [ \"\$rows\" -ge 2 ] && ready=\$((ready + 1)); done; if [ \"\$ready\" -eq \"\$streams\" ]; then echo \"[template] Savant local telemetry ready streams=\$ready\"; return 0; fi; if [ \"\$SECONDS\" -ge \"\$deadline\" ]; then echo \"[template][warning] Savant local telemetry did not become ready: ready=\$ready/\$streams after \${startup_wait_s}s\" >&2; return 1; fi; sleep 1; done; }; "
+process_alive() { pid=\"\$1\"; [ -n \"\$pid\" ] && kill -0 \"\$pid\" >/dev/null 2>&1; }; \
+pid_at() { target=\"\$1\"; shift; idx=0; for pid in \"\$@\"; do if [ \"\$idx\" -eq \"\$target\" ]; then printf '%s' \"\$pid\"; return 0; fi; idx=\$((idx + 1)); done; return 1; }; \
+wait_for_csv_rows() { path=\"\$1\"; min_rows=\"\$2\"; label=\"\$3\"; pid=\"\${4:-}\"; deadline=\$((SECONDS + startup_wait_s)); while :; do rows=0; [ -f \"\$path\" ] && rows=\$(wc -l < \"\$path\" 2>/dev/null || echo 0); if [ \"\$rows\" -ge \"\$min_rows\" ]; then echo \"[template] \$label ready rows=\$rows\"; return 0; fi; if [ -n \"\$pid\" ] && ! process_alive \"\$pid\"; then echo \"[template][warning] \$label process exited before telemetry was ready\" >&2; return 1; fi; if [ \"\$SECONDS\" -ge \"\$deadline\" ]; then echo \"[template][warning] \$label did not become ready after \${startup_wait_s}s\" >&2; return 1; fi; sleep 1; done; }; \
+wait_for_telemetry() { deadline=\$((SECONDS + startup_wait_s)); while :; do ready=0; for i in \$(seq 0 \$((streams - 1))); do path=\"\$host_output/streams/stream_\$i/frames.csv\"; pid=\$(pid_at \"\$i\" \$stream_pids || true); rows=0; [ -f \"\$path\" ] && rows=\$(wc -l < \"\$path\" 2>/dev/null || echo 0); if [ \"\$rows\" -ge 2 ] && process_alive \"\$pid\"; then ready=\$((ready + 1)); elif [ -n \"\$pid\" ] && ! process_alive \"\$pid\"; then echo \"[template][warning] Savant local stream \$i process exited before telemetry was ready\" >&2; return 1; fi; done; if [ \"\$ready\" -eq \"\$streams\" ]; then echo \"[template] Savant local telemetry ready streams=\$ready\"; return 0; fi; if [ \"\$SECONDS\" -ge \"\$deadline\" ]; then echo \"[template][warning] Savant local telemetry did not become ready: ready=\$ready/\$streams after \${startup_wait_s}s\" >&2; return 1; fi; sleep 1; done; }; "
   if [[ "$prewarm_enabled" != "0" ]]; then
-    local prewarm_source="/workspace/project/data/videos/$(basename "$(pick_video_for_stream 1)")"
+    local prewarm_source
+    prewarm_source="$(savant_local_stream_source 1)"
     cmd+="echo '[template] Prewarming Savant local model cache'; docker run --rm --gpus all --entrypoint bash \
       -e VIDEO_URI='file://$prewarm_source' \
       -e VAST_STREAM_ID='0' \
@@ -796,12 +809,13 @@ wait_for_telemetry() { deadline=\$((SECONDS + startup_wait_s)); while :; do read
       -e MAX_OBJECTS='${MAX_OBJECTS}' \
       -v '$PROJECT_DIR':/workspace/project ${output_mount} ${cache_mount} \
       -w /workspace/project '$image' \
-      -lc 'python -m savant.entrypoint $module' & pids=\"\$pids \$!\"; \
-      wait_for_csv_rows \"\$host_output/prewarm/frames.csv\" 2 'Savant local cache prewarm' || { rc=\$?; cleanup \"\$rc\"; exit \"\$rc\"; }; cleanup 0; pids=''; "
+      -lc 'python -m savant.entrypoint $module' & prewarm_pid=\"\$!\"; pids=\"\$pids \$prewarm_pid\"; \
+      wait_for_csv_rows \"\$host_output/prewarm/frames.csv\" 2 'Savant local cache prewarm' \"\$prewarm_pid\" || { rc=\$?; cleanup \"\$rc\"; exit \"\$rc\"; }; cleanup 0; pids=''; "
   fi
   for i in $(seq 0 $((STREAMS - 1))); do
     local idx=$((i + 1))
-    local stream_source="/workspace/project/data/videos/$(basename "$(pick_video_for_stream "$idx")")"
+    local stream_source
+    stream_source="$(savant_local_stream_source "$idx")"
     cmd+="docker run --rm --gpus all --entrypoint bash \
       -e VIDEO_URI='file://$stream_source' \
       -e VAST_STREAM_ID='$i' \
@@ -813,7 +827,7 @@ wait_for_telemetry() { deadline=\$((SECONDS + startup_wait_s)); while :; do read
       -e MAX_OBJECTS='${MAX_OBJECTS}' \
       -v '$PROJECT_DIR':/workspace/project ${output_mount} ${cache_mount} \
       -w /workspace/project '$image' \
-      -lc 'python -m savant.entrypoint $module' & pids=\"\$pids \$!\"; "
+      -lc 'python -m savant.entrypoint $module' & stream_pid=\"\$!\"; pids=\"\$pids \$stream_pid\"; stream_pids=\"\$stream_pids \$stream_pid\"; "
   done
   cmd+="wait_for_telemetry || { rc=\$?; cleanup \"\$rc\"; exit \"\$rc\"; }; mark_measurement_start; sleep ${DURATION_S}; mark_measurement_end; cleanup 0; exit 0"
 

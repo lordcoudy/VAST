@@ -307,6 +307,51 @@ class ScenarioPlanningTests(unittest.TestCase):
                 self.assertIn(".cache/savant", output)
                 self.assertNotIn("; sleep 5; for pid in $pids", output)
 
+    def test_savant_local_template_preserves_benchmark_dataset_paths(self) -> None:
+        env = os.environ.copy()
+        env.update(
+            {
+                "REAL_DRY_RUN": "1",
+                "BENCHMARK_MODE": "benchmark",
+                "EXPERIMENT_DISTRIBUTED": "0",
+                "EXPERIMENT_HOST_ROLE": "local",
+                "EXPERIMENT_PIPELINE_STAGES": "decode,detect,aggregate",
+                "DATASET_STREAMS_JSON": '["data/benchmark/mot17_02.mp4","data/benchmark/mot17_04.mp4"]',
+            }
+        )
+        completed = subprocess.run(
+            [
+                "bash",
+                str(ROOT / "scripts" / "run_system_template.sh"),
+                "--system",
+                "savant",
+                "--scenario",
+                "canonical_heterogeneous",
+                "--duration",
+                "5",
+                "--streams",
+                "2",
+                "--min-objects",
+                "5",
+                "--max-objects",
+                "35",
+                "--output",
+                str(ROOT / "runs" / "dry" / "local" / "savant_dataset" / "frames.csv"),
+            ],
+            cwd=ROOT,
+            env=env,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        output = completed.stdout + completed.stderr
+
+        self.assertEqual(completed.returncode, 1)
+        self.assertIn("file:///workspace/project/data/benchmark/mot17_02.mp4", output)
+        self.assertIn("file:///workspace/project/data/benchmark/mot17_04.mp4", output)
+        self.assertNotIn("file:///workspace/project/data/videos/mot17_02.mp4", output)
+        self.assertNotIn("file:///workspace/project/data/videos/mot17_04.mp4", output)
+
     def test_gstreamer_custom_plugin_is_bundled(self) -> None:
         source = ROOT / "deploy" / "gstreamer_adaptivescheduler" / "gstadaptivescheduler.c"
         cmake = (ROOT / "CMakeLists.txt").read_text(encoding="utf-8")
@@ -374,6 +419,10 @@ class ScenarioPlanningTests(unittest.TestCase):
         self.assertIn("mark_measurement_start; sleep ${DURATION_S}; mark_measurement_end", body)
         self.assertIn("measurement_start_ms", body)
         self.assertIn("measurement_end_ms", body)
+        self.assertIn("process_alive", body)
+        self.assertIn("process exited before telemetry was ready", body)
+        self.assertIn("wait_for_csv_rows \\\"\\$host_output/prewarm/frames.csv\\\" 2 'Savant local cache prewarm' \\\"\\$prewarm_pid\\\"", body)
+        self.assertIn("pid_at \\\"\\$i\\\" \\$stream_pids", body)
 
     def test_savant_local_timeout_allows_prewarm_and_shutdown(self) -> None:
         base_env = {"STARTUP_GRACE_S": "180", "SAVANT_LOCAL_SHUTDOWN_GRACE_S": "15"}
