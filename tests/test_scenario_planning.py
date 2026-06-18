@@ -266,6 +266,8 @@ class ScenarioPlanningTests(unittest.TestCase):
         self.assertIn("EXPERIMENT_DISTRIBUTED=1", steps[0]["remote_command"])
         self.assertIn("EXPERIMENT_RTP_INPUT_PORT=5700", steps[0]["remote_command"])
         self.assertIn("--output /opt/vast/runs/test", steps[0]["remote_command"])
+        self.assertIn(" && { (METRICS_PY=", steps[0]["remote_command"])
+        self.assertTrue(steps[0]["remote_command"].rstrip().endswith("; }"))
 
 
 if __name__ == "__main__":

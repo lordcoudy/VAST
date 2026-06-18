@@ -210,6 +210,7 @@ def build_distributed_plan(
             f"mkdir -p {shlex.quote(str(remote_output))} && "
             f"cd {shlex.quote(str(remote_project))} && "
             f"rm -f {shlex.quote(str(exit_file))} {shlex.quote(str(ready_file))} && "
+            "{ "
             f"(METRICS_PY=.venv/bin/python; test -x \"$METRICS_PY\" || METRICS_PY=python3; "
             f"$METRICS_PY scripts/collect_metrics.py --output {shlex.quote(str(remote_output / 'system_metrics.csv'))} "
             f"--interval 1 >/dev/null 2>&1 & echo $! > {shlex.quote(str(metrics_pid_file))}; "
@@ -217,7 +218,8 @@ def build_distributed_plan(
             f"2> {shlex.quote(str(stderr_file))}; rc=$?; "
             f"kill $(cat {shlex.quote(str(metrics_pid_file))}) >/dev/null 2>&1 || true; "
             f"echo $rc > {shlex.quote(str(exit_file))}) & "
-            f"echo $! > {shlex.quote(str(pid_file))} && touch {shlex.quote(str(ready_file))}"
+            f"echo $! > {shlex.quote(str(pid_file))} && touch {shlex.quote(str(ready_file))}; "
+            "}"
         )
         steps.append(
             {
