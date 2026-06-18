@@ -1,7 +1,8 @@
 param(
-    [switch]$InstallWSL = $true,
-    [switch]$InstallNativeOpenVino = $true,
-    [switch]$InstallNativeGStreamer = $true,
+    [bool]$InstallWSL = $true,
+    [switch]$InstallNativeOpenVino,
+    [switch]$InstallNativeGStreamer,
+    [switch]$InstallNativePython,
     [switch]$SkipRebootPrompt = $false
 )
 
@@ -36,12 +37,22 @@ function Ensure-Choco {
 
 function Install-BaseTools {
     Write-Step "Installing base Windows tools"
-    choco install -y git python docker-desktop nvidia-display-driver
+    choco install -y git docker-desktop nvidia-display-driver
+}
+
+function Install-NativePython {
+    Write-Step "Installing native Python 3.12 for optional Windows-only tools"
+    choco install -y python312
 }
 
 function Install-WSLPath {
     Write-Step "Installing WSL2 Ubuntu path (recommended for DeepStream + Savant)"
-    wsl --install -d Ubuntu
+    $distros = @(wsl -l -q 2>$null | ForEach-Object { $_.Trim([char]0).Trim() } | Where-Object { $_ })
+    if ($distros -contains "Ubuntu") {
+        Write-Step "Ubuntu WSL distribution already exists"
+    } else {
+        wsl --install -d Ubuntu
+    }
 
     if (-not $SkipRebootPrompt) {
         Write-Warn "A reboot may be required to finish WSL installation."
@@ -52,9 +63,12 @@ function Install-WSLPath {
 }
 
 function Install-NativeOpenVino {
-    Write-Step "Installing native OpenVINO Python packages"
-    py -m pip install --upgrade pip
-    py -m pip install openvino openvino-dev
+    Write-Step "Installing native OpenVINO Python packages on Windows Python 3.12"
+    if (-not (Get-Command py -ErrorAction SilentlyContinue)) {
+        Install-NativePython
+    }
+    py -3.12 -m pip install --upgrade pip
+    py -3.12 -m pip install "openvino==2024.6.0" "openvino-dev==2024.6.0"
 }
 
 function Install-NativeGStreamer {
@@ -66,6 +80,10 @@ function Main {
     Ensure-Admin
     Ensure-Choco
     Install-BaseTools
+
+    if ($InstallNativePython) {
+        Install-NativePython
+    }
 
     if ($InstallWSL) {
         Install-WSLPath
@@ -81,6 +99,7 @@ function Main {
 
     Write-Host "`n[done] Windows preparation complete." -ForegroundColor Green
     Write-Warn "DeepStream is Linux-first; use WSL2 Ubuntu (or native Ubuntu) for full stack parity."
+    Write-Warn "Native Windows OpenVINO/GStreamer installation is optional; pass -InstallNativeOpenVino or -InstallNativeGStreamer only if you need Windows-native diagnostics."
 }
 
 Main

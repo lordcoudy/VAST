@@ -106,13 +106,16 @@ powershell -ExecutionPolicy Bypass -File .\scripts\setup_target_windows.ps1
 
 What this script does:
 - Installs Chocolatey if missing
-- Installs core tools (git, python, docker desktop, NVIDIA display driver)
+- Installs core tools (git, Docker Desktop, NVIDIA display driver)
 - Installs WSL2 Ubuntu (recommended path for DeepStream + Savant)
-- Installs OpenVINO Python packages on Windows
-- Installs GStreamer on Windows
+- Optionally installs Windows-native Python 3.12, OpenVINO, and GStreamer when
+  `-InstallNativePython`, `-InstallNativeOpenVino`, or
+  `-InstallNativeGStreamer` are passed
 
 Important:
 - DeepStream is Linux-first; run full stack in WSL2 Ubuntu or native Linux.
+- The full benchmark path does not need Windows-native OpenVINO/GStreamer; run
+  those inside WSL instead.
 - After WSL setup, open Ubuntu and run:
 
 ```bash

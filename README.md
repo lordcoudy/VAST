@@ -79,6 +79,11 @@ Windows setup (run PowerShell as Administrator):
 powershell -ExecutionPolicy Bypass -File .\scripts\setup_target_windows.ps1
 ```
 
+The Windows script prepares Git, Docker Desktop, NVIDIA driver, and WSL2
+Ubuntu. Windows-native Python/OpenVINO/GStreamer are optional diagnostics; pass
+`-InstallNativePython`, `-InstallNativeOpenVino`, or `-InstallNativeGStreamer`
+only if you need them outside WSL.
+
 Windows one-command launcher:
 
 ```powershell
