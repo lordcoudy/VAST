@@ -251,6 +251,14 @@ class ScenarioPlanningTests(unittest.TestCase):
         self.assertIn('gst_element_register(plugin, "adaptivescheduler"', body)
         self.assertIn("GST_PLUGIN_DEFINE", body)
 
+    def test_native_probe_dockerfiles_disable_unneeded_custom_plugin_target(self) -> None:
+        for name in ("Dockerfile.deepstream", "Dockerfile.savant"):
+            body = (ROOT / "deploy" / "native_gst_probe" / name).read_text(encoding="utf-8")
+            self.assertIn("COPY deploy/native_gst_probe", body)
+            self.assertIn("-DVAST_BUILD_NATIVE_GST_PROBE=ON", body)
+            self.assertIn("-DVAST_BUILD_GSTREAMER_CUSTOM_PLUGIN=OFF", body)
+            self.assertIn("-DVAST_BUILD_CUSTOM_CUDA_QT=OFF", body)
+
     def test_single_server_preflight_records_loopback_metrics(self) -> None:
         hosts_config = {
             "hosts": [

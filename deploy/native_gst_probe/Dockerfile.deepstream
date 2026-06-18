@@ -20,9 +20,9 @@ COPY deploy/native_gst_probe /workspace/project/deploy/native_gst_probe
 
 RUN cmake -S /workspace/project -B /workspace/project/build/cmake \
       -DVAST_BUILD_NATIVE_GST_PROBE=ON \
+      -DVAST_BUILD_GSTREAMER_CUSTOM_PLUGIN=OFF \
       -DVAST_BUILD_CUSTOM_CUDA_QT=OFF \
   && cmake --build /workspace/project/build/cmake --target vast_native_gst_probe --parallel \
   && install -m 0755 /workspace/project/build/bin/vast_native_gst_probe /usr/local/bin/vast_native_gst_probe
 
 ENTRYPOINT ["/usr/local/bin/vast_native_gst_probe"]
-
