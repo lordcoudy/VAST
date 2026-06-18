@@ -641,8 +641,9 @@ run_container_native_probe() {
     -e DATASET_STREAMS_JSON='${DATASET_STREAMS_JSON}' \
     -e GST_CUSTOM_STRICT='1' \
     -v '$PROJECT_DIR':/workspace/project \
-    -w /workspace/project '$image' \
-    /usr/local/bin/vast_native_gst_probe$(native_probe_args "$container_output" "$detect_bin")"
+    -w /workspace/project \
+    --entrypoint /usr/local/bin/vast_native_gst_probe \
+    '$image'$(native_probe_args "$container_output" "$detect_bin")"
   NATIVE_PROBE_CONTAINERIZED="$prev_containerized"
   run_or_echo "$cmd"
 }
@@ -772,8 +773,10 @@ run_savant_framework_native_probe() {
     -e MIN_OBJECTS='${MIN_OBJECTS}' \
     -e MAX_OBJECTS='${MAX_OBJECTS}' \
     -v '$PROJECT_DIR':/workspace/project \
-    -w /workspace/project '$SAVANT_NATIVE_PROBE_IMAGE' \
-    bash -lc $(shell_quote "$inner")"
+    -w /workspace/project \
+    --entrypoint bash \
+    '$SAVANT_NATIVE_PROBE_IMAGE' \
+    -lc $(shell_quote "$inner")"
   run_or_echo "$cmd"
 }
 

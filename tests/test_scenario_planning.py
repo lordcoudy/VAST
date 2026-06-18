@@ -190,6 +190,9 @@ class ScenarioPlanningTests(unittest.TestCase):
             self.assertEqual(completed.returncode, 1)
             for fragment in expected:
                 self.assertIn(fragment, output)
+            if system == "deepstream":
+                self.assertIn("--entrypoint /usr/local/bin/vast_native_gst_probe", output)
+                self.assertNotIn("'vast/deepstream-native-probe:7.0'     /usr/local/bin/vast_native_gst_probe", output)
 
     def test_builtin_strict_local_template_dry_run_commands(self) -> None:
         expectations = {
@@ -240,6 +243,9 @@ class ScenarioPlanningTests(unittest.TestCase):
                 self.assertIn(fragment, output)
             self.assertNotIn("deepstream-test3-app", output)
             self.assertNotIn("deploy/savant/module.yml", output)
+            if system == "deepstream":
+                self.assertIn("--entrypoint /usr/local/bin/vast_native_gst_probe", output)
+                self.assertNotIn("'vast/deepstream-native-probe:7.0'     /usr/local/bin/vast_native_gst_probe", output)
 
     def test_gstreamer_custom_plugin_is_bundled(self) -> None:
         source = ROOT / "deploy" / "gstreamer_adaptivescheduler" / "gstadaptivescheduler.c"
