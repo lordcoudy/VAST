@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import subprocess
 from pathlib import Path
 from typing import Any
@@ -43,6 +44,25 @@ FRAME_EVENT_COLUMNS = [
     "estimated_cost_ms",
     "policy_action",
 ]
+FRAME_NUMERIC_COLUMNS = {
+    "schema_version",
+    "stream_id",
+    "frame_id",
+    "ingress_timestamp_ms",
+    "egress_timestamp_ms",
+    "e2e_latency_ms",
+    "objects",
+}
+FRAME_EVENT_NUMERIC_COLUMNS = {
+    "schema_version",
+    "stream_id",
+    "frame_id",
+    "queue_enter_timestamp_ms",
+    "stage_start_timestamp_ms",
+    "stage_end_timestamp_ms",
+    "queue_depth",
+    "estimated_cost_ms",
+}
 NETWORK_COLUMNS = [
     "timestamp_ms",
     "source_role",
@@ -58,6 +78,75 @@ NETWORK_COLUMNS = [
 
 class ContractError(RuntimeError):
     pass
+
+
+_NULL_STRINGS = {"", "none", "nan", "null"}
+
+
+def _missing_value(value: Any) -> bool:
+    if value is None:
+        return True
+    try:
+        if pd.isna(value):
+            return True
+    except (TypeError, ValueError):
+        pass
+    return str(value).strip().lower() in _NULL_STRINGS
+
+
+def _parse_finite_number(value: Any, *, path: Path, row_number: int, column: str) -> float:
+    if _missing_value(value):
+        raise ContractError(f"{path}:{row_number}: missing or empty value for {column}")
+    try:
+        number = float(str(value).strip())
+    except (TypeError, ValueError) as exc:
+        raise ContractError(f"{path}:{row_number}: invalid numeric value for {column}: {value!r}") from exc
+    if not math.isfinite(number):
+        raise ContractError(f"{path}:{row_number}: invalid numeric value for {column}: {value!r}")
+    return number
+
+
+def validate_csv_row_fields(
+    row: dict[str, Any],
+    fieldnames: list[str],
+    *,
+    path: Path,
+    row_number: int,
+    numeric_columns: set[str] | None = None,
+) -> dict[str, Any]:
+    if None in row:
+        raise ContractError(f"{path}:{row_number}: unexpected extra CSV fields: {row[None]!r}")
+    normalized: dict[str, Any] = {}
+    for field in fieldnames:
+        value = row.get(field)
+        if _missing_value(value):
+            raise ContractError(f"{path}:{row_number}: missing or empty value for {field}")
+        normalized[field] = value
+    if "trace_id" in fieldnames and not str(normalized.get("trace_id", "")).strip():
+        raise ContractError(f"{path}:{row_number}: missing or empty trace_id")
+    for field in numeric_columns or set():
+        _parse_finite_number(normalized[field], path=path, row_number=row_number, column=field)
+    return normalized
+
+
+def _validate_dataframe_fields(
+    df: pd.DataFrame,
+    path: Path,
+    fieldnames: list[str],
+    numeric_columns: set[str],
+) -> None:
+    missing = [column for column in fieldnames if column not in df.columns]
+    if missing:
+        raise ContractError(f"{path} is missing required columns: {', '.join(missing)}")
+    for row_index, row in df[fieldnames].iterrows():
+        row_number = int(row_index) + 2
+        for field in fieldnames:
+            if _missing_value(row[field]):
+                raise ContractError(f"{path}:{row_number}: missing or empty value for {field}")
+        if "trace_id" in fieldnames and not str(row["trace_id"]).strip():
+            raise ContractError(f"{path}:{row_number}: missing or empty trace_id")
+        for field in numeric_columns:
+            _parse_finite_number(row[field], path=path, row_number=row_number, column=field)
 
 
 def sha256_file(path: Path) -> str:
@@ -175,7 +264,9 @@ def canonicalize_frames_csv(
         )
         df.to_csv(path, index=False)
 
-    if any(int(value) != TELEMETRY_SCHEMA_VERSION for value in df["schema_version"].unique()):
+    _validate_dataframe_fields(df, path, FRAME_COLUMNS, FRAME_NUMERIC_COLUMNS)
+    schema_versions = pd.to_numeric(df["schema_version"], errors="raise")
+    if (schema_versions != TELEMETRY_SCHEMA_VERSION).any():
         raise ContractError(f"unsupported telemetry schema version in {path}")
     if mode == "benchmark" and set(df["telemetry_source"].astype(str)) != {"native"}:
         raise ContractError("benchmark mode only accepts telemetry_source=native")
@@ -213,7 +304,9 @@ def validate_frame_events(path: Path) -> pd.DataFrame:
     missing = [column for column in FRAME_EVENT_COLUMNS if column not in df.columns]
     if missing:
         raise ContractError(f"{path} is missing frame event columns: {', '.join(missing)}")
-    if any(int(value) != TELEMETRY_SCHEMA_VERSION for value in df["schema_version"].unique()):
+    _validate_dataframe_fields(df, path, FRAME_EVENT_COLUMNS, FRAME_EVENT_NUMERIC_COLUMNS)
+    schema_versions = pd.to_numeric(df["schema_version"], errors="raise")
+    if (schema_versions != TELEMETRY_SCHEMA_VERSION).any():
         raise ContractError(f"unsupported frame event schema version in {path}")
     return df[FRAME_EVENT_COLUMNS]
 

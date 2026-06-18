@@ -277,6 +277,7 @@ class NativeProbeRuntime {
             << trace.frame_id << "," << stage << "," << args_.role << ",localhost,cpu," << start_ms << ","
             << start_ms << "," << end_ms << ",0," << std::max<std::uint64_t>(1, end_ms - start_ms)
             << ",native:" << args_.system << "\n";
+    events_.flush();
   }
 
   void start_measurement_timer_if_needed() {
@@ -298,6 +299,7 @@ class NativeProbeRuntime {
     frames_ << "2," << args_.run_id << "," << trace_id(trace) << "," << static_cast<int>(trace.stream_id) << ","
             << trace.frame_id << "," << ingress << "," << egress_ms << "," << latency << "," << object_count()
             << "," << args_.detector << "," << args_.backend << ",native\n";
+    frames_.flush();
   }
 
   struct ProbeContext {

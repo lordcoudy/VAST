@@ -12,7 +12,13 @@ from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
 from typing import Any
 
-from benchmark_contract import FRAME_EVENT_COLUMNS, NETWORK_COLUMNS, network_profile_matches
+from benchmark_contract import (
+    FRAME_EVENT_COLUMNS,
+    FRAME_EVENT_NUMERIC_COLUMNS,
+    NETWORK_COLUMNS,
+    network_profile_matches,
+    validate_csv_row_fields,
+)
 
 
 ROLE_START_ORDER = {"aggregator": 0, "gpu_worker": 1, "edge": 2}
@@ -418,13 +424,22 @@ def _csvs(role_dir: Path, pattern: str) -> list[Path]:
 
 def _combine_csv(paths: list[Path], output_csv: Path, fieldnames: list[str]) -> None:
     output_csv.parent.mkdir(parents=True, exist_ok=True)
+    numeric_columns = FRAME_EVENT_NUMERIC_COLUMNS if fieldnames == FRAME_EVENT_COLUMNS else set()
     with output_csv.open("w", newline="", encoding="utf-8") as out_f:
         writer = csv.DictWriter(out_f, fieldnames=fieldnames, extrasaction="ignore")
         writer.writeheader()
         for path in paths:
             with path.open("r", newline="", encoding="utf-8") as in_f:
-                for row in csv.DictReader(in_f):
-                    writer.writerow(row)
+                for row_number, row in enumerate(csv.DictReader(in_f), start=2):
+                    writer.writerow(
+                        validate_csv_row_fields(
+                            row,
+                            fieldnames,
+                            path=path,
+                            row_number=row_number,
+                            numeric_columns=numeric_columns,
+                        )
+                    )
 
 
 def _stop_remote(step: dict[str, Any]) -> None:

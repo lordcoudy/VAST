@@ -2,12 +2,14 @@ from __future__ import annotations
 
 import argparse
 import csv
+import math
 import os
 import struct
 import sys
+import threading
 import time
 from pathlib import Path
-from typing import Any
+from typing import Any, Iterator
 
 try:
     from savant.base.pyfunc import BasePyFuncPlugin
@@ -64,7 +66,29 @@ FRAME_COLUMNS = [
 ]
 
 _LOCAL_INGRESS_MS: dict[tuple[int, int], int] = {}
-_INITIALIZED_EVENT_FILES: set[Path] = set()
+_LOCAL_INGRESS_LOCK = threading.Lock()
+_SHARED_EVENT_WRITERS: dict[Path, "_SharedCsvWriter"] = {}
+_SHARED_EVENT_WRITERS_LOCK = threading.Lock()
+_NULL_STRINGS = {"", "none", "nan", "null"}
+_FRAME_NUMERIC_COLUMNS = {
+    "schema_version",
+    "stream_id",
+    "frame_id",
+    "ingress_timestamp_ms",
+    "egress_timestamp_ms",
+    "e2e_latency_ms",
+    "objects",
+}
+_FRAME_EVENT_NUMERIC_COLUMNS = {
+    "schema_version",
+    "stream_id",
+    "frame_id",
+    "queue_enter_timestamp_ms",
+    "stage_start_timestamp_ms",
+    "stage_end_timestamp_ms",
+    "queue_depth",
+    "estimated_cost_ms",
+}
 
 
 def now_ms() -> int:
@@ -76,6 +100,91 @@ def unpack_trace(payload: bytes) -> tuple[int, int, int]:
     if magic != TRACE_MAGIC or version != TRACE_VERSION:
         raise ValueError("invalid VAST RTP trace payload")
     return stream_id, frame_id, ingress_ms
+
+
+def missing_value(value: Any) -> bool:
+    if value is None:
+        return True
+    return str(value).strip().lower() in _NULL_STRINGS
+
+
+def validate_csv_row(
+    row: dict[str, Any],
+    fieldnames: list[str],
+    numeric_columns: set[str],
+    *,
+    source: str,
+) -> dict[str, Any]:
+    if None in row:
+        raise RuntimeError(f"{source}: unexpected extra CSV fields: {row[None]!r}")
+    normalized: dict[str, Any] = {}
+    for field in fieldnames:
+        value = row.get(field)
+        if missing_value(value):
+            raise RuntimeError(f"{source}: missing or empty value for {field}")
+        normalized[field] = value
+
+    if not str(normalized.get("trace_id", "")).strip():
+        raise RuntimeError(f"{source}: missing or empty trace_id")
+
+    for field in numeric_columns:
+        try:
+            number = float(normalized[field])
+        except (TypeError, ValueError) as exc:
+            raise RuntimeError(f"{source}: invalid numeric value for {field}: {normalized[field]!r}") from exc
+        if not math.isfinite(number):
+            raise RuntimeError(f"{source}: invalid numeric value for {field}: {normalized[field]!r}")
+
+    return normalized
+
+
+class _SharedCsvWriter:
+    def __init__(self, path: Path, fieldnames: list[str]) -> None:
+        self.path = path
+        self.fieldnames = fieldnames
+        self.lock = threading.Lock()
+        self.refcount = 0
+        self.file = self.path.open("w", newline="", encoding="utf-8")
+        self.writer = csv.DictWriter(self.file, fieldnames=self.fieldnames)
+        self.writer.writeheader()
+        self.file.flush()
+
+    def write(self, row: dict[str, Any]) -> None:
+        with self.lock:
+            self.writer.writerow(row)
+            self.file.flush()
+
+    def close(self) -> None:
+        with self.lock:
+            if not self.file.closed:
+                self.file.close()
+
+
+def acquire_shared_writer(path: Path, fieldnames: list[str]) -> _SharedCsvWriter:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path = path.resolve()
+    with _SHARED_EVENT_WRITERS_LOCK:
+        writer = _SHARED_EVENT_WRITERS.get(path)
+        if writer is None:
+            writer = _SharedCsvWriter(path, fieldnames)
+            _SHARED_EVENT_WRITERS[path] = writer
+        writer.refcount += 1
+        return writer
+
+
+def release_shared_writer(path: Path, writer: _SharedCsvWriter) -> None:
+    path = path.resolve()
+    close_writer: _SharedCsvWriter | None = None
+    with _SHARED_EVENT_WRITERS_LOCK:
+        current = _SHARED_EVENT_WRITERS.get(path)
+        if current is not writer:
+            return
+        current.refcount -= 1
+        if current.refcount <= 0:
+            close_writer = current
+            del _SHARED_EVENT_WRITERS[path]
+    if close_writer is not None:
+        close_writer.close()
 
 
 class NativeEventWriter:
@@ -95,18 +204,21 @@ class NativeEventWriter:
         self.role = role
         self.resource = resource
         self.path = self.output_dir / "frame_events.csv"
-        write_header = not shared or self.path not in _INITIALIZED_EVENT_FILES
-        self.file = self.path.open("w" if write_header else "a", newline="", encoding="utf-8")
-        self.writer = csv.DictWriter(self.file, fieldnames=FRAME_EVENT_COLUMNS)
-        if write_header:
+        self.shared = shared
+        self.closed = False
+        self.lock = threading.Lock()
+        self.shared_writer: _SharedCsvWriter | None = None
+        if shared:
+            self.shared_writer = acquire_shared_writer(self.path, FRAME_EVENT_COLUMNS)
+        else:
+            self.file = self.path.open("w", newline="", encoding="utf-8")
+            self.writer = csv.DictWriter(self.file, fieldnames=FRAME_EVENT_COLUMNS)
             self.writer.writeheader()
             self.file.flush()
-            if shared:
-                _INITIALIZED_EVENT_FILES.add(self.path)
 
     def write(self, stream_id: int, frame_id: int, start_ms: int, end_ms: int) -> None:
         trace_id = f"{self.run_id}:{stream_id}:{frame_id}"
-        self.writer.writerow(
+        row = validate_csv_row(
             {
                 "schema_version": 2,
                 "run_id": self.run_id,
@@ -123,12 +235,27 @@ class NativeEventWriter:
                 "queue_depth": 0,
                 "estimated_cost_ms": max(1, end_ms - start_ms),
                 "policy_action": "native:savant",
-            }
+            },
+            FRAME_EVENT_COLUMNS,
+            _FRAME_EVENT_NUMERIC_COLUMNS,
+            source=f"{self.path}:emitted",
         )
-        self.file.flush()
+        if self.shared_writer is not None:
+            self.shared_writer.write(row)
+        else:
+            with self.lock:
+                self.writer.writerow(row)
+                self.file.flush()
 
     def close(self) -> None:
-        self.file.close()
+        if self.closed:
+            return
+        self.closed = True
+        if self.shared_writer is not None:
+            release_shared_writer(self.path, self.shared_writer)
+        else:
+            with self.lock:
+                self.file.close()
 
 
 class NativeFrameWriter:
@@ -141,12 +268,14 @@ class NativeFrameWriter:
         self.min_objects = min_objects
         self.max_objects = max_objects
         self.path = self.output_dir / "frames.csv"
+        self.lock = threading.Lock()
+        self.closed = False
         self.file = self.path.open("w", newline="", encoding="utf-8")
         self.writer = csv.DictWriter(self.file, fieldnames=FRAME_COLUMNS)
         self.writer.writeheader()
 
     def write(self, stream_id: int, frame_id: int, ingress_ms: int, egress_ms: int) -> None:
-        self.writer.writerow(
+        row = validate_csv_row(
             {
                 "schema_version": 2,
                 "run_id": self.run_id,
@@ -160,12 +289,21 @@ class NativeFrameWriter:
                 "detector": self.detector,
                 "backend": self.backend,
                 "telemetry_source": "native",
-            }
+            },
+            FRAME_COLUMNS,
+            _FRAME_NUMERIC_COLUMNS,
+            source=f"{self.path}:emitted",
         )
-        self.file.flush()
+        with self.lock:
+            self.writer.writerow(row)
+            self.file.flush()
 
     def close(self) -> None:
-        self.file.close()
+        if self.closed:
+            return
+        self.closed = True
+        with self.lock:
+            self.file.close()
 
 
 def object_count(min_objects: int, max_objects: int) -> int:
@@ -245,11 +383,13 @@ class SavantLocalTelemetryProbe(BasePyFuncPlugin):
         stream_id, frame_id = frame_identity(buffer)
         key = (stream_id, frame_id)
         if self.stage == "decode":
-            _LOCAL_INGRESS_MS[key] = start_ms
+            with _LOCAL_INGRESS_LOCK:
+                _LOCAL_INGRESS_MS[key] = start_ms
         end_ms = now_ms()
         self.events.write(stream_id, frame_id, start_ms, end_ms)
         if self.stage == "aggregate" and self.frames is not None:
-            ingress_ms = _LOCAL_INGRESS_MS.pop(key, start_ms)
+            with _LOCAL_INGRESS_LOCK:
+                ingress_ms = _LOCAL_INGRESS_MS.pop(key, start_ms)
             self.frames.write(stream_id, frame_id, ingress_ms, end_ms)
         return buffer
 
@@ -276,62 +416,122 @@ def read_timestamp_marker(root: Path, name: str) -> int | None:
         raise RuntimeError(f"invalid Savant measurement marker {path}: {raw!r}") from exc
 
 
-def row_timestamp(row: dict[str, str], column: str) -> int:
-    raw = str(row.get(column, "")).strip()
-    if not raw:
-        raise RuntimeError(f"Savant telemetry row is missing timestamp column {column}")
+def row_timestamp(row: dict[str, Any], column: str, *, path: Path, row_number: int) -> int:
+    raw_value = row.get(column)
+    if missing_value(raw_value):
+        raise RuntimeError(f"{path}:{row_number}: missing or empty timestamp column {column}")
+    raw = str(raw_value).strip()
     try:
         return int(float(raw))
     except ValueError as exc:
-        raise RuntimeError(f"invalid Savant timestamp value for {column}: {raw!r}") from exc
+        raise RuntimeError(f"{path}:{row_number}: invalid Savant timestamp value for {column}: {raw!r}") from exc
 
 
 def row_in_window(
-    row: dict[str, str],
+    row: dict[str, Any],
     *,
     start_column: str,
     end_column: str,
     min_timestamp_ms: int | None,
     max_timestamp_ms: int | None,
+    path: Path,
+    row_number: int,
 ) -> bool:
-    if min_timestamp_ms is not None and row_timestamp(row, start_column) < min_timestamp_ms:
+    if min_timestamp_ms is not None and row_timestamp(row, start_column, path=path, row_number=row_number) < min_timestamp_ms:
         return False
-    if max_timestamp_ms is not None and row_timestamp(row, end_column) > max_timestamp_ms:
+    if max_timestamp_ms is not None and row_timestamp(row, end_column, path=path, row_number=row_number) > max_timestamp_ms:
         return False
     return True
 
 
-def merge_csvs(
+def iter_csv_rows(paths: list[Path]) -> Iterator[tuple[Path, int, dict[str, Any]]]:
+    for path in paths:
+        with path.open("r", newline="", encoding="utf-8") as src:
+            reader = csv.DictReader(src)
+            for row_number, row in enumerate(reader, start=2):
+                yield path, row_number, row
+
+
+def row_trace_id(row: dict[str, Any]) -> str:
+    value = row.get("trace_id")
+    if missing_value(value):
+        return ""
+    return str(value).strip()
+
+
+def merge_frame_csvs(
     paths: list[Path],
     output: Path,
-    fieldnames: list[str],
     *,
-    start_column: str | None = None,
-    end_column: str | None = None,
     min_timestamp_ms: int | None = None,
     max_timestamp_ms: int | None = None,
-) -> int:
+) -> tuple[int, set[str]]:
     rows = 0
+    trace_ids: set[str] = set()
     output.parent.mkdir(parents=True, exist_ok=True)
     with output.open("w", newline="", encoding="utf-8") as out:
-        writer = csv.DictWriter(out, fieldnames=fieldnames)
+        writer = csv.DictWriter(out, fieldnames=FRAME_COLUMNS)
         writer.writeheader()
-        for path in paths:
-            with path.open("r", newline="", encoding="utf-8") as src:
-                reader = csv.DictReader(src)
-                for row in reader:
-                    if start_column is not None and end_column is not None:
-                        if not row_in_window(
-                            row,
-                            start_column=start_column,
-                            end_column=end_column,
-                            min_timestamp_ms=min_timestamp_ms,
-                            max_timestamp_ms=max_timestamp_ms,
-                        ):
-                            continue
-                    writer.writerow({field: row.get(field, "") for field in fieldnames})
-                    rows += 1
-    return rows
+        for path, row_number, row in iter_csv_rows(paths):
+            normalized = validate_csv_row(
+                row,
+                FRAME_COLUMNS,
+                _FRAME_NUMERIC_COLUMNS,
+                source=f"{path}:{row_number}",
+            )
+            if not row_in_window(
+                normalized,
+                start_column="ingress_timestamp_ms",
+                end_column="egress_timestamp_ms",
+                min_timestamp_ms=min_timestamp_ms,
+                max_timestamp_ms=max_timestamp_ms,
+                path=path,
+                row_number=row_number,
+            ):
+                continue
+            writer.writerow(normalized)
+            trace_ids.add(str(normalized["trace_id"]).strip())
+            rows += 1
+    return rows, trace_ids
+
+
+def merge_event_csvs(
+    paths: list[Path],
+    output: Path,
+    measured_trace_ids: set[str],
+) -> tuple[int, dict[str, set[str]]]:
+    rows = 0
+    stage_traces: dict[str, set[str]] = {}
+    output.parent.mkdir(parents=True, exist_ok=True)
+    with output.open("w", newline="", encoding="utf-8") as out:
+        writer = csv.DictWriter(out, fieldnames=FRAME_EVENT_COLUMNS)
+        writer.writeheader()
+        for path, row_number, row in iter_csv_rows(paths):
+            trace_id = row_trace_id(row)
+            if trace_id not in measured_trace_ids:
+                continue
+            normalized = validate_csv_row(
+                row,
+                FRAME_EVENT_COLUMNS,
+                _FRAME_EVENT_NUMERIC_COLUMNS,
+                source=f"{path}:{row_number}",
+            )
+            writer.writerow(normalized)
+            stage = str(normalized["stage"]).strip()
+            stage_traces.setdefault(stage, set()).add(trace_id)
+            rows += 1
+    return rows, stage_traces
+
+
+def validate_required_stage_events(measured_trace_ids: set[str], stage_traces: dict[str, set[str]]) -> None:
+    for stage in ("decode", "detect", "aggregate"):
+        missing = measured_trace_ids - stage_traces.get(stage, set())
+        if missing:
+            sample = ", ".join(sorted(missing)[:5])
+            raise RuntimeError(
+                f"Savant local telemetry is missing '{stage}' frame_events for "
+                f"{len(missing)} measured frames; sample trace_id values: {sample}"
+            )
 
 
 def merge_local_outputs(output_dir: str | Path, streams: int) -> None:
@@ -346,28 +546,22 @@ def merge_local_outputs(output_dir: str | Path, streams: int) -> None:
     measurement_start_ms = read_timestamp_marker(root, "measurement_start_ms")
     measurement_end_ms = read_timestamp_marker(root, "measurement_end_ms")
 
-    frame_rows = merge_csvs(
+    frame_rows, measured_trace_ids = merge_frame_csvs(
         frame_paths,
         root / "frames.csv",
-        FRAME_COLUMNS,
-        start_column="ingress_timestamp_ms",
-        end_column="egress_timestamp_ms",
         min_timestamp_ms=measurement_start_ms,
         max_timestamp_ms=measurement_end_ms,
     )
-    event_rows = merge_csvs(
+    event_rows, stage_traces = merge_event_csvs(
         event_paths,
         root / "frame_events.csv",
-        FRAME_EVENT_COLUMNS,
-        start_column="stage_start_timestamp_ms",
-        end_column="stage_end_timestamp_ms",
-        min_timestamp_ms=measurement_start_ms,
-        max_timestamp_ms=measurement_end_ms,
+        measured_trace_ids,
     )
     if frame_rows == 0:
         raise RuntimeError(f"Savant local telemetry merge produced no frame rows in {root / 'frames.csv'}")
     if event_rows == 0:
         raise RuntimeError(f"Savant local telemetry merge produced no event rows in {root / 'frame_events.csv'}")
+    validate_required_stage_events(measured_trace_ids, stage_traces)
 
 
 def main(argv: list[str] | None = None) -> int:

@@ -401,6 +401,8 @@ class ScenarioPlanningTests(unittest.TestCase):
         self.assertIn("waiting for first frame event", body)
         self.assertIn("start_measurement_timer_if_needed();", body)
         self.assertIn("measurement_started_.compare_exchange_strong", body)
+        self.assertGreaterEqual(body.count("events_.flush();"), 2)
+        self.assertGreaterEqual(body.count("frames_.flush();"), 2)
 
     def test_template_rejects_stale_native_probe_images(self) -> None:
         body = (ROOT / "scripts" / "run_system_template.sh").read_text(encoding="utf-8")
