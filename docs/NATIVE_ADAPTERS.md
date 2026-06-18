@@ -87,7 +87,10 @@ Defaults:
 - `vast/savant-native-probe:0.5.17-7.0`, based on `ghcr.io/insight-platform/savant-deepstream:0.5.17-7.0`
 - Savant `gpu_worker` runs `python -m savant.entrypoint deploy/savant/canonical_distributed_module.yml`
 - OpenVINO+GVA requires `gvadetect` or `object_detect`
-- GStreamer custom requires `GST_CUSTOM_STRICT=1` and the configured plugin in `GST_PLUGIN_PATH`
+- GStreamer custom uses the bundled `adaptivescheduler` plugin by default.
+  Build it with `cmake --build build/cmake --target gstadaptivescheduler`
+  and expose it with `GST_PLUGIN_PATH=$PWD/build/lib`. Strict mode still
+  fails fast if `gst-inspect-1.0 adaptivescheduler` cannot load it.
 
 The common RTP bridge in `scripts/run_system_template.sh` is intentionally
 restricted to `--mode smoke`. It verifies transport wiring but does not satisfy

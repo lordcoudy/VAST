@@ -188,6 +188,7 @@ build_reference_custom_app() {
   local build_dir="$PROJECT_DIR/build/cmake"
   local out_bin="$PROJECT_DIR/build/bin/adaptive_scheduler_app"
   local probe_bin="$PROJECT_DIR/build/bin/vast_native_gst_probe"
+  local custom_gst_plugin="$PROJECT_DIR/build/lib/libgstadaptivescheduler.so"
 
   if [[ ! -f "$PROJECT_DIR/CMakeLists.txt" ]]; then
     warn "Missing root CMakeLists.txt, cannot build native binaries"
@@ -201,6 +202,10 @@ build_reference_custom_app() {
   log "Building native GStreamer probe -> $probe_bin"
   cmake --build "$build_dir" --target vast_native_gst_probe --parallel "$(nproc)" || \
     warn "Native GStreamer probe build failed; strict distributed benchmark will fail until it is built"
+
+  log "Building custom GStreamer plugin -> $custom_gst_plugin"
+  cmake --build "$build_dir" --target gstadaptivescheduler --parallel "$(nproc)" || \
+    warn "Custom GStreamer plugin build failed; gstreamer_custom strict benchmark will fail until it is built"
 
   if command -v nvcc >/dev/null 2>&1; then
     log "Building custom CUDA + Qt app -> $out_bin"
@@ -270,6 +275,10 @@ final_checks() {
   log "Final checks"
   command -v python3 >/dev/null 2>&1 && python3 --version
   command -v gst-launch-1.0 >/dev/null 2>&1 && gst-launch-1.0 --version | head -n 1
+  if command -v gst-inspect-1.0 >/dev/null 2>&1; then
+    GST_PLUGIN_PATH="$PROJECT_DIR/build/lib" gst-inspect-1.0 adaptivescheduler >/dev/null 2>&1 || \
+      warn "adaptivescheduler plugin is not visible; check build/lib/libgstadaptivescheduler.so"
+  fi
   command -v docker >/dev/null 2>&1 && docker --version
   command -v nvidia-smi >/dev/null 2>&1 && nvidia-smi --query-gpu=name,driver_version --format=csv,noheader || true
   log "Setup completed"

@@ -214,7 +214,7 @@ Tailored behavior in real templates:
 - DeepStream: pinned to `nvcr.io/nvidia/deepstream:7.0-triton-multiarch`, uses `deepstream-test3-app` with stream URIs from `data/videos/streamXX.mp4`.
 - Savant: pinned to `ghcr.io/insight-platform/savant-deepstream:0.5.17-7.0` and uses module config at `/workspace/project/deploy/savant/module.yml`.
 - OpenVINO+GVA: pinned OpenVINO Python install `2024.6.0`, uses `gvadetect` with the exact OpenVINO model XML path above.
-- GStreamer custom: expects plugin in `build/lib` by default (`GST_PLUGIN_PATH`), and falls back to `identity` unless `GST_CUSTOM_STRICT=1`.
+- GStreamer custom: builds bundled plugin `build/lib/libgstadaptivescheduler.so` from `deploy/gstreamer_adaptivescheduler` and uses element `adaptivescheduler`; it falls back to `identity` only outside strict mode.
 - Custom CUDA + Qt: builds `build/bin/adaptive_scheduler_app` from
   `deploy/custom_cpp_cuda_qt/adaptive_scheduler_app.cu` through CMake and runs
   its Qt dashboard with `QT_QPA_PLATFORM=offscreen`.
@@ -238,6 +238,14 @@ Useful template environment variables:
 - `NATIVE_PROBE_BIN`, `DEEPSTREAM_NATIVE_PROBE_IMAGE`, `SAVANT_NATIVE_PROBE_IMAGE`
 - `SAVANT_CANONICAL_MODULE`, `DEEPSTREAM_PGIE_CONFIG`, `GST_CUSTOM_STRICT`
 - `DISTRIBUTED_NATIVE_CMD_<SYSTEM>_<ROLE>` or `DISTRIBUTED_NATIVE_CMD` as override paths for native role-specific RTP commands
+
+Build and verify the bundled GStreamer custom plugin manually:
+
+```bash
+cmake -S . -B build/cmake -DVAST_BUILD_GSTREAMER_CUSTOM_PLUGIN=ON
+cmake --build build/cmake --target gstadaptivescheduler
+GST_PLUGIN_PATH="$PWD/build/lib" gst-inspect-1.0 adaptivescheduler
+```
 
 ## Scenario Schema and Distributed Runs
 

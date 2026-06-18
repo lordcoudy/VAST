@@ -35,6 +35,7 @@ It includes:
 - `scripts/setup_target_windows.ps1`: Windows bootstrap + WSL2 preparation
 - `scripts/setup_target.py`: One-command OS auto-detect launcher for installers
 - `scripts/run_system_template.sh`: Real DeepStream/Savant/OpenVINO/GStreamer/C++ command templates
+- `deploy/gstreamer_adaptivescheduler/`: Bundled `adaptivescheduler` GStreamer plugin source
 - `scripts/emit_runtime_frames_csv.py`: Runtime-derived per-frame CSV exporter used when system commands do not natively write frame metrics
 - `scripts/prepare_assets.sh`: Builds 6-stream video layout and downloads OpenVINO model to fixed paths
 - `INSTRUCTIONS.md`: Full setup and usage guide
@@ -66,6 +67,7 @@ Pinned system defaults:
 - Savant image: `ghcr.io/insight-platform/savant-deepstream:0.5.17-7.0`
 - OpenVINO Python: `2024.6.0`
 - Custom CUDA + Qt reference app source: `deploy/custom_cpp_cuda_qt/adaptive_scheduler_app.cu`
+- GStreamer custom plugin: `build/lib/libgstadaptivescheduler.so`, built from `deploy/gstreamer_adaptivescheduler`
 
 Prepare assets manually (if needed):
 
@@ -96,6 +98,14 @@ Manual Python-only setup (minimal):
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
+```
+
+Build the bundled GStreamer custom plugin manually:
+
+```bash
+cmake -S . -B build/cmake -DVAST_BUILD_GSTREAMER_CUSTOM_PLUGIN=ON
+cmake --build build/cmake --target gstadaptivescheduler
+GST_PLUGIN_PATH="$PWD/build/lib" gst-inspect-1.0 adaptivescheduler
 ```
 
 ## 2) Validate hardware visibility

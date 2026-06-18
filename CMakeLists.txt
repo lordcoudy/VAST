@@ -1,19 +1,23 @@
 cmake_minimum_required(VERSION 3.22)
 
-project(vast_benchmark LANGUAGES CXX)
+project(vast_benchmark LANGUAGES C CXX)
 
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/build/bin")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/build/lib")
 
 option(VAST_BUILD_NATIVE_GST_PROBE "Build strict native GStreamer probe runtime" ON)
+option(VAST_BUILD_GSTREAMER_CUSTOM_PLUGIN "Build bundled custom GStreamer adaptivescheduler plugin" ON)
 option(VAST_BUILD_CUSTOM_CUDA_QT "Build custom CUDA + Qt scheduler app when dependencies are available" ON)
 
 find_package(Threads REQUIRED)
+find_package(PkgConfig QUIET)
 
 if(VAST_BUILD_NATIVE_GST_PROBE)
-  find_package(PkgConfig QUIET)
   if(PkgConfig_FOUND)
     pkg_check_modules(GSTREAMER QUIET IMPORTED_TARGET
       gstreamer-1.0
@@ -30,6 +34,32 @@ if(VAST_BUILD_NATIVE_GST_PROBE)
     )
   else()
     message(WARNING "GStreamer development packages were not found; vast_native_gst_probe will not be built")
+  endif()
+endif()
+
+if(VAST_BUILD_GSTREAMER_CUSTOM_PLUGIN)
+  if(PkgConfig_FOUND)
+    pkg_check_modules(GSTREAMER_CUSTOM_PLUGIN QUIET IMPORTED_TARGET
+      gstreamer-1.0
+      gstreamer-base-1.0
+      gstreamer-video-1.0
+    )
+  endif()
+  if(GSTREAMER_CUSTOM_PLUGIN_FOUND)
+    add_library(gstadaptivescheduler MODULE
+      deploy/gstreamer_adaptivescheduler/gstadaptivescheduler.c
+    )
+    set_target_properties(gstadaptivescheduler PROPERTIES
+      LIBRARY_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/build/lib"
+    )
+    target_compile_definitions(gstadaptivescheduler PRIVATE
+      PACKAGE="vast"
+    )
+    target_link_libraries(gstadaptivescheduler PRIVATE
+      PkgConfig::GSTREAMER_CUSTOM_PLUGIN
+    )
+  else()
+    message(WARNING "GStreamer base/video development packages were not found; gstadaptivescheduler plugin will not be built")
   endif()
 endif()
 

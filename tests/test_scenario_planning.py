@@ -191,6 +191,16 @@ class ScenarioPlanningTests(unittest.TestCase):
             for fragment in expected:
                 self.assertIn(fragment, output)
 
+    def test_gstreamer_custom_plugin_is_bundled(self) -> None:
+        source = ROOT / "deploy" / "gstreamer_adaptivescheduler" / "gstadaptivescheduler.c"
+        cmake = (ROOT / "CMakeLists.txt").read_text(encoding="utf-8")
+        body = source.read_text(encoding="utf-8")
+
+        self.assertIn("add_library(gstadaptivescheduler MODULE", cmake)
+        self.assertIn("LIBRARY_OUTPUT_DIRECTORY", cmake)
+        self.assertIn('gst_element_register(plugin, "adaptivescheduler"', body)
+        self.assertIn("GST_PLUGIN_DEFINE", body)
+
     def test_single_server_preflight_records_loopback_metrics(self) -> None:
         hosts_config = {
             "hosts": [
