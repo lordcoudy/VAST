@@ -16,6 +16,7 @@ from benchmark_contract import ContractError
 from distributed_executor import build_distributed_plan, run_network_preflight
 from run_experiments import (
     build_run_seed,
+    default_command_timeout_s,
     expand_scenario,
     load_config,
     normalize_run_kind,
@@ -298,6 +299,13 @@ class ScenarioPlanningTests(unittest.TestCase):
             if system == "deepstream":
                 self.assertIn("--entrypoint /usr/local/bin/vast_native_gst_probe", output)
                 self.assertNotIn("'vast/deepstream-native-probe:7.0'     /usr/local/bin/vast_native_gst_probe", output)
+            if system == "savant":
+                self.assertIn("Prewarming Savant local model cache", output)
+                self.assertIn("wait_for_telemetry", output)
+                self.assertIn("measurement_start_ms", output)
+                self.assertIn("measurement_end_ms", output)
+                self.assertIn(".cache/savant", output)
+                self.assertNotIn("; sleep 5; for pid in $pids", output)
 
     def test_gstreamer_custom_plugin_is_bundled(self) -> None:
         source = ROOT / "deploy" / "gstreamer_adaptivescheduler" / "gstadaptivescheduler.c"
@@ -356,6 +364,50 @@ class ScenarioPlanningTests(unittest.TestCase):
         self.assertIn("org.vast.native_probe.source_sha", body)
         self.assertIn("VAST_SKIP_NATIVE_IMAGE_SHA_CHECK", body)
         self.assertIn("Strict native $SYSTEM benchmark image is stale", body)
+
+    def test_savant_local_template_waits_for_native_rows_before_measurement(self) -> None:
+        body = (ROOT / "scripts" / "run_system_template.sh").read_text(encoding="utf-8")
+
+        self.assertIn("SAVANT_LOCAL_PREWARM", body)
+        self.assertIn("wait_for_csv_rows", body)
+        self.assertIn("wait_for_telemetry || { rc=\\$?; cleanup", body)
+        self.assertIn("mark_measurement_start; sleep ${DURATION_S}; mark_measurement_end", body)
+        self.assertIn("measurement_start_ms", body)
+        self.assertIn("measurement_end_ms", body)
+
+    def test_savant_local_timeout_allows_prewarm_and_shutdown(self) -> None:
+        base_env = {"STARTUP_GRACE_S": "180", "SAVANT_LOCAL_SHUTDOWN_GRACE_S": "15"}
+
+        self.assertEqual(
+            default_command_timeout_s(
+                system_key="deepstream",
+                duration_s=30,
+                distributed_enabled=False,
+                mode="benchmark",
+                env=base_env,
+            ),
+            270,
+        )
+        self.assertEqual(
+            default_command_timeout_s(
+                system_key="savant",
+                duration_s=30,
+                distributed_enabled=False,
+                mode="benchmark",
+                env=base_env,
+            ),
+            540,
+        )
+        self.assertEqual(
+            default_command_timeout_s(
+                system_key="savant",
+                duration_s=30,
+                distributed_enabled=False,
+                mode="benchmark",
+                env={**base_env, "SAVANT_LOCAL_PREWARM": "0"},
+            ),
+            360,
+        )
 
     def test_dlstreamer_installer_prefers_clean_docker_fallback(self) -> None:
         body = (ROOT / "scripts" / "install_openvino_dlstreamer.sh").read_text(encoding="utf-8")

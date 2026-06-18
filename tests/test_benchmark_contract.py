@@ -303,6 +303,81 @@ class BenchmarkContractTests(unittest.TestCase):
             self.assertEqual(frames.shape[0], 2)
             self.assertEqual(events.shape[0], 6)
 
+    def test_savant_local_merge_filters_measurement_window(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "measurement_start_ms").write_text("1000\n", encoding="utf-8")
+            (root / "measurement_end_ms").write_text("2000\n", encoding="utf-8")
+            for stream_id in range(2):
+                stream_dir = root / "streams" / f"stream_{stream_id}"
+                stream_dir.mkdir(parents=True)
+                frame_rows = []
+                event_rows = []
+                samples = [
+                    (1, 100, 130),
+                    (2, 1100, 1130),
+                    (3, 2100, 2130),
+                ]
+                for frame_id, ingress_ms, egress_ms in samples:
+                    trace_id = f"r:{stream_id}:{frame_id}"
+                    frame_rows.append(
+                        {
+                            "schema_version": 2,
+                            "run_id": "r",
+                            "trace_id": trace_id,
+                            "stream_id": stream_id,
+                            "frame_id": frame_id,
+                            "ingress_timestamp_ms": ingress_ms,
+                            "egress_timestamp_ms": egress_ms,
+                            "e2e_latency_ms": egress_ms - ingress_ms,
+                            "objects": 3,
+                            "detector": "peoplenet",
+                            "backend": "deepstream_tensorrt",
+                            "telemetry_source": "native",
+                        }
+                    )
+                    for idx, stage in enumerate(["decode", "detect", "aggregate"]):
+                        start_ms = ingress_ms + idx * 10
+                        event_rows.append(
+                            {
+                                "schema_version": 2,
+                                "run_id": "r",
+                                "trace_id": trace_id,
+                                "stream_id": stream_id,
+                                "frame_id": frame_id,
+                                "stage": stage,
+                                "role": "local",
+                                "host": "localhost",
+                                "resource": "gpu" if stage == "detect" else "cpu",
+                                "queue_enter_timestamp_ms": start_ms,
+                                "stage_start_timestamp_ms": start_ms,
+                                "stage_end_timestamp_ms": start_ms + 1,
+                                "queue_depth": 0,
+                                "estimated_cost_ms": 1,
+                                "policy_action": "native:savant",
+                            }
+                        )
+                pd.DataFrame(frame_rows).to_csv(stream_dir / "frames.csv", index=False)
+                pd.DataFrame(event_rows).to_csv(stream_dir / "frame_events.csv", index=False)
+
+            merge_local_outputs(root, streams=2)
+            frames = canonicalize_frames_csv(
+                root / "frames.csv",
+                mode="benchmark",
+                run_id="r",
+                detector="peoplenet",
+                backend="deepstream_tensorrt",
+            )
+            events = validate_frame_events(root / "frame_events.csv")
+            validate_stage_trace_coverage(
+                root / "frames.csv",
+                root / "frame_events.csv",
+                required_stages=["decode", "detect", "aggregate"],
+            )
+            self.assertEqual(set(frames["frame_id"]), {2})
+            self.assertEqual(frames.shape[0], 2)
+            self.assertEqual(events.shape[0], 6)
+
     def test_savant_local_pyfunc_writes_native_rows_from_buffer(self) -> None:
         class Buffer:
             pts = 42

@@ -263,7 +263,54 @@ class SavantLocalTelemetryProbe(BasePyFuncPlugin):
         return True
 
 
-def merge_csvs(paths: list[Path], output: Path, fieldnames: list[str]) -> int:
+def read_timestamp_marker(root: Path, name: str) -> int | None:
+    path = root / name
+    if not path.exists():
+        return None
+    raw = path.read_text(encoding="utf-8").strip()
+    if not raw:
+        return None
+    try:
+        return int(raw)
+    except ValueError as exc:
+        raise RuntimeError(f"invalid Savant measurement marker {path}: {raw!r}") from exc
+
+
+def row_timestamp(row: dict[str, str], column: str) -> int:
+    raw = str(row.get(column, "")).strip()
+    if not raw:
+        raise RuntimeError(f"Savant telemetry row is missing timestamp column {column}")
+    try:
+        return int(float(raw))
+    except ValueError as exc:
+        raise RuntimeError(f"invalid Savant timestamp value for {column}: {raw!r}") from exc
+
+
+def row_in_window(
+    row: dict[str, str],
+    *,
+    start_column: str,
+    end_column: str,
+    min_timestamp_ms: int | None,
+    max_timestamp_ms: int | None,
+) -> bool:
+    if min_timestamp_ms is not None and row_timestamp(row, start_column) < min_timestamp_ms:
+        return False
+    if max_timestamp_ms is not None and row_timestamp(row, end_column) > max_timestamp_ms:
+        return False
+    return True
+
+
+def merge_csvs(
+    paths: list[Path],
+    output: Path,
+    fieldnames: list[str],
+    *,
+    start_column: str | None = None,
+    end_column: str | None = None,
+    min_timestamp_ms: int | None = None,
+    max_timestamp_ms: int | None = None,
+) -> int:
     rows = 0
     output.parent.mkdir(parents=True, exist_ok=True)
     with output.open("w", newline="", encoding="utf-8") as out:
@@ -273,6 +320,15 @@ def merge_csvs(paths: list[Path], output: Path, fieldnames: list[str]) -> int:
             with path.open("r", newline="", encoding="utf-8") as src:
                 reader = csv.DictReader(src)
                 for row in reader:
+                    if start_column is not None and end_column is not None:
+                        if not row_in_window(
+                            row,
+                            start_column=start_column,
+                            end_column=end_column,
+                            min_timestamp_ms=min_timestamp_ms,
+                            max_timestamp_ms=max_timestamp_ms,
+                        ):
+                            continue
                     writer.writerow({field: row.get(field, "") for field in fieldnames})
                     rows += 1
     return rows
@@ -287,8 +343,27 @@ def merge_local_outputs(output_dir: str | Path, streams: int) -> None:
     if missing:
         raise RuntimeError("missing Savant local telemetry files: " + ", ".join(missing))
 
-    frame_rows = merge_csvs(frame_paths, root / "frames.csv", FRAME_COLUMNS)
-    event_rows = merge_csvs(event_paths, root / "frame_events.csv", FRAME_EVENT_COLUMNS)
+    measurement_start_ms = read_timestamp_marker(root, "measurement_start_ms")
+    measurement_end_ms = read_timestamp_marker(root, "measurement_end_ms")
+
+    frame_rows = merge_csvs(
+        frame_paths,
+        root / "frames.csv",
+        FRAME_COLUMNS,
+        start_column="ingress_timestamp_ms",
+        end_column="egress_timestamp_ms",
+        min_timestamp_ms=measurement_start_ms,
+        max_timestamp_ms=measurement_end_ms,
+    )
+    event_rows = merge_csvs(
+        event_paths,
+        root / "frame_events.csv",
+        FRAME_EVENT_COLUMNS,
+        start_column="stage_start_timestamp_ms",
+        end_column="stage_end_timestamp_ms",
+        min_timestamp_ms=measurement_start_ms,
+        max_timestamp_ms=measurement_end_ms,
+    )
     if frame_rows == 0:
         raise RuntimeError(f"Savant local telemetry merge produced no frame rows in {root / 'frames.csv'}")
     if event_rows == 0:

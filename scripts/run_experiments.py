@@ -45,6 +45,24 @@ def load_config(path: Path) -> dict[str, Any]:
         return yaml.safe_load(f)
 
 
+def default_command_timeout_s(
+    *,
+    system_key: str,
+    duration_s: int,
+    distributed_enabled: bool,
+    mode: str,
+    env: dict[str, str] | None = None,
+) -> int:
+    values = os.environ if env is None else env
+    startup_grace_s = int(values.get("STARTUP_GRACE_S", "180"))
+    if mode == "benchmark" and not distributed_enabled and system_key == "savant":
+        savant_startup_s = int(values.get("SAVANT_LOCAL_STARTUP_WAIT_S", str(startup_grace_s)))
+        shutdown_grace_s = int(values.get("SAVANT_LOCAL_SHUTDOWN_GRACE_S", "15"))
+        startup_windows = 2 if values.get("SAVANT_LOCAL_PREWARM", "1") != "0" else 1
+        return int(duration_s) + (startup_windows * savant_startup_s) + (2 * shutdown_grace_s) + 120
+    return int(duration_s) + startup_grace_s + 60
+
+
 @dataclass(frozen=True)
 class ExecutionContext:
     run_kind: str
@@ -612,8 +630,12 @@ def run_one(
     if cmd_timeout_env:
         cmd_timeout_s = int(cmd_timeout_env)
     else:
-        # Default hard ceiling: measurement window + startup allowance + cleanup margin.
-        cmd_timeout_s = int(duration_s) + int(os.environ.get("STARTUP_GRACE_S", "180")) + 60
+        cmd_timeout_s = default_command_timeout_s(
+            system_key=system_key,
+            duration_s=int(duration_s),
+            distributed_enabled=distributed_enabled,
+            mode=mode,
+        )
 
     child_env = os.environ.copy()
     child_env["EXPERIMENT_RUN_SEED"] = str(run_seed)
