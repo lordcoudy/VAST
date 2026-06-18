@@ -42,6 +42,7 @@ protocol:
 scenarios:
   canonical_heterogeneous:
     description: Canonical single-server heterogeneous CPU/GPU benchmark profile.
+    benchmark_status: supported
     workload:
       seed_group: canonical_v1
       streams: 6
@@ -65,6 +66,7 @@ scenarios:
 
   canonical_distributed:
     description: Canonical role-split benchmark profile matching canonical_heterogeneous workload and pipeline.
+    benchmark_status: supported
     workload:
       seed_group: canonical_v1
       streams: 6
@@ -93,6 +95,7 @@ scenarios:
 
   baseline:
     description: Single-host decode and detection baseline.
+    benchmark_status: experimental
     workload:
       streams: 6
       object_density:
@@ -114,6 +117,7 @@ scenarios:
 
   high_density_multistage:
     description: Multi-stage high-density pipeline with tracking, classification, and recording.
+    benchmark_status: experimental
     workload:
       streams: 8
       object_density:
@@ -138,6 +142,7 @@ scenarios:
 
   bursty_workload:
     description: Bursty workload with low, medium, and high object pressure variants.
+    benchmark_status: experimental
     workload:
       streams: 6
       burst_profile:
@@ -177,6 +182,7 @@ scenarios:
 
   stream_scaling:
     description: Increase streams from 1 to 16 to find saturation.
+    benchmark_status: experimental
     workload:
       stream_range: [1, 16]
       object_density:
@@ -198,6 +204,7 @@ scenarios:
 
   edge_to_worker_distributed:
     description: Edge decode with GPU worker detection.
+    benchmark_status: experimental
     workload:
       streams: 6
       object_density:
@@ -225,6 +232,7 @@ scenarios:
 
   edge_worker_aggregator_distributed:
     description: Edge decode, worker inference, and aggregator recording.
+    benchmark_status: experimental
     workload:
       streams: 8
       object_density:
@@ -254,6 +262,7 @@ scenarios:
 
   degraded_network_distributed:
     description: Distributed pipeline under constrained bandwidth, jitter, and packet loss.
+    benchmark_status: experimental
     workload:
       streams: 6
       object_density:
@@ -287,6 +296,7 @@ scenarios:
 
   hybrid_placement:
     description: Compare CPU, GPU, and split placement strategies.
+    benchmark_status: experimental
     workload:
       streams: 6
       object_density:

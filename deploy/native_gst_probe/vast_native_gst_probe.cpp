@@ -220,6 +220,25 @@ class NativeProbeRuntime {
     return args_.video_layout_dir + "/stream" + (stream_id + 1 < 10 ? "0" : "") + std::to_string(stream_id + 1) + ".mp4";
   }
 
+  std::string uri_for_stream(int stream_id) const {
+    const std::string source = source_for_stream(stream_id);
+    if (source.find("://") != std::string::npos) {
+      return source;
+    }
+    GError* error = nullptr;
+    gchar* uri = g_filename_to_uri(source.c_str(), nullptr, &error);
+    if (uri == nullptr) {
+      std::string message = error != nullptr ? error->message : "unknown URI conversion error";
+      if (error != nullptr) {
+        g_error_free(error);
+      }
+      throw std::runtime_error("failed to convert source path to URI: " + source + ": " + message);
+    }
+    std::string out(uri);
+    g_free(uri);
+    return out;
+  }
+
   int object_count() const {
     return std::max(args_.min_objects, std::min(args_.max_objects, (args_.min_objects + args_.max_objects) / 2));
   }
@@ -504,6 +523,10 @@ class NativeProbeRuntime {
     return args_.detect_bin;
   }
 
+  bool is_deepstream() const {
+    return args_.system == "deepstream";
+  }
+
   std::string edge_pipeline(int stream_id) const {
     std::ostringstream p;
     p << "filesrc name=file_src" << stream_id
@@ -515,6 +538,9 @@ class NativeProbeRuntime {
   }
 
   std::string worker_pipeline(int stream_id) const {
+    if (is_deepstream()) {
+      return deepstream_worker_pipeline(stream_id);
+    }
     std::ostringstream p;
     p << "udpsrc name=src" << stream_id << " port=" << (args_.input_port_base + stream_id * args_.port_stride)
       << " caps=\"application/x-rtp,media=(string)video,encoding-name=(string)JPEG,payload=(int)26\""
@@ -534,6 +560,9 @@ class NativeProbeRuntime {
   }
 
   std::string local_pipeline(int stream_id) const {
+    if (is_deepstream()) {
+      return deepstream_local_pipeline(stream_id);
+    }
     std::ostringstream p;
     p << "filesrc name=file_src" << stream_id
       << " ! decodebin ! videoconvert ! videorate ! video/x-raw,framerate=30/1"
@@ -543,6 +572,38 @@ class NativeProbeRuntime {
       << " ! videoconvert"
       << " ! queue name=aggregate_probe" << stream_id
       << " ! fakesink sync=false async=false";
+    return p.str();
+  }
+
+  std::string deepstream_local_pipeline(int stream_id) const {
+    std::ostringstream p;
+    p << "nvstreammux name=mux" << stream_id
+      << " batch-size=1 width=1920 height=1080 live-source=0 batched-push-timeout=40000"
+      << " ! " << detect_bin()
+      << " ! queue name=detect_probe" << stream_id
+      << " ! nvvideoconvert ! video/x-raw"
+      << " ! queue name=aggregate_probe" << stream_id
+      << " ! fakesink sync=false async=false "
+      << "uridecodebin name=uri_src" << stream_id
+      << " ! queue name=decode_probe" << stream_id
+      << " ! nvvideoconvert ! video/x-raw(memory:NVMM),format=NV12"
+      << " ! mux" << stream_id << ".sink_0";
+    return p.str();
+  }
+
+  std::string deepstream_worker_pipeline(int stream_id) const {
+    std::ostringstream p;
+    p << "nvstreammux name=mux" << stream_id
+      << " batch-size=1 width=1920 height=1080 live-source=1 batched-push-timeout=40000"
+      << " ! " << detect_bin()
+      << " ! nvvideoconvert ! video/x-raw"
+      << " ! jpegenc ! rtpjpegpay pt=26 name=pay" << stream_id
+      << " ! udpsink name=out_sink" << stream_id << " port=" << (args_.output_port_base + stream_id * args_.port_stride)
+      << " sync=false async=false "
+      << "udpsrc name=src" << stream_id << " port=" << (args_.input_port_base + stream_id * args_.port_stride)
+      << " caps=\"application/x-rtp,media=(string)video,encoding-name=(string)JPEG,payload=(int)26\""
+      << " ! rtpjpegdepay ! jpegdec ! nvvideoconvert ! video/x-raw(memory:NVMM),format=NV12"
+      << " ! mux" << stream_id << ".sink_0";
     return p.str();
   }
 
@@ -584,7 +645,11 @@ class NativeProbeRuntime {
       } else if (args_.role == "aggregator") {
         add_probe(pipeline, "src" + std::to_string(stream_id), "input", stream_id);
       } else if (args_.role == "local") {
-        set_string_property(pipeline, "file_src" + std::to_string(stream_id), "location", source_for_stream(stream_id));
+        if (is_deepstream()) {
+          set_string_property(pipeline, "uri_src" + std::to_string(stream_id), "uri", uri_for_stream(stream_id));
+        } else {
+          set_string_property(pipeline, "file_src" + std::to_string(stream_id), "location", source_for_stream(stream_id));
+        }
         add_probe(pipeline, "decode_probe" + std::to_string(stream_id), "local-decode", stream_id);
         add_probe(pipeline, "detect_probe" + std::to_string(stream_id), "local-detect", stream_id);
         add_probe(pipeline, "aggregate_probe" + std::to_string(stream_id), "local-aggregate", stream_id);

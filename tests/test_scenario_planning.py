@@ -11,6 +11,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
+from benchmark_adapters import select_scenarios, validate_benchmark_adapter
+from benchmark_contract import ContractError
 from distributed_executor import build_distributed_plan, run_network_preflight
 from run_experiments import (
     build_run_seed,
@@ -58,6 +60,56 @@ class ScenarioPlanningTests(unittest.TestCase):
         self.assertEqual(local["pipeline"], distributed["pipeline"])
         self.assertFalse(local["distributed"]["enabled"])
         self.assertTrue(distributed["distributed"]["enabled"])
+
+    def test_benchmark_all_selects_only_supported_scenarios(self) -> None:
+        cfg = load_config(ROOT / "configs" / "experiments.yaml")
+
+        self.assertEqual(
+            select_scenarios(cfg, ["all"], mode="benchmark"),
+            ["canonical_heterogeneous", "canonical_distributed"],
+        )
+        self.assertEqual(
+            select_scenarios(cfg, ["all"], mode="benchmark", run_kind="heterogeneous"),
+            ["canonical_heterogeneous"],
+        )
+        self.assertEqual(
+            select_scenarios(cfg, ["all"], mode="benchmark", run_kind="distributed"),
+            ["canonical_distributed"],
+        )
+        self.assertIn("baseline", select_scenarios(cfg, ["all"], mode="smoke"))
+
+    def test_strict_adapter_rejects_experimental_multistage_scenario(self) -> None:
+        cfg = load_config(ROOT / "configs" / "experiments.yaml")
+        scenario = normalize_scenario("high_density_multistage", cfg["scenarios"]["high_density_multistage"])
+
+        with self.assertRaisesRegex(ContractError, "unsupported benchmark pipeline"):
+            validate_benchmark_adapter(
+                system_key="deepstream",
+                scenario=scenario,
+                distributed=False,
+                mode="benchmark",
+            )
+
+    def test_strict_adapter_accepts_canonical_local_and_distributed(self) -> None:
+        cfg = load_config(ROOT / "configs" / "experiments.yaml")
+        local = normalize_scenario("canonical_heterogeneous", cfg["scenarios"]["canonical_heterogeneous"])
+        distributed = normalize_scenario("canonical_distributed", cfg["scenarios"]["canonical_distributed"])
+
+        local_plan = validate_benchmark_adapter(
+            system_key="deepstream",
+            scenario=local,
+            distributed=False,
+            mode="benchmark",
+        )
+        distributed_plan = validate_benchmark_adapter(
+            system_key="openvino_gva",
+            scenario=distributed,
+            distributed=True,
+            mode="benchmark",
+        )
+
+        self.assertEqual(local_plan.contract, "strict_native_schema_v2")
+        self.assertEqual(distributed_plan.runner, "scripts/run_system_template.sh")
 
     def test_heterogeneous_context_forces_distributed_env_off(self) -> None:
         cfg = load_config(ROOT / "configs" / "experiments.yaml")
@@ -273,6 +325,16 @@ class ScenarioPlanningTests(unittest.TestCase):
         self.assertIn("udpsink name=out_sink", body)
         self.assertIn('set_string_property(pipeline, "file_src" + std::to_string(stream_id), "location"', body)
         self.assertIn('set_string_property(pipeline, "out_sink" + std::to_string(stream_id), "host"', body)
+
+    def test_deepstream_native_probe_uses_nvstreammux_topology(self) -> None:
+        body = (ROOT / "deploy" / "native_gst_probe" / "vast_native_gst_probe.cpp").read_text(encoding="utf-8")
+
+        self.assertIn("deepstream_local_pipeline", body)
+        self.assertIn("deepstream_worker_pipeline", body)
+        self.assertIn("uridecodebin name=uri_src", body)
+        self.assertIn("nvstreammux name=mux", body)
+        self.assertIn("! mux\" << stream_id << \".sink_0", body)
+        self.assertNotIn("video/x-raw(memory:NVMM),format=NV12 ! nvinfer", body)
 
     def test_single_server_preflight_records_loopback_metrics(self) -> None:
         hosts_config = {

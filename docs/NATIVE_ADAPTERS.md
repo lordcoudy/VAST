@@ -37,9 +37,11 @@ The SSH executor launches roles in this order:
 2. `gpu_worker`
 3. `edge`
 
-For `--mode benchmark`, the built-in strict role commands support
-`canonical_distributed` for DeepStream, Savant, OpenVINO+GVA, and
-GStreamer custom. Host inventories may still override them with
+For `--mode benchmark`, the built-in strict commands support
+`canonical_heterogeneous` and `canonical_distributed` for DeepStream, Savant,
+OpenVINO+GVA, GStreamer custom, and the custom C++ app. Other configured
+scenarios are experimental until adapters write native events for their extra
+stages. Host inventories may still override distributed commands with
 `DISTRIBUTED_NATIVE_CMD_<SYSTEM>_<ROLE>` or the generic `DISTRIBUTED_NATIVE_CMD`
 fallback for custom deployments. The command receives:
 
@@ -67,8 +69,11 @@ The native RTP trace header extension uses extension id `1` and URI
 `ingress_timestamp_ms:u64`, all encoded big-endian. The same serializer lives in
 `scripts/rtp_trace.py` for tests and non-C++ tooling.
 
-`vast_native_gst_probe` is the common non-CUDA runtime for edge/aggregator
-roles and for host OpenVINO/GStreamer custom worker roles. Build it with:
+`vast_native_gst_probe` is the common runtime for edge/aggregator roles, host
+OpenVINO/GStreamer custom worker roles, and DeepStream native probe containers.
+The DeepStream local and worker paths use a DeepStream-specific
+`uridecodebin`/`nvstreammux`/`nvinfer` graph instead of the generic detector
+chain. Build it with:
 
 ```bash
 cmake -S . -B build/cmake -DVAST_BUILD_NATIVE_GST_PROBE=ON -DVAST_BUILD_CUSTOM_CUDA_QT=OFF

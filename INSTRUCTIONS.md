@@ -207,22 +207,25 @@ Synthetic, skipped, and legacy rows are excluded from publishable analysis.
 To execute real pipelines:
 
 ```bash
-python scripts/run_experiments.py --systems deepstream --scenarios baseline --repeats 1 --warmup 0 --measurement 30
+python scripts/run_experiments.py --mode benchmark --run-kind heterogeneous \
+  --systems deepstream savant openvino_gva gstreamer_custom \
+  --scenarios canonical_heterogeneous --repeats 1 --warmup 0 --measurement 30
 ```
 
 Tailored behavior in real templates:
-- DeepStream: pinned to `nvcr.io/nvidia/deepstream:7.0-triton-multiarch`, uses `deepstream-test3-app` with stream URIs from `data/videos/streamXX.mp4`.
-- Savant: pinned to `ghcr.io/insight-platform/savant-deepstream:0.5.17-7.0` and uses module config at `/workspace/project/deploy/savant/module.yml`.
+- DeepStream: benchmark mode uses `vast/deepstream-native-probe:7.0` with a native `uridecodebin -> nvstreammux -> nvinfer` probe graph; the sample app path is smoke/demo only.
+- Savant: benchmark mode uses `deploy/savant/canonical_heterogeneous_module.yml` or `deploy/savant/canonical_distributed_module.yml` with native CSV telemetry merge.
 - OpenVINO+GVA: pinned OpenVINO Python install `2024.6.0`, uses `gvadetect` with the exact OpenVINO model XML path above.
 - GStreamer custom: builds bundled plugin `build/lib/libgstadaptivescheduler.so` from `deploy/gstreamer_adaptivescheduler` and uses element `adaptivescheduler`; it falls back to `identity` only outside strict mode.
 - Custom CUDA + Qt: builds `build/bin/adaptive_scheduler_app` from
   `deploy/custom_cpp_cuda_qt/adaptive_scheduler_app.cu` through CMake and runs
   its Qt dashboard with `QT_QPA_PLATFORM=offscreen`.
 
-Savant module details:
-- File: `deploy/savant/module.yml`
-- Schema: valid for Savant v0.5.x line (pinned to v0.5.17 image)
-- Pipeline: `uridecodebin -> nvinfer@detector (PeopleNet) -> devnull_sink`
+Supported benchmark scenarios:
+- `canonical_heterogeneous` for single-server local runs.
+- `canonical_distributed` for single-server SSH or multi-host role-split runs.
+- Other configured scenarios are experimental and fail fast in `--mode benchmark`
+  until native telemetry for their extra stages is implemented.
 
 Useful template environment variables:
 - `DEEPSTREAM_IMAGE`, `DEEPSTREAM_CONFIG`

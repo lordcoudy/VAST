@@ -271,7 +271,7 @@ run_with_frames_export() {
   return "$rc"
 }
 
-run_deepstream() {
+run_deepstream_smoke_sample_app() {
   local image="${DEEPSTREAM_IMAGE:-nvcr.io/nvidia/deepstream:7.0-triton-multiarch}"
   local i
   local uris=""
@@ -295,7 +295,7 @@ run_deepstream() {
   run_with_frames_export "$cmd" "$source"
 }
 
-run_savant() {
+run_savant_smoke_module() {
   local image="${SAVANT_IMAGE:-ghcr.io/insight-platform/savant-deepstream:0.5.17-7.0}"
   local module="${SAVANT_MODULE:-/workspace/project/deploy/savant/module.yml}"
   local source="${SAVANT_SOURCE:-/workspace/project/data/videos/stream01.mp4}"
@@ -323,7 +323,7 @@ run_savant() {
   run_with_frames_export "$cmd" "$source"
 }
 
-run_openvino_gva() {
+run_openvino_gva_smoke_pipeline() {
   local model_xml="${OPENVINO_MODEL_XML:-$OPENVINO_MODEL_XML_DEFAULT}"
   local legacy_model_xml="$PROJECT_DIR/models/openvino/public/person-vehicle-bike-detection-crossroad-0078/FP16/person-vehicle-bike-detection-crossroad-0078.xml"
   local source
@@ -402,7 +402,7 @@ run_openvino_gva() {
   run_with_frames_export "$cmd" "$source"
 }
 
-run_gstreamer_custom() {
+run_gstreamer_custom_smoke_pipeline() {
   local source="${GST_CUSTOM_SOURCE:-$(pick_video_for_stream 1)}"
   local plugin="${GST_CUSTOM_PLUGIN:-adaptivescheduler}"
   local strict_plugin="${GST_CUSTOM_STRICT:-0}"
@@ -525,7 +525,7 @@ native_probe_detect_bin() {
     deepstream)
       local config
       config="$(project_path_for_runtime "${DEEPSTREAM_PGIE_CONFIG:-/opt/nvidia/deepstream/deepstream/samples/configs/deepstream-app/config_infer_primary.txt}")"
-      printf "nvvideoconvert ! video/x-raw(memory:NVMM),format=NV12 ! nvinfer config-file-path=%s ! nvvideoconvert ! video/x-raw" "$(shell_quote "$config")"
+      printf "nvinfer config-file-path=%s" "$(shell_quote "$config")"
       ;;
     savant)
       # The Savant derived image provides a framework module that exposes a GStreamer-compatible detector hook.
@@ -888,18 +888,20 @@ if [[ "$BENCHMARK_MODE" == "benchmark" ]]; then
   exit $?
 fi
 
+# Below this point only explicit smoke/demo adapters may run. Benchmark mode
+# has already exited through strict native adapters or failed fast.
 case "$SYSTEM" in
   deepstream)
-    run_deepstream
+    run_deepstream_smoke_sample_app
     ;;
   savant)
-    run_savant
+    run_savant_smoke_module
     ;;
   openvino_gva)
-    run_openvino_gva
+    run_openvino_gva_smoke_pipeline
     ;;
   gstreamer_custom)
-    run_gstreamer_custom
+    run_gstreamer_custom_smoke_pipeline
     ;;
   custom_cpp_cuda_qt)
     run_custom_cpp_cuda_qt

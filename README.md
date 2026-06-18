@@ -27,6 +27,7 @@ It includes:
 - `scripts/collect_metrics.py`: CPU/GPU sampler (CSV)
 - `scripts/run_experiments.py`: Main matrix execution tool
 - `scripts/distributed_executor.py`: SSH/rsync/scp executor for multi-host scenarios
+- `scripts/benchmark_adapters.py`: Strict benchmark adapter support matrix and fail-fast contract checks
 - `scripts/check_dataset.py`: Dataset checksum validator
 - `scripts/train_ql_heft.py`: Seeded offline QL-HEFT policy trainer
 - `docs/NATIVE_ADAPTERS.md`: Required native probe and distributed RTP contract
@@ -34,9 +35,9 @@ It includes:
 - `scripts/setup_target.sh`: Linux full-stack bootstrap script
 - `scripts/setup_target_windows.ps1`: Windows bootstrap + WSL2 preparation
 - `scripts/setup_target.py`: One-command OS auto-detect launcher for installers
-- `scripts/run_system_template.sh`: Real DeepStream/Savant/OpenVINO/GStreamer/C++ command templates
+- `scripts/run_system_template.sh`: Compatibility wrapper for strict adapters and smoke/demo command templates
 - `deploy/gstreamer_adaptivescheduler/`: Bundled `adaptivescheduler` GStreamer plugin source
-- `scripts/emit_runtime_frames_csv.py`: Runtime-derived per-frame CSV exporter used when system commands do not natively write frame metrics
+- `scripts/emit_runtime_frames_csv.py`: Smoke-only synthetic per-frame CSV exporter
 - `scripts/prepare_assets.sh`: Builds 6-stream video layout and downloads OpenVINO model to fixed paths
 - `INSTRUCTIONS.md`: Full setup and usage guide
 - `runs/`: Raw run outputs (generated)
@@ -60,7 +61,7 @@ python3 scripts/setup_target.py
 Asset paths used by real templates:
 - Videos: `data/videos/stream01.mp4` ... `data/videos/stream06.mp4`
 - OpenVINO model: `models/openvino/public/intel/person-vehicle-bike-detection-crossroad-0078/FP16/person-vehicle-bike-detection-crossroad-0078.xml`
-- Savant module: `deploy/savant/module.yml` (pinned for image `ghcr.io/insight-platform/savant-deepstream:0.5.17-7.0`)
+- Savant benchmark modules: `deploy/savant/canonical_heterogeneous_module.yml` and `deploy/savant/canonical_distributed_module.yml`
 
 Pinned system defaults:
 - DeepStream image: `nvcr.io/nvidia/deepstream:7.0-triton-multiarch`
@@ -228,10 +229,12 @@ The runner also exports scenario context to templates:
   and backend identity for every row.
 - `benchmark` mode rejects missing, legacy, and synthetic per-frame telemetry.
 - Distributed roles start in the order `aggregator -> gpu_worker -> edge`.
-- DeepStream, Savant, OpenVINO+GVA, and GStreamer custom have built-in strict
-  native commands for `canonical_distributed`; `DISTRIBUTED_NATIVE_CMD_*`
-  remains an override path for custom deployments. The common RTP bridge is
-  smoke-only.
+- DeepStream, Savant, OpenVINO+GVA, GStreamer custom, and the custom C++ app
+  have strict native adapters for `canonical_heterogeneous` and
+  `canonical_distributed`. Other scenarios are marked experimental and fail
+  fast in benchmark mode until native stage telemetry exists.
+- `DISTRIBUTED_NATIVE_CMD_*` remains an override path for custom deployments.
+  The common RTP bridge is smoke-only.
 - Custom CUDA + Qt runs use `QT_QPA_PLATFORM=offscreen`; train the frozen policy
   with `python scripts/train_ql_heft.py`.
 - All run metadata, commands, dataset checksums, git state, and logs are stored per repetition.

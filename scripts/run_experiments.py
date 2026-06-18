@@ -30,6 +30,7 @@ from benchmark_contract import (
     validate_stage_trace_coverage,
     write_json,
 )
+from benchmark_adapters import select_scenarios, validate_benchmark_adapter
 from collect_metrics import MetricsCollector
 from distributed_executor import (
     build_distributed_plan,
@@ -473,6 +474,12 @@ def run_one(
     system_config = config["systems"][system_key]
     if execution_context.distributed_enabled and not bool(system_config.get("supports_distributed", False)):
         raise ContractError(f"system '{system_key}' does not support distributed execution")
+    benchmark_adapter = validate_benchmark_adapter(
+        system_key=system_key,
+        scenario=scenario,
+        distributed=execution_context.distributed_enabled,
+        mode=mode,
+    )
     detector = str(system_config.get("detector", system_key))
     backend = str(system_config.get("backend", system_key))
     variant_name = str(scenario.get("workload", {}).get("variant", "")).strip()
@@ -686,6 +693,7 @@ def run_one(
                 "dataset": dataset,
                 "git": git_manifest(Path.cwd()),
                 "adapter": adapter_manifest(system_config),
+                "benchmark_adapter": benchmark_adapter.metadata() if benchmark_adapter else {},
                 "detected_hardware": detected_hardware_manifest(),
                 "ql_heft_policy_artifact": {
                     "path": ql_heft_artifact,
@@ -812,6 +820,7 @@ def run_one(
         "dataset": dataset,
         "git": git_manifest(Path.cwd()),
         "adapter": adapter_manifest(system_config),
+        "benchmark_adapter": benchmark_adapter.metadata() if benchmark_adapter else {},
         "detected_hardware": detected_hardware_manifest(),
         "ql_heft_policy_artifact": {
             "path": ql_heft_artifact,
@@ -929,7 +938,7 @@ def main() -> None:
     validate_hardware(cfg)
 
     systems = list(cfg["systems"].keys()) if args.systems == ["all"] else args.systems
-    scenarios = list(cfg["scenarios"].keys()) if args.scenarios == ["all"] else args.scenarios
+    scenarios = select_scenarios(cfg, args.scenarios, mode=args.mode, run_kind=run_kind)
 
     repeats = int(cfg["protocol"]["repeats"] if args.repeats < 0 else args.repeats)
     measurement_s = int(cfg["protocol"]["measurement_s"] if args.measurement < 0 else args.measurement)
