@@ -22,6 +22,7 @@ from benchmark_contract import (
     validate_frame_events,
     validate_stage_trace_coverage,
 )
+from deploy.savant.native_probe import merge_local_outputs
 from distributed_executor import _combine_csv, parse_chrony_tracking, parse_iperf_output, parse_ping_output
 from rtp_trace import RtpTrace, pack_trace, unpack_trace
 
@@ -242,6 +243,65 @@ class BenchmarkContractTests(unittest.TestCase):
             ).to_csv(events, index=False)
             with self.assertRaises(ContractError):
                 validate_stage_trace_coverage(frames, events, required_stages=["decode", "detect", "aggregate"])
+
+    def test_savant_local_stream_outputs_are_merged(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            for stream_id in range(2):
+                stream_dir = root / "streams" / f"stream_{stream_id}"
+                stream_dir.mkdir(parents=True)
+                trace_id = f"r:{stream_id}:1"
+                pd.DataFrame(
+                    [
+                        {
+                            "schema_version": 2,
+                            "run_id": "r",
+                            "trace_id": trace_id,
+                            "stream_id": stream_id,
+                            "frame_id": 1,
+                            "ingress_timestamp_ms": 100,
+                            "egress_timestamp_ms": 130,
+                            "e2e_latency_ms": 30,
+                            "objects": 3,
+                            "detector": "peoplenet",
+                            "backend": "deepstream_tensorrt",
+                            "telemetry_source": "native",
+                        }
+                    ]
+                ).to_csv(stream_dir / "frames.csv", index=False)
+                pd.DataFrame(
+                    [
+                        {
+                            "schema_version": 2,
+                            "run_id": "r",
+                            "trace_id": trace_id,
+                            "stream_id": stream_id,
+                            "frame_id": 1,
+                            "stage": stage,
+                            "role": "local",
+                            "host": "localhost",
+                            "resource": "gpu" if stage == "detect" else "cpu",
+                            "queue_enter_timestamp_ms": 100 + idx * 10,
+                            "stage_start_timestamp_ms": 100 + idx * 10,
+                            "stage_end_timestamp_ms": 110 + idx * 10,
+                            "queue_depth": 0,
+                            "estimated_cost_ms": 10,
+                            "policy_action": "native:savant",
+                        }
+                        for idx, stage in enumerate(["decode", "detect", "aggregate"])
+                    ]
+                ).to_csv(stream_dir / "frame_events.csv", index=False)
+
+            merge_local_outputs(root, streams=2)
+            frames = canonicalize_frames_csv(root / "frames.csv", mode="benchmark", run_id="r", detector="d", backend="b")
+            events = validate_frame_events(root / "frame_events.csv")
+            validate_stage_trace_coverage(
+                root / "frames.csv",
+                root / "frame_events.csv",
+                required_stages=["decode", "detect", "aggregate"],
+            )
+            self.assertEqual(frames.shape[0], 2)
+            self.assertEqual(events.shape[0], 6)
 
     def test_throughput_uses_completed_frames_per_window(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

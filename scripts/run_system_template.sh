@@ -41,6 +41,7 @@ OPENVINO_MODEL_XML_DEFAULT="$PROJECT_DIR/models/openvino/public/intel/person-veh
 NATIVE_PROBE_BIN="${NATIVE_PROBE_BIN:-$PROJECT_DIR/build/bin/vast_native_gst_probe}"
 DEEPSTREAM_NATIVE_PROBE_IMAGE="${DEEPSTREAM_NATIVE_PROBE_IMAGE:-vast/deepstream-native-probe:7.0}"
 SAVANT_NATIVE_PROBE_IMAGE="${SAVANT_NATIVE_PROBE_IMAGE:-vast/savant-native-probe:0.5.17-7.0}"
+SAVANT_LOCAL_MODULE_DEFAULT="$PROJECT_DIR/deploy/savant/canonical_heterogeneous_module.yml"
 
 log() { echo "[template] $*"; }
 warn() { echo "[template][warning] $*" >&2; }
@@ -595,7 +596,7 @@ run_host_native_probe() {
   local detect_bin
   detect_bin="$(native_probe_detect_bin)" || return 1
   if [[ "$REAL_DRY_RUN" != "1" && ! -x "$NATIVE_PROBE_BIN" ]]; then
-    warn "Strict distributed benchmark requires native probe binary: $NATIVE_PROBE_BIN"
+    warn "Strict native benchmark requires native probe binary: $NATIVE_PROBE_BIN"
     warn "Build it with: cmake -S . -B build/cmake && cmake --build build/cmake --target vast_native_gst_probe"
     return 1
   fi
@@ -609,12 +610,12 @@ run_container_native_probe() {
   local detect_bin
   if [[ "$REAL_DRY_RUN" != "1" ]]; then
     if ! command -v docker >/dev/null 2>&1; then
-      warn "docker not found for strict distributed $SYSTEM probe"
+      warn "docker not found for strict native $SYSTEM probe"
       return 1
     fi
   fi
   if [[ "$REAL_DRY_RUN" != "1" ]] && ! docker image inspect "$image" >/dev/null 2>&1; then
-    warn "Strict distributed $SYSTEM benchmark requires derived native probe image: $image"
+    warn "Strict native $SYSTEM benchmark requires derived native probe image: $image"
     warn "Build images with: bash scripts/build_native_probe_images.sh"
     return 1
   fi
@@ -644,6 +645,87 @@ run_container_native_probe() {
     /usr/local/bin/vast_native_gst_probe$(native_probe_args "$container_output" "$detect_bin")"
   NATIVE_PROBE_CONTAINERIZED="$prev_containerized"
   run_or_echo "$cmd"
+}
+
+merge_savant_local_outputs() {
+  local py_bin="python3"
+  if ! command -v "$py_bin" >/dev/null 2>&1; then
+    py_bin="python"
+  fi
+  if ! command -v "$py_bin" >/dev/null 2>&1; then
+    warn "Savant local telemetry merge failed: python runtime is unavailable"
+    return 1
+  fi
+  "$py_bin" "$PROJECT_DIR/deploy/savant/native_probe.py" \
+    --merge-local \
+    --output-dir "$OUTPUT_DIR" \
+    --streams "$STREAMS"
+}
+
+run_savant_local_native_probe() {
+  local image="${SAVANT_IMAGE:-ghcr.io/insight-platform/savant-deepstream:0.5.17-7.0}"
+  local module
+  local container_output
+  local output_mount=""
+  local cmd=""
+  local i
+  local rc
+  local prev_containerized="${NATIVE_PROBE_CONTAINERIZED:-0}"
+
+  if [[ "$OUTPUT_DIR" == "$PROJECT_DIR" ]]; then
+    container_output="/workspace/project"
+  elif [[ "$OUTPUT_DIR" == "$PROJECT_DIR"/* ]]; then
+    container_output="/workspace/project/${OUTPUT_DIR#"$PROJECT_DIR/"}"
+  else
+    container_output="/results"
+    output_mount="-v '$OUTPUT_DIR':/results"
+  fi
+
+  NATIVE_PROBE_CONTAINERIZED=1
+  module="$(project_path_for_runtime "${SAVANT_LOCAL_MODULE:-$SAVANT_LOCAL_MODULE_DEFAULT}")"
+  NATIVE_PROBE_CONTAINERIZED="$prev_containerized"
+
+  if [[ "$REAL_DRY_RUN" != "1" ]]; then
+    if ! command -v docker >/dev/null 2>&1; then
+      warn "docker not found for strict local Savant probe"
+      return 1
+    fi
+    ensure_docker_image_local "$image" || return 1
+  fi
+
+  cmd="set -e; pids=''; "
+  for i in $(seq 0 $((STREAMS - 1))); do
+    local idx=$((i + 1))
+    local stream_source="/workspace/project/data/videos/$(basename "$(pick_video_for_stream "$idx")")"
+    cmd+="docker run --rm --gpus all --entrypoint bash \
+      -e VIDEO_URI='file://$stream_source' \
+      -e VAST_STREAM_ID='$i' \
+      -e VAST_NATIVE_OUTPUT_DIR='${container_output}/streams/stream_$i' \
+      -e EXPERIMENT_RUN_ID='${RUN_ID}' \
+      -e ADAPTER_DETECTOR='${DETECTOR}' \
+      -e ADAPTER_BACKEND='${BACKEND}' \
+      -e MIN_OBJECTS='${MIN_OBJECTS}' \
+      -e MAX_OBJECTS='${MAX_OBJECTS}' \
+      -v '$PROJECT_DIR':/workspace/project ${output_mount} \
+      -w /workspace/project '$image' \
+      -lc 'python -m savant.entrypoint $module' & pids=\"\$pids \$!\"; "
+  done
+  cmd+="sleep ${DURATION_S}; for pid in \$pids; do kill -INT \$pid >/dev/null 2>&1 || true; done; wait || true"
+
+  set +e
+  run_or_echo "$cmd"
+  rc=$?
+  set -e
+
+  if [[ "$REAL_DRY_RUN" == "1" ]]; then
+    return "$rc"
+  fi
+
+  if [[ "$rc" -eq 0 || "$rc" -eq 124 || "$rc" -eq 137 || "$rc" -eq 143 ]]; then
+    merge_savant_local_outputs || return 1
+  fi
+
+  return "$rc"
 }
 
 run_savant_framework_native_probe() {
@@ -720,6 +802,31 @@ run_builtin_strict_distributed_adapter() {
   esac
 }
 
+run_builtin_strict_local_adapter() {
+  if [[ "$SCENARIO" != "canonical_heterogeneous" ]]; then
+    warn "Built-in strict local benchmark adapters currently support only canonical_heterogeneous"
+    return 1
+  fi
+  case "$SYSTEM" in
+    openvino_gva|gstreamer_custom)
+      run_host_native_probe
+      ;;
+    deepstream)
+      run_container_native_probe "$DEEPSTREAM_NATIVE_PROBE_IMAGE"
+      ;;
+    savant)
+      run_savant_local_native_probe
+      ;;
+    custom_cpp_cuda_qt)
+      run_custom_cpp_cuda_qt
+      ;;
+    *)
+      warn "No built-in strict local adapter for system=$SYSTEM"
+      return 1
+      ;;
+  esac
+}
+
 run_distributed_rtp_smoke() {
   local source
   source="$(pick_video_for_stream 1)"
@@ -770,6 +877,11 @@ run_distributed_adapter() {
 
 if [[ "$EXPERIMENT_DISTRIBUTED" == "1" ]]; then
   run_distributed_adapter
+  exit $?
+fi
+
+if [[ "$BENCHMARK_MODE" == "benchmark" ]]; then
+  run_builtin_strict_local_adapter
   exit $?
 fi
 

@@ -53,9 +53,11 @@ struct Trace {
 
 struct StreamState {
   std::uint32_t edge_frame_id = 0;
+  std::uint32_t local_frame_id = 0;
   Trace current_output_trace{};
   bool has_output_trace = false;
   std::deque<Trace> traces;
+  std::deque<Trace> aggregate_traces;
 };
 
 class NativeProbeRuntime {
@@ -247,7 +249,7 @@ class NativeProbeRuntime {
     }
     events_ << "schema_version,run_id,trace_id,stream_id,frame_id,stage,role,host,resource,"
                "queue_enter_timestamp_ms,stage_start_timestamp_ms,stage_end_timestamp_ms,queue_depth,estimated_cost_ms,policy_action\n";
-    if (args_.role == "aggregator") {
+    if (args_.role == "aggregator" || args_.role == "local") {
       frames_.open((fs::path(args_.output_dir) / "frames.csv").string(), std::ios::out | std::ios::trunc);
       if (!frames_.is_open()) {
         throw std::runtime_error("failed to open frames.csv");
@@ -402,6 +404,53 @@ class NativeProbeRuntime {
     return GST_PAD_PROBE_OK;
   }
 
+  static GstPadProbeReturn local_stage_probe(GstPad*, GstPadProbeInfo* info, gpointer data) {
+    auto* ctx = static_cast<ProbeContext*>(data);
+    auto* self = ctx->runtime;
+    GstBuffer* buffer = GST_PAD_PROBE_INFO_BUFFER(info);
+    if (buffer == nullptr) {
+      return GST_PAD_PROBE_OK;
+    }
+
+    const std::uint64_t end = now_ms();
+    std::lock_guard<std::mutex> lock(self->mutex_);
+    StreamState& state = self->states_[static_cast<std::size_t>(ctx->stream_id)];
+
+    if (ctx->kind == "local-decode") {
+      Trace trace;
+      trace.stream_id = static_cast<std::uint8_t>(ctx->stream_id);
+      trace.frame_id = state.local_frame_id++;
+      trace.ingress_ms = end;
+      self->write_event(trace, "decode", trace.ingress_ms, end);
+      state.traces.push_back(trace);
+      return GST_PAD_PROBE_OK;
+    }
+
+    if (ctx->kind == "local-detect") {
+      if (state.traces.empty()) {
+        return GST_PAD_PROBE_OK;
+      }
+      Trace trace = state.traces.front();
+      state.traces.pop_front();
+      self->write_event(trace, "detect", end > 1 ? end - 1 : end, end);
+      state.aggregate_traces.push_back(trace);
+      return GST_PAD_PROBE_OK;
+    }
+
+    if (ctx->kind == "local-aggregate") {
+      if (state.aggregate_traces.empty()) {
+        return GST_PAD_PROBE_OK;
+      }
+      Trace trace = state.aggregate_traces.front();
+      state.aggregate_traces.pop_front();
+      self->write_event(trace, "aggregate", end > 1 ? end - 1 : end, end);
+      self->write_frame(trace, end);
+      return GST_PAD_PROBE_OK;
+    }
+
+    return GST_PAD_PROBE_OK;
+  }
+
   static gboolean bus_callback(GstBus*, GstMessage* message, gpointer data) {
     auto* self = static_cast<NativeProbeRuntime*>(data);
     if (GST_MESSAGE_TYPE(message) == GST_MESSAGE_ERROR) {
@@ -439,6 +488,8 @@ class NativeProbeRuntime {
       gst_pad_add_probe(pad, GST_PAD_PROBE_TYPE_BUFFER, &NativeProbeRuntime::edge_pay_probe, ctx, nullptr);
     } else if (kind == "worker-pay") {
       gst_pad_add_probe(pad, GST_PAD_PROBE_TYPE_BUFFER, &NativeProbeRuntime::worker_pay_probe, ctx, nullptr);
+    } else if (kind == "local-decode" || kind == "local-detect" || kind == "local-aggregate") {
+      gst_pad_add_probe(pad, GST_PAD_PROBE_TYPE_BUFFER, &NativeProbeRuntime::local_stage_probe, ctx, nullptr);
     } else {
       gst_pad_add_probe(pad, GST_PAD_PROBE_TYPE_BUFFER, &NativeProbeRuntime::input_rtp_probe, ctx, nullptr);
     }
@@ -482,6 +533,19 @@ class NativeProbeRuntime {
     return p.str();
   }
 
+  std::string local_pipeline(int stream_id) const {
+    std::ostringstream p;
+    p << "filesrc location=" << q(source_for_stream(stream_id))
+      << " ! decodebin ! videoconvert ! videorate ! video/x-raw,framerate=30/1"
+      << " ! queue name=decode_probe" << stream_id
+      << " ! " << detect_bin()
+      << " ! queue name=detect_probe" << stream_id
+      << " ! videoconvert"
+      << " ! queue name=aggregate_probe" << stream_id
+      << " ! fakesink sync=false async=false";
+    return p.str();
+  }
+
   void build_pipelines() {
     for (int stream_id = 0; stream_id < streams_; ++stream_id) {
       std::string pipeline_text;
@@ -491,6 +555,8 @@ class NativeProbeRuntime {
         pipeline_text = worker_pipeline(stream_id);
       } else if (args_.role == "aggregator") {
         pipeline_text = aggregator_pipeline(stream_id);
+      } else if (args_.role == "local") {
+        pipeline_text = local_pipeline(stream_id);
       } else {
         throw std::runtime_error("unsupported role: " + args_.role);
       }
@@ -514,6 +580,10 @@ class NativeProbeRuntime {
         add_probe(pipeline, "pay" + std::to_string(stream_id), "worker-pay", stream_id);
       } else if (args_.role == "aggregator") {
         add_probe(pipeline, "src" + std::to_string(stream_id), "input", stream_id);
+      } else if (args_.role == "local") {
+        add_probe(pipeline, "decode_probe" + std::to_string(stream_id), "local-decode", stream_id);
+        add_probe(pipeline, "detect_probe" + std::to_string(stream_id), "local-detect", stream_id);
+        add_probe(pipeline, "aggregate_probe" + std::to_string(stream_id), "local-aggregate", stream_id);
       }
       pipelines_.push_back(pipeline);
       std::cerr << "[native-probe] role=" << args_.role << " stream=" << stream_id << " pipeline=" << pipeline_text << "\n";

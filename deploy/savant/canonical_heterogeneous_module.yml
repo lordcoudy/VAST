@@ -1,0 +1,87 @@
+# Canonical strict local Savant module for pipeline [decode, detect, aggregate].
+# One container instance handles one input stream and writes per-stream native
+# telemetry under VAST_NATIVE_OUTPUT_DIR; run_system_template.sh merges outputs.
+
+name: vast_canonical_heterogeneous_savant_v1
+
+parameters:
+  output_frame: null
+  batch_size: 1
+  output_dir: ${oc.env:VAST_NATIVE_OUTPUT_DIR, '/workspace/project/runs/savant_local'}
+  run_id: ${oc.env:EXPERIMENT_RUN_ID, 'savant-local'}
+  detector: ${oc.env:ADAPTER_DETECTOR, 'peoplenet'}
+  backend: ${oc.env:ADAPTER_BACKEND, 'deepstream_tensorrt'}
+  min_objects: ${oc.env:MIN_OBJECTS, 0}
+  max_objects: ${oc.env:MAX_OBJECTS, 20}
+
+pipeline:
+  source:
+    element: uridecodebin
+    properties:
+      uri: ${oc.env:VIDEO_URI, 'file:///workspace/project/data/videos/stream01.mp4'}
+
+  elements:
+    - element: pyfunc
+      module: deploy.savant.native_probe
+      class_name: SavantLocalTelemetryProbe
+      kwargs:
+        stage: decode
+        output_dir: ${parameters.output_dir}
+        run_id: ${parameters.run_id}
+        detector: ${parameters.detector}
+        backend: ${parameters.backend}
+        min_objects: ${parameters.min_objects}
+        max_objects: ${parameters.max_objects}
+    - element: nvinfer@detector
+      name: peoplenet
+      model:
+        format: etlt
+        remote:
+          url: s3://savant-data/models/peoplenet/peoplenet_pruned_v2.0.zip
+          checksum_url: s3://savant-data/models/peoplenet/peoplenet_pruned_v2.0.md5
+          parameters:
+            endpoint: https://eu-central-1.linodeobjects.com
+        model_file: resnet34_peoplenet_pruned.etlt
+        batch_size: ${parameters.batch_size}
+        input:
+          layer_name: input_1
+          shape: [3, 544, 960]
+          scale_factor: 0.0039215697906911373
+        output:
+          layer_names: [output_bbox/BiasAdd, output_cov/Sigmoid]
+          num_detected_classes: 3
+          objects:
+            - class_id: 0
+              label: person
+            - class_id: 2
+              label: face
+              selector:
+                kwargs:
+                  confidence_threshold: 0.1
+                  min_width: 16
+                  min_height: 16
+    - element: pyfunc
+      module: deploy.savant.native_probe
+      class_name: SavantLocalTelemetryProbe
+      kwargs:
+        stage: detect
+        output_dir: ${parameters.output_dir}
+        run_id: ${parameters.run_id}
+        detector: ${parameters.detector}
+        backend: ${parameters.backend}
+        min_objects: ${parameters.min_objects}
+        max_objects: ${parameters.max_objects}
+    - element: pyfunc
+      module: deploy.savant.native_probe
+      class_name: SavantLocalTelemetryProbe
+      kwargs:
+        stage: aggregate
+        output_dir: ${parameters.output_dir}
+        run_id: ${parameters.run_id}
+        detector: ${parameters.detector}
+        backend: ${parameters.backend}
+        min_objects: ${parameters.min_objects}
+        max_objects: ${parameters.max_objects}
+
+  sink:
+    - element: devnull_sink

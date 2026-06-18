@@ -191,6 +191,56 @@ class ScenarioPlanningTests(unittest.TestCase):
             for fragment in expected:
                 self.assertIn(fragment, output)
 
+    def test_builtin_strict_local_template_dry_run_commands(self) -> None:
+        expectations = {
+            "deepstream": ["vast/deepstream-native-probe:7.0", "nvinfer", "/usr/local/bin/vast_native_gst_probe", "--role local"],
+            "savant": ["ghcr.io/insight-platform/savant-deepstream:0.5.17-7.0", "savant.entrypoint", "canonical_heterogeneous_module.yml"],
+            "openvino_gva": ["vast_native_gst_probe", "gvadetect", "--role local"],
+            "gstreamer_custom": ["GST_CUSTOM_STRICT=1", "adaptivescheduler", "--role local"],
+        }
+        for system, expected in expectations.items():
+            env = os.environ.copy()
+            env.update(
+                {
+                    "REAL_DRY_RUN": "1",
+                    "BENCHMARK_MODE": "benchmark",
+                    "EXPERIMENT_DISTRIBUTED": "0",
+                    "EXPERIMENT_HOST_ROLE": "local",
+                    "EXPERIMENT_PIPELINE_STAGES": "decode,detect,aggregate",
+                }
+            )
+            completed = subprocess.run(
+                [
+                    "bash",
+                    str(ROOT / "scripts" / "run_system_template.sh"),
+                    "--system",
+                    system,
+                    "--scenario",
+                    "canonical_heterogeneous",
+                    "--duration",
+                    "5",
+                    "--streams",
+                    "2",
+                    "--min-objects",
+                    "5",
+                    "--max-objects",
+                    "35",
+                    "--output",
+                    str(ROOT / "runs" / "dry" / "local" / system / "frames.csv"),
+                ],
+                cwd=ROOT,
+                env=env,
+                text=True,
+                capture_output=True,
+                check=False,
+            )
+            output = completed.stdout + completed.stderr
+            self.assertEqual(completed.returncode, 1)
+            for fragment in expected:
+                self.assertIn(fragment, output)
+            self.assertNotIn("deepstream-test3-app", output)
+            self.assertNotIn("deploy/savant/module.yml", output)
+
     def test_gstreamer_custom_plugin_is_bundled(self) -> None:
         source = ROOT / "deploy" / "gstreamer_adaptivescheduler" / "gstadaptivescheduler.c"
         cmake = (ROOT / "CMakeLists.txt").read_text(encoding="utf-8")
