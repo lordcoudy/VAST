@@ -313,9 +313,15 @@ class ScenarioPlanningTests(unittest.TestCase):
         for name in ("Dockerfile.deepstream", "Dockerfile.savant"):
             body = (ROOT / "deploy" / "native_gst_probe" / name).read_text(encoding="utf-8")
             self.assertIn("COPY deploy/native_gst_probe", body)
+            self.assertIn("VAST_NATIVE_PROBE_SOURCE_SHA", body)
+            self.assertIn('org.vast.native_probe.source_sha="${VAST_NATIVE_PROBE_SOURCE_SHA}"', body)
             self.assertIn("-DVAST_BUILD_NATIVE_GST_PROBE=ON", body)
             self.assertIn("-DVAST_BUILD_GSTREAMER_CUSTOM_PLUGIN=OFF", body)
             self.assertIn("-DVAST_BUILD_CUSTOM_CUDA_QT=OFF", body)
+
+        build_script = (ROOT / "scripts" / "build_native_probe_images.sh").read_text(encoding="utf-8")
+        self.assertIn("--build-arg VAST_NATIVE_PROBE_SOURCE_SHA", build_script)
+        self.assertIn("--label \"$SOURCE_LABEL=", build_script)
 
     def test_native_probe_sets_string_properties_after_parse_launch(self) -> None:
         body = (ROOT / "deploy" / "native_gst_probe" / "vast_native_gst_probe.cpp").read_text(encoding="utf-8")
@@ -335,6 +341,31 @@ class ScenarioPlanningTests(unittest.TestCase):
         self.assertIn("nvstreammux name=mux", body)
         self.assertIn("! mux\" << stream_id << \".sink_0", body)
         self.assertNotIn("video/x-raw(memory:NVMM),format=NV12 ! nvinfer", body)
+
+    def test_native_probe_measurement_timer_starts_on_first_frame_event(self) -> None:
+        body = (ROOT / "deploy" / "native_gst_probe" / "vast_native_gst_probe.cpp").read_text(encoding="utf-8")
+
+        self.assertIn("waiting for first frame event", body)
+        self.assertIn("start_measurement_timer_if_needed();", body)
+        self.assertIn("measurement_started_.compare_exchange_strong", body)
+
+    def test_template_rejects_stale_native_probe_images(self) -> None:
+        body = (ROOT / "scripts" / "run_system_template.sh").read_text(encoding="utf-8")
+
+        self.assertIn("ensure_native_probe_image_current", body)
+        self.assertIn("org.vast.native_probe.source_sha", body)
+        self.assertIn("VAST_SKIP_NATIVE_IMAGE_SHA_CHECK", body)
+        self.assertIn("Strict native $SYSTEM benchmark image is stale", body)
+
+    def test_dlstreamer_installer_prefers_clean_docker_fallback(self) -> None:
+        body = (ROOT / "scripts" / "install_openvino_dlstreamer.sh").read_text(encoding="utf-8")
+
+        self.assertIn("docker create \"$image\" bash -lc 'sleep 600'", body)
+        self.assertIn("DLSTREAMER_TRY_INTEL_APT", body)
+        self.assertLess(
+            body.index("if install_from_intel_dlstreamer_image; then"),
+            body.index("Docker fallback failed; trying Intel OpenVINO APT repository"),
+        )
 
     def test_single_server_preflight_records_loopback_metrics(self) -> None:
         hosts_config = {

@@ -122,22 +122,22 @@ install_from_intel_dlstreamer_image() {
   log "Trying Docker fallback from image: $image"
   docker pull "$image" >/dev/null
 
-  cid="$(docker create "$image" bash -lc 'true')"
-  trap 'docker rm -f "$cid" >/dev/null 2>&1 || true' RETURN
+  cid="$(docker create "$image" bash -lc 'sleep 600')"
+  trap 'docker rm -f "$cid" >/dev/null 2>&1 || true; trap - RETURN' RETURN
 
   sudo mkdir -p "$install_root"
   sudo rm -rf "$install_root/lib" "$install_root/gstreamer" "$install_root/opencv" "$install_root/openvino"
   sudo mkdir -p "$install_root"
+  sudo rm -rf /tmp/dlstreamer_lib /tmp/dlstreamer_gstreamer /tmp/dlstreamer_opencv /tmp/dlstreamer_openvino
 
   # Copy runtime trees that libgstvideoanalytics.so depends on.
+  docker start "$cid" >/dev/null
   docker cp "$cid:/opt/intel/dlstreamer/lib" /tmp/dlstreamer_lib
   docker cp "$cid:/opt/intel/dlstreamer/gstreamer" /tmp/dlstreamer_gstreamer
   docker cp "$cid:/opt/opencv" /tmp/dlstreamer_opencv
 
-  docker start "$cid" >/dev/null
-  docker exec "$cid" bash -lc "mkdir -p /tmp/vast_ov && cp -a /usr/lib/libopenvino.so* /tmp/vast_ov/ 2>/dev/null || true"
-  if docker cp "$cid:/tmp/vast_ov" /tmp/dlstreamer_openvino 2>/dev/null; then
-    :
+  if docker exec "$cid" bash -lc "mkdir -p /tmp/vast_ov && cp -a /usr/lib/libopenvino.so* /tmp/vast_ov/ 2>/dev/null || cp -a /usr/lib/x86_64-linux-gnu/libopenvino.so* /tmp/vast_ov/ 2>/dev/null || true"; then
+    docker cp "$cid:/tmp/vast_ov" /tmp/dlstreamer_openvino >/dev/null 2>&1 || true
   fi
 
   sudo mv /tmp/dlstreamer_lib "$install_root/lib"
@@ -234,16 +234,29 @@ main() {
   fi
 
   warn "DL Streamer package was not available in current apt sources."
-  if configure_openvino_repo; then
-    if install_first_available_pkg "${dlstreamer_pkgs[@]}"; then
-      if verify_gvadetect; then
-        exit 0
+  if [[ "${DLSTREAMER_TRY_INTEL_APT:-0}" == "1" ]]; then
+    if configure_openvino_repo; then
+      if install_first_available_pkg "${dlstreamer_pkgs[@]}"; then
+        if verify_gvadetect; then
+          exit 0
+        fi
       fi
     fi
   fi
 
   if install_from_intel_dlstreamer_image; then
     exit 0
+  fi
+
+  if [[ "${DLSTREAMER_TRY_INTEL_APT:-0}" != "1" ]]; then
+    warn "Docker fallback failed; trying Intel OpenVINO APT repository"
+    if configure_openvino_repo; then
+      if install_first_available_pkg "${dlstreamer_pkgs[@]}"; then
+        if verify_gvadetect; then
+          exit 0
+        fi
+      fi
+    fi
   fi
 
   die "Neither gvadetect nor object_detect is available. Run 'apt-cache search dlstreamer' and install a package providing DL Streamer GStreamer elements for your distro."

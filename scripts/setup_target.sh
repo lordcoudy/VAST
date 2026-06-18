@@ -18,6 +18,7 @@ INSTALL_SAVANT="${INSTALL_SAVANT:-1}"
 INSTALL_DEEPSTREAM="${INSTALL_DEEPSTREAM:-1}"
 PREPARE_ASSETS="${PREPARE_ASSETS:-1}"
 BUILD_REFERENCE_CUSTOM_APP="${BUILD_REFERENCE_CUSTOM_APP:-1}"
+BUILD_NATIVE_PROBE_IMAGES="${BUILD_NATIVE_PROBE_IMAGES:-1}"
 CUDA_ARCHITECTURES="${CUDA_ARCHITECTURES:-86}"
 DOCKER_PULL_TIMEOUT="${DOCKER_PULL_TIMEOUT:-1800}"
 
@@ -271,6 +272,23 @@ pull_savant_image() {
   fi
 }
 
+build_native_probe_images() {
+  if [[ "$BUILD_NATIVE_PROBE_IMAGES" != "1" ]]; then
+    log "Skipping derived native probe image build"
+    return
+  fi
+
+  if ! command -v docker >/dev/null 2>&1; then
+    warn "Docker is unavailable. Cannot build derived native probe images."
+    return
+  fi
+
+  log "Building derived native probe images"
+  if ! bash "$PROJECT_DIR/scripts/build_native_probe_images.sh"; then
+    warn "Derived native probe image build failed; strict DeepStream/Savant benchmark will fail until images are rebuilt"
+  fi
+}
+
 final_checks() {
   log "Final checks"
   command -v python3 >/dev/null 2>&1 && python3 --version
@@ -302,6 +320,7 @@ main() {
   build_reference_custom_app
   pull_deepstream_image
   pull_savant_image
+  build_native_probe_images
   final_checks
 
   cat <<'EOF'
@@ -312,6 +331,8 @@ Next actions:
 3) Verify project hardware check: python scripts/check_system.py
 4) Run smoke benchmark:
    python scripts/run_experiments.py --mode smoke --run-kind heterogeneous --systems custom_cpp_cuda_qt --scenarios canonical_heterogeneous --repeats 1 --warmup 0 --measurement 5
+5) Run one strict benchmark:
+   GST_PLUGIN_PATH="$PWD/build/lib" python scripts/run_experiments.py --mode benchmark --run-kind heterogeneous --systems deepstream savant openvino_gva gstreamer_custom --scenarios canonical_heterogeneous --repeats 1 --warmup 0 --measurement 30
 
 EOF
 }

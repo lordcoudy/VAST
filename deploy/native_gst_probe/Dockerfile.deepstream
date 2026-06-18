@@ -1,6 +1,10 @@
 ARG BASE_IMAGE=nvcr.io/nvidia/deepstream:7.0-triton-multiarch
 FROM ${BASE_IMAGE}
 
+ARG VAST_NATIVE_PROBE_SOURCE_SHA=unknown
+LABEL org.vast.native_probe.source_sha="${VAST_NATIVE_PROBE_SOURCE_SHA}"
+LABEL org.vast.native_probe.kind="deepstream"
+
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y --no-install-recommends \

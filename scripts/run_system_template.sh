@@ -42,6 +42,7 @@ NATIVE_PROBE_BIN="${NATIVE_PROBE_BIN:-$PROJECT_DIR/build/bin/vast_native_gst_pro
 DEEPSTREAM_NATIVE_PROBE_IMAGE="${DEEPSTREAM_NATIVE_PROBE_IMAGE:-vast/deepstream-native-probe:7.0}"
 SAVANT_NATIVE_PROBE_IMAGE="${SAVANT_NATIVE_PROBE_IMAGE:-vast/savant-native-probe:0.5.17-7.0}"
 SAVANT_LOCAL_MODULE_DEFAULT="$PROJECT_DIR/deploy/savant/canonical_heterogeneous_module.yml"
+NATIVE_PROBE_SOURCE_LABEL="org.vast.native_probe.source_sha"
 
 log() { echo "[template] $*"; }
 warn() { echo "[template][warning] $*" >&2; }
@@ -466,6 +467,63 @@ shell_quote() {
   printf "%q" "$1"
 }
 
+sha256_file() {
+  if command -v sha256sum >/dev/null 2>&1; then
+    sha256sum "$1"
+  else
+    shasum -a 256 "$1"
+  fi
+}
+
+sha256_stream() {
+  if command -v sha256sum >/dev/null 2>&1; then
+    sha256sum
+  else
+    shasum -a 256
+  fi
+}
+
+native_probe_source_sha() {
+  local include_savant="$1"
+  (
+    cd "$PROJECT_DIR"
+    printf "CMakeLists.txt\n"
+    find deploy/native_gst_probe -type f -print | LC_ALL=C sort
+    if [[ "$include_savant" == "1" ]]; then
+      find deploy/savant -type f -print | LC_ALL=C sort
+    fi
+  ) | while IFS= read -r path; do
+    local digest
+    digest="$(sha256_file "$PROJECT_DIR/$path" | awk '{print $1}')"
+    printf "%s  %s\n" "$digest" "$path"
+  done | sha256_stream | awk '{print $1}'
+}
+
+ensure_native_probe_image_current() {
+  local image="$1"
+  local include_savant="$2"
+  local expected
+  local actual
+
+  if [[ "${VAST_SKIP_NATIVE_IMAGE_SHA_CHECK:-0}" == "1" ]]; then
+    return 0
+  fi
+
+  expected="$(native_probe_source_sha "$include_savant")"
+  actual="$(docker image inspect --format '{{ index .Config.Labels "org.vast.native_probe.source_sha" }}' "$image" 2>/dev/null || true)"
+  if [[ -z "$actual" || "$actual" == "<no value>" || "$actual" == "unknown" ]]; then
+    warn "Strict native $SYSTEM benchmark image is unlabeled or stale: $image"
+    warn "Rebuild derived probe images after pulling source changes: bash scripts/build_native_probe_images.sh"
+    return 1
+  fi
+  if [[ "$actual" != "$expected" ]]; then
+    warn "Strict native $SYSTEM benchmark image is stale: $image"
+    warn "image source sha=$actual current source sha=$expected"
+    warn "Rebuild derived probe images: bash scripts/build_native_probe_images.sh"
+    return 1
+  fi
+}
+
 project_path_for_runtime() {
   local path="$1"
   if [[ "${NATIVE_PROBE_CONTAINERIZED:-0}" == "1" && "$path" == "$PROJECT_DIR"/* ]]; then
@@ -619,6 +677,13 @@ run_container_native_probe() {
     warn "Build images with: bash scripts/build_native_probe_images.sh"
     return 1
   fi
+  if [[ "$REAL_DRY_RUN" != "1" ]]; then
+    if [[ "$image" == "$SAVANT_NATIVE_PROBE_IMAGE" ]]; then
+      ensure_native_probe_image_current "$image" 1 || return 1
+    else
+      ensure_native_probe_image_current "$image" 0 || return 1
+    fi
+  fi
   local container_output
   container_output="$(container_output_dir)"
   local cmd
@@ -744,6 +809,7 @@ run_savant_framework_native_probe() {
       warn "Build images with: bash scripts/build_native_probe_images.sh"
       return 1
     fi
+    ensure_native_probe_image_current "$SAVANT_NATIVE_PROBE_IMAGE" 1 || return 1
   fi
   local container_output
   local module

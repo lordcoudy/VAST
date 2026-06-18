@@ -1,6 +1,10 @@
 ARG BASE_IMAGE=ghcr.io/insight-platform/savant-deepstream:0.5.17-7.0
 FROM ${BASE_IMAGE}
 
+ARG VAST_NATIVE_PROBE_SOURCE_SHA=unknown
+LABEL org.vast.native_probe.source_sha="${VAST_NATIVE_PROBE_SOURCE_SHA}"
+LABEL org.vast.native_probe.kind="savant"
+
 ENV DEBIAN_FRONTEND=noninteractive
 ENV SAVANT_CANONICAL_MODULE=/workspace/project/deploy/savant/canonical_distributed_module.yml
 

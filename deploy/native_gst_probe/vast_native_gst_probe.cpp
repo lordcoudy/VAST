@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <array>
+#include <atomic>
 #include <chrono>
 #include <cstdint>
 #include <cstdlib>
@@ -81,11 +82,13 @@ class NativeProbeRuntime {
     build_pipelines();
     GMainLoop* loop = g_main_loop_new(nullptr, FALSE);
     loop_ = loop;
-    guint timer = g_timeout_add_seconds(static_cast<guint>(std::max(1, args_.duration_s)), &NativeProbeRuntime::quit_loop, this);
     for (GstElement* pipeline : pipelines_) {
       gst_element_set_state(pipeline, GST_STATE_PLAYING);
     }
+    std::cerr << "[native-probe] waiting for first frame event before starting "
+              << args_.duration_s << "s measurement timer\n";
     g_main_loop_run(loop);
+    const guint timer = measurement_timer_id_.exchange(0);
     if (timer != 0) {
       g_source_remove(timer);
     }
@@ -103,6 +106,8 @@ class NativeProbeRuntime {
   std::vector<std::string> sources_;
   std::vector<GstElement*> pipelines_;
   GMainLoop* loop_ = nullptr;
+  std::atomic<guint> measurement_timer_id_{0};
+  std::atomic<bool> measurement_started_{false};
   std::ofstream events_;
   std::ofstream frames_;
   std::mutex mutex_;
@@ -115,6 +120,7 @@ class NativeProbeRuntime {
 
   static gboolean quit_loop(gpointer data) {
     auto* self = static_cast<NativeProbeRuntime*>(data);
+    self->measurement_timer_id_.store(0);
     if (self->loop_ != nullptr) {
       g_main_loop_quit(self->loop_);
     }
@@ -266,10 +272,24 @@ class NativeProbeRuntime {
   }
 
   void write_event(const Trace& trace, const std::string& stage, std::uint64_t start_ms, std::uint64_t end_ms) {
+    start_measurement_timer_if_needed();
     events_ << "2," << args_.run_id << "," << trace_id(trace) << "," << static_cast<int>(trace.stream_id) << ","
             << trace.frame_id << "," << stage << "," << args_.role << ",localhost,cpu," << start_ms << ","
             << start_ms << "," << end_ms << ",0," << std::max<std::uint64_t>(1, end_ms - start_ms)
             << ",native:" << args_.system << "\n";
+  }
+
+  void start_measurement_timer_if_needed() {
+    bool expected = false;
+    if (!measurement_started_.compare_exchange_strong(expected, true)) {
+      return;
+    }
+    const guint timer = g_timeout_add_seconds(
+        static_cast<guint>(std::max(1, args_.duration_s)),
+        &NativeProbeRuntime::quit_loop,
+        this);
+    measurement_timer_id_.store(timer);
+    std::cerr << "[native-probe] measurement timer started duration_s=" << args_.duration_s << "\n";
   }
 
   void write_frame(const Trace& trace, std::uint64_t egress_ms) {
