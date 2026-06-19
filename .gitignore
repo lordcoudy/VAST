@@ -3,6 +3,7 @@ __pycache__/
 *.py[cod]
 *.egg-info/
 .venv/
+.pytest_cache/
 
 # Experiment outputs
 runs/
@@ -20,3 +21,6 @@ tmp_*
 
 # Local laboratory inventory
 configs/hosts.yaml
+
+.cache/
+.agents/
