@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import csv
 import hashlib
 import json
 import math
@@ -127,6 +128,19 @@ def validate_csv_row_fields(
     for field in numeric_columns or set():
         _parse_finite_number(normalized[field], path=path, row_number=row_number, column=field)
     return normalized
+
+
+def _validate_csv_file_rows(path: Path, fieldnames: list[str], numeric_columns: set[str]) -> None:
+    with path.open("r", newline="", encoding="utf-8") as src:
+        reader = csv.DictReader(src)
+        for row_number, row in enumerate(reader, start=2):
+            validate_csv_row_fields(
+                row,
+                fieldnames,
+                path=path,
+                row_number=row_number,
+                numeric_columns=numeric_columns,
+            )
 
 
 def _validate_dataframe_fields(
@@ -298,6 +312,7 @@ def summarize_frames(path: Path, *, deadline_s: float, measurement_s: float) -> 
 def validate_frame_events(path: Path) -> pd.DataFrame:
     if not path.exists():
         raise ContractError(f"frame_events.csv was not produced: {path}")
+    _validate_csv_file_rows(path, FRAME_EVENT_COLUMNS, FRAME_EVENT_NUMERIC_COLUMNS)
     df = pd.read_csv(path)
     if df.empty:
         raise ContractError(f"frame_events.csv is empty: {path}")

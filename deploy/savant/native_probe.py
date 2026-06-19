@@ -196,6 +196,7 @@ class NativeEventWriter:
         role: str,
         resource: str = "gpu",
         shared: bool = False,
+        filename: str = "frame_events.csv",
     ) -> None:
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
@@ -203,7 +204,7 @@ class NativeEventWriter:
         self.stage = stage
         self.role = role
         self.resource = resource
-        self.path = self.output_dir / "frame_events.csv"
+        self.path = self.output_dir / filename
         self.shared = shared
         self.closed = False
         self.lock = threading.Lock()
@@ -310,6 +311,13 @@ def object_count(min_objects: int, max_objects: int) -> int:
     return max(min_objects, min(max_objects, (min_objects + max_objects) // 2))
 
 
+def frame_event_filename(stage: str) -> str:
+    safe_stage = "".join(ch if ch.isalnum() or ch in {"_", "-"} else "_" for ch in str(stage).strip())
+    if not safe_stage:
+        raise RuntimeError("Savant local telemetry stage name is empty")
+    return f"frame_events_{safe_stage}.csv"
+
+
 def frame_identity(frame_or_buffer: Any) -> tuple[int, int]:
     stream_id = int(os.environ.get("VAST_STREAM_ID", getattr(frame_or_buffer, "source_id", 0) or 0))
     frame_id = int(
@@ -371,7 +379,14 @@ class SavantLocalTelemetryProbe(BasePyFuncPlugin):
         super().__init__()
         resource = "gpu" if stage == "detect" else "cpu"
         self.stage = stage
-        self.events = NativeEventWriter(output_dir, run_id, stage, role, resource=resource, shared=True)
+        self.events = NativeEventWriter(
+            output_dir,
+            run_id,
+            stage,
+            role,
+            resource=resource,
+            filename=frame_event_filename(stage),
+        )
         self.frames = (
             NativeFrameWriter(output_dir, run_id, detector, backend, int(min_objects), int(max_objects))
             if stage == "aggregate"
@@ -507,15 +522,15 @@ def merge_event_csvs(
         writer = csv.DictWriter(out, fieldnames=FRAME_EVENT_COLUMNS)
         writer.writeheader()
         for path, row_number, row in iter_csv_rows(paths):
-            trace_id = row_trace_id(row)
-            if trace_id not in measured_trace_ids:
-                continue
             normalized = validate_csv_row(
                 row,
                 FRAME_EVENT_COLUMNS,
                 _FRAME_EVENT_NUMERIC_COLUMNS,
                 source=f"{path}:{row_number}",
             )
+            trace_id = row_trace_id(normalized)
+            if trace_id not in measured_trace_ids:
+                continue
             writer.writerow(normalized)
             stage = str(normalized["stage"]).strip()
             stage_traces.setdefault(stage, set()).add(trace_id)
@@ -538,8 +553,13 @@ def merge_local_outputs(output_dir: str | Path, streams: int) -> None:
     root = Path(output_dir)
     stream_dirs = [root / "streams" / f"stream_{stream_id}" for stream_id in range(max(1, int(streams)))]
     frame_paths = [path / "frames.csv" for path in stream_dirs]
-    event_paths = [path / "frame_events.csv" for path in stream_dirs]
-    missing = [str(path) for path in frame_paths + event_paths if not path.exists()]
+    missing = [str(path) for path in frame_paths if not path.exists()]
+    event_paths: list[Path] = []
+    for path in stream_dirs:
+        stream_event_paths = sorted(path.glob("frame_events*.csv"))
+        if not stream_event_paths:
+            missing.append(str(path / "frame_events*.csv"))
+        event_paths.extend(stream_event_paths)
     if missing:
         raise RuntimeError("missing Savant local telemetry files: " + ", ".join(missing))
 

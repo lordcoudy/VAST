@@ -307,6 +307,98 @@ class ScenarioPlanningTests(unittest.TestCase):
                 self.assertIn(".cache/savant", output)
                 self.assertNotIn("; sleep 5; for pid in $pids", output)
 
+    def test_openvino_local_template_can_force_container_runtime(self) -> None:
+        env = os.environ.copy()
+        env.update(
+            {
+                "REAL_DRY_RUN": "1",
+                "BENCHMARK_MODE": "benchmark",
+                "EXPERIMENT_DISTRIBUTED": "0",
+                "EXPERIMENT_HOST_ROLE": "local",
+                "EXPERIMENT_PIPELINE_STAGES": "decode,detect,aggregate",
+                "OPENVINO_GVA_FORCE_CONTAINER": "1",
+                "DATASET_STREAMS_JSON": '["data/benchmark/mot17_02.mp4"]',
+            }
+        )
+        completed = subprocess.run(
+            [
+                "bash",
+                str(ROOT / "scripts" / "run_system_template.sh"),
+                "--system",
+                "openvino_gva",
+                "--scenario",
+                "canonical_heterogeneous",
+                "--duration",
+                "5",
+                "--streams",
+                "1",
+                "--min-objects",
+                "5",
+                "--max-objects",
+                "35",
+                "--output",
+                str(ROOT / "runs" / "dry" / "local" / "openvino_container" / "frames.csv"),
+            ],
+            cwd=ROOT,
+            env=env,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        output = completed.stdout + completed.stderr
+
+        self.assertEqual(completed.returncode, 1)
+        self.assertIn("intel/dlstreamer:latest", output)
+        self.assertIn("--entrypoint /workspace/project/build/bin/vast_native_gst_probe", output)
+        self.assertIn("object_detect", output)
+        self.assertIn("/workspace/project/models/openvino", output)
+        self.assertIn("data/benchmark/mot17_02.mp4", output)
+
+    def test_openvino_container_fallback_uses_short_finite_input_chunks(self) -> None:
+        env = os.environ.copy()
+        env.update(
+            {
+                "REAL_DRY_RUN": "1",
+                "BENCHMARK_MODE": "benchmark",
+                "EXPERIMENT_DISTRIBUTED": "0",
+                "EXPERIMENT_HOST_ROLE": "local",
+                "EXPERIMENT_PIPELINE_STAGES": "decode,detect,aggregate",
+                "OPENVINO_GVA_FORCE_CONTAINER": "1",
+                "DATASET_STREAMS_JSON": '["data/benchmark/mot17_02.mp4"]',
+            }
+        )
+        completed = subprocess.run(
+            [
+                "bash",
+                str(ROOT / "scripts" / "run_system_template.sh"),
+                "--system",
+                "openvino_gva",
+                "--scenario",
+                "canonical_heterogeneous",
+                "--duration",
+                "16",
+                "--streams",
+                "1",
+                "--min-objects",
+                "5",
+                "--max-objects",
+                "35",
+                "--output",
+                str(ROOT / "runs" / "dry" / "local" / "openvino_chunks" / "frames.csv"),
+            ],
+            cwd=ROOT,
+            env=env,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        output = completed.stdout + completed.stderr
+
+        self.assertEqual(completed.returncode, 1)
+        self.assertIn("run_openvino_container_chunks.py", output)
+        self.assertIn("--chunk-s 15", output)
+        self.assertIn("--parallel-streams 1", output)
+
     def test_savant_local_template_preserves_benchmark_dataset_paths(self) -> None:
         env = os.environ.copy()
         env.update(
@@ -404,6 +496,26 @@ class ScenarioPlanningTests(unittest.TestCase):
         self.assertGreaterEqual(body.count("events_.flush();"), 2)
         self.assertGreaterEqual(body.count("frames_.flush();"), 2)
 
+    def test_native_probe_stops_before_flushing_telemetry(self) -> None:
+        body = (ROOT / "deploy" / "native_gst_probe" / "vast_native_gst_probe.cpp").read_text(encoding="utf-8")
+
+        self.assertIn("stop_pipelines();", body)
+        self.assertIn("flush_outputs();", body)
+        self.assertIn("std::mutex output_mutex_;", body)
+
+    def test_custom_gstreamer_template_prepends_project_plugin_path(self) -> None:
+        body = (ROOT / "scripts" / "run_system_template.sh").read_text(encoding="utf-8")
+
+        self.assertIn('"$PROJECT_DIR/build/lib${GST_PLUGIN_PATH:+:$GST_PLUGIN_PATH}"', body)
+        self.assertIn('GST_PLUGIN_PATH=$(gstreamer_custom_plugin_path)', body)
+
+    def test_custom_cuda_app_uses_monotonic_telemetry_timestamps(self) -> None:
+        body = (ROOT / "deploy" / "custom_cpp_cuda_qt" / "adaptive_scheduler_app.cu").read_text(encoding="utf-8")
+
+        self.assertIn("telemetry_timestamp_ms", body)
+        self.assertIn("completed_at - task.created_at", body)
+        self.assertNotIn("now - task.wall_created_at", body)
+
     def test_template_rejects_stale_native_probe_images(self) -> None:
         body = (ROOT / "scripts" / "run_system_template.sh").read_text(encoding="utf-8")
 
@@ -417,6 +529,10 @@ class ScenarioPlanningTests(unittest.TestCase):
 
         self.assertIn("SAVANT_LOCAL_PREWARM", body)
         self.assertIn("wait_for_csv_rows", body)
+        self.assertIn("csv_ready", body)
+        self.assertIn("frame_events_decode.csv", body)
+        self.assertIn("frame_events_detect.csv", body)
+        self.assertIn("frame_events_aggregate.csv", body)
         self.assertIn("wait_for_telemetry || { rc=\\$?; cleanup", body)
         self.assertIn("mark_measurement_start; sleep ${DURATION_S}; mark_measurement_end", body)
         self.assertIn("measurement_start_ms", body)

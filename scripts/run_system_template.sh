@@ -533,6 +533,25 @@ project_path_for_runtime() {
   fi
 }
 
+gstreamer_custom_plugin_path() {
+  printf "%s" "$PROJECT_DIR/build/lib${GST_PLUGIN_PATH:+:$GST_PLUGIN_PATH}"
+}
+
+openvino_host_detect_element() {
+  if ! command -v gst-inspect-1.0 >/dev/null 2>&1; then
+    return 1
+  fi
+  if gst-inspect-1.0 gvadetect >/dev/null 2>&1; then
+    printf "gvadetect"
+    return 0
+  fi
+  if gst-inspect-1.0 object_detect >/dev/null 2>&1 && gst-inspect-1.0 capsrelax >/dev/null 2>&1; then
+    printf "object_detect"
+    return 0
+  fi
+  return 1
+}
+
 native_probe_detect_bin() {
   case "$SYSTEM" in
     openvino_gva)
@@ -544,20 +563,12 @@ native_probe_detect_bin() {
         return 1
       fi
       if [[ -z "$element" ]]; then
-        if [[ "$REAL_DRY_RUN" == "1" ]]; then
-          element="gvadetect"
-        elif ! command -v gst-inspect-1.0 >/dev/null 2>&1; then
-          warn "OpenVINO strict distributed benchmark requires gst-inspect-1.0 and DL Streamer plugins"
-          return 1
-        fi
-        if [[ "$element" == "gvadetect" ]]; then
-          :
-        elif gst-inspect-1.0 gvadetect >/dev/null 2>&1; then
-          element="gvadetect"
-        elif gst-inspect-1.0 object_detect >/dev/null 2>&1; then
+        if [[ "${NATIVE_PROBE_CONTAINERIZED:-0}" == "1" ]]; then
           element="object_detect"
-        else
-          warn "OpenVINO strict distributed benchmark requires gvadetect or object_detect"
+        elif [[ "$REAL_DRY_RUN" == "1" ]]; then
+          element="gvadetect"
+        elif ! element="$(openvino_host_detect_element)"; then
+          warn "OpenVINO strict benchmark requires gvadetect, or object_detect with the capsrelax helper element"
           return 1
         fi
       fi
@@ -565,17 +576,18 @@ native_probe_detect_bin() {
       ;;
     gstreamer_custom)
       local plugin="${GST_CUSTOM_PLUGIN:-adaptivescheduler}"
-      local gst_plugin_path="${GST_PLUGIN_PATH:-$PROJECT_DIR/build/lib}"
+      local gst_plugin_path
+      gst_plugin_path="$(gstreamer_custom_plugin_path)"
       if [[ "$REAL_DRY_RUN" == "1" ]]; then
         printf "%s" "$plugin"
         return 0
       fi
       if ! command -v gst-inspect-1.0 >/dev/null 2>&1; then
-        warn "Strict distributed benchmark requires gst-inspect-1.0 for custom GStreamer plugin validation"
+        warn "Strict benchmark requires gst-inspect-1.0 for custom GStreamer plugin validation"
         return 1
       fi
       if ! GST_PLUGIN_PATH="$gst_plugin_path" GST_CUSTOM_STRICT=1 gst-inspect-1.0 "$plugin" >/dev/null 2>&1; then
-        warn "Strict distributed benchmark requires custom GStreamer plugin '$plugin' in GST_PLUGIN_PATH=$gst_plugin_path"
+        warn "Strict benchmark requires custom GStreamer plugin '$plugin' in GST_PLUGIN_PATH=$gst_plugin_path"
         return 1
       fi
       printf "%s" "$plugin"
@@ -631,7 +643,7 @@ native_probe_args() {
 native_probe_env_prefix() {
   local env_args=()
   if [[ "$SYSTEM" == "gstreamer_custom" ]]; then
-    env_args+=("GST_PLUGIN_PATH=${GST_PLUGIN_PATH:-$PROJECT_DIR/build/lib}" "GST_CUSTOM_STRICT=1")
+    env_args+=("GST_PLUGIN_PATH=$(gstreamer_custom_plugin_path)" "GST_CUSTOM_STRICT=1")
   fi
   if [[ ${#env_args[@]} -eq 0 ]]; then
     return 0
@@ -661,6 +673,62 @@ run_host_native_probe() {
   local cmd
   cmd="$(native_probe_env_prefix)$(shell_quote "$NATIVE_PROBE_BIN")$(native_probe_args "$OUTPUT_DIR" "$detect_bin")"
   run_or_echo "$cmd"
+}
+
+run_openvino_gva_container_native_probe() {
+  local image="${OPENVINO_GVA_IMAGE:-intel/dlstreamer:latest}"
+  local detect_bin
+  local container_output
+  local cmd
+  local prev_containerized="${NATIVE_PROBE_CONTAINERIZED:-0}"
+
+  if [[ "$REAL_DRY_RUN" != "1" ]]; then
+    if ! command -v docker >/dev/null 2>&1; then
+      warn "docker not found for strict OpenVINO GVA probe"
+      return 1
+    fi
+    ensure_docker_image_local "$image" || return 1
+    if ! docker run --rm --entrypoint bash "$image" -lc 'gst-inspect-1.0 object_detect >/dev/null && gst-inspect-1.0 capsrelax >/dev/null'; then
+      warn "Strict OpenVINO GVA container image lacks usable object_detect/capsrelax runtime: $image"
+      return 1
+    fi
+    if [[ ! -x "$NATIVE_PROBE_BIN" ]]; then
+      warn "Strict OpenVINO GVA container probe requires native probe binary: $NATIVE_PROBE_BIN"
+      warn "Build it with: cmake -S . -B build/cmake && cmake --build build/cmake --target vast_native_gst_probe"
+      return 1
+    fi
+  fi
+
+  container_output="$(container_output_dir)"
+  NATIVE_PROBE_CONTAINERIZED=1
+  if ! detect_bin="$(native_probe_detect_bin)"; then
+    NATIVE_PROBE_CONTAINERIZED="$prev_containerized"
+    return 1
+  fi
+  # Keep each finite benchmark clip below EOS while OpenVINO's meta_aggregate is active.
+  local chunk_s="${OPENVINO_GVA_CHUNK_S:-15}"
+  if [[ "$HOST_ROLE" == "local" && "$DURATION_S" =~ ^[0-9]+$ && "$chunk_s" =~ ^[0-9]+$ && "$DURATION_S" -gt "$chunk_s" ]]; then
+    cmd="python3 $(shell_quote "$PROJECT_DIR/scripts/run_openvino_container_chunks.py")       --image $(shell_quote "$image")       --project-dir $(shell_quote "$PROJECT_DIR")       --output-dir $(shell_quote "$OUTPUT_DIR")       --container-output-dir $(shell_quote "$container_output")       --duration $(shell_quote "$DURATION_S")       --chunk-s $(shell_quote "$chunk_s")       --streams $(shell_quote "$STREAMS")       --parallel-streams $(shell_quote "${OPENVINO_GVA_PARALLEL_STREAMS:-$STREAMS}")       --video-layout-dir $(shell_quote "$(project_path_for_runtime "$VIDEO_LAYOUT_DIR")")       --detect-bin $(shell_quote "$detect_bin")       --run-id $(shell_quote "$RUN_ID")       --role $(shell_quote "$HOST_ROLE")       --stages $(shell_quote "$PIPELINE_STAGES")       --detector $(shell_quote "$DETECTOR")       --backend $(shell_quote "$BACKEND")       --dataset-streams-json $(shell_quote "$DATASET_STREAMS_JSON")       --input-port $(shell_quote "$RTP_INPUT_PORT")       --output-host $(shell_quote "$RTP_OUTPUT_HOST")       --output-port $(shell_quote "$RTP_OUTPUT_PORT")       --port-stride $(shell_quote "$RTP_PORT_STRIDE")       --min-objects $(shell_quote "$MIN_OBJECTS")       --max-objects $(shell_quote "$MAX_OBJECTS")"
+    NATIVE_PROBE_CONTAINERIZED="$prev_containerized"
+    run_or_echo "$cmd"
+    return $?
+  fi
+  cmd="docker run --rm --network host     -e EXPERIMENT_RTP_INPUT_PORT='${RTP_INPUT_PORT}'     -e EXPERIMENT_RTP_OUTPUT_HOST='${RTP_OUTPUT_HOST}'     -e EXPERIMENT_RTP_OUTPUT_PORT='${RTP_OUTPUT_PORT}'     -e EXPERIMENT_RTP_PORT_STRIDE='${RTP_PORT_STRIDE}'     -e EXPERIMENT_RUN_ID='${RUN_ID}'     -e EXPERIMENT_HOST_ROLE='${HOST_ROLE}'     -e EXPERIMENT_PIPELINE_STAGES='${PIPELINE_STAGES}'     -e ADAPTER_DETECTOR='${DETECTOR}'     -e ADAPTER_BACKEND='${BACKEND}'     -e DATASET_STREAMS_JSON='${DATASET_STREAMS_JSON}'     -v '$PROJECT_DIR':/workspace/project     -w /workspace/project     --entrypoint /workspace/project/build/bin/vast_native_gst_probe     '$image'$(native_probe_args "$container_output" "$detect_bin")"
+  NATIVE_PROBE_CONTAINERIZED="$prev_containerized"
+  run_or_echo "$cmd"
+}
+
+run_openvino_gva_native_probe() {
+  if [[ "${OPENVINO_GVA_FORCE_CONTAINER:-0}" == "1" ]]; then
+    run_openvino_gva_container_native_probe
+    return $?
+  fi
+  if [[ "$REAL_DRY_RUN" != "1" && "${OPENVINO_GVA_USE_CONTAINER:-1}" != "0" ]] && ! openvino_host_detect_element >/dev/null 2>&1; then
+    warn "OpenVINO host DL Streamer runtime is incomplete; using containerized DL Streamer image"
+    run_openvino_gva_container_native_probe
+    return $?
+  fi
+  run_host_native_probe
 }
 
 run_container_native_probe() {
@@ -794,7 +862,8 @@ trap 'cleanup 130; exit 130' INT TERM; \
 process_alive() { pid=\"\$1\"; [ -n \"\$pid\" ] && kill -0 \"\$pid\" >/dev/null 2>&1; }; \
 pid_at() { target=\"\$1\"; shift; idx=0; for pid in \"\$@\"; do if [ \"\$idx\" -eq \"\$target\" ]; then printf '%s' \"\$pid\"; return 0; fi; idx=\$((idx + 1)); done; return 1; }; \
 wait_for_csv_rows() { path=\"\$1\"; min_rows=\"\$2\"; label=\"\$3\"; pid=\"\${4:-}\"; deadline=\$((SECONDS + startup_wait_s)); while :; do rows=0; [ -f \"\$path\" ] && rows=\$(wc -l < \"\$path\" 2>/dev/null || echo 0); if [ \"\$rows\" -ge \"\$min_rows\" ]; then echo \"[template] \$label ready rows=\$rows\"; return 0; fi; if [ -n \"\$pid\" ] && ! process_alive \"\$pid\"; then echo \"[template][warning] \$label process exited before telemetry was ready\" >&2; return 1; fi; if [ \"\$SECONDS\" -ge \"\$deadline\" ]; then echo \"[template][warning] \$label did not become ready after \${startup_wait_s}s\" >&2; return 1; fi; sleep 1; done; }; \
-wait_for_telemetry() { deadline=\$((SECONDS + startup_wait_s)); while :; do ready=0; for i in \$(seq 0 \$((streams - 1))); do path=\"\$host_output/streams/stream_\$i/frames.csv\"; pid=\$(pid_at \"\$i\" \$stream_pids || true); rows=0; [ -f \"\$path\" ] && rows=\$(wc -l < \"\$path\" 2>/dev/null || echo 0); if [ \"\$rows\" -ge 2 ] && process_alive \"\$pid\"; then ready=\$((ready + 1)); elif [ -n \"\$pid\" ] && ! process_alive \"\$pid\"; then echo \"[template][warning] Savant local stream \$i process exited before telemetry was ready\" >&2; return 1; fi; done; if [ \"\$ready\" -eq \"\$streams\" ]; then echo \"[template] Savant local telemetry ready streams=\$ready\"; return 0; fi; if [ \"\$SECONDS\" -ge \"\$deadline\" ]; then echo \"[template][warning] Savant local telemetry did not become ready: ready=\$ready/\$streams after \${startup_wait_s}s\" >&2; return 1; fi; sleep 1; done; }; "
+csv_ready() { path=\"\$1\"; rows=0; [ -f \"\$path\" ] && rows=\$(wc -l < \"\$path\" 2>/dev/null || echo 0); [ \"\$rows\" -ge 2 ]; }; \
+wait_for_telemetry() { deadline=\$((SECONDS + startup_wait_s)); while :; do ready=0; for i in \$(seq 0 \$((streams - 1))); do base=\"\$host_output/streams/stream_\$i\"; pid=\$(pid_at \"\$i\" \$stream_pids || true); if csv_ready \"\$base/frames.csv\" && csv_ready \"\$base/frame_events_decode.csv\" && csv_ready \"\$base/frame_events_detect.csv\" && csv_ready \"\$base/frame_events_aggregate.csv\" && process_alive \"\$pid\"; then ready=\$((ready + 1)); elif [ -n \"\$pid\" ] && ! process_alive \"\$pid\"; then echo \"[template][warning] Savant local stream \$i process exited before telemetry was ready\" >&2; return 1; fi; done; if [ \"\$ready\" -eq \"\$streams\" ]; then echo \"[template] Savant local telemetry ready streams=\$ready\"; return 0; fi; if [ \"\$SECONDS\" -ge \"\$deadline\" ]; then echo \"[template][warning] Savant local telemetry did not become ready: ready=\$ready/\$streams after \${startup_wait_s}s\" >&2; return 1; fi; sleep 1; done; }; "
   if [[ "$prewarm_enabled" != "0" ]]; then
     local prewarm_source
     prewarm_source="$(savant_local_stream_source 1)"
@@ -911,7 +980,10 @@ run_builtin_strict_distributed_adapter() {
     return 1
   fi
   case "$SYSTEM" in
-    openvino_gva|gstreamer_custom)
+    openvino_gva)
+      run_openvino_gva_native_probe
+      ;;
+    gstreamer_custom)
       run_host_native_probe
       ;;
     deepstream)
@@ -936,7 +1008,10 @@ run_builtin_strict_local_adapter() {
     return 1
   fi
   case "$SYSTEM" in
-    openvino_gva|gstreamer_custom)
+    openvino_gva)
+      run_openvino_gva_native_probe
+      ;;
+    gstreamer_custom)
       run_host_native_probe
       ;;
     deepstream)

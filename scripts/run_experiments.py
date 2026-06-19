@@ -469,6 +469,58 @@ def dataset_streams_json(dataset: dict[str, Any]) -> str:
     return json.dumps(streams, separators=(",", ":"))
 
 
+def run_directory(
+    run_root: Path,
+    scenario: dict[str, Any],
+    streams: int,
+    system_key: str,
+    repeat_index: int,
+) -> Path:
+    scenario_dir = run_root / scenario["name"]
+    variant_name = str(scenario.get("workload", {}).get("variant", "")).strip()
+    if variant_name:
+        scenario_dir /= f"variant_{variant_name}"
+    return scenario_dir / f"streams_{streams}" / system_key / f"rep_{repeat_index:02d}"
+
+
+def load_resumable_result(
+    metadata_path: Path,
+    *,
+    system_key: str,
+    scenario_key: str,
+    repeat_index: int,
+    streams: int,
+    duration_s: int,
+    policy: str,
+    dataset_name: str,
+) -> dict[str, Any] | None:
+    if not metadata_path.exists():
+        return None
+    try:
+        with metadata_path.open("r", encoding="utf-8") as source:
+            metadata = json.load(source)
+    except (OSError, json.JSONDecodeError) as exc:
+        raise ContractError(f"cannot read resumable metadata {metadata_path}: {exc}") from exc
+    result = metadata.get("result")
+    if not isinstance(result, dict) or result.get("status") != "completed":
+        return None
+    expected = {
+        "system": system_key,
+        "scenario": scenario_key,
+        "repeat": repeat_index,
+        "streams": streams,
+        "duration_s": duration_s,
+        "policy": policy,
+        "dataset": dataset_name,
+    }
+    mismatches = [key for key, value in expected.items() if result.get(key) != value]
+    if mismatches:
+        raise ContractError(
+            f"resumable metadata does not match requested run at {metadata_path}: {', '.join(mismatches)}"
+        )
+    return result
+
+
 def run_one(
     config: dict[str, Any],
     dataset: dict[str, Any],
@@ -516,10 +568,7 @@ def run_one(
         if part
     )
 
-    scenario_dir = run_root / scenario_key
-    if variant_name:
-        scenario_dir /= f"variant_{variant_name}"
-    scenario_dir = scenario_dir / f"streams_{streams}" / system_key / f"rep_{repeat_index:02d}"
+    scenario_dir = run_directory(run_root, scenario, streams, system_key, repeat_index)
     if not dry_run_plan:
         scenario_dir.mkdir(parents=True, exist_ok=True)
 
@@ -921,6 +970,11 @@ def main() -> None:
     parser.add_argument("--seed", type=int, default=None, help="Base seed shared across systems for a scenario/repeat")
     parser.add_argument("--dry-run-plan", action="store_true")
     parser.add_argument(
+        "--resume-run-root",
+        type=Path,
+        help="Reuse a failed run root, skipping only completed repetitions with matching metadata",
+    )
+    parser.add_argument(
         "--strict-real-mode",
         action="store_true",
         help="Deprecated: real mode is now always enabled",
@@ -965,7 +1019,9 @@ def main() -> None:
     repeats = int(cfg["protocol"]["repeats"] if args.repeats < 0 else args.repeats)
     measurement_s = int(cfg["protocol"]["measurement_s"] if args.measurement < 0 else args.measurement)
 
-    run_root = Path(args.output_root) / datetime.now().strftime("%Y%m%d_%H%M%S")
+    run_root = args.resume_run_root or Path(args.output_root) / datetime.now().strftime("%Y%m%d_%H%M%S")
+    if args.resume_run_root and not args.dry_run_plan and not run_root.is_dir():
+        raise ContractError(f"--resume-run-root does not exist: {run_root}")
     if not args.dry_run_plan:
         run_root.mkdir(parents=True, exist_ok=True)
 
@@ -994,6 +1050,32 @@ def main() -> None:
                     project_root=Path.cwd(),
                 )
                 for rep in range(1, repeats + 1):
+                    duration_s = _scenario_duration_s(variant["scenario"], measurement_s)
+                    if args.resume_run_root and not args.dry_run_plan:
+                        metadata_path = run_directory(
+                            run_root,
+                            variant["scenario"],
+                            variant["streams"],
+                            system,
+                            rep,
+                        ) / "run_metadata.json"
+                        existing = load_resumable_result(
+                            metadata_path,
+                            system_key=system,
+                            scenario_key=variant["scenario"]["name"],
+                            repeat_index=rep,
+                            streams=variant["streams"],
+                            duration_s=duration_s,
+                            policy=args.policy,
+                            dataset_name=dataset["name"],
+                        )
+                        if existing is not None:
+                            all_rows.append(existing)
+                            print(
+                                f"[resumed] scenario={scenario} streams={variant['streams']} "
+                                f"system={system} rep={rep}"
+                            )
+                            continue
                     row = run_one(
                         config=cfg,
                         dataset=dataset,
@@ -1002,7 +1084,7 @@ def main() -> None:
                         streams=variant["streams"],
                         min_objects=variant["min_objects"],
                         max_objects=variant["max_objects"],
-                        duration_s=_scenario_duration_s(variant["scenario"], measurement_s),
+                        duration_s=duration_s,
                         repeat_index=rep,
                         run_root=run_root,
                         execution_context=execution_context,

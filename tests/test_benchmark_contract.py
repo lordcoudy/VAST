@@ -24,7 +24,7 @@ from benchmark_contract import (
     validate_frame_events,
     validate_stage_trace_coverage,
 )
-from deploy.savant.native_probe import BasePyFuncPlugin, SavantLocalTelemetryProbe, merge_local_outputs
+from deploy.savant.native_probe import BasePyFuncPlugin, SavantLocalTelemetryProbe, frame_event_filename, merge_local_outputs
 from distributed_executor import _combine_csv, parse_chrony_tracking, parse_iperf_output, parse_ping_output
 from rtp_trace import RtpTrace, pack_trace, unpack_trace
 
@@ -68,6 +68,14 @@ def native_event_row(**overrides):
     }
     row.update(overrides)
     return row
+
+
+def write_savant_event_fragments(stream_dir: Path, rows: list[dict]) -> None:
+    grouped: dict[str, list[dict]] = {}
+    for row in rows:
+        grouped.setdefault(str(row["stage"]), []).append(row)
+    for stage, stage_rows in grouped.items():
+        pd.DataFrame(stage_rows).to_csv(stream_dir / frame_event_filename(stage), index=False)
 
 
 class BenchmarkContractTests(unittest.TestCase):
@@ -198,6 +206,21 @@ class BenchmarkContractTests(unittest.TestCase):
 
                 with self.assertRaisesRegex(ContractError, r"frame_events\.csv:2: .*stage_start_timestamp_ms"):
                     validate_frame_events(path)
+
+    def test_benchmark_rejects_extra_frame_event_fields(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "frame_events.csv"
+            row = native_event_row()
+            path.write_text(
+                ",".join(FRAME_EVENT_COLUMNS)
+                + "\n"
+                + ",".join(str(row[column]) for column in FRAME_EVENT_COLUMNS)
+                + ",extra\n",
+                encoding="utf-8",
+            )
+
+            with self.assertRaisesRegex(ContractError, r"frame_events\.csv:2: unexpected extra CSV fields"):
+                validate_frame_events(path)
 
     def test_stage_trace_coverage_accepts_merged_role_events(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -379,6 +402,34 @@ class BenchmarkContractTests(unittest.TestCase):
             self.assertEqual(frames.shape[0], 2)
             self.assertEqual(events.shape[0], 6)
 
+    def test_savant_local_stage_event_fragments_are_merged(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            stream_dir = root / "streams" / "stream_0"
+            stream_dir.mkdir(parents=True)
+            pd.DataFrame(
+                [
+                    native_frame_row(
+                        trace_id="r:0:1",
+                        detector="peoplenet",
+                        backend="deepstream_tensorrt",
+                    )
+                ]
+            ).to_csv(stream_dir / "frames.csv", index=False)
+            write_savant_event_fragments(
+                stream_dir,
+                [
+                    native_event_row(trace_id="r:0:1", stage="decode", resource="cpu", policy_action="native:savant"),
+                    native_event_row(trace_id="r:0:1", stage="detect", resource="gpu", policy_action="native:savant"),
+                    native_event_row(trace_id="r:0:1", stage="aggregate", resource="cpu", policy_action="native:savant"),
+                ],
+            )
+
+            merge_local_outputs(root, streams=1)
+            events = validate_frame_events(root / "frame_events.csv")
+            self.assertEqual(set(events["stage"]), {"decode", "detect", "aggregate"})
+            self.assertEqual(events.shape[0], 3)
+
     def test_savant_local_merge_filters_measurement_window(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -433,16 +484,6 @@ class BenchmarkContractTests(unittest.TestCase):
                                 "policy_action": "native:savant",
                             }
                         )
-                event_rows.append(
-                    native_event_row(
-                        trace_id=f"r:{stream_id}:1",
-                        stream_id=stream_id,
-                        frame_id=1,
-                        stage="detect",
-                        stage_start_timestamp_ms="None",
-                        policy_action="native:savant",
-                    )
-                )
                 pd.DataFrame(frame_rows).to_csv(stream_dir / "frames.csv", index=False)
                 pd.DataFrame(event_rows).to_csv(stream_dir / "frame_events.csv", index=False)
 
@@ -463,6 +504,52 @@ class BenchmarkContractTests(unittest.TestCase):
             self.assertEqual(set(frames["frame_id"]), {2})
             self.assertEqual(frames.shape[0], 2)
             self.assertEqual(events.shape[0], 6)
+
+    def test_savant_local_merge_rejects_malformed_unmeasured_event(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "measurement_start_ms").write_text("1000\n", encoding="utf-8")
+            (root / "measurement_end_ms").write_text("2000\n", encoding="utf-8")
+            stream_dir = root / "streams" / "stream_0"
+            stream_dir.mkdir(parents=True)
+            pd.DataFrame(
+                [
+                    native_frame_row(
+                        trace_id="r:0:1",
+                        frame_id=1,
+                        ingress_timestamp_ms=100,
+                        egress_timestamp_ms=130,
+                        detector="peoplenet",
+                        backend="deepstream_tensorrt",
+                    ),
+                    native_frame_row(
+                        trace_id="r:0:2",
+                        frame_id=2,
+                        ingress_timestamp_ms=1100,
+                        egress_timestamp_ms=1130,
+                        detector="peoplenet",
+                        backend="deepstream_tensorrt",
+                    ),
+                ]
+            ).to_csv(stream_dir / "frames.csv", index=False)
+            write_savant_event_fragments(
+                stream_dir,
+                [
+                    native_event_row(trace_id="r:0:2", frame_id=2, stage="decode", policy_action="native:savant"),
+                    native_event_row(
+                        trace_id="r:0:1",
+                        frame_id=1,
+                        stage="detect",
+                        stage_start_timestamp_ms="None",
+                        policy_action="native:savant",
+                    ),
+                    native_event_row(trace_id="r:0:2", frame_id=2, stage="detect", resource="gpu", policy_action="native:savant"),
+                    native_event_row(trace_id="r:0:2", frame_id=2, stage="aggregate", policy_action="native:savant"),
+                ],
+            )
+
+            with self.assertRaisesRegex(RuntimeError, r"frame_events_detect\.csv:2: .*stage_start_timestamp_ms"):
+                merge_local_outputs(root, streams=1)
 
     def test_savant_local_merge_rejects_malformed_measured_event(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -486,7 +573,7 @@ class BenchmarkContractTests(unittest.TestCase):
             with self.assertRaisesRegex(RuntimeError, r"frame_events\.csv:2: .*stage_start_timestamp_ms"):
                 merge_local_outputs(root, streams=1)
 
-    def test_savant_local_shared_event_writer_handles_concurrent_stage_writes(self) -> None:
+    def test_savant_local_stage_event_writers_handle_concurrent_stage_writes(self) -> None:
         class Buffer:
             def __init__(self, frame_id: int) -> None:
                 self.pts = frame_id
@@ -526,14 +613,17 @@ class BenchmarkContractTests(unittest.TestCase):
                 for probe in probes:
                     probe.on_stop()
 
-            with (root / "frame_events.csv").open("r", newline="", encoding="utf-8") as src:
-                rows = list(csv.DictReader(src))
-            self.assertEqual(len(rows), 150)
-            for row_number, row in enumerate(rows, start=2):
-                for column in FRAME_EVENT_COLUMNS:
-                    self.assertIsNotNone(row.get(column), f"row {row_number} column {column}")
-                    self.assertNotEqual(str(row.get(column)).strip(), "", f"row {row_number} column {column}")
-            validate_frame_events(root / "frame_events.csv")
+            self.assertFalse((root / "frame_events.csv").exists())
+            for stage in ("decode", "detect", "aggregate"):
+                path = root / frame_event_filename(stage)
+                with path.open("r", newline="", encoding="utf-8") as src:
+                    rows = list(csv.DictReader(src))
+                self.assertEqual(len(rows), 50)
+                for row_number, row in enumerate(rows, start=2):
+                    for column in FRAME_EVENT_COLUMNS:
+                        self.assertIsNotNone(row.get(column), f"row {row_number} column {column}")
+                        self.assertNotEqual(str(row.get(column)).strip(), "", f"row {row_number} column {column}")
+                validate_frame_events(path)
 
     def test_savant_local_pyfunc_writes_native_rows_from_buffer(self) -> None:
         class Buffer:
@@ -574,8 +664,11 @@ class BenchmarkContractTests(unittest.TestCase):
                 detector="peoplenet",
                 backend="deepstream_tensorrt",
             )
-            events = validate_frame_events(root / "frame_events.csv")
+            decode_events = validate_frame_events(root / frame_event_filename("decode"))
+            aggregate_events = validate_frame_events(root / frame_event_filename("aggregate"))
+            events = pd.concat([decode_events, aggregate_events], ignore_index=True)
 
+            self.assertFalse((root / "frame_events.csv").exists())
             self.assertEqual(frames.shape[0], 1)
             self.assertEqual(set(events["stage"]), {"decode", "aggregate"})
 

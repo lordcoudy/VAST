@@ -94,8 +94,7 @@ struct Task {
   double aggregate = 0.0;
   std::array<float, kSignalWidth> signal{};
   std::chrono::steady_clock::time_point created_at;
-  std::chrono::system_clock::time_point wall_created_at;
-  std::chrono::system_clock::time_point queue_enter_at;
+  std::chrono::steady_clock::time_point queue_enter_at;
 };
 
 template <typename T>
@@ -334,6 +333,14 @@ class AdaptivePipeline {
   std::atomic<double> gpu_queue_weight_{0.85};
   std::atomic<double> heavy_gpu_bonus_{1.75};
   int heavy_object_threshold_ = 32;
+  const std::chrono::steady_clock::time_point telemetry_steady_epoch_ = std::chrono::steady_clock::now();
+  const std::chrono::system_clock::time_point telemetry_wall_epoch_ = std::chrono::system_clock::now();
+
+  double telemetry_timestamp_ms(std::chrono::steady_clock::time_point timestamp) const {
+    const auto wall_epoch_ms = std::chrono::duration<double, std::milli>(telemetry_wall_epoch_.time_since_epoch()).count();
+    const auto elapsed_ms = std::chrono::duration<double, std::milli>(timestamp - telemetry_steady_epoch_).count();
+    return wall_epoch_ms + elapsed_ms;
+  }
 
   void init_stages() {
     const std::vector<std::string> requested = requested_pipeline_stages();
@@ -571,16 +578,16 @@ class AdaptivePipeline {
   }
 
   void record_completion(const Task& task) {
-    const auto now = std::chrono::system_clock::now();
+    const auto completed_at = std::chrono::steady_clock::now();
     const auto latency_ms =
-        std::chrono::duration_cast<std::chrono::microseconds>(now - task.wall_created_at).count() / 1000.0;
+        std::chrono::duration_cast<std::chrono::microseconds>(completed_at - task.created_at).count() / 1000.0;
     FrameRecord row;
     row.trace_id = args_.run_id + ":" + std::to_string(task.stream_id) + ":" + std::to_string(task.frame_id);
     row.frame_id = task.frame_id;
     row.stream_id = task.stream_id;
     row.objects = task.objects;
-    row.ingress_timestamp_ms = std::chrono::duration<double, std::milli>(task.wall_created_at.time_since_epoch()).count();
-    row.egress_timestamp_ms = std::chrono::duration<double, std::milli>(now.time_since_epoch()).count();
+    row.ingress_timestamp_ms = telemetry_timestamp_ms(task.created_at);
+    row.egress_timestamp_ms = telemetry_timestamp_ms(completed_at);
     row.latency_ms = latency_ms;
 
     {
@@ -603,7 +610,7 @@ class AdaptivePipeline {
       return;
     }
 
-    task.queue_enter_at = std::chrono::system_clock::now();
+    task.queue_enter_at = std::chrono::steady_clock::now();
     const Resource resource = choose_resource(task.stage_index, task);
     if (resource == Resource::Cpu) {
       cpu_queue_.push(std::move(task));
@@ -614,7 +621,7 @@ class AdaptivePipeline {
 
   void process_task(Task task, Resource resource, GpuExecutor* gpu_executor) {
     const StageSpec& stage = stages_[static_cast<std::size_t>(task.stage_index)];
-    const auto stage_start = std::chrono::system_clock::now();
+    const auto stage_start = std::chrono::steady_clock::now();
     const std::size_t queue_depth = resource == Resource::Cpu ? cpu_queue_.size() : gpu_queue_.size();
     const double predicted_ms = estimated_cost_ms(resource, stage, task);
     if (resource == Resource::Cpu) {
@@ -625,16 +632,16 @@ class AdaptivePipeline {
       }
       (void)gpu_stage_step(task, stage, *gpu_executor);
     }
-    const auto stage_end = std::chrono::system_clock::now();
+    const auto stage_end = std::chrono::steady_clock::now();
     EventRecord event;
     event.trace_id = args_.run_id + ":" + std::to_string(task.stream_id) + ":" + std::to_string(task.frame_id);
     event.frame_id = task.frame_id;
     event.stream_id = task.stream_id;
     event.stage = stage.name;
     event.resource = resource_name(resource);
-    event.queue_enter_timestamp_ms = std::chrono::duration<double, std::milli>(task.queue_enter_at.time_since_epoch()).count();
-    event.stage_start_timestamp_ms = std::chrono::duration<double, std::milli>(stage_start.time_since_epoch()).count();
-    event.stage_end_timestamp_ms = std::chrono::duration<double, std::milli>(stage_end.time_since_epoch()).count();
+    event.queue_enter_timestamp_ms = telemetry_timestamp_ms(task.queue_enter_at);
+    event.stage_start_timestamp_ms = telemetry_timestamp_ms(stage_start);
+    event.stage_end_timestamp_ms = telemetry_timestamp_ms(stage_end);
     event.queue_depth = queue_depth;
     event.estimated_cost_ms = predicted_ms;
     event.policy_action = args_.policy + ":" + resource_name(resource);
@@ -742,7 +749,6 @@ class AdaptivePipeline {
           task.stage_index = 0;
           task.objects = object_count_for_frame(task.frame_id, stream_id);
           task.created_at = std::chrono::steady_clock::now();
-          task.wall_created_at = std::chrono::system_clock::now();
           fill_signal(task);
           enqueue_stage(std::move(task));
         }

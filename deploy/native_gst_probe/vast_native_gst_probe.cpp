@@ -92,10 +92,10 @@ class NativeProbeRuntime {
     if (timer != 0) {
       g_source_remove(timer);
     }
+    stop_pipelines();
     g_main_loop_unref(loop);
     loop_ = nullptr;
-    events_.flush();
-    frames_.flush();
+    flush_outputs();
     return failed_ ? 1 : 0;
   }
 
@@ -111,6 +111,7 @@ class NativeProbeRuntime {
   std::ofstream events_;
   std::ofstream frames_;
   std::mutex mutex_;
+  std::mutex output_mutex_;
   bool failed_ = false;
 
   static std::uint64_t now_ms() {
@@ -273,10 +274,13 @@ class NativeProbeRuntime {
 
   void write_event(const Trace& trace, const std::string& stage, std::uint64_t start_ms, std::uint64_t end_ms) {
     start_measurement_timer_if_needed();
-    events_ << "2," << args_.run_id << "," << trace_id(trace) << "," << static_cast<int>(trace.stream_id) << ","
-            << trace.frame_id << "," << stage << "," << args_.role << ",localhost,cpu," << start_ms << ","
-            << start_ms << "," << end_ms << ",0," << std::max<std::uint64_t>(1, end_ms - start_ms)
-            << ",native:" << args_.system << "\n";
+    std::ostringstream row;
+    row << "2," << args_.run_id << "," << trace_id(trace) << "," << static_cast<int>(trace.stream_id) << ","
+        << trace.frame_id << "," << stage << "," << args_.role << ",localhost,cpu," << start_ms << ","
+        << start_ms << "," << end_ms << ",0," << std::max<std::uint64_t>(1, end_ms - start_ms)
+        << ",native:" << args_.system << "\n";
+    std::lock_guard<std::mutex> lock(output_mutex_);
+    events_ << row.str();
     events_.flush();
   }
 
@@ -296,9 +300,31 @@ class NativeProbeRuntime {
   void write_frame(const Trace& trace, std::uint64_t egress_ms) {
     const std::uint64_t ingress = trace.ingress_ms;
     const std::uint64_t latency = egress_ms >= ingress ? egress_ms - ingress : 0;
-    frames_ << "2," << args_.run_id << "," << trace_id(trace) << "," << static_cast<int>(trace.stream_id) << ","
-            << trace.frame_id << "," << ingress << "," << egress_ms << "," << latency << "," << object_count()
-            << "," << args_.detector << "," << args_.backend << ",native\n";
+    std::ostringstream row;
+    row << "2," << args_.run_id << "," << trace_id(trace) << "," << static_cast<int>(trace.stream_id) << ","
+        << trace.frame_id << "," << ingress << "," << egress_ms << "," << latency << "," << object_count()
+        << "," << args_.detector << "," << args_.backend << ",native\n";
+    std::lock_guard<std::mutex> lock(output_mutex_);
+    frames_ << row.str();
+    frames_.flush();
+  }
+
+  void stop_pipelines() {
+    for (GstElement* pipeline : pipelines_) {
+      if (pipeline != nullptr) {
+        gst_element_set_state(pipeline, GST_STATE_NULL);
+      }
+    }
+    for (GstElement* pipeline : pipelines_) {
+      if (pipeline != nullptr) {
+        gst_element_get_state(pipeline, nullptr, nullptr, 5 * GST_SECOND);
+      }
+    }
+  }
+
+  void flush_outputs() {
+    std::lock_guard<std::mutex> lock(output_mutex_);
+    events_.flush();
     frames_.flush();
   }
 

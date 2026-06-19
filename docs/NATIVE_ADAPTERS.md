@@ -18,12 +18,20 @@ Each configured system command receives:
 - `DATASET_STREAMS_JSON`
 - `EXPERIMENT_RUN_SEED`
 
-The command must write:
+The command must publish:
 
 - `frames.csv`: one row per completed frame using the columns defined in
   `scripts/benchmark_contract.py::FRAME_COLUMNS`
 - `frame_events.csv`: one row per stage execution using
   `scripts/benchmark_contract.py::FRAME_EVENT_COLUMNS`
+
+Adapters may write intermediate `frame_events*.csv` fragments inside
+per-stream or per-role output directories before merge. Strict validation reads
+every raw fragment row before measured-frame filtering, so malformed rows are
+rejected even when they fall outside the measurement window. Savant local writes
+per-stage fragments such as `frame_events_decode.csv`, `frame_events_detect.csv`,
+and `frame_events_aggregate.csv` to avoid concurrent writes to one file, then
+publishes the merged root `frame_events.csv`.
 
 DeepStream and Savant adapters should use GStreamer pad probes. OpenVINO+GVA
 and GStreamer custom adapters should use source/sink pad probes. The custom
@@ -56,7 +64,8 @@ fallback for custom deployments. The command receives:
 The role command must process only the assigned stages. It must propagate
 `trace_id`, `stream_id`, `frame_id`, and the original edge ingress timestamp
 through an RTP header extension. The aggregator writes E2E `frames.csv`; every
-role writes `frame_events.csv`.
+role writes `frame_events.csv` or mergeable `frame_events*.csv` fragments that
+publish as the role benchmark `frame_events.csv`.
 
 The canonical transport uses one UDP port per stream:
 
@@ -91,7 +100,10 @@ Defaults:
 - `vast/deepstream-native-probe:7.0`, based on `nvcr.io/nvidia/deepstream:7.0-triton-multiarch`
 - `vast/savant-native-probe:0.5.17-7.0`, based on `ghcr.io/insight-platform/savant-deepstream:0.5.17-7.0`
 - Savant `gpu_worker` runs `python -m savant.entrypoint deploy/savant/canonical_distributed_module.yml`
-- OpenVINO+GVA requires `gvadetect` or `object_detect`
+- OpenVINO+GVA requires `gvadetect` or `object_detect`. When the host DL Streamer
+  runtime is incomplete, strict local mode uses `intel/dlstreamer:latest` and
+  isolates each stream in a short finite-input container chunk to avoid the
+  DL Streamer `meta_aggregate` EOS path.
 - GStreamer custom uses the bundled `adaptivescheduler` plugin by default.
   Build it with `cmake --build build/cmake --target gstadaptivescheduler`
   and expose it with `GST_PLUGIN_PATH=$PWD/build/lib`. Strict mode still
@@ -113,6 +125,7 @@ A distributed benchmark run is rejected when:
 - `chronyc tracking` reports more than 5 ms offset on any role;
 - required public dataset checksums are absent or invalid;
 - the aggregator does not write E2E `frames.csv`;
-- any role omits `frame_events.csv` or `system_metrics.csv`;
+- any role omits native event output (`frame_events.csv` or mergeable
+  `frame_events*.csv`) or `system_metrics.csv`;
 - any frame row is synthetic, legacy, malformed, or has a duplicate trace ID;
 - any completed frame lacks native events for a required pipeline stage.
