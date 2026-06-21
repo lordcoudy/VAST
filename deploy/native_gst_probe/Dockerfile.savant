@@ -8,15 +8,21 @@ LABEL org.vast.native_probe.kind="savant"
 ENV DEBIAN_FRONTEND=noninteractive
 ENV SAVANT_CANONICAL_MODULE=/workspace/project/deploy/savant/canonical_distributed_module.yml
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    ca-certificates \
-    cmake \
-    pkg-config \
-    python3 \
-    libgstreamer1.0-dev \
-    libgstreamer-plugins-base1.0-dev \
-    gstreamer1.0-plugins-good \
+RUN for attempt in 1 2 3 4 5; do \
+      apt-get -o Acquire::Retries=5 update && \
+      apt-get -o Acquire::Retries=5 install -y --fix-missing --no-install-recommends \
+        build-essential \
+        ca-certificates \
+        cmake \
+        pkg-config \
+        python3 \
+        libgstreamer1.0-dev \
+        libgstreamer-plugins-base1.0-dev \
+        gstreamer1.0-plugins-good && break; \
+      if [ "$attempt" -eq 5 ]; then exit 1; fi; \
+      rm -rf /var/lib/apt/lists/*; \
+      sleep "$attempt"; \
+    done \
   && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /workspace/project

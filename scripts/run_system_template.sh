@@ -98,6 +98,13 @@ fi
 
 DETECTOR="${ADAPTER_DETECTOR:-$SYSTEM}"
 BACKEND="${ADAPTER_BACKEND:-$SYSTEM}"
+ADAPTER_DURATION_S="$DURATION_S"
+if [[ "$EXPERIMENT_DISTRIBUTED" == "1" && "$HOST_ROLE" == "edge" && "$DURATION_S" =~ ^[0-9]+$ ]]; then
+  EDGE_PREROLL_S="${DISTRIBUTED_EDGE_PREROLL_S:-$STARTUP_GRACE_S}"
+  if [[ "$EDGE_PREROLL_S" =~ ^[0-9]+$ ]]; then
+    ADAPTER_DURATION_S="$((DURATION_S + EDGE_PREROLL_S))"
+  fi
+fi
 
 OUTPUT_DIR="$(dirname "$OUTPUT_FILE")"
 mkdir -p "$OUTPUT_DIR"
@@ -180,8 +187,8 @@ run_or_echo() {
 
   if [[ -n "$CMD_TIMEOUT_S" ]]; then
     effective_timeout="$CMD_TIMEOUT_S"
-  elif [[ "$DURATION_S" =~ ^[0-9]+$ && "$STARTUP_GRACE_S" =~ ^[0-9]+$ ]]; then
-    effective_timeout="$((DURATION_S + STARTUP_GRACE_S))"
+  elif [[ "$ADAPTER_DURATION_S" =~ ^[0-9]+$ && "$STARTUP_GRACE_S" =~ ^[0-9]+$ ]]; then
+    effective_timeout="$((ADAPTER_DURATION_S + STARTUP_GRACE_S))"
   else
     effective_timeout="$DURATION_S"
   fi
@@ -438,7 +445,7 @@ run_gstreamer_custom_smoke_pipeline() {
 
 run_custom_cpp_cuda_qt() {
   local app="${CUSTOM_APP_BIN:-$PROJECT_DIR/build/bin/adaptive_scheduler_app}"
-  local cmd="QT_QPA_PLATFORM=offscreen '$app' --scenario '$SCENARIO' --streams '$STREAMS' --duration '$DURATION_S' --output '$OUTPUT_DIR' --policy '$SCHEDULER_POLICY' --policy-artifact '$QL_HEFT_POLICY_ARTIFACT' --run-id '$RUN_ID' --detector '$DETECTOR' --backend '$BACKEND' --min-objects '$MIN_OBJECTS' --max-objects '$MAX_OBJECTS' --deadline-ms '$DEADLINE_MS'"
+  local cmd="QT_QPA_PLATFORM=offscreen '$app' --scenario '$SCENARIO' --streams '$STREAMS' --duration '$ADAPTER_DURATION_S' --output '$OUTPUT_DIR' --policy '$SCHEDULER_POLICY' --policy-artifact '$QL_HEFT_POLICY_ARTIFACT' --run-id '$RUN_ID' --detector '$DETECTOR' --backend '$BACKEND' --min-objects '$MIN_OBJECTS' --max-objects '$MAX_OBJECTS' --deadline-ms '$DEADLINE_MS'"
   local source
   source="$(pick_video_for_stream 1)"
 
@@ -552,6 +559,29 @@ openvino_host_detect_element() {
   return 1
 }
 
+openvino_detect_bin_for_element() {
+  local element="$1"
+  local model_xml="$2"
+  if [[ "$element" == "object_detect" ]]; then
+    printf "capsrelax ! object_detect model=%s device=CPU" "$(shell_quote "$model_xml")"
+  else
+    printf "%s model=%s device=CPU" "$element" "$(shell_quote "$model_xml")"
+  fi
+}
+
+openvino_host_runtime_usable() {
+  local model_xml="$1"
+  local element="${OPENVINO_GVA_DETECT_ELEMENT:-}"
+  local detect_bin
+  if [[ -z "$element" ]]; then
+    element="$(openvino_host_detect_element)" || return 1
+  fi
+  detect_bin="$(openvino_detect_bin_for_element "$element" "$model_xml")"
+  timeout --signal=INT 45s bash -lc \
+    "gst-launch-1.0 -q videotestsrc num-buffers=1 ! videoconvert ! video/x-raw,format=BGRx,width=640,height=480 ! $detect_bin ! fakesink sync=false" \
+    >/dev/null 2>&1
+}
+
 native_probe_detect_bin() {
   case "$SYSTEM" in
     openvino_gva)
@@ -572,10 +602,13 @@ native_probe_detect_bin() {
           return 1
         fi
       fi
-      printf "%s model=%s device=CPU" "$element" "$(shell_quote "$model_xml")"
+      openvino_detect_bin_for_element "$element" "$model_xml"
       ;;
     gstreamer_custom)
       local plugin="${GST_CUSTOM_PLUGIN:-adaptivescheduler}"
+      if [[ "$EXPERIMENT_DISTRIBUTED" == "1" && "$HOST_ROLE" != "local" ]]; then
+        plugin="${GST_CUSTOM_DISTRIBUTED_PLUGIN:-identity}"
+      fi
       local gst_plugin_path
       gst_plugin_path="$(gstreamer_custom_plugin_path)"
       if [[ "$REAL_DRY_RUN" == "1" ]]; then
@@ -590,7 +623,11 @@ native_probe_detect_bin() {
         warn "Strict benchmark requires custom GStreamer plugin '$plugin' in GST_PLUGIN_PATH=$gst_plugin_path"
         return 1
       fi
-      printf "%s" "$plugin"
+      if [[ "$plugin" == "identity" ]]; then
+        printf "identity"
+      else
+        printf "video/x-raw,format=RGB ! %s" "$plugin"
+      fi
       ;;
     deepstream)
       local config
@@ -598,8 +635,9 @@ native_probe_detect_bin() {
       printf "nvinfer config-file-path=%s" "$(shell_quote "$config")"
       ;;
     savant)
-      # The Savant derived image provides a framework module that exposes a GStreamer-compatible detector hook.
-      printf "%s" "${SAVANT_CANONICAL_DETECT_BIN:-vast_savant_detect}"
+      local config
+      config="$(project_path_for_runtime "${SAVANT_PGIE_CONFIG:-/opt/nvidia/deepstream/deepstream/samples/configs/deepstream-app/config_infer_primary.txt}")"
+      printf "nvinfer config-file-path=%s" "$(shell_quote "$config")"
       ;;
     *)
       printf "identity"
@@ -620,7 +658,7 @@ native_probe_args() {
     --detector "$DETECTOR"
     --backend "$BACKEND"
     --output-dir "$output_dir"
-    --duration "$DURATION_S"
+    --duration "$ADAPTER_DURATION_S"
     --streams "$STREAMS"
     --video-layout-dir "$runtime_video_layout"
     --detect-bin "$detect_bin"
@@ -723,8 +761,10 @@ run_openvino_gva_native_probe() {
     run_openvino_gva_container_native_probe
     return $?
   fi
-  if [[ "$REAL_DRY_RUN" != "1" && "${OPENVINO_GVA_USE_CONTAINER:-1}" != "0" ]] && ! openvino_host_detect_element >/dev/null 2>&1; then
-    warn "OpenVINO host DL Streamer runtime is incomplete; using containerized DL Streamer image"
+  local model_xml
+  model_xml="${OPENVINO_MODEL_XML:-$OPENVINO_MODEL_XML_DEFAULT}"
+  if [[ "$REAL_DRY_RUN" != "1" && "${OPENVINO_GVA_USE_CONTAINER:-1}" != "0" ]] && ! openvino_host_runtime_usable "$model_xml"; then
+    warn "OpenVINO host DL Streamer runtime failed model preflight; using containerized DL Streamer image"
     run_openvino_gva_container_native_probe
     return $?
   fi
@@ -734,6 +774,7 @@ run_openvino_gva_native_probe() {
 run_container_native_probe() {
   local image="$1"
   local detect_bin
+  local custom_plugin_env=""
   if [[ "$REAL_DRY_RUN" != "1" ]]; then
     if ! command -v docker >/dev/null 2>&1; then
       warn "docker not found for strict native $SYSTEM probe"
@@ -761,6 +802,9 @@ run_container_native_probe() {
     NATIVE_PROBE_CONTAINERIZED="$prev_containerized"
     return 1
   fi
+  if [[ "$SYSTEM" == "gstreamer_custom" ]]; then
+    custom_plugin_env="-e GST_PLUGIN_PATH=/workspace/project/build/lib -e GST_CUSTOM_STRICT=1"
+  fi
   cmd="docker run --rm --network host --gpus all \
     -e EXPERIMENT_RTP_INPUT_PORT='${RTP_INPUT_PORT}' \
     -e EXPERIMENT_RTP_OUTPUT_HOST='${RTP_OUTPUT_HOST}' \
@@ -772,7 +816,7 @@ run_container_native_probe() {
     -e ADAPTER_DETECTOR='${DETECTOR}' \
     -e ADAPTER_BACKEND='${BACKEND}' \
     -e DATASET_STREAMS_JSON='${DATASET_STREAMS_JSON}' \
-    -e GST_CUSTOM_STRICT='1' \
+    $custom_plugin_env \
     -v '$PROJECT_DIR':/workspace/project \
     -w /workspace/project \
     --entrypoint /usr/local/bin/vast_native_gst_probe \
@@ -853,7 +897,7 @@ run_savant_local_native_probe() {
     CMD_TIMEOUT_S="$((DURATION_S + (startup_windows * startup_wait_s) + (2 * shutdown_grace_s) + 60))"
   fi
 
-  cmd="set -e; pids=''; stream_pids=''; host_output=$(shell_quote "$OUTPUT_DIR"); streams='${STREAMS}'; startup_wait_s='${startup_wait_s}'; shutdown_grace_s='${shutdown_grace_s}'; \
+  cmd="set -e; pids=''; stream_pids=''; host_output=$(shell_quote "$OUTPUT_DIR"); streams='${STREAMS}'; required_stages='${PIPELINE_STAGES}'; startup_wait_s='${startup_wait_s}'; shutdown_grace_s='${shutdown_grace_s}'; \
 now_ms() { raw=\$(date +%s%3N 2>/dev/null || true); case \"\$raw\" in ''|*N*) python3 -c 'import time; print(int(time.time() * 1000))' ;; *) printf '%s\n' \"\$raw\" ;; esac; }; \
 mark_measurement_start() { mkdir -p \"\$host_output\"; now_ms > \"\$host_output/measurement_start_ms\"; echo \"[template] Savant local measurement window started\"; }; \
 mark_measurement_end() { mkdir -p \"\$host_output\"; now_ms > \"\$host_output/measurement_end_ms\"; echo \"[template] Savant local measurement window ended\"; }; \
@@ -863,7 +907,8 @@ process_alive() { pid=\"\$1\"; [ -n \"\$pid\" ] && kill -0 \"\$pid\" >/dev/null 
 pid_at() { target=\"\$1\"; shift; idx=0; for pid in \"\$@\"; do if [ \"\$idx\" -eq \"\$target\" ]; then printf '%s' \"\$pid\"; return 0; fi; idx=\$((idx + 1)); done; return 1; }; \
 wait_for_csv_rows() { path=\"\$1\"; min_rows=\"\$2\"; label=\"\$3\"; pid=\"\${4:-}\"; deadline=\$((SECONDS + startup_wait_s)); while :; do rows=0; [ -f \"\$path\" ] && rows=\$(wc -l < \"\$path\" 2>/dev/null || echo 0); if [ \"\$rows\" -ge \"\$min_rows\" ]; then echo \"[template] \$label ready rows=\$rows\"; return 0; fi; if [ -n \"\$pid\" ] && ! process_alive \"\$pid\"; then echo \"[template][warning] \$label process exited before telemetry was ready\" >&2; return 1; fi; if [ \"\$SECONDS\" -ge \"\$deadline\" ]; then echo \"[template][warning] \$label did not become ready after \${startup_wait_s}s\" >&2; return 1; fi; sleep 1; done; }; \
 csv_ready() { path=\"\$1\"; rows=0; [ -f \"\$path\" ] && rows=\$(wc -l < \"\$path\" 2>/dev/null || echo 0); [ \"\$rows\" -ge 2 ]; }; \
-wait_for_telemetry() { deadline=\$((SECONDS + startup_wait_s)); while :; do ready=0; for i in \$(seq 0 \$((streams - 1))); do base=\"\$host_output/streams/stream_\$i\"; pid=\$(pid_at \"\$i\" \$stream_pids || true); if csv_ready \"\$base/frames.csv\" && csv_ready \"\$base/frame_events_decode.csv\" && csv_ready \"\$base/frame_events_detect.csv\" && csv_ready \"\$base/frame_events_aggregate.csv\" && process_alive \"\$pid\"; then ready=\$((ready + 1)); elif [ -n \"\$pid\" ] && ! process_alive \"\$pid\"; then echo \"[template][warning] Savant local stream \$i process exited before telemetry was ready\" >&2; return 1; fi; done; if [ \"\$ready\" -eq \"\$streams\" ]; then echo \"[template] Savant local telemetry ready streams=\$ready\"; return 0; fi; if [ \"\$SECONDS\" -ge \"\$deadline\" ]; then echo \"[template][warning] Savant local telemetry did not become ready: ready=\$ready/\$streams after \${startup_wait_s}s\" >&2; return 1; fi; sleep 1; done; }; "
+stage_files_ready() { base=\"\$1\"; oldifs=\"\$IFS\"; IFS=,; for stage in \$required_stages; do [ -z \"\$stage\" ] || csv_ready \"\$base/frame_events_\$stage.csv\" || { IFS=\"\$oldifs\"; return 1; }; done; IFS=\"\$oldifs\"; return 0; }; \
+wait_for_telemetry() { deadline=\$((SECONDS + startup_wait_s)); while :; do ready=0; for i in \$(seq 0 \$((streams - 1))); do base=\"\$host_output/streams/stream_\$i\"; pid=\$(pid_at \"\$i\" \$stream_pids || true); if csv_ready \"\$base/frames.csv\" && stage_files_ready \"\$base\" && process_alive \"\$pid\"; then ready=\$((ready + 1)); elif [ -n \"\$pid\" ] && ! process_alive \"\$pid\"; then echo \"[template][warning] Savant local stream \$i process exited before telemetry was ready\" >&2; return 1; fi; done; if [ \"\$ready\" -eq \"\$streams\" ]; then echo \"[template] Savant local telemetry ready streams=\$ready\"; return 0; fi; if [ \"\$SECONDS\" -ge \"\$deadline\" ]; then echo \"[template][warning] Savant local telemetry did not become ready: ready=\$ready/\$streams after \${startup_wait_s}s\" >&2; return 1; fi; sleep 1; done; }; "
   if [[ "$prewarm_enabled" != "0" ]]; then
     local prewarm_source
     prewarm_source="$(savant_local_stream_source 1)"
@@ -872,6 +917,7 @@ wait_for_telemetry() { deadline=\$((SECONDS + startup_wait_s)); while :; do read
       -e VAST_STREAM_ID='0' \
       -e VAST_NATIVE_OUTPUT_DIR='${container_output}/prewarm' \
       -e EXPERIMENT_RUN_ID='${RUN_ID}-prewarm' \
+      -e EXPERIMENT_PIPELINE_STAGES='${PIPELINE_STAGES}' \
       -e ADAPTER_DETECTOR='${DETECTOR}' \
       -e ADAPTER_BACKEND='${BACKEND}' \
       -e MIN_OBJECTS='${MIN_OBJECTS}' \
@@ -890,6 +936,7 @@ wait_for_telemetry() { deadline=\$((SECONDS + startup_wait_s)); while :; do read
       -e VAST_STREAM_ID='$i' \
       -e VAST_NATIVE_OUTPUT_DIR='${container_output}/streams/stream_$i' \
       -e EXPERIMENT_RUN_ID='${RUN_ID}' \
+      -e EXPERIMENT_PIPELINE_STAGES='${PIPELINE_STAGES}' \
       -e ADAPTER_DETECTOR='${DETECTOR}' \
       -e ADAPTER_BACKEND='${BACKEND}' \
       -e MIN_OBJECTS='${MIN_OBJECTS}' \
@@ -923,62 +970,10 @@ wait_for_telemetry() { deadline=\$((SECONDS + startup_wait_s)); while :; do read
 }
 
 run_savant_framework_native_probe() {
-  if [[ "$HOST_ROLE" != "gpu_worker" ]]; then
-    run_container_native_probe "$SAVANT_NATIVE_PROBE_IMAGE"
-    return $?
-  fi
-  if [[ "$REAL_DRY_RUN" != "1" ]]; then
-    if ! command -v docker >/dev/null 2>&1; then
-      warn "docker not found for strict distributed Savant probe"
-      return 1
-    fi
-    if ! docker image inspect "$SAVANT_NATIVE_PROBE_IMAGE" >/dev/null 2>&1; then
-      warn "Strict distributed Savant benchmark requires derived native probe image: $SAVANT_NATIVE_PROBE_IMAGE"
-      warn "Build images with: bash scripts/build_native_probe_images.sh"
-      return 1
-    fi
-    ensure_native_probe_image_current "$SAVANT_NATIVE_PROBE_IMAGE" 1 || return 1
-  fi
-  local container_output
-  local module
-  local inner
-  local prev_containerized="${NATIVE_PROBE_CONTAINERIZED:-0}"
-  container_output="$(container_output_dir)"
-  NATIVE_PROBE_CONTAINERIZED=1
-  module="$(project_path_for_runtime "${SAVANT_CANONICAL_MODULE:-$PROJECT_DIR/deploy/savant/canonical_distributed_module.yml}")"
-  NATIVE_PROBE_CONTAINERIZED="$prev_containerized"
-  inner="set -e; pids=''; for i in \$(seq 0 $((STREAMS - 1))); do in_port=\$(( ${RTP_INPUT_PORT:-5600} + i * ${RTP_PORT_STRIDE} )); out_port=\$(( ${RTP_OUTPUT_PORT:-5700} + i * ${RTP_PORT_STRIDE} )); VAST_STREAM_ID=\$i EXPERIMENT_RTP_INPUT_PORT=\$in_port EXPERIMENT_RTP_OUTPUT_PORT=\$out_port VAST_NATIVE_OUTPUT_DIR='${container_output}/streams/stream_'\$i python -m savant.entrypoint ${module} & pids=\"\$pids \$!\"; done; sleep ${DURATION_S}; for pid in \$pids; do kill -INT \$pid >/dev/null 2>&1 || true; done; wait || true"
-  local cmd
-  cmd="docker run --rm --network host --gpus all \
-    -e BENCHMARK_MODE='${BENCHMARK_MODE}' \
-    -e DATASET_NAME='${DATASET_NAME:-}' \
-    -e DATASET_STREAMS_JSON='${DATASET_STREAMS_JSON}' \
-    -e EXPERIMENT_RUN_ID='${RUN_ID}' \
-    -e EXPERIMENT_HOST_ROLE='${HOST_ROLE}' \
-    -e EXPERIMENT_PIPELINE_STAGES='${PIPELINE_STAGES}' \
-    -e EXPERIMENT_RTP_INPUT_PORT='${RTP_INPUT_PORT}' \
-    -e EXPERIMENT_RTP_OUTPUT_HOST='${RTP_OUTPUT_HOST}' \
-    -e EXPERIMENT_RTP_OUTPUT_PORT='${RTP_OUTPUT_PORT}' \
-    -e EXPERIMENT_RTP_PORT_STRIDE='${RTP_PORT_STRIDE}' \
-    -e ADAPTER_DETECTOR='${DETECTOR}' \
-    -e ADAPTER_BACKEND='${BACKEND}' \
-    -e VAST_NATIVE_OUTPUT_DIR='${container_output}' \
-    -e VAST_TRACE_EXTENSION_ID='1' \
-    -e MIN_OBJECTS='${MIN_OBJECTS}' \
-    -e MAX_OBJECTS='${MAX_OBJECTS}' \
-    -v '$PROJECT_DIR':/workspace/project \
-    -w /workspace/project \
-    --entrypoint bash \
-    '$SAVANT_NATIVE_PROBE_IMAGE' \
-    -lc $(shell_quote "$inner")"
-  run_or_echo "$cmd"
+  run_container_native_probe "$SAVANT_NATIVE_PROBE_IMAGE"
 }
 
 run_builtin_strict_distributed_adapter() {
-  if [[ "$SCENARIO" != "canonical_distributed" ]]; then
-    warn "Built-in strict distributed adapters currently support only canonical_distributed"
-    return 1
-  fi
   case "$SYSTEM" in
     openvino_gva)
       run_openvino_gva_native_probe
@@ -1003,10 +998,6 @@ run_builtin_strict_distributed_adapter() {
 }
 
 run_builtin_strict_local_adapter() {
-  if [[ "$SCENARIO" != "canonical_heterogeneous" ]]; then
-    warn "Built-in strict local benchmark adapters currently support only canonical_heterogeneous"
-    return 1
-  fi
   case "$SYSTEM" in
     openvino_gva)
       run_openvino_gva_native_probe

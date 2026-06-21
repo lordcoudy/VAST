@@ -22,6 +22,9 @@ from validate_strict_telemetry_fix import (  # noqa: E402
     run_experiments_command,
     run_validation,
     runtime_artifact_paths,
+    scenario_completed,
+    scenario_groups,
+    scenario_variant_paths,
     validation_environment,
 )
 
@@ -97,6 +100,44 @@ class StrictValidationAutomationTests(unittest.TestCase):
                 {"savant"},
             )
 
+    def test_scenario_completed_requires_every_variant_stream_and_repeat(self) -> None:
+        config = {
+            "scenarios": {
+                "profile": {
+                    "workload": {
+                        "stream_range": [1, 2],
+                        "variants": [{"name": "low"}, {"name": "high"}],
+                    }
+                }
+            }
+        }
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            prefixes = scenario_variant_paths(config, "profile")
+            first = root / "cpu_only" / "old" / Path(*prefixes[0]) / "savant" / "rep_01"
+            first.mkdir(parents=True)
+            (first / "run_metadata.json").write_text("{}", encoding="utf-8")
+            self.assertFalse(scenario_completed(root, "cpu_only", config, "profile", "savant", 1))
+
+            for index, prefix in enumerate(prefixes):
+                run_dir = root / "cpu_only" / f"run_{index}" / Path(*prefix) / "savant" / "rep_01"
+                run_dir.mkdir(parents=True, exist_ok=True)
+                (run_dir / "run_metadata.json").write_text("{}", encoding="utf-8")
+            self.assertTrue(scenario_completed(root, "cpu_only", config, "profile", "savant", 1))
+
+    def test_auto_scenario_groups_use_local_and_single_server_dispatch(self) -> None:
+        config = {
+            "scenarios": {
+                "local": {"distributed": {"enabled": False}},
+                "distributed": {"distributed": {"enabled": True}},
+            }
+        }
+
+        self.assertEqual(
+            scenario_groups(config, "all", "auto"),
+            [("heterogeneous", ["local"]), ("single-server-distributed", ["distributed"])],
+        )
+
     def test_validation_environment_sets_savant_defaults_without_overriding(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -148,6 +189,23 @@ class StrictValidationAutomationTests(unittest.TestCase):
         self.assertEqual(command[command.index("--output-dir") + 1], "/workspace/project/runs/out/chunks/chunk_03/stream_01")
         self.assertIn('DATASET_STREAMS_JSON=["data/benchmark/b.mp4"]', command)
 
+    def test_openvino_chunk_sources_cycle_when_scenario_has_more_streams_than_clips(self) -> None:
+        args = argparse.Namespace(
+            dataset_streams_json='["data/benchmark/a.mp4", "data/benchmark/b.mp4"]',
+            streams=5,
+        )
+
+        self.assertEqual(
+            parse_stream_sources(args),
+            [
+                "data/benchmark/a.mp4",
+                "data/benchmark/b.mp4",
+                "data/benchmark/a.mp4",
+                "data/benchmark/b.mp4",
+                "data/benchmark/a.mp4",
+            ],
+        )
+
     def test_openvino_chunk_merge_rewrites_stream_identity(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -176,6 +234,20 @@ class StrictValidationAutomationTests(unittest.TestCase):
             src.write_text(
                 "schema_version,run_id,trace_id,stream_id,frame_id,stage\n"
                 "2,old,old:0:7,0,7,decode,unexpected\n",
+                encoding="utf-8",
+            )
+
+            with self.assertRaisesRegex(ChunkRunError, "malformed raw CSV row.*line 2"):
+                append_openvino_chunk_csv(src, dst, run_id="strict-openvino", stream_index=0)
+
+    def test_openvino_chunk_merge_rejects_empty_surplus_raw_field(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            src = root / "chunk_events.csv"
+            dst = root / "frame_events.csv"
+            src.write_text(
+                "schema_version,run_id,trace_id,stream_id,frame_id,stage\n"
+                "2,old,old:0:7,0,7,decode,\n",
                 encoding="utf-8",
             )
 
@@ -227,6 +299,55 @@ class StrictValidationAutomationTests(unittest.TestCase):
             self.assertTrue(all(dry_run for _, _, dry_run in calls))
             self.assertIn("scripts/run_experiments.py", calls[-1][0])
             self.assertEqual(calls[-1][1], root.resolve())
+
+    def test_run_validation_all_dry_run_dispatches_local_and_single_server_profiles(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            config_dir = root / "configs"
+            config_dir.mkdir()
+            (config_dir / "experiments.yaml").write_text(
+                "benchmark:\n"
+                "  scheduler_policies: [cpu_only]\n"
+                "protocol:\n"
+                "  repeats: 1\n"
+                "scenarios:\n"
+                "  local_profile:\n"
+                "    distributed: {enabled: false}\n"
+                "  distributed_profile:\n"
+                "    distributed: {enabled: true}\n",
+                encoding="utf-8",
+            )
+            args = argparse.Namespace(
+                project_root=root,
+                config=Path("configs/experiments.yaml"),
+                manifest=Path("configs/datasets.yaml"),
+                dataset="mot17_uadetrac_public",
+                source_root=Path("data/videos"),
+                dataset_output_dir=Path("data/benchmark"),
+                output_root=Path("runs/strict_validation"),
+                scenario="all",
+                run_kind="auto",
+                systems=["gstreamer_custom"],
+                policies=["cpu_only"],
+                repeats=1,
+                warmup=0,
+                measurement=1,
+                clear_runtime_artifacts=False,
+                skip_build=True,
+                dry_run_plan=True,
+                resume=False,
+            )
+            calls = []
+
+            with mock.patch("validate_strict_telemetry_fix.run_command", side_effect=lambda *a, **k: calls.append(a[0])):
+                run_validation(args)
+
+            benchmark_calls = calls[2:]
+            self.assertEqual(len(benchmark_calls), 2)
+            self.assertIn("--run-kind heterogeneous", " ".join(benchmark_calls[0]))
+            self.assertIn("--scenarios local_profile", " ".join(benchmark_calls[0]))
+            self.assertIn("--run-kind single-server-distributed", " ".join(benchmark_calls[1]))
+            self.assertIn("--scenarios distributed_profile", " ".join(benchmark_calls[1]))
 
     def test_run_experiments_command_is_strict_local_benchmark(self) -> None:
         args = argparse.Namespace(

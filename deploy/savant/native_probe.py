@@ -311,6 +311,16 @@ def object_count(min_objects: int, max_objects: int) -> int:
     return max(min_objects, min(max_objects, (min_objects + max_objects) // 2))
 
 
+def configured_pipeline_stages() -> list[str]:
+    raw = os.environ.get("EXPERIMENT_PIPELINE_STAGES", "decode,detect,aggregate")
+    stages = [stage.strip() for stage in raw.split(",") if stage.strip()]
+    if not stages:
+        raise RuntimeError("EXPERIMENT_PIPELINE_STAGES must define at least one stage")
+    if len(set(stages)) != len(stages):
+        raise RuntimeError("EXPERIMENT_PIPELINE_STAGES must not contain duplicate stages")
+    return stages
+
+
 def frame_event_filename(stage: str) -> str:
     safe_stage = "".join(ch if ch.isalnum() or ch in {"_", "-"} else "_" for ch in str(stage).strip())
     if not safe_stage:
@@ -339,9 +349,12 @@ class SavantNativeDetectProbe(BasePyFuncPlugin):
 
     def __init__(self, stage: str, role: str, output_dir: str, run_id: str, **_: Any) -> None:
         super().__init__()
-        self.writer = NativeEventWriter(output_dir, run_id, stage, role)
+        self.enabled = stage in configured_pipeline_stages()
+        self.writer = NativeEventWriter(output_dir, run_id, stage, role) if self.enabled else None
 
     def process_buffer(self, buffer: Any) -> Any:
+        if not self.enabled or self.writer is None:
+            return buffer
         start_ms = now_ms()
         stream_id, frame_id = frame_identity(buffer)
         trace_payload = getattr(buffer, "vast_rtp_trace", None)
@@ -357,7 +370,8 @@ class SavantNativeDetectProbe(BasePyFuncPlugin):
         return self.process_buffer(frame)
 
     def on_stop(self) -> bool:
-        self.writer.close()
+        if self.writer is not None:
+            self.writer.close()
         return True
 
 
@@ -379,30 +393,41 @@ class SavantLocalTelemetryProbe(BasePyFuncPlugin):
         super().__init__()
         resource = "gpu" if stage == "detect" else "cpu"
         self.stage = stage
-        self.events = NativeEventWriter(
-            output_dir,
-            run_id,
-            stage,
-            role,
-            resource=resource,
-            filename=frame_event_filename(stage),
+        self.pipeline_stages = configured_pipeline_stages()
+        self.enabled = stage in self.pipeline_stages
+        self.is_first = self.enabled and stage == self.pipeline_stages[0]
+        self.is_final = self.enabled and stage == self.pipeline_stages[-1]
+        self.events = (
+            NativeEventWriter(
+                output_dir,
+                run_id,
+                stage,
+                role,
+                resource=resource,
+                filename=frame_event_filename(stage),
+            )
+            if self.enabled
+            else None
         )
         self.frames = (
             NativeFrameWriter(output_dir, run_id, detector, backend, int(min_objects), int(max_objects))
-            if stage == "aggregate"
+            if self.is_final
             else None
         )
 
     def process_buffer(self, buffer: Any) -> Any:
+        if not self.enabled:
+            return buffer
         start_ms = now_ms()
         stream_id, frame_id = frame_identity(buffer)
         key = (stream_id, frame_id)
-        if self.stage == "decode":
+        if self.is_first:
             with _LOCAL_INGRESS_LOCK:
                 _LOCAL_INGRESS_MS[key] = start_ms
         end_ms = now_ms()
-        self.events.write(stream_id, frame_id, start_ms, end_ms)
-        if self.stage == "aggregate" and self.frames is not None:
+        if self.events is not None:
+            self.events.write(stream_id, frame_id, start_ms, end_ms)
+        if self.is_final and self.frames is not None:
             with _LOCAL_INGRESS_LOCK:
                 ingress_ms = _LOCAL_INGRESS_MS.pop(key, start_ms)
             self.frames.write(stream_id, frame_id, ingress_ms, end_ms)
@@ -412,7 +437,8 @@ class SavantLocalTelemetryProbe(BasePyFuncPlugin):
         return self.process_buffer(frame)
 
     def on_stop(self) -> bool:
-        self.events.close()
+        if self.events is not None:
+            self.events.close()
         if self.frames is not None:
             self.frames.close()
         return True
@@ -538,8 +564,10 @@ def merge_event_csvs(
     return rows, stage_traces
 
 
-def validate_required_stage_events(measured_trace_ids: set[str], stage_traces: dict[str, set[str]]) -> None:
-    for stage in ("decode", "detect", "aggregate"):
+def validate_required_stage_events(
+    measured_trace_ids: set[str], stage_traces: dict[str, set[str]], required_stages: list[str]
+) -> None:
+    for stage in required_stages:
         missing = measured_trace_ids - stage_traces.get(stage, set())
         if missing:
             sample = ", ".join(sorted(missing)[:5])
@@ -581,7 +609,7 @@ def merge_local_outputs(output_dir: str | Path, streams: int) -> None:
         raise RuntimeError(f"Savant local telemetry merge produced no frame rows in {root / 'frames.csv'}")
     if event_rows == 0:
         raise RuntimeError(f"Savant local telemetry merge produced no event rows in {root / 'frame_events.csv'}")
-    validate_required_stage_events(measured_trace_ids, stage_traces)
+    validate_required_stage_events(measured_trace_ids, stage_traces, configured_pipeline_stages())
 
 
 def main(argv: list[str] | None = None) -> int:

@@ -62,32 +62,50 @@ class ScenarioPlanningTests(unittest.TestCase):
         self.assertFalse(local["distributed"]["enabled"])
         self.assertTrue(distributed["distributed"]["enabled"])
 
-    def test_benchmark_all_selects_only_supported_scenarios(self) -> None:
+    def test_benchmark_all_selects_every_configured_scenario(self) -> None:
         cfg = load_config(ROOT / "configs" / "experiments.yaml")
+        configured = list(cfg["scenarios"])
+        local = [
+            name
+            for name, raw in cfg["scenarios"].items()
+            if not bool((raw.get("distributed") or {}).get("enabled"))
+        ]
+        distributed = [name for name in configured if name not in local]
 
-        self.assertEqual(
-            select_scenarios(cfg, ["all"], mode="benchmark"),
-            ["canonical_heterogeneous", "canonical_distributed"],
-        )
-        self.assertEqual(
-            select_scenarios(cfg, ["all"], mode="benchmark", run_kind="heterogeneous"),
-            ["canonical_heterogeneous"],
-        )
-        self.assertEqual(
-            select_scenarios(cfg, ["all"], mode="benchmark", run_kind="distributed"),
-            ["canonical_distributed"],
-        )
+        self.assertEqual(select_scenarios(cfg, ["all"], mode="benchmark"), configured)
+        self.assertEqual(select_scenarios(cfg, ["all"], mode="benchmark", run_kind="auto"), configured)
+        self.assertEqual(select_scenarios(cfg, ["all"], mode="benchmark", run_kind="heterogeneous"), local)
+        self.assertEqual(select_scenarios(cfg, ["all"], mode="benchmark", run_kind="distributed"), distributed)
         self.assertIn("baseline", select_scenarios(cfg, ["all"], mode="smoke"))
 
-    def test_strict_adapter_rejects_experimental_multistage_scenario(self) -> None:
+    def test_strict_adapter_accepts_every_configured_scenario(self) -> None:
         cfg = load_config(ROOT / "configs" / "experiments.yaml")
-        scenario = normalize_scenario("high_density_multistage", cfg["scenarios"]["high_density_multistage"])
 
-        with self.assertRaisesRegex(ContractError, "unsupported benchmark pipeline"):
+        for name, raw in cfg["scenarios"].items():
+            with self.subTest(scenario=name):
+                scenario = normalize_scenario(name, raw)
+                plan = validate_benchmark_adapter(
+                    system_key="deepstream",
+                    scenario=scenario,
+                    distributed=bool(scenario["distributed"]["enabled"]),
+                    mode="benchmark",
+                )
+                self.assertEqual(plan.contract, "strict_native_schema_v2")
+                self.assertEqual(plan.runner, "scripts/run_system_template.sh")
+
+    def test_strict_adapter_rejects_unknown_distributed_role(self) -> None:
+        cfg = load_config(ROOT / "configs" / "experiments.yaml")
+        scenario = normalize_scenario(
+            "edge_worker_aggregator_distributed",
+            cfg["scenarios"]["edge_worker_aggregator_distributed"],
+        )
+        scenario["placement"]["stages"]["track"] = "remote"
+
+        with self.assertRaisesRegex(ContractError, "unsupported distributed roles: remote"):
             validate_benchmark_adapter(
                 system_key="deepstream",
                 scenario=scenario,
-                distributed=False,
+                distributed=True,
                 mode="benchmark",
             )
 
@@ -192,13 +210,15 @@ class ScenarioPlanningTests(unittest.TestCase):
             self.assertTrue(all("EXPERIMENT_DISTRIBUTED=1" in s["remote_command"] for s in steps))
             self.assertTrue(all("EXPERIMENT_RTP_PORT_STRIDE=1" in s["remote_command"] for s in steps))
             self.assertTrue(all("DISTRIBUTED_NATIVE_CMD" not in s["remote_command"] for s in steps))
+            self.assertTrue(all("setsid bash -lc" in s["remote_command"] for s in steps))
+            self.assertTrue(all(">/dev/null 2>&1 &" in s["remote_command"] for s in steps))
 
     def test_builtin_strict_template_dry_run_commands(self) -> None:
         expectations = {
             "deepstream": ["vast/deepstream-native-probe:7.0", "nvinfer", "/usr/local/bin/vast_native_gst_probe"],
-            "savant": ["vast/savant-native-probe:0.5.17-7.0", "savant.entrypoint", "canonical_distributed_module.yml"],
+            "savant": ["vast/savant-native-probe:0.5.17-7.0", "/usr/local/bin/vast_native_gst_probe", "nvinfer"],
             "openvino_gva": ["vast_native_gst_probe", "gvadetect", "--input-port-base 5600"],
-            "gstreamer_custom": ["GST_CUSTOM_STRICT=1", "adaptivescheduler", "--input-port-base 5600"],
+            "gstreamer_custom": ["GST_CUSTOM_STRICT=1", "--detect-bin identity", "--input-port-base 5600"],
         }
         for system, expected in expectations.items():
             env = os.environ.copy()
@@ -307,6 +327,104 @@ class ScenarioPlanningTests(unittest.TestCase):
                 self.assertIn(".cache/savant", output)
                 self.assertNotIn("; sleep 5; for pid in $pids", output)
 
+    def test_builtin_templates_dispatch_multistage_local_and_distributed_profiles(self) -> None:
+        cases = [
+            ("savant", "high_density_multistage", "0", "local", "decode,detect,track,classify,record"),
+            ("gstreamer_custom", "edge_worker_aggregator_distributed", "1", "gpu_worker", "detect,track"),
+        ]
+        for system, scenario, distributed, role, stages in cases:
+            with self.subTest(system=system, scenario=scenario):
+                env = os.environ.copy()
+                env.update(
+                    {
+                        "REAL_DRY_RUN": "1",
+                        "BENCHMARK_MODE": "benchmark",
+                        "EXPERIMENT_DISTRIBUTED": distributed,
+                        "EXPERIMENT_HOST_ROLE": role,
+                        "EXPERIMENT_PIPELINE_STAGES": stages,
+                    }
+                )
+                completed = subprocess.run(
+                    [
+                        "bash",
+                        str(ROOT / "scripts" / "run_system_template.sh"),
+                        "--system",
+                        system,
+                        "--scenario",
+                        scenario,
+                        "--duration",
+                        "5",
+                        "--streams",
+                        "1",
+                        "--min-objects",
+                        "1",
+                        "--max-objects",
+                        "2",
+                        "--output",
+                        str(ROOT / "runs" / "dry" / scenario / system / "frames.csv"),
+                    ],
+                    cwd=ROOT,
+                    env=env,
+                    text=True,
+                    capture_output=True,
+                    check=False,
+                )
+                output = completed.stdout + completed.stderr
+                self.assertEqual(completed.returncode, 1)
+                self.assertNotIn("currently support only canonical", output)
+                self.assertIn(stages, output)
+                if system == "savant":
+                    self.assertIn("stage_files_ready", output)
+                    self.assertIn("frame_events_$stage.csv", output)
+
+    def test_custom_cpp_uses_per_stream_frame_ids_for_distributed_preroll(self) -> None:
+        body = (ROOT / "deploy" / "custom_cpp_cuda_qt" / "adaptive_scheduler_app.cu").read_text(encoding="utf-8")
+
+        self.assertIn("task.frame_id = frame_idx;", body)
+        self.assertNotIn("task.frame_id = stream_id * frames_per_stream_ + frame_idx;", body)
+
+    def test_distributed_edge_preroll_keeps_rtp_producer_alive_for_cold_workers(self) -> None:
+        env = os.environ.copy()
+        env.update(
+            {
+                "REAL_DRY_RUN": "1",
+                "BENCHMARK_MODE": "benchmark",
+                "EXPERIMENT_DISTRIBUTED": "1",
+                "EXPERIMENT_HOST_ROLE": "edge",
+                "EXPERIMENT_PIPELINE_STAGES": "decode",
+                "STARTUP_GRACE_S": "10",
+            }
+        )
+        completed = subprocess.run(
+            [
+                "bash",
+                str(ROOT / "scripts" / "run_system_template.sh"),
+                "--system",
+                "gstreamer_custom",
+                "--scenario",
+                "edge_worker_aggregator_distributed",
+                "--duration",
+                "5",
+                "--streams",
+                "1",
+                "--min-objects",
+                "1",
+                "--max-objects",
+                "2",
+                "--output",
+                str(ROOT / "runs" / "dry" / "edge_preroll" / "frames.csv"),
+            ],
+            cwd=ROOT,
+            env=env,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        output = completed.stdout + completed.stderr
+
+        self.assertEqual(completed.returncode, 1)
+        self.assertIn("--duration 15", output)
+
     def test_openvino_local_template_can_force_container_runtime(self) -> None:
         env = os.environ.copy()
         env.update(
@@ -399,6 +517,14 @@ class ScenarioPlanningTests(unittest.TestCase):
         self.assertIn("--chunk-s 15", output)
         self.assertIn("--parallel-streams 1", output)
 
+    def test_openvino_host_fallback_validates_runtime_model_load(self) -> None:
+        body = (ROOT / "scripts" / "run_system_template.sh").read_text(encoding="utf-8")
+
+        self.assertIn("openvino_host_runtime_usable", body)
+        self.assertIn("videotestsrc num-buffers=1", body)
+        self.assertIn("capsrelax ! object_detect", body)
+        self.assertIn("OpenVINO host DL Streamer runtime failed model preflight", body)
+
     def test_savant_local_template_preserves_benchmark_dataset_paths(self) -> None:
         env = os.environ.copy()
         env.update(
@@ -460,6 +586,11 @@ class ScenarioPlanningTests(unittest.TestCase):
             self.assertIn("COPY deploy/native_gst_probe", body)
             self.assertIn("VAST_NATIVE_PROBE_SOURCE_SHA", body)
             self.assertIn('org.vast.native_probe.source_sha="${VAST_NATIVE_PROBE_SOURCE_SHA}"', body)
+            self.assertIn("for attempt in 1 2 3 4 5", body)
+            self.assertIn("apt-get -o Acquire::Retries=5 update &&", body)
+            self.assertIn("apt-get -o Acquire::Retries=5 install -y --fix-missing", body)
+            self.assertIn('if [ "$attempt" -eq 5 ]; then exit 1; fi;', body)
+            self.assertNotIn("$$attempt", body)
             self.assertIn("-DVAST_BUILD_NATIVE_GST_PROBE=ON", body)
             self.assertIn("-DVAST_BUILD_GSTREAMER_CUSTOM_PLUGIN=OFF", body)
             self.assertIn("-DVAST_BUILD_CUSTOM_CUDA_QT=OFF", body)
@@ -480,12 +611,40 @@ class ScenarioPlanningTests(unittest.TestCase):
     def test_deepstream_native_probe_uses_nvstreammux_topology(self) -> None:
         body = (ROOT / "deploy" / "native_gst_probe" / "vast_native_gst_probe.cpp").read_text(encoding="utf-8")
 
+        self.assertIn("deepstream_edge_pipeline", body)
         self.assertIn("deepstream_local_pipeline", body)
         self.assertIn("deepstream_worker_pipeline", body)
+        self.assertIn("return args_.system == \"deepstream\" || args_.system == \"savant\";", body)
+        self.assertIn("if (uses_deepstream_elements()) {\n      return deepstream_edge_pipeline(stream_id);", body)
+        self.assertIn('set_string_property(pipeline, "uri_src" + std::to_string(stream_id), "uri", uri_for_stream(stream_id));', body)
         self.assertIn("uridecodebin name=uri_src", body)
+        self.assertIn("nvurisrcbin name=uri_src", body)
+        self.assertIn("file-loop=true", body)
+        self.assertIn("! queue ! nvvideoconvert ! video/x-raw,format=I420", body)
+        self.assertIn("! identity sync=true ! jpegenc", body)
+        self.assertGreaterEqual(body.count("! identity sync=true ! jpegenc"), 2)
         self.assertIn("nvstreammux name=mux", body)
         self.assertIn("! mux\" << stream_id << \".sink_0", body)
         self.assertNotIn("video/x-raw(memory:NVMM),format=NV12 ! nvinfer", body)
+
+    def test_native_probe_builds_dynamic_stage_probes(self) -> None:
+        body = (ROOT / "deploy" / "native_gst_probe" / "vast_native_gst_probe.cpp").read_text(encoding="utf-8")
+
+        self.assertIn("stage_names_", body)
+        self.assertIn("add_local_stage_probes", body)
+        self.assertIn("identity name=", body)
+        self.assertIn("stage_probe_name", body)
+
+    def test_native_probe_handles_rtp_payload_buffer_lists(self) -> None:
+        body = (ROOT / "deploy" / "native_gst_probe" / "vast_native_gst_probe.cpp").read_text(encoding="utf-8")
+
+        self.assertIn("GST_PAD_PROBE_TYPE_BUFFER_LIST", body)
+        self.assertIn("GST_PAD_PROBE_INFO_TYPE(info) & GST_PAD_PROBE_TYPE_BUFFER_LIST", body)
+        self.assertIn("gst_buffer_list_make_writable", body)
+        self.assertIn("gst_buffer_list_get_writable", body)
+        self.assertIn("&NativeProbeRuntime::input_rtp_probe", body)
+        self.assertIn("gst_buffer_list_get(list, index)", body)
+        self.assertNotIn("VAST_SKIP_RTP_TRACE_EXTENSION", body)
 
     def test_native_probe_measurement_timer_starts_on_first_frame_event(self) -> None:
         body = (ROOT / "deploy" / "native_gst_probe" / "vast_native_gst_probe.cpp").read_text(encoding="utf-8")
@@ -508,6 +667,7 @@ class ScenarioPlanningTests(unittest.TestCase):
 
         self.assertIn('"$PROJECT_DIR/build/lib${GST_PLUGIN_PATH:+:$GST_PLUGIN_PATH}"', body)
         self.assertIn('GST_PLUGIN_PATH=$(gstreamer_custom_plugin_path)', body)
+        self.assertIn('video/x-raw,format=RGB ! %s', body)
 
     def test_custom_cuda_app_uses_monotonic_telemetry_timestamps(self) -> None:
         body = (ROOT / "deploy" / "custom_cpp_cuda_qt" / "adaptive_scheduler_app.cu").read_text(encoding="utf-8")
@@ -530,9 +690,11 @@ class ScenarioPlanningTests(unittest.TestCase):
         self.assertIn("SAVANT_LOCAL_PREWARM", body)
         self.assertIn("wait_for_csv_rows", body)
         self.assertIn("csv_ready", body)
-        self.assertIn("frame_events_decode.csv", body)
-        self.assertIn("frame_events_detect.csv", body)
-        self.assertIn("frame_events_aggregate.csv", body)
+        self.assertIn("required_stages='${PIPELINE_STAGES}'", body)
+        self.assertIn("stage_files_ready()", body)
+        self.assertIn("frame_events_\\$stage.csv", body)
+        self.assertIn("EXPERIMENT_PIPELINE_STAGES='${PIPELINE_STAGES}'", body)
+        self.assertNotIn("currently support only canonical", body)
         self.assertIn("wait_for_telemetry || { rc=\\$?; cleanup", body)
         self.assertIn("mark_measurement_start; sleep ${DURATION_S}; mark_measurement_end", body)
         self.assertIn("measurement_start_ms", body)
@@ -661,7 +823,7 @@ class ScenarioPlanningTests(unittest.TestCase):
         self.assertIn("EXPERIMENT_DISTRIBUTED=1", steps[0]["remote_command"])
         self.assertIn("EXPERIMENT_RTP_INPUT_PORT=5700", steps[0]["remote_command"])
         self.assertIn("--output /opt/vast/runs/test", steps[0]["remote_command"])
-        self.assertIn(" && { (METRICS_PY=", steps[0]["remote_command"])
+        self.assertIn(" && { setsid bash -lc", steps[0]["remote_command"])
         self.assertTrue(steps[0]["remote_command"].rstrip().endswith("; }"))
 
 

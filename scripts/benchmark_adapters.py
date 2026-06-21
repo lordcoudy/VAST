@@ -7,7 +7,6 @@ from typing import Any
 from benchmark_contract import ContractError
 
 
-CANONICAL_STAGES = ("decode", "detect", "aggregate")
 STRICT_BENCHMARK_SYSTEMS = {
     "deepstream",
     "savant",
@@ -15,13 +14,7 @@ STRICT_BENCHMARK_SYSTEMS = {
     "gstreamer_custom",
     "custom_cpp_cuda_qt",
 }
-LOCAL_BENCHMARK_SCENARIOS = {"canonical_heterogeneous"}
-DISTRIBUTED_BENCHMARK_SCENARIOS = {"canonical_distributed"}
-ROLE_STAGES = {
-    "edge": ("decode",),
-    "gpu_worker": ("detect",),
-    "aggregator": ("aggregate",),
-}
+RTP_ROLES = {"edge", "gpu_worker", "aggregator"}
 
 
 @dataclass(frozen=True)
@@ -48,9 +41,7 @@ def scenario_benchmark_status(name: str, raw: dict[str, Any]) -> str:
     benchmark = raw.get("benchmark")
     if isinstance(benchmark, dict) and "status" in benchmark:
         return str(benchmark["status"])
-    if name in LOCAL_BENCHMARK_SCENARIOS | DISTRIBUTED_BENCHMARK_SCENARIOS:
-        return "supported"
-    return "experimental"
+    return "supported"
 
 
 def select_scenarios(
@@ -62,19 +53,15 @@ def select_scenarios(
 ) -> list[str]:
     if requested != ["all"]:
         return requested
-    all_scenarios = list(config["scenarios"].keys())
-    if mode != "benchmark":
-        return all_scenarios
-    supported = [
+    scenarios = list(config["scenarios"].keys())
+    if mode != "benchmark" or run_kind == "auto":
+        return scenarios
+    distributed = run_kind in {"single-server-distributed", "distributed"}
+    return [
         name
         for name, raw in config["scenarios"].items()
-        if scenario_benchmark_status(name, raw) == "supported"
+        if bool((raw.get("distributed") or {}).get("enabled")) == distributed
     ]
-    if run_kind in {"local", "heterogeneous"}:
-        return [name for name in supported if name in LOCAL_BENCHMARK_SCENARIOS]
-    if run_kind in {"single-server-distributed", "distributed"}:
-        return [name for name in supported if name in DISTRIBUTED_BENCHMARK_SCENARIOS]
-    return supported
 
 
 def validate_benchmark_adapter(
@@ -91,40 +78,28 @@ def validate_benchmark_adapter(
     if system_key not in STRICT_BENCHMARK_SYSTEMS:
         raise ContractError(f"system '{system_key}' has no strict native benchmark adapter")
 
-    pipeline = tuple(str(stage) for stage in scenario.get("pipeline", []))
-    if pipeline != CANONICAL_STAGES:
-        raise ContractError(
-            f"scenario '{scenario_name}' has unsupported benchmark pipeline {list(pipeline)}; "
-            f"strict native adapters currently support {list(CANONICAL_STAGES)}"
-        )
+    pipeline = [str(stage) for stage in scenario.get("pipeline", [])]
+    if not pipeline or len(set(pipeline)) != len(pipeline):
+        raise ContractError(f"scenario '{scenario_name}' must define unique strict benchmark stages")
+    placements = {str(stage): str(role) for stage, role in (scenario.get("placement", {}).get("stages") or {}).items()}
+    missing = [stage for stage in pipeline if stage not in placements]
+    if missing:
+        raise ContractError(f"scenario '{scenario_name}' placement is missing stages: {', '.join(missing)}")
 
     if distributed:
-        if scenario_name not in DISTRIBUTED_BENCHMARK_SCENARIOS:
+        roles = {placements[stage] for stage in pipeline}
+        unsupported_roles = sorted(roles - RTP_ROLES)
+        if unsupported_roles:
             raise ContractError(
-                f"scenario '{scenario_name}' is not a supported distributed benchmark scenario; "
-                f"supported: {', '.join(sorted(DISTRIBUTED_BENCHMARK_SCENARIOS))}"
+                f"scenario '{scenario_name}' has unsupported distributed roles: {', '.join(unsupported_roles)}"
             )
-        stages_by_role: dict[str, list[str]] = {}
-        for stage, role in scenario.get("placement", {}).get("stages", {}).items():
-            stages_by_role.setdefault(str(role), []).append(str(stage))
-        for role, expected in ROLE_STAGES.items():
-            actual = tuple(stages_by_role.get(role, []))
-            if actual != expected:
-                raise ContractError(
-                    f"scenario '{scenario_name}' maps role '{role}' to stages {list(actual)}; "
-                    f"strict distributed adapters require {list(expected)}"
-                )
-    else:
-        if scenario_name not in LOCAL_BENCHMARK_SCENARIOS:
+        missing_roles = sorted(RTP_ROLES - roles)
+        if missing_roles:
             raise ContractError(
-                f"scenario '{scenario_name}' is not a supported local benchmark scenario; "
-                f"supported: {', '.join(sorted(LOCAL_BENCHMARK_SCENARIOS))}"
+                f"scenario '{scenario_name}' must assign strict distributed stages to roles: {', '.join(missing_roles)}"
             )
-        placements = {str(role) for role in scenario.get("placement", {}).get("stages", {}).values()}
-        if placements != {"local"}:
-            raise ContractError(
-                f"scenario '{scenario_name}' is not a local benchmark placement: {sorted(placements)}"
-            )
+    elif {placements[stage] for stage in pipeline} != {"local"}:
+        raise ContractError(f"scenario '{scenario_name}' is not a strict local placement")
 
     return BenchmarkAdapterPlan(
         system=system_key,

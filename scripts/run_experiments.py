@@ -592,10 +592,22 @@ def run_one(
     )
     video_layout_dir = str(Path(dataset["streams"][0]["absolute_path"]).parent)
     ql_heft_artifact = str(config.get("benchmark", {}).get("ql_heft_policy_artifact", ""))
+    distributed_enabled = execution_context.distributed_enabled
+    cmd_timeout_env = os.environ.get("EXPERIMENT_CMD_TIMEOUT_S", "").strip()
+    if cmd_timeout_env:
+        cmd_timeout_s = int(cmd_timeout_env)
+    else:
+        cmd_timeout_s = default_command_timeout_s(
+            system_key=system_key,
+            duration_s=int(duration_s),
+            distributed_enabled=distributed_enabled,
+            mode=mode,
+        )
     command_env = {
         "ADAPTER_BACKEND": backend,
         "ADAPTER_DETECTOR": detector,
         "BENCHMARK_MODE": mode,
+        "CMD_TIMEOUT_S": str(cmd_timeout_s),
         "DATASET_NAME": dataset["name"],
         "DATASET_STREAMS_JSON": dataset_streams_json(dataset),
         "EXPERIMENT_REPEAT_INDEX": str(repeat_index),
@@ -610,7 +622,6 @@ def run_one(
         f"{base_cmd}"
     )
 
-    distributed_enabled = execution_context.distributed_enabled
     run_relpath = str(scenario_dir)
     distributed_steps: list[dict[str, Any]] = []
     if distributed_enabled:
@@ -675,17 +686,6 @@ def run_one(
     if warmup_s > 0:
         time.sleep(warmup_s)
 
-    cmd_timeout_env = os.environ.get("EXPERIMENT_CMD_TIMEOUT_S", "").strip()
-    if cmd_timeout_env:
-        cmd_timeout_s = int(cmd_timeout_env)
-    else:
-        cmd_timeout_s = default_command_timeout_s(
-            system_key=system_key,
-            duration_s=int(duration_s),
-            distributed_enabled=distributed_enabled,
-            mode=mode,
-        )
-
     child_env = os.environ.copy()
     child_env["EXPERIMENT_RUN_SEED"] = str(run_seed)
     child_env["EXPERIMENT_REPEAT_INDEX"] = str(repeat_index)
@@ -708,6 +708,7 @@ def run_one(
                 duration_s=duration_s,
                 startup_grace_s=int(config.get("transport", {}).get("startup_grace_s", 5)),
                 mode=mode,
+                role_timeout_s=cmd_timeout_s,
             )
             completed = subprocess.CompletedProcess(cmd, distributed_result.exit_code)
         else:

@@ -1,7 +1,7 @@
-# Canonical strict distributed Savant worker module for pipeline [decode, detect, aggregate].
-# The edge role sends traced RTP/JPEG on EXPERIMENT_RTP_INPUT_PORT + stream_id.
-# The worker forwards traced RTP/JPEG to EXPERIMENT_RTP_OUTPUT_HOST:
-# EXPERIMENT_RTP_OUTPUT_PORT + stream_id after the Savant detector stage.
+# Canonical Savant worker module kept for direct framework experiments.
+# Strict one-server distributed benchmarks use the native RTP trace probe in the
+# Savant-derived image so detect/track telemetry shares the same trace contract as
+# edge and aggregator roles.
 
 name: vast_canonical_distributed_savant_v1
 
@@ -25,14 +25,6 @@ pipeline:
     - element: rtpjpegdepay
     - element: jpegdec
     - element: videoconvert
-    - element: pyfunc
-      module: deploy.savant.native_probe
-      class_name: SavantNativeDetectProbe
-      kwargs:
-        stage: detect
-        role: gpu_worker
-        output_dir: ${parameters.output_dir}
-        run_id: ${parameters.run_id}
     - element: nvinfer@detector
       name: peoplenet
       model:
@@ -61,6 +53,22 @@ pipeline:
                   confidence_threshold: 0.1
                   min_width: 16
                   min_height: 16
+    - element: pyfunc
+      module: deploy.savant.native_probe
+      class_name: SavantNativeDetectProbe
+      kwargs:
+        stage: detect
+        role: gpu_worker
+        output_dir: ${parameters.output_dir}
+        run_id: ${parameters.run_id}
+    - element: pyfunc
+      module: deploy.savant.native_probe
+      class_name: SavantNativeDetectProbe
+      kwargs:
+        stage: track
+        role: gpu_worker
+        output_dir: ${parameters.output_dir}
+        run_id: ${parameters.run_id}
     - element: videoconvert
     - element: jpegenc
     - element: rtpjpegpay
@@ -68,9 +76,4 @@ pipeline:
         pt: 26
 
   sink:
-    - element: udpsink
-      properties:
-        host: ${parameters.output_host}
-        port: ${parameters.output_port}
-        sync: false
-        async: false
+    - element: devnull_sink

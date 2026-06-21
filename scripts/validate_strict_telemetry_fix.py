@@ -24,7 +24,7 @@ DEFAULT_SYSTEMS = [
     "gstreamer_custom",
     "custom_cpp_cuda_qt",
 ]
-DEFAULT_SCENARIO = "canonical_heterogeneous"
+DEFAULT_SCENARIO = "all"
 DEFAULT_DATASET = "mot17_uadetrac_public"
 DEFAULT_OUTPUT_ROOT = Path("runs/strict_validation")
 
@@ -187,8 +187,97 @@ def completed_systems(output_root: Path, policy: str, scenario: str, systems: Se
     return completed
 
 
-def run_experiments_command(args: argparse.Namespace, policy: str, systems: Sequence[str] | None = None) -> list[str]:
+
+def requested_scenarios(config: dict, scenario: str) -> list[str]:
+    scenarios = config.get("scenarios") or {}
+    if not scenarios:
+        return [scenario]
+    if scenario == "all":
+        return [str(name) for name in scenarios]
+    if scenario not in scenarios:
+        raise StrictValidationError(f"unknown scenario '{scenario}'")
+    return [scenario]
+
+
+def scenario_variant_paths(config: dict, scenario: str) -> list[tuple[str, ...]]:
+    raw = (config.get("scenarios") or {}).get(scenario) or {}
+    workload = raw.get("workload") or {}
+    variants = workload.get("variants") or [None]
+    if "stream_range" in workload:
+        start, end = workload["stream_range"]
+        streams = range(int(start), int(end) + 1)
+    else:
+        streams = [int(workload.get("streams", 6))]
+
+    paths: list[tuple[str, ...]] = []
+    for variant in variants:
+        variant_name = str(variant.get("name", "variant")) if isinstance(variant, dict) else ""
+        for stream_count in streams:
+            parts = [scenario]
+            if variant_name:
+                parts.append(f"variant_{variant_name}")
+            parts.append(f"streams_{stream_count}")
+            paths.append(tuple(parts))
+    return paths
+
+
+def _metadata_matches_suffix(policy_root: Path, suffix: tuple[str, ...], repeat: int) -> bool:
+    expected = (*suffix, f"rep_{repeat:02d}")
+    for metadata in policy_root.rglob("run_metadata.json"):
+        parts = metadata.parent.parts
+        if len(parts) >= len(expected) and tuple(parts[-len(expected) :]) == expected:
+            return True
+    return False
+
+
+def scenario_completed(
+    output_root: Path,
+    policy: str,
+    config: dict,
+    scenario: str,
+    system: str,
+    repeats: int,
+) -> bool:
+    policy_root = output_root / policy
+    for prefix in scenario_variant_paths(config, scenario):
+        suffix = (*prefix, system)
+        if not all(_metadata_matches_suffix(policy_root, suffix, rep) for rep in range(1, repeats + 1)):
+            return False
+    return True
+
+
+def scenario_groups(config: dict, scenario: str, run_kind: str) -> list[tuple[str, list[str]]]:
+    names = requested_scenarios(config, scenario)
+    raw_scenarios = config.get("scenarios") or {}
+    local = [name for name in names if not bool((raw_scenarios.get(name, {}).get("distributed") or {}).get("enabled"))]
+    distributed = [name for name in names if name not in local]
+    if run_kind in {"local", "heterogeneous"}:
+        return [("heterogeneous", local)] if local else []
+    if run_kind == "single-server-distributed":
+        return [("single-server-distributed", distributed)] if distributed else []
+    if run_kind == "distributed":
+        return [("distributed", distributed)] if distributed else []
+    if run_kind == "auto":
+        groups: list[tuple[str, list[str]]] = []
+        if local:
+            groups.append(("heterogeneous", local))
+        if distributed:
+            groups.append(("single-server-distributed", distributed))
+        return groups
+    raise StrictValidationError(f"unsupported run kind '{run_kind}'")
+
+
+def run_experiments_command(
+    args: argparse.Namespace,
+    policy: str,
+    systems: Sequence[str] | None = None,
+    *,
+    scenarios: Sequence[str] | None = None,
+    run_kind: str | None = None,
+    resume_run_root: Path | None = None,
+) -> list[str]:
     selected_systems = [str(system) for system in (systems or args.systems)]
+    selected_scenarios = [str(name) for name in (scenarios or [args.scenario])]
     command = [
         python_executable(),
         "scripts/run_experiments.py",
@@ -199,16 +288,18 @@ def run_experiments_command(args: argparse.Namespace, policy: str, systems: Sequ
         "--dataset",
         str(args.dataset),
         "--run-kind",
-        str(args.run_kind),
+        str(run_kind or args.run_kind),
         "--systems",
         *selected_systems,
         "--scenarios",
-        str(args.scenario),
+        *selected_scenarios,
         "--policy",
         policy,
         "--output-root",
         str(args.output_root / policy),
     ]
+    if resume_run_root is not None:
+        command.extend(["--resume-run-root", str(resume_run_root)])
     if args.repeats is not None:
         command.extend(["--repeats", str(args.repeats)])
     if args.warmup is not None:
@@ -218,7 +309,6 @@ def run_experiments_command(args: argparse.Namespace, policy: str, systems: Sequ
     if args.dry_run_plan:
         command.append("--dry-run-plan")
     return command
-
 
 def run_command(command: Sequence[str], *, cwd: Path, env: dict[str, str], dry_run: bool = False) -> None:
     printable = shlex.join([str(part) for part in command])
@@ -250,20 +340,46 @@ def run_validation(args: argparse.Namespace) -> None:
 
     requested_repeats = int(args.repeats if args.repeats is not None else config.get("protocol", {}).get("repeats", 1))
     for policy in policies:
-        systems = [str(system) for system in args.systems]
-        if args.resume:
-            done = completed_systems(output_root, policy, args.scenario, systems, requested_repeats)
-            if done:
-                print(f"[strict-validation] policy={policy} completed systems: {', '.join(sorted(done))}")
-            systems = [system for system in systems if system not in done]
-        if not systems:
-            print(f"[strict-validation] policy={policy} already complete")
-            continue
-        run_command(run_experiments_command(args, policy, systems), cwd=project_root, env=env, dry_run=args.dry_run_plan)
-
+        for selected_run_kind, scenarios in scenario_groups(config, args.scenario, args.run_kind):
+            for system in [str(system) for system in args.systems]:
+                pending = list(scenarios)
+                if args.resume:
+                    pending = [
+                        scenario
+                        for scenario in scenarios
+                        if not scenario_completed(output_root, policy, config, scenario, system, requested_repeats)
+                    ]
+                    completed = sorted(set(scenarios) - set(pending))
+                    if completed:
+                        print(
+                            f"[strict-validation] policy={policy} system={system} "
+                            f"completed scenarios: {', '.join(completed)}"
+                        )
+                if not pending:
+                    print(
+                        f"[strict-validation] policy={policy} system={system} "
+                        f"run_kind={selected_run_kind} already complete"
+                    )
+                    continue
+                resume_root = output_root / policy / "one_server_all" / selected_run_kind / system
+                if not args.dry_run_plan:
+                    resume_root.mkdir(parents=True, exist_ok=True)
+                run_command(
+                    run_experiments_command(
+                        args,
+                        policy,
+                        [system],
+                        scenarios=pending,
+                        run_kind=selected_run_kind,
+                        resume_run_root=resume_root,
+                    ),
+                    cwd=project_root,
+                    env=env,
+                    dry_run=args.dry_run_plan,
+                )
 
 def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Prepare assets, clear runtime artifacts, and run strict local VAST validation")
+    parser = argparse.ArgumentParser(description="Prepare assets and run resumable strict VAST validation")
     parser.add_argument("--project-root", type=Path, default=Path.cwd())
     parser.add_argument("--config", type=Path, default=Path("configs/experiments.yaml"))
     parser.add_argument("--manifest", type=Path, default=Path("configs/datasets.yaml"))
@@ -272,7 +388,11 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--dataset-output-dir", type=Path, default=Path("data/benchmark"))
     parser.add_argument("--output-root", type=Path, default=DEFAULT_OUTPUT_ROOT)
     parser.add_argument("--scenario", default=DEFAULT_SCENARIO)
-    parser.add_argument("--run-kind", choices=["heterogeneous", "local", "auto"], default="heterogeneous")
+    parser.add_argument(
+        "--run-kind",
+        choices=["heterogeneous", "local", "auto", "single-server-distributed", "distributed"],
+        default="auto",
+    )
     parser.add_argument("--systems", nargs="+", default=DEFAULT_SYSTEMS)
     parser.add_argument("--policies", nargs="+", default=["all"])
     parser.add_argument("--repeats", type=int, default=None)

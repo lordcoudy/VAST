@@ -75,7 +75,40 @@ pipeline:
       module: deploy.savant.native_probe
       class_name: SavantLocalTelemetryProbe
       kwargs:
+        stage: track
+        output_dir: ${parameters.output_dir}
+        run_id: ${parameters.run_id}
+        detector: ${parameters.detector}
+        backend: ${parameters.backend}
+        min_objects: ${parameters.min_objects}
+        max_objects: ${parameters.max_objects}
+    - element: pyfunc
+      module: deploy.savant.native_probe
+      class_name: SavantLocalTelemetryProbe
+      kwargs:
+        stage: classify
+        output_dir: ${parameters.output_dir}
+        run_id: ${parameters.run_id}
+        detector: ${parameters.detector}
+        backend: ${parameters.backend}
+        min_objects: ${parameters.min_objects}
+        max_objects: ${parameters.max_objects}
+    - element: pyfunc
+      module: deploy.savant.native_probe
+      class_name: SavantLocalTelemetryProbe
+      kwargs:
         stage: aggregate
+        output_dir: ${parameters.output_dir}
+        run_id: ${parameters.run_id}
+        detector: ${parameters.detector}
+        backend: ${parameters.backend}
+        min_objects: ${parameters.min_objects}
+        max_objects: ${parameters.max_objects}
+    - element: pyfunc
+      module: deploy.savant.native_probe
+      class_name: SavantLocalTelemetryProbe
+      kwargs:
+        stage: record
         output_dir: ${parameters.output_dir}
         run_id: ${parameters.run_id}
         detector: ${parameters.detector}

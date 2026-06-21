@@ -212,18 +212,21 @@ def build_distributed_plan(
         ready_file = remote_output / "ready"
         stdout_file = remote_output / "stdout.log"
         stderr_file = remote_output / "stderr.log"
-        remote_command = (
-            f"mkdir -p {shlex.quote(str(remote_output))} && "
-            f"cd {shlex.quote(str(remote_project))} && "
-            f"rm -f {shlex.quote(str(exit_file))} {shlex.quote(str(ready_file))} && "
-            "{ "
-            f"(METRICS_PY=.venv/bin/python; test -x \"$METRICS_PY\" || METRICS_PY=python3; "
+        role_body = (
+            f"METRICS_PY=.venv/bin/python; test -x \"$METRICS_PY\" || METRICS_PY=python3; "
             f"$METRICS_PY scripts/collect_metrics.py --output {shlex.quote(str(remote_output / 'system_metrics.csv'))} "
             f"--interval 1 >/dev/null 2>&1 & echo $! > {shlex.quote(str(metrics_pid_file))}; "
             f"{env_prefix} {role_command} > {shlex.quote(str(stdout_file))} "
             f"2> {shlex.quote(str(stderr_file))}; rc=$?; "
             f"kill $(cat {shlex.quote(str(metrics_pid_file))}) >/dev/null 2>&1 || true; "
-            f"echo $rc > {shlex.quote(str(exit_file))}) & "
+            f"echo $rc > {shlex.quote(str(exit_file))}"
+        )
+        remote_command = (
+            f"mkdir -p {shlex.quote(str(remote_output))} && "
+            f"cd {shlex.quote(str(remote_project))} && "
+            f"rm -f {shlex.quote(str(exit_file))} {shlex.quote(str(ready_file))} && "
+            "{ "
+            f"setsid bash -lc {shlex.quote(role_body)} >/dev/null 2>&1 & "
             f"echo $! > {shlex.quote(str(pid_file))} && touch {shlex.quote(str(ready_file))}; "
             "}"
         )
@@ -444,7 +447,11 @@ def _combine_csv(paths: list[Path], output_csv: Path, fieldnames: list[str]) -> 
 
 def _stop_remote(step: dict[str, Any]) -> None:
     command = (
-        f"test -f {shlex.quote(step['pid_file'])} && kill $(cat {shlex.quote(step['pid_file'])}) >/dev/null 2>&1 || true; "
+        f"if test -f {shlex.quote(step['pid_file'])}; then pid=$(cat {shlex.quote(step['pid_file'])}); "
+        'kill -TERM -- -"$pid" >/dev/null 2>&1 || kill -TERM "$pid" >/dev/null 2>&1 || true; '
+        "sleep 1; "
+        'kill -KILL -- -"$pid" >/dev/null 2>&1 || kill -KILL "$pid" >/dev/null 2>&1 || true; '
+        "fi; "
         f"test -f {shlex.quote(step['metrics_pid_file'])} && kill $(cat {shlex.quote(step['metrics_pid_file'])}) >/dev/null 2>&1 || true"
     )
     subprocess.run(_ssh_base(step["host"]) + [command], check=False)
@@ -465,6 +472,7 @@ def run_distributed(
     duration_s: int,
     startup_grace_s: int,
     mode: str,
+    role_timeout_s: int | None = None,
 ) -> DistributedResult:
     role_map = _role_hosts(hosts_config)
     same_host = _same_host_topology(role_map)
@@ -490,7 +498,8 @@ def run_distributed(
             subprocess.run(step["ssh_command"], check=True)
             launched.append(step)
             time.sleep(max(0, startup_grace_s))
-        deadline = time.monotonic() + duration_s + startup_grace_s + 60
+        minimum_wait_s = duration_s + startup_grace_s + 60
+        deadline = time.monotonic() + max(minimum_wait_s, int(role_timeout_s or 0))
         exit_code = 0
         for step in reversed(steps):
             while time.monotonic() < deadline:

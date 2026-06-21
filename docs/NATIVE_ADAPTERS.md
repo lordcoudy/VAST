@@ -30,8 +30,10 @@ per-stream or per-role output directories before merge. Strict validation reads
 every raw fragment row before measured-frame filtering, so malformed rows are
 rejected even when they fall outside the measurement window. Savant local writes
 per-stage fragments such as `frame_events_decode.csv`, `frame_events_detect.csv`,
-and `frame_events_aggregate.csv` to avoid concurrent writes to one file, then
-publishes the merged root `frame_events.csv`.
+`frame_events_track.csv`, `frame_events_classify.csv`, `frame_events_aggregate.csv`,
+and `frame_events_record.csv` to avoid concurrent writes to one file. Only stages
+listed in `EXPERIMENT_PIPELINE_STAGES` are required; the merge publishes the
+benchmark root `frame_events.csv`.
 
 DeepStream and Savant adapters should use GStreamer pad probes. OpenVINO+GVA
 and GStreamer custom adapters should use source/sink pad probes. The custom
@@ -45,13 +47,15 @@ The SSH executor launches roles in this order:
 2. `gpu_worker`
 3. `edge`
 
-For `--mode benchmark`, the built-in strict commands support
-`canonical_heterogeneous` and `canonical_distributed` for DeepStream, Savant,
-OpenVINO+GVA, GStreamer custom, and the custom C++ app. Other configured
-scenarios are experimental until adapters write native events for their extra
-stages. Host inventories may still override distributed commands with
-`DISTRIBUTED_NATIVE_CMD_<SYSTEM>_<ROLE>` or the generic `DISTRIBUTED_NATIVE_CMD`
-fallback for custom deployments. The command receives:
+For `--mode benchmark`, the built-in strict commands support every configured
+scenario for DeepStream, Savant, OpenVINO+GVA, GStreamer custom, and the custom
+C++ app. The validator derives required native events from the scenario pipeline,
+including `track`, `classify`, and `record`; completed frames must cover every
+listed stage. `--run-kind auto` dispatches local scenarios as heterogeneous and
+distributed scenarios as single-server SSH role launches. Host inventories may
+still override distributed commands with `DISTRIBUTED_NATIVE_CMD_<SYSTEM>_<ROLE>`
+or the generic `DISTRIBUTED_NATIVE_CMD` fallback for custom deployments. The
+command receives:
 
 - `EXPERIMENT_HOST_ROLE`
 - `EXPERIMENT_PIPELINE_STAGES`
@@ -99,7 +103,7 @@ Defaults:
 
 - `vast/deepstream-native-probe:7.0`, based on `nvcr.io/nvidia/deepstream:7.0-triton-multiarch`
 - `vast/savant-native-probe:0.5.17-7.0`, based on `ghcr.io/insight-platform/savant-deepstream:0.5.17-7.0`
-- Savant `gpu_worker` runs `python -m savant.entrypoint deploy/savant/canonical_distributed_module.yml`
+- Savant distributed roles run the native RTP trace probe inside the Savant-derived image; local Savant still runs the Savant module.
 - OpenVINO+GVA requires `gvadetect` or `object_detect`. When the host DL Streamer
   runtime is incomplete, strict local mode uses `intel/dlstreamer:latest` and
   isolates each stream in a short finite-input container chunk to avoid the

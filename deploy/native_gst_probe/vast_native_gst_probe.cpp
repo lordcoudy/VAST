@@ -16,6 +16,7 @@
 #include <stdexcept>
 #include <string>
 #include <thread>
+#include <unordered_map>
 #include <vector>
 
 namespace fs = std::filesystem;
@@ -57,13 +58,26 @@ struct StreamState {
   std::uint32_t local_frame_id = 0;
   Trace current_output_trace{};
   bool has_output_trace = false;
+  std::uint32_t last_input_frame_id = 0;
+  bool has_last_input_frame = false;
   std::deque<Trace> traces;
   std::deque<Trace> aggregate_traces;
+  std::unordered_map<std::uint64_t, Trace> local_traces_by_pts;
 };
 
 class NativeProbeRuntime {
  public:
   explicit NativeProbeRuntime(Args args) : args_(std::move(args)), streams_(std::max(1, args_.streams)) {
+    stage_names_ = parse_stage_names(args_.stages);
+    if (stage_names_.empty()) {
+      if (args_.role == "edge") {
+        stage_names_ = {"decode"};
+      } else if (args_.role == "gpu_worker") {
+        stage_names_ = {"detect"};
+      } else {
+        stage_names_ = {"decode", "detect", "aggregate"};
+      }
+    }
     states_.resize(static_cast<std::size_t>(streams_));
     sources_ = parse_json_string_array(args_.dataset_streams_json);
     open_outputs();
@@ -104,6 +118,7 @@ class NativeProbeRuntime {
   int streams_ = 1;
   std::vector<StreamState> states_;
   std::vector<std::string> sources_;
+  std::vector<std::string> stage_names_;
   std::vector<GstElement*> pipelines_;
   GMainLoop* loop_ = nullptr;
   std::atomic<guint> measurement_timer_id_{0};
@@ -186,6 +201,25 @@ class NativeProbeRuntime {
     out.frame_id = read_u32(payload + 4);
     out.ingress_ms = read_u64(payload + 8);
     return true;
+  }
+
+  static std::vector<std::string> parse_stage_names(const std::string& raw) {
+    std::vector<std::string> stages;
+    std::istringstream input(raw);
+    std::string stage;
+    while (std::getline(input, stage, ',')) {
+      const auto first = stage.find_first_not_of(" \t\r\n");
+      if (first == std::string::npos) {
+        continue;
+      }
+      const auto last = stage.find_last_not_of(" \t\r\n");
+      stages.push_back(stage.substr(first, last - first + 1));
+    }
+    return stages;
+  }
+
+  static std::string stage_probe_name(const std::string& stage, int stream_id) {
+    return stage + "_probe" + std::to_string(stream_id);
   }
 
   static std::vector<std::string> parse_json_string_array(const std::string& raw) {
@@ -332,43 +366,71 @@ class NativeProbeRuntime {
     NativeProbeRuntime* runtime = nullptr;
     int stream_id = 0;
     std::string kind;
+    std::string stage;
+    bool final_stage = false;
   };
 
   static GstPadProbeReturn edge_pay_probe(GstPad*, GstPadProbeInfo* info, gpointer data) {
     auto* ctx = static_cast<ProbeContext*>(data);
     auto* self = ctx->runtime;
-    GstBuffer* buffer = GST_PAD_PROBE_INFO_BUFFER(info);
-    if (buffer == nullptr) {
-      return GST_PAD_PROBE_OK;
-    }
-    buffer = gst_buffer_make_writable(buffer);
-    GST_PAD_PROBE_INFO_DATA(info) = buffer;
-    GstRTPBuffer rtp = GST_RTP_BUFFER_INIT;
-    if (!gst_rtp_buffer_map(buffer, GST_MAP_READWRITE, &rtp)) {
-      return GST_PAD_PROBE_OK;
-    }
-    const bool marker = gst_rtp_buffer_get_marker(&rtp);
-    Trace trace;
-    {
-      std::lock_guard<std::mutex> lock(self->mutex_);
-      StreamState& state = self->states_[static_cast<std::size_t>(ctx->stream_id)];
-      if (!state.has_output_trace) {
-        state.current_output_trace.stream_id = static_cast<std::uint8_t>(ctx->stream_id);
-        state.current_output_trace.frame_id = state.edge_frame_id;
-        state.current_output_trace.ingress_ms = now_ms();
-        state.has_output_trace = true;
+    auto handle_buffer = [&](GstBuffer* buffer) {
+      if (buffer == nullptr) {
+        return;
       }
-      trace = state.current_output_trace;
+      GstRTPBuffer read_rtp = GST_RTP_BUFFER_INIT;
+      if (!gst_rtp_buffer_map(buffer, GST_MAP_READ, &read_rtp)) {
+        return;
+      }
+      const bool marker = gst_rtp_buffer_get_marker(&read_rtp);
+      gst_rtp_buffer_unmap(&read_rtp);
+
+      Trace trace;
+      bool completed_frame = false;
+      {
+        std::lock_guard<std::mutex> lock(self->mutex_);
+        StreamState& state = self->states_[static_cast<std::size_t>(ctx->stream_id)];
+        if (!state.has_output_trace) {
+          state.current_output_trace.stream_id = static_cast<std::uint8_t>(ctx->stream_id);
+          state.current_output_trace.frame_id = state.edge_frame_id++;
+          state.current_output_trace.ingress_ms = now_ms();
+          state.has_output_trace = true;
+        }
+        trace = state.current_output_trace;
+        if (marker) {
+          state.has_output_trace = false;
+          completed_frame = true;
+        }
+      }
+
+      GstRTPBuffer write_rtp = GST_RTP_BUFFER_INIT;
+      if (!gst_rtp_buffer_map(buffer, GST_MAP_READWRITE, &write_rtp)) {
+        return;
+      }
       const auto payload = pack_trace(trace);
-      gst_rtp_buffer_add_extension_onebyte_header(&rtp, kTraceExtensionId, payload.data(), payload.size());
-      if (marker) {
+      gst_rtp_buffer_add_extension_onebyte_header(&write_rtp, kTraceExtensionId, payload.data(), payload.size());
+      gst_rtp_buffer_unmap(&write_rtp);
+
+      if (completed_frame) {
         const std::uint64_t end = now_ms();
         self->write_event(trace, "decode", trace.ingress_ms, end);
-        ++state.edge_frame_id;
-        state.has_output_trace = false;
       }
+    };
+
+    if (GST_PAD_PROBE_INFO_TYPE(info) & GST_PAD_PROBE_TYPE_BUFFER_LIST) {
+      GstBufferList* list = GST_PAD_PROBE_INFO_BUFFER_LIST(info);
+      if (list == nullptr) {
+        return GST_PAD_PROBE_OK;
+      }
+      list = gst_buffer_list_make_writable(list);
+      GST_PAD_PROBE_INFO_DATA(info) = list;
+      for (guint index = 0; index < gst_buffer_list_length(list); ++index) {
+        handle_buffer(gst_buffer_list_get_writable(list, index));
+      }
+    } else if (GstBuffer* buffer = GST_PAD_PROBE_INFO_BUFFER(info); buffer != nullptr) {
+      buffer = gst_buffer_make_writable(buffer);
+      GST_PAD_PROBE_INFO_DATA(info) = buffer;
+      handle_buffer(buffer);
     }
-    gst_rtp_buffer_unmap(&rtp);
     return GST_PAD_PROBE_OK;
   }
 
@@ -388,30 +450,46 @@ class NativeProbeRuntime {
   static GstPadProbeReturn input_rtp_probe(GstPad*, GstPadProbeInfo* info, gpointer data) {
     auto* ctx = static_cast<ProbeContext*>(data);
     auto* self = ctx->runtime;
-    GstBuffer* buffer = GST_PAD_PROBE_INFO_BUFFER(info);
-    if (buffer == nullptr) {
-      return GST_PAD_PROBE_OK;
-    }
-    GstRTPBuffer rtp = GST_RTP_BUFFER_INIT;
-    if (!gst_rtp_buffer_map(buffer, GST_MAP_READ, &rtp)) {
-      return GST_PAD_PROBE_OK;
-    }
-    const bool marker = gst_rtp_buffer_get_marker(&rtp);
-    gst_rtp_buffer_unmap(&rtp);
-    if (!marker) {
-      return GST_PAD_PROBE_OK;
-    }
-    Trace trace;
-    if (!extract_trace(buffer, trace)) {
-      return GST_PAD_PROBE_OK;
-    }
-    const std::uint64_t end = now_ms();
-    std::lock_guard<std::mutex> lock(self->mutex_);
-    if (self->args_.role == "gpu_worker") {
-      self->states_[static_cast<std::size_t>(ctx->stream_id)].traces.push_back(trace);
-    } else if (self->args_.role == "aggregator") {
-      self->write_event(trace, "aggregate", end > 1 ? end - 1 : end, end);
-      self->write_frame(trace, end);
+    auto handle_buffer = [&](GstBuffer* buffer) {
+      if (buffer == nullptr) {
+        return;
+      }
+      Trace trace;
+      if (!extract_trace(buffer, trace)) {
+        return;
+      }
+      const std::uint64_t end = now_ms();
+      bool write_aggregate = false;
+      {
+        std::lock_guard<std::mutex> lock(self->mutex_);
+        StreamState& state = self->states_[static_cast<std::size_t>(ctx->stream_id)];
+        if (state.has_last_input_frame && state.last_input_frame_id == trace.frame_id) {
+          return;
+        }
+        state.last_input_frame_id = trace.frame_id;
+        state.has_last_input_frame = true;
+        if (self->args_.role == "gpu_worker") {
+          state.traces.push_back(trace);
+        } else if (self->args_.role == "aggregator") {
+          write_aggregate = true;
+        }
+      }
+      if (write_aggregate) {
+        for (const std::string& stage : self->stage_names_) {
+          self->write_event(trace, stage, end > 1 ? end - 1 : end, end);
+        }
+        self->write_frame(trace, end);
+      }
+    };
+    if (GST_PAD_PROBE_INFO_TYPE(info) & GST_PAD_PROBE_TYPE_BUFFER_LIST) {
+      GstBufferList* list = GST_PAD_PROBE_INFO_BUFFER_LIST(info);
+      if (list != nullptr) {
+        for (guint index = 0; index < gst_buffer_list_length(list); ++index) {
+          handle_buffer(gst_buffer_list_get(list, index));
+        }
+      }
+    } else {
+      handle_buffer(GST_PAD_PROBE_INFO_BUFFER(info));
     }
     return GST_PAD_PROBE_OK;
   }
@@ -419,42 +497,68 @@ class NativeProbeRuntime {
   static GstPadProbeReturn worker_pay_probe(GstPad*, GstPadProbeInfo* info, gpointer data) {
     auto* ctx = static_cast<ProbeContext*>(data);
     auto* self = ctx->runtime;
-    GstBuffer* buffer = GST_PAD_PROBE_INFO_BUFFER(info);
-    if (buffer == nullptr) {
-      return GST_PAD_PROBE_OK;
-    }
-    buffer = gst_buffer_make_writable(buffer);
-    GST_PAD_PROBE_INFO_DATA(info) = buffer;
-    GstRTPBuffer rtp = GST_RTP_BUFFER_INIT;
-    if (!gst_rtp_buffer_map(buffer, GST_MAP_READWRITE, &rtp)) {
-      return GST_PAD_PROBE_OK;
-    }
-    const bool marker = gst_rtp_buffer_get_marker(&rtp);
-    Trace trace;
-    bool have_trace = false;
-    {
-      std::lock_guard<std::mutex> lock(self->mutex_);
-      StreamState& state = self->states_[static_cast<std::size_t>(ctx->stream_id)];
-      if (!state.has_output_trace && !state.traces.empty()) {
-        state.current_output_trace = state.traces.front();
-        state.traces.pop_front();
-        state.has_output_trace = true;
+    auto handle_buffer = [&](GstBuffer* buffer) {
+      if (buffer == nullptr) {
+        return;
       }
-      if (state.has_output_trace) {
+      GstRTPBuffer read_rtp = GST_RTP_BUFFER_INIT;
+      if (!gst_rtp_buffer_map(buffer, GST_MAP_READ, &read_rtp)) {
+        return;
+      }
+      const bool marker = gst_rtp_buffer_get_marker(&read_rtp);
+      gst_rtp_buffer_unmap(&read_rtp);
+
+      Trace trace;
+      bool completed_frame = false;
+      {
+        std::lock_guard<std::mutex> lock(self->mutex_);
+        StreamState& state = self->states_[static_cast<std::size_t>(ctx->stream_id)];
+        if (!state.has_output_trace) {
+          if (state.traces.empty()) {
+            return;
+          }
+          state.current_output_trace = state.traces.front();
+          state.traces.pop_front();
+          state.has_output_trace = true;
+        }
         trace = state.current_output_trace;
-        have_trace = true;
+        if (marker) {
+          state.has_output_trace = false;
+          completed_frame = true;
+        }
       }
-      if (have_trace) {
-        const auto payload = pack_trace(trace);
-        gst_rtp_buffer_add_extension_onebyte_header(&rtp, kTraceExtensionId, payload.data(), payload.size());
+
+      GstRTPBuffer write_rtp = GST_RTP_BUFFER_INIT;
+      if (!gst_rtp_buffer_map(buffer, GST_MAP_READWRITE, &write_rtp)) {
+        return;
       }
-      if (marker && have_trace) {
+      const auto payload = pack_trace(trace);
+      gst_rtp_buffer_add_extension_onebyte_header(&write_rtp, kTraceExtensionId, payload.data(), payload.size());
+      gst_rtp_buffer_unmap(&write_rtp);
+
+      if (completed_frame) {
         const std::uint64_t end = now_ms();
-        self->write_event(trace, "detect", end > 1 ? end - 1 : end, end);
-        state.has_output_trace = false;
+        for (const std::string& stage : self->stage_names_) {
+          self->write_event(trace, stage, end > 1 ? end - 1 : end, end);
+        }
       }
+    };
+
+    if (GST_PAD_PROBE_INFO_TYPE(info) & GST_PAD_PROBE_TYPE_BUFFER_LIST) {
+      GstBufferList* list = GST_PAD_PROBE_INFO_BUFFER_LIST(info);
+      if (list == nullptr) {
+        return GST_PAD_PROBE_OK;
+      }
+      list = gst_buffer_list_make_writable(list);
+      GST_PAD_PROBE_INFO_DATA(info) = list;
+      for (guint index = 0; index < gst_buffer_list_length(list); ++index) {
+        handle_buffer(gst_buffer_list_get_writable(list, index));
+      }
+    } else if (GstBuffer* buffer = GST_PAD_PROBE_INFO_BUFFER(info); buffer != nullptr) {
+      buffer = gst_buffer_make_writable(buffer);
+      GST_PAD_PROBE_INFO_DATA(info) = buffer;
+      handle_buffer(buffer);
     }
-    gst_rtp_buffer_unmap(&rtp);
     return GST_PAD_PROBE_OK;
   }
 
@@ -467,41 +571,35 @@ class NativeProbeRuntime {
     }
 
     const std::uint64_t end = now_ms();
+    const std::uint64_t pts = GST_BUFFER_PTS_IS_VALID(buffer) ? GST_BUFFER_PTS(buffer) : GST_CLOCK_TIME_NONE;
     std::lock_guard<std::mutex> lock(self->mutex_);
     StreamState& state = self->states_[static_cast<std::size_t>(ctx->stream_id)];
-
+    Trace trace;
     if (ctx->kind == "local-decode") {
-      Trace trace;
       trace.stream_id = static_cast<std::uint8_t>(ctx->stream_id);
       trace.frame_id = state.local_frame_id++;
       trace.ingress_ms = end;
+      if (pts != GST_CLOCK_TIME_NONE) {
+        state.local_traces_by_pts[pts] = trace;
+      }
       self->write_event(trace, "decode", trace.ingress_ms, end);
-      state.traces.push_back(trace);
+      if (ctx->final_stage) {
+        self->write_frame(trace, end);
+      }
       return GST_PAD_PROBE_OK;
     }
 
-    if (ctx->kind == "local-detect") {
-      if (state.traces.empty()) {
-        return GST_PAD_PROBE_OK;
-      }
-      Trace trace = state.traces.front();
-      state.traces.pop_front();
-      self->write_event(trace, "detect", end > 1 ? end - 1 : end, end);
-      state.aggregate_traces.push_back(trace);
+    const auto trace_it = state.local_traces_by_pts.find(pts);
+    if (trace_it == state.local_traces_by_pts.end()) {
       return GST_PAD_PROBE_OK;
     }
-
-    if (ctx->kind == "local-aggregate") {
-      if (state.aggregate_traces.empty()) {
-        return GST_PAD_PROBE_OK;
-      }
-      Trace trace = state.aggregate_traces.front();
-      state.aggregate_traces.pop_front();
-      self->write_event(trace, "aggregate", end > 1 ? end - 1 : end, end);
+    trace = trace_it->second;
+    const std::string stage = ctx->kind == "local-detect" ? "detect" : ctx->stage;
+    self->write_event(trace, stage, end > 1 ? end - 1 : end, end);
+    if (ctx->final_stage) {
       self->write_frame(trace, end);
-      return GST_PAD_PROBE_OK;
+      state.local_traces_by_pts.erase(trace_it);
     }
-
     return GST_PAD_PROBE_OK;
   }
 
@@ -540,28 +638,58 @@ class NativeProbeRuntime {
     gst_object_unref(element);
   }
 
-  void add_probe(GstElement* pipeline, const std::string& element_name, const std::string& kind, int stream_id) {
+  void add_probe(
+      GstElement* pipeline,
+      const std::string& element_name,
+      const std::string& kind,
+      int stream_id,
+      const std::string& stage = "",
+      bool final_stage = false) {
     GstElement* element = gst_bin_get_by_name(GST_BIN(pipeline), element_name.c_str());
     if (element == nullptr) {
       throw std::runtime_error("missing probe element: " + element_name);
     }
-    GstPad* pad = gst_element_get_static_pad(element, kind == "input" ? "src" : "src");
+    GstPad* pad = gst_element_get_static_pad(element, "src");
     if (pad == nullptr) {
       gst_object_unref(element);
       throw std::runtime_error("missing src pad on probe element: " + element_name);
     }
-    auto* ctx = new ProbeContext{this, stream_id, kind};
+    auto* ctx = new ProbeContext{this, stream_id, kind, stage, final_stage};
     if (kind == "edge-pay") {
-      gst_pad_add_probe(pad, GST_PAD_PROBE_TYPE_BUFFER, &NativeProbeRuntime::edge_pay_probe, ctx, nullptr);
+      gst_pad_add_probe(
+          pad,
+          static_cast<GstPadProbeType>(GST_PAD_PROBE_TYPE_BUFFER | GST_PAD_PROBE_TYPE_BUFFER_LIST),
+          &NativeProbeRuntime::edge_pay_probe,
+          ctx,
+          nullptr);
     } else if (kind == "worker-pay") {
-      gst_pad_add_probe(pad, GST_PAD_PROBE_TYPE_BUFFER, &NativeProbeRuntime::worker_pay_probe, ctx, nullptr);
-    } else if (kind == "local-decode" || kind == "local-detect" || kind == "local-aggregate") {
+      gst_pad_add_probe(
+          pad,
+          static_cast<GstPadProbeType>(GST_PAD_PROBE_TYPE_BUFFER | GST_PAD_PROBE_TYPE_BUFFER_LIST),
+          &NativeProbeRuntime::worker_pay_probe,
+          ctx,
+          nullptr);
+    } else if (kind.rfind("local-", 0) == 0) {
       gst_pad_add_probe(pad, GST_PAD_PROBE_TYPE_BUFFER, &NativeProbeRuntime::local_stage_probe, ctx, nullptr);
     } else {
-      gst_pad_add_probe(pad, GST_PAD_PROBE_TYPE_BUFFER, &NativeProbeRuntime::input_rtp_probe, ctx, nullptr);
+      gst_pad_add_probe(
+          pad,
+          static_cast<GstPadProbeType>(GST_PAD_PROBE_TYPE_BUFFER | GST_PAD_PROBE_TYPE_BUFFER_LIST),
+          &NativeProbeRuntime::input_rtp_probe,
+          ctx,
+          nullptr);
     }
     gst_object_unref(pad);
     gst_object_unref(element);
+  }
+
+  void add_local_stage_probes(GstElement* pipeline, int stream_id) {
+    for (std::size_t index = 0; index < stage_names_.size(); ++index) {
+      const std::string& stage = stage_names_[index];
+      const bool final_stage = index + 1 == stage_names_.size();
+      const std::string kind = stage == "decode" ? "local-decode" : (stage == "detect" ? "local-detect" : "local-stage");
+      add_probe(pipeline, stage_probe_name(stage, stream_id), kind, stream_id, stage, final_stage);
+    }
   }
 
   std::string detect_bin() const {
@@ -571,22 +699,35 @@ class NativeProbeRuntime {
     return args_.detect_bin;
   }
 
-  bool is_deepstream() const {
-    return args_.system == "deepstream";
+  bool uses_deepstream_elements() const {
+    return args_.system == "deepstream" || args_.system == "savant";
   }
 
   std::string edge_pipeline(int stream_id) const {
+    if (uses_deepstream_elements()) {
+      return deepstream_edge_pipeline(stream_id);
+    }
     std::ostringstream p;
     p << "filesrc name=file_src" << stream_id
       << " ! decodebin ! videoconvert ! videorate ! video/x-raw,framerate=30/1"
-      << " ! jpegenc ! rtpjpegpay pt=26 name=pay" << stream_id
+      << " ! identity sync=true ! jpegenc ! rtpjpegpay pt=26 name=pay" << stream_id
+      << " ! udpsink name=out_sink" << stream_id << " port=" << (args_.output_port_base + stream_id * args_.port_stride)
+      << " sync=false async=false";
+    return p.str();
+  }
+
+  std::string deepstream_edge_pipeline(int stream_id) const {
+    std::ostringstream p;
+    p << "nvurisrcbin name=uri_src" << stream_id << " file-loop=true"
+      << " ! queue ! nvvideoconvert ! video/x-raw,format=I420"
+      << " ! identity sync=true ! jpegenc ! rtpjpegpay pt=26 name=pay" << stream_id
       << " ! udpsink name=out_sink" << stream_id << " port=" << (args_.output_port_base + stream_id * args_.port_stride)
       << " sync=false async=false";
     return p.str();
   }
 
   std::string worker_pipeline(int stream_id) const {
-    if (is_deepstream()) {
+    if (uses_deepstream_elements()) {
       return deepstream_worker_pipeline(stream_id);
     }
     std::ostringstream p;
@@ -608,32 +749,45 @@ class NativeProbeRuntime {
   }
 
   std::string local_pipeline(int stream_id) const {
-    if (is_deepstream()) {
+    if (uses_deepstream_elements()) {
       return deepstream_local_pipeline(stream_id);
     }
     std::ostringstream p;
     p << "filesrc name=file_src" << stream_id
-      << " ! decodebin ! videoconvert ! videorate ! video/x-raw,framerate=30/1"
-      << " ! queue name=decode_probe" << stream_id
-      << " ! " << detect_bin()
-      << " ! queue name=detect_probe" << stream_id
-      << " ! videoconvert"
-      << " ! queue name=aggregate_probe" << stream_id
-      << " ! fakesink sync=false async=false";
+      << " ! decodebin ! videoconvert ! videorate ! video/x-raw,framerate=30/1";
+    for (const std::string& stage : stage_names_) {
+      if (stage == "decode") {
+        p << " ! queue name=" << stage_probe_name(stage, stream_id);
+      } else if (stage == "detect") {
+        p << " ! " << detect_bin() << " ! queue name=" << stage_probe_name(stage, stream_id);
+      } else {
+        p << " ! identity name=" << stage << "_op" << stream_id
+          << " ! queue name=" << stage_probe_name(stage, stream_id);
+      }
+    }
+    p << " ! fakesink sync=false async=false";
     return p.str();
   }
 
   std::string deepstream_local_pipeline(int stream_id) const {
     std::ostringstream p;
     p << "nvstreammux name=mux" << stream_id
-      << " batch-size=1 width=1920 height=1080 live-source=0 batched-push-timeout=40000"
-      << " ! " << detect_bin()
-      << " ! queue name=detect_probe" << stream_id
-      << " ! nvvideoconvert ! video/x-raw"
-      << " ! queue name=aggregate_probe" << stream_id
-      << " ! fakesink sync=false async=false "
+      << " batch-size=1 width=1920 height=1080 live-source=0 batched-push-timeout=40000";
+    for (std::size_t index = 0; index < stage_names_.size(); ++index) {
+      const std::string& stage = stage_names_[index];
+      if (stage == "decode") {
+        continue;
+      }
+      if (stage == "detect") {
+        p << " ! " << detect_bin();
+      } else {
+        p << " ! identity name=" << stage << "_op" << stream_id;
+      }
+      p << " ! queue name=" << stage_probe_name(stage, stream_id);
+    }
+    p << " ! nvvideoconvert ! video/x-raw ! fakesink sync=false async=false "
       << "uridecodebin name=uri_src" << stream_id
-      << " ! queue name=decode_probe" << stream_id
+      << " ! queue name=" << stage_probe_name("decode", stream_id)
       << " ! nvvideoconvert ! video/x-raw(memory:NVMM),format=NV12"
       << " ! mux" << stream_id << ".sink_0";
     return p.str();
@@ -683,7 +837,11 @@ class NativeProbeRuntime {
       gst_bus_add_watch(bus, &NativeProbeRuntime::bus_callback, this);
       gst_object_unref(bus);
       if (args_.role == "edge") {
-        set_string_property(pipeline, "file_src" + std::to_string(stream_id), "location", source_for_stream(stream_id));
+        if (uses_deepstream_elements()) {
+          set_string_property(pipeline, "uri_src" + std::to_string(stream_id), "uri", uri_for_stream(stream_id));
+        } else {
+          set_string_property(pipeline, "file_src" + std::to_string(stream_id), "location", source_for_stream(stream_id));
+        }
         set_string_property(pipeline, "out_sink" + std::to_string(stream_id), "host", args_.output_host);
         add_probe(pipeline, "pay" + std::to_string(stream_id), "edge-pay", stream_id);
       } else if (args_.role == "gpu_worker") {
@@ -693,14 +851,12 @@ class NativeProbeRuntime {
       } else if (args_.role == "aggregator") {
         add_probe(pipeline, "src" + std::to_string(stream_id), "input", stream_id);
       } else if (args_.role == "local") {
-        if (is_deepstream()) {
+        if (uses_deepstream_elements()) {
           set_string_property(pipeline, "uri_src" + std::to_string(stream_id), "uri", uri_for_stream(stream_id));
         } else {
           set_string_property(pipeline, "file_src" + std::to_string(stream_id), "location", source_for_stream(stream_id));
         }
-        add_probe(pipeline, "decode_probe" + std::to_string(stream_id), "local-decode", stream_id);
-        add_probe(pipeline, "detect_probe" + std::to_string(stream_id), "local-detect", stream_id);
-        add_probe(pipeline, "aggregate_probe" + std::to_string(stream_id), "local-aggregate", stream_id);
+        add_local_stage_probes(pipeline, stream_id);
       }
       pipelines_.push_back(pipeline);
       std::cerr << "[native-probe] role=" << args_.role << " stream=" << stream_id << " pipeline=" << pipeline_text << "\n";

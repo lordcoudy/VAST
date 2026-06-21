@@ -34,7 +34,7 @@ def append_csv(src: Path, dst: Path, *, run_id: str, stream_index: int) -> None:
             if write_header:
                 writer.writeheader()
             for line_number, row in enumerate(reader, start=2):
-                if row.get(None) or any(value is None for key, value in row.items() if key is not None):
+                if None in row or any(value is None for key, value in row.items() if key is not None):
                     raise ChunkRunError(
                         f"malformed raw CSV row in {src} at line {line_number}: "
                         f"expected {len(reader.fieldnames)} fields"
@@ -55,16 +55,13 @@ def parse_stream_sources(args: argparse.Namespace) -> list[str]:
         raise ChunkRunError(f"--dataset-streams-json is not valid JSON: {exc}") from exc
     if not isinstance(raw, list):
         raise ChunkRunError("--dataset-streams-json must be a JSON list")
-    if len(raw) < int(args.streams):
-        raise ChunkRunError(
-            f"--dataset-streams-json has {len(raw)} streams, but --streams requested {args.streams}"
-        )
-    sources: list[str] = []
-    for index, value in enumerate(raw[: int(args.streams)]):
-        if not isinstance(value, str):
-            raise ChunkRunError(f"--dataset-streams-json stream {index} is not a string")
-        sources.append(value)
-    return sources
+    if not raw:
+        raise ChunkRunError("--dataset-streams-json must contain at least one stream when provided")
+    if any(not isinstance(value, str) for value in raw):
+        raise ChunkRunError("--dataset-streams-json entries must be strings")
+    # Benchmarks may request more streams than the public clip set; match the native
+    # probe's deterministic round-robin assignment instead of rejecting the profile.
+    return [str(raw[index % len(raw)]) for index in range(int(args.streams))]
 
 
 def build_stream_command(

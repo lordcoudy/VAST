@@ -744,7 +744,7 @@ class AdaptivePipeline {
           }
 
           Task task;
-          task.frame_id = stream_id * frames_per_stream_ + frame_idx;
+          task.frame_id = frame_idx;
           task.stream_id = stream_id;
           task.stage_index = 0;
           task.objects = object_count_for_frame(task.frame_id, stream_id);

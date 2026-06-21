@@ -2,11 +2,13 @@
 from __future__ import annotations
 
 import csv
+import os
 import sys
 import tempfile
 import threading
 import unittest
 from pathlib import Path
+from unittest import mock
 
 import pandas as pd
 import yaml
@@ -281,6 +283,35 @@ class BenchmarkContractTests(unittest.TestCase):
             _combine_csv(paths, merged_events, FRAME_EVENT_COLUMNS)
             validate_stage_trace_coverage(frames, merged_events, required_stages=["decode", "detect", "aggregate"])
 
+    def test_stage_trace_coverage_accepts_edge_preroll_with_per_stream_frame_ids(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            frames = root / "frames.csv"
+            events = root / "frame_events.csv"
+            frame_rows = []
+            event_rows = []
+            run_id = "r"
+            measured_frames = 3
+            edge_frames = 7
+            for stream_id in range(2):
+                for frame_id in range(measured_frames):
+                    trace_id = f"{run_id}:{stream_id}:{frame_id}"
+                    frame_rows.append(native_frame_row(trace_id=trace_id, stream_id=stream_id, frame_id=frame_id))
+                    for stage in ("detect", "track", "aggregate", "record"):
+                        event_rows.append(native_event_row(trace_id=trace_id, stream_id=stream_id, frame_id=frame_id, stage=stage))
+                for frame_id in range(edge_frames):
+                    trace_id = f"{run_id}:{stream_id}:{frame_id}"
+                    event_rows.append(native_event_row(trace_id=trace_id, stream_id=stream_id, frame_id=frame_id, stage="decode"))
+
+            pd.DataFrame(frame_rows).to_csv(frames, index=False)
+            pd.DataFrame(event_rows).to_csv(events, index=False)
+
+            validate_stage_trace_coverage(
+                frames,
+                events,
+                required_stages=["decode", "detect", "track", "aggregate", "record"],
+            )
+
     def test_distributed_combine_rejects_truncated_event_rows(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -342,6 +373,28 @@ class BenchmarkContractTests(unittest.TestCase):
             ).to_csv(events, index=False)
             with self.assertRaises(ContractError):
                 validate_stage_trace_coverage(frames, events, required_stages=["decode", "detect", "aggregate"])
+
+    def test_stage_trace_coverage_rejects_missing_declared_extra_stage(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            frames = root / "frames.csv"
+            events = root / "frame_events.csv"
+            pd.DataFrame([native_frame_row()]).to_csv(frames, index=False)
+            pd.DataFrame(
+                [
+                    native_event_row(stage="decode"),
+                    native_event_row(stage="detect", resource="gpu"),
+                    native_event_row(stage="track", resource="gpu"),
+                    native_event_row(stage="record"),
+                ]
+            ).to_csv(events, index=False)
+
+            with self.assertRaisesRegex(ContractError, "stage 'classify'"):
+                validate_stage_trace_coverage(
+                    frames,
+                    events,
+                    required_stages=["decode", "detect", "track", "classify", "record"],
+                )
 
     def test_savant_local_stream_outputs_are_merged(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -421,14 +474,35 @@ class BenchmarkContractTests(unittest.TestCase):
                 [
                     native_event_row(trace_id="r:0:1", stage="decode", resource="cpu", policy_action="native:savant"),
                     native_event_row(trace_id="r:0:1", stage="detect", resource="gpu", policy_action="native:savant"),
-                    native_event_row(trace_id="r:0:1", stage="aggregate", resource="cpu", policy_action="native:savant"),
+                    native_event_row(trace_id="r:0:1", stage="track", resource="cpu", policy_action="native:savant"),
+                    native_event_row(trace_id="r:0:1", stage="classify", resource="cpu", policy_action="native:savant"),
+                    native_event_row(trace_id="r:0:1", stage="record", resource="cpu", policy_action="native:savant"),
                 ],
             )
 
-            merge_local_outputs(root, streams=1)
+            with mock.patch.dict(os.environ, {"EXPERIMENT_PIPELINE_STAGES": "decode,detect,track,classify,record"}):
+                merge_local_outputs(root, streams=1)
             events = validate_frame_events(root / "frame_events.csv")
-            self.assertEqual(set(events["stage"]), {"decode", "detect", "aggregate"})
-            self.assertEqual(events.shape[0], 3)
+            self.assertEqual(set(events["stage"]), {"decode", "detect", "track", "classify", "record"})
+            self.assertEqual(events.shape[0], 5)
+
+    def test_savant_local_probe_writes_only_declared_stage_fragment(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp, mock.patch.dict(
+            os.environ,
+            {"EXPERIMENT_PIPELINE_STAGES": "decode,detect"},
+        ):
+            root = Path(tmp)
+            inactive = SavantLocalTelemetryProbe(
+                stage="track",
+                output_dir=str(root),
+                run_id="r",
+                detector="d",
+                backend="b",
+            )
+
+            self.assertIsNone(inactive.events)
+            self.assertFalse((root / frame_event_filename("track")).exists())
+            inactive.on_stop()
 
     def test_savant_local_merge_filters_measurement_window(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
