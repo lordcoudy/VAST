@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VAST Workbench</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="app-header">
+    <div>
+      <h1>VAST Workbench</h1>
+      <p id="project-path">Loading project...</p>
+    </div>
+    <div class="header-actions">
+      <button id="refresh-all" class="icon-button" title="Refresh all data" type="button">R</button>
+      <span id="status-pill" class="status-pill">Starting</span>
+    </div>
+  </header>
+
+  <nav class="tabs" aria-label="Workbench tabs">
+    <button class="tab active" data-tab="dashboard" type="button">Dashboard</button>
+    <button class="tab" data-tab="settings" type="button">Settings</button>
+    <button class="tab" data-tab="planner" type="button">Run Planner</button>
+    <button class="tab" data-tab="jobs" type="button">Jobs</button>
+    <button class="tab" data-tab="statistics" type="button">Statistics</button>
+    <button class="tab" data-tab="infographics" type="button">Infographics</button>
+    <button class="tab" data-tab="analytics" type="button">Analytics</button>
+    <button class="tab" data-tab="tools" type="button">Build / Setup</button>
+  </nav>
+
+  <main>
+    <section id="tab-dashboard" class="tab-panel active"></section>
+    <section id="tab-settings" class="tab-panel"></section>
+    <section id="tab-planner" class="tab-panel"></section>
+    <section id="tab-jobs" class="tab-panel"></section>
+    <section id="tab-statistics" class="tab-panel"></section>
+    <section id="tab-infographics" class="tab-panel"></section>
+    <section id="tab-analytics" class="tab-panel"></section>
+    <section id="tab-tools" class="tab-panel"></section>
+  </main>
+
+  <div id="toast" class="toast" hidden></div>
+  <script src="/app.js"></script>
+</body>
+</html>
