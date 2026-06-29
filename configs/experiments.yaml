@@ -1,20 +1,57 @@
 schema_version: 2
-
 project:
   name: video-pipeline-scheduler-experiments
-  description: Experimental benchmark suite for heterogeneous CPU/GPU video analytics scheduling.
-
+  description: Reproducible checkpoint benchmark suite for real KPP AVI video analytics.
 benchmark:
   dataset_manifest: configs/datasets.yaml
   default_dataset:
     smoke: smoke_testsrc
-    benchmark: mot17_uadetrac_public
+    benchmark: kpp_real_h264
   telemetry_schema_version: 2
-  publishable_telemetry_sources: [native]
-  scheduler_policies: [cpu_only, gpu_only, static_hybrid, heft, ql_heft_frozen, ql_heft_online]
-  ql_heft_policy_artifact: policies/ql_heft_frozen.policy
+  publishable_telemetry_sources:
+  - native
+  scheduler_policies:
+  - cpu_only
+  - gpu_only
+  - static_hybrid
+  - heft
+  - deadline_aware_heft
+  - queue_aware_edf
+  - adaptive_weights
   default_seed: 20260323
-
+  active_scenarios:
+  - checkpoint_independent_processes_baseline
+  - checkpoint_video_dag_shared
+  smoke_scenarios:
+  - checkpoint_video_dag_shared
+  report_scenarios:
+  - checkpoint_independent_processes_baseline
+  - checkpoint_video_dag_shared
+  deadline_ms:
+  - 16.7
+  - 33.3
+  - 50
+  - 100
+  - 500
+  smoke_deadline_ms:
+  - 100
+  report_deadline_ms:
+  - 16.7
+  - 33.3
+  - 50
+  - 100
+  - 500
+  benchmark_datasets:
+  - kpp_real_h264
+  - kpp_real_h265
+  report_datasets:
+  - kpp_real_h264
+  - kpp_real_h265
+  scheduler_ablations:
+  - no_queues
+  - no_transfer_cost
+  - no_deadline_penalty
+  - no_adaptive_weights
 transport:
   kind: gstreamer_rtp_udp
   trace_metadata: rtp_header_extension
@@ -25,112 +62,79 @@ transport:
     edge_to_gpu_worker: 5600
     gpu_worker_to_aggregator: 5700
   stream_port_stride: 1
-
 hardware_target:
   gpu_model: NVIDIA GeForce RTX 3060
   cpu_model: Intel Core i7-14700K
   ram_gb: 22
-  deadline_s: 3
-
+  deadline_s: 0.1
 protocol:
   warmup_s: 30
   measurement_s: 180
-  repeats: 5
+  repeats: 10
   metric_interval_s: 1
   custom_cpp_cuda_qt_metric_interval_s: 0.2
-
 scenarios:
-  canonical_heterogeneous:
-    description: Canonical single-server heterogeneous CPU/GPU benchmark profile.
+  checkpoint_independent_processes_baseline:
+    description: KPP baseline with independent detector processes; every analytics
+      branch decodes and preprocesses its input again.
     benchmark_status: supported
     workload:
-      seed_group: canonical_v1
+      seed_group: kpp_real_codecs_v1
       streams: 6
+      logical_consumers: 4
+      camera_layout:
+      - stream_id: 0
+        camera_role: plate_number
+        source: data/videos/kpp/2.avi
+      - stream_id: 1
+        camera_role: plate_number
+        source: data/videos/kpp/2.avi
+      - stream_id: 2
+        camera_role: vehicle_type
+        source: data/videos/kpp/2.avi
+      - stream_id: 3
+        camera_role: damage
+        source: data/videos/kpp/2.avi
+      - stream_id: 4
+        camera_role: damage
+        source: data/videos/kpp/2.avi
+      - stream_id: 5
+        camera_role: foreign_object
+        source: data/videos/kpp/1.avi
       object_density:
-        min: 5
-        max: 35
-    pipeline: [decode, detect, aggregate]
+        min: 1
+        max: 12
+    pipeline:
+    - decode_plate_number
+    - preprocess_plate_number
+    - plate_number
+    - decode_vehicle_type
+    - preprocess_vehicle_type
+    - vehicle_type
+    - decode_damage
+    - preprocess_damage
+    - damage
+    - decode_foreign_object
+    - preprocess_foreign_object
+    - foreign_object
+    - aggregate
+    - record
     placement:
-      policy: canonical_local_cpu_gpu
+      policy: checkpoint_independent_local_cpu_gpu
       stages:
-        decode: local
-        detect: local
+        decode_plate_number: local
+        preprocess_plate_number: local
+        plate_number: local
+        decode_vehicle_type: local
+        preprocess_vehicle_type: local
+        vehicle_type: local
+        decode_damage: local
+        preprocess_damage: local
+        damage: local
+        decode_foreign_object: local
+        preprocess_foreign_object: local
+        foreign_object: local
         aggregate: local
-    network:
-      profile: local
-      latency_ms: 0
-      bandwidth_mbps: 0
-      packet_loss_percent: 0
-    distributed:
-      enabled: false
-
-  canonical_distributed:
-    description: Canonical role-split benchmark profile matching canonical_heterogeneous workload and pipeline.
-    benchmark_status: supported
-    workload:
-      seed_group: canonical_v1
-      streams: 6
-      object_density:
-        min: 5
-        max: 35
-    pipeline: [decode, detect, aggregate]
-    placement:
-      policy: canonical_edge_worker_aggregator
-      stages:
-        decode: edge
-        detect: gpu_worker
-        aggregate: aggregator
-    network:
-      profile: lan
-      latency_ms: 5
-      jitter_ms: 2
-      bandwidth_mbps: 1000
-      packet_loss_percent: 0
-    distributed:
-      enabled: true
-      hosts_config: configs/hosts.yaml
-      launch_strategy: staged_rtp_roles
-      sync_project: true
-      collect_artifacts: [frames.csv, frame_events.csv, system_metrics.csv, network_metrics.csv, stdout.log, stderr.log]
-
-  baseline:
-    description: Single-host decode and detection baseline.
-    benchmark_status: experimental
-    workload:
-      streams: 6
-      object_density:
-        min: 0
-        max: 20
-    pipeline: [decode, detect]
-    placement:
-      policy: local_gpu
-      stages:
-        decode: local
-        detect: local
-    network:
-      profile: local
-      latency_ms: 0
-      bandwidth_mbps: 0
-      packet_loss_percent: 0
-    distributed:
-      enabled: false
-
-  high_density_multistage:
-    description: Multi-stage high-density pipeline with tracking, classification, and recording.
-    benchmark_status: experimental
-    workload:
-      streams: 8
-      object_density:
-        min: 20
-        max: 80
-    pipeline: [decode, detect, track, classify, record]
-    placement:
-      policy: local_gpu_multistage
-      stages:
-        decode: local
-        detect: local
-        track: local
-        classify: local
         record: local
     network:
       profile: local
@@ -139,39 +143,56 @@ scenarios:
       packet_loss_percent: 0
     distributed:
       enabled: false
-
-  bursty_workload:
-    description: Bursty workload with low, medium, and high object pressure variants.
-    benchmark_status: experimental
+  checkpoint_video_dag_shared:
+    description: KPP shared Video-DAG with one decode/preprocess prefix feeding plate,
+      vehicle type, damage, and foreign object branches.
+    benchmark_status: supported
     workload:
+      seed_group: kpp_real_codecs_v1
       streams: 6
-      burst_profile:
-        enabled: true
-        period_s: 30
-        peak_multiplier: 2.5
+      logical_consumers: 4
+      camera_layout:
+      - stream_id: 0
+        camera_role: plate_number
+        source: data/videos/kpp/2.avi
+      - stream_id: 1
+        camera_role: plate_number
+        source: data/videos/kpp/2.avi
+      - stream_id: 2
+        camera_role: vehicle_type
+        source: data/videos/kpp/2.avi
+      - stream_id: 3
+        camera_role: damage
+        source: data/videos/kpp/2.avi
+      - stream_id: 4
+        camera_role: damage
+        source: data/videos/kpp/2.avi
+      - stream_id: 5
+        camera_role: foreign_object
+        source: data/videos/kpp/1.avi
       object_density:
-        min: 0
-        max: 30
-      variants:
-        - name: low
-          object_density:
-            min: 0
-            max: 20
-        - name: medium
-          object_density:
-            min: 10
-            max: 50
-        - name: high
-          object_density:
-            min: 30
-            max: 90
-    pipeline: [decode, detect, track]
+        min: 1
+        max: 12
+    pipeline:
+    - decode
+    - preprocess
+    - plate_number
+    - vehicle_type
+    - damage
+    - foreign_object
+    - aggregate
+    - record
     placement:
-      policy: local_adaptive
+      policy: checkpoint_video_dag_local_cpu_gpu
       stages:
         decode: local
-        detect: local
-        track: local
+        preprocess: local
+        plate_number: local
+        vehicle_type: local
+        damage: local
+        foreign_object: local
+        aggregate: local
+        record: local
     network:
       profile: local
       latency_ms: 0
@@ -179,152 +200,6 @@ scenarios:
       packet_loss_percent: 0
     distributed:
       enabled: false
-
-  stream_scaling:
-    description: Increase streams from 1 to 16 to find saturation.
-    benchmark_status: experimental
-    workload:
-      stream_range: [1, 16]
-      object_density:
-        min: 0
-        max: 25
-    pipeline: [decode, detect]
-    placement:
-      policy: local_scaling
-      stages:
-        decode: local
-        detect: local
-    network:
-      profile: local
-      latency_ms: 0
-      bandwidth_mbps: 0
-      packet_loss_percent: 0
-    distributed:
-      enabled: false
-
-  edge_to_worker_distributed:
-    description: Edge decode with GPU worker detection.
-    benchmark_status: experimental
-    workload:
-      streams: 6
-      object_density:
-        min: 5
-        max: 35
-    pipeline: [decode, detect, aggregate]
-    placement:
-      policy: edge_gpu_worker
-      stages:
-        decode: edge
-        detect: gpu_worker
-        aggregate: aggregator
-    network:
-      profile: lan
-      latency_ms: 5
-      jitter_ms: 2
-      bandwidth_mbps: 1000
-      packet_loss_percent: 0
-    distributed:
-      enabled: true
-      hosts_config: configs/hosts.yaml
-      launch_strategy: staged_rtp_roles
-      sync_project: true
-      collect_artifacts: [frames.csv, frame_events.csv, system_metrics.csv, network_metrics.csv, stdout.log, stderr.log]
-
-  edge_worker_aggregator_distributed:
-    description: Edge decode, worker inference, and aggregator recording.
-    benchmark_status: experimental
-    workload:
-      streams: 8
-      object_density:
-        min: 10
-        max: 60
-    pipeline: [decode, detect, track, aggregate, record]
-    placement:
-      policy: edge_worker_aggregator
-      stages:
-        decode: edge
-        detect: gpu_worker
-        track: gpu_worker
-        aggregate: aggregator
-        record: aggregator
-    network:
-      profile: lan
-      latency_ms: 8
-      jitter_ms: 3
-      bandwidth_mbps: 1000
-      packet_loss_percent: 0.1
-    distributed:
-      enabled: true
-      hosts_config: configs/hosts.yaml
-      launch_strategy: staged_rtp_roles
-      sync_project: true
-      collect_artifacts: [frames.csv, frame_events.csv, system_metrics.csv, network_metrics.csv, stdout.log, stderr.log]
-
-  degraded_network_distributed:
-    description: Distributed pipeline under constrained bandwidth, jitter, and packet loss.
-    benchmark_status: experimental
-    workload:
-      streams: 6
-      object_density:
-        min: 10
-        max: 50
-    pipeline: [decode, detect, track, aggregate]
-    placement:
-      policy: degraded_edge_cloud
-      stages:
-        decode: edge
-        detect: gpu_worker
-        track: gpu_worker
-        aggregate: aggregator
-    network:
-      profile: degraded_wan
-      latency_ms: 80
-      jitter_ms: 25
-      bandwidth_mbps: 80
-      packet_loss_percent: 1.5
-      acceptance:
-        latency_ms: [60, 140]
-        jitter_ms: [10, 60]
-        bandwidth_mbps: [20, 120]
-        packet_loss_percent: [0.5, 5]
-    distributed:
-      enabled: true
-      hosts_config: configs/hosts.yaml
-      launch_strategy: staged_rtp_roles
-      sync_project: true
-      collect_artifacts: [frames.csv, frame_events.csv, system_metrics.csv, network_metrics.csv, stdout.log, stderr.log]
-
-  hybrid_placement:
-    description: Compare CPU, GPU, and split placement strategies.
-    benchmark_status: experimental
-    workload:
-      streams: 6
-      object_density:
-        min: 5
-        max: 40
-      variants:
-        - name: cpu
-          placement_policy: cpu_only
-        - name: gpu
-          placement_policy: gpu_only
-        - name: split
-          placement_policy: cpu_gpu_split
-    pipeline: [decode, detect, track, classify]
-    placement:
-      policy: hybrid_compare
-      stages:
-        decode: local
-        detect: local
-        track: local
-        classify: local
-    network:
-      profile: local
-      latency_ms: 0
-      bandwidth_mbps: 0
-      packet_loss_percent: 0
-    distributed:
-      enabled: false
-
 systems:
   deepstream:
     label: NVIDIA DeepStream SDK
@@ -332,30 +207,40 @@ systems:
     backend: tensorrt
     container_image: nvcr.io/nvidia/deepstream:7.0-triton-multiarch
     supports_distributed: true
-    command: bash scripts/run_system_template.sh --system deepstream --scenario {scenario} --duration {duration_s} --streams {streams} --min-objects {min_objects} --max-objects {max_objects} --output {output_dir}/frames.csv
+    command: bash scripts/run_system_template.sh --system deepstream --scenario {scenario}
+      --duration {duration_s} --streams {streams} --min-objects {min_objects} --max-objects
+      {max_objects} --output {output_dir}/frames.csv --deadline-ms {deadline_ms}
   savant:
     label: Savant
     detector: peoplenet
     backend: deepstream_tensorrt
     container_image: ghcr.io/insight-platform/savant-deepstream:0.5.17-7.0
     supports_distributed: true
-    command: bash scripts/run_system_template.sh --system savant --scenario {scenario} --duration {duration_s} --streams {streams} --min-objects {min_objects} --max-objects {max_objects} --output {output_dir}/frames.csv
+    command: bash scripts/run_system_template.sh --system savant --scenario {scenario}
+      --duration {duration_s} --streams {streams} --min-objects {min_objects} --max-objects
+      {max_objects} --output {output_dir}/frames.csv --deadline-ms {deadline_ms}
   openvino_gva:
     label: Intel OpenVINO + GVA
     detector: person-vehicle-bike-detection-crossroad-0078
     backend: openvino_cpu
     container_image: intel/dlstreamer:latest
     supports_distributed: true
-    command: bash scripts/run_system_template.sh --system openvino_gva --scenario {scenario} --duration {duration_s} --streams {streams} --min-objects {min_objects} --max-objects {max_objects} --output {output_dir}/frames.csv
+    command: bash scripts/run_system_template.sh --system openvino_gva --scenario
+      {scenario} --duration {duration_s} --streams {streams} --min-objects {min_objects}
+      --max-objects {max_objects} --output {output_dir}/frames.csv --deadline-ms {deadline_ms}
   gstreamer_custom:
     label: GStreamer + custom plugin
     detector: custom_gstreamer_native
     backend: gstreamer
     supports_distributed: true
-    command: bash scripts/run_system_template.sh --system gstreamer_custom --scenario {scenario} --duration {duration_s} --streams {streams} --min-objects {min_objects} --max-objects {max_objects} --output {output_dir}/frames.csv
+    command: bash scripts/run_system_template.sh --system gstreamer_custom --scenario
+      {scenario} --duration {duration_s} --streams {streams} --min-objects {min_objects}
+      --max-objects {max_objects} --output {output_dir}/frames.csv --deadline-ms {deadline_ms}
   custom_cpp_cuda_qt:
     label: Custom C++ + CUDA + Qt
     detector: custom_cuda_signal
     backend: cuda_qt
     supports_distributed: true
-    command: bash scripts/run_system_template.sh --system custom_cpp_cuda_qt --scenario {scenario} --duration {duration_s} --streams {streams} --min-objects {min_objects} --max-objects {max_objects} --output {output_dir}/frames.csv
+    command: bash scripts/run_system_template.sh --system custom_cpp_cuda_qt --scenario
+      {scenario} --duration {duration_s} --streams {streams} --min-objects {min_objects}
+      --max-objects {max_objects} --output {output_dir}/frames.csv --deadline-ms {deadline_ms}

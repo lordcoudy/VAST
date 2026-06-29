@@ -56,6 +56,36 @@ def make_source_frame(root: Path, rel: Path) -> None:
 
 
 class PrepareBenchmarkDatasetTests(unittest.TestCase):
+    def test_real_avi_dataset_has_no_preparation_plans(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            manifest = root / "configs" / "datasets.yaml"
+            manifest.parent.mkdir(parents=True)
+            manifest.write_text(
+                yaml.safe_dump(
+                    {
+                        "datasets": {
+                            "kpp_real_avi": {
+                                "kind": "real_avi",
+                                "publishable": True,
+                                "streams": [{"path": "data/videos/kpp/1.avi", "sha256": "abc"}],
+                            }
+                        }
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            plans = build_clip_plans(
+                manifest=manifest,
+                dataset_name="kpp_real_avi",
+                project_root=root,
+                source_root=Path("data/videos"),
+                output_dir=Path("data/benchmark"),
+            )
+
+        self.assertEqual(plans, [])
+
     def test_public_manifest_maps_all_expected_sources(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             plans = build_clip_plans(

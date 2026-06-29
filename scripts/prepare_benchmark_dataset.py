@@ -81,6 +81,8 @@ def build_clip_plans(
     source_root = _resolve_under_project(project_root, source_root).resolve()
     output_dir = _resolve_under_project(project_root, output_dir).resolve()
     dataset = _read_manifest_dataset(manifest, dataset_name)
+    if str(dataset.get("kind", "")) in {"real_avi", "real_codec_transcode"}:
+        return []
 
     plans: list[ClipPlan] = []
     for raw_stream in list(dataset.get("streams") or []):
@@ -252,7 +254,7 @@ def validate_manifest_dataset(manifest: Path, dataset_name: str, *, project_root
 def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Prepare VAST public benchmark clips from local raw MOT17/UA-DETRAC sources")
     parser.add_argument("--manifest", type=Path, default=Path("configs/datasets.yaml"))
-    parser.add_argument("--dataset", default="mot17_uadetrac_public")
+    parser.add_argument("--dataset", default="kpp_real_h264")
     parser.add_argument("--source-root", type=Path, default=Path("data/videos"))
     parser.add_argument("--output-dir", type=Path, default=Path("data/benchmark"))
     parser.add_argument("--project-root", type=Path, default=Path.cwd())

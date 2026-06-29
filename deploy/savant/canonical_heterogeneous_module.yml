@@ -1,4 +1,4 @@
-# Canonical strict local Savant module for pipeline [decode, detect, aggregate].
+# Canonical strict local Savant module for active benchmark pipeline stages.
 # One container instance handles one input stream and writes per-stream native
 # telemetry under VAST_NATIVE_OUTPUT_DIR; run_system_template.sh merges outputs.
 
@@ -26,6 +26,105 @@ pipeline:
       class_name: SavantLocalTelemetryProbe
       kwargs:
         stage: decode
+        output_dir: ${parameters.output_dir}
+        run_id: ${parameters.run_id}
+        detector: ${parameters.detector}
+        backend: ${parameters.backend}
+        min_objects: ${parameters.min_objects}
+        max_objects: ${parameters.max_objects}
+    - element: pyfunc
+      module: deploy.savant.native_probe
+      class_name: SavantLocalTelemetryProbe
+      kwargs:
+        stage: decode_plate_number
+        output_dir: ${parameters.output_dir}
+        run_id: ${parameters.run_id}
+        detector: ${parameters.detector}
+        backend: ${parameters.backend}
+        min_objects: ${parameters.min_objects}
+        max_objects: ${parameters.max_objects}
+    - element: pyfunc
+      module: deploy.savant.native_probe
+      class_name: SavantLocalTelemetryProbe
+      kwargs:
+        stage: preprocess_plate_number
+        output_dir: ${parameters.output_dir}
+        run_id: ${parameters.run_id}
+        detector: ${parameters.detector}
+        backend: ${parameters.backend}
+        min_objects: ${parameters.min_objects}
+        max_objects: ${parameters.max_objects}
+    - element: pyfunc
+      module: deploy.savant.native_probe
+      class_name: SavantLocalTelemetryProbe
+      kwargs:
+        stage: decode_vehicle_type
+        output_dir: ${parameters.output_dir}
+        run_id: ${parameters.run_id}
+        detector: ${parameters.detector}
+        backend: ${parameters.backend}
+        min_objects: ${parameters.min_objects}
+        max_objects: ${parameters.max_objects}
+    - element: pyfunc
+      module: deploy.savant.native_probe
+      class_name: SavantLocalTelemetryProbe
+      kwargs:
+        stage: preprocess_vehicle_type
+        output_dir: ${parameters.output_dir}
+        run_id: ${parameters.run_id}
+        detector: ${parameters.detector}
+        backend: ${parameters.backend}
+        min_objects: ${parameters.min_objects}
+        max_objects: ${parameters.max_objects}
+    - element: pyfunc
+      module: deploy.savant.native_probe
+      class_name: SavantLocalTelemetryProbe
+      kwargs:
+        stage: decode_damage
+        output_dir: ${parameters.output_dir}
+        run_id: ${parameters.run_id}
+        detector: ${parameters.detector}
+        backend: ${parameters.backend}
+        min_objects: ${parameters.min_objects}
+        max_objects: ${parameters.max_objects}
+    - element: pyfunc
+      module: deploy.savant.native_probe
+      class_name: SavantLocalTelemetryProbe
+      kwargs:
+        stage: preprocess_damage
+        output_dir: ${parameters.output_dir}
+        run_id: ${parameters.run_id}
+        detector: ${parameters.detector}
+        backend: ${parameters.backend}
+        min_objects: ${parameters.min_objects}
+        max_objects: ${parameters.max_objects}
+    - element: pyfunc
+      module: deploy.savant.native_probe
+      class_name: SavantLocalTelemetryProbe
+      kwargs:
+        stage: decode_foreign_object
+        output_dir: ${parameters.output_dir}
+        run_id: ${parameters.run_id}
+        detector: ${parameters.detector}
+        backend: ${parameters.backend}
+        min_objects: ${parameters.min_objects}
+        max_objects: ${parameters.max_objects}
+    - element: pyfunc
+      module: deploy.savant.native_probe
+      class_name: SavantLocalTelemetryProbe
+      kwargs:
+        stage: preprocess_foreign_object
+        output_dir: ${parameters.output_dir}
+        run_id: ${parameters.run_id}
+        detector: ${parameters.detector}
+        backend: ${parameters.backend}
+        min_objects: ${parameters.min_objects}
+        max_objects: ${parameters.max_objects}
+    - element: pyfunc
+      module: deploy.savant.native_probe
+      class_name: SavantLocalTelemetryProbe
+      kwargs:
+        stage: preprocess
         output_dir: ${parameters.output_dir}
         run_id: ${parameters.run_id}
         detector: ${parameters.detector}
@@ -60,6 +159,50 @@ pipeline:
                   confidence_threshold: 0.1
                   min_width: 16
                   min_height: 16
+    - element: pyfunc
+      module: deploy.savant.native_probe
+      class_name: SavantLocalTelemetryProbe
+      kwargs:
+        stage: plate_number
+        output_dir: ${parameters.output_dir}
+        run_id: ${parameters.run_id}
+        detector: ${parameters.detector}
+        backend: ${parameters.backend}
+        min_objects: ${parameters.min_objects}
+        max_objects: ${parameters.max_objects}
+    - element: pyfunc
+      module: deploy.savant.native_probe
+      class_name: SavantLocalTelemetryProbe
+      kwargs:
+        stage: vehicle_type
+        output_dir: ${parameters.output_dir}
+        run_id: ${parameters.run_id}
+        detector: ${parameters.detector}
+        backend: ${parameters.backend}
+        min_objects: ${parameters.min_objects}
+        max_objects: ${parameters.max_objects}
+    - element: pyfunc
+      module: deploy.savant.native_probe
+      class_name: SavantLocalTelemetryProbe
+      kwargs:
+        stage: damage
+        output_dir: ${parameters.output_dir}
+        run_id: ${parameters.run_id}
+        detector: ${parameters.detector}
+        backend: ${parameters.backend}
+        min_objects: ${parameters.min_objects}
+        max_objects: ${parameters.max_objects}
+    - element: pyfunc
+      module: deploy.savant.native_probe
+      class_name: SavantLocalTelemetryProbe
+      kwargs:
+        stage: foreign_object
+        output_dir: ${parameters.output_dir}
+        run_id: ${parameters.run_id}
+        detector: ${parameters.detector}
+        backend: ${parameters.backend}
+        min_objects: ${parameters.min_objects}
+        max_objects: ${parameters.max_objects}
     - element: pyfunc
       module: deploy.savant.native_probe
       class_name: SavantLocalTelemetryProbe

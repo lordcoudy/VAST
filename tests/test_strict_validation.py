@@ -89,14 +89,14 @@ class StrictValidationAutomationTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             for rep in range(1, 6):
-                path = root / "cpu_only" / "20260619_001025" / "canonical_heterogeneous" / "streams_6" / "savant" / f"rep_{rep:02d}"
+                path = root / "cpu_only" / "20260619_001025" / "checkpoint_video_dag_shared" / "streams_6" / "savant" / f"rep_{rep:02d}"
                 path.mkdir(parents=True)
                 (path / "run_metadata.json").write_text("{}", encoding="utf-8")
-            partial = root / "cpu_only" / "20260619_001025" / "canonical_heterogeneous" / "streams_6" / "openvino_gva" / "rep_01"
+            partial = root / "cpu_only" / "20260619_001025" / "checkpoint_video_dag_shared" / "streams_6" / "openvino_gva" / "rep_01"
             partial.mkdir(parents=True)
 
             self.assertEqual(
-                completed_systems(root, "cpu_only", "canonical_heterogeneous", ["savant", "openvino_gva"], 5),
+                completed_systems(root, "cpu_only", "checkpoint_video_dag_shared", ["savant", "openvino_gva"], 5),
                 {"savant"},
             )
 
@@ -171,6 +171,8 @@ class StrictValidationAutomationTests(unittest.TestCase):
             port_stride=1,
             min_objects=5,
             max_objects=35,
+            deadline_ms=100.0,
+            policy="heft",
             parallel_streams=0,
         )
 
@@ -187,6 +189,8 @@ class StrictValidationAutomationTests(unittest.TestCase):
         self.assertEqual(command[command.index("--streams") + 1], "1")
         self.assertEqual(command[command.index("--duration") + 1], "5")
         self.assertEqual(command[command.index("--output-dir") + 1], "/workspace/project/runs/out/chunks/chunk_03/stream_01")
+        self.assertEqual(command[command.index("--deadline-ms") + 1], "100.0")
+        self.assertEqual(command[command.index("--policy") + 1], "heft")
         self.assertIn('DATASET_STREAMS_JSON=["data/benchmark/b.mp4"]', command)
 
     def test_openvino_chunk_sources_cycle_when_scenario_has_more_streams_than_clips(self) -> None:
@@ -271,11 +275,11 @@ class StrictValidationAutomationTests(unittest.TestCase):
                 project_root=root,
                 config=Path("configs/experiments.yaml"),
                 manifest=Path("configs/datasets.yaml"),
-                dataset="mot17_uadetrac_public",
+                dataset="kpp_real_avi",
                 source_root=Path("data/videos"),
                 dataset_output_dir=Path("data/benchmark"),
                 output_root=Path("runs/strict_validation"),
-                scenario="canonical_heterogeneous",
+                scenario="checkpoint_video_dag_shared",
                 run_kind="heterogeneous",
                 systems=["openvino_gva"],
                 policies=["static_hybrid"],
@@ -321,7 +325,7 @@ class StrictValidationAutomationTests(unittest.TestCase):
                 project_root=root,
                 config=Path("configs/experiments.yaml"),
                 manifest=Path("configs/datasets.yaml"),
-                dataset="mot17_uadetrac_public",
+                dataset="kpp_real_avi",
                 source_root=Path("data/videos"),
                 dataset_output_dir=Path("data/benchmark"),
                 output_root=Path("runs/strict_validation"),
@@ -352,10 +356,10 @@ class StrictValidationAutomationTests(unittest.TestCase):
     def test_run_experiments_command_is_strict_local_benchmark(self) -> None:
         args = argparse.Namespace(
             config=Path("configs/experiments.yaml"),
-            dataset="mot17_uadetrac_public",
+            dataset="kpp_real_avi",
             run_kind="heterogeneous",
             systems=DEFAULT_SYSTEMS,
-            scenario="canonical_heterogeneous",
+            scenario="checkpoint_video_dag_shared",
             output_root=Path("runs/strict_validation"),
             repeats=None,
             warmup=None,
@@ -370,8 +374,8 @@ class StrictValidationAutomationTests(unittest.TestCase):
         self.assertIn("--systems openvino_gva gstreamer_custom", joined)
         self.assertIn("--mode benchmark", joined)
         self.assertIn("--run-kind heterogeneous", joined)
-        self.assertIn("--dataset mot17_uadetrac_public", joined)
-        self.assertIn("--scenarios canonical_heterogeneous", joined)
+        self.assertIn("--dataset kpp_real_avi", joined)
+        self.assertIn("--scenarios checkpoint_video_dag_shared", joined)
         self.assertIn("--policy static_hybrid", joined)
         self.assertIn("runs/strict_validation/static_hybrid", joined)
 

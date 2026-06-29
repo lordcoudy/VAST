@@ -31,12 +31,16 @@ def minimal_experiments() -> dict:
         "project": {"name": "test"},
         "benchmark": {
             "dataset_manifest": "configs/datasets.yaml",
-            "default_dataset": {"smoke": "smoke_testsrc", "benchmark": "mot17_uadetrac_public"},
+            "default_dataset": {"smoke": "smoke_testsrc", "benchmark": "kpp_real_avi"},
             "telemetry_schema_version": 2,
             "publishable_telemetry_sources": ["native"],
             "scheduler_policies": ["static_hybrid", "gpu_only"],
-            "ql_heft_policy_artifact": "policies/ql_heft_frozen.policy",
             "default_seed": 20260323,
+            "active_scenarios": ["checkpoint_video_dag_shared"],
+            "smoke_scenarios": ["checkpoint_video_dag_shared"],
+            "report_scenarios": ["checkpoint_video_dag_shared"],
+            "deadline_ms": [16.7, 33.3, 50, 100, 500],
+            "report_deadline_ms": [16.7, 33.3, 50, 100, 500],
         },
         "transport": {
             "kind": "gstreamer_rtp_udp",
@@ -51,7 +55,7 @@ def minimal_experiments() -> dict:
             "gpu_model": "NVIDIA GeForce RTX 3060",
             "cpu_model": "Intel Core i7-14700K",
             "ram_gb": 22,
-            "deadline_s": 3,
+            "deadline_s": 0.1,
         },
         "protocol": {
             "warmup_s": 0,
@@ -61,7 +65,7 @@ def minimal_experiments() -> dict:
             "custom_cpp_cuda_qt_metric_interval_s": 0.2,
         },
         "scenarios": {
-            "canonical_heterogeneous": {
+            "checkpoint_video_dag_shared": {
                 "description": "Canonical local profile.",
                 "benchmark_status": "supported",
                 "workload": {"streams": 6, "object_density": {"min": 5, "max": 35}},
@@ -102,12 +106,12 @@ def minimal_datasets() -> dict:
                 "fps": 30,
                 "streams": [{"path": "data/videos/stream01.mp4"}],
             },
-            "mot17_uadetrac_public": {
-                "kind": "public_clips",
+            "kpp_real_avi": {
+                "kind": "real_avi",
                 "description": "Benchmark",
                 "publishable": True,
-                "fps": 30,
-                "streams": [{"path": "data/benchmark/mot17_02.mp4", "sha256": "abc"}],
+                "fps_policy": "pts_frame_count",
+                "streams": [{"path": "data/videos/kpp/2.avi", "sha256": "abc", "camera_role": "plate_number"}],
             },
         },
     }
@@ -178,7 +182,7 @@ class VastGuiTests(unittest.TestCase):
             Path.cwd(),
             {
                 "systems": ["deepstream"],
-                "scenarios": ["canonical_heterogeneous"],
+                "scenarios": ["checkpoint_video_dag_shared"],
                 "mode": "smoke",
                 "dataset": "smoke_testsrc",
                 "policy": "gpu_only",
@@ -206,14 +210,14 @@ class VastGuiTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = self.make_project(tmp)
             run_dir = root / "runs" / "20260101_010101"
-            rep_dir = run_dir / "canonical_heterogeneous" / "streams_1" / "deepstream" / "rep_01"
+            rep_dir = run_dir / "checkpoint_video_dag_shared" / "streams_1" / "deepstream" / "rep_01"
             rep_dir.mkdir(parents=True)
             pd.DataFrame(
                 [
                     {
                         "timestamp": "t",
                         "system": "deepstream",
-                        "scenario": "canonical_heterogeneous",
+                        "scenario": "checkpoint_video_dag_shared",
                         "repeat": 1,
                         "exit_code": 0,
                         "status": "completed",
@@ -230,6 +234,7 @@ class VastGuiTests(unittest.TestCase):
                         "backend": "test",
                         "policy": "static_hybrid",
                         "dataset": "smoke_testsrc",
+                        "deadline_ms": 100.0,
                         "throughput_fps": 30,
                         "latency_p50_ms": 10,
                         "latency_p95_ms": 20,
@@ -341,7 +346,7 @@ class VastGuiTests(unittest.TestCase):
                         data=json.dumps(
                             {
                                 "systems": ["deepstream"],
-                                "scenarios": ["canonical_heterogeneous"],
+                                "scenarios": ["checkpoint_video_dag_shared"],
                                 "mode": "smoke",
                                 "dataset": "smoke_testsrc",
                             }

@@ -136,6 +136,10 @@ def build_stream_command(
         str(args.min_objects),
         "--max-objects",
         str(args.max_objects),
+        "--deadline-ms",
+        str(args.deadline_ms),
+        "--policy",
+        args.policy,
         "--port-stride",
         str(args.port_stride),
     ]
@@ -249,6 +253,8 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--port-stride", type=int, default=1)
     parser.add_argument("--min-objects", type=int, required=True)
     parser.add_argument("--max-objects", type=int, required=True)
+    parser.add_argument("--deadline-ms", type=float, required=True)
+    parser.add_argument("--policy", required=True)
     parser.add_argument("--parallel-streams", type=int, default=0)
     args = parser.parse_args(argv)
     if args.chunk_s <= 0:

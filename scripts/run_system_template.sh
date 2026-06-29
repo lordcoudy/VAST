@@ -13,7 +13,7 @@ STREAMS=""
 MIN_OBJECTS="0"
 MAX_OBJECTS="20"
 OUTPUT_FILE=""
-DEADLINE_MS="3000"
+DEADLINE_MS="100"
 HOST_ROLE="${EXPERIMENT_HOST_ROLE:-local}"
 PIPELINE_STAGES="${EXPERIMENT_PIPELINE_STAGES:-}"
 SCENARIO_JSON="${EXPERIMENT_SCENARIO_JSON:-}"
@@ -664,6 +664,8 @@ native_probe_args() {
     --detect-bin "$detect_bin"
     --min-objects "$MIN_OBJECTS"
     --max-objects "$MAX_OBJECTS"
+    --deadline-ms "$DEADLINE_MS"
+    --policy "$SCHEDULER_POLICY"
   )
   if [[ -n "$RTP_INPUT_PORT" ]]; then
     args+=(--input-port-base "$RTP_INPUT_PORT")
@@ -746,7 +748,7 @@ run_openvino_gva_container_native_probe() {
   # Keep each finite benchmark clip below EOS while OpenVINO's meta_aggregate is active.
   local chunk_s="${OPENVINO_GVA_CHUNK_S:-15}"
   if [[ "$HOST_ROLE" == "local" && "$DURATION_S" =~ ^[0-9]+$ && "$chunk_s" =~ ^[0-9]+$ && "$DURATION_S" -gt "$chunk_s" ]]; then
-    cmd="python3 $(shell_quote "$PROJECT_DIR/scripts/run_openvino_container_chunks.py")       --image $(shell_quote "$image")       --project-dir $(shell_quote "$PROJECT_DIR")       --output-dir $(shell_quote "$OUTPUT_DIR")       --container-output-dir $(shell_quote "$container_output")       --duration $(shell_quote "$DURATION_S")       --chunk-s $(shell_quote "$chunk_s")       --streams $(shell_quote "$STREAMS")       --parallel-streams $(shell_quote "${OPENVINO_GVA_PARALLEL_STREAMS:-$STREAMS}")       --video-layout-dir $(shell_quote "$(project_path_for_runtime "$VIDEO_LAYOUT_DIR")")       --detect-bin $(shell_quote "$detect_bin")       --run-id $(shell_quote "$RUN_ID")       --role $(shell_quote "$HOST_ROLE")       --stages $(shell_quote "$PIPELINE_STAGES")       --detector $(shell_quote "$DETECTOR")       --backend $(shell_quote "$BACKEND")       --dataset-streams-json $(shell_quote "$DATASET_STREAMS_JSON")       --input-port $(shell_quote "$RTP_INPUT_PORT")       --output-host $(shell_quote "$RTP_OUTPUT_HOST")       --output-port $(shell_quote "$RTP_OUTPUT_PORT")       --port-stride $(shell_quote "$RTP_PORT_STRIDE")       --min-objects $(shell_quote "$MIN_OBJECTS")       --max-objects $(shell_quote "$MAX_OBJECTS")"
+    cmd="python3 $(shell_quote "$PROJECT_DIR/scripts/run_openvino_container_chunks.py")       --image $(shell_quote "$image")       --project-dir $(shell_quote "$PROJECT_DIR")       --output-dir $(shell_quote "$OUTPUT_DIR")       --container-output-dir $(shell_quote "$container_output")       --duration $(shell_quote "$DURATION_S")       --chunk-s $(shell_quote "$chunk_s")       --streams $(shell_quote "$STREAMS")       --parallel-streams $(shell_quote "${OPENVINO_GVA_PARALLEL_STREAMS:-$STREAMS}")       --video-layout-dir $(shell_quote "$(project_path_for_runtime "$VIDEO_LAYOUT_DIR")")       --detect-bin $(shell_quote "$detect_bin")       --run-id $(shell_quote "$RUN_ID")       --role $(shell_quote "$HOST_ROLE")       --stages $(shell_quote "$PIPELINE_STAGES")       --detector $(shell_quote "$DETECTOR")       --backend $(shell_quote "$BACKEND")       --dataset-streams-json $(shell_quote "$DATASET_STREAMS_JSON")       --input-port $(shell_quote "$RTP_INPUT_PORT")       --output-host $(shell_quote "$RTP_OUTPUT_HOST")       --output-port $(shell_quote "$RTP_OUTPUT_PORT")       --port-stride $(shell_quote "$RTP_PORT_STRIDE")       --min-objects $(shell_quote "$MIN_OBJECTS")       --max-objects $(shell_quote "$MAX_OBJECTS")       --deadline-ms $(shell_quote "$DEADLINE_MS")       --policy $(shell_quote "$SCHEDULER_POLICY")"
     NATIVE_PROBE_CONTAINERIZED="$prev_containerized"
     run_or_echo "$cmd"
     return $?

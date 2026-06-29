@@ -26,57 +26,107 @@ from run_experiments import (
 )
 
 
+SHARED_PROOF_PIPELINE = [
+    "decode",
+    "preprocess",
+    "plate_number",
+    "vehicle_type",
+    "damage",
+    "foreign_object",
+    "aggregate",
+    "record",
+]
+INDEPENDENT_PROOF_PIPELINE = [
+    "decode_plate_number",
+    "preprocess_plate_number",
+    "plate_number",
+    "decode_vehicle_type",
+    "preprocess_vehicle_type",
+    "vehicle_type",
+    "decode_damage",
+    "preprocess_damage",
+    "damage",
+    "decode_foreign_object",
+    "preprocess_foreign_object",
+    "foreign_object",
+    "aggregate",
+    "record",
+]
+ACTIVE_SCENARIOS = ["checkpoint_independent_processes_baseline", "checkpoint_video_dag_shared"]
+
+
+def distributed_fixture() -> dict:
+    pipeline = ["decode", "preprocess", "detect", "track", "aggregate", "record"]
+    return {
+        "description": "Inline distributed fixture for planner tests.",
+        "workload": {"streams": 6, "object_density": {"min": 1, "max": 12}},
+        "pipeline": pipeline,
+        "placement": {
+            "policy": "fixture_edge_worker_aggregator",
+            "stages": {
+                "decode": "edge",
+                "preprocess": "edge",
+                "detect": "gpu_worker",
+                "track": "gpu_worker",
+                "aggregate": "aggregator",
+                "record": "aggregator",
+            },
+        },
+        "network": {"profile": "lan", "latency_ms": 5, "bandwidth_mbps": 1000, "packet_loss_percent": 0},
+        "distributed": {"enabled": True, "sync_project": True},
+    }
+
+
 class ScenarioPlanningTests(unittest.TestCase):
-    def test_baseline_scenario_uses_new_schema(self) -> None:
+    def test_checkpoint_shared_scenario_uses_real_kpp_schema(self) -> None:
         cfg = load_config(ROOT / "configs" / "experiments.yaml")
-        scenario = normalize_scenario("baseline", cfg["scenarios"]["baseline"])
+        scenario = normalize_scenario("checkpoint_video_dag_shared", cfg["scenarios"]["checkpoint_video_dag_shared"])
 
         self.assertEqual(scenario["workload"]["streams"], 6)
-        self.assertEqual(scenario["pipeline"], ["decode", "detect"])
+        self.assertEqual(scenario["workload"]["seed_group"], "kpp_real_codecs_v1")
+        self.assertEqual(scenario["workload"]["logical_consumers"], 4)
+        self.assertEqual(scenario["pipeline"], SHARED_PROOF_PIPELINE)
         self.assertFalse(scenario["distributed"]["enabled"])
 
-    def test_stream_range_expands_to_variants(self) -> None:
+    def test_checkpoint_profiles_share_workload_and_deadlines(self) -> None:
         cfg = load_config(ROOT / "configs" / "experiments.yaml")
-        variants = expand_scenario(cfg, "stream_scaling")
+        shared = normalize_scenario("checkpoint_video_dag_shared", cfg["scenarios"]["checkpoint_video_dag_shared"])
+        baseline = normalize_scenario(
+            "checkpoint_independent_processes_baseline",
+            cfg["scenarios"]["checkpoint_independent_processes_baseline"],
+        )
 
-        self.assertEqual(variants[0]["streams"], 1)
-        self.assertEqual(variants[-1]["streams"], 16)
-        self.assertEqual(len(variants), 16)
+        self.assertEqual(shared["workload"], baseline["workload"])
+        self.assertEqual(shared["workload"]["streams"], 6)
+        self.assertEqual(shared["pipeline"], SHARED_PROOF_PIPELINE)
+        self.assertEqual(baseline["pipeline"], INDEPENDENT_PROOF_PIPELINE)
+        self.assertEqual(cfg["benchmark"]["active_scenarios"], ACTIVE_SCENARIOS)
+        self.assertEqual(cfg["benchmark"]["report_scenarios"], ACTIVE_SCENARIOS)
+        self.assertEqual(cfg["benchmark"]["deadline_ms"], [16.7, 33.3, 50, 100, 500])
+        self.assertEqual(cfg["benchmark"]["report_deadline_ms"], [16.7, 33.3, 50, 100, 500])
+        self.assertNotIn(3000, cfg["benchmark"]["report_deadline_ms"])
 
-    def test_hybrid_variant_sets_placement_policy(self) -> None:
+    def test_independent_baseline_repeats_common_stages_per_branch(self) -> None:
         cfg = load_config(ROOT / "configs" / "experiments.yaml")
-        variants = expand_scenario(cfg, "hybrid_placement")
-        policies = [v["scenario"]["placement"]["policy"] for v in variants]
+        baseline = normalize_scenario(
+            "checkpoint_independent_processes_baseline",
+            cfg["scenarios"]["checkpoint_independent_processes_baseline"],
+        )
 
-        self.assertEqual(policies, ["cpu_only", "gpu_only", "cpu_gpu_split"])
+        self.assertEqual(baseline["pipeline"], INDEPENDENT_PROOF_PIPELINE)
+        self.assertEqual(sum(1 for stage in baseline["pipeline"] if stage.startswith("decode_")), 4)
+        self.assertEqual(sum(1 for stage in baseline["pipeline"] if stage.startswith("preprocess_")), 4)
+        self.assertEqual(set(baseline["placement"]["stages"].values()), {"local"})
+        self.assertFalse(baseline["distributed"]["enabled"])
 
-    def test_canonical_profiles_share_workload_and_pipeline(self) -> None:
+    def test_benchmark_all_selects_only_publishable_checkpoint_scenarios(self) -> None:
         cfg = load_config(ROOT / "configs" / "experiments.yaml")
-        local = normalize_scenario("canonical_heterogeneous", cfg["scenarios"]["canonical_heterogeneous"])
-        distributed = normalize_scenario("canonical_distributed", cfg["scenarios"]["canonical_distributed"])
 
-        self.assertEqual(local["workload"], distributed["workload"])
-        self.assertEqual(local["workload"]["seed_group"], "canonical_v1")
-        self.assertEqual(local["pipeline"], ["decode", "detect", "aggregate"])
-        self.assertEqual(local["pipeline"], distributed["pipeline"])
-        self.assertFalse(local["distributed"]["enabled"])
-        self.assertTrue(distributed["distributed"]["enabled"])
-
-    def test_benchmark_all_selects_every_configured_scenario(self) -> None:
-        cfg = load_config(ROOT / "configs" / "experiments.yaml")
-        configured = list(cfg["scenarios"])
-        local = [
-            name
-            for name, raw in cfg["scenarios"].items()
-            if not bool((raw.get("distributed") or {}).get("enabled"))
-        ]
-        distributed = [name for name in configured if name not in local]
-
-        self.assertEqual(select_scenarios(cfg, ["all"], mode="benchmark"), configured)
-        self.assertEqual(select_scenarios(cfg, ["all"], mode="benchmark", run_kind="auto"), configured)
-        self.assertEqual(select_scenarios(cfg, ["all"], mode="benchmark", run_kind="heterogeneous"), local)
-        self.assertEqual(select_scenarios(cfg, ["all"], mode="benchmark", run_kind="distributed"), distributed)
-        self.assertIn("baseline", select_scenarios(cfg, ["all"], mode="smoke"))
+        self.assertEqual(select_scenarios(cfg, ["all"], mode="benchmark"), ACTIVE_SCENARIOS)
+        self.assertEqual(select_scenarios(cfg, ["all"], mode="benchmark", run_kind="auto"), ACTIVE_SCENARIOS)
+        self.assertEqual(select_scenarios(cfg, ["all"], mode="benchmark", run_kind="heterogeneous"), ACTIVE_SCENARIOS)
+        self.assertEqual(select_scenarios(cfg, ["all"], mode="benchmark", run_kind="distributed"), [])
+        self.assertEqual(select_scenarios(cfg, ["all"], mode="smoke"), ["checkpoint_video_dag_shared"])
 
     def test_strict_adapter_accepts_every_configured_scenario(self) -> None:
         cfg = load_config(ROOT / "configs" / "experiments.yaml")
@@ -94,11 +144,7 @@ class ScenarioPlanningTests(unittest.TestCase):
                 self.assertEqual(plan.runner, "scripts/run_system_template.sh")
 
     def test_strict_adapter_rejects_unknown_distributed_role(self) -> None:
-        cfg = load_config(ROOT / "configs" / "experiments.yaml")
-        scenario = normalize_scenario(
-            "edge_worker_aggregator_distributed",
-            cfg["scenarios"]["edge_worker_aggregator_distributed"],
-        )
+        scenario = normalize_scenario("distributed_fixture", distributed_fixture())
         scenario["placement"]["stages"]["track"] = "remote"
 
         with self.assertRaisesRegex(ContractError, "unsupported distributed roles: remote"):
@@ -109,10 +155,10 @@ class ScenarioPlanningTests(unittest.TestCase):
                 mode="benchmark",
             )
 
-    def test_strict_adapter_accepts_canonical_local_and_distributed(self) -> None:
+    def test_strict_adapter_accepts_checkpoint_local_and_distributed_fixture(self) -> None:
         cfg = load_config(ROOT / "configs" / "experiments.yaml")
-        local = normalize_scenario("canonical_heterogeneous", cfg["scenarios"]["canonical_heterogeneous"])
-        distributed = normalize_scenario("canonical_distributed", cfg["scenarios"]["canonical_distributed"])
+        local = normalize_scenario("checkpoint_video_dag_shared", cfg["scenarios"]["checkpoint_video_dag_shared"])
+        distributed = normalize_scenario("distributed_fixture", distributed_fixture())
 
         local_plan = validate_benchmark_adapter(
             system_key="deepstream",
@@ -132,7 +178,7 @@ class ScenarioPlanningTests(unittest.TestCase):
 
     def test_heterogeneous_context_forces_distributed_env_off(self) -> None:
         cfg = load_config(ROOT / "configs" / "experiments.yaml")
-        scenario = normalize_scenario("canonical_heterogeneous", cfg["scenarios"]["canonical_heterogeneous"])
+        scenario = normalize_scenario("checkpoint_video_dag_shared", cfg["scenarios"]["checkpoint_video_dag_shared"])
         context = resolve_execution_context(
             requested_run_kind=normalize_run_kind("local"),
             scenario=scenario,
@@ -150,7 +196,7 @@ class ScenarioPlanningTests(unittest.TestCase):
 
     def test_single_server_distributed_uses_localhost_without_sync(self) -> None:
         cfg = load_config(ROOT / "configs" / "experiments.yaml")
-        scenario = normalize_scenario("canonical_distributed", cfg["scenarios"]["canonical_distributed"])
+        scenario = normalize_scenario("distributed_fixture", distributed_fixture())
         context = resolve_execution_context(
             requested_run_kind="single-server-distributed",
             scenario=scenario,
@@ -166,11 +212,11 @@ class ScenarioPlanningTests(unittest.TestCase):
             scenario=scenario,
             system_key="custom_cpp_cuda_qt",
             command_template=cfg["systems"]["custom_cpp_cuda_qt"]["command"],
-            run_relpath="runs/test/canonical_distributed/streams_6/custom/rep_01",
+            run_relpath="runs/test/distributed_fixture/streams_6/custom/rep_01",
             duration_s=5,
             streams=6,
-            min_objects=5,
-            max_objects=35,
+            min_objects=1,
+            max_objects=12,
         )
 
         self.assertFalse(context.sync_project)
@@ -180,7 +226,7 @@ class ScenarioPlanningTests(unittest.TestCase):
 
     def test_builtin_strict_systems_build_role_steps(self) -> None:
         cfg = load_config(ROOT / "configs" / "experiments.yaml")
-        scenario = normalize_scenario("canonical_distributed", cfg["scenarios"]["canonical_distributed"])
+        scenario = normalize_scenario("distributed_fixture", distributed_fixture())
         context = resolve_execution_context(
             requested_run_kind="single-server-distributed",
             scenario=scenario,
@@ -197,11 +243,11 @@ class ScenarioPlanningTests(unittest.TestCase):
                 scenario=scenario,
                 system_key=system,
                 command_template=cfg["systems"][system]["command"],
-                run_relpath=f"runs/test/canonical_distributed/streams_6/{system}/rep_01",
+                run_relpath=f"runs/test/distributed_fixture/streams_6/{system}/rep_01",
                 duration_s=5,
                 streams=6,
-                min_objects=5,
-                max_objects=35,
+                min_objects=1,
+                max_objects=12,
                 transport=cfg["transport"],
                 mode="benchmark",
             )
@@ -228,7 +274,7 @@ class ScenarioPlanningTests(unittest.TestCase):
                     "BENCHMARK_MODE": "benchmark",
                     "EXPERIMENT_DISTRIBUTED": "1",
                     "EXPERIMENT_HOST_ROLE": "gpu_worker",
-                    "EXPERIMENT_PIPELINE_STAGES": "detect",
+                    "EXPERIMENT_PIPELINE_STAGES": "detect,track",
                     "EXPERIMENT_RTP_INPUT_PORT": "5600",
                     "EXPERIMENT_RTP_OUTPUT_HOST": "127.0.0.1",
                     "EXPERIMENT_RTP_OUTPUT_PORT": "5700",
@@ -241,15 +287,15 @@ class ScenarioPlanningTests(unittest.TestCase):
                     "--system",
                     system,
                     "--scenario",
-                    "canonical_distributed",
+                    "distributed_fixture",
                     "--duration",
                     "5",
                     "--streams",
                     "2",
                     "--min-objects",
-                    "5",
+                    "1",
                     "--max-objects",
-                    "35",
+                    "12",
                     "--output",
                     str(ROOT / "runs" / "dry" / system / "frames.csv"),
                 ],
@@ -282,7 +328,7 @@ class ScenarioPlanningTests(unittest.TestCase):
                     "BENCHMARK_MODE": "benchmark",
                     "EXPERIMENT_DISTRIBUTED": "0",
                     "EXPERIMENT_HOST_ROLE": "local",
-                    "EXPERIMENT_PIPELINE_STAGES": "decode,detect,aggregate",
+                    "EXPERIMENT_PIPELINE_STAGES": ",".join(SHARED_PROOF_PIPELINE),
                 }
             )
             completed = subprocess.run(
@@ -292,15 +338,15 @@ class ScenarioPlanningTests(unittest.TestCase):
                     "--system",
                     system,
                     "--scenario",
-                    "canonical_heterogeneous",
+                    "checkpoint_video_dag_shared",
                     "--duration",
                     "5",
                     "--streams",
                     "2",
                     "--min-objects",
-                    "5",
+                    "20",
                     "--max-objects",
-                    "35",
+                    "80",
                     "--output",
                     str(ROOT / "runs" / "dry" / "local" / system / "frames.csv"),
                 ],
@@ -433,7 +479,7 @@ class ScenarioPlanningTests(unittest.TestCase):
                 "BENCHMARK_MODE": "benchmark",
                 "EXPERIMENT_DISTRIBUTED": "0",
                 "EXPERIMENT_HOST_ROLE": "local",
-                "EXPERIMENT_PIPELINE_STAGES": "decode,detect,aggregate",
+                "EXPERIMENT_PIPELINE_STAGES": ",".join(SHARED_PROOF_PIPELINE),
                 "OPENVINO_GVA_FORCE_CONTAINER": "1",
                 "DATASET_STREAMS_JSON": '["data/benchmark/mot17_02.mp4"]',
             }
@@ -445,7 +491,7 @@ class ScenarioPlanningTests(unittest.TestCase):
                 "--system",
                 "openvino_gva",
                 "--scenario",
-                "canonical_heterogeneous",
+                "checkpoint_video_dag_shared",
                 "--duration",
                 "5",
                 "--streams",
@@ -480,7 +526,7 @@ class ScenarioPlanningTests(unittest.TestCase):
                 "BENCHMARK_MODE": "benchmark",
                 "EXPERIMENT_DISTRIBUTED": "0",
                 "EXPERIMENT_HOST_ROLE": "local",
-                "EXPERIMENT_PIPELINE_STAGES": "decode,detect,aggregate",
+                "EXPERIMENT_PIPELINE_STAGES": ",".join(SHARED_PROOF_PIPELINE),
                 "OPENVINO_GVA_FORCE_CONTAINER": "1",
                 "DATASET_STREAMS_JSON": '["data/benchmark/mot17_02.mp4"]',
             }
@@ -492,7 +538,7 @@ class ScenarioPlanningTests(unittest.TestCase):
                 "--system",
                 "openvino_gva",
                 "--scenario",
-                "canonical_heterogeneous",
+                "checkpoint_video_dag_shared",
                 "--duration",
                 "16",
                 "--streams",
@@ -533,7 +579,7 @@ class ScenarioPlanningTests(unittest.TestCase):
                 "BENCHMARK_MODE": "benchmark",
                 "EXPERIMENT_DISTRIBUTED": "0",
                 "EXPERIMENT_HOST_ROLE": "local",
-                "EXPERIMENT_PIPELINE_STAGES": "decode,detect,aggregate",
+                "EXPERIMENT_PIPELINE_STAGES": ",".join(SHARED_PROOF_PIPELINE),
                 "DATASET_STREAMS_JSON": '["data/benchmark/mot17_02.mp4","data/benchmark/mot17_04.mp4"]',
             }
         )
@@ -544,7 +590,7 @@ class ScenarioPlanningTests(unittest.TestCase):
                 "--system",
                 "savant",
                 "--scenario",
-                "canonical_heterogeneous",
+                "checkpoint_video_dag_shared",
                 "--duration",
                 "5",
                 "--streams",
@@ -632,8 +678,15 @@ class ScenarioPlanningTests(unittest.TestCase):
 
         self.assertIn("stage_names_", body)
         self.assertIn("add_local_stage_probes", body)
-        self.assertIn("identity name=", body)
         self.assertIn("stage_probe_name", body)
+        self.assertIn("stage_base_name", body)
+        self.assertIn("generic_stage_operation", body)
+        self.assertIn("deepstream_stage_operation", body)
+        self.assertIn("write_stage_events", body)
+        self.assertIn("ctx->stage", body)
+        self.assertIn("videoconvert ! videoscale ! video/x-raw,format=RGB,width=640,height=360", body)
+        self.assertIn("jpegenc ! jpegdec", body)
+        self.assertIn("sleep-time=1000", body)
 
     def test_native_probe_handles_rtp_payload_buffer_lists(self) -> None:
         body = (ROOT / "deploy" / "native_gst_probe" / "vast_native_gst_probe.cpp").read_text(encoding="utf-8")
@@ -771,19 +824,16 @@ class ScenarioPlanningTests(unittest.TestCase):
             self.assertIn("same_host_loopback", network_csv.read_text(encoding="utf-8"))
 
     def test_workload_seed_is_independent_of_system(self) -> None:
-        first = build_run_seed(20260323, "canonical_heterogeneous", "", 6, 1)
-        second = build_run_seed(20260323, "canonical_heterogeneous", "", 6, 1)
-        different_repeat = build_run_seed(20260323, "canonical_heterogeneous", "", 6, 2)
+        first = build_run_seed(20260323, "checkpoint_video_dag_shared", "", 6, 1)
+        second = build_run_seed(20260323, "checkpoint_video_dag_shared", "", 6, 1)
+        different_repeat = build_run_seed(20260323, "checkpoint_video_dag_shared", "", 6, 2)
 
         self.assertEqual(first, second)
         self.assertNotEqual(first, different_repeat)
 
     def test_distributed_plan_maps_roles_to_hosts(self) -> None:
         cfg = load_config(ROOT / "configs" / "experiments.yaml")
-        scenario = normalize_scenario(
-            "edge_worker_aggregator_distributed",
-            cfg["scenarios"]["edge_worker_aggregator_distributed"],
-        )
+        scenario = normalize_scenario("distributed_fixture", distributed_fixture())
         hosts_config = {
             "hosts": [
                 {

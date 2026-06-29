@@ -15,23 +15,28 @@ from run_experiments import load_resumable_result, run_directory  # noqa: E402
 
 class RunExperimentsResumeTests(unittest.TestCase):
     def test_run_directory_matches_canonical_layout(self) -> None:
-        scenario = {"name": "canonical_heterogeneous", "workload": {}}
+        scenario = {"name": "checkpoint_video_dag_shared", "workload": {}}
 
         self.assertEqual(
             run_directory(Path("runs/root"), scenario, 6, "openvino_gva", 5),
-            Path("runs/root/canonical_heterogeneous/streams_6/openvino_gva/rep_05"),
+            Path("runs/root/checkpoint_video_dag_shared/streams_6/openvino_gva/rep_05"),
+        )
+        self.assertEqual(
+            run_directory(Path("runs/root"), scenario, 6, "openvino_gva", 5, 16.7),
+            Path("runs/root/checkpoint_video_dag_shared/streams_6/deadline_16p7/openvino_gva/rep_05"),
         )
 
     def test_load_resumable_result_accepts_matching_completed_metadata(self) -> None:
         result = {
             "status": "completed",
             "system": "openvino_gva",
-            "scenario": "canonical_heterogeneous",
+            "scenario": "checkpoint_video_dag_shared",
             "repeat": 5,
             "streams": 6,
             "duration_s": 180,
             "policy": "cpu_only",
-            "dataset": "mot17_uadetrac_public",
+            "dataset": "kpp_real_avi",
+            "deadline_ms": 16.7,
         }
         with tempfile.TemporaryDirectory() as tmp:
             metadata_path = Path(tmp) / "run_metadata.json"
@@ -41,12 +46,13 @@ class RunExperimentsResumeTests(unittest.TestCase):
                 load_resumable_result(
                     metadata_path,
                     system_key="openvino_gva",
-                    scenario_key="canonical_heterogeneous",
+                    scenario_key="checkpoint_video_dag_shared",
                     repeat_index=5,
                     streams=6,
                     duration_s=180,
                     policy="cpu_only",
-                    dataset_name="mot17_uadetrac_public",
+                    dataset_name="kpp_real_avi",
+                    deadline_ms=16.7,
                 ),
                 result,
             )
@@ -60,12 +66,12 @@ class RunExperimentsResumeTests(unittest.TestCase):
                         "result": {
                             "status": "completed",
                             "system": "openvino_gva",
-                            "scenario": "canonical_heterogeneous",
+                            "scenario": "checkpoint_video_dag_shared",
                             "repeat": 1,
                             "streams": 6,
                             "duration_s": 180,
                             "policy": "gpu_only",
-                            "dataset": "mot17_uadetrac_public",
+                            "dataset": "kpp_real_avi",
                         }
                     }
                 ),
@@ -76,12 +82,12 @@ class RunExperimentsResumeTests(unittest.TestCase):
                 load_resumable_result(
                     metadata_path,
                     system_key="openvino_gva",
-                    scenario_key="canonical_heterogeneous",
+                    scenario_key="checkpoint_video_dag_shared",
                     repeat_index=5,
                     streams=6,
                     duration_s=180,
                     policy="cpu_only",
-                    dataset_name="mot17_uadetrac_public",
+                    dataset_name="kpp_real_avi",
                 )
 
 

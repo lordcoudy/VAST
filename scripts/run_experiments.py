@@ -26,8 +26,11 @@ from benchmark_contract import (
     load_dataset,
     sha256_file,
     summarize_frames,
+    summarize_sidecars,
     validate_frame_events,
+    validate_required_sidecars,
     validate_stage_trace_coverage,
+    write_derived_native_sidecars,
     write_json,
 )
 from benchmark_adapters import select_scenarios, validate_benchmark_adapter
@@ -409,6 +412,19 @@ def measured_metrics_duration_s(metrics_csv: Path) -> float:
         return 0.0
 
 
+def validate_system_metrics(path: Path) -> pd.DataFrame:
+    if not path.exists():
+        raise ContractError(f"system_metrics.csv was not produced: {path}")
+    df = pd.read_csv(path)
+    required = {"timestamp_ms", "cpu_total_percent", "cpu_memory_mb"}
+    missing = sorted(required - set(df.columns))
+    if missing:
+        raise ContractError(f"system_metrics.csv is missing columns at {path}: {', '.join(missing)}")
+    if df.empty:
+        raise ContractError(f"system_metrics.csv has no samples: {path}")
+    return df
+
+
 def resolve_metric_interval_s(config: dict[str, Any], system_key: str) -> float:
     protocol = config.get("protocol", {})
     base_interval = float(protocol.get("metric_interval_s", 1.0))
@@ -469,18 +485,97 @@ def dataset_streams_json(dataset: dict[str, Any]) -> str:
     return json.dumps(streams, separators=(",", ":"))
 
 
+def configured_deadlines_ms(
+    config: dict[str, Any],
+    *,
+    mode: str,
+    requested: list[str] | None = None,
+) -> list[float]:
+    benchmark = config.get("benchmark", {})
+    if requested and requested != ["all"]:
+        values = requested
+    elif mode == "benchmark":
+        values = benchmark.get("deadline_ms") or benchmark.get("report_deadline_ms") or []
+    else:
+        values = benchmark.get("smoke_deadline_ms") or []
+    if not values:
+        values = [float(config.get("hardware_target", {}).get("deadline_s", 0.1)) * 1000.0]
+    deadlines = [float(value) for value in values]
+    if any(value <= 0 for value in deadlines):
+        raise ContractError("benchmark deadlines must be positive milliseconds")
+    return deadlines
+
+
+def configured_policy_names(config: dict[str, Any], requested: list[str] | None) -> list[str]:
+    benchmark = config.get("benchmark", {})
+    configured = [str(policy) for policy in benchmark.get("scheduler_policies", [])]
+    ablations = [str(policy) for policy in benchmark.get("scheduler_ablations", [])]
+    all_policies = list(dict.fromkeys([*configured, *ablations]))
+    if not all_policies:
+        raise ContractError("benchmark.scheduler_policies must be a non-empty list")
+    if not requested or requested == ["all"]:
+        return all_policies
+    unknown = [policy for policy in requested if policy not in all_policies]
+    if unknown:
+        raise ContractError(
+            f"unknown scheduler policies: {', '.join(unknown)}; expected one of: {', '.join(all_policies)}"
+        )
+    return list(requested)
+
+
+def configured_dataset_names(
+    config: dict[str, Any],
+    *,
+    mode: str,
+    dataset: str,
+    datasets: list[str] | None,
+) -> list[str]:
+    benchmark = config.get("benchmark", {})
+    defaults = benchmark.get("default_dataset", {})
+    requested = [str(name) for name in (datasets or []) if str(name).strip()]
+    if not requested and dataset:
+        requested = [dataset]
+    if requested == ["all"]:
+        requested = [str(name) for name in benchmark.get("benchmark_datasets", [])]
+    if not requested:
+        if mode == "benchmark":
+            requested = [str(name) for name in benchmark.get("benchmark_datasets", [])]
+        if not requested:
+            requested = [str(defaults.get(mode, ""))]
+    requested = [name for name in requested if name]
+    if not requested:
+        raise ContractError(f"no dataset configured for mode={mode}")
+    return list(dict.fromkeys(requested))
+
+
+def deadline_slug(deadline_ms: float) -> str:
+    text = f"{float(deadline_ms):g}".replace(".", "p")
+    return f"deadline_{text}"
+
+
 def run_directory(
     run_root: Path,
     scenario: dict[str, Any],
     streams: int,
     system_key: str,
     repeat_index: int,
+    deadline_ms: float | None = None,
+    dataset_name: str | None = None,
+    policy: str | None = None,
 ) -> Path:
-    scenario_dir = run_root / scenario["name"]
+    root = run_root
+    if dataset_name:
+        root /= f"dataset_{dataset_name}"
+    if policy:
+        root /= f"policy_{policy}"
+    scenario_dir = root / scenario["name"]
     variant_name = str(scenario.get("workload", {}).get("variant", "")).strip()
     if variant_name:
         scenario_dir /= f"variant_{variant_name}"
-    return scenario_dir / f"streams_{streams}" / system_key / f"rep_{repeat_index:02d}"
+    streams_dir = scenario_dir / f"streams_{streams}"
+    if deadline_ms is not None:
+        streams_dir /= deadline_slug(deadline_ms)
+    return streams_dir / system_key / f"rep_{repeat_index:02d}"
 
 
 def load_resumable_result(
@@ -493,6 +588,7 @@ def load_resumable_result(
     duration_s: int,
     policy: str,
     dataset_name: str,
+    deadline_ms: float | None = None,
 ) -> dict[str, Any] | None:
     if not metadata_path.exists():
         return None
@@ -513,12 +609,62 @@ def load_resumable_result(
         "policy": policy,
         "dataset": dataset_name,
     }
+    if deadline_ms is not None:
+        expected["deadline_ms"] = float(deadline_ms)
     mismatches = [key for key, value in expected.items() if result.get(key) != value]
     if mismatches:
         raise ContractError(
             f"resumable metadata does not match requested run at {metadata_path}: {', '.join(mismatches)}"
         )
     return result
+
+
+def failed_result_row(
+    *,
+    config: dict[str, Any],
+    dataset: dict[str, Any],
+    system_key: str,
+    scenario: dict[str, Any],
+    streams: int,
+    duration_s: int,
+    repeat_index: int,
+    execution_context: ExecutionContext,
+    policy: str,
+    deadline_ms: float,
+    error: BaseException,
+) -> dict[str, Any]:
+    system_config = config["systems"].get(system_key, {})
+    adapter = system_config.get("adapter") or {}
+    distributed_enabled = bool(scenario.get("distributed", {}).get("enabled", False))
+    return {
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "system": system_key,
+        "scenario": scenario["name"],
+        "repeat": repeat_index,
+        "exit_code": 2,
+        "status": "failed",
+        "skip_reason": str(error).replace("\n", " ")[:500],
+        "streams": streams,
+        "duration_s": duration_s,
+        "scenario_variant": str(scenario.get("workload", {}).get("variant", "")).strip(),
+        "placement_policy": scenario.get("placement", {}).get("policy", ""),
+        "distributed": distributed_enabled,
+        "deployment_mode": execution_context.deployment_mode,
+        "host_topology": execution_context.host_topology,
+        "host_role": "distributed" if distributed_enabled else "local",
+        "detector": str(adapter.get("detector", "")),
+        "backend": str(adapter.get("backend", "")),
+        "policy": policy,
+        "dataset": dataset["name"],
+        "deadline_ms": float(deadline_ms),
+        "throughput_fps": 0.0,
+        "latency_p50_ms": 0.0,
+        "latency_p95_ms": 0.0,
+        "latency_p99_ms": 0.0,
+        "slo_violation_rate_percent": 0.0,
+        "frames": 0,
+        "telemetry_source": "",
+    }
 
 
 def run_one(
@@ -535,11 +681,13 @@ def run_one(
     execution_context: ExecutionContext,
     mode: str,
     policy: str,
+    deadline_ms: float,
     base_seed: int,
     dry_run_plan: bool,
+    directory_dataset_name: str | None = None,
+    directory_policy: str | None = None,
 ) -> dict[str, Any]:
     protocol = config["protocol"]
-    deadline_s = float(config["hardware_target"]["deadline_s"])
     scenario_key = scenario["name"]
     system_config = config["systems"][system_key]
     if execution_context.distributed_enabled and not bool(system_config.get("supports_distributed", False)):
@@ -562,13 +710,25 @@ def run_one(
             scenario_key,
             variant_name,
             f"streams{streams}",
+            dataset["name"],
+            policy,
+            deadline_slug(deadline_ms),
             system_key,
             f"rep{repeat_index:02d}",
         )
         if part
     )
 
-    scenario_dir = run_directory(run_root, scenario, streams, system_key, repeat_index)
+    scenario_dir = run_directory(
+        run_root,
+        scenario,
+        streams,
+        system_key,
+        repeat_index,
+        deadline_ms,
+        directory_dataset_name,
+        directory_policy,
+    )
     if not dry_run_plan:
         scenario_dir.mkdir(parents=True, exist_ok=True)
 
@@ -589,6 +749,7 @@ def run_one(
         min_objects=min_objects,
         max_objects=max_objects,
         output_dir=scenario_dir,
+        deadline_ms=deadline_ms,
     )
     video_layout_dir = str(Path(dataset["streams"][0]["absolute_path"]).parent)
     ql_heft_artifact = str(config.get("benchmark", {}).get("ql_heft_policy_artifact", ""))
@@ -616,6 +777,7 @@ def run_one(
         "QL_HEFT_POLICY_ARTIFACT": ql_heft_artifact,
         "SCHEDULER_POLICY": policy,
         "VIDEO_LAYOUT_DIR": video_layout_dir,
+        "DEADLINE_MS": str(float(deadline_ms)),
     }
     cmd = (
         f"{scenario_env_prefix(scenario, distributed=execution_context.distributed_enabled, extra=command_env)} "
@@ -635,6 +797,7 @@ def run_one(
             streams=streams,
             min_objects=min_objects,
             max_objects=max_objects,
+            deadline_ms=deadline_ms,
             transport=config.get("transport", {}),
             mode=mode,
             policy=policy,
@@ -673,6 +836,7 @@ def run_one(
             "backend": backend,
             "policy": policy,
             "dataset": dataset["name"],
+            "deadline_ms": float(deadline_ms),
             "throughput_fps": float("nan"),
             "latency_p50_ms": float("nan"),
             "latency_p95_ms": float("nan"),
@@ -748,6 +912,7 @@ def run_one(
             "backend": backend,
             "policy": policy,
             "dataset": dataset["name"],
+            "deadline_ms": float(deadline_ms),
             "throughput_fps": float("nan"),
             "latency_p50_ms": float("nan"),
             "latency_p95_ms": float("nan"),
@@ -827,27 +992,40 @@ def run_one(
             streams=streams,
             min_objects=min_objects,
             max_objects=max_objects,
-            deadline_s=deadline_s,
+            deadline_s=float(deadline_ms) / 1000.0,
             elapsed_s=sampled_s,
             run_id=run_id,
             detector=detector,
             backend=backend,
         )
-    canonicalize_frames_csv(
+    frames_df = canonicalize_frames_csv(
         frames_path,
         mode=mode,
         run_id=run_id,
         detector=detector,
         backend=backend,
     )
+    sidecar_summary: dict[str, Any] = {}
     if mode == "benchmark":
-        validate_frame_events(frame_events_path)
+        validate_system_metrics(metrics_path)
+        events_df = validate_frame_events(frame_events_path)
         validate_stage_trace_coverage(
             frames_path,
             frame_events_path,
             required_stages=[str(stage) for stage in scenario.get("pipeline", [])],
         )
-    summary = summarize_frames(frames_path, deadline_s=deadline_s, measurement_s=duration_s)
+        write_derived_native_sidecars(
+            scenario_dir,
+            frames=frames_df,
+            events=events_df,
+            dataset=dataset,
+            policy=policy,
+            deadline_ms=deadline_ms,
+        )
+        validate_required_sidecars(scenario_dir)
+        sidecar_summary = summarize_sidecars(scenario_dir)
+    summary = summarize_frames(frames_path, deadline_ms=deadline_ms, measurement_s=duration_s)
+    summary.update(sidecar_summary)
     result = {
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "system": system_key,
@@ -958,7 +1136,10 @@ def main() -> None:
     parser.add_argument("--hosts-config", type=Path, default=Path("configs/hosts.yaml"))
     parser.add_argument("--mode", choices=["smoke", "benchmark"], default="benchmark")
     parser.add_argument("--dataset", default="")
+    parser.add_argument("--datasets", nargs="*", default=None)
     parser.add_argument("--policy", default="static_hybrid")
+    parser.add_argument("--policies", nargs="*", default=None)
+    parser.add_argument("--deadline-modes", nargs="*", default=["all"])
     parser.add_argument(
         "--run-kind",
         choices=["auto", "local", "heterogeneous", "single-server-distributed", "distributed"],
@@ -970,6 +1151,7 @@ def main() -> None:
     parser.add_argument("--single-server-user", default="")
     parser.add_argument("--seed", type=int, default=None, help="Base seed shared across systems for a scenario/repeat")
     parser.add_argument("--dry-run-plan", action="store_true")
+    parser.add_argument("--continue-on-error", action="store_true")
     parser.add_argument(
         "--resume-run-root",
         type=Path,
@@ -988,9 +1170,8 @@ def main() -> None:
     if int(cfg.get("schema_version", 0)) != 2:
         raise ContractError("configs/experiments.yaml must use schema_version: 2")
     hosts_cfg = load_hosts_config(args.hosts_config)
-    policies = list(cfg.get("benchmark", {}).get("scheduler_policies") or [])
-    if args.policy not in policies:
-        raise ContractError(f"unknown scheduler policy '{args.policy}'; expected one of: {', '.join(policies)}")
+    requested_policies = args.policies if args.policies is not None else [args.policy]
+    policy_names = configured_policy_names(cfg, requested_policies)
     run_kind = normalize_run_kind(args.run_kind, local_only=args.local_only)
     if args.dry_run_plan and run_kind == "distributed" and not hosts_cfg.get("hosts"):
         hosts_example = args.hosts_config.with_name("hosts.example.yaml")
@@ -998,16 +1179,18 @@ def main() -> None:
             print(f"[warning] {args.hosts_config} is empty or missing; using {hosts_example} for dry-run planning")
             hosts_cfg = load_hosts_config(hosts_example)
     base_seed = int(args.seed if args.seed is not None else cfg.get("benchmark", {}).get("default_seed", 20260323))
-    default_datasets = cfg.get("benchmark", {}).get("default_dataset", {})
-    dataset_name = args.dataset or str(default_datasets.get(args.mode, ""))
-    dataset = load_dataset(
-        Path(cfg["benchmark"]["dataset_manifest"]),
-        dataset_name,
-        mode=args.mode,
-        project_root=Path.cwd(),
-        require_files=args.mode == "benchmark" and not args.dry_run_plan,
-        allow_placeholder_checksums=args.dry_run_plan,
-    )
+    dataset_names = configured_dataset_names(cfg, mode=args.mode, dataset=args.dataset, datasets=args.datasets)
+    datasets = [
+        load_dataset(
+            Path(cfg["benchmark"]["dataset_manifest"]),
+            dataset_name,
+            mode=args.mode,
+            project_root=Path.cwd(),
+            require_files=args.mode == "benchmark" and not args.dry_run_plan,
+            allow_placeholder_checksums=args.dry_run_plan,
+        )
+        for dataset_name in dataset_names
+    ]
 
     if args.warmup >= 0:
         cfg["protocol"]["warmup_s"] = int(args.warmup)
@@ -1019,6 +1202,8 @@ def main() -> None:
 
     repeats = int(cfg["protocol"]["repeats"] if args.repeats < 0 else args.repeats)
     measurement_s = int(cfg["protocol"]["measurement_s"] if args.measurement < 0 else args.measurement)
+    deadlines_ms = configured_deadlines_ms(cfg, mode=args.mode, requested=args.deadline_modes)
+    use_matrix_dirs = len(datasets) > 1 or len(policy_names) > 1
 
     run_root = args.resume_run_root or Path(args.output_root) / datetime.now().strftime("%Y%m%d_%H%M%S")
     if args.resume_run_root and not args.dry_run_plan and not run_root.is_dir():
@@ -1028,84 +1213,121 @@ def main() -> None:
 
     all_rows: list[dict[str, Any]] = []
 
-    for scenario in scenarios:
-        if scenario not in cfg["scenarios"]:
-            print(f"[error] unknown scenario: {scenario}")
-            sys.exit(2)
-        scenario_variants = expand_scenario(cfg, scenario)
+    for dataset in datasets:
+        for policy in policy_names:
+            for scenario in scenarios:
+                if scenario not in cfg["scenarios"]:
+                    print(f"[error] unknown scenario: {scenario}")
+                    sys.exit(2)
+                scenario_variants = expand_scenario(cfg, scenario)
 
-        for system in systems:
-            if system not in cfg["systems"]:
-                print(f"[error] unknown system: {system}")
-                sys.exit(2)
+                for system in systems:
+                    if system not in cfg["systems"]:
+                        print(f"[error] unknown system: {system}")
+                        sys.exit(2)
 
-            for variant in scenario_variants:
-                execution_context = resolve_execution_context(
-                    requested_run_kind=run_kind,
-                    scenario=variant["scenario"],
-                    hosts_config=hosts_cfg,
-                    hosts_config_path=args.hosts_config,
-                    single_server_host=args.single_server_host,
-                    single_server_user=args.single_server_user,
-                    single_server_port=args.single_server_port,
-                    project_root=Path.cwd(),
-                )
-                for rep in range(1, repeats + 1):
-                    duration_s = _scenario_duration_s(variant["scenario"], measurement_s)
-                    if args.resume_run_root and not args.dry_run_plan:
-                        metadata_path = run_directory(
-                            run_root,
-                            variant["scenario"],
-                            variant["streams"],
-                            system,
-                            rep,
-                        ) / "run_metadata.json"
-                        existing = load_resumable_result(
-                            metadata_path,
-                            system_key=system,
-                            scenario_key=variant["scenario"]["name"],
-                            repeat_index=rep,
-                            streams=variant["streams"],
-                            duration_s=duration_s,
-                            policy=args.policy,
-                            dataset_name=dataset["name"],
+                    for variant in scenario_variants:
+                        execution_context = resolve_execution_context(
+                            requested_run_kind=run_kind,
+                            scenario=variant["scenario"],
+                            hosts_config=hosts_cfg,
+                            hosts_config_path=args.hosts_config,
+                            single_server_host=args.single_server_host,
+                            single_server_user=args.single_server_user,
+                            single_server_port=args.single_server_port,
+                            project_root=Path.cwd(),
                         )
-                        if existing is not None:
-                            all_rows.append(existing)
-                            print(
-                                f"[resumed] scenario={scenario} streams={variant['streams']} "
-                                f"system={system} rep={rep}"
-                            )
-                            continue
-                    row = run_one(
-                        config=cfg,
-                        dataset=dataset,
-                        system_key=system,
-                        scenario=variant["scenario"],
-                        streams=variant["streams"],
-                        min_objects=variant["min_objects"],
-                        max_objects=variant["max_objects"],
-                        duration_s=duration_s,
-                        repeat_index=rep,
-                        run_root=run_root,
-                        execution_context=execution_context,
-                        mode=args.mode,
-                        policy=args.policy,
-                        base_seed=base_seed,
-                        dry_run_plan=args.dry_run_plan,
-                    )
-                    all_rows.append(row)
-                    if row["status"] == "skipped":
-                        print(
-                            f"[skipped] scenario={scenario} streams={variant['streams']} "
-                            f"system={system} rep={rep} reason={row['skip_reason']}"
-                        )
-                    else:
-                        print(
-                            f"[done] scenario={scenario} streams={variant['streams']} system={system} rep={rep} "
-                            f"fps={row['throughput_fps']} p95={row['latency_p95_ms']} "
-                            f"slo={row['slo_violation_rate_percent']}%"
-                        )
+                        for deadline_ms in deadlines_ms:
+                            for rep in range(1, repeats + 1):
+                                duration_s = _scenario_duration_s(variant["scenario"], measurement_s)
+                                directory_dataset_name = dataset["name"] if use_matrix_dirs else None
+                                directory_policy = policy if use_matrix_dirs else None
+                                if args.resume_run_root and not args.dry_run_plan:
+                                    metadata_path = run_directory(
+                                        run_root,
+                                        variant["scenario"],
+                                        variant["streams"],
+                                        system,
+                                        rep,
+                                        deadline_ms,
+                                        directory_dataset_name,
+                                        directory_policy,
+                                    ) / "run_metadata.json"
+                                    existing = load_resumable_result(
+                                        metadata_path,
+                                        system_key=system,
+                                        scenario_key=variant["scenario"]["name"],
+                                        repeat_index=rep,
+                                        streams=variant["streams"],
+                                        duration_s=duration_s,
+                                        policy=policy,
+                                        dataset_name=dataset["name"],
+                                        deadline_ms=deadline_ms,
+                                    )
+                                    if existing is not None:
+                                        all_rows.append(existing)
+                                        print(
+                                            f"[resumed] dataset={dataset['name']} policy={policy} scenario={scenario} "
+                                            f"streams={variant['streams']} deadline_ms={deadline_ms:g} "
+                                            f"system={system} rep={rep}"
+                                        )
+                                        continue
+                                try:
+                                    row = run_one(
+                                        config=cfg,
+                                        dataset=dataset,
+                                        system_key=system,
+                                        scenario=variant["scenario"],
+                                        streams=variant["streams"],
+                                        min_objects=variant["min_objects"],
+                                        max_objects=variant["max_objects"],
+                                        duration_s=duration_s,
+                                        repeat_index=rep,
+                                        run_root=run_root,
+                                        execution_context=execution_context,
+                                        mode=args.mode,
+                                        policy=policy,
+                                        deadline_ms=deadline_ms,
+                                        base_seed=base_seed,
+                                        dry_run_plan=args.dry_run_plan,
+                                        directory_dataset_name=directory_dataset_name,
+                                        directory_policy=directory_policy,
+                                    )
+                                except Exception as exc:
+                                    if not args.continue_on_error:
+                                        raise
+                                    row = failed_result_row(
+                                        config=cfg,
+                                        dataset=dataset,
+                                        system_key=system,
+                                        scenario=variant["scenario"],
+                                        streams=variant["streams"],
+                                        duration_s=duration_s,
+                                        repeat_index=rep,
+                                        execution_context=execution_context,
+                                        policy=policy,
+                                        deadline_ms=deadline_ms,
+                                        error=exc,
+                                    )
+                                    print(
+                                        f"[failed] dataset={dataset['name']} policy={policy} scenario={scenario} "
+                                        f"streams={variant['streams']} deadline_ms={deadline_ms:g} "
+                                        f"system={system} rep={rep} reason={row['skip_reason']}"
+                                    )
+                                all_rows.append(row)
+                                if row["status"] == "skipped":
+                                    print(
+                                        f"[skipped] dataset={dataset['name']} policy={policy} scenario={scenario} "
+                                        f"streams={variant['streams']} deadline_ms={deadline_ms:g} "
+                                        f"system={system} rep={rep} reason={row['skip_reason']}"
+                                    )
+                                else:
+                                    print(
+                                        f"[done] dataset={dataset['name']} policy={policy} scenario={scenario} "
+                                        f"streams={variant['streams']} deadline_ms={deadline_ms:g} system={system} "
+                                        f"rep={rep} fps={row['throughput_fps']} p95={row['latency_p95_ms']} "
+                                        f"slo={row['slo_violation_rate_percent']}%"
+                                    )
 
     if args.dry_run_plan:
         print("[result] dry run plan complete")
@@ -1133,13 +1355,27 @@ def main() -> None:
             "backend",
             "policy",
             "dataset",
+            "deadline_ms",
             "throughput_fps",
             "latency_p50_ms",
             "latency_p95_ms",
             "latency_p99_ms",
+            "latency_p999_ms",
+            "latency_max_ms",
             "slo_violation_rate_percent",
             "frames",
             "telemetry_source",
+            "decode_count",
+            "preprocess_count",
+            "cpu_time_ms",
+            "gpu_time_ms",
+            "h2d_bytes",
+            "d2h_bytes",
+            "nvdec_utilization_percent",
+            "vram_mb_max",
+            "policy_decision_count",
+            "dropped_frame_rate_percent",
+            "late_frame_rate_percent",
         ]
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()

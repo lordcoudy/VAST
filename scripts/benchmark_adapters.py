@@ -53,14 +53,20 @@ def select_scenarios(
 ) -> list[str]:
     if requested != ["all"]:
         return requested
-    scenarios = list(config["scenarios"].keys())
+    benchmark = config.get("benchmark", {})
+    configured = list(config["scenarios"].keys())
+    if mode == "benchmark":
+        scenario_names = [str(name) for name in (benchmark.get("active_scenarios") or benchmark.get("report_scenarios") or configured)]
+    else:
+        scenario_names = [str(name) for name in (benchmark.get("smoke_scenarios") or benchmark.get("active_scenarios") or configured)]
+    scenario_names = [name for name in scenario_names if name in config["scenarios"]]
     if mode != "benchmark" or run_kind == "auto":
-        return scenarios
+        return scenario_names
     distributed = run_kind in {"single-server-distributed", "distributed"}
     return [
         name
-        for name, raw in config["scenarios"].items()
-        if bool((raw.get("distributed") or {}).get("enabled")) == distributed
+        for name in scenario_names
+        if bool((config["scenarios"][name].get("distributed") or {}).get("enabled")) == distributed
     ]
 
 

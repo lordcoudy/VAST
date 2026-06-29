@@ -395,14 +395,38 @@ class AdaptivePipeline {
     return split_csv(raw);
   }
 
+  static bool is_branch_suffix(const std::string& suffix) {
+    return suffix == "a" || suffix == "b" || suffix == "primary" ||
+           suffix == "secondary" || suffix == "left" || suffix == "right";
+  }
+
+  static std::string stage_base_name(const std::string& name) {
+    const auto pos = name.rfind('_');
+    if (pos == std::string::npos || pos == 0 || pos + 1 >= name.size()) {
+      return name;
+    }
+    const std::string base = name.substr(0, pos);
+    const std::string suffix = name.substr(pos + 1);
+    if (!is_branch_suffix(suffix)) {
+      return name;
+    }
+    if (base == "decode" || base == "preprocess" || base == "detect" || base == "track" ||
+        base == "classify" || base == "aggregate" || base == "record" || base == "visualize") {
+      return base;
+    }
+    return name;
+  }
+
   static StageSpec stage_spec_for_name(const std::string& name) {
-    if (name == "decode") return {"decode", Resource::Gpu, 0.95f, 1.05f, 0.08f};
-    if (name == "detect") return {"detect", Resource::Gpu, 1.05f, 1.35f, 0.22f};
-    if (name == "track") return {"track", Resource::Cpu, 1.25f, 0.85f, 0.16f};
-    if (name == "classify") return {"classify", Resource::Cpu, 1.05f, 0.70f, 0.11f};
-    if (name == "aggregate") return {"aggregate", Resource::Cpu, 0.88f, 0.62f, 0.05f};
-    if (name == "record") return {"record", Resource::Cpu, 0.82f, 0.55f, 0.04f};
-    if (name == "visualize") return {"visualize", Resource::Cpu, 0.90f, 0.65f, 0.06f};
+    const std::string base = stage_base_name(name);
+    if (base == "decode") return {name, Resource::Gpu, 0.95f, 1.05f, 0.08f};
+    if (base == "preprocess") return {name, Resource::Cpu, 1.12f, 0.90f, 0.12f};
+    if (base == "detect") return {name, Resource::Gpu, 1.05f, 1.35f, 0.22f};
+    if (base == "track") return {name, Resource::Cpu, 1.25f, 0.85f, 0.16f};
+    if (base == "classify") return {name, Resource::Cpu, 1.05f, 0.70f, 0.11f};
+    if (base == "aggregate") return {name, Resource::Cpu, 0.88f, 0.62f, 0.05f};
+    if (base == "record") return {name, Resource::Cpu, 0.82f, 0.55f, 0.04f};
+    if (base == "visualize") return {name, Resource::Cpu, 0.90f, 0.65f, 0.06f};
     return {name, Resource::Cpu, 1.00f, 0.70f, 0.05f};
   }
 
@@ -504,6 +528,52 @@ class AdaptivePipeline {
       const double gpu_cost = static_cast<double>(gpu_backlog + 1) * stage.gpu_gain;
       return gpu_cost <= cpu_cost ? Resource::Gpu : Resource::Cpu;
     }
+    if (args_.policy == "deadline_aware_heft") {
+      const auto now = std::chrono::steady_clock::now();
+      const double elapsed_ms = std::chrono::duration<double, std::milli>(now - task.created_at).count();
+      const double remaining_ms = std::max(0.1, args_.deadline_ms - elapsed_ms);
+      const double deadline_pressure = remaining_ms < args_.deadline_ms * 0.35 ? 0.72 : 1.0;
+      const double cpu_cost = static_cast<double>(cpu_backlog + 1) * stage.cpu_gain;
+      const double gpu_cost = static_cast<double>(gpu_backlog + 1) * stage.gpu_gain * deadline_pressure;
+      return gpu_cost <= cpu_cost ? Resource::Gpu : Resource::Cpu;
+    }
+    if (args_.policy == "queue_aware_edf") {
+      const auto now = std::chrono::steady_clock::now();
+      const double elapsed_ms = std::chrono::duration<double, std::milli>(now - task.created_at).count();
+      const double slack_ms = std::max(0.1, args_.deadline_ms - elapsed_ms);
+      const double cpu_cost = (static_cast<double>(cpu_backlog) + 1.0) * stage.cpu_gain / slack_ms;
+      const double gpu_cost = (static_cast<double>(gpu_backlog) + 1.0) * stage.gpu_gain / slack_ms;
+      return gpu_cost <= cpu_cost ? Resource::Gpu : Resource::Cpu;
+    }
+    if (args_.policy == "adaptive_weights") {
+      const double cpu_cost = static_cast<double>(cpu_backlog + 1) * stage.cpu_gain * cpu_queue_weight_.load();
+      double gpu_cost = static_cast<double>(gpu_backlog + 1) * stage.gpu_gain * gpu_queue_weight_.load();
+      if (task.objects >= heavy_object_threshold_) {
+        gpu_cost /= heavy_gpu_bonus_.load();
+      }
+      return gpu_cost <= cpu_cost ? Resource::Gpu : Resource::Cpu;
+    }
+    if (args_.policy == "no_queues") {
+      return stage.gpu_gain <= stage.cpu_gain ? Resource::Gpu : Resource::Cpu;
+    }
+    if (args_.policy == "no_transfer_cost") {
+      const double cpu_cost = static_cast<double>(cpu_backlog + 1) * stage.cpu_gain;
+      const double gpu_cost = static_cast<double>(gpu_backlog + 1) * stage.gpu_gain;
+      return gpu_cost <= cpu_cost ? Resource::Gpu : Resource::Cpu;
+    }
+    if (args_.policy == "no_deadline_penalty") {
+      const double cpu_cost = static_cast<double>(cpu_backlog + 1) * stage.cpu_gain;
+      const double gpu_cost = static_cast<double>(gpu_backlog + 1) * stage.gpu_gain;
+      return gpu_cost <= cpu_cost ? Resource::Gpu : Resource::Cpu;
+    }
+    if (args_.policy == "no_adaptive_weights") {
+      const double cpu_cost = static_cast<double>(cpu_backlog + 1) * stage.cpu_gain;
+      double gpu_cost = static_cast<double>(gpu_backlog + 1) * stage.gpu_gain;
+      if (task.objects >= heavy_object_threshold_) {
+        gpu_cost /= heavy_gpu_bonus_.load();
+      }
+      return gpu_cost <= cpu_cost ? Resource::Gpu : Resource::Cpu;
+    }
     if (args_.policy == "ql_heft_frozen" || args_.policy == "ql_heft_online") {
       const double cpu_cost = static_cast<double>(cpu_backlog + 1) * stage.cpu_gain * cpu_queue_weight_.load();
       double gpu_cost = static_cast<double>(gpu_backlog + 1) * stage.gpu_gain * gpu_queue_weight_.load();
@@ -594,7 +664,7 @@ class AdaptivePipeline {
       std::lock_guard<std::mutex> lock(rows_mutex_);
       rows_.push_back(row);
     }
-    if (args_.policy == "ql_heft_online") {
+    if (args_.policy == "ql_heft_online" || args_.policy == "adaptive_weights") {
       const double direction = latency_ms > args_.deadline_ms ? -0.002 : 0.0002;
       gpu_queue_weight_.store(std::max(0.5, std::min(1.5, gpu_queue_weight_.load() + direction)));
     }

@@ -149,6 +149,7 @@ def build_distributed_plan(
     streams: int,
     min_objects: int,
     max_objects: int,
+    deadline_ms: float = 100.0,
     transport: dict[str, Any] | None = None,
     mode: str = "smoke",
     policy: str = "static_hybrid",
@@ -184,6 +185,7 @@ def build_distributed_plan(
             min_objects=min_objects,
             max_objects=max_objects,
             output_dir=str(remote_output),
+            deadline_ms=deadline_ms,
         )
         env = {
             "BENCHMARK_MODE": mode,
@@ -198,6 +200,7 @@ def build_distributed_plan(
             "EXPERIMENT_SCENARIO_JSON": json.dumps(scenario, separators=(",", ":")),
             "MIN_OBJECTS": str(min_objects),
             "MAX_OBJECTS": str(max_objects),
+            "DEADLINE_MS": str(float(deadline_ms)),
         }
         env.update({str(k): str(v) for k, v in (extra_env or {}).items()})
         env["EXPERIMENT_DISTRIBUTED"] = "1"

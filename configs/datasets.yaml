@@ -1,35 +1,361 @@
 schema_version: 1
-
 datasets:
   smoke_testsrc:
     kind: synthetic
-    description: Generated 1080p testsrc layout for installation and smoke checks only.
+    description: Generated 1080p testsrc layout for installation and smoke checks
+      only.
     publishable: false
     fps: 30
     streams:
-      - path: data/videos/stream01.mp4
-      - path: data/videos/stream02.mp4
-      - path: data/videos/stream03.mp4
-      - path: data/videos/stream04.mp4
-      - path: data/videos/stream05.mp4
-      - path: data/videos/stream06.mp4
-
+    - path: data/videos/stream01.mp4
+    - path: data/videos/stream02.mp4
+    - path: data/videos/stream03.mp4
+    - path: data/videos/stream04.mp4
+    - path: data/videos/stream05.mp4
+    - path: data/videos/stream06.mp4
+  kpp_real_avi:
+    kind: real_avi
+    description: Source real checkpoint AVI captures used to derive publishable H.264/H.265
+      codec datasets.
+    publishable: true
+    fps_policy: pts_frame_count
+    annotations: &id001
+      path: data/videos/kpp/Timestamps.txt
+      sha256: 39f64f2c35a9e37ff2a19c69f3d3e78e964b5d3afe24b2f3329c080183d0dbd6
+      use: underbody_foreign_object_events_and_realism_metadata_only
+      accuracy_ground_truth: false
+    streams:
+    - stream_id: 0
+      path: data/videos/kpp/2.avi
+      sha256: 929fb1f999438764dde2089a5a32ff3a9f546ae40f1314d136e24d328fe09e31
+      camera_role: plate_number
+      source_id: kpp_plate_avi
+      container: avi
+      codec_name: mpeg4
+      width: 1920
+      height: 1080
+      r_frame_rate: 30/1
+      avg_frame_rate: 600/1
+      fps_policy: pts_frame_count
+      duration_s: 91.198333
+      frame_count: 54719
+    - stream_id: 1
+      path: data/videos/kpp/2.avi
+      sha256: 929fb1f999438764dde2089a5a32ff3a9f546ae40f1314d136e24d328fe09e31
+      camera_role: plate_number
+      source_id: kpp_plate_avi
+      container: avi
+      codec_name: mpeg4
+      width: 1920
+      height: 1080
+      r_frame_rate: 30/1
+      avg_frame_rate: 600/1
+      fps_policy: pts_frame_count
+      duration_s: 91.198333
+      frame_count: 54719
+    - stream_id: 2
+      path: data/videos/kpp/2.avi
+      sha256: 929fb1f999438764dde2089a5a32ff3a9f546ae40f1314d136e24d328fe09e31
+      camera_role: vehicle_type
+      source_id: kpp_plate_avi
+      container: avi
+      codec_name: mpeg4
+      width: 1920
+      height: 1080
+      r_frame_rate: 30/1
+      avg_frame_rate: 600/1
+      fps_policy: pts_frame_count
+      duration_s: 91.198333
+      frame_count: 54719
+    - stream_id: 3
+      path: data/videos/kpp/2.avi
+      sha256: 929fb1f999438764dde2089a5a32ff3a9f546ae40f1314d136e24d328fe09e31
+      camera_role: damage
+      source_id: kpp_plate_avi
+      container: avi
+      codec_name: mpeg4
+      width: 1920
+      height: 1080
+      r_frame_rate: 30/1
+      avg_frame_rate: 600/1
+      fps_policy: pts_frame_count
+      duration_s: 91.198333
+      frame_count: 54719
+    - stream_id: 4
+      path: data/videos/kpp/2.avi
+      sha256: 929fb1f999438764dde2089a5a32ff3a9f546ae40f1314d136e24d328fe09e31
+      camera_role: damage
+      source_id: kpp_plate_avi
+      container: avi
+      codec_name: mpeg4
+      width: 1920
+      height: 1080
+      r_frame_rate: 30/1
+      avg_frame_rate: 600/1
+      fps_policy: pts_frame_count
+      duration_s: 91.198333
+      frame_count: 54719
+    - stream_id: 5
+      path: data/videos/kpp/1.avi
+      sha256: c49055bcee58b185c71f7380ed2f6cd8c3b41f9062aacb158f79432fb31f7b45
+      camera_role: foreign_object
+      source_id: kpp_underbody_avi
+      container: avi
+      codec_name: mpeg4
+      width: 1700
+      height: 236
+      r_frame_rate: 600/1
+      avg_frame_rate: 600/1
+      fps_policy: constant
+      duration_s: 135.288333
+      frame_count: 81173
+  kpp_real_h264:
+    kind: real_codec_transcode
+    source_dataset: kpp_real_avi
+    description: Real checkpoint captures transcoded to H.264/AVC MP4 at 600 FPS CFR
+      for publishable KPP codec benchmarks.
+    publishable: true
+    codec_variant: h264
+    fps_policy: cfr_600_from_source_pts
+    transcode:
+      source_paths:
+      - data/videos/kpp/1.avi
+      - data/videos/kpp/2.avi
+      ffmpeg_filter: fps=600
+      encoder: libx264
+      preset: veryfast
+      crf: 23
+      pix_fmt: yuv420p
+    annotations: *id001
+    streams:
+    - stream_id: 0
+      path: data/videos/kpp/h264/2.mp4
+      sha256: 30ddaa1136dbfc9ab9e01e00c46482a644493ed7614def7c56f278aa02d829c1
+      camera_role: plate_number
+      source_id: kpp_plate_avi
+      source_path: data/videos/kpp/2.avi
+      container: mp4
+      codec_name: h264
+      codec_profile: High
+      width: 1920
+      height: 1080
+      r_frame_rate: 600/1
+      avg_frame_rate: 600/1
+      fps_policy: cfr_600_from_source_pts
+      duration_s: 91.198333
+      frame_count: 54719
+    - stream_id: 1
+      path: data/videos/kpp/h264/2.mp4
+      sha256: 30ddaa1136dbfc9ab9e01e00c46482a644493ed7614def7c56f278aa02d829c1
+      camera_role: plate_number
+      source_id: kpp_plate_avi
+      source_path: data/videos/kpp/2.avi
+      container: mp4
+      codec_name: h264
+      codec_profile: High
+      width: 1920
+      height: 1080
+      r_frame_rate: 600/1
+      avg_frame_rate: 600/1
+      fps_policy: cfr_600_from_source_pts
+      duration_s: 91.198333
+      frame_count: 54719
+    - stream_id: 2
+      path: data/videos/kpp/h264/2.mp4
+      sha256: 30ddaa1136dbfc9ab9e01e00c46482a644493ed7614def7c56f278aa02d829c1
+      camera_role: vehicle_type
+      source_id: kpp_plate_avi
+      source_path: data/videos/kpp/2.avi
+      container: mp4
+      codec_name: h264
+      codec_profile: High
+      width: 1920
+      height: 1080
+      r_frame_rate: 600/1
+      avg_frame_rate: 600/1
+      fps_policy: cfr_600_from_source_pts
+      duration_s: 91.198333
+      frame_count: 54719
+    - stream_id: 3
+      path: data/videos/kpp/h264/2.mp4
+      sha256: 30ddaa1136dbfc9ab9e01e00c46482a644493ed7614def7c56f278aa02d829c1
+      camera_role: damage
+      source_id: kpp_plate_avi
+      source_path: data/videos/kpp/2.avi
+      container: mp4
+      codec_name: h264
+      codec_profile: High
+      width: 1920
+      height: 1080
+      r_frame_rate: 600/1
+      avg_frame_rate: 600/1
+      fps_policy: cfr_600_from_source_pts
+      duration_s: 91.198333
+      frame_count: 54719
+    - stream_id: 4
+      path: data/videos/kpp/h264/2.mp4
+      sha256: 30ddaa1136dbfc9ab9e01e00c46482a644493ed7614def7c56f278aa02d829c1
+      camera_role: damage
+      source_id: kpp_plate_avi
+      source_path: data/videos/kpp/2.avi
+      container: mp4
+      codec_name: h264
+      codec_profile: High
+      width: 1920
+      height: 1080
+      r_frame_rate: 600/1
+      avg_frame_rate: 600/1
+      fps_policy: cfr_600_from_source_pts
+      duration_s: 91.198333
+      frame_count: 54719
+    - stream_id: 5
+      path: data/videos/kpp/h264/1.mp4
+      sha256: 5dc0f6a1b0fa0c3e9d015481b3822e9a8d7363b20859c0755348675c0bf9f4b7
+      camera_role: foreign_object
+      source_id: kpp_underbody_avi
+      source_path: data/videos/kpp/1.avi
+      container: mp4
+      codec_name: h264
+      codec_profile: High
+      width: 1700
+      height: 236
+      r_frame_rate: 600/1
+      avg_frame_rate: 600/1
+      fps_policy: cfr_600_from_source_pts
+      duration_s: 135.288333
+      frame_count: 81173
+  kpp_real_h265:
+    kind: real_codec_transcode
+    source_dataset: kpp_real_avi
+    description: Real checkpoint captures transcoded to H.265/HEVC MP4 at 600 FPS
+      CFR for publishable KPP codec benchmarks.
+    publishable: true
+    codec_variant: h265
+    fps_policy: cfr_600_from_source_pts
+    transcode:
+      source_paths:
+      - data/videos/kpp/1.avi
+      - data/videos/kpp/2.avi
+      ffmpeg_filter: fps=600
+      encoder: libx265
+      preset: ultrafast
+      crf: 30
+      pix_fmt: yuv420p
+    annotations: *id001
+    streams:
+    - stream_id: 0
+      path: data/videos/kpp/h265/2.mp4
+      sha256: 730be15ef7c22c489f57b6567aec2d02bf86d6c46d90f683328059e4aa1ae965
+      camera_role: plate_number
+      source_id: kpp_plate_avi
+      source_path: data/videos/kpp/2.avi
+      container: mp4
+      codec_name: hevc
+      codec_profile: Main
+      width: 1920
+      height: 1080
+      r_frame_rate: 600/1
+      avg_frame_rate: 600/1
+      fps_policy: cfr_600_from_source_pts
+      duration_s: 91.198333
+      frame_count: 54719
+    - stream_id: 1
+      path: data/videos/kpp/h265/2.mp4
+      sha256: 730be15ef7c22c489f57b6567aec2d02bf86d6c46d90f683328059e4aa1ae965
+      camera_role: plate_number
+      source_id: kpp_plate_avi
+      source_path: data/videos/kpp/2.avi
+      container: mp4
+      codec_name: hevc
+      codec_profile: Main
+      width: 1920
+      height: 1080
+      r_frame_rate: 600/1
+      avg_frame_rate: 600/1
+      fps_policy: cfr_600_from_source_pts
+      duration_s: 91.198333
+      frame_count: 54719
+    - stream_id: 2
+      path: data/videos/kpp/h265/2.mp4
+      sha256: 730be15ef7c22c489f57b6567aec2d02bf86d6c46d90f683328059e4aa1ae965
+      camera_role: vehicle_type
+      source_id: kpp_plate_avi
+      source_path: data/videos/kpp/2.avi
+      container: mp4
+      codec_name: hevc
+      codec_profile: Main
+      width: 1920
+      height: 1080
+      r_frame_rate: 600/1
+      avg_frame_rate: 600/1
+      fps_policy: cfr_600_from_source_pts
+      duration_s: 91.198333
+      frame_count: 54719
+    - stream_id: 3
+      path: data/videos/kpp/h265/2.mp4
+      sha256: 730be15ef7c22c489f57b6567aec2d02bf86d6c46d90f683328059e4aa1ae965
+      camera_role: damage
+      source_id: kpp_plate_avi
+      source_path: data/videos/kpp/2.avi
+      container: mp4
+      codec_name: hevc
+      codec_profile: Main
+      width: 1920
+      height: 1080
+      r_frame_rate: 600/1
+      avg_frame_rate: 600/1
+      fps_policy: cfr_600_from_source_pts
+      duration_s: 91.198333
+      frame_count: 54719
+    - stream_id: 4
+      path: data/videos/kpp/h265/2.mp4
+      sha256: 730be15ef7c22c489f57b6567aec2d02bf86d6c46d90f683328059e4aa1ae965
+      camera_role: damage
+      source_id: kpp_plate_avi
+      source_path: data/videos/kpp/2.avi
+      container: mp4
+      codec_name: hevc
+      codec_profile: Main
+      width: 1920
+      height: 1080
+      r_frame_rate: 600/1
+      avg_frame_rate: 600/1
+      fps_policy: cfr_600_from_source_pts
+      duration_s: 91.198333
+      frame_count: 54719
+    - stream_id: 5
+      path: data/videos/kpp/h265/1.mp4
+      sha256: 1f7b75884945dba4e594dacea3ca9c93a7b293378fcdb3d74e0f39f6a04d4beb
+      camera_role: foreign_object
+      source_id: kpp_underbody_avi
+      source_path: data/videos/kpp/1.avi
+      container: mp4
+      codec_name: hevc
+      codec_profile: Main
+      width: 1700
+      height: 236
+      r_frame_rate: 600/1
+      avg_frame_rate: 600/1
+      fps_policy: cfr_600_from_source_pts
+      duration_s: 135.288333
+      frame_count: 81173
   mot17_uadetrac_public:
     kind: public_clips
-    description: Normalized 1080p benchmark clips prepared from MOT17 and UA-DETRAC.
-    publishable: true
+    description: Legacy normalized MOT17/UA-DETRAC clips retained for manual compatibility,
+      not used by benchmark defaults.
+    publishable: false
     fps: 30
     preparation: docs/DATASETS.md
     streams:
-      - path: data/benchmark/mot17_02.mp4
-        sha256: 220d4fb5adbaa8b117f40c5a2c47b13164d84a7d05b972c42668e036f1173617
-      - path: data/benchmark/mot17_04.mp4
-        sha256: 454518e0f35958a4237d63d868dfc960f59fe10b7af1929aebecc4a23292dcdd
-      - path: data/benchmark/mot17_09.mp4
-        sha256: 822e765e9453aa6f28f3f83b230318c6ff98f450e0152c74736336ff51c87814
-      - path: data/benchmark/uadetrac_mvi_20011.mp4
-        sha256: bb5feac112eb21e052619790596529b6d89df9294ba2541de00f2022a99c54ea
-      - path: data/benchmark/uadetrac_mvi_40152.mp4
-        sha256: 7f3d68ab27158b85ad2bcc4ff845afd2121b50013c3a39fe916f7cfa0c48f225
-      - path: data/benchmark/uadetrac_mvi_40714.mp4
-        sha256: 909bf3e4c72120789d13af2d5c1bb395542b22ab01dd98bc023c4ff712adeefd
+    - path: data/benchmark/mot17_02.mp4
+      sha256: 220d4fb5adbaa8b117f40c5a2c47b13164d84a7d05b972c42668e036f1173617
+    - path: data/benchmark/mot17_04.mp4
+      sha256: 454518e0f35958a4237d63d868dfc960f59fe10b7af1929aebecc4a23292dcdd
+    - path: data/benchmark/mot17_09.mp4
+      sha256: 822e765e9453aa6f28f3f83b230318c6ff98f450e0152c74736336ff51c87814
+    - path: data/benchmark/uadetrac_mvi_20011.mp4
+      sha256: bb5feac112eb21e052619790596529b6d89df9294ba2541de00f2022a99c54ea
+    - path: data/benchmark/uadetrac_mvi_40152.mp4
+      sha256: 7f3d68ab27158b85ad2bcc4ff845afd2121b50013c3a39fe916f7cfa0c48f225
+    - path: data/benchmark/uadetrac_mvi_40714.mp4
+      sha256: 909bf3e4c72120789d13af2d5c1bb395542b22ab01dd98bc023c4ff712adeefd

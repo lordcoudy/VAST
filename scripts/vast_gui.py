@@ -155,8 +155,9 @@ def validate_experiments_config(cfg: dict[str, Any]) -> None:
             if port < 1 or port > 65535:
                 raise GuiError(f"transport.role_ports.{key} must be a valid TCP/UDP port")
 
-    policies = cfg.get("benchmark", {}).get("scheduler_policies") or []
-    if not isinstance(policies, list) or not policies:
+    benchmark = cfg.get("benchmark", {})
+    policies = list(benchmark.get("scheduler_policies") or []) + list(benchmark.get("scheduler_ablations") or [])
+    if not policies:
         raise GuiError("benchmark.scheduler_policies must be a non-empty list")
 
     for name, raw in cfg["scenarios"].items():
@@ -369,12 +370,26 @@ def normalize_summary(df: pd.DataFrame) -> pd.DataFrame:
         "backend": "legacy",
         "policy": "legacy",
         "dataset": "legacy",
+        "deadline_ms": float("nan"),
         "throughput_fps": float("nan"),
         "latency_p50_ms": float("nan"),
         "latency_p95_ms": float("nan"),
         "latency_p99_ms": float("nan"),
+        "latency_p999_ms": float("nan"),
+        "latency_max_ms": float("nan"),
         "slo_violation_rate_percent": float("nan"),
         "frames": 0,
+        "decode_count": 0,
+        "preprocess_count": 0,
+        "cpu_time_ms": float("nan"),
+        "gpu_time_ms": float("nan"),
+        "h2d_bytes": 0,
+        "d2h_bytes": 0,
+        "nvdec_utilization_percent": float("nan"),
+        "vram_mb_max": float("nan"),
+        "policy_decision_count": 0,
+        "dropped_frame_rate_percent": float("nan"),
+        "late_frame_rate_percent": float("nan"),
         "telemetry_source": "legacy",
     }
     for column, default in defaults.items():
@@ -639,11 +654,19 @@ class VastGuiApp:
                 "scenarios": [
                     {
                         "key": key,
-                        "description": value.get("description", ""),
-                        "distributed": bool((value.get("distributed") or {}).get("enabled")),
-                        "benchmark_status": value.get("benchmark_status", ""),
+                        "description": scenarios[key].get("description", ""),
+                        "distributed": bool((scenarios[key].get("distributed") or {}).get("enabled")),
+                        "benchmark_status": scenarios[key].get("benchmark_status", ""),
                     }
-                    for key, value in scenarios.items()
+                    for key in [
+                        name
+                        for name in dict.fromkeys(
+                            list(benchmark.get("active_scenarios") or [])
+                            + list(benchmark.get("smoke_scenarios") or [])
+                            + list(benchmark.get("report_scenarios") or [])
+                        )
+                        if name in scenarios
+                    ]
                 ],
                 "datasets": [
                     {
@@ -655,7 +678,7 @@ class VastGuiApp:
                     }
                     for key, value in datasets_map.items()
                 ],
-                "policies": list(benchmark.get("scheduler_policies") or []),
+                "policies": list(dict.fromkeys(list(benchmark.get("scheduler_policies") or []) + list(benchmark.get("scheduler_ablations") or []))),
                 "modes": ["benchmark", "smoke"],
                 "run_kinds": ["auto", "heterogeneous", "single-server-distributed", "distributed"],
             },

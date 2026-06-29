@@ -17,6 +17,7 @@
 #include <string>
 #include <thread>
 #include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 namespace fs = std::filesystem;
@@ -45,6 +46,8 @@ struct Args {
   int duration_s = 1;
   int min_objects = 0;
   int max_objects = 20;
+  double deadline_ms = 100.0;
+  std::string policy = "static_hybrid";
 };
 
 struct Trace {
@@ -127,6 +130,7 @@ class NativeProbeRuntime {
   std::ofstream frames_;
   std::mutex mutex_;
   std::mutex output_mutex_;
+  std::unordered_set<std::uint64_t> written_frame_keys_;
   bool failed_ = false;
 
   static std::uint64_t now_ms() {
@@ -222,6 +226,50 @@ class NativeProbeRuntime {
     return stage + "_probe" + std::to_string(stream_id);
   }
 
+  static bool is_branch_suffix(const std::string& suffix) {
+    return suffix == "a" || suffix == "b" || suffix == "primary" ||
+           suffix == "secondary" || suffix == "left" || suffix == "right";
+  }
+
+  static bool is_stage_base_name(const std::string& value) {
+    return value == "decode" || value == "preprocess" || value == "detect" || value == "track" ||
+           value == "classify" || value == "aggregate" || value == "record" || value == "visualize";
+  }
+
+  static std::string stage_base_name(const std::string& stage) {
+    const auto first = stage.find('_');
+    if (first != std::string::npos) {
+      const std::string prefix = stage.substr(0, first);
+      if (is_stage_base_name(prefix)) {
+        return prefix;
+      }
+    }
+    const auto pos = stage.rfind('_');
+    if (pos == std::string::npos || pos == 0 || pos + 1 >= stage.size()) {
+      return stage;
+    }
+    const std::string base = stage.substr(0, pos);
+    const std::string suffix = stage.substr(pos + 1);
+    if (is_branch_suffix(suffix) && is_stage_base_name(base)) {
+      return base;
+    }
+    return stage;
+  }
+
+  std::size_t first_stage_index_with_base(const std::string& base) const {
+    for (std::size_t index = 0; index < stage_names_.size(); ++index) {
+      if (stage_base_name(stage_names_[index]) == base) {
+        return index;
+      }
+    }
+    return stage_names_.size();
+  }
+
+  std::string first_stage_with_base(const std::string& base) const {
+    const std::size_t index = first_stage_index_with_base(base);
+    return index < stage_names_.size() ? stage_names_[index] : base;
+  }
+
   static std::vector<std::string> parse_json_string_array(const std::string& raw) {
     std::vector<std::string> values;
     std::string current;
@@ -288,6 +336,10 @@ class NativeProbeRuntime {
     return args_.run_id + ":" + std::to_string(trace.stream_id) + ":" + std::to_string(trace.frame_id);
   }
 
+  static std::uint64_t frame_key(const Trace& trace) {
+    return (static_cast<std::uint64_t>(trace.stream_id) << 32) | static_cast<std::uint64_t>(trace.frame_id);
+  }
+
   void open_outputs() {
     fs::create_directories(args_.output_dir);
     events_.open((fs::path(args_.output_dir) / "frame_events.csv").string(), std::ios::out | std::ios::trunc);
@@ -318,6 +370,26 @@ class NativeProbeRuntime {
     events_.flush();
   }
 
+  void write_stage_events(const Trace& trace, const std::vector<std::string>& stages, std::uint64_t start_ms, std::uint64_t end_ms) {
+    if (stages.empty()) {
+      return;
+    }
+    if (end_ms < start_ms) {
+      end_ms = start_ms;
+    }
+    const std::uint64_t span = std::max<std::uint64_t>(1, end_ms - start_ms);
+    const std::uint64_t step = std::max<std::uint64_t>(1, span / static_cast<std::uint64_t>(stages.size()));
+    std::uint64_t cursor = start_ms;
+    for (std::size_t index = 0; index < stages.size(); ++index) {
+      std::uint64_t stage_end = index + 1 == stages.size() ? end_ms : std::min<std::uint64_t>(end_ms, cursor + step);
+      if (stage_end < cursor) {
+        stage_end = cursor;
+      }
+      write_event(trace, stages[index], cursor, stage_end);
+      cursor = stage_end;
+    }
+  }
+
   void start_measurement_timer_if_needed() {
     bool expected = false;
     if (!measurement_started_.compare_exchange_strong(expected, true)) {
@@ -339,6 +411,9 @@ class NativeProbeRuntime {
         << trace.frame_id << "," << ingress << "," << egress_ms << "," << latency << "," << object_count()
         << "," << args_.detector << "," << args_.backend << ",native\n";
     std::lock_guard<std::mutex> lock(output_mutex_);
+    if (!written_frame_keys_.insert(frame_key(trace)).second) {
+      return;
+    }
     frames_ << row.str();
     frames_.flush();
   }
@@ -412,7 +487,7 @@ class NativeProbeRuntime {
 
       if (completed_frame) {
         const std::uint64_t end = now_ms();
-        self->write_event(trace, "decode", trace.ingress_ms, end);
+        self->write_stage_events(trace, self->stage_names_, trace.ingress_ms, end);
       }
     };
 
@@ -475,9 +550,8 @@ class NativeProbeRuntime {
         }
       }
       if (write_aggregate) {
-        for (const std::string& stage : self->stage_names_) {
-          self->write_event(trace, stage, end > 1 ? end - 1 : end, end);
-        }
+        const std::uint64_t start = end > self->stage_names_.size() ? end - self->stage_names_.size() : end;
+        self->write_stage_events(trace, self->stage_names_, start, end);
         self->write_frame(trace, end);
       }
     };
@@ -538,9 +612,8 @@ class NativeProbeRuntime {
 
       if (completed_frame) {
         const std::uint64_t end = now_ms();
-        for (const std::string& stage : self->stage_names_) {
-          self->write_event(trace, stage, end > 1 ? end - 1 : end, end);
-        }
+        const std::uint64_t start = end > self->stage_names_.size() ? end - self->stage_names_.size() : end;
+        self->write_stage_events(trace, self->stage_names_, start, end);
       }
     };
 
@@ -582,7 +655,8 @@ class NativeProbeRuntime {
       if (pts != GST_CLOCK_TIME_NONE) {
         state.local_traces_by_pts[pts] = trace;
       }
-      self->write_event(trace, "decode", trace.ingress_ms, end);
+      state.traces.push_back(trace);
+      self->write_event(trace, ctx->stage, trace.ingress_ms, end);
       if (ctx->final_stage) {
         self->write_frame(trace, end);
       }
@@ -590,15 +664,28 @@ class NativeProbeRuntime {
     }
 
     const auto trace_it = state.local_traces_by_pts.find(pts);
-    if (trace_it == state.local_traces_by_pts.end()) {
-      return GST_PAD_PROBE_OK;
+    bool matched_by_pts = trace_it != state.local_traces_by_pts.end();
+    if (matched_by_pts) {
+      trace = trace_it->second;
+    } else {
+      if (state.traces.empty()) {
+        return GST_PAD_PROBE_OK;
+      }
+      trace = state.traces.front();
+      if (pts != GST_CLOCK_TIME_NONE) {
+        state.local_traces_by_pts[pts] = trace;
+        matched_by_pts = true;
+      }
     }
-    trace = trace_it->second;
-    const std::string stage = ctx->kind == "local-detect" ? "detect" : ctx->stage;
-    self->write_event(trace, stage, end > 1 ? end - 1 : end, end);
+    self->write_event(trace, ctx->stage, end > 1 ? end - 1 : end, end);
     if (ctx->final_stage) {
       self->write_frame(trace, end);
-      state.local_traces_by_pts.erase(trace_it);
+      if (matched_by_pts) {
+        state.local_traces_by_pts.erase(pts);
+      }
+      if (!state.traces.empty() && state.traces.front().frame_id == trace.frame_id) {
+        state.traces.pop_front();
+      }
     }
     return GST_PAD_PROBE_OK;
   }
@@ -684,10 +771,13 @@ class NativeProbeRuntime {
   }
 
   void add_local_stage_probes(GstElement* pipeline, int stream_id) {
+    const std::size_t first_decode = first_stage_index_with_base("decode");
     for (std::size_t index = 0; index < stage_names_.size(); ++index) {
       const std::string& stage = stage_names_[index];
+      const std::string base = stage_base_name(stage);
       const bool final_stage = index + 1 == stage_names_.size();
-      const std::string kind = stage == "decode" ? "local-decode" : (stage == "detect" ? "local-detect" : "local-stage");
+      const std::string kind = base == "decode" && index == first_decode ? "local-decode"
+                               : (base == "detect" ? "local-detect" : "local-stage");
       add_probe(pipeline, stage_probe_name(stage, stream_id), kind, stream_id, stage, final_stage);
     }
   }
@@ -703,24 +793,85 @@ class NativeProbeRuntime {
     return args_.system == "deepstream" || args_.system == "savant";
   }
 
+  std::string generic_stage_operation(const std::string& stage, int stream_id, bool source_decode) const {
+    const std::string base = stage_base_name(stage);
+    if (base == "decode") {
+      if (source_decode) {
+        return "";
+      }
+      return "videoconvert ! jpegenc ! jpegdec ! videoconvert";
+    }
+    if (base == "preprocess") {
+      return "videoconvert ! videoscale ! video/x-raw,format=RGB,width=640,height=360";
+    }
+    if (base == "detect") {
+      return detect_bin();
+    }
+    if (base == "track" || base == "classify") {
+      return "videoconvert ! video/x-raw,format=I420 ! videoconvert ! video/x-raw,format=RGB ! identity name=" +
+             stage + "_op" + std::to_string(stream_id) + " silent=false";
+    }
+    if (base == "record") {
+      return "videoconvert ! jpegenc ! jpegdec ! videoconvert";
+    }
+    return "identity name=" + stage + "_op" + std::to_string(stream_id) + " silent=false";
+  }
+
+  std::string deepstream_stage_operation(const std::string& stage, int stream_id, bool source_decode) const {
+    const std::string base = stage_base_name(stage);
+    if (base == "decode") {
+      if (source_decode) {
+        return "";
+      }
+      return "nvvideoconvert ! video/x-raw,format=I420 ! jpegenc ! jpegdec ! nvvideoconvert ! video/x-raw(memory:NVMM),format=NV12";
+    }
+    if (base == "preprocess") {
+      return "nvvideoconvert ! video/x-raw(memory:NVMM),format=NV12,width=640,height=360";
+    }
+    if (base == "detect") {
+      return detect_bin();
+    }
+    if (base == "track" || base == "classify") {
+      return "identity name=" + stage + "_op" + std::to_string(stream_id) + " sleep-time=1000 silent=false";
+    }
+    if (base == "record") {
+      return "nvvideoconvert ! video/x-raw,format=I420 ! jpegenc ! jpegdec ! nvvideoconvert ! video/x-raw(memory:NVMM),format=NV12";
+    }
+    return "identity name=" + stage + "_op" + std::to_string(stream_id) + " silent=false";
+  }
+
   std::string edge_pipeline(int stream_id) const {
     if (uses_deepstream_elements()) {
       return deepstream_edge_pipeline(stream_id);
     }
+    const std::size_t first_decode = first_stage_index_with_base("decode");
     std::ostringstream p;
     p << "filesrc name=file_src" << stream_id
-      << " ! decodebin ! videoconvert ! videorate ! video/x-raw,framerate=30/1"
-      << " ! identity sync=true ! jpegenc ! rtpjpegpay pt=26 name=pay" << stream_id
+      << " ! decodebin ! videoconvert ! videorate ! video/x-raw,framerate=30/1";
+    for (std::size_t index = 0; index < stage_names_.size(); ++index) {
+      const std::string op = generic_stage_operation(stage_names_[index], stream_id, index == first_decode);
+      if (!op.empty()) {
+        p << " ! " << op;
+      }
+    }
+    p << " ! identity sync=true ! jpegenc ! rtpjpegpay pt=26 name=pay" << stream_id
       << " ! udpsink name=out_sink" << stream_id << " port=" << (args_.output_port_base + stream_id * args_.port_stride)
       << " sync=false async=false";
     return p.str();
   }
 
   std::string deepstream_edge_pipeline(int stream_id) const {
+    const std::size_t first_decode = first_stage_index_with_base("decode");
     std::ostringstream p;
     p << "nvurisrcbin name=uri_src" << stream_id << " file-loop=true"
-      << " ! queue ! nvvideoconvert ! video/x-raw,format=I420"
-      << " ! identity sync=true ! jpegenc ! rtpjpegpay pt=26 name=pay" << stream_id
+      << " ! queue ! nvvideoconvert ! video/x-raw,format=I420";
+    for (std::size_t index = 0; index < stage_names_.size(); ++index) {
+      const std::string op = deepstream_stage_operation(stage_names_[index], stream_id, index == first_decode);
+      if (!op.empty()) {
+        p << " ! " << op;
+      }
+    }
+    p << " ! identity sync=true ! jpegenc ! rtpjpegpay pt=26 name=pay" << stream_id
       << " ! udpsink name=out_sink" << stream_id << " port=" << (args_.output_port_base + stream_id * args_.port_stride)
       << " sync=false async=false";
     return p.str();
@@ -733,8 +884,14 @@ class NativeProbeRuntime {
     std::ostringstream p;
     p << "udpsrc name=src" << stream_id << " port=" << (args_.input_port_base + stream_id * args_.port_stride)
       << " caps=\"application/x-rtp,media=(string)video,encoding-name=(string)JPEG,payload=(int)26\""
-      << " ! rtpjpegdepay ! jpegdec ! videoconvert ! " << detect_bin()
-      << " ! videoconvert ! jpegenc ! rtpjpegpay pt=26 name=pay" << stream_id
+      << " ! rtpjpegdepay ! jpegdec ! videoconvert";
+    for (const std::string& stage : stage_names_) {
+      const std::string op = generic_stage_operation(stage, stream_id, false);
+      if (!op.empty()) {
+        p << " ! " << op;
+      }
+    }
+    p << " ! videoconvert ! jpegenc ! rtpjpegpay pt=26 name=pay" << stream_id
       << " ! udpsink name=out_sink" << stream_id << " port=" << (args_.output_port_base + stream_id * args_.port_stride)
       << " sync=false async=false";
     return p.str();
@@ -752,42 +909,42 @@ class NativeProbeRuntime {
     if (uses_deepstream_elements()) {
       return deepstream_local_pipeline(stream_id);
     }
+    const std::size_t first_decode = first_stage_index_with_base("decode");
     std::ostringstream p;
     p << "filesrc name=file_src" << stream_id
       << " ! decodebin ! videoconvert ! videorate ! video/x-raw,framerate=30/1";
-    for (const std::string& stage : stage_names_) {
-      if (stage == "decode") {
-        p << " ! queue name=" << stage_probe_name(stage, stream_id);
-      } else if (stage == "detect") {
-        p << " ! " << detect_bin() << " ! queue name=" << stage_probe_name(stage, stream_id);
-      } else {
-        p << " ! identity name=" << stage << "_op" << stream_id
-          << " ! queue name=" << stage_probe_name(stage, stream_id);
+    for (std::size_t index = 0; index < stage_names_.size(); ++index) {
+      const std::string& stage = stage_names_[index];
+      const std::string op = generic_stage_operation(stage, stream_id, index == first_decode);
+      if (!op.empty()) {
+        p << " ! " << op;
       }
+      p << " ! queue name=" << stage_probe_name(stage, stream_id);
     }
     p << " ! fakesink sync=false async=false";
     return p.str();
   }
 
   std::string deepstream_local_pipeline(int stream_id) const {
+    const std::size_t first_decode = first_stage_index_with_base("decode");
+    const std::string source_decode_stage = first_stage_with_base("decode");
     std::ostringstream p;
     p << "nvstreammux name=mux" << stream_id
       << " batch-size=1 width=1920 height=1080 live-source=0 batched-push-timeout=40000";
     for (std::size_t index = 0; index < stage_names_.size(); ++index) {
       const std::string& stage = stage_names_[index];
-      if (stage == "decode") {
+      if (index == first_decode && stage_base_name(stage) == "decode") {
         continue;
       }
-      if (stage == "detect") {
-        p << " ! " << detect_bin();
-      } else {
-        p << " ! identity name=" << stage << "_op" << stream_id;
+      const std::string op = deepstream_stage_operation(stage, stream_id, false);
+      if (!op.empty()) {
+        p << " ! " << op;
       }
       p << " ! queue name=" << stage_probe_name(stage, stream_id);
     }
     p << " ! nvvideoconvert ! video/x-raw ! fakesink sync=false async=false "
       << "uridecodebin name=uri_src" << stream_id
-      << " ! queue name=" << stage_probe_name("decode", stream_id)
+      << " ! queue name=" << stage_probe_name(source_decode_stage, stream_id)
       << " ! nvvideoconvert ! video/x-raw(memory:NVMM),format=NV12"
       << " ! mux" << stream_id << ".sink_0";
     return p.str();
@@ -796,9 +953,14 @@ class NativeProbeRuntime {
   std::string deepstream_worker_pipeline(int stream_id) const {
     std::ostringstream p;
     p << "nvstreammux name=mux" << stream_id
-      << " batch-size=1 width=1920 height=1080 live-source=1 batched-push-timeout=40000"
-      << " ! " << detect_bin()
-      << " ! nvvideoconvert ! video/x-raw"
+      << " batch-size=1 width=1920 height=1080 live-source=1 batched-push-timeout=40000";
+    for (const std::string& stage : stage_names_) {
+      const std::string op = deepstream_stage_operation(stage, stream_id, false);
+      if (!op.empty()) {
+        p << " ! " << op;
+      }
+    }
+    p << " ! nvvideoconvert ! video/x-raw"
       << " ! jpegenc ! rtpjpegpay pt=26 name=pay" << stream_id
       << " ! udpsink name=out_sink" << stream_id << " port=" << (args_.output_port_base + stream_id * args_.port_stride)
       << " sync=false async=false "
@@ -879,6 +1041,10 @@ static Args parse_args(int argc, char** argv) {
   args.backend = env_or("ADAPTER_BACKEND", args.system);
   args.video_layout_dir = env_or("VIDEO_LAYOUT_DIR", args.video_layout_dir);
   args.dataset_streams_json = env_or("DATASET_STREAMS_JSON", "");
+  args.policy = env_or("SCHEDULER_POLICY", args.policy);
+  if (!env_or("DEADLINE_MS").empty()) {
+    args.deadline_ms = std::stod(env_or("DEADLINE_MS"));
+  }
   args.output_host = env_or("EXPERIMENT_RTP_OUTPUT_HOST", "127.0.0.1");
   args.output_dir = ".";
   if (!env_or("EXPERIMENT_RTP_INPUT_PORT").empty()) {
@@ -916,6 +1082,8 @@ static Args parse_args(int argc, char** argv) {
     else if (key == "--detect-bin") args.detect_bin = value("--detect-bin");
     else if (key == "--min-objects") args.min_objects = std::stoi(value("--min-objects"));
     else if (key == "--max-objects") args.max_objects = std::stoi(value("--max-objects"));
+    else if (key == "--deadline-ms") args.deadline_ms = std::stod(value("--deadline-ms"));
+    else if (key == "--policy") args.policy = value("--policy");
     else throw std::runtime_error("unknown argument: " + key);
   }
   return args;

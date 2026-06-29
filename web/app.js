@@ -150,6 +150,7 @@ function renderDashboard() {
   const latest = analytics.latest_run || {};
   const experiments = state.config?.configs?.experiments || {};
   const hardware = experiments.hardware_target || {};
+  const benchmark = experiments.benchmark || {};
   const protocol = experiments.protocol || {};
   $("tab-dashboard").innerHTML = `
     ${sectionTitle("Operational Dashboard", latest.run_id ? `Latest run: ${latest.run_id}` : "No summaries found")}
@@ -167,7 +168,7 @@ function renderDashboard() {
           ["GPU", hardware.gpu_model],
           ["CPU", hardware.cpu_model],
           ["RAM GB", hardware.ram_gb],
-          ["Deadline s", hardware.deadline_s],
+          ["Benchmark deadlines ms", (benchmark.deadline_ms || []).join(", ")],
         ])}
       </div>
       <div class="panel">
@@ -259,7 +260,7 @@ function renderSettings() {
             ${inputField("experiments", "hardware_target.gpu_model", "GPU model")}
             ${inputField("experiments", "hardware_target.cpu_model", "CPU model")}
             ${inputField("experiments", "hardware_target.ram_gb", "RAM GB", "number")}
-            ${inputField("experiments", "hardware_target.deadline_s", "Deadline s", "number")}
+            ${inputField("experiments", "benchmark.deadline_ms", "Benchmark deadlines ms")}
           </div>
         </div>
         <div class="panel">

@@ -25,7 +25,7 @@ DEFAULT_SYSTEMS = [
     "custom_cpp_cuda_qt",
 ]
 DEFAULT_SCENARIO = "all"
-DEFAULT_DATASET = "mot17_uadetrac_public"
+DEFAULT_DATASET = "kpp_real_h264"
 DEFAULT_OUTPUT_ROOT = Path("runs/strict_validation")
 
 
@@ -308,6 +308,8 @@ def run_experiments_command(
         command.extend(["--measurement", str(args.measurement)])
     if args.dry_run_plan:
         command.append("--dry-run-plan")
+    if getattr(args, "continue_on_error", False):
+        command.append("--continue-on-error")
     return command
 
 def run_command(command: Sequence[str], *, cwd: Path, env: dict[str, str], dry_run: bool = False) -> None:
@@ -401,6 +403,7 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--clear-runtime-artifacts", action="store_true")
     parser.add_argument("--skip-build", action="store_true")
     parser.add_argument("--dry-run-plan", action="store_true")
+    parser.add_argument("--continue-on-error", action="store_true", help="Record failed repetitions in summary.csv and continue the matrix")
     parser.add_argument("--resume", action="store_true", help="Skip systems with all requested repeats already completed under the policy output root")
     return parser.parse_args(argv)
 

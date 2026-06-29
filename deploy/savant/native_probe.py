@@ -391,7 +391,7 @@ class SavantLocalTelemetryProbe(BasePyFuncPlugin):
         **_: Any,
     ) -> None:
         super().__init__()
-        resource = "gpu" if stage == "detect" else "cpu"
+        resource = "gpu" if stage in {"detect", "plate_number", "vehicle_type", "damage", "foreign_object"} else "cpu"
         self.stage = stage
         self.pipeline_stages = configured_pipeline_stages()
         self.enabled = stage in self.pipeline_stages

@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import csv
 import os
+import shutil
 import sys
 import tempfile
 import threading
@@ -22,10 +23,17 @@ from benchmark_contract import (
     canonicalize_frames_csv,
     load_dataset,
     network_profile_matches,
+    stage_base_name,
     summarize_frames,
+    validate_drop_counters,
     validate_frame_events,
+    validate_policy_decisions,
+    validate_required_sidecars,
+    validate_resource_events,
     validate_stage_trace_coverage,
+    write_derived_native_sidecars,
 )
+from generate_vast_report_artifacts import build_shared_vs_duplicated, deadline_rows_for_frames
 from deploy.savant.native_probe import BasePyFuncPlugin, SavantLocalTelemetryProbe, frame_event_filename, merge_local_outputs
 from distributed_executor import _combine_csv, parse_chrony_tracking, parse_iperf_output, parse_ping_output
 from rtp_trace import RtpTrace, pack_trace, unpack_trace
@@ -190,6 +198,36 @@ class BenchmarkContractTests(unittest.TestCase):
 
             canonicalize_frames_csv(frames, mode="benchmark", run_id="r", detector="d", backend="b")
             validate_frame_events(events)
+
+    def test_required_sidecars_are_derived_and_validated(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            frames = pd.DataFrame([native_frame_row(), native_frame_row(trace_id="r:0:2", frame_id=2, e2e_latency_ms=120)])
+            events = pd.DataFrame(
+                [
+                    native_event_row(stage="decode", resource="cpu"),
+                    native_event_row(stage="preprocess", resource="cpu"),
+                    native_event_row(stage="plate_number", resource="gpu"),
+                ]
+            )
+            dataset = {
+                "streams": [
+                    {"stream_id": 0, "camera_role": "plate_number", "width": 1920, "height": 1080},
+                ]
+            }
+
+            write_derived_native_sidecars(root, frames=frames, events=events, dataset=dataset, policy="heft", deadline_ms=100.0)
+
+            self.assertFalse(validate_resource_events(root / "resource_events.csv").empty)
+            self.assertFalse(validate_policy_decisions(root / "policy_decisions.csv").empty)
+            drops = validate_drop_counters(root / "drop_counters.csv")
+            self.assertEqual(float(drops.iloc[0]["late_rate_percent"]), 50.0)
+            validate_required_sidecars(root)
+
+    def test_required_sidecars_reject_missing_files(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            with self.assertRaisesRegex(ContractError, "resource_events.csv was not produced"):
+                validate_required_sidecars(Path(tmp))
 
     def test_benchmark_rejects_malformed_frame_timestamps(self) -> None:
         for bad_value in ("None", "", "not-a-number"):
@@ -395,6 +433,90 @@ class BenchmarkContractTests(unittest.TestCase):
                     events,
                     required_stages=["decode", "detect", "track", "classify", "record"],
                 )
+
+    def test_stage_base_name_strips_branch_suffixes(self) -> None:
+        self.assertEqual(stage_base_name("decode_a"), "decode")
+        self.assertEqual(stage_base_name("preprocess_b"), "preprocess")
+        self.assertEqual(stage_base_name("detect_primary"), "detect")
+        self.assertEqual(stage_base_name("track_right"), "track")
+        self.assertEqual(stage_base_name("aggregate"), "aggregate")
+        self.assertEqual(stage_base_name("custom_a"), "custom_a")
+
+    def test_report_deadline_rows_use_raw_frame_latencies(self) -> None:
+        frames = pd.DataFrame(
+            [
+                native_frame_row(trace_id="r:0:1", frame_id=1, e2e_latency_ms=10),
+                native_frame_row(trace_id="r:0:2", frame_id=2, e2e_latency_ms=20),
+                native_frame_row(trace_id="r:0:3", frame_id=3, e2e_latency_ms=40),
+                native_frame_row(trace_id="r:0:4", frame_id=4, e2e_latency_ms=80),
+            ]
+        )
+        rows = deadline_rows_for_frames(frames, [16.7, 50], {"duration_s": 2.0, "scenario": "s"})
+
+        self.assertEqual(rows[0]["deadline_ms"], 16.7)
+        self.assertEqual(rows[0]["slo_violation_rate_percent"], 75.0)
+        self.assertEqual(rows[1]["deadline_ms"], 50.0)
+        self.assertEqual(rows[1]["slo_violation_rate_percent"], 25.0)
+        self.assertEqual(rows[0]["throughput_fps"], 2.0)
+
+    def test_shared_vs_duplicated_requires_common_stage_factor_two(self) -> None:
+        config = {
+            "benchmark": {"report_scenarios": ["checkpoint_video_dag_shared", "checkpoint_independent_processes_baseline"]},
+            "scenarios": {"checkpoint_independent_processes_baseline": {"workload": {"logical_consumers": 4}}},
+        }
+        summary = pd.DataFrame(
+            [
+                {
+                    "scenario": "checkpoint_video_dag_shared",
+                    "system": "custom_cpp_cuda_qt",
+                    "policy": "heft",
+                    "repeat": 1,
+                    "frames": 2,
+                    "throughput_fps": 10.0,
+                    "latency_p95_ms": 30.0,
+                    "latency_p99_ms": 35.0,
+                    "slo_violation_rate_percent": 0.0,
+                    "deadline_ms": 100.0,
+                    "status": "completed",
+                    "telemetry_source": "native",
+                },
+                {
+                    "scenario": "checkpoint_independent_processes_baseline",
+                    "system": "custom_cpp_cuda_qt",
+                    "policy": "heft",
+                    "repeat": 1,
+                    "frames": 2,
+                    "throughput_fps": 8.0,
+                    "latency_p95_ms": 45.0,
+                    "latency_p99_ms": 50.0,
+                    "slo_violation_rate_percent": 1.0,
+                    "deadline_ms": 100.0,
+                    "status": "completed",
+                    "telemetry_source": "native",
+                },
+            ]
+        )
+        stage_metrics = pd.DataFrame(
+            [
+                {"scenario": "checkpoint_video_dag_shared", "system": "custom_cpp_cuda_qt", "policy": "heft", "repeat": 1, "deadline_ms": 100.0, "base_stage": "decode", "event_count": 2, "stage_duration_ms_total": 20.0},
+                {"scenario": "checkpoint_video_dag_shared", "system": "custom_cpp_cuda_qt", "policy": "heft", "repeat": 1, "deadline_ms": 100.0, "base_stage": "preprocess", "event_count": 2, "stage_duration_ms_total": 10.0},
+                {"scenario": "checkpoint_independent_processes_baseline", "system": "custom_cpp_cuda_qt", "policy": "heft", "repeat": 1, "deadline_ms": 100.0, "base_stage": "decode", "event_count": 8, "stage_duration_ms_total": 44.0},
+                {"scenario": "checkpoint_independent_processes_baseline", "system": "custom_cpp_cuda_qt", "policy": "heft", "repeat": 1, "deadline_ms": 100.0, "base_stage": "preprocess", "event_count": 8, "stage_duration_ms_total": 24.0},
+            ]
+        )
+
+        result = build_shared_vs_duplicated(stage_metrics, summary, config)
+        self.assertEqual(set(result["base_stage"]), {"decode", "preprocess"})
+        self.assertTrue((result["event_factor_baseline"] >= 4.0).all())
+        self.assertTrue((result["event_factor_ratio"] >= 4.0).all())
+
+        bad = stage_metrics.copy()
+        bad.loc[
+            (bad["scenario"] == "checkpoint_independent_processes_baseline") & (bad["base_stage"] == "preprocess"),
+            "event_count",
+        ] = 3
+        with self.assertRaisesRegex(ContractError, "logical consumers=4"):
+            build_shared_vs_duplicated(bad, summary, config)
 
     def test_savant_local_stream_outputs_are_merged(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -760,6 +882,28 @@ class BenchmarkContractTests(unittest.TestCase):
             result = summarize_frames(path, deadline_s=0.05, measurement_s=2)
             self.assertEqual(result["throughput_fps"], 2.0)
             self.assertEqual(result["slo_violation_rate_percent"], 25.0)
+
+    @unittest.skipUnless((ROOT / "data" / "videos" / "kpp" / "1.avi").exists(), "real KPP AVI files are not present")
+    @unittest.skipUnless(shutil.which("ffprobe") is not None, "ffprobe is required for AVI metadata validation")
+    def test_kpp_real_avi_manifest_validates_real_files_and_fps_policy(self) -> None:
+        dataset = load_dataset(
+            ROOT / "configs" / "datasets.yaml",
+            "kpp_real_avi",
+            mode="benchmark",
+            project_root=ROOT,
+            require_files=True,
+        )
+
+        self.assertEqual(dataset["name"], "kpp_real_avi")
+        self.assertEqual(len(dataset["streams"]), 6)
+        underbody = [stream for stream in dataset["streams"] if stream["camera_role"] == "foreign_object"]
+        self.assertEqual(len(underbody), 1)
+        self.assertEqual(underbody[0]["frame_count"], 81173)
+        plate = [stream for stream in dataset["streams"] if stream["path"] == "data/videos/kpp/2.avi"][0]
+        self.assertEqual(plate["r_frame_rate"], "30/1")
+        self.assertEqual(plate["avg_frame_rate"], "600/1")
+        self.assertEqual(plate["fps_policy"], "pts_frame_count")
+        self.assertEqual(dataset["annotations"]["accuracy_ground_truth"], False)
 
     def test_publishable_dataset_requires_checksums(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
