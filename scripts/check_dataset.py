@@ -21,7 +21,13 @@ def main() -> None:
         project_root=Path.cwd(),
         require_files=True,
     )
-    print(f"dataset={dataset['name']} streams={len(dataset['streams'])} aggregate_sha256={dataset['aggregate_sha256']}")
+    print(
+        f"dataset={dataset['name']} streams={len(dataset['streams'])} "
+        f"aggregate_sha256={dataset['aggregate_sha256']} "
+        f"manifest_identity_schema_version="
+        f"{dataset['manifest_identity_schema_version']} "
+        f"manifest_identity_sha256={dataset['manifest_identity_sha256']}"
+    )
 
 
 if __name__ == "__main__":

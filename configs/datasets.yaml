@@ -18,6 +18,15 @@ datasets:
     description: Source real checkpoint AVI captures used to derive publishable H.264/H.265
       codec datasets.
     publishable: true
+    workload_scope: replicated_logical_streams_from_two_recordings
+    logical_stream_instances: 6
+    unique_recorded_sources: 2
+    analytics_routing: unresolved
+    experimental_routing_profiles:
+    - name: architecture_reuse_all_branches_v1
+      routing_mode: all_branches_per_stream
+      scope: topology_only_stress
+      production_semantics: false
     fps_policy: pts_frame_count
     annotations: &id001
       path: data/videos/kpp/Timestamps.txt
@@ -115,6 +124,15 @@ datasets:
     description: Real checkpoint captures transcoded to H.264/AVC MP4 at 600 FPS CFR
       for publishable KPP codec benchmarks.
     publishable: true
+    workload_scope: replicated_logical_streams_from_two_recordings
+    logical_stream_instances: 6
+    unique_recorded_sources: 2
+    analytics_routing: unresolved
+    experimental_routing_profiles:
+    - name: architecture_reuse_all_branches_v1
+      routing_mode: all_branches_per_stream
+      scope: topology_only_stress
+      production_semantics: false
     codec_variant: h264
     fps_policy: cfr_600_from_source_pts
     transcode:
@@ -230,6 +248,15 @@ datasets:
     description: Real checkpoint captures transcoded to H.265/HEVC MP4 at 600 FPS
       CFR for publishable KPP codec benchmarks.
     publishable: true
+    workload_scope: replicated_logical_streams_from_two_recordings
+    logical_stream_instances: 6
+    unique_recorded_sources: 2
+    analytics_routing: unresolved
+    experimental_routing_profiles:
+    - name: architecture_reuse_all_branches_v1
+      routing_mode: all_branches_per_stream
+      scope: topology_only_stress
+      production_semantics: false
     codec_variant: h265
     fps_policy: cfr_600_from_source_pts
     transcode:

@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "implementation_id": "formal-aw-heft-reference-v1",
+  "method": "AW-HEFT",
+  "status": "reference_only_not_runtime_bound",
+  "benchmark_eligible": false,
+  "resource_scope": [
+    "cpu",
+    "gpu",
+    "nvdec"
+  ],
+  "rank_u_semantics": "mean_exec_plus_max_mean_communication_successor_rank_v1",
+  "ready_order_semantics": "descending_rank_then_deadline_arrival_trace_stage_v1",
+  "transfer_cost_semantics": "directed_parent_resource_to_candidate_resource_ms_v1",
+  "memory_cost_semantics": "candidate_resource_buffer_placement_ms_v1",
+  "deadline_risk_semantics": "remaining_plus_lambda_positive_deadline_lateness_ms_v1",
+  "stability_window_semantics": "terminal_history_lag_cooldown_and_total_variation_budget_v1",
+  "weight_projection": "euclidean_box_mean_one_v1",
+  "tie_break": [
+    "communication_ms",
+    "queue_depth",
+    "resource_order"
+  ],
+  "resource_order": [
+    "cpu",
+    "gpu",
+    "nvdec"
+  ],
+  "trace_contract_version": 1,
+  "formal_trace_replay_semantics": "recompute_rank_ready_decision_feedback_state_and_first_consumer_v1",
+  "replay_numeric_tolerance": 1e-09,
+  "frozen_policy_semantics": "same_initial_weights_feedback_updates_disabled_v1",
+  "implementation_module": "scripts/formal_aw_heft_reference.py",
+  "runtime_binding": null,
+  "limitations": [
+    "no_dataset_consuming_runtime_binding",
+    "no_target_hardware_execution",
+    "no_benchmark_measurement",
+    "no_policy_effect_claim",
+    "no_accepted_formal_trace_replay"
+  ]
+}

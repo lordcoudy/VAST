@@ -22,6 +22,7 @@ from vast_gui import (  # noqa: E402
     VastGuiApp,
     build_run_command,
     make_handler,
+    normalize_summary,
 )
 
 
@@ -123,6 +124,17 @@ def write_yaml(path: Path, payload: dict) -> None:
 
 
 class VastGuiTests(unittest.TestCase):
+    def test_summary_defaults_keep_causal_gate_separate(self) -> None:
+        summary = normalize_summary(pd.DataFrame([{"policy_trace_complete": True}]))
+
+        self.assertTrue(bool(summary.iloc[0]["policy_trace_complete"]))
+        self.assertFalse(bool(summary.iloc[0]["policy_causal_trace_complete"]))
+        self.assertFalse(bool(summary.iloc[0]["stage_semantic_contract_complete"]))
+        self.assertTrue(pd.isna(summary.iloc[0]["semantic_contract_version"]))
+        self.assertEqual(summary.iloc[0]["semantic_prefix_contract_sha256"], "unavailable")
+        self.assertFalse(bool(summary.iloc[0]["ingress_ledger_complete"]))
+        self.assertTrue(pd.isna(summary.iloc[0]["ingress_frame_count"]))
+
     def make_project(self, tmp: str) -> Path:
         root = Path(tmp)
         write_yaml(root / "configs" / "experiments.yaml", minimal_experiments())
@@ -328,7 +340,10 @@ class VastGuiTests(unittest.TestCase):
             root = self.make_project(tmp)
             app = VastGuiApp(root)
             handler = make_handler(app)
-            server = ThreadingHTTPServer(("127.0.0.1", 0), handler)
+            try:
+                server = ThreadingHTTPServer(("127.0.0.1", 0), handler)
+            except PermissionError as exc:
+                self.skipTest(f"local HTTP bind is prohibited by the execution environment: {exc}")
             thread = threading.Thread(target=server.serve_forever, daemon=True)
             thread.start()
             base = f"http://127.0.0.1:{server.server_port}"

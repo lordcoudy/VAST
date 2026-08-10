@@ -190,6 +190,8 @@ build_reference_custom_app() {
   local out_bin="$PROJECT_DIR/build/bin/adaptive_scheduler_app"
   local probe_bin="$PROJECT_DIR/build/bin/vast_native_gst_probe"
   local custom_gst_plugin="$PROJECT_DIR/build/lib/libgstadaptivescheduler.so"
+  local analytics_terminal_plugin="$PROJECT_DIR/build/lib/libgstvastanalyticsterminal.so"
+  local analytics_queue_plugin="$PROJECT_DIR/build/lib/libgstvastanalyticsqueue.so"
 
   if [[ ! -f "$PROJECT_DIR/CMakeLists.txt" ]]; then
     warn "Missing root CMakeLists.txt, cannot build native binaries"
@@ -207,6 +209,14 @@ build_reference_custom_app() {
   log "Building custom GStreamer plugin -> $custom_gst_plugin"
   cmake --build "$build_dir" --target gstadaptivescheduler --parallel "$(nproc)" || \
     warn "Custom GStreamer plugin build failed; gstreamer_custom strict benchmark will fail until it is built"
+
+  log "Building native analytics terminal -> $analytics_terminal_plugin"
+  cmake --build "$build_dir" --target gstvastanalyticsterminal --parallel "$(nproc)" || \
+    warn "Native analytics terminal build failed; checkpoint terminal tests will fail"
+
+  log "Building bounded analytics queue -> $analytics_queue_plugin"
+  cmake --build "$build_dir" --target gstvastanalyticsqueue --parallel "$(nproc)" || \
+    warn "Bounded analytics queue build failed; explicit checkpoint drop telemetry will fail"
 
   if command -v nvcc >/dev/null 2>&1; then
     log "Building custom CUDA + Qt app -> $out_bin"

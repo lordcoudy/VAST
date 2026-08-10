@@ -8,6 +8,7 @@
 #include <condition_variable>
 #include <cstdint>
 #include <cstdlib>
+#include <deque>
 #include <filesystem>
 #include <fstream>
 #include <iomanip>
@@ -27,6 +28,9 @@
 #include <QVBoxLayout>
 #include <QWidget>
 #include <cuda_runtime.h>
+
+#include "policy_trace_format.hpp"
+#include "weighted_proxy_policy.hpp"
 
 namespace fs = std::filesystem;
 
@@ -62,6 +66,81 @@ struct Args {
 
 enum class Resource { Cpu, Gpu };
 
+struct DecisionSnapshot {
+  std::uint64_t ordinal = 0;
+  std::string decision_id = "unavailable";
+  std::uint64_t decision_seq = 0;
+  double decision_timestamp_ms = 0.0;
+  Resource resource = Resource::Cpu;
+  std::size_t queue_depth = 0;
+  std::size_t cpu_queue_depth_snapshot = 0;
+  std::size_t gpu_queue_depth_snapshot = 0;
+  double selected_score_ms = 0.0;
+  std::uint64_t update_seq = 0;
+  std::string policy_version;
+  std::string allowed_resources_json = "[]";
+  std::string alternative_scores_json = "{}";
+  std::string cost_components_json = "{}";
+  std::string parameters_json = "{}";
+  std::string tie_break_rule = "unavailable";
+  std::string update_json = "{}";
+  std::string reason = "unavailable";
+  std::string graph_version = "unavailable";
+  std::string profile_version = "unavailable";
+  std::string feature_provenance_json = "{}";
+  std::string terminal_status = "unavailable";
+  double terminal_timestamp_ms = 0.0;
+  double update_timestamp_ms = 0.0;
+  std::string source_decision_ids_json = "[]";
+  std::string first_consumer_decision_id = "unavailable";
+  std::uint64_t first_consumer_decision_seq = 0;
+  bool replayable = false;
+};
+
+struct PendingPolicyFeedback {
+  std::string trace_id;
+  double latency_ms = 0.0;
+  double deadline_ms = 0.0;
+  std::size_t gpu_queue_depth = 0;
+  vast_weighted_proxy::UpdateSignal signal = vast_weighted_proxy::UpdateSignal::None;
+  bool late = false;
+  bool overloaded = false;
+  bool stable = false;
+  std::string terminal_status = "completed";
+  double terminal_timestamp_ms = 0.0;
+  std::vector<std::string> source_decision_ids;
+  std::uint64_t source_parameter_snapshot_seq = 0;
+};
+
+struct AppliedPolicyUpdate {
+  std::string update_json = "{}";
+  double update_timestamp_ms = 0.0;
+  std::string source_decision_ids_json = "[]";
+};
+
+struct PolicyFeedbackRecord {
+  std::uint64_t feedback_seq = 0;
+  double feedback_timestamp_ms = 0.0;
+  std::string source_trace_id;
+  std::string terminal_status;
+  double terminal_timestamp_ms = 0.0;
+  std::string source_decision_ids_json = "[]";
+  std::uint64_t source_parameter_snapshot_seq = 0;
+  std::uint64_t parameter_lag = 0;
+  std::uint64_t events_since_update = 0;
+  vast_weighted_proxy::WeightPair old_weights;
+  vast_weighted_proxy::WeightPair raw_weights;
+  vast_weighted_proxy::WeightPair projected_weights;
+  double variation_before = 0.0;
+  double variation_after = 0.0;
+  std::string feedback_features_json = "{}";
+  std::string feedback_action = "no_op";
+  std::string reason;
+  std::uint64_t update_seq = 0;
+  std::string first_consumer_decision_id = "unavailable";
+  std::uint64_t first_consumer_decision_seq = 0;
+};
+
 struct FrameRecord {
   std::string trace_id;
   int frame_id = 0;
@@ -86,6 +165,14 @@ struct EventRecord {
   std::string policy_action;
 };
 
+struct PolicyDecisionRecord {
+  std::string trace_id;
+  int frame_id = 0;
+  int stream_id = 0;
+  std::string stage;
+  DecisionSnapshot decision;
+};
+
 struct Task {
   int frame_id = 0;
   int stream_id = 0;
@@ -95,6 +182,10 @@ struct Task {
   std::array<float, kSignalWidth> signal{};
   std::chrono::steady_clock::time_point created_at;
   std::chrono::steady_clock::time_point queue_enter_at;
+  DecisionSnapshot decision;
+  std::vector<std::string> applied_decision_ids;
+  std::size_t max_applied_gpu_queue_depth = 0;
+  std::uint64_t oldest_applied_parameter_snapshot_seq = 0;
 };
 
 template <typename T>
@@ -283,6 +374,8 @@ class AdaptivePipeline {
                                          std::chrono::high_resolution_clock::now().time_since_epoch().count())) {
     rows_.reserve(static_cast<std::size_t>(total_frames_));
     events_.reserve(static_cast<std::size_t>(total_frames_) * 5);
+    policy_decisions_.reserve(static_cast<std::size_t>(total_frames_) * 5);
+    policy_feedback_.reserve(static_cast<std::size_t>(total_frames_));
     init_stages();
     load_policy_artifact();
   }
@@ -296,6 +389,11 @@ class AdaptivePipeline {
 
     if (!failure_message_.empty()) {
       throw std::runtime_error(failure_message_);
+    }
+
+    if (args_.policy == "ql_heft_online") {
+      std::lock_guard<std::mutex> lock(policy_mutex_);
+      flush_pending_policy_feedback_locked();
     }
 
     write_csv();
@@ -319,6 +417,8 @@ class AdaptivePipeline {
   std::mutex rows_mutex_;
   std::vector<FrameRecord> rows_;
   std::vector<EventRecord> events_;
+  std::vector<PolicyDecisionRecord> policy_decisions_;
+  std::vector<PolicyFeedbackRecord> policy_feedback_;
   std::mutex done_mutex_;
   std::condition_variable done_cv_;
   std::atomic<int> remaining_frames_{0};
@@ -333,6 +433,22 @@ class AdaptivePipeline {
   std::atomic<double> gpu_queue_weight_{0.85};
   std::atomic<double> heavy_gpu_bonus_{1.75};
   int heavy_object_threshold_ = 32;
+  double weight_lower_bound_ = 0.5;
+  double weight_upper_bound_ = 1.5;
+  std::string projection_rule_ = "unavailable";
+  std::uint64_t feedback_lag_limit_ = 0;
+  std::uint64_t feedback_cooldown_events_ = 0;
+  double variation_budget_ = 0.0;
+  std::string feedback_update_rule_ = "unavailable";
+  double feedback_penalty_step_ = 0.0;
+  double feedback_reward_step_ = 0.0;
+  std::mutex policy_mutex_;
+  std::deque<PendingPolicyFeedback> pending_policy_feedback_;
+  std::uint64_t next_decision_ordinal_ = 0;
+  std::uint64_t next_feedback_seq_ = 0;
+  std::uint64_t policy_update_seq_ = 0;
+  std::uint64_t last_update_feedback_seq_ = 0;
+  double policy_total_variation_ = 0.0;
   const std::chrono::steady_clock::time_point telemetry_steady_epoch_ = std::chrono::steady_clock::now();
   const std::chrono::system_clock::time_point telemetry_wall_epoch_ = std::chrono::system_clock::now();
 
@@ -436,18 +552,48 @@ class AdaptivePipeline {
     }
     std::ifstream input(args_.policy_artifact);
     if (!input.is_open()) {
-      throw std::runtime_error("QL-HEFT policy artifact is missing: " + args_.policy_artifact);
+      throw std::runtime_error("Adaptive-weight policy artifact is missing: " + args_.policy_artifact);
     }
+    int artifact_schema_version = 0;
     std::string line;
     while (std::getline(input, line)) {
       const auto pos = line.find('=');
       if (pos == std::string::npos) continue;
       const std::string key = line.substr(0, pos);
       const std::string value = line.substr(pos + 1);
+      if (key == "schema_version") artifact_schema_version = std::stoi(value);
       if (key == "cpu_queue_weight") cpu_queue_weight_.store(std::stod(value));
       if (key == "gpu_queue_weight") gpu_queue_weight_.store(std::stod(value));
       if (key == "heavy_gpu_bonus") heavy_gpu_bonus_.store(std::stod(value));
       if (key == "heavy_object_threshold") heavy_object_threshold_ = std::stoi(value);
+      if (key == "weight_lower_bound") weight_lower_bound_ = std::stod(value);
+      if (key == "weight_upper_bound") weight_upper_bound_ = std::stod(value);
+      if (key == "projection_rule") projection_rule_ = value;
+      if (key == "feedback_lag_limit") feedback_lag_limit_ = std::stoull(value);
+      if (key == "feedback_cooldown_events") feedback_cooldown_events_ = std::stoull(value);
+      if (key == "variation_budget") variation_budget_ = std::stod(value);
+      if (key == "feedback_update_rule") feedback_update_rule_ = value;
+      if (key == "feedback_penalty_step") feedback_penalty_step_ = std::stod(value);
+      if (key == "feedback_reward_step") feedback_reward_step_ = std::stod(value);
+    }
+    const vast_weighted_proxy::WeightPair initial_weights{
+        cpu_queue_weight_.load(), gpu_queue_weight_.load()};
+    const vast_weighted_proxy::WeightPair minimum_weights{
+        weight_lower_bound_, weight_lower_bound_};
+    const vast_weighted_proxy::WeightPair maximum_weights{
+        weight_upper_bound_, weight_upper_bound_};
+    (void)vast_weighted_proxy::project_box_mean_one(
+        initial_weights, minimum_weights, maximum_weights);
+    if (artifact_schema_version != 2 || !vast_weighted_proxy::mean_one(initial_weights) ||
+        initial_weights.cpu < weight_lower_bound_ || initial_weights.cpu > weight_upper_bound_ ||
+        initial_weights.gpu < weight_lower_bound_ || initial_weights.gpu > weight_upper_bound_ ||
+        !std::isfinite(heavy_gpu_bonus_.load()) || heavy_gpu_bonus_.load() <= 0.0 ||
+        heavy_object_threshold_ < 0 || projection_rule_ != "euclidean_box_mean_one_v1" ||
+        feedback_update_rule_ != "simplified_gpu_queue_terminal_signal_v1" ||
+        !std::isfinite(feedback_penalty_step_) || feedback_penalty_step_ <= 0.0 ||
+        !std::isfinite(feedback_reward_step_) || feedback_reward_step_ <= 0.0 ||
+        !std::isfinite(variation_budget_) || variation_budget_ < 0.0) {
+      throw std::runtime_error("Adaptive-weight policy artifact violates the bounded feedback passport");
     }
   }
 
@@ -503,6 +649,365 @@ class AdaptivePipeline {
       task.signal[static_cast<std::size_t>(i)] =
           base + stream_bias + std::sin(phase) + 0.5f * std::cos(phase * 0.37f);
     }
+  }
+
+  static bool is_ql_heft_policy(const std::string& policy) {
+    return policy == "ql_heft_frozen" || policy == "ql_heft_online";
+  }
+
+  static std::string weights_json(double cpu_weight, double gpu_weight) {
+    return "{\"cpu\":" + vast_policy_trace::json_number(cpu_weight) +
+           ",\"gpu\":" + vast_policy_trace::json_number(gpu_weight) + "}";
+  }
+
+  static std::string weights_json(const vast_weighted_proxy::WeightPair& weights) {
+    return weights_json(weights.cpu, weights.gpu);
+  }
+
+  static std::string string_array_json(const std::vector<std::string>& values) {
+    std::string result = "[";
+    for (std::size_t index = 0; index < values.size(); ++index) {
+      if (index != 0) {
+        result += ',';
+      }
+      result += vast_policy_trace::json_quote(values[index]);
+    }
+    result += ']';
+    return result;
+  }
+
+  std::string frame_trace_id(const Task& task) const {
+    return args_.run_id + ":" + std::to_string(task.stream_id) + ":" + std::to_string(task.frame_id);
+  }
+
+  static std::string feature_provenance_entry(const std::string& source,
+                                              const std::string& source_trace_id,
+                                              double observed_timestamp_ms,
+                                              double decision_timestamp_ms,
+                                              const std::string& estimator_version) {
+    return "{\"source\":" + vast_policy_trace::json_quote(source) +
+           ",\"source_trace_id\":" + vast_policy_trace::json_quote(source_trace_id) +
+           ",\"observed_timestamp_ms\":" + vast_policy_trace::json_number(observed_timestamp_ms) +
+           ",\"age_ms\":" +
+           vast_policy_trace::json_number(std::max(0.0, decision_timestamp_ms - observed_timestamp_ms)) +
+           ",\"estimator_version\":" + vast_policy_trace::json_quote(estimator_version) + "}";
+  }
+
+  std::string decision_feature_provenance_json(const Task& task,
+                                               double queue_snapshot_timestamp_ms,
+                                               double policy_snapshot_timestamp_ms,
+                                               double decision_timestamp_ms) const {
+    const std::string trace_id = frame_trace_id(task);
+    const std::string scheduler_trace = args_.run_id + ":" + args_.policy;
+    const std::string ingress = feature_provenance_entry(
+        "native_signal_ingress_metadata",
+        trace_id,
+        telemetry_timestamp_ms(task.created_at),
+        decision_timestamp_ms,
+        "custom-signal-generator-v1");
+    const std::string queue = feature_provenance_entry(
+        "native_scheduler_snapshot",
+        scheduler_trace,
+        queue_snapshot_timestamp_ms,
+        decision_timestamp_ms,
+        "custom-scheduler-queue-snapshot-v1");
+    const std::string profile = feature_provenance_entry(
+        "configured_stage_profile",
+        args_.policy_artifact,
+        policy_snapshot_timestamp_ms,
+        decision_timestamp_ms,
+        "custom-signal-stage-proxy-v2");
+    const std::string policy_state = feature_provenance_entry(
+        "native_policy_state",
+        scheduler_trace,
+        policy_snapshot_timestamp_ms,
+        decision_timestamp_ms,
+        "simplified-cpu-gpu-weighted-proxy-v4");
+    return "{\"objects\":" + ingress +
+           ",\"cpu_queue_depth\":" + queue +
+           ",\"gpu_queue_depth\":" + queue +
+           ",\"active_cpu_tasks\":" + queue +
+           ",\"active_gpu_tasks\":" + queue +
+           ",\"cpu_profile_proxy_ms\":" + profile +
+           ",\"gpu_profile_proxy_ms\":" + profile +
+           ",\"stage_preference\":" + profile +
+           ",\"cpu_weight\":" + policy_state +
+           ",\"gpu_weight\":" + policy_state +
+           ",\"heavy_gpu_bonus\":" + policy_state + "}";
+  }
+
+  static std::string alternative_scores_json(double cpu_score, double gpu_score) {
+    return "{\"cpu\":" + vast_policy_trace::json_number(cpu_score) +
+           ",\"gpu\":" + vast_policy_trace::json_number(gpu_score) + "}";
+  }
+
+  static std::string cost_components_json(double cpu_profile_ms,
+                                          double gpu_profile_ms,
+                                          double object_multiplier,
+                                          std::size_t cpu_queue_depth,
+                                          std::size_t gpu_queue_depth,
+                                          int active_cpu,
+                                          int active_gpu,
+                                          double cpu_weight,
+                                          double gpu_weight,
+                                          double gpu_heavy_multiplier) {
+    const auto component = [&](double profile_ms,
+                               std::size_t queue_depth,
+                               int active,
+                               double weight,
+                               double heavy_multiplier) {
+      const double backlog = static_cast<double>(queue_depth + static_cast<std::size_t>(std::max(0, active)));
+      return "{\"profile_exec_proxy_ms\":" + vast_policy_trace::json_number(profile_ms) +
+             ",\"object_multiplier\":" + vast_policy_trace::json_number(object_multiplier) +
+             ",\"queue_depth\":" + std::to_string(queue_depth) +
+             ",\"active_tasks\":" + std::to_string(std::max(0, active)) +
+             ",\"queue_wait_proxy_ms\":" +
+             vast_policy_trace::json_number(backlog * profile_ms * object_multiplier) +
+             ",\"weight\":" + vast_policy_trace::json_number(weight) +
+             ",\"heavy_multiplier\":" + vast_policy_trace::json_number(heavy_multiplier) + "}";
+    };
+    return "{\"cpu\":" + component(cpu_profile_ms, cpu_queue_depth, active_cpu, cpu_weight, 1.0) +
+           ",\"gpu\":" +
+           component(gpu_profile_ms, gpu_queue_depth, active_gpu, gpu_weight, gpu_heavy_multiplier) + "}";
+  }
+
+  std::string parameters_json(double cpu_weight,
+                              double gpu_weight,
+                              double heavy_bonus,
+                              bool heavy_scene,
+                              Resource stage_preference) const {
+    return "{\"score_epsilon\":1e-9,\"weights\":" + weights_json(cpu_weight, gpu_weight) +
+           ",\"weight_lower_bounds\":" + weights_json(weight_lower_bound_, weight_lower_bound_) +
+           ",\"weight_upper_bounds\":" + weights_json(weight_upper_bound_, weight_upper_bound_) +
+           ",\"projection_rule\":" + vast_policy_trace::json_quote(projection_rule_) +
+           ",\"feedback_lag_limit\":" + std::to_string(feedback_lag_limit_) +
+           ",\"feedback_cooldown_events\":" + std::to_string(feedback_cooldown_events_) +
+           ",\"variation_budget\":" + vast_policy_trace::json_number(variation_budget_) +
+           ",\"feedback_update_rule\":" + vast_policy_trace::json_quote(feedback_update_rule_) +
+           ",\"feedback_update_parameters\":{\"penalty_step\":" +
+           vast_policy_trace::json_number(feedback_penalty_step_) +
+           ",\"reward_step\":" + vast_policy_trace::json_number(feedback_reward_step_) + "}" +
+           ",\"heavy_gpu_bonus\":" + vast_policy_trace::json_number(heavy_bonus) +
+           ",\"heavy_object_threshold\":" + std::to_string(heavy_object_threshold_) +
+           ",\"heavy_scene\":" + (heavy_scene ? "true" : "false") +
+           ",\"stage_preference\":" +
+           vast_policy_trace::json_quote(resource_name(stage_preference)) +
+           ",\"policy_scope\":\"simplified_cpu_gpu_queue_weighted_proxy\"}";
+  }
+
+  static std::string feedback_features_json(const PendingPolicyFeedback& feedback) {
+    return "{\"trace_id\":" + vast_policy_trace::json_quote(feedback.trace_id) +
+           ",\"latency_ms\":" + vast_policy_trace::json_number(feedback.latency_ms) +
+           ",\"deadline_ms\":" + vast_policy_trace::json_number(feedback.deadline_ms) +
+           ",\"gpu_queue_depth\":" + std::to_string(feedback.gpu_queue_depth) +
+           ",\"late\":" + (feedback.late ? "true" : "false") +
+           ",\"overloaded\":" + (feedback.overloaded ? "true" : "false") +
+           ",\"stable\":" + (feedback.stable ? "true" : "false") +
+           ",\"terminal_status\":" + vast_policy_trace::json_quote(feedback.terminal_status) +
+           ",\"terminal_timestamp_ms\":" +
+           vast_policy_trace::json_number(feedback.terminal_timestamp_ms) + "}";
+  }
+
+  AppliedPolicyUpdate process_pending_policy_feedback_locked(
+      const std::string& first_consumer_decision_id,
+      std::uint64_t first_consumer_decision_seq,
+      bool has_first_consumer) {
+    while (!pending_policy_feedback_.empty()) {
+      PendingPolicyFeedback feedback = std::move(pending_policy_feedback_.front());
+      pending_policy_feedback_.pop_front();
+      if (feedback.source_parameter_snapshot_seq > policy_update_seq_) {
+        throw std::runtime_error("Terminal feedback references a future parameter snapshot");
+      }
+
+      PolicyFeedbackRecord record;
+      record.feedback_seq = ++next_feedback_seq_;
+      record.feedback_timestamp_ms = telemetry_timestamp_ms(std::chrono::steady_clock::now());
+      record.source_trace_id = feedback.trace_id;
+      record.terminal_status = feedback.terminal_status;
+      record.terminal_timestamp_ms = feedback.terminal_timestamp_ms;
+      record.source_decision_ids_json = string_array_json(feedback.source_decision_ids);
+      record.source_parameter_snapshot_seq = feedback.source_parameter_snapshot_seq;
+      record.parameter_lag = policy_update_seq_ - feedback.source_parameter_snapshot_seq;
+      record.events_since_update = record.feedback_seq - last_update_feedback_seq_;
+      record.old_weights = {cpu_queue_weight_.load(), gpu_queue_weight_.load()};
+      const double delta = vast_weighted_proxy::update_delta(
+          feedback.signal, feedback_penalty_step_, feedback_reward_step_);
+      record.raw_weights = {record.old_weights.cpu, record.old_weights.gpu + delta};
+      record.projected_weights = vast_weighted_proxy::project_box_mean_one(
+          record.raw_weights,
+          {weight_lower_bound_, weight_lower_bound_},
+          {weight_upper_bound_, weight_upper_bound_});
+      record.variation_before = policy_total_variation_;
+      record.feedback_features_json = feedback_features_json(feedback);
+
+      const double candidate_variation = vast_weighted_proxy::l1_variation(
+          record.old_weights, record.projected_weights);
+      vast_weighted_proxy::FeedbackGateInput gate_input;
+      gate_input.signal = feedback.signal;
+      gate_input.censored = feedback.terminal_status == "censored";
+      gate_input.parameter_lag = record.parameter_lag;
+      gate_input.lag_limit = feedback_lag_limit_;
+      gate_input.events_since_update = record.events_since_update;
+      gate_input.cooldown_events = feedback_cooldown_events_;
+      gate_input.candidate_variation = candidate_variation;
+      gate_input.variation_before = policy_total_variation_;
+      gate_input.variation_budget = variation_budget_;
+      gate_input.has_first_consumer = has_first_consumer;
+      const vast_weighted_proxy::FeedbackGateDecision gate =
+          vast_weighted_proxy::evaluate_feedback_gate(gate_input);
+      record.reason = gate.reason;
+
+      AppliedPolicyUpdate applied;
+      if (gate.apply) {
+        cpu_queue_weight_.store(record.projected_weights.cpu);
+        gpu_queue_weight_.store(record.projected_weights.gpu);
+        ++policy_update_seq_;
+        last_update_feedback_seq_ = record.feedback_seq;
+        policy_total_variation_ += candidate_variation;
+        record.feedback_action = "update";
+        record.variation_after = policy_total_variation_;
+        record.update_seq = policy_update_seq_;
+        record.first_consumer_decision_id = first_consumer_decision_id;
+        record.first_consumer_decision_seq = first_consumer_decision_seq;
+
+        applied.update_timestamp_ms = record.feedback_timestamp_ms;
+        applied.source_decision_ids_json = record.source_decision_ids_json;
+        applied.update_json = "{\"reason\":" + vast_policy_trace::json_quote(record.reason) +
+                              ",\"features\":" + record.feedback_features_json +
+                              ",\"old_weights\":" + weights_json(record.old_weights) +
+                              ",\"new_weights\":" + weights_json(record.projected_weights) + "}";
+        policy_feedback_.push_back(std::move(record));
+        return applied;
+      }
+
+      record.feedback_action = "no_op";
+      record.variation_after = policy_total_variation_;
+      record.update_seq = policy_update_seq_;
+      policy_feedback_.push_back(std::move(record));
+    }
+    return AppliedPolicyUpdate{};
+  }
+
+  void flush_pending_policy_feedback_locked() {
+    (void)process_pending_policy_feedback_locked("unavailable", 0, false);
+    if (!pending_policy_feedback_.empty()) {
+      throw std::runtime_error("Pending policy feedback was not fully drained");
+    }
+  }
+
+  DecisionSnapshot choose_ql_heft_decision(int stage_index, const Task& task) {
+    const StageSpec& stage = stages_[static_cast<std::size_t>(stage_index)];
+    const std::size_t cpu_queue_depth = cpu_queue_.size();
+    const std::size_t gpu_queue_depth = gpu_queue_.size();
+    const int active_cpu = active_cpu_.load();
+    const int active_gpu = active_gpu_.load();
+    const double object_multiplier = 1.0 + 0.01 * static_cast<double>(task.objects);
+    const bool heavy_scene = task.objects >= heavy_object_threshold_;
+    const double queue_snapshot_timestamp_ms = telemetry_timestamp_ms(std::chrono::steady_clock::now());
+
+    std::lock_guard<std::mutex> lock(policy_mutex_);
+    DecisionSnapshot decision;
+    decision.ordinal = next_decision_ordinal_++;
+    decision.decision_seq = decision.ordinal + 1;
+    decision.decision_id = args_.run_id + ":" + args_.policy + ":decision:" +
+                           std::to_string(decision.decision_seq);
+    const AppliedPolicyUpdate applied_update =
+        args_.policy == "ql_heft_online"
+            ? process_pending_policy_feedback_locked(
+                  decision.decision_id, decision.decision_seq, true)
+            : AppliedPolicyUpdate{};
+    decision.update_json = applied_update.update_json;
+    decision.update_timestamp_ms = applied_update.update_timestamp_ms;
+    decision.source_decision_ids_json = applied_update.source_decision_ids_json;
+    if (decision.update_json != "{}") {
+      decision.first_consumer_decision_id = decision.decision_id;
+      decision.first_consumer_decision_seq = decision.decision_seq;
+    }
+    decision.update_seq = policy_update_seq_;
+
+    const double cpu_weight = cpu_queue_weight_.load();
+    const double gpu_weight = gpu_queue_weight_.load();
+    const double heavy_bonus = heavy_gpu_bonus_.load();
+    const double policy_snapshot_timestamp_ms = telemetry_timestamp_ms(std::chrono::steady_clock::now());
+    const double gpu_heavy_multiplier = heavy_scene ? 1.0 / heavy_bonus : 1.0;
+    constexpr double score_epsilon = 1e-9;
+    vast_weighted_proxy::DecisionInput proxy_input;
+    proxy_input.cpu_profile_proxy_ms = stage.cpu_gain;
+    proxy_input.gpu_profile_proxy_ms = stage.gpu_gain;
+    proxy_input.object_multiplier = object_multiplier;
+    proxy_input.cpu_queue_depth = cpu_queue_depth;
+    proxy_input.gpu_queue_depth = gpu_queue_depth;
+    proxy_input.active_cpu = active_cpu;
+    proxy_input.active_gpu = active_gpu;
+    proxy_input.cpu_weight = cpu_weight;
+    proxy_input.gpu_weight = gpu_weight;
+    proxy_input.gpu_heavy_multiplier = gpu_heavy_multiplier;
+    proxy_input.score_epsilon = score_epsilon;
+    proxy_input.stage_preference = stage.preferred == Resource::Cpu
+                                       ? vast_weighted_proxy::Resource::Cpu
+                                       : vast_weighted_proxy::Resource::Gpu;
+    const vast_weighted_proxy::Decision proxy_decision = vast_weighted_proxy::choose(proxy_input);
+    decision.resource = proxy_decision.selected == vast_weighted_proxy::Resource::Cpu
+                            ? Resource::Cpu
+                            : Resource::Gpu;
+    decision.reason = proxy_decision.reason;
+    const double cpu_score = proxy_decision.cpu_score_ms;
+    const double gpu_score = proxy_decision.gpu_score_ms;
+
+    decision.queue_depth = decision.resource == Resource::Cpu ? cpu_queue_depth : gpu_queue_depth;
+    decision.cpu_queue_depth_snapshot = cpu_queue_depth;
+    decision.gpu_queue_depth_snapshot = gpu_queue_depth;
+    decision.selected_score_ms = decision.resource == Resource::Cpu ? cpu_score : gpu_score;
+    decision.policy_version = "simplified-cpu-gpu-weighted-proxy-v4-" +
+                              std::string(args_.policy == "ql_heft_online" ? "online" : "frozen");
+    decision.allowed_resources_json = "[\"cpu\",\"gpu\"]";
+    decision.alternative_scores_json = alternative_scores_json(cpu_score, gpu_score);
+    decision.cost_components_json = cost_components_json(
+        stage.cpu_gain,
+        stage.gpu_gain,
+        object_multiplier,
+        cpu_queue_depth,
+        gpu_queue_depth,
+        active_cpu,
+        active_gpu,
+        cpu_weight,
+        gpu_weight,
+        gpu_heavy_multiplier);
+    decision.parameters_json = parameters_json(
+        cpu_weight, gpu_weight, heavy_bonus, heavy_scene, stage.preferred);
+    decision.tie_break_rule = "score_then_queue_depth_then_stage_preference";
+    decision.graph_version = "custom-signal-graph-v2:" + args_.scenario;
+    decision.profile_version = "custom-signal-stage-proxy-v2";
+    decision.decision_timestamp_ms = telemetry_timestamp_ms(std::chrono::steady_clock::now());
+    decision.feature_provenance_json = decision_feature_provenance_json(
+        task,
+        queue_snapshot_timestamp_ms,
+        policy_snapshot_timestamp_ms,
+        decision.decision_timestamp_ms);
+    decision.replayable = true;
+    return decision;
+  }
+
+  void queue_online_policy_feedback(const Task& task, double latency_ms, double terminal_timestamp_ms) {
+    if (args_.policy != "ql_heft_online" || task.applied_decision_ids.empty()) {
+      return;
+    }
+    const std::size_t gpu_queue_depth = task.max_applied_gpu_queue_depth;
+    PendingPolicyFeedback feedback;
+    feedback.trace_id = frame_trace_id(task);
+    feedback.latency_ms = latency_ms;
+    feedback.deadline_ms = args_.deadline_ms;
+    feedback.gpu_queue_depth = gpu_queue_depth;
+    feedback.late = latency_ms > args_.deadline_ms;
+    feedback.overloaded = gpu_queue_depth > 0;
+    feedback.stable = !feedback.late && gpu_queue_depth == 0;
+    feedback.terminal_timestamp_ms = terminal_timestamp_ms;
+    feedback.source_decision_ids = task.applied_decision_ids;
+    feedback.source_parameter_snapshot_seq = task.oldest_applied_parameter_snapshot_seq;
+    feedback.signal = vast_weighted_proxy::classify_update(
+        latency_ms, args_.deadline_ms, gpu_queue_depth);
+    std::lock_guard<std::mutex> lock(policy_mutex_);
+    pending_policy_feedback_.push_back(std::move(feedback));
   }
 
   Resource choose_resource(int stage_index, const Task& task) const {
@@ -574,15 +1079,6 @@ class AdaptivePipeline {
       }
       return gpu_cost <= cpu_cost ? Resource::Gpu : Resource::Cpu;
     }
-    if (args_.policy == "ql_heft_frozen" || args_.policy == "ql_heft_online") {
-      const double cpu_cost = static_cast<double>(cpu_backlog + 1) * stage.cpu_gain * cpu_queue_weight_.load();
-      double gpu_cost = static_cast<double>(gpu_backlog + 1) * stage.gpu_gain * gpu_queue_weight_.load();
-      if (task.objects >= heavy_object_threshold_) {
-        gpu_cost /= heavy_gpu_bonus_.load();
-      }
-      return gpu_cost <= cpu_cost ? Resource::Gpu : Resource::Cpu;
-    }
-
     if (args_.scenario == "heterogeneous_distribution") {
       if (stage.preferred == Resource::Gpu) {
         return (gpu_backlog <= cpu_backlog + 1 || detect_heavy) ? Resource::Gpu : Resource::Cpu;
@@ -649,23 +1145,34 @@ class AdaptivePipeline {
 
   void record_completion(const Task& task) {
     const auto completed_at = std::chrono::steady_clock::now();
+    const double terminal_timestamp_ms = telemetry_timestamp_ms(completed_at);
     const auto latency_ms =
         std::chrono::duration_cast<std::chrono::microseconds>(completed_at - task.created_at).count() / 1000.0;
     FrameRecord row;
-    row.trace_id = args_.run_id + ":" + std::to_string(task.stream_id) + ":" + std::to_string(task.frame_id);
+    row.trace_id = frame_trace_id(task);
     row.frame_id = task.frame_id;
     row.stream_id = task.stream_id;
     row.objects = task.objects;
     row.ingress_timestamp_ms = telemetry_timestamp_ms(task.created_at);
-    row.egress_timestamp_ms = telemetry_timestamp_ms(completed_at);
+    row.egress_timestamp_ms = terminal_timestamp_ms;
     row.latency_ms = latency_ms;
 
     {
       std::lock_guard<std::mutex> lock(rows_mutex_);
       rows_.push_back(row);
+      for (auto& policy_record : policy_decisions_) {
+        if (std::find(
+                task.applied_decision_ids.begin(),
+                task.applied_decision_ids.end(),
+                policy_record.decision.decision_id) != task.applied_decision_ids.end()) {
+          policy_record.decision.terminal_status = "completed";
+          policy_record.decision.terminal_timestamp_ms = terminal_timestamp_ms;
+        }
+      }
     }
-    if (args_.policy == "ql_heft_online" || args_.policy == "adaptive_weights") {
-      const double direction = latency_ms > args_.deadline_ms ? -0.002 : 0.0002;
+    queue_online_policy_feedback(task, latency_ms, terminal_timestamp_ms);
+    if (args_.policy == "adaptive_weights") {
+      const double direction = latency_ms > args_.deadline_ms ? 0.002 : -0.0002;
       gpu_queue_weight_.store(std::max(0.5, std::min(1.5, gpu_queue_weight_.load() + direction)));
     }
     ++completed_frames_;
@@ -681,7 +1188,25 @@ class AdaptivePipeline {
     }
 
     task.queue_enter_at = std::chrono::steady_clock::now();
-    const Resource resource = choose_resource(task.stage_index, task);
+    Resource resource = Resource::Cpu;
+    if (is_ql_heft_policy(args_.policy)) {
+      task.decision = choose_ql_heft_decision(task.stage_index, task);
+      const bool first_applied_decision = task.applied_decision_ids.empty();
+      task.applied_decision_ids.push_back(task.decision.decision_id);
+      task.max_applied_gpu_queue_depth =
+          std::max(task.max_applied_gpu_queue_depth, task.decision.gpu_queue_depth_snapshot);
+      task.oldest_applied_parameter_snapshot_seq =
+          first_applied_decision
+              ? task.decision.update_seq
+              : std::min(task.oldest_applied_parameter_snapshot_seq, task.decision.update_seq);
+      resource = task.decision.resource;
+    } else {
+      resource = choose_resource(task.stage_index, task);
+      const StageSpec& stage = stages_[static_cast<std::size_t>(task.stage_index)];
+      task.decision.resource = resource;
+      task.decision.queue_depth = resource == Resource::Cpu ? cpu_queue_.size() : gpu_queue_.size();
+      task.decision.selected_score_ms = estimated_cost_ms(resource, stage, task);
+    }
     if (resource == Resource::Cpu) {
       cpu_queue_.push(std::move(task));
     } else {
@@ -692,8 +1217,8 @@ class AdaptivePipeline {
   void process_task(Task task, Resource resource, GpuExecutor* gpu_executor) {
     const StageSpec& stage = stages_[static_cast<std::size_t>(task.stage_index)];
     const auto stage_start = std::chrono::steady_clock::now();
-    const std::size_t queue_depth = resource == Resource::Cpu ? cpu_queue_.size() : gpu_queue_.size();
-    const double predicted_ms = estimated_cost_ms(resource, stage, task);
+    const std::size_t queue_depth = task.decision.queue_depth;
+    const double predicted_ms = task.decision.selected_score_ms;
     if (resource == Resource::Cpu) {
       (void)cpu_stage_step(task, stage);
     } else {
@@ -718,6 +1243,16 @@ class AdaptivePipeline {
     {
       std::lock_guard<std::mutex> lock(rows_mutex_);
       events_.push_back(std::move(event));
+      if (task.decision.replayable) {
+        PolicyDecisionRecord policy_record;
+        policy_record.trace_id = args_.run_id + ":" + std::to_string(task.stream_id) + ":" +
+                                 std::to_string(task.frame_id);
+        policy_record.frame_id = task.frame_id;
+        policy_record.stream_id = task.stream_id;
+        policy_record.stage = stage.name;
+        policy_record.decision = task.decision;
+        policy_decisions_.push_back(std::move(policy_record));
+      }
     }
 
     ++task.stage_index;
@@ -863,6 +1398,16 @@ class AdaptivePipeline {
     return out_path;
   }
 
+  static void write_csv_row(std::ofstream& output, const std::vector<std::string>& fields) {
+    for (std::size_t index = 0; index < fields.size(); ++index) {
+      if (index != 0) {
+        output << ',';
+      }
+      output << vast_policy_trace::csv_escape(fields[index]);
+    }
+    output << '\n';
+  }
+
   void write_csv() {
     const fs::path out_path = resolve_output_path();
     std::ofstream ofs(out_path.string(), std::ios::out | std::ios::trunc);
@@ -899,7 +1444,7 @@ class AdaptivePipeline {
       throw std::runtime_error("Failed to open output file: " + events_path.string());
     }
     events << "schema_version,run_id,trace_id,stream_id,frame_id,stage,role,host,resource,queue_enter_timestamp_ms,stage_start_timestamp_ms,stage_end_timestamp_ms,queue_depth,estimated_cost_ms,policy_action\n";
-    events << std::fixed << std::setprecision(6);
+    events << std::fixed << std::setprecision(12);
     for (const auto& event : events_) {
       events << "2,"
              << args_.run_id << ','
@@ -916,6 +1461,126 @@ class AdaptivePipeline {
              << event.queue_depth << ','
              << event.estimated_cost_ms << ','
              << event.policy_action << '\n';
+    }
+    events.close();
+
+    if (policy_decisions_.empty()) {
+      return;
+    }
+    std::sort(policy_decisions_.begin(), policy_decisions_.end(), [](const PolicyDecisionRecord& a,
+                                                                    const PolicyDecisionRecord& b) {
+      return a.decision.ordinal < b.decision.ordinal;
+    });
+    const fs::path policy_path = out_path.parent_path() / "policy_decisions.csv";
+    std::ofstream policy(policy_path.string(), std::ios::out | std::ios::trunc);
+    if (!policy.is_open()) {
+      throw std::runtime_error("Failed to open output file: " + policy_path.string());
+    }
+    policy << "schema_version,run_id,trace_id,stream_id,frame_id,stage,policy,decision,resource,queue_depth,estimated_cost_ms,deadline_ms,policy_version,allowed_resources_json,alternative_scores_json,cost_components_json,parameters_json,tie_break_rule,decision_mode,update_seq,update_json,reason,decision_id,decision_seq,decision_timestamp_ms,graph_version,profile_version,feature_provenance_json,terminal_status,terminal_timestamp_ms,update_timestamp_ms,source_decision_ids_json,first_consumer_decision_id,first_consumer_decision_seq,causal_trace_completeness,decision_provenance,trace_completeness,telemetry_source\n";
+    for (const auto& record : policy_decisions_) {
+      const DecisionSnapshot& decision = record.decision;
+      const std::string resource = resource_name(decision.resource);
+      const bool causal_complete = decision.decision_id != "unavailable" &&
+                                   decision.decision_seq > 0 &&
+                                   decision.decision_timestamp_ms > 0.0 &&
+                                   decision.terminal_status == "completed" &&
+                                   decision.terminal_timestamp_ms >= decision.decision_timestamp_ms;
+      write_csv_row(
+          policy,
+          {
+              "2",
+              args_.run_id,
+              record.trace_id,
+              std::to_string(record.stream_id),
+              std::to_string(record.frame_id),
+              record.stage,
+              args_.policy,
+              args_.policy + ":" + resource,
+              resource,
+              std::to_string(decision.queue_depth),
+              vast_policy_trace::json_number(decision.selected_score_ms),
+              vast_policy_trace::json_number(args_.deadline_ms),
+              decision.policy_version,
+              decision.allowed_resources_json,
+              decision.alternative_scores_json,
+              decision.cost_components_json,
+              decision.parameters_json,
+              decision.tie_break_rule,
+              "applied",
+              std::to_string(decision.update_seq),
+              decision.update_json,
+              decision.reason,
+              decision.decision_id,
+              std::to_string(decision.decision_seq),
+              vast_policy_trace::json_number(decision.decision_timestamp_ms),
+              decision.graph_version,
+              decision.profile_version,
+              decision.feature_provenance_json,
+              decision.terminal_status,
+              vast_policy_trace::json_number(decision.terminal_timestamp_ms),
+              vast_policy_trace::json_number(decision.update_timestamp_ms),
+              decision.source_decision_ids_json,
+              decision.first_consumer_decision_id,
+              std::to_string(decision.first_consumer_decision_seq),
+              causal_complete ? "full" : "partial",
+              "native_scheduler_trace",
+              "full",
+              "native",
+          });
+    }
+    policy.close();
+
+    if (args_.policy != "ql_heft_online") {
+      return;
+    }
+    if (policy_feedback_.empty()) {
+      throw std::runtime_error("Online policy completed without terminal feedback rows");
+    }
+    std::sort(policy_feedback_.begin(), policy_feedback_.end(), [](const PolicyFeedbackRecord& a,
+                                                                   const PolicyFeedbackRecord& b) {
+      return a.feedback_seq < b.feedback_seq;
+    });
+    const fs::path feedback_path = out_path.parent_path() / "policy_feedback.csv";
+    std::ofstream feedback(feedback_path.string(), std::ios::out | std::ios::trunc);
+    if (!feedback.is_open()) {
+      throw std::runtime_error("Failed to open output file: " + feedback_path.string());
+    }
+    feedback << "schema_version,run_id,policy,feedback_seq,feedback_timestamp_ms,source_trace_id,terminal_status,terminal_timestamp_ms,source_decision_ids_json,source_parameter_snapshot_seq,parameter_lag,events_since_update,old_weights_json,raw_weights_json,projected_weights_json,weight_lower_bounds_json,weight_upper_bounds_json,projection_rule,variation_before,variation_after,variation_budget,feedback_features_json,feedback_action,reason,update_seq,first_consumer_decision_id,first_consumer_decision_seq,feedback_provenance,feedback_trace_completeness,telemetry_source\n";
+    for (const auto& record : policy_feedback_) {
+      write_csv_row(
+          feedback,
+          {
+              "2",
+              args_.run_id,
+              args_.policy,
+              std::to_string(record.feedback_seq),
+              vast_policy_trace::json_number(record.feedback_timestamp_ms),
+              record.source_trace_id,
+              record.terminal_status,
+              vast_policy_trace::json_number(record.terminal_timestamp_ms),
+              record.source_decision_ids_json,
+              std::to_string(record.source_parameter_snapshot_seq),
+              std::to_string(record.parameter_lag),
+              std::to_string(record.events_since_update),
+              weights_json(record.old_weights),
+              weights_json(record.raw_weights),
+              weights_json(record.projected_weights),
+              weights_json(weight_lower_bound_, weight_lower_bound_),
+              weights_json(weight_upper_bound_, weight_upper_bound_),
+              projection_rule_,
+              vast_policy_trace::json_number(record.variation_before),
+              vast_policy_trace::json_number(record.variation_after),
+              vast_policy_trace::json_number(variation_budget_),
+              record.feedback_features_json,
+              record.feedback_action,
+              record.reason,
+              std::to_string(record.update_seq),
+              record.first_consumer_decision_id,
+              std::to_string(record.first_consumer_decision_seq),
+              "native_terminal_feedback",
+              "full",
+              "native",
+          });
     }
   }
 };

@@ -96,6 +96,15 @@ if [[ -z "$SYSTEM" || -z "$SCENARIO" || -z "$DURATION_S" || -z "$STREAMS" || -z 
   exit 2
 fi
 
+if [[ "$BENCHMARK_MODE" == "benchmark" ]]; then
+  case "$SCENARIO" in
+    checkpoint_independent_processes_baseline|checkpoint_video_dag_shared)
+      warn "$SCENARIO is blocked in benchmark mode: current adapters serialize configured stage labels in one pipeline and do not implement the required process-per-detector versus shared-fanout topology contract"
+      exit 2
+      ;;
+  esac
+fi
+
 DETECTOR="${ADAPTER_DETECTOR:-$SYSTEM}"
 BACKEND="${ADAPTER_BACKEND:-$SYSTEM}"
 ADAPTER_DURATION_S="$DURATION_S"
@@ -449,6 +458,11 @@ run_custom_cpp_cuda_qt() {
   local source
   source="$(pick_video_for_stream 1)"
 
+  if [[ "$BENCHMARK_MODE" == "benchmark" ]]; then
+    warn "custom_cpp_cuda_qt is diagnostic-only: the current binary does not consume the configured video source"
+    return 1
+  fi
+
   if [[ "$BENCHMARK_MODE" == "smoke" && "${CUSTOM_SMOKE_USE_BINARY:-0}" != "1" ]]; then
     log "Using explicit synthetic custom adapter for smoke mode"
     python3 "$PROJECT_DIR/scripts/custom_app_emitter.py" \
@@ -661,6 +675,7 @@ native_probe_args() {
     --duration "$ADAPTER_DURATION_S"
     --streams "$STREAMS"
     --video-layout-dir "$runtime_video_layout"
+    --dataset-streams-json "$DATASET_STREAMS_JSON"
     --detect-bin "$detect_bin"
     --min-objects "$MIN_OBJECTS"
     --max-objects "$MAX_OBJECTS"

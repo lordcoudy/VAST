@@ -13,12 +13,18 @@ from pathlib import Path, PurePosixPath
 from typing import Any
 
 from benchmark_contract import (
+    BRANCH_TERMINAL_COLUMNS,
     FRAME_EVENT_COLUMNS,
     FRAME_EVENT_NUMERIC_COLUMNS,
+    INGRESS_LEDGER_COLUMNS,
+    INGRESS_LEDGER_NUMERIC_COLUMNS,
     NETWORK_COLUMNS,
+    STAGE_CONTRACT_COLUMNS,
+    STAGE_CONTRACT_NUMERIC_COLUMNS,
     network_profile_matches,
     validate_csv_row_fields,
 )
+from topology_contract import TOPOLOGY_EVENT_COLUMNS
 
 
 ROLE_START_ORDER = {"aggregator": 0, "gpu_worker": 1, "edge": 2}
@@ -430,7 +436,11 @@ def _csvs(role_dir: Path, pattern: str) -> list[Path]:
 
 def _combine_csv(paths: list[Path], output_csv: Path, fieldnames: list[str]) -> None:
     output_csv.parent.mkdir(parents=True, exist_ok=True)
-    numeric_columns = FRAME_EVENT_NUMERIC_COLUMNS if fieldnames == FRAME_EVENT_COLUMNS else set()
+    numeric_columns = {
+        tuple(FRAME_EVENT_COLUMNS): FRAME_EVENT_NUMERIC_COLUMNS,
+        tuple(INGRESS_LEDGER_COLUMNS): INGRESS_LEDGER_NUMERIC_COLUMNS,
+        tuple(STAGE_CONTRACT_COLUMNS): STAGE_CONTRACT_NUMERIC_COLUMNS,
+    }.get(tuple(fieldnames), set())
     with output_csv.open("w", newline="", encoding="utf-8") as out_f:
         writer = csv.DictWriter(out_f, fieldnames=fieldnames, extrasaction="ignore")
         writer.writeheader()
@@ -476,6 +486,10 @@ def run_distributed(
     startup_grace_s: int,
     mode: str,
     role_timeout_s: int | None = None,
+    topology_events_csv: Path | None = None,
+    ingress_ledger_csv: Path | None = None,
+    branch_terminals_csv: Path | None = None,
+    stage_contracts_csv: Path | None = None,
 ) -> DistributedResult:
     role_map = _role_hosts(hosts_config)
     same_host = _same_host_topology(role_map)
@@ -540,4 +554,44 @@ def run_distributed(
             raise RuntimeError(f"distributed roles did not produce system_metrics.csv: {', '.join(missing_metrics)}")
     if event_paths:
         _combine_csv(event_paths, frame_events_csv, FRAME_EVENT_COLUMNS)
+    if topology_events_csv is not None:
+        topology_paths = [
+            path
+            for role_dir in role_dirs.values()
+            for path in _csvs(role_dir, "topology_events*.csv")
+        ]
+        if mode == "benchmark" and not topology_paths:
+            raise RuntimeError("distributed checkpoint run did not produce topology_events.csv")
+        if topology_paths:
+            _combine_csv(topology_paths, topology_events_csv, TOPOLOGY_EVENT_COLUMNS)
+    if ingress_ledger_csv is not None:
+        ingress_paths = [
+            path
+            for role_dir in role_dirs.values()
+            for path in _csvs(role_dir, "ingress_ledger*.csv")
+        ]
+        if mode == "benchmark" and not ingress_paths:
+            raise RuntimeError("distributed checkpoint run did not produce ingress_ledger.csv")
+        if ingress_paths:
+            _combine_csv(ingress_paths, ingress_ledger_csv, INGRESS_LEDGER_COLUMNS)
+    if branch_terminals_csv is not None:
+        terminal_paths = [
+            path
+            for role_dir in role_dirs.values()
+            for path in _csvs(role_dir, "branch_terminals*.csv")
+        ]
+        if mode == "benchmark" and not terminal_paths:
+            raise RuntimeError("distributed checkpoint run did not produce branch_terminals.csv")
+        if terminal_paths:
+            _combine_csv(terminal_paths, branch_terminals_csv, BRANCH_TERMINAL_COLUMNS)
+    if stage_contracts_csv is not None:
+        contract_paths = [
+            path
+            for role_dir in role_dirs.values()
+            for path in _csvs(role_dir, "stage_contracts*.csv")
+        ]
+        if mode == "benchmark" and not contract_paths:
+            raise RuntimeError("distributed checkpoint run did not produce stage_contracts.csv")
+        if contract_paths:
+            _combine_csv(contract_paths, stage_contracts_csv, STAGE_CONTRACT_COLUMNS)
     return DistributedResult(exit_code, max_clock_offset_ms=preflight.max_clock_offset_ms)

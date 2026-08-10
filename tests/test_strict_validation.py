@@ -53,8 +53,8 @@ class StrictValidationAutomationTests(unittest.TestCase):
             root.mkdir()
             paths = runtime_artifact_paths(root, Path("runs/strict_validation"))
 
-            self.assertEqual(paths[0], root / ".cache" / "savant")
-            self.assertEqual(paths[1], root / "runs" / "strict_validation")
+            self.assertEqual(paths[0], (root / ".cache" / "savant").resolve())
+            self.assertEqual(paths[1], (root / "runs" / "strict_validation").resolve())
             for path in paths:
                 self.assertEqual(guard_repo_child(path, root), path.resolve())
 
