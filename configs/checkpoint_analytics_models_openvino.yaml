@@ -1,0 +1,127 @@
+schema_version: 2
+artifact_kind: checkpoint_analytics_model_bindings
+manifest_id: kpp-openvino-omz-proxies-fp16-v1
+selection_basis: public_omz_proxies_frozen_before_benchmark_results
+runtime_family: openvino_dlstreamer
+precision: FP16
+effective_batch_size: 1
+provenance:
+  catalog: Open Model Zoo
+  catalog_version: 2024.6.0
+  catalog_revision: 602c643ac909f1bbfa1fed0f3c4723772508d7d9
+  license_spdx: Apache-2.0
+  license_url: https://raw.githubusercontent.com/openvinotoolkit/open_model_zoo/602c643ac909f1bbfa1fed0f3c4723772508d7d9/LICENSE
+  acquisition_tool: omz_downloader
+branches:
+  plate_number:
+    proxy_role: plate_number
+    semantic_claim: topology_load_proxy_only
+    source_model_name: vehicle-license-plate-detection-barrier-0106
+    source_model_config_url: https://raw.githubusercontent.com/openvinotoolkit/open_model_zoo/602c643ac909f1bbfa1fed0f3c4723772508d7d9/models/intel/vehicle-license-plate-detection-barrier-0106/model.yml
+    factory: gvadetect
+    device: CPU
+    input_format: BGR
+    batch_size: 1
+    nireq: 1
+    ie_config: PERFORMANCE_HINT=LATENCY,NUM_STREAMS=1,INFERENCE_NUM_THREADS=1
+    detector_id: plate-number-omz-vlp-0106-fp16-v1
+    model_path: ../models/openvino/public/intel/vehicle-license-plate-detection-barrier-0106/FP16/vehicle-license-plate-detection-barrier-0106.xml
+    model_sha256: 69ed174cee70e19b098215f53d1fe6f27edc5b417790bbc44cde7f37cc082fae
+    model_source_url: https://storage.openvinotoolkit.org/repositories/open_model_zoo/2023.0/models_bin/1/vehicle-license-plate-detection-barrier-0106/FP16/vehicle-license-plate-detection-barrier-0106.xml
+    model_source_sha384: b0a70cfc4ccbe85dd5ba5549c2d142d7f922a0a1116657cdcc9f48cb6afc7cc40a596a655b9e6566396c48b72232ff65
+    weights_path: ../models/openvino/public/intel/vehicle-license-plate-detection-barrier-0106/FP16/vehicle-license-plate-detection-barrier-0106.bin
+    weights_sha256: 7f96bfaa0ac3af65d136f6a185d1d78d68d03bab2e1f2faafe1d27ccd94b0dc1
+    weights_source_url: https://storage.openvinotoolkit.org/repositories/open_model_zoo/2023.0/models_bin/1/vehicle-license-plate-detection-barrier-0106/FP16/vehicle-license-plate-detection-barrier-0106.bin
+    weights_source_sha384: 0406e296c9822f4a5e8ee300ad40e5c0a0eeeaf9206f829556cb836cb8f10a4f8a4dd94d1bb16a60562bf1568fd12618
+    input:
+      name: Placeholder
+      layout: NHWC
+      shape: [1, 300, 300, 3]
+      color_order: BGR
+    output:
+      semantics: openvino_detection_output_1x1nx7
+      coordinates: normalized_xyxy
+  vehicle_type:
+    proxy_role: vehicle_type
+    semantic_claim: topology_load_proxy_only
+    source_model_name: vehicle-detection-0202
+    source_model_config_url: https://raw.githubusercontent.com/openvinotoolkit/open_model_zoo/602c643ac909f1bbfa1fed0f3c4723772508d7d9/models/intel/vehicle-detection-0202/model.yml
+    factory: gvadetect
+    device: CPU
+    input_format: BGR
+    batch_size: 1
+    nireq: 1
+    ie_config: PERFORMANCE_HINT=LATENCY,NUM_STREAMS=1,INFERENCE_NUM_THREADS=1
+    detector_id: vehicle-type-omz-vehicle-0202-fp16-v1
+    model_path: ../models/openvino/public/intel/vehicle-detection-0202/FP16/vehicle-detection-0202.xml
+    model_sha256: 08b844a402a615605a626261fd9e27161a044845426ece5aa0872203c50bb5a2
+    model_source_url: https://storage.openvinotoolkit.org/repositories/open_model_zoo/2023.0/models_bin/1/vehicle-detection-0202/FP16/vehicle-detection-0202.xml
+    model_source_sha384: 397543ce3a53c629df7794fc13b919092a9e788003fb6bdf8ef1dafa77392b72732fe408c9d0d13e05ce4af4a7833b74
+    weights_path: ../models/openvino/public/intel/vehicle-detection-0202/FP16/vehicle-detection-0202.bin
+    weights_sha256: c0a602428cfd71ac63a533c23b7cdb8c83e144f118a81001420246701daf0c78
+    weights_source_url: https://storage.openvinotoolkit.org/repositories/open_model_zoo/2023.0/models_bin/1/vehicle-detection-0202/FP16/vehicle-detection-0202.bin
+    weights_source_sha384: 467802734ab235cf653d13707501fa3c44fb025a7ad02921ea958b3032865fce43bbafe4dfabbb2acfb18b0bcd6c0180
+    input:
+      name: image
+      layout: NCHW
+      shape: [1, 3, 512, 512]
+      color_order: BGR
+    output:
+      semantics: openvino_detection_output_1x1nx7
+      coordinates: normalized_xyxy
+  damage:
+    proxy_role: damage
+    semantic_claim: topology_load_proxy_only
+    source_model_name: person-vehicle-bike-detection-2002
+    source_model_config_url: https://raw.githubusercontent.com/openvinotoolkit/open_model_zoo/602c643ac909f1bbfa1fed0f3c4723772508d7d9/models/intel/person-vehicle-bike-detection-2002/model.yml
+    factory: gvadetect
+    device: CPU
+    input_format: BGR
+    batch_size: 1
+    nireq: 1
+    ie_config: PERFORMANCE_HINT=LATENCY,NUM_STREAMS=1,INFERENCE_NUM_THREADS=1
+    detector_id: damage-omz-pvb-2002-fp16-v1
+    model_path: ../models/openvino/public/intel/person-vehicle-bike-detection-2002/FP16/person-vehicle-bike-detection-2002.xml
+    model_sha256: 2630c4cc5a68d8b1f7f224741340ddf8f733e245252379c691083c7d3dc111ed
+    model_source_url: https://storage.openvinotoolkit.org/repositories/open_model_zoo/2023.0/models_bin/1/person-vehicle-bike-detection-2002/FP16/person-vehicle-bike-detection-2002.xml
+    model_source_sha384: f9f35961bc5cffbb0d663bfc1e8b02efab0fbc4c9270578dad2bedac2634bd33428acde64f2e080347c2417948a690ee
+    weights_path: ../models/openvino/public/intel/person-vehicle-bike-detection-2002/FP16/person-vehicle-bike-detection-2002.bin
+    weights_sha256: 7f9344e41167d14179a0da136f87f2570a30ac5399e0363fd6787a9ae18d0fa0
+    weights_source_url: https://storage.openvinotoolkit.org/repositories/open_model_zoo/2023.0/models_bin/1/person-vehicle-bike-detection-2002/FP16/person-vehicle-bike-detection-2002.bin
+    weights_source_sha384: 5f76bab11f3fd97d4313fa6e9d9f1fce0fc669aacfba9e688161c90c89baeb5f9a89a9f68e4ace49c180af35133fbda3
+    input:
+      name: image
+      layout: NCHW
+      shape: [1, 3, 512, 512]
+      color_order: BGR
+    output:
+      semantics: openvino_detection_output_1x1nx7
+      coordinates: normalized_xyxy
+  foreign_object:
+    proxy_role: foreign_object
+    semantic_claim: topology_load_proxy_only
+    source_model_name: person-vehicle-bike-detection-crossroad-1016
+    source_model_config_url: https://raw.githubusercontent.com/openvinotoolkit/open_model_zoo/602c643ac909f1bbfa1fed0f3c4723772508d7d9/models/intel/person-vehicle-bike-detection-crossroad-1016/model.yml
+    factory: gvadetect
+    device: CPU
+    input_format: BGR
+    batch_size: 1
+    nireq: 1
+    ie_config: PERFORMANCE_HINT=LATENCY,NUM_STREAMS=1,INFERENCE_NUM_THREADS=1
+    detector_id: foreign-object-omz-pvb-crossroad-1016-fp16-v1
+    model_path: ../models/openvino/public/intel/person-vehicle-bike-detection-crossroad-1016/FP16/person-vehicle-bike-detection-crossroad-1016.xml
+    model_sha256: baed27b9dde81b75590a382d2aa458d63391cdb146e7ef20c12577c4cb0617d8
+    model_source_url: https://storage.openvinotoolkit.org/repositories/open_model_zoo/2023.0/models_bin/1/person-vehicle-bike-detection-crossroad-1016/FP16/person-vehicle-bike-detection-crossroad-1016.xml
+    model_source_sha384: 812a89ced16938bb32c6648f5278cb4a34940912199de4c9644bbb0e63d5b0728f7f0e0e0f1c0bae6eab36c28b724c3b
+    weights_path: ../models/openvino/public/intel/person-vehicle-bike-detection-crossroad-1016/FP16/person-vehicle-bike-detection-crossroad-1016.bin
+    weights_sha256: a7f04e3243aae3099a00c5276074bdbe57bc8bf91986093dfeafb3b065843f45
+    weights_source_url: https://storage.openvinotoolkit.org/repositories/open_model_zoo/2023.0/models_bin/1/person-vehicle-bike-detection-crossroad-1016/FP16/person-vehicle-bike-detection-crossroad-1016.bin
+    weights_source_sha384: fc945d7885733f86cef916b91e2791761abaa56bc005f6426ec48e7aa573e1529f479f723713944d4a81773a9140df9f
+    input:
+      name: input.1
+      layout: NCHW
+      shape: [1, 3, 512, 512]
+      color_order: BGR
+    output:
+      semantics: openvino_detection_output_1x1nx7
+      coordinates: normalized_xyxy

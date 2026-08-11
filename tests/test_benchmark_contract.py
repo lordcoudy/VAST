@@ -1592,6 +1592,26 @@ class BenchmarkContractTests(unittest.TestCase):
             self.assertTrue(result["reset_claim_eligible"].all())
             self.assertEqual(set(result["process_role"]), {"source_coordinator", "shared_graph_worker"})
 
+    def test_reset_origin_is_independent_of_warmup_excluded_measurement_sequence(self) -> None:
+        ingress = pd.DataFrame(
+            [ingress_ledger_row(admission_seq=31, access_unit_pts_ns=2_700_000)],
+            columns=INGRESS_LEDGER_COLUMNS,
+        )
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "reset_evidence.csv"
+            pd.DataFrame(reset_evidence_rows(), columns=RESET_EVIDENCE_COLUMNS).to_csv(path, index=False)
+
+            result = validate_reset_evidence(
+                path,
+                ingress_ledger=ingress,
+                topology_kind="shared_video_dag",
+                expected_streams=1,
+                required_branches=["a", "b"],
+            )
+
+        self.assertTrue(result["reset_claim_eligible"].all())
+        self.assertEqual(int(result.loc[result["process_role"] == "source_coordinator", "admission_seq_first"].iloc[0]), 1)
+
     def test_reset_evidence_rejects_nonempty_queue_or_engineering_source(self) -> None:
         ingress = pd.DataFrame([ingress_ledger_row()], columns=INGRESS_LEDGER_COLUMNS)
         mutations = [
@@ -1628,6 +1648,33 @@ class BenchmarkContractTests(unittest.TestCase):
                 ).to_csv(path, index=False)
                 with self.assertRaisesRegex(ContractError, message):
                     validate_ingress_ledger(path, frames=frames)
+
+    def test_ingress_ledger_bounds_schedule_selected_wall_clock_start_jitter(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "ingress_ledger.csv"
+            accepted = ingress_ledger_row(
+                ingress_timestamp_ms=98.0,
+                window_start_timestamp_ms=100.0,
+            )
+            pd.DataFrame([accepted], columns=INGRESS_LEDGER_COLUMNS).to_csv(path, index=False)
+
+            ledger = validate_ingress_ledger(
+                path,
+                frames=pd.DataFrame([native_frame_row(ingress_timestamp_ms=98.0)]),
+            )
+
+            self.assertEqual(float(ledger.iloc[0]["ingress_timestamp_ms"]), 98.0)
+
+            rejected = ingress_ledger_row(
+                ingress_timestamp_ms=94.0,
+                window_start_timestamp_ms=100.0,
+            )
+            pd.DataFrame([rejected], columns=INGRESS_LEDGER_COLUMNS).to_csv(path, index=False)
+            with self.assertRaisesRegex(ContractError, "outside \\[t0, t1\\)"):
+                validate_ingress_ledger(
+                    path,
+                    frames=pd.DataFrame([native_frame_row(ingress_timestamp_ms=94.0)]),
+                )
 
     def test_ingress_ledger_rejects_completed_frame_or_censoring_mismatch(self) -> None:
         cases = [
@@ -1816,6 +1863,51 @@ class BenchmarkContractTests(unittest.TestCase):
                 validate_branch_terminals(
                     path,
                     ingress_ledger=ledger,
+                    frames=frames,
+                    required_branches=branches,
+                )
+
+    def test_completed_aggregate_join_may_follow_last_branch_terminal_but_not_precede_it(self) -> None:
+        branches = ("damage", "people_counting")
+        ledger = pd.DataFrame(
+            [ingress_ledger_row(terminal_timestamp_ms=135.0)],
+            columns=INGRESS_LEDGER_COLUMNS,
+        )
+        frames = pd.DataFrame(
+            [
+                native_frame_row(
+                    egress_timestamp_ms=135.0,
+                    e2e_latency_ms=35.0,
+                    objects=2,
+                    detector=CHECKPOINT_FRAME_AGGREGATE_DETECTOR,
+                )
+            ]
+        )
+        rows = [
+            branch_terminal_row(
+                branch_id=branch,
+                terminal_timestamp_ms=127.0 + index,
+                detector=verified_detector_identity(f"native-{branch}-v1"),
+            )
+            for index, branch in enumerate(branches)
+        ]
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "branch_terminals.csv"
+            pd.DataFrame(rows, columns=BRANCH_TERMINAL_COLUMNS).to_csv(path, index=False)
+            result = validate_branch_terminals(
+                path,
+                ingress_ledger=ledger,
+                frames=frames,
+                required_branches=branches,
+            )
+            self.assertTrue(result["branch_terminal_claim_eligible"].all())
+
+            early_ledger = ledger.copy()
+            early_ledger.loc[:, "terminal_timestamp_ms"] = 127.5
+            with self.assertRaisesRegex(ContractError, "aggregate join precedes"):
+                validate_branch_terminals(
+                    path,
+                    ingress_ledger=early_ledger,
                     frames=frames,
                     required_branches=branches,
                 )

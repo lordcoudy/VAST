@@ -10606,3 +10606,17 @@ Claim-state остаётся `blocked_missing_required_pairs_or_gates`: целе
 >
 > </details>
 </details>
+
+## 11 августа 2026 — основной архитектурный benchmark завершён
+
+Проверена целостность и исполнимость VAST benchmark по актуальному frozen-контракту. Предыдущий полный прогон `runs/kpp_publishable_20260629_121408` остановлен, а его данные удалены как потерявшие актуальность. Корень отсутствует, активных benchmark-процессов и контейнеров после завершения новой серии нет.
+
+Матрица уточнена до реализованной preregistered primary architecture cell: `gstreamer_custom`, `kpp_real_h264`, 6 логических потоков, `static_hybrid`, deadline 100 ms, warmup 30 s, measurement 180 s, 10 попарных повторов baseline/shared (20 arms). Нереализованные system/topology-комбинации не выдавались за полный научный benchmark.
+
+Перед серией устранены обнаруженные runtime- и evidence-дефекты: независимый READY timeout, детерминированный per-process GStreamer registry с проверенным `nvh264dec`, корректная граница measurement cohort с допустимым clock offset, полный стабильный summary contract, независимость runner от инвалидированного WSL cwd, а также race между EOS и terminal/drop publication. Полный regression suite: 360/360 тестов успешно; короткий 24-worker pilot принят до основного запуска.
+
+Новая серия находится в `runs/primary_architecture/20260811_003541`. Все 20 arms имеют `exit_code=0`, статус `completed`, accepted native sidecars, `nvh264dec`, закрытый ingress cohort, нулевое цензурирование и все обязательные topology/semantic/decoder/branch/reset/resource-attribution gates. Получено 20 acceptance-манифестов; независимо пересчитаны 200 SHA-256 evidence-файлов: отсутствующих файлов и несовпадений нет. Во всех 10 парах совпадают seed/run_seed, точное входное расписание и последовательность frame keys, длительность окна, censoring rule, resource attribution/signature, semantic/branch contracts и decoder factory.
+
+Итоги когорт: baseline — 10 800 ingress, 10 751 completed, 49 native drops, 0 censored; shared — 10 800 ingress, 10 800 completed, 0 drops, 0 censored. Штатная повторная raw-валидация сформировала `reports/primary_architecture_20260811_003541` и состояние `favorable_preregistered_rule_satisfied_partial_resource_coverage`: приняты 10/10 пар, blockers отсутствуют, все пять preregistered interval conditions выполнены. Медиана наблюдаемого относительного reuse-эффекта `Delta_reuse_obs` равна 0,65858, 95% paired percentile-bootstrap CI [0,65667; 0,66042]; `Delta F_decode = 3` и `Delta F_preprocess = 3`, их нижние границы равны 3. Верхняя граница изменения Vmax равна 0 п.п., drop-max — -1,1111 п.п.
+
+Научная граница сохранена: положительное состояние относится только к этой primary cell и измеренным CPU/GPU stage-интервалам. Оно не доказывает полную экономию NVDEC/transfer/fanout, энергии, FLOPs или универсальное превосходство архитектуры. Относительный Vmax guardrail проходит из-за отсутствия ухудшения, но абсолютная доля нарушений 100-ms SLO равна 100% в обеих руках; поэтому серия не подтверждает соблюдение абсолютного SLO. Для последующего использования в статье подготовлены `primary_architecture_pairs.csv`, `primary_architecture_inference.csv`, `primary_architecture_claim_state.json` и `benchmark_verification.json`; сама статья не изменялась.

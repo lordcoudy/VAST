@@ -159,14 +159,18 @@ class CheckpointAdmissionTests(unittest.TestCase):
             measurement_s=0.05,
             drain_timeout_s=0.25,
             start_lead_s=0.03,
+            measurement_end_boundary_guard_ns=1_000_000,
         )
         self.assertEqual(len(result.process_ids), 4)
         self.assertEqual(set(result.source_process_ids), {"stream-0-source-coordinator"})
         self.assertEqual(sum(row["event_kind"] == "source_read" for row in result.events), 4)
         self.assertEqual(sum(row["event_kind"] == "join_complete" for row in result.events), 1)
         self.assertEqual(result.unresolved_frames, ())
+        self.assertEqual(result.measurement_end_schedule_offset_ns, 49_000_000)
         self.assertIsNotNone(result.admission_audit)
         assert result.admission_audit is not None
+        self.assertEqual(len(result.admission_records), 1)
+        self.assertEqual(result.admission_records[0]["sequence"], 1)
         self.assertEqual(result.admission_audit["admission_count"], 1)
         self.assertEqual(result.admission_audit["complete_consumer_coverage_count"], 1)
         self.assertFalse(result.admission_audit["terminal_ingress_ledger_complete"])

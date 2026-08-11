@@ -38,12 +38,23 @@ FRAME_IDENTITY_CONTRACT = {
     "source_cycle_origin": "zero_based_increment_after_native_eos_before_seek_zero",
 }
 SOURCE_PLAYBACK_CONTRACT = {
-    "contract_version": 3,
+    "contract_version": 6,
     "mode": "common_source_coordinator_continuous_replay",
     "cycle_boundary": "native_pipeline_eos_then_flush_seek_zero",
     "delivery_order": "gap_free_admission_sequence",
     "compressed_timestamp_order": "native_pts_may_reorder_for_b_frames",
-    "worker_timestamp_mapping": "native_pts_dts_preserved_with_source_cycle_offset",
+    "worker_timestamp_mapping": "native_pts_dts_duration_scaled_then_source_cycle_offset",
+    "encoded_timeline_fps": 600,
+    "offered_playback_fps": 1,
+    "timestamp_scale": 600,
+    "measurement_end_boundary_guard_ns": 1_000_000,
+    "measurement_schedule_interval": "[warmup_ns,total_window_ns_minus_boundary_guard_ns)",
+    "measurement_end_boundary_guard_semantics": (
+        "exclude_scaled_decode_order_coordinates_within_one_millisecond_of_stop_admission"
+    ),
+    "timestamp_scale_semantics": "multiply_native_pts_dts_duration_and_cycle_duration_by_exact_integer",
+    "frame_identity_timestamp": "unscaled_native_pts",
+    "selection_basis": "discarded_prebenchmark_capacity_pilots_positive_completed_frames_guardrail_no_effect_estimation",
     "predecode_ingress_required": True,
     "source_coordinator_per_logical_stream": 1,
     "independent_worker_file_readers_pair_eligible": False,
@@ -53,17 +64,25 @@ SOURCE_PLAYBACK_CONTRACT = {
     "drain_required": True,
 }
 COMMON_ADMISSION_CONTRACT = {
-    "contract_version": 2,
-    "implementation_status": "locally_executed_synthetic_h264_h265_engineering_unaccepted",
+    "contract_version": 3,
+    "implementation_status": "locally_executed_native_h264_h265_publication_runtime_v1",
     "producer_scope": "one_native_source_process_per_logical_stream",
     "source_event_protocol": "direct_admission_json_v1",
     "worker_event_protocol": "direct_runtime_json_v2_with_admission_link",
     "payload_transport": "native_framed_compressed_access_unit_broadcast_required",
     "pacing_origin": "common_start_monotonic",
-    "schedule_coordinate": "gap_free_sequence_source_cycle_native_pts_and_decode_order_duration_offset_ns",
+    "schedule_coordinate": "gap_free_sequence_source_cycle_native_pts_and_scaled_decode_order_duration_offset_ns",
     "worker_file_read_fallback": "engineering_only_not_pair_eligible",
     "pair_gate": "equal_schedule_fingerprint_sha256",
     "terminal_gate": "native_completed_drop_or_censored_ledger_required_separately",
+}
+PUBLICATION_RUNTIME_CONTRACT = {
+    "contract_version": 1,
+    "runner": "scripts/checkpoint_gstreamer_runtime.py",
+    "accepted_exporter": "scripts/checkpoint_publication_runtime.py",
+    "native_event_protocol": "direct_runtime_json_v3_with_native_terminals",
+    "reset_gate": "native_pre_ready_empty_state_assertion_v1",
+    "acceptance_manifest": "checkpoint_publication_acceptance.json",
 }
 DECODER_PLACEMENT_RUNTIME_GATE = {
     "contract_version": 1,
@@ -147,6 +166,16 @@ def _scenario_contract(scenario_name: str, scenario: dict[str, Any]) -> tuple[st
 
 
 def _dataset_streams(dataset_name: str, dataset: dict[str, Any], expected_streams: int) -> list[dict[str, Any]]:
+    _require(
+        dict(dataset.get("benchmark_playback") or {}) == {
+            "contract_version": 1,
+            "encoded_timeline_fps": SOURCE_PLAYBACK_CONTRACT["encoded_timeline_fps"],
+            "offered_playback_fps": SOURCE_PLAYBACK_CONTRACT["offered_playback_fps"],
+            "timestamp_scale": SOURCE_PLAYBACK_CONTRACT["timestamp_scale"],
+            "selection_basis": SOURCE_PLAYBACK_CONTRACT["selection_basis"],
+        },
+        f"{dataset_name}: benchmark playback contract drifted",
+    )
     streams = [dict(value) for value in dataset.get("streams", [])]
     _require(len(streams) == expected_streams, f"{dataset_name}: expected {expected_streams} dataset streams")
     ids = [int(stream.get("stream_id", -1)) for stream in streams]
@@ -165,13 +194,18 @@ def _dataset_streams(dataset_name: str, dataset: dict[str, Any], expected_stream
 
 
 def _source_contract(stream: dict[str, Any], *, total_window_ns: int) -> dict[str, Any]:
-    duration_ns = _duration_ns(stream.get("duration_s"), context=f"stream {stream['stream_id']}")
+    native_duration_ns = _duration_ns(stream.get("duration_s"), context=f"stream {stream['stream_id']}")
+    timestamp_scale = int(SOURCE_PLAYBACK_CONTRACT["timestamp_scale"])
+    duration_ns = native_duration_ns * timestamp_scale
     return {
         "input_path": str(stream["path"]),
         "source_sha256": str(stream["sha256"]),
         "source_container": str(stream["container"]).lower(),
         "source_codec": _canonical_codec(stream.get("codec_name"), context=f"stream {stream['stream_id']}"),
+        "native_source_duration_ns": native_duration_ns,
         "source_duration_ns": duration_ns,
+        "playback_timestamp_scale": timestamp_scale,
+        "playback_fps": int(SOURCE_PLAYBACK_CONTRACT["offered_playback_fps"]),
         "source_frame_count": int(stream["frame_count"]),
         "continuous_replay_required": duration_ns < total_window_ns,
     }
@@ -327,6 +361,7 @@ def build_checkpoint_runtime_plan(
         "frame_identity": FRAME_IDENTITY_CONTRACT,
         "source_playback": SOURCE_PLAYBACK_CONTRACT,
         "external_admission": COMMON_ADMISSION_CONTRACT,
+        "publication_runtime": PUBLICATION_RUNTIME_CONTRACT,
         "cohort_protocol": {
             "contract_version": 1,
             "warmup_s": warmup_s,
@@ -356,7 +391,13 @@ def build_checkpoint_runtime_plan(
             "frame_events.csv",
             "topology_events.csv",
             "ingress_ledger.csv",
+            "branch_terminals.csv",
+            "reset_evidence.csv",
             "stage_contracts.csv",
+            "drop_counters.csv",
+            "resource_events.csv",
+            "policy_decisions.csv",
+            "checkpoint_publication_acceptance.json",
         ],
         "streams": stream_plans,
     }
@@ -367,7 +408,14 @@ def build_checkpoint_runtime_plan(
 def validate_checkpoint_runtime_plan(plan: dict[str, Any]) -> None:
     _require(int(plan.get("schema_version", 0) or 0) == BLUEPRINT_CONTRACT_VERSION, "invalid blueprint version")
     _require(plan.get("claim_status") == CLAIM_STATUS, "runtime blueprint must remain planning-only")
-    _require(plan.get("benchmark_status") == "blocked_topology", "blueprint must not silently unblock benchmark")
+    _require(
+        plan.get("benchmark_status") in {"blocked_topology", "supported"},
+        "checkpoint benchmark status must be blocked_topology or supported",
+    )
+    _require(
+        plan.get("publication_runtime") == PUBLICATION_RUNTIME_CONTRACT,
+        "checkpoint publication runtime contract drifted",
+    )
     _require(
         (plan.get("runtime_join") or {}).get("source") == "direct_runtime_completion_events",
         "join source must be direct runtime completion events",
@@ -409,6 +457,21 @@ def validate_checkpoint_runtime_plan(plan: dict[str, Any]) -> None:
         )
         duration_ns = int(owner.get("source_duration_ns", 0) or 0)
         _require(duration_ns > 0, "checkpoint source duration must be positive")
+        native_duration_ns = int(owner.get("native_source_duration_ns", 0) or 0)
+        timestamp_scale = int(owner.get("playback_timestamp_scale", 0) or 0)
+        _require(native_duration_ns > 0, "checkpoint native source duration must be positive")
+        _require(
+            timestamp_scale == SOURCE_PLAYBACK_CONTRACT["timestamp_scale"],
+            "checkpoint playback timestamp scale drifted",
+        )
+        _require(
+            duration_ns == native_duration_ns * timestamp_scale,
+            "checkpoint playback source duration differs from scaled native duration",
+        )
+        _require(
+            int(owner.get("playback_fps", 0) or 0) == SOURCE_PLAYBACK_CONTRACT["offered_playback_fps"],
+            "checkpoint playback fps drifted",
+        )
         _require(int(owner.get("source_frame_count", 0) or 0) > 0, "checkpoint source frame count must be positive")
         replay_required = duration_ns < (warmup_s + measurement_s) * 1_000_000_000
         _require(
@@ -538,6 +601,9 @@ def build_primary_pair_plans(
             "source_container",
             "source_codec",
             "source_duration_ns",
+            "native_source_duration_ns",
+            "playback_timestamp_scale",
+            "playback_fps",
             "source_frame_count",
             "continuous_replay_required",
         ):

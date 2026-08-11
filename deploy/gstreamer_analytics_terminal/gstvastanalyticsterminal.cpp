@@ -44,6 +44,7 @@ enum {
   PROP_EXPECTED_UPSTREAM_FACTORY,
   PROP_EXPECTED_MODEL_SHA256,
   PROP_EXPECTED_WEIGHTS_SHA256,
+  PROP_CURRENT_LEVEL_BUFFERS,
   N_PROPERTIES,
 };
 
@@ -262,6 +263,9 @@ static void gst_vast_analytics_terminal_get_property(
     case PROP_EXPECTED_WEIGHTS_SHA256:
       g_value_set_string(value, self->expected_weights_sha256);
       break;
+    case PROP_CURRENT_LEVEL_BUFFERS:
+      g_value_set_uint(value, 0);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
       break;
@@ -333,6 +337,14 @@ static void gst_vast_analytics_terminal_class_init(GstVastAnalyticsTerminalClass
       "Lowercase SHA-256 of the sibling .bin file required by an OpenVINO IR model",
       nullptr,
       static_cast<GParamFlags>(G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+  properties[PROP_CURRENT_LEVEL_BUFFERS] = g_param_spec_uint(
+      "current-level-buffers",
+      "Current level buffers",
+      "Compatibility queue level reported to DL Streamer by this zero-buffer in-place terminal",
+      0,
+      G_MAXUINT,
+      0,
+      static_cast<GParamFlags>(G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
   g_object_class_install_properties(object_class, N_PROPERTIES, properties);
 
   gst_element_class_set_static_metadata(

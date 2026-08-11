@@ -5,14 +5,20 @@ import argparse
 import csv
 import hashlib
 import json
+import os
 import re
+import shutil
 import socket
+import subprocess
 from pathlib import Path
 from typing import Any
 
 import pandas as pd
 import yaml
 
+from analytics_model_contract import (
+    load_analytics_model_bindings as load_v2_analytics_model_bindings,
+)
 from benchmark_contract import (
     BRANCH_TERMINAL_COLUMNS,
     ContractError,
@@ -23,13 +29,20 @@ from benchmark_contract import (
     STAGE_CONTRACT_COLUMNS,
     validate_stage_contracts,
 )
+from checkpoint_admission import schedule_fingerprint_for_records
 from checkpoint_runtime import (
     SourceLaunchSpec,
     WorkerLaunchSpec,
     build_runtime_reset_evidence,
     run_worker_processes,
 )
+from full_resource_contract import (
+    FANOUT_COUNTER_PROVENANCE,
+    FANOUT_WORK_COUNTER_COLUMNS,
+    FULL_RESOURCE_CONTRACT_VERSION,
+)
 from checkpoint_runtime_plan import CLAIM_STATUS, build_primary_pair_plans
+from checkpoint_publication_runtime import publish_checkpoint_runtime
 from resource_interval_contract import (
     RESOURCE_INTERVAL_COLUMNS,
     RESOURCE_INTERVAL_CONTRACT_VERSION,
@@ -54,10 +67,20 @@ REFERENCE_ANALYTICS_PLACEHOLDERS = {
     "{model_sha256}",
     "{weights_sha256}",
     "{detector_id}",
+    "{device}",
+    "{input_format}",
+    "{batch_size}",
+    "{nireq}",
+    "{ie_config}",
     "{max_buffers}",
 }
 MODEL_BINDING_ENV_FIELDS = {
     "factory": "FACTORY",
+    "device": "DEVICE",
+    "input_format": "INPUT_FORMAT",
+    "batch_size": "BATCH_SIZE",
+    "nireq": "NIREQ",
+    "ie_config": "IE_CONFIG",
     "model_path": "MODEL_PATH",
     "model_sha256": "MODEL_SHA256",
     "weights_sha256": "WEIGHTS_SHA256",
@@ -77,21 +100,75 @@ def build_runtime_cohort_audit(
     window_start_timestamp_ms: int,
     window_end_timestamp_ms: int,
     drain_end_timestamp_ms: int,
+    admission_records: list[dict[str, Any]] | tuple[dict[str, Any], ...] = (),
+    measurement_start_schedule_offset_ns: int | None = None,
+    measurement_end_schedule_offset_ns: int | None = None,
 ) -> dict[str, Any]:
-    """Audit direct runtime coverage without constructing a scientific ingress ledger."""
+    """Audit runtime coverage; native runs use deterministic decode-order schedule membership."""
     _require(window_start_timestamp_ms < window_end_timestamp_ms, "runtime cohort window is invalid")
     _require(drain_end_timestamp_ms >= window_end_timestamp_ms, "runtime drain boundary is invalid")
     branch_values = tuple(str(value) for value in branches)
     source_rows = [row for row in events if str(row.get("event_kind")) == "source_read"]
     _require(bool(source_rows), "runtime cohort audit requires direct source_read events")
-    post_window_source_count = sum(
-        int(row["timestamp_ms"]) >= window_end_timestamp_ms for row in source_rows
+    admissions = list(admission_records)
+    schedule_selected = bool(admissions) or any(
+        value is not None
+        for value in (
+            measurement_start_schedule_offset_ns,
+            measurement_end_schedule_offset_ns,
+        )
     )
-    measurement_sources = [
-        row
-        for row in source_rows
-        if window_start_timestamp_ms <= int(row["timestamp_ms"]) < window_end_timestamp_ms
-    ]
+    measurement_schedule_fingerprint_sha256: str | None = None
+    if schedule_selected:
+        _require(bool(admissions), "schedule-selected cohort audit requires direct admission records")
+        _require(
+            measurement_start_schedule_offset_ns is not None
+            and measurement_end_schedule_offset_ns is not None
+            and 0 <= measurement_start_schedule_offset_ns < measurement_end_schedule_offset_ns,
+            "runtime cohort schedule window is invalid",
+        )
+        measurement_admissions = [
+            row
+            for row in admissions
+            if measurement_start_schedule_offset_ns
+            <= int(row["schedule_offset_ns"])
+            < measurement_end_schedule_offset_ns
+        ]
+        _require(bool(measurement_admissions), "runtime measurement schedule cohort is empty")
+        measurement_input_keys = {
+            (int(row["stream_id"]), str(row["input_frame_key"]))
+            for row in measurement_admissions
+        }
+        post_window_input_keys = {
+            (int(row["stream_id"]), str(row["input_frame_key"]))
+            for row in admissions
+            if int(row["schedule_offset_ns"]) >= measurement_end_schedule_offset_ns
+        }
+        measurement_sources = [
+            row
+            for row in source_rows
+            if (int(row["stream_id"]), str(row["input_frame_key"])) in measurement_input_keys
+        ]
+        post_window_source_count = sum(
+            (int(row["stream_id"]), str(row["input_frame_key"])) in post_window_input_keys
+            for row in source_rows
+        )
+        measurement_schedule_fingerprint_sha256 = schedule_fingerprint_for_records(
+            measurement_admissions
+        )
+        cohort_selection_basis = "decode_order_schedule_offset_half_open"
+    else:
+        measurement_admissions = []
+        measurement_sources = [
+            row
+            for row in source_rows
+            if window_start_timestamp_ms <= int(row["timestamp_ms"]) < window_end_timestamp_ms
+        ]
+        post_window_source_count = sum(
+            int(row["timestamp_ms"]) >= window_end_timestamp_ms for row in source_rows
+        )
+        cohort_selection_basis = "wall_clock_timestamp_half_open_test_fallback"
+
     frame_sources: dict[tuple[int, str], list[dict[str, Any]]] = {}
     for row in measurement_sources:
         frame_sources.setdefault((int(row["stream_id"]), str(row["input_frame_key"])), []).append(row)
@@ -138,10 +215,17 @@ def build_runtime_cohort_audit(
             for stream_id in streams
         )
 
+    external_ingress_schedule_proven = bool(schedule_selected) and all(
+        bool(row.get("consumer_coverage_complete")) for row in measurement_admissions
+    ) and len(complete_source_coverage) == len(measurement_admissions)
     return {
         "schema_version": 1,
         "artifact_kind": "checkpoint_runtime_cohort_audit",
         "claim_status": "engineering_diagnostic_not_native_ingress_ledger",
+        "cohort_selection_basis": cohort_selection_basis,
+        "measurement_start_schedule_offset_ns": measurement_start_schedule_offset_ns,
+        "measurement_end_schedule_offset_ns": measurement_end_schedule_offset_ns,
+        "measurement_schedule_fingerprint_sha256": measurement_schedule_fingerprint_sha256,
         "window_start_timestamp_ms": window_start_timestamp_ms,
         "window_end_timestamp_ms": window_end_timestamp_ms,
         "drain_end_timestamp_ms": drain_end_timestamp_ms,
@@ -152,13 +236,12 @@ def build_runtime_cohort_audit(
         "post_window_source_event_count": post_window_source_count,
         "max_branch_source_timestamp_spread_ms": max(source_spreads, default=0),
         "baseline_branch_input_key_sets_identical": branch_key_sets_identical,
-        "external_ingress_schedule_proven": False,
+        "external_ingress_schedule_proven": external_ingress_schedule_proven,
         "accepted_ingress_ledger_written": False,
         "publication_blockers": [
-            "native common-source framing has not been executed on the target GStreamer stand",
-            "bounded per-consumer sender queues and overflow rejection are unverified on the target stand",
             "runtime cohort rows are not accepted frames.csv or ingress_ledger.csv",
-            "target GStreamer execution and native terminal linkage remain unverified",
+            "runtime audit remains engineering evidence rather than an accepted sidecar",
+            "target resource attribution remains unaccepted",
         ],
     }
 
@@ -186,6 +269,91 @@ def _sha256_file(path: Path) -> str:
         for chunk in iter(lambda: source.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def _gst_registry_path(run_id: str, process_id: str) -> str:
+    identity = f"{run_id}\0{process_id}".encode("utf-8")
+    digest = hashlib.sha256(identity).hexdigest()
+    return f"/tmp/vast-gst-registry-{digest}.bin"
+
+
+def seed_gstreamer_registry_copies(
+    specs: list[WorkerLaunchSpec],
+    source_specs: list[SourceLaunchSpec],
+    *,
+    template_path: Path | None = None,
+    refresh_hardware_plugins: bool = True,
+) -> dict[str, Any]:
+    resolved_template = (
+        template_path
+        if template_path is not None
+        else Path(os.environ.get("VAST_GST_REGISTRY_TEMPLATE", ""))
+    )
+    _require(
+        bool(str(resolved_template)) and resolved_template.is_file(),
+        "prebuilt GStreamer registry template is missing",
+    )
+    base_template_sha256 = _sha256_file(resolved_template)
+    destinations = [
+        Path(spec.environment["GST_REGISTRY"])
+        for spec in (*specs, *source_specs)
+    ]
+    _require(
+        len(destinations) == len(set(destinations)),
+        "checkpoint processes require distinct GStreamer registry copies",
+    )
+    _require(
+        all(path != resolved_template for path in destinations),
+        "checkpoint registry copy must not overwrite its template",
+    )
+    seeded_template = resolved_template
+    hardware_refresh = {"performed": False, "factory": ""}
+    if refresh_hardware_plugins:
+        seeded_template = Path("/tmp/vast-gst-registry-hardware-template.bin")
+        seeded_template.unlink(missing_ok=True)
+        refresh_environment = os.environ.copy()
+        refresh_environment["GST_REGISTRY"] = str(seeded_template)
+        refresh_environment.pop("GST_REGISTRY_UPDATE", None)
+        completed = subprocess.run(
+            ("gst-inspect-1.0", "nvh264dec"),
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=60,
+            env=refresh_environment,
+        )
+        _require(
+            completed.returncode == 0,
+            "GPU-aware GStreamer registry refresh did not expose nvh264dec: "
+            + completed.stderr.strip(),
+        )
+        _require(
+            seeded_template.is_file() and seeded_template.stat().st_size > 0,
+            "GPU-aware GStreamer registry refresh did not create its seed",
+        )
+        seeded_template.chmod(0o600)
+        hardware_refresh = {"performed": True, "factory": "nvh264dec"}
+    seeded_template_sha256 = _sha256_file(seeded_template)
+    for destination in destinations:
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(seeded_template, destination)
+        destination.chmod(0o600)
+        _require(
+            _sha256_file(destination) == seeded_template_sha256,
+            f"GStreamer registry copy digest mismatch: {destination}",
+        )
+    return {
+        "schema_version": 1,
+        "base_template_path": str(resolved_template),
+        "base_template_sha256": base_template_sha256,
+        "seeded_template_sha256": seeded_template_sha256,
+        "hardware_refresh": hardware_refresh,
+        "copy_count": len(destinations),
+        "registry_update_disabled": all(
+            spec.environment.get("GST_REGISTRY_UPDATE") == "no"
+            for spec in (*specs, *source_specs)
+        ),
+    }
 
 
 def _binding_environment_name(field: str, branch: str) -> str:
@@ -244,6 +412,10 @@ def load_analytics_model_bindings(
     *,
     required_branches: list[str] | tuple[str, ...],
 ) -> dict[str, dict[str, str]]:
+    return load_v2_analytics_model_bindings(
+        path,
+        required_branches=required_branches,
+    )
     """Validate branch model artifacts before constructing a native worker command."""
     resolved_manifest = path.resolve()
     raw = _load_yaml(resolved_manifest)
@@ -357,6 +529,8 @@ def build_gstreamer_source_specs(
             str(source["source_codec"]),
             "--source-duration-ns",
             str(source["source_duration_ns"]),
+            "--playback-timestamp-scale",
+            str(source["playback_timestamp_scale"]),
             "--source-replay",
             "continuous",
             "--logical-stream-id",
@@ -370,9 +544,12 @@ def build_gstreamer_source_specs(
                 source_sha256=str(source["source_sha256"]),
                 command=command,
                 environment={
+                    "GST_REGISTRY": _gst_registry_path(run_id, source_id),
+                    "GST_REGISTRY_UPDATE": "no",
                     "VAST_CHECKPOINT_SOURCE_CONTAINER": str(source["source_container"]),
                     "VAST_CHECKPOINT_SOURCE_CODEC": str(source["source_codec"]),
                     "VAST_CHECKPOINT_SOURCE_DURATION_NS": str(source["source_duration_ns"]),
+                    "VAST_CHECKPOINT_PLAYBACK_TIMESTAMP_SCALE": str(source["playback_timestamp_scale"]),
                     "VAST_CHECKPOINT_SOURCE_REPLAY": "continuous",
                     "VAST_CHECKPOINT_ADMISSION_MODE": "native_common_source_coordinator",
                 },
@@ -400,7 +577,6 @@ def build_gstreamer_worker_specs(
     analytics_queue_max_buffers: int | None = None,
 ) -> list[WorkerLaunchSpec]:
     _require(plan.get("claim_status") == CLAIM_STATUS, "checkpoint launch plan must remain planning-only")
-    _require(plan.get("benchmark_status") == "blocked_topology", "engineering launcher must not run a supported benchmark")
     _require(duration_s > 0, "checkpoint engineering duration must be positive")
     _require(
         analytics_terminal_mode in ANALYTICS_TERMINAL_MODES,
@@ -442,6 +618,10 @@ def build_gstreamer_worker_specs(
         _require(
             REFERENCE_ANALYTICS_PLACEHOLDERS.issubset(set(re.findall(r"\{[a-z0-9_]+\}", detect_bin))),
             "vastanalyticsterminal detect bin lacks required branch/model/queue placeholders",
+        )
+        _require(
+            detect_bin.count("name=checkpoint_detector_{branch}") == 1,
+            "vastanalyticsterminal requires one unique branch-derived detector name",
         )
         _require(
             analytics_model_bindings is not None and set(analytics_model_bindings) == set(branches),
@@ -500,6 +680,8 @@ def build_gstreamer_worker_specs(
                         branch_id=branch,
                         command=command,
                         environment={
+                            "GST_REGISTRY": _gst_registry_path(run_id, worker_id),
+                            "GST_REGISTRY_UPDATE": "no",
                             "VAST_CHECKPOINT_DATASET_ID": str(plan["dataset"]),
                             "VAST_CHECKPOINT_SOURCE_SHA256": str(worker["source_sha256"]),
                             "VAST_CHECKPOINT_SOURCE_CONTAINER": str(worker["source_container"]),
@@ -573,6 +755,8 @@ def build_gstreamer_worker_specs(
                     branch_id=None,
                     command=command,
                     environment={
+                        "GST_REGISTRY": _gst_registry_path(run_id, worker_id),
+                        "GST_REGISTRY_UPDATE": "no",
                         "VAST_CHECKPOINT_BRANCHES": ",".join(branches),
                         "VAST_CHECKPOINT_DATASET_ID": str(plan["dataset"]),
                         "VAST_CHECKPOINT_SOURCE_SHA256": str(graph["source_sha256"]),
@@ -682,6 +866,7 @@ def validate_source_provenance(specs: list[SourceLaunchSpec]) -> None:
         source_container = command[command.index("--checkpoint-container") + 1]
         source_codec = command[command.index("--checkpoint-codec") + 1]
         source_duration_ns = command[command.index("--source-duration-ns") + 1]
+        playback_timestamp_scale = command[command.index("--playback-timestamp-scale") + 1]
         source_replay = command[command.index("--source-replay") + 1]
         stream_id = int(command[command.index("--logical-stream-id") + 1])
         _require(dataset_id == spec.dataset_id, f"{spec.source_process_id}: source dataset binding drifted")
@@ -690,8 +875,13 @@ def validate_source_provenance(specs: list[SourceLaunchSpec]) -> None:
         _require(source_container == "mp4", f"{spec.source_process_id}: checkpoint container must be MP4")
         _require(source_codec in {"h264", "h265"}, f"{spec.source_process_id}: checkpoint codec is unsupported")
         _require(int(source_duration_ns) > 0, f"{spec.source_process_id}: source duration must be positive")
+        _require(int(playback_timestamp_scale) > 0, f"{spec.source_process_id}: playback timestamp scale must be positive")
         _require(source_replay == "continuous", f"{spec.source_process_id}: finite source replay must be continuous")
         _require(spec.native_source, f"{spec.source_process_id}: source process is not marked native")
+        _require(
+            spec.environment.get("VAST_CHECKPOINT_PLAYBACK_TIMESTAMP_SCALE") == playback_timestamp_scale,
+            f"{spec.source_process_id}: playback timestamp scale differs between command and runtime environment",
+        )
         _require(
             spec.environment.get("VAST_CHECKPOINT_ADMISSION_MODE") == "native_common_source_coordinator",
             f"{spec.source_process_id}: source is not in native common-source admission mode",
@@ -966,6 +1156,145 @@ def merge_runtime_fanout_intervals(
     return merged
 
 
+
+def merge_runtime_fanout_work_counters(
+    *,
+    specs: list[WorkerLaunchSpec],
+    output_root: Path,
+    run_id: str,
+    topology_events: list[dict[str, Any]] | tuple[dict[str, Any], ...],
+) -> Path | None:
+    """Merge native CPU-work fragments while keeping them runtime-only."""
+
+    shared_specs = [spec for spec in specs if spec.branch_id is None]
+    fragments = [
+        Path(spec.command[spec.command.index("--output-dir") + 1])
+        / "fanout_work_counters.runtime.csv"
+        for spec in specs
+    ]
+    if not shared_specs:
+        _require(
+            not any(path.exists() for path in fragments),
+            "independent-process baseline must not emit fanout work fragments",
+        )
+        return None
+    _require(
+        len(shared_specs) == len(specs),
+        "fanout work merge cannot mix shared and independent workers",
+    )
+
+    expected: dict[tuple[str, int, int, str, str], dict[str, Any]] = {}
+    for raw in topology_events:
+        if str(raw["event_kind"]) != "fanout":
+            continue
+        key = (
+            str(raw["trace_id"]),
+            int(raw["stream_id"]),
+            int(raw["frame_id"]),
+            str(raw["branch_id"]),
+            str(raw["execution_id"]),
+        )
+        _require(key not in expected, "runtime topology contains duplicate fanout work keys")
+        expected[key] = raw
+    _require(bool(expected), "shared runtime produced no fanout topology events")
+
+    rows: list[dict[str, str]] = []
+    observed: set[tuple[str, int, int, str, str]] = set()
+    for spec, fragment in zip(specs, fragments, strict=True):
+        _require(fragment.is_file(), f"{spec.worker_id}: native fanout work fragment was not produced")
+        with fragment.open("r", newline="", encoding="utf-8") as source:
+            reader = csv.DictReader(source)
+            _require(
+                reader.fieldnames == FANOUT_WORK_COUNTER_COLUMNS,
+                f"{spec.worker_id}: fanout work fragment has an unexpected schema",
+            )
+            fragment_rows = list(reader)
+        _require(bool(fragment_rows), f"{spec.worker_id}: fanout work fragment is empty")
+        expected_stream_id = int(spec.stream_id)
+        for row in fragment_rows:
+            integer_columns = (
+                "schema_version",
+                "resource_contract_version",
+                "stream_id",
+                "frame_id",
+                "thread_cpu_time_ns",
+                "work_units",
+            )
+            _require(
+                all(
+                    re.fullmatch(r"0|[1-9][0-9]*", str(row[column]))
+                    for column in integer_columns
+                ),
+                f"{spec.worker_id}: fanout work integer is not canonical",
+            )
+            try:
+                schema_version = int(row["schema_version"])
+                contract_version = int(row["resource_contract_version"])
+                stream_id = int(row["stream_id"])
+                frame_id = int(row["frame_id"])
+                thread_cpu_time_ns = int(row["thread_cpu_time_ns"])
+                work_units = int(row["work_units"])
+            except (TypeError, ValueError) as exc:
+                raise ContractError(f"{spec.worker_id}: fanout work integer is invalid") from exc
+            _require(
+                schema_version == TELEMETRY_SCHEMA_VERSION
+                and contract_version == FULL_RESOURCE_CONTRACT_VERSION,
+                f"{spec.worker_id}: fanout work contract version drifted",
+            )
+            _require(str(row["run_id"]) == run_id, f"{spec.worker_id}: fanout work run_id mismatch")
+            _require(stream_id == expected_stream_id, f"{spec.worker_id}: fanout work stream mismatch")
+            _require(
+                thread_cpu_time_ns > 0 and work_units > 0,
+                f"{spec.worker_id}: fanout CPU work must be positive",
+            )
+            _require(
+                (
+                    str(row["device_id"]),
+                    str(row["counter_scope"]),
+                    str(row["counter_provenance"]),
+                    str(row["telemetry_source"]),
+                )
+                == (
+                    "host:fanout",
+                    "per_trace_resource_work",
+                    FANOUT_COUNTER_PROVENANCE,
+                    "native",
+                ),
+                f"{spec.worker_id}: fanout work provenance drifted",
+            )
+            trace_id = str(row["trace_id"])
+            branch_id = str(row["branch_id"])
+            execution_id = str(row["execution_id"])
+            _require(
+                execution_id == f"{trace_id}:{branch_id}:fanout",
+                f"{spec.worker_id}: fanout work execution identity drifted",
+            )
+            key = (trace_id, stream_id, frame_id, branch_id, execution_id)
+            topology = expected.get(key)
+            _require(topology is not None, f"{spec.worker_id}: fanout work has no topology event")
+            _require(
+                str(topology["input_frame_key"]) == str(row["input_frame_key"]),
+                f"{spec.worker_id}: fanout work input-frame linkage drifted",
+            )
+            _require(key not in observed, "fanout execution has more than one work counter")
+            observed.add(key)
+            rows.append({column: str(row[column]) for column in FANOUT_WORK_COUNTER_COLUMNS})
+
+    _require(
+        observed == set(expected),
+        "runtime fanout work counters do not exactly cover shared topology fanout events",
+    )
+    output_root.mkdir(parents=True, exist_ok=True)
+    merged = output_root / "fanout_work_counters.runtime.csv"
+    with merged.open("w", newline="", encoding="utf-8") as output:
+        writer = csv.DictWriter(output, fieldnames=FANOUT_WORK_COUNTER_COLUMNS)
+        writer.writeheader()
+        writer.writerows(rows)
+    _require(
+        not (output_root / "fanout_work_counters.csv").exists(),
+        "runtime fanout work merge must not create an accepted resource sidecar",
+    )
+    return merged
 def write_runtime_branch_terminals(
     *,
     records: list[dict[str, Any]] | tuple[dict[str, Any], ...],
@@ -1075,11 +1404,20 @@ def write_runtime_branch_terminals(
                 "runtime branch terminal occurred outside the ingress/drain interval",
             )
         if ledger_status in {"completed", "drop"}:
-            _require(
-                max(int(record["terminal_timestamp_ms"]) for record in terminal_records)
-                == int(ledger["terminal_timestamp_ms"]),
-                "runtime aggregate terminal timestamp does not match branch outcomes",
+            branch_terminal_max = max(
+                int(record["terminal_timestamp_ms"]) for record in terminal_records
             )
+            aggregate_terminal = int(ledger["terminal_timestamp_ms"])
+            if ledger_status == "completed":
+                _require(
+                    aggregate_terminal >= branch_terminal_max,
+                    "runtime join timestamp precedes a branch outcome",
+                )
+            else:
+                _require(
+                    aggregate_terminal == branch_terminal_max,
+                    "runtime drop timestamp does not match branch outcomes",
+                )
         for record in terminal_records:
             terminal_status = str(record["terminal_status"])
             if terminal_status == "drop":
@@ -1133,7 +1471,7 @@ def write_runtime_branch_terminals(
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Run or inspect the incomplete engineering GStreamer checkpoint runtime.")
+    parser = argparse.ArgumentParser(description="Run or inspect the native GStreamer checkpoint runtime.")
     parser.add_argument("--config", type=Path, default=Path("configs/experiments.yaml"))
     parser.add_argument("--datasets", type=Path, default=Path("configs/datasets.yaml"))
     parser.add_argument("--scenario", choices=tuple(CHECKPOINT_KEYS), required=True)
@@ -1145,6 +1483,7 @@ def main() -> int:
     parser.add_argument("--duration", type=int, default=5)
     parser.add_argument("--warmup", type=float, default=0.0)
     parser.add_argument("--drain-timeout", type=float, default=10.0)
+    parser.add_argument("--ready-timeout", type=float, default=300.0)
     parser.add_argument("--start-lead-ms", type=int, default=100)
     parser.add_argument("--use-preregistered-window", action="store_true")
     parser.add_argument("--detect-bin", default="identity")
@@ -1163,7 +1502,9 @@ def main() -> int:
         choices=tuple(sorted(ANALYTICS_TERMINAL_MODES)),
         default=TOPOLOGY_ONLY_ANALYTICS_MODE,
     )
-    parser.add_argument("--execute-engineering-runtime", action="store_true")
+    execution_mode = parser.add_mutually_exclusive_group()
+    execution_mode.add_argument("--execute-engineering-runtime", action="store_true")
+    execution_mode.add_argument("--execute-publication-runtime", action="store_true")
     args = parser.parse_args()
 
     project_root = args.config.resolve().parents[1]
@@ -1171,6 +1512,12 @@ def main() -> int:
     datasets = dict(_load_yaml(args.datasets).get("datasets") or {})
     pair = build_primary_pair_plans(config=config, datasets=datasets, system=args.system)
     plan = pair[CHECKPOINT_KEYS[args.scenario]]
+    publication_mode = bool(args.execute_publication_runtime)
+    runtime_output_dir = (
+        args.output_dir / "native_runtime"
+        if publication_mode
+        else args.output_dir
+    )
     runtime_warmup_s = (
         float(plan["cohort_protocol"]["warmup_s"])
         if args.use_preregistered_window
@@ -1184,6 +1531,7 @@ def main() -> int:
     _require(runtime_warmup_s > 0, "decoder placement verification requires a positive engineering warmup")
     _require(runtime_measurement_s > 0, "engineering checkpoint measurement must be positive")
     _require(args.drain_timeout > 0, "engineering checkpoint drain timeout must be positive")
+    _require(args.ready_timeout > 0, "engineering checkpoint READY timeout must be positive")
     _require(args.start_lead_ms >= 0, "engineering checkpoint start lead must be non-negative")
     analytics_model_bindings = None
     if args.analytics_model_manifest is not None:
@@ -1203,7 +1551,7 @@ def main() -> int:
     specs = build_gstreamer_worker_specs(
         plan=plan,
         binary=args.binary.resolve(),
-        output_root=args.output_dir.resolve(),
+        output_root=runtime_output_dir.resolve(),
         project_root=project_root,
         run_id=args.run_id,
         duration_s=args.duration,
@@ -1219,7 +1567,11 @@ def main() -> int:
         run_id=args.run_id,
     )
     preview = {
-        "status": ENGINEERING_STATUS,
+        "status": (
+            "publication_runtime_ready_preview"
+            if publication_mode
+            else ENGINEERING_STATUS
+        ),
         "scenario": args.scenario,
         "topology_kind": plan["topology_kind"],
         "cohort_protocol": plan["cohort_protocol"],
@@ -1227,7 +1579,11 @@ def main() -> int:
         "source_playback": plan["source_playback"],
         "external_admission": plan["external_admission"],
         "source_coordinator_count": len(source_specs),
-        "engineering_source_mode": "native_framed_common_source_unaccepted",
+        "source_mode": (
+            "native_framed_common_source_publication_v1"
+            if publication_mode
+            else "native_framed_common_source_engineering_unaccepted"
+        ),
         "analytics_terminal_mode": args.checkpoint_analytics_mode,
         "native_branch_terminal_bridge_enabled": (
             args.checkpoint_analytics_mode == NATIVE_TERMINAL_ANALYTICS_MODE
@@ -1247,6 +1603,7 @@ def main() -> int:
             "warmup_s": runtime_warmup_s,
             "measurement_s": runtime_measurement_s,
             "drain_timeout_s": float(args.drain_timeout),
+            "ready_timeout_s": float(args.ready_timeout),
             "start_lead_ms": int(args.start_lead_ms),
             "preregistered_window_selected": bool(args.use_preregistered_window),
             "decoder_placement_verification_required": True,
@@ -1256,29 +1613,41 @@ def main() -> int:
         "source_commands": [list(spec.command) for spec in source_specs],
         "accepted_benchmark_sidecars_written": False,
     }
-    if not args.execute_engineering_runtime:
+    if not args.execute_engineering_runtime and not args.execute_publication_runtime:
         print(json.dumps(preview, indent=2, sort_keys=True))
         return 0
 
-    _assert_output_location(args.output_dir, project_root)
+    if publication_mode:
+        _require(
+            plan.get("benchmark_status") == "supported",
+            "publication checkpoint runtime requires benchmark_status=supported",
+        )
+        args.output_dir.mkdir(parents=True, exist_ok=True)
+    else:
+        _require(
+            plan.get("benchmark_status") == "blocked_topology",
+            "engineering checkpoint runtime requires benchmark_status=blocked_topology",
+        )
+        _assert_output_location(args.output_dir, project_root)
     _require(args.binary.is_file(), f"native GStreamer probe binary was not found: {args.binary}")
     _require(args.source_binary.is_file(), f"native GStreamer source binary was not found: {args.source_binary}")
     validate_worker_source_provenance(specs)
     validate_source_provenance(source_specs)
+    registry_seed = seed_gstreamer_registry_copies(specs, source_specs)
     telemetry_sink_preexisting_entry_count = (
-        sum(1 for _ in args.output_dir.iterdir()) if args.output_dir.exists() else 0
+        sum(1 for _ in runtime_output_dir.iterdir()) if runtime_output_dir.exists() else 0
     )
     _require(
         telemetry_sink_preexisting_entry_count == 0,
         "checkpoint reset contract requires a new empty output directory for every arm",
     )
     telemetry_sink_id = hashlib.sha256(
-        f"{args.run_id}\0{args.output_dir.resolve()}".encode("utf-8")
+        f"{args.run_id}\0{runtime_output_dir.resolve()}".encode("utf-8")
     ).hexdigest()
     for spec in specs:
         Path(spec.command[spec.command.index("--output-dir") + 1]).mkdir(parents=True, exist_ok=True)
-    args.output_dir.mkdir(parents=True, exist_ok=True)
-    topology_path = args.output_dir / "topology_events.runtime.csv"
+    runtime_output_dir.mkdir(parents=True, exist_ok=True)
+    topology_path = runtime_output_dir / "topology_events.runtime.csv"
     with topology_path.open("w", newline="", encoding="utf-8") as output:
         writer = csv.DictWriter(output, fieldnames=TOPOLOGY_EVENT_COLUMNS)
         writer.writeheader()
@@ -1297,6 +1666,7 @@ def main() -> int:
                 30.0,
                 runtime_warmup_s + runtime_measurement_s + float(args.drain_timeout) + 20.0,
             ),
+            ready_timeout_s=float(args.ready_timeout),
             on_event=write_event,
             synchronized_lifecycle=True,
             warmup_s=runtime_warmup_s,
@@ -1304,6 +1674,9 @@ def main() -> int:
             drain_timeout_s=float(args.drain_timeout),
             start_lead_s=float(args.start_lead_ms) / 1000.0,
             require_decoder_placement_verification=True,
+            measurement_end_boundary_guard_ns=int(
+                plan["source_playback"]["measurement_end_boundary_guard_ns"]
+            ),
         )
     cohort_audit = build_runtime_cohort_audit(
         events=result.events,
@@ -1312,15 +1685,18 @@ def main() -> int:
         window_start_timestamp_ms=result.window_start_timestamp_ms,
         window_end_timestamp_ms=result.window_end_timestamp_ms,
         drain_end_timestamp_ms=result.drain_end_timestamp_ms,
+        admission_records=result.admission_records,
+        measurement_start_schedule_offset_ns=result.measurement_start_schedule_offset_ns,
+        measurement_end_schedule_offset_ns=result.measurement_end_schedule_offset_ns,
     )
-    cohort_audit_path = args.output_dir / "cohort_audit.runtime.json"
+    cohort_audit_path = runtime_output_dir / "cohort_audit.runtime.json"
     cohort_audit_path.write_text(
         json.dumps(cohort_audit, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
     admission_audit_path: Path | None = None
     if result.admission_audit is not None:
-        admission_audit_path = args.output_dir / "direct_admission_audit.runtime.json"
+        admission_audit_path = runtime_output_dir / "direct_admission_audit.runtime.json"
         admission_audit_path.write_text(
             json.dumps(result.admission_audit, indent=2, sort_keys=True) + "\n",
             encoding="utf-8",
@@ -1328,12 +1704,12 @@ def main() -> int:
     terminal_ingress_path: Path | None = None
     terminal_admission_audit_path: Path | None = None
     if result.terminal_admission_audit is not None:
-        terminal_ingress_path = args.output_dir / "ingress_ledger.runtime.csv"
+        terminal_ingress_path = runtime_output_dir / "ingress_ledger.runtime.csv"
         with terminal_ingress_path.open("w", newline="", encoding="utf-8") as output:
             writer = csv.DictWriter(output, fieldnames=INGRESS_LEDGER_COLUMNS)
             writer.writeheader()
             writer.writerows(result.terminal_ingress_rows)
-        terminal_admission_audit_path = args.output_dir / "terminal_admission_audit.runtime.json"
+        terminal_admission_audit_path = runtime_output_dir / "terminal_admission_audit.runtime.json"
         terminal_admission_audit_path.write_text(
             json.dumps(result.terminal_admission_audit, indent=2, sort_keys=True) + "\n",
             encoding="utf-8",
@@ -1341,6 +1717,7 @@ def main() -> int:
     runtime_reset_evidence_path: Path | None = None
     runtime_reset_audit_path: Path | None = None
     runtime_reset_audit: dict[str, Any] | None = None
+    runtime_reset_rows: list[dict[str, Any]] = []
     if result.terminal_ingress_rows:
         runtime_reset_rows, runtime_reset_audit = build_runtime_reset_evidence(
             run_id=args.run_id,
@@ -1352,29 +1729,36 @@ def main() -> int:
             telemetry_sink_id=telemetry_sink_id,
             telemetry_sink_preexisting_entry_count=telemetry_sink_preexisting_entry_count,
         )
-        runtime_reset_evidence_path = args.output_dir / "reset_evidence.runtime.csv"
+        runtime_reset_evidence_path = runtime_output_dir / "reset_evidence.runtime.csv"
         with runtime_reset_evidence_path.open("w", newline="", encoding="utf-8") as output:
             writer = csv.DictWriter(output, fieldnames=RESET_EVIDENCE_COLUMNS)
             writer.writeheader()
             writer.writerows(runtime_reset_rows)
-        runtime_reset_audit_path = args.output_dir / "reset_evidence_audit.runtime.json"
+        runtime_reset_audit_path = runtime_output_dir / "reset_evidence_audit.runtime.json"
         runtime_reset_audit_path.write_text(
             json.dumps(runtime_reset_audit, indent=2, sort_keys=True) + "\n",
             encoding="utf-8",
         )
     runtime_stage_contract_path: Path | None = None
     runtime_resource_interval_path: Path | None = None
+    runtime_fanout_work_path: Path | None = None
     if not result.unresolved_frames:
         runtime_stage_contract_path = merge_runtime_stage_contracts(
             specs=specs,
             process_ids=result.process_ids,
-            output_root=args.output_dir,
+            output_root=runtime_output_dir,
             run_id=args.run_id,
             topology_events=result.events,
         )
         runtime_resource_interval_path = merge_runtime_fanout_intervals(
             specs=specs,
-            output_root=args.output_dir,
+            output_root=runtime_output_dir,
+            run_id=args.run_id,
+            topology_events=result.events,
+        )
+        runtime_fanout_work_path = merge_runtime_fanout_work_counters(
+            specs=specs,
+            output_root=runtime_output_dir,
             run_id=args.run_id,
             topology_events=result.events,
         )
@@ -1386,15 +1770,43 @@ def main() -> int:
             records=result.branch_terminal_records,
             ingress_rows=result.terminal_ingress_rows,
             required_branches=plan["required_branches"],
-            output_root=args.output_dir,
+            output_root=runtime_output_dir,
         )
-        runtime_branch_terminal_audit_path = args.output_dir / "branch_terminal_audit.runtime.json"
+        runtime_branch_terminal_audit_path = runtime_output_dir / "branch_terminal_audit.runtime.json"
         runtime_branch_terminal_audit_path.write_text(
             json.dumps(runtime_branch_terminal_audit, indent=2, sort_keys=True) + "\n",
             encoding="utf-8",
         )
+    publication_acceptance: dict[str, Any] | None = None
+    if publication_mode:
+        _require(runtime_reset_audit is not None, "publication runtime reset audit is absent")
+        _require(runtime_stage_contract_path is not None, "publication runtime stage contract is absent")
+        primary = dict((config.get("benchmark") or {}).get("primary_architecture_contrast") or {})
+        _require(str(primary.get("system")) == args.system, "publication runtime system differs from primary cell")
+        _require(str(primary.get("dataset")) == str(plan["dataset"]), "publication runtime dataset differs from primary cell")
+        scenario = dict((config.get("scenarios") or {}).get(args.scenario) or {})
+        scenario["name"] = args.scenario
+        dataset = dict(datasets[str(plan["dataset"])])
+        publication_acceptance = publish_checkpoint_runtime(
+            output_dir=args.output_dir,
+            plan=plan,
+            scenario=scenario,
+            dataset=dataset,
+            result=result,
+            reset_rows=runtime_reset_rows,
+            reset_audit=runtime_reset_audit,
+            cohort_audit=cohort_audit,
+            stage_contract_runtime_path=runtime_stage_contract_path,
+            worker_specs=specs,
+            source_specs=source_specs,
+            run_id=args.run_id,
+            policy=str(primary["policy"]),
+            deadline_ms=float(primary["deadline_ms"]),
+        )
+
     status = {
         **preview,
+        "gstreamer_registry_seed": registry_seed,
         "runtime_topology_path": str(topology_path),
         "runtime_stage_contract_path": (
             str(runtime_stage_contract_path) if runtime_stage_contract_path is not None else None
@@ -1402,6 +1814,11 @@ def main() -> int:
         "runtime_resource_interval_path": (
             str(runtime_resource_interval_path)
             if runtime_resource_interval_path is not None
+            else None
+        ),
+        "runtime_fanout_work_path": (
+            str(runtime_fanout_work_path)
+            if runtime_fanout_work_path is not None
             else None
         ),
         "runtime_cohort_audit_path": str(cohort_audit_path),
@@ -1440,9 +1857,13 @@ def main() -> int:
         },
         "common_start_clock": result.common_start_clock,
         "common_start_monotonic_ns": result.common_start_monotonic_ns,
+        "measurement_start_schedule_offset_ns": result.measurement_start_schedule_offset_ns,
+        "measurement_end_schedule_offset_ns": result.measurement_end_schedule_offset_ns,
         "window_start_timestamp_ms": result.window_start_timestamp_ms,
         "window_end_timestamp_ms": result.window_end_timestamp_ms,
         "drain_end_timestamp_ms": result.drain_end_timestamp_ms,
+        "publication_acceptance": publication_acceptance,
+        "accepted_benchmark_sidecars_written": publication_acceptance is not None,
         "publication_blockers": [
             "accepted frames.csv is not emitted by the join coordinator",
             "accepted ingress_ledger.csv is not emitted; ingress_ledger.runtime.csv is engineering-only",
@@ -1454,7 +1875,7 @@ def main() -> int:
             "native CUDA-transfer and NVDEC-busy intervals are not emitted; fanout intervals remain engineering-only",
             "accepted reset_evidence.csv is not emitted; reset_evidence.runtime.csv is engineering-only",
             "target-hardware execution has not been accepted",
-        ],
+        ] if publication_acceptance is None else [],
     }
     print(json.dumps(status, indent=2, sort_keys=True))
     return 0 if not result.unresolved_frames else 2

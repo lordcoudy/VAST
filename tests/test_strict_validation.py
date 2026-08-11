@@ -192,6 +192,10 @@ class StrictValidationAutomationTests(unittest.TestCase):
         self.assertEqual(command[command.index("--deadline-ms") + 1], "100.0")
         self.assertEqual(command[command.index("--policy") + 1], "heft")
         self.assertIn('DATASET_STREAMS_JSON=["data/benchmark/b.mp4"]', command)
+        self.assertIn("--gpus", command)
+        self.assertIn("NVIDIA_DRIVER_CAPABILITIES=compute,utility,video", command)
+        self.assertEqual(
+            command[command.index("--entrypoint") + 1], "/usr/local/bin/vast_native_gst_probe")
 
     def test_openvino_chunk_sources_cycle_when_scenario_has_more_streams_than_clips(self) -> None:
         args = argparse.Namespace(

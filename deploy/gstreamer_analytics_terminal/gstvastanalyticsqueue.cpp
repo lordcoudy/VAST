@@ -190,7 +190,9 @@ static void stop_runtime(GstVastAnalyticsQueue* self) {
   self->flushing = TRUE;
   g_cond_broadcast(&self->condition);
   g_mutex_unlock(&self->lock);
-  gst_pad_stop_task(self->src_pad);
+  if (self->src_pad != nullptr && GST_IS_PAD(self->src_pad)) {
+    gst_pad_stop_task(self->src_pad);
+  }
   g_mutex_lock(&self->lock);
   clear_items_locked(self);
   g_mutex_unlock(&self->lock);

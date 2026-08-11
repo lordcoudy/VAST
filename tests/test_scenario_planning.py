@@ -124,6 +124,13 @@ def local_fixture() -> dict:
 
 
 class ScenarioPlanningTests(unittest.TestCase):
+    def test_runner_binds_project_root_before_long_lived_docker_execution(self) -> None:
+        body = (ROOT / "scripts" / "run_experiments.py").read_text(encoding="utf-8")
+
+        self.assertIn("PROJECT_ROOT = Path(__file__).resolve().parents[1]", body)
+        self.assertIn("cwd=PROJECT_ROOT", body)
+        self.assertNotIn("Path.cwd()", body)
+
     def test_summary_csv_serializes_pairing_passport_and_reset_fields(self) -> None:
         row = {field: "" for field in summary_fieldnames()}
         row.update({
@@ -155,6 +162,7 @@ class ScenarioPlanningTests(unittest.TestCase):
             "slo_violation_rate_percent": 0.0,
             "frames": 5400,
             "telemetry_source": "native",
+            "branch_analytics_contract_sha256": "6" * 64,
             "seed": 20260323,
             "run_seed": 1001,
             "resource_attribution_complete": True,
@@ -191,6 +199,7 @@ class ScenarioPlanningTests(unittest.TestCase):
         self.assertEqual(parsed["run_mode"], "benchmark")
         self.assertEqual(parsed["measurement_signature"], "3" * 64)
         self.assertEqual(parsed["reset_telemetry_sink_id"], "5" * 64)
+        self.assertEqual(parsed["branch_analytics_contract_sha256"], "6" * 64)
 
     def test_summary_schema_accepts_incomplete_noncompleted_rows(self) -> None:
         row = {field: "" for field in summary_fieldnames() if field in {
@@ -292,8 +301,8 @@ class ScenarioPlanningTests(unittest.TestCase):
         self.assertEqual(shared["workload"]["streams"], 6)
         self.assertEqual(shared["pipeline"], SHARED_PROOF_PIPELINE)
         self.assertEqual(baseline["pipeline"], INDEPENDENT_PROOF_PIPELINE)
-        self.assertEqual(shared["benchmark_status"], "blocked_topology")
-        self.assertEqual(baseline["benchmark_status"], "blocked_topology")
+        self.assertEqual(shared["benchmark_status"], "supported")
+        self.assertEqual(baseline["benchmark_status"], "supported")
         self.assertEqual(cfg["benchmark"]["active_scenarios"], ACTIVE_SCENARIOS)
         self.assertEqual(cfg["benchmark"]["report_scenarios"], ACTIVE_SCENARIOS)
         self.assertEqual(cfg["benchmark"]["deadline_ms"], [16.7, 33.3, 50, 100, 500])
@@ -870,22 +879,32 @@ class ScenarioPlanningTests(unittest.TestCase):
         self.assertEqual(set(baseline["placement"]["stages"].values()), {"local"})
         self.assertFalse(baseline["distributed"]["enabled"])
 
-    def test_benchmark_all_excludes_topology_blocked_checkpoint_scenarios(self) -> None:
+    def test_benchmark_all_selects_supported_local_checkpoint_scenarios(self) -> None:
         cfg = load_config(ROOT / "configs" / "experiments.yaml")
 
-        self.assertEqual(select_scenarios(cfg, ["all"], mode="benchmark"), [])
-        self.assertEqual(select_scenarios(cfg, ["all"], mode="benchmark", run_kind="auto"), [])
-        self.assertEqual(select_scenarios(cfg, ["all"], mode="benchmark", run_kind="heterogeneous"), [])
+        self.assertEqual(select_scenarios(cfg, ["all"], mode="benchmark"), ACTIVE_SCENARIOS)
+        self.assertEqual(select_scenarios(cfg, ["all"], mode="benchmark", run_kind="auto"), ACTIVE_SCENARIOS)
+        self.assertEqual(
+            select_scenarios(cfg, ["all"], mode="benchmark", run_kind="heterogeneous"),
+            ACTIVE_SCENARIOS,
+        )
         self.assertEqual(select_scenarios(cfg, ["all"], mode="benchmark", run_kind="distributed"), [])
         self.assertEqual(select_scenarios(cfg, ["all"], mode="smoke"), ["checkpoint_video_dag_shared"])
 
-    def test_strict_adapter_rejects_topology_blocked_checkpoint_scenarios(self) -> None:
+    def test_strict_adapter_binds_checkpoint_publication_to_gstreamer_custom(self) -> None:
         cfg = load_config(ROOT / "configs" / "experiments.yaml")
 
         for name, raw in cfg["scenarios"].items():
             with self.subTest(scenario=name):
                 scenario = normalize_scenario(name, raw)
-                with self.assertRaisesRegex(ContractError, "not publishable.*blocked_topology"):
+                plan = validate_benchmark_adapter(
+                    system_key="gstreamer_custom",
+                    scenario=scenario,
+                    distributed=bool(scenario["distributed"]["enabled"]),
+                    mode="benchmark",
+                )
+                self.assertEqual(plan.contract, "strict_native_schema_v2_topology_v1")
+                with self.assertRaisesRegex(ContractError, "implemented only for gstreamer_custom"):
                     validate_benchmark_adapter(
                         system_key="deepstream",
                         scenario=scenario,
@@ -893,11 +912,13 @@ class ScenarioPlanningTests(unittest.TestCase):
                         mode="benchmark",
                     )
 
-    def test_explicit_checkpoint_benchmark_request_fails_topology_contract(self) -> None:
+    def test_explicit_checkpoint_benchmark_request_is_selectable(self) -> None:
         cfg = load_config(ROOT / "configs" / "experiments.yaml")
 
-        with self.assertRaisesRegex(ContractError, "non-publishable scenarios cannot run"):
-            select_scenarios(cfg, ["checkpoint_video_dag_shared"], mode="benchmark")
+        self.assertEqual(
+            select_scenarios(cfg, ["checkpoint_video_dag_shared"], mode="benchmark"),
+            ["checkpoint_video_dag_shared"],
+        )
 
     def test_checkpoint_adapter_requires_declared_topology_after_status_is_enabled(self) -> None:
         cfg = load_config(ROOT / "configs" / "experiments.yaml")
@@ -911,7 +932,7 @@ class ScenarioPlanningTests(unittest.TestCase):
 
         with self.assertRaisesRegex(ContractError, "must resolve routing_mode"):
             validate_benchmark_adapter(
-                system_key="deepstream",
+                system_key="gstreamer_custom",
                 scenario=checkpoint,
                 distributed=False,
                 mode="benchmark",
@@ -920,7 +941,7 @@ class ScenarioPlanningTests(unittest.TestCase):
         checkpoint["topology"]["routing_mode"] = "all_branches_per_stream"
         checkpoint["workload"]["routing_mode"] = "all_branches_per_stream"
         plan = validate_benchmark_adapter(
-            system_key="deepstream",
+            system_key="gstreamer_custom",
             scenario=checkpoint,
             distributed=False,
             mode="benchmark",
@@ -932,7 +953,7 @@ class ScenarioPlanningTests(unittest.TestCase):
         checkpoint["topology"]["required_branches"] = ["plate_number"]
         with self.assertRaisesRegex(ContractError, "branches must match analytics_function_types"):
             validate_benchmark_adapter(
-                system_key="deepstream",
+                system_key="gstreamer_custom",
                 scenario=checkpoint,
                 distributed=False,
                 mode="benchmark",
@@ -964,9 +985,9 @@ class ScenarioPlanningTests(unittest.TestCase):
         with self.assertRaisesRegex(ContractError, "analytics routing is unresolved"):
             validate_checkpoint_workload(dataset, unresolved_checkpoint)
 
-    def test_publication_report_rejects_topology_blocked_scenarios(self) -> None:
-        with self.assertRaisesRegex(ContractError, "report_scenarios contains non-publishable"):
-            load_report_config(ROOT / "configs" / "experiments.yaml")
+    def test_publication_report_accepts_supported_checkpoint_scenarios(self) -> None:
+        cfg = load_report_config(ROOT / "configs" / "experiments.yaml")
+        self.assertEqual(cfg["benchmark"]["report_scenarios"], ACTIVE_SCENARIOS)
 
     def test_strict_adapter_rejects_unknown_distributed_role(self) -> None:
         scenario = normalize_scenario("distributed_fixture", distributed_fixture())
@@ -1366,9 +1387,10 @@ class ScenarioPlanningTests(unittest.TestCase):
         output = completed.stdout + completed.stderr
 
         self.assertEqual(completed.returncode, 1)
-        self.assertIn("intel/dlstreamer:latest", output)
-        self.assertIn("--entrypoint /workspace/project/build/bin/vast_native_gst_probe", output)
-        self.assertIn("object_detect", output)
+        self.assertIn("vast/openvino-native-probe:dlstreamer-2026.1", output)
+        self.assertIn("--entrypoint /usr/local/bin/vast_native_gst_probe", output)
+        self.assertIn("NVIDIA_DRIVER_CAPABILITIES=compute,utility,video", output)
+        self.assertIn("gvadetect", output)
         self.assertIn("/workspace/project/models/openvino", output)
         self.assertIn("data/benchmark/mot17_02.mp4", output)
 
@@ -1542,11 +1564,13 @@ class ScenarioPlanningTests(unittest.TestCase):
         self.assertIn("jpegenc ! jpegdec", body)
         self.assertIn("sleep-time=1000", body)
 
-    def test_checkpoint_shell_paths_are_blocked_until_topology_is_implemented(self) -> None:
+    def test_checkpoint_shell_routes_only_local_gstreamer_to_publication_runtime(self) -> None:
         body = (ROOT / "scripts" / "run_system_template.sh").read_text(encoding="utf-8")
 
         self.assertIn("checkpoint_independent_processes_baseline|checkpoint_video_dag_shared", body)
-        self.assertIn("do not implement the required process-per-detector versus shared-fanout topology contract", body)
+        self.assertIn("run_checkpoint_publication_runtime", body)
+        self.assertIn("--execute-publication-runtime", body)
+        self.assertIn("publication runtime is implemented only for local gstreamer_custom", body)
 
         with tempfile.TemporaryDirectory() as tmp:
             completed = subprocess.run(
@@ -1571,7 +1595,7 @@ class ScenarioPlanningTests(unittest.TestCase):
                 check=False,
             )
         self.assertEqual(completed.returncode, 2)
-        self.assertIn("blocked in benchmark mode", completed.stderr)
+        self.assertIn("implemented only for local gstreamer_custom", completed.stderr)
 
     def test_native_probe_receives_configured_dataset_streams(self) -> None:
         shell_body = (ROOT / "scripts" / "run_system_template.sh").read_text(encoding="utf-8")
@@ -1668,6 +1692,20 @@ class ScenarioPlanningTests(unittest.TestCase):
                 env=base_env,
             ),
             270,
+        )
+        self.assertEqual(
+            default_command_timeout_s(
+                system_key="gstreamer_custom",
+                duration_s=180,
+                distributed_enabled=False,
+                mode="benchmark",
+                env={
+                    **base_env,
+                    "CHECKPOINT_READY_TIMEOUT_S": "300",
+                    "CHECKPOINT_DRAIN_TIMEOUT_S": "10",
+                },
+            ),
+            610,
         )
         self.assertEqual(
             default_command_timeout_s(
@@ -1782,9 +1820,10 @@ class ScenarioPlanningTests(unittest.TestCase):
 
         self.assertEqual(
             plan["status"],
-            "blocked_primary_architecture_topology_implementation",
+            "ready_primary_architecture_pair_runtime_plan",
         )
-        self.assertFalse(plan["runtime_execution_allowed"])
+        self.assertTrue(plan["runtime_execution_allowed"])
+        self.assertEqual(plan["blockers"], [])
         self.assertEqual(plan["expected_pairs"], 10)
         self.assertEqual(plan["expected_runs"], 20)
         self.assertEqual(len(plan["runs"]), 20)
@@ -1849,7 +1888,7 @@ class ScenarioPlanningTests(unittest.TestCase):
                 scenario=scenario,
             )
 
-    def test_primary_architecture_plan_cli_reports_topology_blocker(self) -> None:
+    def test_primary_architecture_plan_cli_reports_runtime_ready(self) -> None:
         completed = subprocess.run(
             [
                 sys.executable,
@@ -1863,12 +1902,13 @@ class ScenarioPlanningTests(unittest.TestCase):
         )
         payload = json.loads(completed.stdout)
 
-        self.assertFalse(payload["runtime_execution_allowed"])
+        self.assertTrue(payload["runtime_execution_allowed"])
         self.assertEqual(payload["expected_runs"], 20)
         self.assertEqual(
             payload["status"],
-            "blocked_primary_architecture_topology_implementation",
+            "ready_primary_architecture_pair_runtime_plan",
         )
+        self.assertEqual(payload["blockers"], [])
 
     def test_primary_architecture_execution_cells_preserve_frozen_order(self) -> None:
         cfg = load_config(ROOT / "configs" / "experiments.yaml")
@@ -1979,7 +2019,7 @@ class ScenarioPlanningTests(unittest.TestCase):
         self.assertTrue(all(call.kwargs["dry_run_plan"] is False for call in run_mock.call_args_list))
         self.assertEqual(summary_mock.call_args.args[0], run_root / "summary.csv")
 
-    def test_primary_architecture_run_cli_fails_before_output_creation(self) -> None:
+    def test_primary_architecture_run_cli_rejects_seed_drift_before_output_creation(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             output_root = Path(tmp) / "primary-runs"
             completed = subprocess.run(
@@ -1989,6 +2029,8 @@ class ScenarioPlanningTests(unittest.TestCase):
                     "--primary-architecture-run",
                     "--output-root",
                     str(output_root),
+                    "--seed",
+                    "1",
                 ],
                 cwd=ROOT,
                 check=False,
@@ -1997,7 +2039,8 @@ class ScenarioPlanningTests(unittest.TestCase):
             )
 
             self.assertEqual(completed.returncode, 2)
-            self.assertIn("primary architecture execution is blocked", completed.stderr)
+            self.assertIn("uses only the frozen preregistered cell", completed.stderr)
+            self.assertIn("--seed", completed.stderr)
             self.assertFalse(output_root.exists())
 
     def test_primary_architecture_run_cli_rejects_matrix_overrides(self) -> None:

@@ -12,6 +12,7 @@ def main() -> int:
     parser.add_argument("--mode", choices=("baseline", "shared"), required=True)
     parser.add_argument("--branches", required=True)
     parser.add_argument("--sleep-after", type=float, default=0.0)
+    parser.add_argument("--sleep-before-ready", type=float, default=0.0)
     parser.add_argument("--omit-branch", default="")
     parser.add_argument("--admission-linked", action="store_true")
     args = parser.parse_args()
@@ -41,6 +42,8 @@ def main() -> int:
             encoding="utf-8",
             buffering=1,
         )
+        if args.sleep_before_ready > 0:
+            time.sleep(args.sleep_before_ready)
         status.write(f"1 READY {worker_id} {time.monotonic_ns()}\n")
         start_fields = control.readline().strip().split()
         if len(start_fields) != 6 or start_fields[:2] != ["1", "START"]:

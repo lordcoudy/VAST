@@ -248,22 +248,9 @@ class DirectAdmissionCoordinator:
         return tuple(sorted(records, key=lambda row: (int(row["stream_id"]), int(row["sequence"]))))
 
     def schedule_fingerprint(self) -> str:
-        rows = [
-            {
-                "stream_id": state.message.stream_id,
-                "sequence": state.message.sequence,
-                "source_sha256": state.message.source_sha256,
-                "source_cycle": state.message.source_cycle,
-                "access_unit_pts_ns": state.message.access_unit_pts_ns,
-                "payload_sha256": state.message.payload_sha256,
-                "payload_size_bytes": state.message.payload_size_bytes,
-                "schedule_offset_ns": state.message.schedule_offset_ns,
-            }
-            for state in self._admissions.values()
-        ]
-        rows.sort(key=lambda row: (int(row["stream_id"]), int(row["sequence"])))
-        payload = json.dumps(rows, sort_keys=True, separators=(",", ":"), ensure_ascii=True)
-        return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+        return schedule_fingerprint_for_records(
+            asdict(state.message) for state in self._admissions.values()
+        )
 
     def audit(self) -> dict[str, Any]:
         expected = set(self.branches) if self.topology_kind == INDEPENDENT_PROCESSES else {"shared"}
@@ -280,6 +267,60 @@ class DirectAdmissionCoordinator:
             "terminal_ingress_ledger_complete": False,
             "accepted_ingress_ledger_written": False,
         }
+
+
+def schedule_fingerprint_for_records(records: Iterable[dict[str, Any]]) -> str:
+    """Hash only schedule-defining fields, excluding run IDs and wall-clock timestamps."""
+    rows = [
+        {
+            "stream_id": int(row["stream_id"]),
+            "sequence": int(row["sequence"]),
+            "source_sha256": str(row["source_sha256"]),
+            "source_cycle": int(row["source_cycle"]),
+            "access_unit_pts_ns": int(row["access_unit_pts_ns"]),
+            "payload_sha256": str(row["payload_sha256"]),
+            "payload_size_bytes": int(row["payload_size_bytes"]),
+            "schedule_offset_ns": int(row["schedule_offset_ns"]),
+        }
+        for row in records
+    ]
+    rows.sort(key=lambda row: (row["stream_id"], row["sequence"]))
+    payload = json.dumps(rows, sort_keys=True, separators=(",", ":"), ensure_ascii=True)
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+
+def require_matching_measurement_schedule_fingerprints(
+    left: dict[str, Any], right: dict[str, Any]
+) -> str:
+    """Require equal persisted half-open measurement cohorts for a paired comparison."""
+    for audit in (left, right):
+        _require(
+            audit.get("artifact_kind") == "checkpoint_terminal_admission_audit",
+            "paired measurement admission audit has an unexpected artifact kind",
+        )
+        _require(
+            audit.get("cohort_selection_basis") == "decode_order_schedule_offset_half_open",
+            "paired measurement admission audit is not schedule-selected",
+        )
+        _require(
+            int(audit.get("measurement_admission_count", 0) or 0) > 0,
+            "paired measurement admission audit is empty",
+        )
+        _require(
+            bool(audit.get("engineering_terminal_accounting_complete")),
+            "paired measurement admission audit has incomplete terminal accounting",
+        )
+        _sha256(
+            audit.get("measurement_schedule_fingerprint_sha256"),
+            "measurement_schedule_fingerprint_sha256",
+        )
+    left_fingerprint = str(left["measurement_schedule_fingerprint_sha256"])
+    right_fingerprint = str(right["measurement_schedule_fingerprint_sha256"])
+    _require(
+        left_fingerprint == right_fingerprint,
+        "persisted baseline/shared measurement admission schedules differ",
+    )
+    return left_fingerprint
 
 
 def require_matching_schedule_fingerprints(left: DirectAdmissionCoordinator, right: DirectAdmissionCoordinator) -> str:

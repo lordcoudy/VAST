@@ -17,7 +17,11 @@ from benchmark_contract import (
     RESET_EVIDENCE_CONTRACT_VERSION,
     TELEMETRY_SCHEMA_VERSION,
 )
-from checkpoint_admission import DirectAdmissionCoordinator, SourceBinding
+from checkpoint_admission import (
+    DirectAdmissionCoordinator,
+    SourceBinding,
+    schedule_fingerprint_for_records,
+)
 from checkpoint_runtime_plan import validate_checkpoint_runtime_plan
 from topology_contract import INDEPENDENT_PROCESSES, SHARED_VIDEO_DAG, TOPOLOGY_EVENT_COLUMNS
 
@@ -65,11 +69,28 @@ WORKER_EVENT_KINDS = {"source_read", "stage_complete", "fanout", "branch_complet
 RUNTIME_TERMINAL_CLAIM_STATUS = "runtime_terminal_closure_not_accepted_ingress_ledger"
 RUNTIME_TERMINAL_TELEMETRY_SOURCE = "engineering_runtime"
 RUNTIME_RESET_PROVENANCE = "engineering_coordinator_lifecycle_observation_v1"
+NATIVE_SUBPROCESS_ENVIRONMENT_EXCLUSIONS = ("PYTHONHOME", "PYTHONPATH")
 
 
 def _require(condition: bool, message: str) -> None:
     if not condition:
         raise ContractError(message)
+
+
+def native_subprocess_environment(overrides: dict[str, str]) -> dict[str, str]:
+    """Build a native child environment without leaking Python import paths to GStreamer."""
+    environment = os.environ.copy()
+    trusted_pythonpath = environment.pop("VAST_NATIVE_PYTHONPATH", "")
+    for name in NATIVE_SUBPROCESS_ENVIRONMENT_EXCLUSIONS:
+        environment.pop(name, None)
+    if trusted_pythonpath:
+        _require(
+            "\r" not in trusted_pythonpath and "\n" not in trusted_pythonpath,
+            "VAST_NATIVE_PYTHONPATH contains an unsafe line break",
+        )
+        environment["PYTHONPATH"] = trusted_pythonpath
+    environment.update(overrides)
+    return environment
 
 
 def _integer(value: Any, name: str) -> int:
@@ -325,10 +346,13 @@ class RuntimeRunResult:
     lifecycle_records: dict[str, tuple[RuntimeLifecycleStatus, ...]] = field(default_factory=dict)
     common_start_clock: str = ""
     common_start_monotonic_ns: int = 0
+    measurement_start_schedule_offset_ns: int = 0
+    measurement_end_schedule_offset_ns: int = 0
     window_start_timestamp_ms: int = 0
     window_end_timestamp_ms: int = 0
     drain_end_timestamp_ms: int = 0
     admission_audit: dict[str, Any] | None = None
+    admission_records: tuple[dict[str, Any], ...] = ()
     terminal_ingress_rows: tuple[dict[str, Any], ...] = ()
     terminal_admission_audit: dict[str, Any] | None = None
     branch_terminal_records: tuple[dict[str, Any], ...] = ()
@@ -375,11 +399,13 @@ def build_runtime_reset_evidence(
     _require(preexisting >= 0, "reset sink preexisting entry count must be non-negative")
     ingress_rows = list(result.terminal_ingress_rows)
     _require(bool(ingress_rows), "runtime reset evidence requires terminal ingress rows")
+    admission_rows = list(result.admission_records)
+    _require(bool(admission_rows), "runtime reset evidence requires complete admission records")
     cohort_ids = {str(row["cohort_id"]) for row in ingress_rows}
     _require(len(cohort_ids) == 1, "runtime reset evidence requires one cohort")
     cohort_id = next(iter(cohort_ids))
     first_ingress: dict[int, dict[str, Any]] = {}
-    for row in sorted(ingress_rows, key=lambda item: (int(item["stream_id"]), int(item["admission_seq"]))):
+    for row in sorted(admission_rows, key=lambda item: (int(item["stream_id"]), int(item["sequence"]))):
         first_ingress.setdefault(int(row["stream_id"]), row)
 
     def lifecycle(instance_id: str) -> tuple[RuntimeLifecycleStatus, ...]:
@@ -446,7 +472,7 @@ def build_runtime_reset_evidence(
             pid=result.source_process_ids[spec.source_process_id],
             queue_depths={},
             source_cycle_first=int(first["source_cycle"]),
-            admission_seq_first=int(first["admission_seq"]),
+            admission_seq_first=int(first["sequence"]),
         )
 
     worker_values = tuple(specs)
@@ -478,7 +504,7 @@ def build_runtime_reset_evidence(
         and terminal_states == {"DRAINED"}
         and len(process_tokens) == len(set(process_tokens))
         and all(
-            int(first["source_cycle"]) == 0 and int(first["admission_seq"]) == 1
+            int(first["source_cycle"]) == 0 and int(first["sequence"]) == 1
             for first in first_ingress.values()
         )
     )
@@ -630,10 +656,12 @@ class DirectRuntimeJoinCoordinator:
             elif message.event_kind == "branch_complete" and message.stage == branch:
                 _require(parent_shapes == {("stage_complete", branch, branch)}, "baseline completion parent mismatch")
             elif message.event_kind == "branch_drop" and message.stage == branch:
-                _require(
-                    parent_shapes == {("stage_complete", f"preprocess_{branch}", branch)},
-                    "baseline drop parent mismatch",
+                expected_drop_parents = (
+                    {("stage_complete", f"decode_{branch}", branch)}
+                    if message.terminal_reason == "native_postdecode_preprocess_queue_full_drop_newest"
+                    else {("stage_complete", f"preprocess_{branch}", branch)}
                 )
+                _require(parent_shapes == expected_drop_parents, "baseline drop parent mismatch")
             else:
                 raise ContractError("baseline worker emitted an event outside its source/decode/preprocess/branch chain")
         else:
@@ -657,7 +685,12 @@ class DirectRuntimeJoinCoordinator:
             elif message.event_kind == "branch_complete" and message.stage == branch and branch in self.branches:
                 _require(parent_shapes == {("stage_complete", branch, branch)}, "shared completion parent mismatch")
             elif message.event_kind == "branch_drop" and message.stage == branch and branch in self.branches:
-                _require(parent_shapes == {("fanout", "fanout", branch)}, "shared drop parent mismatch")
+                expected_drop_parents = (
+                    {("stage_complete", "decode", "shared")}
+                    if message.terminal_reason == "native_postdecode_preprocess_queue_full_drop_newest"
+                    else {("fanout", "fanout", branch)}
+                )
+                _require(parent_shapes == expected_drop_parents, "shared drop parent mismatch")
             else:
                 raise ContractError("shared worker emitted an event outside its prefix/fanout/branch chain")
 
@@ -705,7 +738,13 @@ class DirectRuntimeJoinCoordinator:
                     _require(state.admission_id == message.admission_id, "runtime event changed admission_id")
                     _require(state.payload_sha256 == message.payload_sha256, "runtime event changed payload_sha256")
             self._bind_worker_frame(state, message)
-            _require(message.execution_id not in self._execution_ids, "duplicate runtime execution_id")
+            _require(
+                message.execution_id not in self._execution_ids,
+                "duplicate runtime execution_id "
+                f"{message.execution_id!r} from worker={observed_worker_id!r} "
+                f"event_kind={message.event_kind!r} stage={message.stage!r} "
+                f"branch_id={message.branch_id!r} input_frame_key={message.input_frame_key!r}",
+            )
             self._validate_shape(message, binding, state)
             row = {
                 "schema_version": TELEMETRY_SCHEMA_VERSION,
@@ -866,6 +905,8 @@ def build_runtime_terminal_ingress_ledger(
     admission_records: Iterable[dict[str, Any]],
     terminal_frame_records: Iterable[dict[str, Any]],
     lifecycle_statuses: dict[str, tuple[str, ...]],
+    measurement_start_schedule_offset_ns: int,
+    measurement_end_schedule_offset_ns: int,
     window_start_timestamp_ms: int,
     window_end_timestamp_ms: int,
     drain_end_timestamp_ms: int,
@@ -873,6 +914,10 @@ def build_runtime_terminal_ingress_ledger(
     """Close direct admissions for engineering diagnostics without producing an accepted ledger."""
     _require(window_start_timestamp_ms < window_end_timestamp_ms, "terminal ingress window is invalid")
     _require(drain_end_timestamp_ms >= window_end_timestamp_ms, "terminal ingress drain boundary is invalid")
+    _require(
+        0 <= measurement_start_schedule_offset_ns < measurement_end_schedule_offset_ns,
+        "terminal ingress schedule window is invalid",
+    )
     admissions = list(admission_records)
     frames = list(terminal_frame_records)
     run_ids = {str(row["run_id"]) for row in admissions}
@@ -890,10 +935,18 @@ def build_runtime_terminal_ingress_ledger(
     measurement = [
         row
         for row in admissions
-        if window_start_timestamp_ms <= int(row["admission_timestamp_ms"]) < window_end_timestamp_ms
+        if measurement_start_schedule_offset_ns
+        <= int(row["schedule_offset_ns"])
+        < measurement_end_schedule_offset_ns
     ]
-    pre_window_count = sum(int(row["admission_timestamp_ms"]) < window_start_timestamp_ms for row in admissions)
-    post_window_count = sum(int(row["admission_timestamp_ms"]) >= window_end_timestamp_ms for row in admissions)
+    pre_window_count = sum(
+        int(row["schedule_offset_ns"]) < measurement_start_schedule_offset_ns
+        for row in admissions
+    )
+    post_window_count = sum(
+        int(row["schedule_offset_ns"]) >= measurement_end_schedule_offset_ns
+        for row in admissions
+    )
     measurement_ids = {str(row["admission_id"]) for row in measurement}
     extra_terminal_frame_count = sum(admission_id not in admission_id_set for admission_id in frames_by_admission)
     has_censored = any(
@@ -987,7 +1040,6 @@ def build_runtime_terminal_ingress_ledger(
         and len(ledger_rows) == len(measurement)
         and completed_count + drop_count + censored_count == len(measurement)
         and lifecycle_terminal
-        and post_window_count == 0
         and extra_terminal_frame_count == 0
     )
     engineering_terminal_accounting_complete = (
@@ -1001,6 +1053,10 @@ def build_runtime_terminal_ingress_ledger(
         "claim_status": RUNTIME_TERMINAL_CLAIM_STATUS,
         "run_id": run_id,
         "cohort_id": cohort_id,
+        "cohort_selection_basis": "decode_order_schedule_offset_half_open",
+        "measurement_start_schedule_offset_ns": measurement_start_schedule_offset_ns,
+        "measurement_end_schedule_offset_ns": measurement_end_schedule_offset_ns,
+        "measurement_schedule_fingerprint_sha256": schedule_fingerprint_for_records(measurement),
         "admission_count": len(admissions),
         "pre_window_admission_count": pre_window_count,
         "measurement_admission_count": len(measurement),
@@ -1072,6 +1128,7 @@ def run_worker_processes(
     specs: Iterable[WorkerLaunchSpec],
     source_specs: Iterable[SourceLaunchSpec] = (),
     timeout_s: float = 30.0,
+    ready_timeout_s: float | None = None,
     on_event: Callable[[dict[str, Any]], None] | None = None,
     synchronized_lifecycle: bool = False,
     warmup_s: float = 0.0,
@@ -1079,6 +1136,7 @@ def run_worker_processes(
     drain_timeout_s: float = 10.0,
     start_lead_s: float = 0.1,
     require_decoder_placement_verification: bool = False,
+    measurement_end_boundary_guard_ns: int = 0,
 ) -> RuntimeRunResult:
     _require(os.name == "posix", "direct checkpoint event pipes require a POSIX runtime")
     spec_values = list(specs)
@@ -1096,10 +1154,27 @@ def run_worker_processes(
             "admission source processes do not cover every worker stream",
         )
     if synchronized_lifecycle:
+        resolved_ready_timeout_s = (
+            float(timeout_s) if ready_timeout_s is None else float(ready_timeout_s)
+        )
+        _require(
+            resolved_ready_timeout_s > 0,
+            "checkpoint READY timeout must be positive",
+        )
         _require(warmup_s >= 0, "checkpoint warmup must be non-negative")
         _require(measurement_s > 0, "checkpoint measurement must be positive")
         _require(drain_timeout_s > 0, "checkpoint drain timeout must be positive")
         _require(start_lead_s >= 0, "checkpoint start lead must be non-negative")
+        _require(
+            isinstance(measurement_end_boundary_guard_ns, int)
+            and not isinstance(measurement_end_boundary_guard_ns, bool)
+            and measurement_end_boundary_guard_ns >= 0,
+            "checkpoint measurement-end boundary guard must be a non-negative integer ns value",
+        )
+        _require(
+            measurement_end_boundary_guard_ns < int(measurement_s * 1_000_000_000),
+            "checkpoint measurement-end boundary guard must be shorter than the measurement window",
+        )
         _require(
             timeout_s > start_lead_s + warmup_s + measurement_s,
             "checkpoint timeout must extend beyond the synchronized measurement window",
@@ -1135,8 +1210,7 @@ def run_worker_processes(
             if synchronized_lifecycle:
                 control_write_fds[spec.worker_id] = control_write_fd
                 status_read_fds[spec.worker_id] = status_read_fd
-            environment = os.environ.copy()
-            environment.update(spec.environment)
+            environment = native_subprocess_environment(spec.environment)
             environment.update(
                 {
                     RUNTIME_EVENT_FD_ENV: str(write_fd),
@@ -1197,8 +1271,7 @@ def run_worker_processes(
                 if worker.stream_id == spec.stream_id
             }
             _require(bool(consumers), f"admission source {spec.source_process_id} has no consumers")
-            environment = os.environ.copy()
-            environment.update(spec.environment)
+            environment = native_subprocess_environment(spec.environment)
             environment.update(
                 {
                     RUNTIME_ADMISSION_EVENT_FD_ENV: str(event_write_fd),
@@ -1386,9 +1459,14 @@ def run_worker_processes(
     for thread in status_threads:
         thread.start()
 
-    deadline = time.monotonic() + timeout_s
+    ready_deadline = time.monotonic() + (
+        resolved_ready_timeout_s if synchronized_lifecycle else timeout_s
+    )
+    deadline = ready_deadline
     common_start_monotonic_ns = 0
     common_start_clock = ""
+    measurement_start_schedule_offset_ns = 0
+    measurement_end_schedule_offset_ns = 0
     window_start_timestamp_ms = 0
     window_end_timestamp_ms = 0
     drain_end_timestamp_ms = 0
@@ -1413,8 +1491,19 @@ def run_worker_processes(
                 )
                 if ready == set(all_processes):
                     break
-                _require(time.monotonic() < deadline, "checkpoint READY barrier timed out")
+                missing_ready = sorted(set(all_processes) - ready)
+                _require(
+                    time.monotonic() < ready_deadline,
+                    "checkpoint READY barrier timed out; missing workers: "
+                    + ",".join(missing_ready),
+                )
                 time.sleep(0.005)
+
+            # Startup/model compilation is outside the benchmark window. Give the
+            # synchronized lifecycle its complete execution budget only after every
+            # process has reached READY, so a cold startup cannot shorten warmup,
+            # measurement, or terminal drain.
+            deadline = time.monotonic() + timeout_s
 
             with output_lock:
                 ready_statuses = {
@@ -1433,6 +1522,10 @@ def run_worker_processes(
             common_start_monotonic_ns = native_clock_now_ns + lead_ns
             coordinator_start_monotonic_ns = time.monotonic_ns() + lead_ns
             start_timestamp_ms = int(time.time() * 1000 + start_lead_s * 1000)
+            measurement_start_schedule_offset_ns = int(warmup_s * 1_000_000_000)
+            measurement_end_schedule_offset_ns = int(
+                (warmup_s + measurement_s) * 1_000_000_000
+            ) - measurement_end_boundary_guard_ns
             window_start_timestamp_ms = start_timestamp_ms + int(warmup_s * 1000)
             window_end_timestamp_ms = window_start_timestamp_ms + int(measurement_s * 1000)
             drain_end_timestamp_ms = window_end_timestamp_ms + int(drain_timeout_s * 1000)
@@ -1558,11 +1651,15 @@ def run_worker_processes(
     }
     terminal_ingress_rows: tuple[dict[str, Any], ...] = ()
     terminal_admission_audit: dict[str, Any] | None = None
+    admission_records: tuple[dict[str, Any], ...] = ()
     if admission_coordinator is not None:
+        admission_records = admission_coordinator.admission_records()
         terminal_ingress_rows, terminal_admission_audit = build_runtime_terminal_ingress_ledger(
-            admission_records=admission_coordinator.admission_records(),
+            admission_records=admission_records,
             terminal_frame_records=coordinator.terminal_frame_records(),
             lifecycle_statuses=lifecycle_state_values,
+            measurement_start_schedule_offset_ns=measurement_start_schedule_offset_ns,
+            measurement_end_schedule_offset_ns=measurement_end_schedule_offset_ns,
             window_start_timestamp_ms=window_start_timestamp_ms,
             window_end_timestamp_ms=window_end_timestamp_ms,
             drain_end_timestamp_ms=drain_end_timestamp_ms,
@@ -1579,10 +1676,13 @@ def run_worker_processes(
         lifecycle_records=lifecycle_record_values,
         common_start_clock=common_start_clock,
         common_start_monotonic_ns=common_start_monotonic_ns,
+        measurement_start_schedule_offset_ns=measurement_start_schedule_offset_ns,
+        measurement_end_schedule_offset_ns=measurement_end_schedule_offset_ns,
         window_start_timestamp_ms=window_start_timestamp_ms,
         window_end_timestamp_ms=window_end_timestamp_ms,
         drain_end_timestamp_ms=drain_end_timestamp_ms,
         admission_audit=admission_coordinator.audit() if admission_coordinator is not None else None,
+        admission_records=admission_records,
         terminal_ingress_rows=terminal_ingress_rows,
         terminal_admission_audit=terminal_admission_audit,
         branch_terminal_records=coordinator.branch_terminal_records(),

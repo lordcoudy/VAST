@@ -192,6 +192,7 @@ build_reference_custom_app() {
   local custom_gst_plugin="$PROJECT_DIR/build/lib/libgstadaptivescheduler.so"
   local analytics_terminal_plugin="$PROJECT_DIR/build/lib/libgstvastanalyticsterminal.so"
   local analytics_queue_plugin="$PROJECT_DIR/build/lib/libgstvastanalyticsqueue.so"
+  local checkpoint_prefix_queue_plugin="$PROJECT_DIR/build/lib/libgstvastcheckpointprefixqueue.so"
 
   if [[ ! -f "$PROJECT_DIR/CMakeLists.txt" ]]; then
     warn "Missing root CMakeLists.txt, cannot build native binaries"
@@ -217,6 +218,10 @@ build_reference_custom_app() {
   log "Building bounded analytics queue -> $analytics_queue_plugin"
   cmake --build "$build_dir" --target gstvastanalyticsqueue --parallel "$(nproc)" || \
     warn "Bounded analytics queue build failed; explicit checkpoint drop telemetry will fail"
+
+  log "Building bounded post-decode prefix queue -> $checkpoint_prefix_queue_plugin"
+  cmake --build "$build_dir" --target gstvastcheckpointprefixqueue --parallel "$(nproc)" || \
+    warn "Bounded post-decode prefix queue build failed; safe checkpoint overload handling will fail"
 
   if command -v nvcc >/dev/null 2>&1; then
     log "Building custom CUDA + Qt app -> $out_bin"

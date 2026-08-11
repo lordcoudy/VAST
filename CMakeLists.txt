@@ -101,6 +101,22 @@ if(VAST_BUILD_GSTREAMER_CUSTOM_PLUGIN)
     target_link_libraries(gstvastanalyticsqueue PRIVATE
       PkgConfig::GSTREAMER_CUSTOM_PLUGIN
     )
+
+    add_library(gstvastcheckpointprefixqueue MODULE
+      deploy/gstreamer_analytics_terminal/gstvastcheckpointprefixqueue.cpp
+    )
+    set_target_properties(gstvastcheckpointprefixqueue PROPERTIES
+      LIBRARY_OUTPUT_DIRECTORY "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}"
+    )
+    target_compile_definitions(gstvastcheckpointprefixqueue PRIVATE
+      PACKAGE="vast"
+    )
+    target_include_directories(gstvastcheckpointprefixqueue PRIVATE
+      deploy/native_gst_probe
+    )
+    target_link_libraries(gstvastcheckpointprefixqueue PRIVATE
+      PkgConfig::GSTREAMER_CUSTOM_PLUGIN
+    )
   else()
     message(WARNING "GStreamer base/video development packages were not found; custom GStreamer plugins will not be built")
   endif()

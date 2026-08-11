@@ -144,6 +144,10 @@ def validate_benchmark_adapter(
         "checkpoint_independent_processes_baseline",
         "checkpoint_video_dag_shared",
     }:
+        if system_key != "gstreamer_custom":
+            raise ContractError(
+                f"scenario '{scenario_name}' publication runtime is implemented only for gstreamer_custom"
+            )
         expected_kind = (
             "independent_processes"
             if scenario_name == "checkpoint_independent_processes_baseline"

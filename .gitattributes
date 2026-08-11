@@ -1,1 +1,9 @@
 *.sh text eol=lf
+# These files are bound to preregistered SHA-256 identities. Their working-tree
+# bytes must be stable even when core.autocrlf is enabled on Windows.
+policies/ql_heft_frozen.policy text eol=lf
+policies/aw_heft_reference_v1.json text eol=lf
+scripts/formal_aw_heft_reference.py text eol=lf
+scripts/resource_interval_contract.py text eol=lf
+deploy/native_gst_probe/checkpoint_resource_interval_emitter.hpp text eol=lf
+deploy/native_gst_probe/vast_native_gst_probe.cpp text eol=lf

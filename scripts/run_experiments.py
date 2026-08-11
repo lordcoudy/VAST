@@ -21,6 +21,7 @@ import psutil
 import yaml
 from benchmark_contract import (
     ContractError,
+    FULL_RESOURCE_PUBLICATION_SCOPE,
     PRIMARY_ARCHITECTURE_DECODER_PLACEMENT_CONTRACT,
     assess_hardware_target,
     assess_primary_policy_runtime_compatibility,
@@ -53,7 +54,7 @@ from benchmark_contract import (
     write_json,
 )
 from benchmark_adapters import select_scenarios, validate_benchmark_adapter
-from collect_metrics import MetricsCollector
+from collect_metrics import HardwareResourceCollector, MetricsCollector
 from distributed_executor import (
     build_distributed_plan,
     load_hosts_config,
@@ -61,6 +62,8 @@ from distributed_executor import (
     run_distributed,
 )
 from topology_contract import validate_topology_events
+
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 
 def load_config(path: Path) -> dict[str, Any]:
@@ -111,6 +114,14 @@ def summary_fieldnames() -> list[str]:
         "d2h_bytes",
         "nvdec_utilization_percent",
         "vram_mb_max",
+        "full_resource_evidence_accepted",
+        "full_resource_coverage_complete",
+        "resource_contract_version",
+        "nvdec_busy_equivalent_ns",
+        "nvdec_counter_scope",
+        "fanout_thread_cpu_time_ns",
+        "fanout_work_units",
+        "fanout_counter_scope",
         "policy_decision_count",
         "policy_trace_complete",
         "policy_causal_trace_complete",
@@ -130,6 +141,7 @@ def summary_fieldnames() -> list[str]:
         "ingress_ledger_complete",
         "branch_terminal_trace_complete",
         "branch_terminal_event_count",
+        "branch_analytics_contract_sha256",
         "native_branch_drop_event_count",
         "checkpoint_frame_aggregation_complete",
         "ingress_cohort_closed",
@@ -266,6 +278,17 @@ def default_command_timeout_s(
         shutdown_grace_s = int(values.get("SAVANT_LOCAL_SHUTDOWN_GRACE_S", "15"))
         startup_windows = 2 if values.get("SAVANT_LOCAL_PREWARM", "1") != "0" else 1
         return int(duration_s) + (startup_windows * savant_startup_s) + (2 * shutdown_grace_s) + 120
+    if mode == "benchmark" and not distributed_enabled and system_key == "gstreamer_custom":
+        checkpoint_ready_timeout_s = int(values.get("CHECKPOINT_READY_TIMEOUT_S", "300"))
+        checkpoint_drain_timeout_s = int(values.get("CHECKPOINT_DRAIN_TIMEOUT_S", "10"))
+        # The preregistered checkpoint runtime owns a 30 s warmup in addition to
+        # measurement. The final 90 s covers container launch, export, and validation.
+        return (
+            int(duration_s)
+            + checkpoint_ready_timeout_s
+            + checkpoint_drain_timeout_s
+            + 120
+        )
     return int(duration_s) + startup_grace_s + 60
 
 
@@ -645,6 +668,37 @@ def resolve_metric_interval_s(config: dict[str, Any], system_key: str) -> float:
         return float(protocol.get("custom_cpp_cuda_qt_metric_interval_s", min(base_interval, 0.2)))
 
     return base_interval
+
+
+def make_hardware_resource_collector(
+    config: dict[str, Any],
+    *,
+    mode: str,
+    system: str,
+    scenario: dict[str, Any],
+    scenario_name: str,
+    policy: str,
+    run_dir: Path,
+    run_id: str,
+    interval_s: float,
+) -> HardwareResourceCollector | None:
+    if mode != "benchmark" or not bool(scenario.get("topology")):
+        return None
+    scope = resolve_publication_evidence_bundle_scope(
+        config,
+        {
+            "system": system,
+            "scenario": scenario_name,
+            "policy": policy,
+        },
+    )
+    if scope != FULL_RESOURCE_PUBLICATION_SCOPE:
+        return None
+    return HardwareResourceCollector(
+        run_dir / "hardware_resource_samples.csv",
+        run_id=run_id,
+        interval_s=interval_s,
+    )
 
 
 def configured_system_names(config: dict[str, Any], requested: list[str], *, mode: str) -> list[str]:
@@ -1253,6 +1307,18 @@ def run_one(
 
     metric_interval_s = resolve_metric_interval_s(config, system_key)
     collector = MetricsCollector(metrics_path, interval_s=metric_interval_s)
+    hardware_collector = make_hardware_resource_collector(
+        config,
+        mode=mode,
+        system=system_key,
+        scenario=scenario,
+        scenario_name=scenario_key,
+        policy=policy,
+        run_dir=scenario_dir,
+        run_id=run_id,
+        interval_s=metric_interval_s,
+    )
+    full_resource_required = hardware_collector is not None
 
     command_template = system_config["command"]
     base_cmd = command_template.format(
@@ -1266,6 +1332,11 @@ def run_one(
     )
     video_layout_dir = str(Path(dataset["streams"][0]["absolute_path"]).parent)
     ql_heft_artifact = str(config.get("benchmark", {}).get("ql_heft_policy_artifact", ""))
+    if ql_heft_artifact:
+        ql_heft_path = Path(ql_heft_artifact)
+        ql_heft_artifact = str(
+            ql_heft_path if ql_heft_path.is_absolute() else PROJECT_ROOT / ql_heft_path
+        )
     distributed_enabled = execution_context.distributed_enabled
     cmd_timeout_env = os.environ.get("EXPERIMENT_CMD_TIMEOUT_S", "").strip()
     if cmd_timeout_env:
@@ -1375,7 +1446,7 @@ def run_one(
         return result
 
     warmup_s = float(protocol.get("warmup_s", 0))
-    if warmup_s > 0:
+    if warmup_s > 0 and not bool(scenario.get("topology")):
         time.sleep(warmup_s)
 
     child_env = os.environ.copy()
@@ -1385,10 +1456,13 @@ def run_one(
     distributed_result = None
     collector.start()
     try:
+        if hardware_collector is not None:
+            hardware_collector.start()
+            hardware_collector.wait_until_ready(timeout_s=10)
         if distributed_enabled:
             distributed_result = run_distributed(
                 steps=distributed_steps,
-                project_root=Path.cwd(),
+                project_root=PROJECT_ROOT,
                 local_run_dir=scenario_dir,
                 frames_csv=frames_path,
                 frame_events_csv=frame_events_path,
@@ -1408,7 +1482,14 @@ def run_one(
             )
             completed = subprocess.CompletedProcess(cmd, distributed_result.exit_code)
         else:
-            completed = subprocess.run(cmd, shell=True, check=False, timeout=cmd_timeout_s, env=child_env)
+            completed = subprocess.run(
+                cmd,
+                shell=True,
+                check=False,
+                timeout=cmd_timeout_s,
+                env=child_env,
+                cwd=PROJECT_ROOT,
+            )
     except subprocess.TimeoutExpired as exc:
         completed = subprocess.CompletedProcess(exc.cmd, returncode=124)
         raise RuntimeError(
@@ -1417,6 +1498,12 @@ def run_one(
             f"Inspect run directory: {scenario_dir}"
         ) from exc
     finally:
+        if hardware_collector is not None:
+            hardware_collector.stop()
+            hardware_collector.join(timeout=5)
+            if hardware_collector.is_alive():
+                raise RuntimeError("hardware resource collector did not stop")
+            hardware_collector.raise_if_failed()
         collector.stop()
         collector.join(timeout=2)
 
@@ -1476,7 +1563,7 @@ def run_one(
                     "sha256": publication_run_identity["sha256"],
                 },
                 "dataset": dataset,
-                "git": git_manifest(Path.cwd()),
+                "git": git_manifest(PROJECT_ROOT),
                 "adapter": adapter_manifest(system_config),
                 "benchmark_adapter": benchmark_adapter.metadata() if benchmark_adapter else {},
                 "primary_architecture_pair": resolved_primary_architecture_pair,
@@ -1595,6 +1682,8 @@ def run_one(
             required_branches=topology_config.get("required_branches"),
             topology_kind=topology_config.get("kind"),
             expected_streams=streams if topology_config else None,
+            require_full_resource_evidence=full_resource_required,
+            expected_run_id=run_id,
             frames=frames_df,
             topology_events=topology_df,
         )
@@ -1606,6 +1695,8 @@ def run_one(
             topology_kind=topology_config.get("kind"),
             expected_streams=streams if topology_config else None,
             require_reset_evidence=bool(topology_config),
+            require_full_resource_evidence=full_resource_required,
+            expected_run_id=run_id,
             decoder_placement_contract=(
                 PRIMARY_ARCHITECTURE_DECODER_PLACEMENT_CONTRACT
                 if topology_config
@@ -1677,7 +1768,7 @@ def run_one(
         "host_topology": execution_context.host_topology,
         "policy": policy,
         "dataset": dataset,
-        "git": git_manifest(Path.cwd()),
+        "git": git_manifest(PROJECT_ROOT),
         "adapter": adapter_manifest(system_config),
         "benchmark_adapter": benchmark_adapter.metadata() if benchmark_adapter else {},
         "primary_architecture_pair": resolved_primary_architecture_pair,
@@ -1868,6 +1959,9 @@ def run_primary_architecture_execution(
     single_server_port: int,
     requested_seed: int | None,
 ) -> tuple[Path, list[dict[str, Any]]]:
+    output_root = output_root if output_root.is_absolute() else PROJECT_ROOT / output_root
+    if resume_run_root is not None and not resume_run_root.is_absolute():
+        resume_run_root = PROJECT_ROOT / resume_run_root
     primary = validate_primary_architecture_contrast(config)
     plan, cells = build_primary_architecture_execution_cells(config)
     frozen_seed = int(primary["seed"])
@@ -1886,7 +1980,7 @@ def run_primary_architecture_execution(
         Path(config["benchmark"]["dataset_manifest"]),
         str(primary["dataset"]),
         mode="benchmark",
-        project_root=Path.cwd(),
+        project_root=PROJECT_ROOT,
         require_files=True,
         allow_placeholder_checksums=False,
     )
@@ -1975,7 +2069,7 @@ def run_primary_architecture_execution(
             single_server_host=single_server_host,
             single_server_user=single_server_user,
             single_server_port=single_server_port,
-            project_root=Path.cwd(),
+            project_root=PROJECT_ROOT,
         )
         row = run_one(
             config=config,
@@ -2173,7 +2267,7 @@ def main() -> None:
             Path(cfg["benchmark"]["dataset_manifest"]),
             dataset_name,
             mode=args.mode,
-            project_root=Path.cwd(),
+            project_root=PROJECT_ROOT,
             require_files=args.mode == "benchmark" and not args.dry_run_plan,
             allow_placeholder_checksums=args.dry_run_plan,
         )
@@ -2243,7 +2337,7 @@ def main() -> None:
                             single_server_host=args.single_server_host,
                             single_server_user=args.single_server_user,
                             single_server_port=args.single_server_port,
-                            project_root=Path.cwd(),
+                            project_root=PROJECT_ROOT,
                         )
                         for deadline_ms in deadlines_ms:
                             for rep in range(1, repeats + 1):

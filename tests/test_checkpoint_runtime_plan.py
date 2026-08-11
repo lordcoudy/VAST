@@ -18,6 +18,7 @@ from benchmark_contract import ContractError
 from checkpoint_runtime_plan import (
     CLAIM_STATUS,
     DECODER_PLACEMENT_RUNTIME_GATE,
+    PUBLICATION_RUNTIME_CONTRACT,
     build_primary_pair_plans,
     validate_checkpoint_runtime_plan,
 )
@@ -38,8 +39,10 @@ class CheckpointRuntimePlanTests(unittest.TestCase):
         self.assertEqual(self.pair["claim_status"], CLAIM_STATUS)
         baseline = self.pair["baseline"]
         shared = self.pair["shared"]
-        self.assertEqual(baseline["benchmark_status"], "blocked_topology")
-        self.assertEqual(shared["benchmark_status"], "blocked_topology")
+        self.assertEqual(baseline["benchmark_status"], "supported")
+        self.assertEqual(shared["benchmark_status"], "supported")
+        self.assertEqual(baseline["publication_runtime"], PUBLICATION_RUNTIME_CONTRACT)
+        self.assertEqual(shared["publication_runtime"], PUBLICATION_RUNTIME_CONTRACT)
         self.assertEqual(len(baseline["streams"]), 6)
         self.assertEqual(len(shared["streams"]), 6)
         self.assertEqual(baseline["cohort_protocol"]["warmup_s"], 30)
@@ -71,9 +74,12 @@ class CheckpointRuntimePlanTests(unittest.TestCase):
         self.assertEqual(len(shared["source_coordinators"]), 6)
         self.assertEqual(
             baseline["external_admission"]["implementation_status"],
-            "locally_executed_synthetic_h264_h265_engineering_unaccepted",
+            "locally_executed_native_h264_h265_publication_runtime_v1",
         )
-        self.assertEqual(baseline["source_playback"]["contract_version"], 3)
+        self.assertEqual(baseline["source_playback"]["contract_version"], 6)
+        self.assertEqual(baseline["source_playback"]["measurement_end_boundary_guard_ns"], 1_000_000)
+        self.assertEqual(baseline["source_playback"]["offered_playback_fps"], 1)
+        self.assertEqual(baseline["source_playback"]["timestamp_scale"], 600)
         self.assertEqual(
             baseline["source_playback"]["compressed_timestamp_order"],
             "native_pts_may_reorder_for_b_frames",
@@ -88,8 +94,13 @@ class CheckpointRuntimePlanTests(unittest.TestCase):
                 {worker["source_duration_ns"] for worker in left["workers"]},
                 {right["graph_process"]["source_duration_ns"]},
             )
-            self.assertTrue(all(worker["continuous_replay_required"] for worker in left["workers"]))
-            self.assertTrue(right["graph_process"]["continuous_replay_required"])
+            self.assertEqual(
+                {worker["source_duration_ns"] for worker in left["workers"]},
+                {right["graph_process"]["native_source_duration_ns"] * 600},
+            )
+            self.assertTrue(all(worker["playback_timestamp_scale"] == 600 for worker in left["workers"]))
+            self.assertFalse(any(worker["continuous_replay_required"] for worker in left["workers"]))
+            self.assertFalse(right["graph_process"]["continuous_replay_required"])
 
     def test_baseline_has_four_os_process_workers_per_logical_stream(self) -> None:
         baseline = self.pair["baseline"]
@@ -175,6 +186,12 @@ class CheckpointRuntimePlanTests(unittest.TestCase):
         with self.assertRaisesRegex(ContractError, "admission contract drifted"):
             validate_checkpoint_runtime_plan(shared)
 
+    def test_validator_rejects_publication_runtime_contract_drift(self) -> None:
+        baseline = copy.deepcopy(self.pair["baseline"])
+        baseline["publication_runtime"]["accepted_exporter"] = "scripts/unbound_exporter.py"
+        with self.assertRaisesRegex(ContractError, "publication runtime contract drifted"):
+            validate_checkpoint_runtime_plan(baseline)
+
     def test_pair_builder_rejects_preregistered_coordinate_drift(self) -> None:
         config = load_yaml(ROOT / "configs" / "experiments.yaml")
         datasets = load_yaml(ROOT / "configs" / "datasets.yaml")["datasets"]
@@ -187,6 +204,13 @@ class CheckpointRuntimePlanTests(unittest.TestCase):
         datasets = load_yaml(ROOT / "configs" / "datasets.yaml")["datasets"]
         datasets["kpp_real_h264"]["streams"][0].pop("duration_s")
         with self.assertRaisesRegex(ContractError, "duration_s"):
+            build_primary_pair_plans(config=config, datasets=datasets, system="gstreamer_custom")
+
+    def test_pair_builder_rejects_playback_contract_drift(self) -> None:
+        config = load_yaml(ROOT / "configs" / "experiments.yaml")
+        datasets = load_yaml(ROOT / "configs" / "datasets.yaml")["datasets"]
+        datasets["kpp_real_h264"]["benchmark_playback"]["timestamp_scale"] = 1
+        with self.assertRaisesRegex(ContractError, "benchmark playback contract drifted"):
             build_primary_pair_plans(config=config, datasets=datasets, system="gstreamer_custom")
 
     def test_cli_writes_blueprint_without_scientific_sidecars(self) -> None:

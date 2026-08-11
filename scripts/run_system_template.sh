@@ -39,6 +39,11 @@ VIDEO_LAYOUT_DIR="${VIDEO_LAYOUT_DIR:-$PROJECT_DIR/data/videos}"
 DATASET_STREAMS_JSON="${DATASET_STREAMS_JSON:-}"
 OPENVINO_MODEL_XML_DEFAULT="$PROJECT_DIR/models/openvino/public/intel/person-vehicle-bike-detection-crossroad-0078/FP16/person-vehicle-bike-detection-crossroad-0078.xml"
 NATIVE_PROBE_BIN="${NATIVE_PROBE_BIN:-$PROJECT_DIR/build/bin/vast_native_gst_probe}"
+OPENVINO_NATIVE_PROBE_IMAGE="${OPENVINO_NATIVE_PROBE_IMAGE:-vast/openvino-native-probe:dlstreamer-2026.1}"
+CHECKPOINT_OPENVINO_IMAGE="${CHECKPOINT_OPENVINO_IMAGE:-$OPENVINO_NATIVE_PROBE_IMAGE}"
+CHECKPOINT_ANALYTICS_MODEL_MANIFEST="${CHECKPOINT_ANALYTICS_MODEL_MANIFEST:-$PROJECT_DIR/configs/checkpoint_analytics_models_openvino.yaml}"
+CHECKPOINT_DRAIN_TIMEOUT_S="${CHECKPOINT_DRAIN_TIMEOUT_S:-10}"
+CHECKPOINT_READY_TIMEOUT_S="${CHECKPOINT_READY_TIMEOUT_S:-300}"
 DEEPSTREAM_NATIVE_PROBE_IMAGE="${DEEPSTREAM_NATIVE_PROBE_IMAGE:-vast/deepstream-native-probe:7.0}"
 SAVANT_NATIVE_PROBE_IMAGE="${SAVANT_NATIVE_PROBE_IMAGE:-vast/savant-native-probe:0.5.17-7.0}"
 SAVANT_LOCAL_MODULE_DEFAULT="$PROJECT_DIR/deploy/savant/canonical_heterogeneous_module.yml"
@@ -99,8 +104,10 @@ fi
 if [[ "$BENCHMARK_MODE" == "benchmark" ]]; then
   case "$SCENARIO" in
     checkpoint_independent_processes_baseline|checkpoint_video_dag_shared)
-      warn "$SCENARIO is blocked in benchmark mode: current adapters serialize configured stage labels in one pipeline and do not implement the required process-per-detector versus shared-fanout topology contract"
-      exit 2
+      if [[ "$SYSTEM" != "gstreamer_custom" || "$EXPERIMENT_DISTRIBUTED" == "1" ]]; then
+        warn "$SCENARIO publication runtime is implemented only for local gstreamer_custom"
+        exit 2
+      fi
       ;;
   esac
 fi
@@ -344,7 +351,7 @@ run_openvino_gva_smoke_pipeline() {
   local model_xml="${OPENVINO_MODEL_XML:-$OPENVINO_MODEL_XML_DEFAULT}"
   local legacy_model_xml="$PROJECT_DIR/models/openvino/public/person-vehicle-bike-detection-crossroad-0078/FP16/person-vehicle-bike-detection-crossroad-0078.xml"
   local source
-  local image="${OPENVINO_GVA_IMAGE:-intel/dlstreamer:latest}"
+  local image="${OPENVINO_GVA_IMAGE:-$OPENVINO_NATIVE_PROBE_IMAGE}"
   local use_container="${OPENVINO_GVA_USE_CONTAINER:-1}"
   local dlstreamer_root="${DLSTREAMER_INSTALL_ROOT:-/opt/vast/dlstreamer}"
   local ov_gst_plugin_path="${GST_PLUGIN_PATH:-}"
@@ -506,12 +513,16 @@ sha256_stream() {
 
 native_probe_source_sha() {
   local include_savant="$1"
+  local include_analytics="${2:-0}"
   (
     cd "$PROJECT_DIR"
     printf "CMakeLists.txt\n"
     find deploy/native_gst_probe -type f -print | LC_ALL=C sort
     if [[ "$include_savant" == "1" ]]; then
       find deploy/savant -type f -print | LC_ALL=C sort
+    fi
+    if [[ "$include_analytics" == "1" ]]; then
+      find deploy/gstreamer_adaptivescheduler deploy/gstreamer_analytics_terminal -type f -print | LC_ALL=C sort
     fi
   ) | while IFS= read -r path; do
     local digest
@@ -523,6 +534,7 @@ native_probe_source_sha() {
 ensure_native_probe_image_current() {
   local image="$1"
   local include_savant="$2"
+  local include_analytics="${3:-0}"
   local expected
   local actual
 
@@ -530,7 +542,7 @@ ensure_native_probe_image_current() {
     return 0
   fi
 
-  expected="$(native_probe_source_sha "$include_savant")"
+  expected="$(native_probe_source_sha "$include_savant" "$include_analytics")"
   actual="$(docker image inspect --format '{{ index .Config.Labels "org.vast.native_probe.source_sha" }}' "$image" 2>/dev/null || true)"
   if [[ -z "$actual" || "$actual" == "<no value>" || "$actual" == "unknown" ]]; then
     warn "Strict native $SYSTEM benchmark image is unlabeled or stale: $image"
@@ -578,6 +590,8 @@ openvino_detect_bin_for_element() {
   local model_xml="$2"
   if [[ "$element" == "object_detect" ]]; then
     printf "capsrelax ! object_detect model=%s device=CPU" "$(shell_quote "$model_xml")"
+  elif [[ "$element" == "gvadetect" ]]; then
+    printf "videoconvert ! video/x-raw,format=BGR ! gvadetect name=vast_openvino_detector batch-size=1 nireq=1 ie-config=PERFORMANCE_HINT=LATENCY,NUM_STREAMS=1,INFERENCE_NUM_THREADS=1 model=%s device=CPU" "$(shell_quote "$model_xml")"
   else
     printf "%s model=%s device=CPU" "$element" "$(shell_quote "$model_xml")"
   fi
@@ -608,7 +622,7 @@ native_probe_detect_bin() {
       fi
       if [[ -z "$element" ]]; then
         if [[ "${NATIVE_PROBE_CONTAINERIZED:-0}" == "1" ]]; then
-          element="object_detect"
+          element="gvadetect"
         elif [[ "$REAL_DRY_RUN" == "1" ]]; then
           element="gvadetect"
         elif ! element="$(openvino_host_detect_element)"; then
@@ -730,8 +744,61 @@ run_host_native_probe() {
   run_or_echo "$cmd"
 }
 
+run_checkpoint_publication_runtime() {
+  local image="$CHECKPOINT_OPENVINO_IMAGE"
+  local detect_bin
+  local cmd
+  local args
+
+  if [[ "$REAL_DRY_RUN" != "1" ]]; then
+    command -v docker >/dev/null 2>&1 || {
+      warn "docker is required for checkpoint publication runtime"
+      return 1
+    }
+    ensure_docker_image_local "$image" || return 1
+    ensure_native_probe_image_current "$image" 0 1 || return 1
+    [[ -f "$CHECKPOINT_ANALYTICS_MODEL_MANIFEST" ]] || {
+      warn "Checkpoint analytics model manifest is missing: $CHECKPOINT_ANALYTICS_MODEL_MANIFEST"
+      return 1
+    }
+  fi
+
+  detect_bin='videoconvert ! video/x-raw,format={input_format} ! vastanalyticsqueue branch-id={branch} detector-id={detector_id} expected-downstream-factory={factory} expected-model-sha256="{model_sha256}" expected-weights-sha256="{weights_sha256}" max-buffers={max_buffers} ! {factory} name=checkpoint_detector_{branch} model="{model_path}" device={device} batch-size={batch_size} nireq={nireq} ie-config="{ie_config}" ! vastanalyticsterminal branch-id={branch} detector-id={detector_id} expected-upstream-factory={factory} expected-model-sha256="{model_sha256}" expected-weights-sha256="{weights_sha256}"'
+  args=(
+    docker run --rm --gpus all --network none
+    -e NVIDIA_DRIVER_CAPABILITIES=compute,utility,video
+    -e VAST_NATIVE_PYTHONPATH=/opt/intel/dlstreamer/gstreamer/lib/python3/dist-packages:/opt/intel/dlstreamer/python
+    -e GST_PLUGIN_PATH=/opt/vast/lib/gstreamer-1.0:/opt/intel/dlstreamer/lib:/opt/intel/dlstreamer/gstreamer/lib/gstreamer-1.0:/opt/intel/dlstreamer/gstreamer/lib/
+    -v "$PROJECT_DIR:/workspace/project:ro"
+    -v "$OUTPUT_DIR:/results"
+    -w /workspace/project
+    --entrypoint /workspace/project/.venv/bin/python
+    "$image"
+    -B scripts/checkpoint_gstreamer_runtime.py
+    --config configs/experiments.yaml
+    --datasets configs/datasets.yaml
+    --scenario "$SCENARIO"
+    --system gstreamer_custom
+    --binary /usr/local/bin/vast_native_gst_probe
+    --source-binary /usr/local/bin/vast_checkpoint_source
+    --output-dir /results
+    --run-id "$RUN_ID"
+    --duration "$DURATION_S"
+    --drain-timeout "$CHECKPOINT_DRAIN_TIMEOUT_S"
+    --ready-timeout "$CHECKPOINT_READY_TIMEOUT_S"
+    --use-preregistered-window
+    --detect-bin "$detect_bin"
+    --analytics-model-manifest configs/checkpoint_analytics_models_openvino.yaml
+    --analytics-queue-max-buffers 1
+    --checkpoint-analytics-mode native_terminal_socket_v1
+    --execute-publication-runtime
+  )
+  printf -v cmd '%q ' "${args[@]}"
+  run_or_echo "$cmd"
+}
+
 run_openvino_gva_container_native_probe() {
-  local image="${OPENVINO_GVA_IMAGE:-intel/dlstreamer:latest}"
+  local image="${OPENVINO_GVA_IMAGE:-$OPENVINO_NATIVE_PROBE_IMAGE}"
   local detect_bin
   local container_output
   local cmd
@@ -743,13 +810,9 @@ run_openvino_gva_container_native_probe() {
       return 1
     fi
     ensure_docker_image_local "$image" || return 1
-    if ! docker run --rm --entrypoint bash "$image" -lc 'gst-inspect-1.0 object_detect >/dev/null && gst-inspect-1.0 capsrelax >/dev/null'; then
-      warn "Strict OpenVINO GVA container image lacks usable object_detect/capsrelax runtime: $image"
-      return 1
-    fi
-    if [[ ! -x "$NATIVE_PROBE_BIN" ]]; then
-      warn "Strict OpenVINO GVA container probe requires native probe binary: $NATIVE_PROBE_BIN"
-      warn "Build it with: cmake -S . -B build/cmake && cmake --build build/cmake --target vast_native_gst_probe"
+    ensure_native_probe_image_current "$image" 0 1 || return 1
+    if ! docker run --rm --gpus all --entrypoint bash -e NVIDIA_DRIVER_CAPABILITIES=compute,utility,video "$image" -lc 'gst-inspect-1.0 gvadetect >/dev/null && gst-inspect-1.0 nvh264dec >/dev/null && gst-inspect-1.0 nvh265dec >/dev/null'; then
+      warn "Strict OpenVINO GVA container image lacks usable gvadetect/NVDEC runtime: $image"
       return 1
     fi
   fi
@@ -768,7 +831,7 @@ run_openvino_gva_container_native_probe() {
     run_or_echo "$cmd"
     return $?
   fi
-  cmd="docker run --rm --network host     -e EXPERIMENT_RTP_INPUT_PORT='${RTP_INPUT_PORT}'     -e EXPERIMENT_RTP_OUTPUT_HOST='${RTP_OUTPUT_HOST}'     -e EXPERIMENT_RTP_OUTPUT_PORT='${RTP_OUTPUT_PORT}'     -e EXPERIMENT_RTP_PORT_STRIDE='${RTP_PORT_STRIDE}'     -e EXPERIMENT_RUN_ID='${RUN_ID}'     -e EXPERIMENT_HOST_ROLE='${HOST_ROLE}'     -e EXPERIMENT_PIPELINE_STAGES='${PIPELINE_STAGES}'     -e ADAPTER_DETECTOR='${DETECTOR}'     -e ADAPTER_BACKEND='${BACKEND}'     -e DATASET_STREAMS_JSON='${DATASET_STREAMS_JSON}'     -v '$PROJECT_DIR':/workspace/project     -w /workspace/project     --entrypoint /workspace/project/build/bin/vast_native_gst_probe     '$image'$(native_probe_args "$container_output" "$detect_bin")"
+  cmd="docker run --rm --network host --gpus all     -e NVIDIA_DRIVER_CAPABILITIES=compute,utility,video     -e EXPERIMENT_RTP_INPUT_PORT='${RTP_INPUT_PORT}'     -e EXPERIMENT_RTP_OUTPUT_HOST='${RTP_OUTPUT_HOST}'     -e EXPERIMENT_RTP_OUTPUT_PORT='${RTP_OUTPUT_PORT}'     -e EXPERIMENT_RTP_PORT_STRIDE='${RTP_PORT_STRIDE}'     -e EXPERIMENT_RUN_ID='${RUN_ID}'     -e EXPERIMENT_HOST_ROLE='${HOST_ROLE}'     -e EXPERIMENT_PIPELINE_STAGES='${PIPELINE_STAGES}'     -e ADAPTER_DETECTOR='${DETECTOR}'     -e ADAPTER_BACKEND='${BACKEND}'     -e DATASET_STREAMS_JSON='${DATASET_STREAMS_JSON}'     -v '$PROJECT_DIR':/workspace/project     -w /workspace/project     --entrypoint /usr/local/bin/vast_native_gst_probe     '$image'$(native_probe_args "$container_output" "$detect_bin")"
   NATIVE_PROBE_CONTAINERIZED="$prev_containerized"
   run_or_echo "$cmd"
 }
@@ -823,6 +886,7 @@ run_container_native_probe() {
     custom_plugin_env="-e GST_PLUGIN_PATH=/workspace/project/build/lib -e GST_CUSTOM_STRICT=1"
   fi
   cmd="docker run --rm --network host --gpus all \
+    -e NVIDIA_DRIVER_CAPABILITIES=compute,utility,video \
     -e EXPERIMENT_RTP_INPUT_PORT='${RTP_INPUT_PORT}' \
     -e EXPERIMENT_RTP_OUTPUT_HOST='${RTP_OUTPUT_HOST}' \
     -e EXPERIMENT_RTP_OUTPUT_PORT='${RTP_OUTPUT_PORT}' \
@@ -1020,7 +1084,14 @@ run_builtin_strict_local_adapter() {
       run_openvino_gva_native_probe
       ;;
     gstreamer_custom)
-      run_host_native_probe
+      case "$SCENARIO" in
+        checkpoint_independent_processes_baseline|checkpoint_video_dag_shared)
+          run_checkpoint_publication_runtime
+          ;;
+        *)
+          run_host_native_probe
+          ;;
+      esac
       ;;
     deepstream)
       run_container_native_probe "$DEEPSTREAM_NATIVE_PROBE_IMAGE"

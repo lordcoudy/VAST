@@ -36,6 +36,7 @@ struct Args {
   std::string codec;
   std::string replay;
   std::uint64_t source_duration_ns = 0;
+  std::uint64_t playback_timestamp_scale = 0;
   int stream_id = -1;
 };
 
@@ -217,6 +218,9 @@ Args parse_args(int argc, char** argv) {
     else if (key == "--checkpoint-codec") args.codec = value("--checkpoint-codec");
     else if (key == "--source-duration-ns") {
       args.source_duration_ns = parse_uint64(value("--source-duration-ns"), "source_duration_ns");
+    } else if (key == "--playback-timestamp-scale") {
+      args.playback_timestamp_scale =
+          parse_uint64(value("--playback-timestamp-scale"), "playback_timestamp_scale");
     } else if (key == "--source-replay") args.replay = value("--source-replay");
     else if (key == "--logical-stream-id") {
       args.stream_id = static_cast<int>(parse_uint64(value("--logical-stream-id"), "stream_id"));
@@ -226,7 +230,8 @@ Args parse_args(int argc, char** argv) {
   }
   if (args.source_path.empty() || !valid_name(args.dataset_id) || !valid_sha256(args.source_sha256) ||
       args.container != "mp4" || (args.codec != "h264" && args.codec != "h265") ||
-      args.source_duration_ns == 0 || args.replay != "continuous" || args.stream_id < 0) {
+      args.source_duration_ns == 0 || args.playback_timestamp_scale == 0 ||
+      args.replay != "continuous" || args.stream_id < 0) {
     throw std::runtime_error("incomplete or invalid checkpoint source contract");
   }
   return args;
@@ -282,6 +287,7 @@ class SourceCoordinator {
     if (paused == GST_STATE_CHANGE_FAILURE) {
       throw std::runtime_error("checkpoint source failed to enter PAUSED state");
     }
+    verify_reset_state_before_ready();
     write_status("READY", steady_now_ns());
     wait_start();
     std::this_thread::sleep_until(std::chrono::steady_clock::time_point(
@@ -394,6 +400,20 @@ class SourceCoordinator {
           stop_.store(true);
         }
       });
+    }
+  }
+
+  void verify_reset_state_before_ready() {
+    if (source_cycle_ != 0 || sequence_ != 0 || next_schedule_offset_ns_ != 0 ||
+        stop_.load() || failed_.load()) {
+      throw std::runtime_error("checkpoint source replay origin is not reset before READY");
+    }
+    for (const auto& channel : consumers_) {
+      std::lock_guard<std::mutex> lock(channel->mutex);
+      if (!channel->queue.empty() || channel->closing || !channel->error.empty()) {
+        throw std::runtime_error(
+            "checkpoint source consumer delivery state is not empty before READY");
+      }
     }
   }
 
@@ -587,6 +607,17 @@ class SourceCoordinator {
       throw std::runtime_error("checkpoint source AU lacks native PTS");
     }
     const std::uint64_t native_pts = GST_BUFFER_PTS(buffer);
+    const std::uint64_t schedule_offset_ns = next_schedule_offset_ns_;
+    if (common_start_monotonic_ns_ >
+        std::numeric_limits<std::uint64_t>::max() - schedule_offset_ns) {
+      throw std::runtime_error("checkpoint source wall-clock schedule overflow");
+    }
+    const auto scheduled_admission_time = std::chrono::steady_clock::time_point(
+        std::chrono::nanoseconds(common_start_monotonic_ns_ + schedule_offset_ns));
+    std::this_thread::sleep_until(scheduled_admission_time);
+    if (stop_.load() || now_ms() >= window_end_ms_) {
+      return;
+    }
     GstMapInfo map = GST_MAP_INFO_INIT;
     if (!gst_buffer_map(buffer, &map, GST_MAP_READ) || map.size == 0) {
       throw std::runtime_error("checkpoint source failed to map compressed AU");
@@ -596,10 +627,28 @@ class SourceCoordinator {
       frame.sequence = ++sequence_;
       frame.source_cycle = source_cycle_;
       frame.access_unit_pts_ns = native_pts;
-      frame.transport_pts_ns = source_cycle_ * args_.source_duration_ns + native_pts;
+      const auto checked_multiply = [](std::uint64_t left, std::uint64_t right, const char* field) {
+        if (left != 0 && right > std::numeric_limits<std::uint64_t>::max() / left) {
+          throw std::runtime_error(std::string("checkpoint source timestamp overflow: ") + field);
+        }
+        return left * right;
+      };
+      const std::uint64_t cycle_offset_ns =
+          checked_multiply(source_cycle_, args_.source_duration_ns, "source_cycle");
+      const std::uint64_t scaled_pts_ns =
+          checked_multiply(native_pts, args_.playback_timestamp_scale, "PTS");
+      if (cycle_offset_ns > std::numeric_limits<std::uint64_t>::max() - scaled_pts_ns) {
+        throw std::runtime_error("checkpoint source timestamp overflow: transport PTS");
+      }
+      frame.transport_pts_ns = cycle_offset_ns + scaled_pts_ns;
       frame.access_unit_dts_ns =
-          GST_BUFFER_DTS_IS_VALID(buffer) ? GST_BUFFER_DTS(buffer) : vast::CheckpointAdmissionTransport::kMissingTimestamp;
-      frame.duration_ns = GST_BUFFER_DURATION_IS_VALID(buffer) ? GST_BUFFER_DURATION(buffer) : 0;
+          GST_BUFFER_DTS_IS_VALID(buffer)
+              ? checked_multiply(GST_BUFFER_DTS(buffer), args_.playback_timestamp_scale, "DTS")
+              : vast::CheckpointAdmissionTransport::kMissingTimestamp;
+      frame.duration_ns =
+          GST_BUFFER_DURATION_IS_VALID(buffer)
+              ? checked_multiply(GST_BUFFER_DURATION(buffer), args_.playback_timestamp_scale, "duration")
+              : 0;
       frame.admission_id = run_id_ + ":" + std::to_string(args_.stream_id) + ":admission:" +
                            std::to_string(frame.sequence);
       frame.input_frame_key = args_.dataset_id + ":" + std::to_string(args_.stream_id) + ":" +
@@ -607,7 +656,6 @@ class SourceCoordinator {
                               std::to_string(frame.access_unit_pts_ns);
       frame.payload_sha256 = payload_sha256(map);
       frame.payload.assign(map.data, map.data + map.size);
-      const std::uint64_t schedule_offset_ns = next_schedule_offset_ns_;
 
       std::ostringstream event;
       event << "{\"protocol_version\":1,\"source_process_id\":\"" << json_escape(source_process_id_)

@@ -6,12 +6,13 @@
 #include <string>
 
 int main(int argc, char** argv) {
-  if (argc != 2) {
-    std::cerr << "expected output path\n";
+  if (argc != 3) {
+    std::cerr << "expected interval and fanout-work output paths\n";
     return 2;
   }
   try {
     vast::CheckpointResourceIntervalEmitter emitter(argv[1]);
+    vast::CheckpointFanoutWorkCounterEmitter work_emitter(argv[2]);
     emitter.emit_fanout(
         "run-1",
         "run-1:3:7",
@@ -24,6 +25,16 @@ int main(int argc, char** argv) {
         1'000'000'321,
         691'200,
         "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef");
+    work_emitter.emit(
+        "run-1",
+        "run-1:3:7",
+        3,
+        7,
+        "kpp_real_h264:3:source:0:90000",
+        "damage",
+        "run-1:3:7:damage:fanout",
+        25'000,
+        1);
     try {
       emitter.emit_fanout(
           "run-1",

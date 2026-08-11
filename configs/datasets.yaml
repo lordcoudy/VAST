@@ -124,6 +124,12 @@ datasets:
     description: Real checkpoint captures transcoded to H.264/AVC MP4 at 600 FPS CFR
       for publishable KPP codec benchmarks.
     publishable: true
+    benchmark_playback: &kpp_benchmark_playback
+      contract_version: 1
+      encoded_timeline_fps: 600
+      offered_playback_fps: 1
+      timestamp_scale: 600
+      selection_basis: discarded_prebenchmark_capacity_pilots_positive_completed_frames_guardrail_no_effect_estimation
     workload_scope: replicated_logical_streams_from_two_recordings
     logical_stream_instances: 6
     unique_recorded_sources: 2
@@ -248,6 +254,7 @@ datasets:
     description: Real checkpoint captures transcoded to H.265/HEVC MP4 at 600 FPS
       CFR for publishable KPP codec benchmarks.
     publishable: true
+    benchmark_playback: *kpp_benchmark_playback
     workload_scope: replicated_logical_streams_from_two_recordings
     logical_stream_instances: 6
     unique_recorded_sources: 2

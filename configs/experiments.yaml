@@ -39,9 +39,9 @@ benchmark:
     validator: scripts/resource_interval_contract.py
     validator_sha256: 9efa89efd0dd3aba9fa86a189099318e29b307192a46756cebe04f4fecbfeb5b
     fanout_emitter: deploy/native_gst_probe/checkpoint_resource_interval_emitter.hpp
-    fanout_emitter_sha256: 6764dc4a803926e0d3fecaddc5a3f5e7a39518b830ec5a71a4cc086402d8add9
+    fanout_emitter_sha256: b80cd581b2bfd43adc6cf5152f7919714db6dff0972a066eb46da5c01eec9165
     fanout_binding: deploy/native_gst_probe/vast_native_gst_probe.cpp
-    fanout_binding_sha256: 998fd1afd82bfab5e8206e91d25f3321c6d03f764b2948e41d3d6f38ff3f8567
+    fanout_binding_sha256: 5269a1e030bdbc5a479d7e3677ca35861ed2ed5e7fceb61c0c74b3b8ed010fb2
     fanout_runtime_sidecar: resource_intervals.runtime.csv
     fanout_runtime_status: source_implemented_not_target_executed_not_accepted
     sidecar: resource_intervals.csv
@@ -407,10 +407,10 @@ protocol:
   custom_cpp_cuda_qt_metric_interval_s: 0.2
 scenarios:
   checkpoint_independent_processes_baseline:
-    description: Planned KPP baseline over six logical stream entries replicated from
-      two recorded sources using a topology-only all-branches-per-stream stress profile.
-    benchmark_status: blocked_topology
-    benchmark_reason: Current adapters do not launch and natively trace independent process-per-detector branches; preregistration does not remove this execution blocker.
+    description: Native KPP baseline over six logical stream entries replicated from
+      two recorded sources with one isolated process per detector branch and direct terminal joins.
+    benchmark_status: supported
+    benchmark_reason: The local gstreamer_custom publication adapter launches native process-per-detector workers, a common source coordinator, and fail-closed accepted telemetry.
     topology:
       contract_version: 1
       kind: independent_processes
@@ -496,10 +496,10 @@ scenarios:
     distributed:
       enabled: false
   checkpoint_video_dag_shared:
-    description: Planned shared Video-DAG over six logical stream entries replicated
-      from two recorded sources using a topology-only all-branches-per-stream stress profile.
-    benchmark_status: blocked_topology
-    benchmark_reason: Current adapters do not construct and natively trace a shared fanout/join topology; preregistration does not remove this execution blocker.
+    description: Native shared Video-DAG over six logical stream entries replicated
+      from two recorded sources with one decode/preprocess prefix, queued tee fanout, and direct terminal joins.
+    benchmark_status: supported
+    benchmark_reason: The local gstreamer_custom publication adapter launches the physical shared graph, a common source coordinator, and fail-closed accepted telemetry.
     topology:
       contract_version: 1
       kind: shared_video_dag
@@ -596,7 +596,7 @@ systems:
     label: Intel OpenVINO + GVA
     detector: person-vehicle-bike-detection-crossroad-0078
     backend: openvino_cpu
-    container_image: intel/dlstreamer:latest
+    container_image: vast/openvino-native-probe:dlstreamer-2026.1
     supports_distributed: true
     command: bash scripts/run_system_template.sh --system openvino_gva --scenario
       {scenario} --duration {duration_s} --streams {streams} --min-objects {min_objects}
@@ -605,6 +605,7 @@ systems:
     label: GStreamer + custom plugin
     detector: custom_gstreamer_native
     backend: gstreamer
+    container_image: vast/openvino-native-probe:dlstreamer-2026.1
     supports_distributed: true
     command: bash scripts/run_system_template.sh --system gstreamer_custom --scenario
       {scenario} --duration {duration_s} --streams {streams} --min-objects {min_objects}

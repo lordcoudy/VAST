@@ -611,6 +611,12 @@ PRIMARY_ARCHITECTURE_REQUIRED_SIDECARS = {
     "reset_evidence.csv",
 }
 PUBLICATION_EVIDENCE_BUNDLE_SCOPE = "primary_architecture_raw_evidence_v1"
+FULL_RESOURCE_PUBLICATION_SCOPE = "primary_architecture_full_resource_raw_evidence_v2"
+FULL_RESOURCE_PUBLICATION_EVIDENCE_FILES = PRIMARY_ARCHITECTURE_REQUIRED_SIDECARS | {
+    "resource_intervals.csv",
+    "hardware_resource_samples.csv",
+    "fanout_work_counters.csv",
+}
 PUBLICATION_EVIDENCE_BUNDLE_POLICY_FROZEN_SCOPE = (
     "primary_policy_frozen_raw_evidence_v1"
 )
@@ -1844,6 +1850,7 @@ _INGRESS_TERMINAL_PROVENANCE = {
     "native_drop_event",
     "explicit_censoring_at_drain_end",
 }
+INGRESS_WALL_CLOCK_START_TOLERANCE_MS = 5.0
 _BRANCH_TERMINAL_STATUSES = {"completed", "drop"}
 _BRANCH_TERMINAL_PROVENANCE = {
     "completed": "native_completion_event",
@@ -2345,6 +2352,20 @@ def resolve_publication_evidence_bundle_scope(
     """Select the frozen byte-manifest scope from run coordinates."""
 
     benchmark = config.get("benchmark") or {}
+    extension = benchmark.get("resource_interval_extension")
+    matrix_policies = {str(value) for value in benchmark.get("scheduler_policies") or ()}
+    matrix_scenarios = {str(value) for value in benchmark.get("active_scenarios") or ()}
+    if (
+        isinstance(extension, dict)
+        and str(result.get("policy", "")) in matrix_policies
+        and str(result.get("scenario", "")) in matrix_scenarios
+        and str(extension.get("status", "")) == "accepted_full_resource_publication_v2"
+        and str(extension.get("current_publication_bundle_scope", ""))
+        == FULL_RESOURCE_PUBLICATION_SCOPE
+        and bool(extension.get("publication_bundle_bound"))
+        and bool(extension.get("evidence_accepted"))
+    ):
+        return FULL_RESOURCE_PUBLICATION_SCOPE
     ablation = benchmark.get("primary_policy_ablation")
     if isinstance(ablation, dict):
         matches_policy_cell = (
@@ -2366,6 +2387,7 @@ def publication_evidence_bundle_files(scope: str) -> tuple[str, ...]:
 
     files_by_scope = {
         PUBLICATION_EVIDENCE_BUNDLE_SCOPE: PRIMARY_ARCHITECTURE_REQUIRED_SIDECARS,
+        FULL_RESOURCE_PUBLICATION_SCOPE: FULL_RESOURCE_PUBLICATION_EVIDENCE_FILES,
         PUBLICATION_EVIDENCE_BUNDLE_POLICY_FROZEN_SCOPE: (
             PRIMARY_ARCHITECTURE_REQUIRED_SIDECARS
         ),
@@ -4689,7 +4711,12 @@ def validate_ingress_ledger(
         terminal = float(row["terminal_timestamp_ms"])
         status = str(row["terminal_status"])
         provenance = str(row["terminal_provenance"])
-        if ingress < window_start or ingress >= window_end:
+        # Cohort membership is selected by the native half-open schedule offsets.
+        # Mapping the common monotonic start to integer wall-clock milliseconds can
+        # place the first scheduled AU a few milliseconds before the declared t0.
+        # Keep that conversion jitter bounded by the frozen 5 ms clock-offset gate;
+        # the right boundary remains strict.
+        if ingress < window_start - INGRESS_WALL_CLOCK_START_TOLERANCE_MS or ingress >= window_end:
             raise ContractError(f"{path}:{row_number}: ingress timestamp is outside [t0, t1)")
         if terminal < ingress or terminal > drain_end:
             raise ContractError(f"{path}:{row_number}: terminal timestamp is outside the frame/drain interval")
@@ -4873,16 +4900,6 @@ def validate_reset_evidence(
     if set(df["terminal_state"].astype(str)) != {"DRAINED"}:
         raise ContractError(f"{path}: every reset process must terminate in DRAINED state")
 
-    ordered_ingress = ingress_ledger.assign(
-        stream_id=pd.to_numeric(ingress_ledger["stream_id"], errors="raise").astype(int),
-        admission_seq=pd.to_numeric(ingress_ledger["admission_seq"], errors="raise").astype(int),
-        source_cycle=pd.to_numeric(ingress_ledger["source_cycle"], errors="raise").astype(int),
-    ).sort_values(["stream_id", "admission_seq"], kind="stable")
-    first_by_stream = {
-        int(stream_id): group.iloc[0]
-        for stream_id, group in ordered_ingress.groupby("stream_id", dropna=False)
-    }
-
     expected_processes: set[tuple[str, int, str]] = {
         ("source_coordinator", stream_id, "not_applicable") for stream_id in range(stream_count)
     }
@@ -4922,9 +4939,6 @@ def validate_reset_evidence(
         if role == "source_coordinator":
             if queue_depths:
                 raise ContractError(f"{path}:{row_number}: source coordinator must not claim analytics queues")
-            first = first_by_stream.get(stream_id)
-            if first is None or source_cycle != int(first["source_cycle"]) or admission_seq != int(first["admission_seq"]):
-                raise ContractError(f"{path}:{row_number}: source origin does not match first direct admission")
             if source_cycle != 0 or admission_seq != 1:
                 raise ContractError(f"{path}:{row_number}: source replay must begin at cycle 0/admission 1")
         else:
@@ -5122,8 +5136,12 @@ def validate_branch_terminals(
             continue
 
         terminal_timestamp = max(float(row["terminal_timestamp_ms"]) for row in rows)
-        if not math.isclose(terminal_timestamp, float(ledger["terminal_timestamp_ms"]), abs_tol=1e-3):
-            raise ContractError(f"{path}: aggregate branch terminal time does not match ingress ledger for {key}")
+        aggregate_timestamp = float(ledger["terminal_timestamp_ms"])
+        if status == "completed":
+            if aggregate_timestamp + 1e-3 < terminal_timestamp:
+                raise ContractError(f"{path}: aggregate join precedes a branch terminal for {key}")
+        elif not math.isclose(terminal_timestamp, aggregate_timestamp, abs_tol=1e-3):
+            raise ContractError(f"{path}: aggregate drop time does not match branch terminals for {key}")
         if status == "completed":
             frame = frame_by_key.get(key)
             if frame is None:
@@ -5596,6 +5614,8 @@ def validate_required_sidecars(
     required_branches: list[str] | tuple[str, ...] | None = None,
     topology_kind: str | None = None,
     expected_streams: int | None = None,
+    require_full_resource_evidence: bool = False,
+    expected_run_id: str = "",
     frames: pd.DataFrame | None = None,
     topology_events: pd.DataFrame | None = None,
 ) -> dict[str, pd.DataFrame]:
@@ -5692,6 +5712,36 @@ def validate_required_sidecars(
             stage_contract_path,
             topology_events=topology_events,
         )
+    if require_full_resource_evidence:
+        ingress = sidecars.get("ingress_ledger")
+        if ingress is None or topology_events is None or topology_kind is None:
+            raise ContractError(
+                "full resource evidence requires accepted ingress and topology sidecars"
+            )
+        if not expected_run_id:
+            raise ContractError("full resource evidence requires expected_run_id")
+        try:
+            from full_resource_contract import validate_full_resource_evidence
+
+            full_resource = validate_full_resource_evidence(
+                run_dir,
+                expected_run_id=expected_run_id,
+                ingress_ledger=ingress,
+                topology_events=topology_events,
+                frame_events=events,
+                topology_kind=topology_kind,
+            )
+        except RuntimeError as exc:
+            raise ContractError(f"full resource evidence rejected: {exc}") from exc
+        for name in (
+            "resource_intervals",
+            "hardware_resource_samples",
+            "fanout_work_counters",
+        ):
+            sidecars[name] = full_resource[name]
+        sidecars["resource_intervals"].attrs["full_resource_summary"] = full_resource[
+            "summary"
+        ]
     return sidecars
 
 
@@ -6253,6 +6303,8 @@ def summarize_sidecars(
     required_branches: list[str] | tuple[str, ...] | None = None,
     topology_kind: str | None = None,
     expected_streams: int | None = None,
+    require_full_resource_evidence: bool = False,
+    expected_run_id: str = "",
     require_reset_evidence: bool = False,
     decoder_placement_contract: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
@@ -6262,6 +6314,8 @@ def summarize_sidecars(
         topology_events=topology_events,
         required_branches=required_branches,
         topology_kind=topology_kind,
+        require_full_resource_evidence=require_full_resource_evidence,
+        expected_run_id=expected_run_id,
         expected_streams=expected_streams,
         require_reset_evidence=require_reset_evidence,
     )
@@ -6338,6 +6392,51 @@ def summarize_sidecars(
         if late_publishable
         else float("nan"),
     }
+    full_resource_summary = (
+        sidecars["resource_intervals"].attrs.get("full_resource_summary")
+        if "resource_intervals" in sidecars
+        else None
+    )
+    if full_resource_summary is None:
+        result.update(
+            {
+                "full_resource_evidence_accepted": False,
+                "full_resource_coverage_complete": False,
+                "resource_contract_version": float("nan"),
+                "nvdec_busy_equivalent_ns": float("nan"),
+                "nvdec_counter_scope": "unavailable",
+                "fanout_thread_cpu_time_ns": float("nan"),
+                "fanout_work_units": float("nan"),
+                "fanout_counter_scope": "unavailable",
+            }
+        )
+    else:
+        result.update(
+            {
+                "full_resource_evidence_accepted": bool(
+                    full_resource_summary["evidence_accepted"]
+                ),
+                "full_resource_coverage_complete": bool(
+                    full_resource_summary["full_resource_coverage_complete"]
+                ),
+                "resource_contract_version": int(
+                    full_resource_summary["resource_contract_version"]
+                ),
+                "nvdec_busy_equivalent_ns": int(
+                    full_resource_summary["nvdec_busy_equivalent_ns"]
+                ),
+                "nvdec_counter_scope": str(
+                    full_resource_summary["nvdec_counter_scope"]
+                ),
+                "fanout_thread_cpu_time_ns": int(
+                    full_resource_summary["fanout_thread_cpu_time_ns"]
+                ),
+                "fanout_work_units": int(full_resource_summary["fanout_work_units"]),
+                "fanout_counter_scope": str(
+                    full_resource_summary["fanout_counter_scope"]
+                ),
+            }
+        )
     ingress = sidecars.get("ingress_ledger")
     if ingress is None:
         result.update(

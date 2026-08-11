@@ -6,6 +6,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <vector>
 
 #include <sys/socket.h>
 #include <unistd.h>
@@ -198,8 +199,13 @@ int main(int argc, char** argv) {
     return 77;
   }
 
-  char directory_template[] = "/private/tmp/vast-terminal-model-XXXXXX";
-  const char* directory = ::mkdtemp(directory_template);
+  const char* configured_tmp = std::getenv("TMPDIR");
+  const std::string tmp_root =
+      configured_tmp == nullptr || std::string(configured_tmp).empty() ? "/tmp" : configured_tmp;
+  const std::string directory_pattern = tmp_root + "/vast-terminal-model-XXXXXX";
+  std::vector<char> directory_template(directory_pattern.begin(), directory_pattern.end());
+  directory_template.push_back('\0');
+  const char* directory = ::mkdtemp(directory_template.data());
   if (directory == nullptr) {
     return 4;
   }

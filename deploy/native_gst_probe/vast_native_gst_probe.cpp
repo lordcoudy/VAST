@@ -11,6 +11,7 @@
 #include <array>
 #include <atomic>
 #include <chrono>
+#include <condition_variable>
 #include <cstdint>
 #include <cstdlib>
 #include <deque>
@@ -30,6 +31,7 @@
 #include <vector>
 
 #include <poll.h>
+#include <time.h>
 #include <unistd.h>
 
 namespace fs = std::filesystem;
@@ -104,8 +106,6 @@ struct StreamState {
   std::unordered_map<std::uint64_t, std::unordered_set<std::string>> checkpoint_completed_branches_by_pts;
   std::unordered_map<std::string, std::unordered_map<std::uint64_t, FanoutIntervalStart>>
       checkpoint_fanout_starts_by_branch;
-  std::uint64_t last_checkpoint_pts = 0;
-  bool has_last_checkpoint_pts = false;
   std::uint64_t checkpoint_source_cycle = 0;
 };
 
@@ -188,6 +188,7 @@ class NativeProbeRuntime {
     GMainLoop* loop = g_main_loop_new(nullptr, FALSE);
     loop_ = loop;
     if (is_checkpoint_role()) {
+      verify_checkpoint_reset_state_before_ready();
       write_checkpoint_lifecycle_status("READY", steady_now_ns());
       wait_for_checkpoint_start();
       const auto start_time = std::chrono::steady_clock::time_point(
@@ -200,7 +201,8 @@ class NativeProbeRuntime {
     }
     if (is_checkpoint_role()) {
       write_checkpoint_lifecycle_status("STARTED", now_ms());
-      checkpoint_data_thread_ = std::thread([this]() { feed_checkpoint_access_units(); });
+      checkpoint_appsrc_thread_ = std::thread([this]() { feed_checkpoint_access_units(); });
+      checkpoint_data_thread_ = std::thread([this]() { receive_checkpoint_access_units(); });
       checkpoint_control_thread_ = std::thread([this]() { wait_for_checkpoint_stop(); });
       std::cerr << "[native-probe][checkpoint] common lifecycle started window=["
                 << checkpoint_window_start_ms_ << "," << checkpoint_window_end_ms_
@@ -211,6 +213,9 @@ class NativeProbeRuntime {
     }
     g_main_loop_run(loop);
     checkpoint_loop_finished_.store(true);
+    checkpoint_ingress_abort_.store(true);
+    checkpoint_ingress_ready_.notify_all();
+    stop_pipelines();
     if (checkpoint_control_thread_.joinable()) {
       checkpoint_control_thread_.join();
     }
@@ -218,10 +223,12 @@ class NativeProbeRuntime {
       checkpoint_data_thread_.join();
     }
     const guint timer = measurement_timer_id_.exchange(0);
+    if (checkpoint_appsrc_thread_.joinable()) {
+      checkpoint_appsrc_thread_.join();
+    }
     if (timer != 0) {
       g_source_remove(timer);
     }
-    stop_pipelines();
     stop_checkpoint_analytics_terminal_reader();
     g_main_loop_unref(loop);
     loop_ = nullptr;
@@ -240,6 +247,7 @@ class NativeProbeRuntime {
   std::vector<GstElement*> pipelines_;
   std::unique_ptr<vast::CheckpointRuntimeEmitter> checkpoint_emitter_;
   std::unique_ptr<vast::CheckpointResourceIntervalEmitter> checkpoint_resource_interval_emitter_;
+  std::unique_ptr<vast::CheckpointFanoutWorkCounterEmitter> checkpoint_fanout_work_emitter_;
   GMainLoop* loop_ = nullptr;
   int checkpoint_control_fd_ = -1;
   int checkpoint_status_fd_ = -1;
@@ -248,10 +256,13 @@ class NativeProbeRuntime {
   std::thread checkpoint_data_thread_;
   std::thread checkpoint_analytics_terminal_thread_;
   std::atomic<bool> checkpoint_admission_stopped_{false};
+  std::thread checkpoint_appsrc_thread_;
   std::atomic<bool> checkpoint_data_eof_{false};
   std::atomic<bool> checkpoint_drain_reported_{false};
   std::atomic<bool> checkpoint_decoder_placement_verified_{false};
+  std::atomic<bool> checkpoint_data_reader_eof_{false};
   std::atomic<bool> checkpoint_loop_finished_{false};
+  std::atomic<bool> checkpoint_ingress_abort_{false};
   std::atomic<bool> checkpoint_analytics_terminal_stop_{false};
   int checkpoint_analytics_terminal_read_fd_ = -1;
   int checkpoint_analytics_terminal_write_fd_ = -1;
@@ -269,6 +280,9 @@ class NativeProbeRuntime {
   std::mutex checkpoint_status_mutex_;
   std::unordered_set<std::uint64_t> written_frame_keys_;
   std::unordered_set<std::string> written_checkpoint_stage_contracts_;
+  std::condition_variable checkpoint_ingress_ready_;
+  std::deque<vast::CheckpointAdmissionFrame> checkpoint_ingress_queue_;
+  static constexpr std::size_t kMaximumQueuedCheckpointAccessUnits = 1024;
   std::atomic<bool> failed_{false};
 
   static std::uint64_t now_ms() {
@@ -285,6 +299,19 @@ class NativeProbeRuntime {
   static std::uint64_t steady_now_ns() {
     using namespace std::chrono;
     return static_cast<std::uint64_t>(duration_cast<nanoseconds>(steady_clock::now().time_since_epoch()).count());
+  }
+  static bool thread_cpu_now_ns(std::uint64_t* value_ns) noexcept {
+    if (value_ns == nullptr) {
+      return false;
+    }
+    struct timespec value {};
+    if (::clock_gettime(CLOCK_THREAD_CPUTIME_ID, &value) != 0) {
+      return false;
+    }
+    *value_ns =
+        static_cast<std::uint64_t>(value.tv_sec) * 1'000'000'000ULL +
+        static_cast<std::uint64_t>(value.tv_nsec);
+    return true;
   }
 
   bool is_checkpoint_role() const {
@@ -547,7 +574,11 @@ class NativeProbeRuntime {
     return factories.front();
   }
 
-  static void require_checkpoint_caps(GstPad* pad, int expected_width = 0, int expected_height = 0) {
+  static void require_checkpoint_caps(
+      GstPad* pad,
+      int expected_width = 0,
+      int expected_height = 0,
+      const char* expected_format = "RGB") {
     GstCaps* caps = gst_pad_get_current_caps(pad);
     if (caps == nullptr || gst_caps_is_empty(caps) || gst_caps_get_size(caps) != 1) {
       if (caps != nullptr) {
@@ -566,10 +597,11 @@ class NativeProbeRuntime {
          gst_structure_get_int(structure, "height", &height) &&
          width == expected_width && height == expected_height);
     const bool matches = media_type != nullptr && std::string(media_type) == "video/x-raw" &&
-                         format != nullptr && std::string(format) == "RGB" && size_matches;
+                         format != nullptr && std::string(format) == expected_format && size_matches;
     gst_caps_unref(caps);
     if (!matches) {
-      throw std::runtime_error("checkpoint negotiated caps do not match the declared RGB stage contract");
+      throw std::runtime_error(
+          std::string("checkpoint negotiated caps do not match the declared stage format ") + expected_format);
     }
   }
 
@@ -624,9 +656,9 @@ class NativeProbeRuntime {
     if (!written_checkpoint_stage_contracts_.insert(stage).second) {
       return;
     }
-    require_checkpoint_caps(pad, 640, 360);
+    require_checkpoint_caps(pad, 640, 360, "BGR");
     const std::string preprocess_config =
-        "{\"caps\":\"video/x-raw,format=RGB,width=640,height=360\","
+        "{\"caps\":\"video/x-raw,format=BGR,width=640,height=360\","
         "\"pipeline_role\":\"checkpoint\",\"stage\":\"preprocess\","
         "\"video_convert\":\"videoconvert\",\"video_scale\":\"videoscale\"}";
     const std::string preprocess_transform =
@@ -642,6 +674,7 @@ class NativeProbeRuntime {
                 {"caps_filter", "capsfilter"},
                 {"format_converter", "videoconvert"},
                 {"resizer", "videoscale"},
+                {"postdecode_prefix_queue", "vastcheckpointprefixqueue"},
             }),
         preprocess_transform,
         "[360,640,3]");
@@ -872,9 +905,79 @@ class NativeProbeRuntime {
         state.checkpoint_fanout_starts_by_branch.begin(),
         state.checkpoint_fanout_starts_by_branch.end(),
         [](const auto& entry) { return entry.second.empty(); });
-    return checkpoint_data_eof_.load() && state.checkpoint_deliveries_by_pts.empty() &&
+    return checkpoint_data_eof_.load() && checkpoint_ingress_queue_.empty() &&
+           state.checkpoint_deliveries_by_pts.empty() &&
            state.local_traces_by_pts.empty() && state.traces.empty() &&
            state.checkpoint_completed_branches_by_pts.empty() && fanout_intervals_drained;
+  }
+
+  void verify_checkpoint_reset_state_before_ready() const {
+    if (!is_checkpoint_role()) {
+      throw std::runtime_error("checkpoint reset verification requires a checkpoint role");
+    }
+    if (pipelines_.size() != 1 || states_.size() != 1) {
+      throw std::runtime_error("checkpoint reset verification requires exactly one fresh pipeline");
+    }
+    const StreamState& state = states_.front();
+    const bool state_maps_empty =
+        state.checkpoint_deliveries_by_pts.empty() &&
+        state.local_traces_by_pts.empty() &&
+        state.traces.empty() &&
+        state.checkpoint_completed_branches_by_pts.empty() &&
+        std::all_of(
+            state.checkpoint_fanout_starts_by_branch.begin(),
+            state.checkpoint_fanout_starts_by_branch.end(),
+            [](const auto& entry) { return entry.second.empty(); });
+    if (!checkpoint_ingress_queue_.empty() || !state_maps_empty ||
+        checkpoint_admission_stopped_.load() || checkpoint_data_eof_.load() ||
+        checkpoint_drain_reported_.load() || checkpoint_loop_finished_.load() ||
+        checkpoint_ingress_abort_.load()) {
+      throw std::runtime_error("checkpoint process state is not empty before READY");
+    }
+
+    GstIterator* iterator = gst_bin_iterate_recurse(GST_BIN(pipelines_.front()));
+    if (iterator == nullptr) {
+      throw std::runtime_error("checkpoint reset verification cannot inspect pipeline elements");
+    }
+    GValue value = G_VALUE_INIT;
+    bool done = false;
+    std::size_t bounded_queue_count = 0;
+    while (!done) {
+      switch (gst_iterator_next(iterator, &value)) {
+        case GST_ITERATOR_OK: {
+          GstElement* element = GST_ELEMENT(g_value_get_object(&value));
+          const GParamSpec* level_property = g_object_class_find_property(
+              G_OBJECT_GET_CLASS(element), "current-level-buffers");
+          if (level_property != nullptr) {
+            guint level = 0;
+            g_object_get(G_OBJECT(element), "current-level-buffers", &level, nullptr);
+            if (level != 0) {
+              g_value_unset(&value);
+              gst_iterator_free(iterator);
+              throw std::runtime_error("checkpoint queue is not empty before READY");
+            }
+            ++bounded_queue_count;
+          }
+          g_value_reset(&value);
+          break;
+        }
+        case GST_ITERATOR_RESYNC:
+          gst_iterator_resync(iterator);
+          break;
+        case GST_ITERATOR_DONE:
+          done = true;
+          break;
+        case GST_ITERATOR_ERROR:
+          g_value_unset(&value);
+          gst_iterator_free(iterator);
+          throw std::runtime_error("checkpoint reset verification failed while inspecting queues");
+      }
+    }
+    g_value_unset(&value);
+    gst_iterator_free(iterator);
+    if (bounded_queue_count == 0) {
+      throw std::runtime_error("checkpoint reset verification found no observable queues");
+    }
   }
 
   void finish_checkpoint_drain(bool censored) {
@@ -1005,13 +1108,18 @@ class NativeProbeRuntime {
         throw std::runtime_error(
             "vastanalyticsterminal requires vastanalyticsqueue immediately before each detector");
       }
-      const std::array<const char*, 7> placeholders = {
+      const std::array<const char*, 12> placeholders = {
           "{branch}",
           "{factory}",
+          "{input_format}",
+          "{batch_size}",
+          "{nireq}",
+          "{ie_config}",
           "{model_path}",
           "{model_sha256}",
           "{weights_sha256}",
           "{detector_id}",
+          "{device}",
           "{max_buffers}",
       };
       for (const char* placeholder : placeholders) {
@@ -1022,10 +1130,15 @@ class NativeProbeRuntime {
       }
       for (const std::string& branch : checkpoint_branches_) {
         (void)checkpoint_analytics_binding(branch, "FACTORY");
+        (void)checkpoint_analytics_binding(branch, "INPUT_FORMAT");
+        (void)checkpoint_analytics_binding(branch, "BATCH_SIZE");
+        (void)checkpoint_analytics_binding(branch, "NIREQ");
+        (void)checkpoint_analytics_binding(branch, "IE_CONFIG");
         (void)checkpoint_analytics_binding(branch, "MODEL_PATH");
         (void)checkpoint_analytics_binding(branch, "MODEL_SHA256");
         (void)checkpoint_analytics_binding(branch, "WEIGHTS_SHA256", true);
         (void)checkpoint_analytics_binding(branch, "DETECTOR_ID");
+        (void)checkpoint_analytics_binding(branch, "DEVICE");
         const std::string raw_max_buffers = checkpoint_analytics_binding(branch, "MAX_BUFFERS");
         std::size_t consumed = 0;
         const unsigned long long max_buffers = std::stoull(raw_max_buffers, &consumed);
@@ -1187,7 +1300,6 @@ class NativeProbeRuntime {
         terminal.detector,
         terminal.backend);
   }
-
   void handle_checkpoint_analytics_terminal(
       const vast::CheckpointAnalyticsTerminal& terminal) {
     const std::uint64_t timestamp_ms = now_ms();
@@ -1204,37 +1316,71 @@ class NativeProbeRuntime {
     if (args_.role == "checkpoint_branch" && terminal.branch_id != args_.checkpoint_branch) {
       throw std::runtime_error("checkpoint branch worker received another branch terminal");
     }
+
+    vast::CheckpointAnalyticsTerminal resolved_terminal = terminal;
+    const bool postdecode_prefix_drop =
+        terminal.terminal_reason == "native_postdecode_preprocess_queue_full_drop_newest";
+    if (postdecode_prefix_drop) {
+      if (terminal.status != vast::CheckpointAnalyticsTerminalStatus::kDrop ||
+          terminal.detector != "runtime-bound-postdecode-drop" ||
+          terminal.backend != "runtime-bound-postdecode-drop") {
+        throw std::runtime_error("post-decode prefix queue emitted an invalid terminal binding");
+      }
+      resolved_terminal.detector =
+          checkpoint_analytics_binding(terminal.branch_id, "DETECTOR_ID") +
+          ";model_sha256=" + checkpoint_analytics_binding(terminal.branch_id, "MODEL_SHA256");
+      const std::string weights_sha256 =
+          checkpoint_analytics_binding(terminal.branch_id, "WEIGHTS_SHA256", true);
+      if (!weights_sha256.empty()) {
+        resolved_terminal.detector += ";weights_sha256=" + weights_sha256;
+      }
+      resolved_terminal.backend =
+          "openvino-dlstreamer:" + checkpoint_analytics_binding(terminal.branch_id, "FACTORY");
+    } else if (
+        terminal.detector == "runtime-bound-postdecode-drop" ||
+        terminal.backend == "runtime-bound-postdecode-drop") {
+      throw std::runtime_error("runtime-bound post-decode placeholder escaped its terminal reason");
+    }
+
     StreamState& state = states_.front();
-    const auto trace_it = state.local_traces_by_pts.find(terminal.transport_pts_ns);
+    const auto trace_it = state.local_traces_by_pts.find(resolved_terminal.transport_pts_ns);
     if (trace_it == state.local_traces_by_pts.end()) {
       throw std::runtime_error("checkpoint analytics terminal has no admitted transport PTS");
     }
     const Trace trace = trace_it->second;
-    const std::string prefix_parent = args_.role == "checkpoint_shared"
-                                          ? checkpoint_execution_id(trace, terminal.branch_id, "fanout")
-                                          : checkpoint_execution_id(trace, terminal.branch_id, "preprocess");
-    if (terminal.status == vast::CheckpointAnalyticsTerminalStatus::kCompleted) {
-      const std::string analytics_id = checkpoint_execution_id(trace, terminal.branch_id, "analytics");
+    const std::string prefix_parent =
+        postdecode_prefix_drop
+            ? checkpoint_execution_id(
+                  trace,
+                  args_.role == "checkpoint_shared" ? "shared" : resolved_terminal.branch_id,
+                  "decode")
+            : (args_.role == "checkpoint_shared"
+                   ? checkpoint_execution_id(trace, resolved_terminal.branch_id, "fanout")
+                   : checkpoint_execution_id(trace, resolved_terminal.branch_id, "preprocess"));
+    if (resolved_terminal.status == vast::CheckpointAnalyticsTerminalStatus::kCompleted) {
+      const std::string analytics_id =
+          checkpoint_execution_id(trace, resolved_terminal.branch_id, "analytics");
       emit_checkpoint_event(
           trace,
-          terminal.transport_pts_ns,
+          resolved_terminal.transport_pts_ns,
           "stage_complete",
-          terminal.branch_id,
-          terminal.branch_id,
+          resolved_terminal.branch_id,
+          resolved_terminal.branch_id,
           "analytics",
           {prefix_parent},
           timestamp_ms);
-      write_event(trace, terminal.branch_id, timestamp_ms, timestamp_ms);
-      emit_checkpoint_branch_terminal(trace, terminal, {analytics_id}, timestamp_ms);
+      write_event(trace, resolved_terminal.branch_id, timestamp_ms, timestamp_ms);
+      emit_checkpoint_branch_terminal(trace, resolved_terminal, {analytics_id}, timestamp_ms);
     } else {
-      emit_checkpoint_branch_terminal(trace, terminal, {prefix_parent}, timestamp_ms);
+      emit_checkpoint_branch_terminal(trace, resolved_terminal, {prefix_parent}, timestamp_ms);
     }
-    auto& terminal_branches = state.checkpoint_completed_branches_by_pts[terminal.transport_pts_ns];
-    if (!terminal_branches.insert(terminal.branch_id).second) {
+    auto& terminal_branches =
+        state.checkpoint_completed_branches_by_pts[resolved_terminal.transport_pts_ns];
+    if (!terminal_branches.insert(resolved_terminal.branch_id).second) {
       throw std::runtime_error("duplicate checkpoint analytics terminal for one branch and frame");
     }
     if (terminal_branches.size() == checkpoint_branches_.size()) {
-      state.checkpoint_completed_branches_by_pts.erase(terminal.transport_pts_ns);
+      state.checkpoint_completed_branches_by_pts.erase(resolved_terminal.transport_pts_ns);
       state.local_traces_by_pts.erase(trace_it);
       state.traces.erase(
           std::remove_if(
@@ -1248,6 +1394,57 @@ class NativeProbeRuntime {
     }
   }
 
+  Trace checkpoint_trace_from_frame(const vast::CheckpointAdmissionFrame& frame) const {
+    Trace trace;
+    trace.stream_id = static_cast<std::uint8_t>(args_.logical_stream_id);
+    trace.source_cycle = frame.source_cycle;
+    trace.source_pts_ns = frame.access_unit_pts_ns;
+    trace.admission_id = frame.admission_id;
+    trace.payload_sha256 = frame.payload_sha256;
+    return trace;
+  }
+
+  void fail_checkpoint_ingress(const std::string& reason) {
+    failed_.store(true);
+    checkpoint_ingress_abort_.store(true);
+    checkpoint_ingress_ready_.notify_all();
+    std::cerr << "[native-probe][checkpoint] " << reason << "\n";
+    if (loop_ != nullptr) {
+      g_main_loop_quit(loop_);
+    }
+  }
+
+  void receive_checkpoint_access_units() {
+    try {
+      while (true) {
+        vast::CheckpointAdmissionFrame frame;
+        if (!vast::CheckpointAdmissionTransport::read_frame(checkpoint_data_fd_, frame)) {
+          break;
+        }
+        if (sha256_bytes(frame.payload) != frame.payload_sha256) {
+          throw std::runtime_error("checkpoint worker received an AU with a mismatched payload SHA-256");
+        }
+
+        {
+          std::unique_lock<std::mutex> lock(mutex_);
+          checkpoint_ingress_ready_.wait(lock, [this]() {
+            return checkpoint_ingress_abort_.load() ||
+                   checkpoint_ingress_queue_.size() < kMaximumQueuedCheckpointAccessUnits;
+          });
+          if (checkpoint_ingress_abort_.load()) {
+            continue;
+          }
+          checkpoint_ingress_queue_.push_back(std::move(frame));
+        }
+        checkpoint_ingress_ready_.notify_one();
+      }
+    } catch (const std::exception& exc) {
+      fail_checkpoint_ingress(exc.what());
+    }
+    checkpoint_data_reader_eof_.store(true);
+    checkpoint_ingress_ready_.notify_all();
+  }
+
   void feed_checkpoint_access_units() {
     GstElement* appsrc_element = nullptr;
     try {
@@ -1258,25 +1455,36 @@ class NativeProbeRuntime {
       if (appsrc_element == nullptr || !GST_IS_APP_SRC(appsrc_element)) {
         throw std::runtime_error("checkpoint worker appsrc was not found");
       }
-      vast::CheckpointAdmissionFrame frame;
-      while (vast::CheckpointAdmissionTransport::read_frame(checkpoint_data_fd_, frame)) {
-        if (sha256_bytes(frame.payload) != frame.payload_sha256) {
-          throw std::runtime_error("checkpoint worker received an AU with a mismatched payload SHA-256");
-        }
-        Trace trace;
-        trace.stream_id = static_cast<std::uint8_t>(args_.logical_stream_id);
-        trace.source_cycle = frame.source_cycle;
-        trace.source_pts_ns = frame.access_unit_pts_ns;
-        trace.admission_id = frame.admission_id;
-        trace.payload_sha256 = frame.payload_sha256;
+      while (true) {
+        vast::CheckpointAdmissionFrame frame;
         {
-          std::lock_guard<std::mutex> lock(mutex_);
+          std::unique_lock<std::mutex> lock(mutex_);
+          checkpoint_ingress_ready_.wait(lock, [this]() {
+            return checkpoint_ingress_abort_.load() ||
+                   checkpoint_data_reader_eof_.load() ||
+                   !checkpoint_ingress_queue_.empty();
+          });
+          if (checkpoint_ingress_abort_.load()) {
+            checkpoint_ingress_queue_.clear();
+            break;
+          }
+          if (checkpoint_ingress_queue_.empty()) {
+            if (checkpoint_data_reader_eof_.load()) {
+              break;
+            }
+            continue;
+          }
+          frame = std::move(checkpoint_ingress_queue_.front());
+          checkpoint_ingress_queue_.pop_front();
           StreamState& state = states_.front();
-          if (!state.checkpoint_deliveries_by_pts.emplace(frame.transport_pts_ns, trace).second) {
+          if (!state.checkpoint_deliveries_by_pts.emplace(
+                  frame.transport_pts_ns,
+                  checkpoint_trace_from_frame(frame)).second) {
             throw std::runtime_error("checkpoint worker received duplicate transport PTS");
           }
         }
 
+        checkpoint_ingress_ready_.notify_one();
         GstBuffer* buffer = gst_buffer_new_allocate(nullptr, frame.payload.size(), nullptr);
         if (buffer == nullptr ||
             gst_buffer_fill(buffer, 0, frame.payload.data(), frame.payload.size()) != frame.payload.size()) {
@@ -1293,25 +1501,29 @@ class NativeProbeRuntime {
         GST_BUFFER_DURATION(buffer) = frame.duration_ns == 0 ? GST_CLOCK_TIME_NONE : frame.duration_ns;
         const GstFlowReturn flow = gst_app_src_push_buffer(GST_APP_SRC(appsrc_element), buffer);
         if (flow != GST_FLOW_OK) {
+          if (checkpoint_ingress_abort_.load() &&
+              (flow == GST_FLOW_FLUSHING || flow == GST_FLOW_EOS)) {
+            break;
+          }
           throw std::runtime_error("checkpoint appsrc rejected a framed compressed access unit");
         }
       }
-      checkpoint_data_eof_.store(true);
-      gst_app_src_end_of_stream(GST_APP_SRC(appsrc_element));
-      bool drained = false;
-      {
-        std::lock_guard<std::mutex> lock(mutex_);
-        drained = checkpoint_state_drained();
-      }
-      if (checkpoint_admission_stopped_.load() && drained) {
-        finish_checkpoint_drain(false);
+      if (!checkpoint_ingress_abort_.load()) {
+        checkpoint_data_eof_.store(true);
+        if (gst_app_src_end_of_stream(GST_APP_SRC(appsrc_element)) != GST_FLOW_OK) {
+          throw std::runtime_error("checkpoint appsrc rejected end-of-stream");
+        }
+        bool drained = false;
+        {
+          std::lock_guard<std::mutex> lock(mutex_);
+          drained = checkpoint_state_drained();
+        }
+        if (checkpoint_admission_stopped_.load() && drained) {
+          finish_checkpoint_drain(false);
+        }
       }
     } catch (const std::exception& exc) {
-      failed_ = true;
-      std::cerr << "[native-probe][checkpoint] " << exc.what() << "\n";
-      if (loop_ != nullptr) {
-        g_main_loop_quit(loop_);
-      }
+      fail_checkpoint_ingress(exc.what());
     }
     if (appsrc_element != nullptr) {
       gst_object_unref(appsrc_element);
@@ -1473,6 +1685,11 @@ class NativeProbeRuntime {
           std::make_unique<vast::CheckpointResourceIntervalEmitter>(
               (fs::path(args_.output_dir) /
                vast::CheckpointResourceIntervalEmitter::kRuntimeFilename)
+                  .string());
+      checkpoint_fanout_work_emitter_ =
+          std::make_unique<vast::CheckpointFanoutWorkCounterEmitter>(
+              (fs::path(args_.output_dir) /
+               vast::CheckpointFanoutWorkCounterEmitter::kRuntimeFilename)
                   .string());
     }
   }
@@ -1887,16 +2104,6 @@ class NativeProbeRuntime {
     }
     trace = trace_it->second;
     if (ctx->kind == "checkpoint-decode") {
-      if (state.has_last_checkpoint_pts && pts <= state.last_checkpoint_pts) {
-        self->failed_ = true;
-        std::cerr << "[native-probe][checkpoint] decoded-buffer PTS is not strictly increasing within source cycle\n";
-        if (self->loop_ != nullptr) {
-          g_main_loop_quit(self->loop_);
-        }
-        return GST_PAD_PROBE_DROP;
-      }
-      state.last_checkpoint_pts = pts;
-      state.has_last_checkpoint_pts = true;
       const std::string branch = self->args_.role == "checkpoint_shared" ? "shared" : self->args_.checkpoint_branch;
       const std::string decode_stage = self->args_.role == "checkpoint_shared"
                                            ? "decode"
@@ -1978,6 +2185,15 @@ class NativeProbeRuntime {
     }
     if (ctx->kind == "checkpoint-fanout") {
       auto branch_starts_it = state.checkpoint_fanout_starts_by_branch.find(ctx->branch);
+      std::uint64_t fanout_thread_cpu_start_ns = 0;
+      if (!thread_cpu_now_ns(&fanout_thread_cpu_start_ns)) {
+        self->failed_ = true;
+        std::cerr << "[native-probe][checkpoint] failed to read fanout thread CPU clock\n";
+        if (self->loop_ != nullptr) {
+          g_main_loop_quit(self->loop_);
+        }
+        return GST_PAD_PROBE_DROP;
+      }
       if (branch_starts_it == state.checkpoint_fanout_starts_by_branch.end()) {
         self->failed_ = true;
         std::cerr << "[native-probe][checkpoint] fanout queue src has no paired sink start\n";
@@ -2000,7 +2216,8 @@ class NativeProbeRuntime {
       if (interval_start.frame_id != trace.frame_id ||
           interval_start.bytes != gst_buffer_get_size(buffer) ||
           interval_start.host_start_timestamp_ns >= event_timestamp_ns ||
-          !self->checkpoint_resource_interval_emitter_) {
+          !self->checkpoint_resource_interval_emitter_ ||
+          !self->checkpoint_fanout_work_emitter_) {
         self->failed_ = true;
         std::cerr << "[native-probe][checkpoint] fanout queue interval linkage is invalid\n";
         if (self->loop_ != nullptr) {
@@ -2020,9 +2237,16 @@ class NativeProbeRuntime {
           {preprocess_id},
           end);
       try {
+        std::uint64_t fanout_thread_cpu_end_ns = 0;
+        if (!thread_cpu_now_ns(&fanout_thread_cpu_end_ns) ||
+            fanout_thread_cpu_end_ns <= fanout_thread_cpu_start_ns) {
+          throw std::runtime_error("fanout thread CPU interval is invalid");
+        }
+        const std::uint64_t fanout_thread_cpu_time_ns =
+            fanout_thread_cpu_end_ns - fanout_thread_cpu_start_ns;
         const std::string native_event_id = sha256_text(
             "fanout_interval_v1\n" + self->args_.run_id + "\n" + self->trace_id(trace) +
-            "\n" + std::to_string(ctx->stream_id) + "\n" +
+            "\n" + std::to_string(trace.stream_id) + "\n" +
             std::to_string(trace.frame_id) + "\n" + ctx->branch + "\n" + execution_id +
             "\n" + std::to_string(interval_start.host_start_timestamp_ns) + "\n" +
             std::to_string(event_timestamp_ns) + "\n" +
@@ -2030,7 +2254,7 @@ class NativeProbeRuntime {
         self->checkpoint_resource_interval_emitter_->emit_fanout(
             self->args_.run_id,
             self->trace_id(trace),
-            static_cast<std::uint64_t>(ctx->stream_id),
+            static_cast<std::uint64_t>(trace.stream_id),
             trace.frame_id,
             self->checkpoint_input_frame_key(trace),
             ctx->branch,
@@ -2039,6 +2263,16 @@ class NativeProbeRuntime {
             event_timestamp_ns,
             interval_start.bytes,
             native_event_id);
+        self->checkpoint_fanout_work_emitter_->emit(
+            self->args_.run_id,
+            self->trace_id(trace),
+            static_cast<std::uint64_t>(trace.stream_id),
+            trace.frame_id,
+            self->checkpoint_input_frame_key(trace),
+            ctx->branch,
+            execution_id,
+            fanout_thread_cpu_time_ns,
+            1);
       } catch (const std::exception& exc) {
         self->failed_ = true;
         std::cerr << "[native-probe][checkpoint] " << exc.what() << "\n";
@@ -2127,19 +2361,14 @@ class NativeProbeRuntime {
         std::lock_guard<std::mutex> lock(self->mutex_);
         drained = self->checkpoint_state_drained();
       }
-      if (!drained) {
-        self->failed_ = true;
-        std::cerr << "[native-probe][checkpoint] appsrc EOS reached before every admitted AU drained\n";
-        if (self->loop_ != nullptr) {
-          g_main_loop_quit(self->loop_);
-        }
-        return TRUE;
-      }
-      if (self->checkpoint_admission_stopped_.load()) {
+      if (drained && self->checkpoint_admission_stopped_.load()) {
         self->finish_checkpoint_drain(false);
         return TRUE;
       }
-      std::cerr << "[native-probe][checkpoint] admission data pipe drained; awaiting coordinated STOP\n";
+      std::cerr
+          << (drained
+                  ? "[native-probe][checkpoint] admission data pipe drained; awaiting coordinated STOP\n"
+                  : "[native-probe][checkpoint] appsrc EOS received; awaiting native terminal drain\n");
     }
     return TRUE;
   }
@@ -2253,6 +2482,10 @@ class NativeProbeRuntime {
     replace_all(value, "{branch}", branch);
     if (value.find("vastanalyticsterminal") != std::string::npos) {
       replace_all(value, "{factory}", checkpoint_analytics_binding(branch, "FACTORY"));
+      replace_all(value, "{input_format}", checkpoint_analytics_binding(branch, "INPUT_FORMAT"));
+      replace_all(value, "{batch_size}", checkpoint_analytics_binding(branch, "BATCH_SIZE"));
+      replace_all(value, "{nireq}", checkpoint_analytics_binding(branch, "NIREQ"));
+      replace_all(value, "{ie_config}", checkpoint_analytics_binding(branch, "IE_CONFIG"));
       replace_all(value, "{model_path}", checkpoint_analytics_binding(branch, "MODEL_PATH"));
       replace_all(value, "{model_sha256}", checkpoint_analytics_binding(branch, "MODEL_SHA256"));
       replace_all(
@@ -2260,6 +2493,7 @@ class NativeProbeRuntime {
           "{weights_sha256}",
           checkpoint_analytics_binding(branch, "WEIGHTS_SHA256", true));
       replace_all(value, "{detector_id}", checkpoint_analytics_binding(branch, "DETECTOR_ID"));
+      replace_all(value, "{device}", checkpoint_analytics_binding(branch, "DEVICE"));
       replace_all(value, "{max_buffers}", checkpoint_analytics_binding(branch, "MAX_BUFFERS"));
     }
     return value;
@@ -2407,6 +2641,7 @@ class NativeProbeRuntime {
     std::ostringstream p;
     p << "appsrc name=checkpoint_appsrc" << stream_id
       << " is-live=true format=time do-timestamp=false block=true"
+      << " max-buffers=1 max-bytes=0 max-time=0 leaky-type=none"
       << " caps=\"" << media_type << ",stream-format=byte-stream,alignment=au\""
       << " ! " << parser
       << " ! " << media_type << ",stream-format=byte-stream,alignment=au"
@@ -2414,13 +2649,30 @@ class NativeProbeRuntime {
     return p.str();
   }
 
-  std::string checkpoint_branch_pipeline(int stream_id) const {
+  std::string checkpoint_prefix_branch_ids() const {
+    if (checkpoint_branches_.empty()) {
+      throw std::runtime_error("checkpoint prefix queue requires at least one branch");
+    }
+    std::ostringstream value;
+    for (std::size_t index = 0; index < checkpoint_branches_.size(); ++index) {
+      if (index != 0) {
+        value << ',';
+      }
+      value << checkpoint_branches_[index];
+    }
+    return value.str();
+  }
+
     const std::string branch = args_.checkpoint_branch;
+  std::string checkpoint_branch_pipeline(int stream_id) const {
     std::ostringstream p;
     p << checkpoint_source_pipeline(stream_id)
       << " ! decodebin ! videoconvert ! video/x-raw,format=RGB"
       << " ! queue name=checkpoint_decode" << stream_id
-      << " ! videoconvert ! videoscale ! video/x-raw,format=RGB,width=640,height=360"
+      << " ! vastcheckpointprefixqueue name=checkpoint_prefix_queue" << stream_id
+      << " branch-ids=\"" << checkpoint_prefix_branch_ids() << "\""
+      << " max-buffers=1"
+      << " ! videoconvert ! videoscale ! video/x-raw,format=BGR,width=640,height=360"
       << " ! queue name=checkpoint_preprocess" << stream_id
       << " ! " << checkpoint_detect_bin(branch)
       << " ! queue name=checkpoint_branch_" << branch << "_" << stream_id
@@ -2433,7 +2685,10 @@ class NativeProbeRuntime {
     p << checkpoint_source_pipeline(stream_id)
       << " ! decodebin ! videoconvert ! video/x-raw,format=RGB"
       << " ! queue name=checkpoint_decode" << stream_id
-      << " ! videoconvert ! videoscale ! video/x-raw,format=RGB,width=640,height=360"
+      << " ! vastcheckpointprefixqueue name=checkpoint_prefix_queue" << stream_id
+      << " branch-ids=\"" << checkpoint_prefix_branch_ids() << "\""
+      << " max-buffers=1"
+      << " ! videoconvert ! videoscale ! video/x-raw,format=BGR,width=640,height=360"
       << " ! queue name=checkpoint_preprocess" << stream_id
       << " ! tee name=checkpoint_tee" << stream_id;
     for (const std::string& branch : checkpoint_branches_) {
