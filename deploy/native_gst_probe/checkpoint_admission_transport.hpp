@@ -16,6 +16,7 @@ namespace vast {
 
 struct CheckpointAdmissionFrame {
   std::uint64_t sequence = 0;
+  bool keyframe = false;
   std::uint64_t source_cycle = 0;
   std::uint64_t access_unit_pts_ns = 0;
   std::uint64_t transport_pts_ns = 0;
@@ -30,6 +31,8 @@ struct CheckpointAdmissionFrame {
 class CheckpointAdmissionTransport {
  public:
   static constexpr std::uint16_t kProtocolVersion = 1;
+  static constexpr std::uint16_t kFlagKeyframe = 1U << 0;
+  static constexpr std::uint16_t kKnownFlags = kFlagKeyframe;
   static constexpr std::uint64_t kMissingTimestamp = std::numeric_limits<std::uint64_t>::max();
   static constexpr std::size_t kMaximumTextBytes = 8192;
   static constexpr std::size_t kMaximumPayloadBytes = 64U * 1024U * 1024U;
@@ -39,7 +42,7 @@ class CheckpointAdmissionTransport {
     std::array<std::uint8_t, kFixedHeaderBytes> header{};
     std::copy(kMagic.begin(), kMagic.end(), header.begin());
     write_u16(header.data() + 8, kProtocolVersion);
-    write_u16(header.data() + 10, 0);
+    write_u16(header.data() + 10, frame.keyframe ? kFlagKeyframe : 0);
     write_u64(header.data() + 12, frame.sequence);
     write_u64(header.data() + 20, frame.source_cycle);
     write_u64(header.data() + 28, frame.access_unit_pts_ns);
@@ -67,7 +70,8 @@ class CheckpointAdmissionTransport {
     if (!std::equal(kMagic.begin(), kMagic.end(), header.begin())) {
       throw std::runtime_error("checkpoint admission frame has invalid magic");
     }
-    if (read_u16(header.data() + 8) != kProtocolVersion || read_u16(header.data() + 10) != 0) {
+    const std::uint16_t flags = read_u16(header.data() + 10);
+    if (read_u16(header.data() + 8) != kProtocolVersion || (flags & ~kKnownFlags) != 0) {
       throw std::runtime_error("unsupported checkpoint admission transport protocol");
     }
 
@@ -80,6 +84,7 @@ class CheckpointAdmissionTransport {
     }
 
     CheckpointAdmissionFrame decoded;
+    decoded.keyframe = (flags & kFlagKeyframe) != 0;
     decoded.sequence = read_u64(header.data() + 12);
     decoded.source_cycle = read_u64(header.data() + 20);
     decoded.access_unit_pts_ns = read_u64(header.data() + 28);

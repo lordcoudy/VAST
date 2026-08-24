@@ -13,7 +13,8 @@ STREAMS=""
 MIN_OBJECTS="0"
 MAX_OBJECTS="20"
 OUTPUT_FILE=""
-DEADLINE_MS="100"
+DEADLINE_MS="${DEADLINE_MS:-}"
+CHECKPOINT_CODEC="${CHECKPOINT_CODEC:-}"
 HOST_ROLE="${EXPERIMENT_HOST_ROLE:-local}"
 PIPELINE_STAGES="${EXPERIMENT_PIPELINE_STAGES:-}"
 SCENARIO_JSON="${EXPERIMENT_SCENARIO_JSON:-}"
@@ -21,7 +22,7 @@ BENCHMARK_MODE="${BENCHMARK_MODE:-benchmark}"
 RUN_ID="${EXPERIMENT_RUN_ID:-unassigned}"
 DETECTOR="${ADAPTER_DETECTOR:-$SYSTEM}"
 BACKEND="${ADAPTER_BACKEND:-$SYSTEM}"
-SCHEDULER_POLICY="${SCHEDULER_POLICY:-static_hybrid}"
+SCHEDULER_POLICY="${SCHEDULER_POLICY:-}"
 QL_HEFT_POLICY_ARTIFACT="${QL_HEFT_POLICY_ARTIFACT:-$PROJECT_DIR/policies/ql_heft_frozen.policy}"
 EXPERIMENT_DISTRIBUTED="${EXPERIMENT_DISTRIBUTED:-0}"
 RTP_INPUT_PORT="${EXPERIMENT_RTP_INPUT_PORT:-}"
@@ -42,6 +43,8 @@ NATIVE_PROBE_BIN="${NATIVE_PROBE_BIN:-$PROJECT_DIR/build/bin/vast_native_gst_pro
 OPENVINO_NATIVE_PROBE_IMAGE="${OPENVINO_NATIVE_PROBE_IMAGE:-vast/openvino-native-probe:dlstreamer-2026.1}"
 CHECKPOINT_OPENVINO_IMAGE="${CHECKPOINT_OPENVINO_IMAGE:-$OPENVINO_NATIVE_PROBE_IMAGE}"
 CHECKPOINT_ANALYTICS_MODEL_MANIFEST="${CHECKPOINT_ANALYTICS_MODEL_MANIFEST:-$PROJECT_DIR/configs/checkpoint_analytics_models_openvino.yaml}"
+CHECKPOINT_POLICY_CAPABILITY_MANIFEST="${CHECKPOINT_POLICY_CAPABILITY_MANIFEST:-$PROJECT_DIR/configs/checkpoint_policy_capability_manifest.yaml}"
+CHECKPOINT_POLICY_CALIBRATION="${CHECKPOINT_POLICY_CALIBRATION:-$PROJECT_DIR/configs/checkpoint_policy_calibration.yaml}"
 CHECKPOINT_DRAIN_TIMEOUT_S="${CHECKPOINT_DRAIN_TIMEOUT_S:-10}"
 CHECKPOINT_READY_TIMEOUT_S="${CHECKPOINT_READY_TIMEOUT_S:-300}"
 DEEPSTREAM_NATIVE_PROBE_IMAGE="${DEEPSTREAM_NATIVE_PROBE_IMAGE:-vast/deepstream-native-probe:7.0}"
@@ -70,7 +73,9 @@ usage() {
 Usage: bash scripts/run_system_template.sh \
   --system <deepstream|savant|openvino_gva|gstreamer_custom|custom_cpp_cuda_qt> \
   --scenario <name> --duration <sec> --streams <n> \
-  --min-objects <n> --max-objects <n> --output <frames.csv>
+  --min-objects <n> --max-objects <n> --output <frames.csv> \
+  [--codec <h264|h265>] [--policy <name>] --deadline-ms <ms> \
+  [--policy-capability-manifest <path>] [--policy-calibration <path>]
 EOF
 }
 
@@ -83,7 +88,11 @@ while [[ $# -gt 0 ]]; do
     --min-objects) MIN_OBJECTS="$2"; shift 2 ;;
     --max-objects) MAX_OBJECTS="$2"; shift 2 ;;
     --output) OUTPUT_FILE="$2"; shift 2 ;;
+    --codec) CHECKPOINT_CODEC="$2"; shift 2 ;;
+    --policy) SCHEDULER_POLICY="$2"; shift 2 ;;
     --deadline-ms) DEADLINE_MS="$2"; shift 2 ;;
+    --policy-capability-manifest) CHECKPOINT_POLICY_CAPABILITY_MANIFEST="$2"; shift 2 ;;
+    --policy-calibration) CHECKPOINT_POLICY_CALIBRATION="$2"; shift 2 ;;
     --host-role) HOST_ROLE="$2"; shift 2 ;;
     --pipeline-stages) PIPELINE_STAGES="$2"; shift 2 ;;
     --scenario-json) SCENARIO_JSON="$2"; shift 2 ;;
@@ -104,13 +113,70 @@ fi
 if [[ "$BENCHMARK_MODE" == "benchmark" ]]; then
   case "$SCENARIO" in
     checkpoint_independent_processes_baseline|checkpoint_video_dag_shared)
-      if [[ "$SYSTEM" != "gstreamer_custom" || "$EXPERIMENT_DISTRIBUTED" == "1" ]]; then
-        warn "$SCENARIO publication runtime is implemented only for local gstreamer_custom"
+      if [[ "$SYSTEM" != "gstreamer_custom" ]]; then
+        warn "$SCENARIO publication runtime is implemented only for local gstreamer_custom; system=$SYSTEM has a generic probe but no topology-specific checkpoint runtime with protocol-v3 common admission and branch terminals"
         exit 2
       fi
+      if [[ "$EXPERIMENT_DISTRIBUTED" == "1" ]]; then
+        warn "$SCENARIO checkpoint runtime for system=$SYSTEM is local-only; distributed execution is unavailable"
+        exit 2
+      fi
+      if [[ -z "$CHECKPOINT_CODEC" ]]; then
+        warn "$SCENARIO checkpoint codec is not explicit; pass --codec or CHECKPOINT_CODEC"
+        exit 2
+      fi
+      CHECKPOINT_CODEC="$(printf '%s' "$CHECKPOINT_CODEC" | tr '[:upper:]' '[:lower:]')"
+      [[ "$CHECKPOINT_CODEC" == "hevc" ]] && CHECKPOINT_CODEC="h265"
+      if [[ "$CHECKPOINT_CODEC" != "h264" && "$CHECKPOINT_CODEC" != "h265" ]]; then
+        warn "$SCENARIO checkpoint codec is outside the frozen H.264/H.265 matrix: $CHECKPOINT_CODEC"
+        exit 2
+      fi
+      if [[ -z "$SCHEDULER_POLICY" ]]; then
+        warn "$SCENARIO checkpoint policy is not explicit; pass --policy or SCHEDULER_POLICY"
+        exit 2
+      fi
+      if [[ -z "$DEADLINE_MS" ]]; then
+        warn "$SCENARIO checkpoint deadline_ms is not explicit; pass --deadline-ms or DEADLINE_MS"
+        exit 2
+      fi
+      if [[ ! "$DEADLINE_MS" =~ ^[0-9]+([.][0-9]+)?$ ]]; then
+        warn "$SCENARIO checkpoint deadline_ms must be a positive number; requested deadline_ms=$DEADLINE_MS"
+        exit 2
+      fi
+      case "$SCHEDULER_POLICY" in
+        cpu_only|gpu_only|static_hybrid|heft|deadline_aware_heft|queue_aware_edf|adaptive_weights) ;;
+        *)
+          warn "$SCENARIO checkpoint policy is outside the frozen seven-policy matrix: $SCHEDULER_POLICY"
+          exit 2
+          ;;
+      esac
+      case "$DEADLINE_MS" in
+        16.7|33.3|50|50.0|100|100.0|500|500.0) ;;
+        *)
+          warn "$SCENARIO checkpoint deadline_ms is outside the frozen full matrix: $DEADLINE_MS"
+          exit 2
+          ;;
+      esac
+      if [[ "$SCHEDULER_POLICY" != "cpu_only" ]]; then
+        warn "$SCENARIO policy=$SCHEDULER_POLICY is blocked: NVIDIA CUDA/TensorRT parity analytics bindings are absent; OpenVINO device=GPU is not accepted"
+        exit 2
+      fi
+      if [[ "$CHECKPOINT_ANALYTICS_MODEL_MANIFEST" != "$PROJECT_DIR"/* || ! -f "$CHECKPOINT_ANALYTICS_MODEL_MANIFEST" ]]; then
+        warn "$SCENARIO analytics model manifest is missing or outside the mounted project: $CHECKPOINT_ANALYTICS_MODEL_MANIFEST"
+        exit 2
+      fi
+      for artifact in "$CHECKPOINT_POLICY_CAPABILITY_MANIFEST" "$CHECKPOINT_POLICY_CALIBRATION"; do
+        if [[ "$artifact" != "$PROJECT_DIR"/* || ! -f "$artifact" ]]; then
+          warn "$SCENARIO cpu_only native policy artifact is missing or outside the mounted project: $artifact"
+          exit 2
+        fi
+      done
       ;;
   esac
 fi
+
+DEADLINE_MS="${DEADLINE_MS:-100}"
+SCHEDULER_POLICY="${SCHEDULER_POLICY:-static_hybrid}"
 
 DETECTOR="${ADAPTER_DETECTOR:-$SYSTEM}"
 BACKEND="${ADAPTER_BACKEND:-$SYSTEM}"
@@ -749,6 +815,9 @@ run_checkpoint_publication_runtime() {
   local detect_bin
   local cmd
   local args
+  local analytics_manifest
+  local capability_manifest
+  local calibration
 
   if [[ "$REAL_DRY_RUN" != "1" ]]; then
     command -v docker >/dev/null 2>&1 || {
@@ -763,7 +832,10 @@ run_checkpoint_publication_runtime() {
     }
   fi
 
-  detect_bin='videoconvert ! video/x-raw,format={input_format} ! vastanalyticsqueue branch-id={branch} detector-id={detector_id} expected-downstream-factory={factory} expected-model-sha256="{model_sha256}" expected-weights-sha256="{weights_sha256}" max-buffers={max_buffers} ! {factory} name=checkpoint_detector_{branch} model="{model_path}" device={device} batch-size={batch_size} nireq={nireq} ie-config="{ie_config}" ! vastanalyticsterminal branch-id={branch} detector-id={detector_id} expected-upstream-factory={factory} expected-model-sha256="{model_sha256}" expected-weights-sha256="{weights_sha256}"'
+  detect_bin='videoconvert ! video/x-raw,format={input_format} ! vastanalyticsqueue branch-id={branch} detector-id={detector_id} expected-downstream-factory={factory} expected-model-sha256="{model_sha256}" expected-weights-sha256="{weights_sha256}" max-buffers={max_buffers} ! {factory} name=checkpoint_detector_{branch} model="{model_path}" device={device} batch-size={batch_size} nireq={nireq} ie-config="{ie_config}" ! vastanalyticsterminal branch-id={branch} detector-id={detector_id} expected-upstream-factory={factory} expected-model-sha256="{model_sha256}" expected-weights-sha256="{weights_sha256}" expected-device={device}'
+  analytics_manifest="/workspace/project/${CHECKPOINT_ANALYTICS_MODEL_MANIFEST#"$PROJECT_DIR/"}"
+  capability_manifest="/workspace/project/${CHECKPOINT_POLICY_CAPABILITY_MANIFEST#"$PROJECT_DIR/"}"
+  calibration="/workspace/project/${CHECKPOINT_POLICY_CALIBRATION#"$PROJECT_DIR/"}"
   args=(
     docker run --rm --gpus all --network none
     -e NVIDIA_DRIVER_CAPABILITIES=compute,utility,video
@@ -778,7 +850,10 @@ run_checkpoint_publication_runtime() {
     --config configs/experiments.yaml
     --datasets configs/datasets.yaml
     --scenario "$SCENARIO"
-    --system gstreamer_custom
+    --system "$SYSTEM"
+    --codec "$CHECKPOINT_CODEC"
+    --policy "$SCHEDULER_POLICY"
+    --deadline-ms "$DEADLINE_MS"
     --binary /usr/local/bin/vast_native_gst_probe
     --source-binary /usr/local/bin/vast_checkpoint_source
     --output-dir /results
@@ -788,11 +863,16 @@ run_checkpoint_publication_runtime() {
     --ready-timeout "$CHECKPOINT_READY_TIMEOUT_S"
     --use-preregistered-window
     --detect-bin "$detect_bin"
-    --analytics-model-manifest configs/checkpoint_analytics_models_openvino.yaml
+    --analytics-model-manifest "$analytics_manifest"
+    --policy-capability-manifest "$capability_manifest"
+    --policy-calibration "$calibration"
     --analytics-queue-max-buffers 1
     --checkpoint-analytics-mode native_terminal_socket_v1
     --execute-publication-runtime
   )
+  if [[ "${CHECKPOINT_DEFER_FULL_RESOURCE_ACCEPTANCE:-0}" == "1" ]]; then
+    args+=(--defer-full-resource-acceptance)
+  fi
   printf -v cmd '%q ' "${args[@]}"
   run_or_echo "$cmd"
 }

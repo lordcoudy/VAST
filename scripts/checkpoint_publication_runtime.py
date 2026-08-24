@@ -5,6 +5,9 @@ import csv
 import hashlib
 import json
 import math
+import os
+import re
+import tempfile
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -30,11 +33,59 @@ from benchmark_contract import (
     write_provenance_labeled_sidecars,
 )
 from checkpoint_runtime import RuntimeRunResult, SourceLaunchSpec, WorkerLaunchSpec
+from checkpoint_acceptance_metadata_binding import (
+    AcceptanceMetadataBindingError,
+    bind_checkpoint_acceptance_to_durable_metadata,
+    validate_checkpoint_acceptance_metadata_binding,
+    validate_full_publication_execution_binding,
+)
+from full_resource_contract import validate_full_resource_evidence
 from topology_contract import SUPPORTED_EVENT_KINDS, TOPOLOGY_EVENT_COLUMNS, validate_topology_events
 
 
-PUBLICATION_ACCEPTANCE_SCHEMA_VERSION = 1
+PUBLICATION_ACCEPTANCE_SCHEMA_VERSION = 2
 PUBLICATION_RESET_PROVENANCE = "native_process_lifecycle_queue_and_sink_snapshot_v1"
+NATIVE_EXECUTION_BINDING_PROVENANCE = "native_scheduler_execution_binding_v1"
+CHECKPOINT_EXECUTION_RESOURCES = frozenset({"cpu", "gpu", "nvdec"})
+NATIVE_EXECUTION_SIDECARS = (
+    "resource_events.csv",
+    "policy_decisions.csv",
+)
+from publication_acceptance_evidence import (
+    BASE_ACCEPTANCE_EVIDENCE_FILES,
+    FROZEN_POLICY_DECISIONS_JSONL,
+    FROZEN_POLICY_FEEDBACK_JSONL,
+    FULL_RESOURCE_EVIDENCE_FILES,
+    frozen_policy_requires_feedback,
+    pre_finalization_acceptance_evidence_files,
+)
+_SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
+_CANDIDATE_FIELDS = {
+    "schema_version",
+    "artifact_kind",
+    "status",
+    "run_id",
+    "system",
+    "scenario",
+    "codec",
+    "policy",
+    "deadline_ms",
+    "execution_binding_provenance",
+    "topology_kind",
+    "cohort_id",
+    "measurement_schedule_fingerprint_sha256",
+    "completed_frames_by_stream",
+    "summary",
+    "evidence_sha256",
+    "pending_full_resource_evidence",
+}
+
+
+def _acceptance_evidence_files(policy: str) -> tuple[str, ...]:
+    # The native coordinator emits a canonical replay record for every frozen
+    # policy.  The CSV projection alone is insufficient to bind the accepted
+    # native request/evaluation/terminal evidence used by qualification.
+    return pre_finalization_acceptance_evidence_files(policy)
 
 
 def _require(condition: bool, message: str) -> None:
@@ -57,6 +108,337 @@ def _sha256_file(path: Path) -> str:
         for chunk in iter(lambda: source.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def _write_immutable_json(path: Path, value: dict[str, Any]) -> None:
+    payload = json.dumps(
+        value,
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=True,
+        allow_nan=False,
+    ).encode("utf-8") + b"\n"
+    if path.exists():
+        _require(path.is_file() and path.read_bytes() == payload, f"immutable acceptance collision: {path.name}")
+        return
+    path.parent.mkdir(parents=True, exist_ok=True)
+    descriptor, temporary_name = tempfile.mkstemp(
+        prefix=f".{path.name}.", suffix=".tmp", dir=path.parent
+    )
+    temporary = Path(temporary_name)
+    try:
+        with os.fdopen(descriptor, "wb") as output:
+            output.write(payload)
+            output.flush()
+            os.fsync(output.fileno())
+        os.replace(temporary, path)
+        if os.name != "nt":
+            directory_descriptor: int | None = None
+            try:
+                directory_descriptor = os.open(
+                    path.parent,
+                    os.O_RDONLY | getattr(os, "O_DIRECTORY", 0),
+                )
+                os.fsync(directory_descriptor)
+            except OSError:
+                # Some mounted filesystems do not expose directory fsync. The
+                # acceptance bytes themselves were flushed before the rename.
+                pass
+            finally:
+                if directory_descriptor is not None:
+                    os.close(directory_descriptor)
+    finally:
+        temporary.unlink(missing_ok=True)
+
+
+def prepare_checkpoint_publication_acceptance(
+    *,
+    output_dir: Path,
+    expected_run_id: str,
+    expected_system: str,
+    expected_scenario: str,
+    expected_codec: str,
+    expected_policy: str,
+    expected_deadline_ms: float,
+    topology_kind: str,
+    hardware_collector_stopped: bool,
+) -> dict[str, Any]:
+    """Validate closed evidence and construct, but do not persist, arm acceptance."""
+
+    _require(hardware_collector_stopped is True, "hardware collector must be stopped before acceptance")
+    candidate_path = output_dir / "checkpoint_publication_candidate.json"
+    acceptance_path = output_dir / "checkpoint_publication_acceptance.json"
+    _require(candidate_path.is_file() and not candidate_path.is_symlink(), "full-resource acceptance candidate is missing")
+    _require(not acceptance_path.exists(), "final checkpoint acceptance already exists")
+    try:
+        candidate = json.loads(candidate_path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, json.JSONDecodeError) as error:
+        raise ContractError(f"invalid checkpoint acceptance candidate: {error}") from error
+    _require(type(candidate) is dict, "checkpoint acceptance candidate must be an object")
+    _require(
+        set(candidate) == _CANDIDATE_FIELDS,
+        "checkpoint acceptance candidate fields drifted",
+    )
+    expected_identity = {
+        "schema_version": PUBLICATION_ACCEPTANCE_SCHEMA_VERSION,
+        "artifact_kind": "checkpoint_publication_runtime_candidate",
+        "status": "pending_full_resource_validation",
+        "run_id": expected_run_id,
+        "system": expected_system,
+        "scenario": expected_scenario,
+        "codec": str(expected_codec).strip().lower().replace("hevc", "h265"),
+        "policy": expected_policy,
+        "execution_binding_provenance": NATIVE_EXECUTION_BINDING_PROVENANCE,
+        "topology_kind": topology_kind,
+    }
+    for field, expected in expected_identity.items():
+        actual = candidate.get(field)
+        _require(
+            type(actual) is type(expected) and actual == expected,
+            f"checkpoint acceptance candidate identity drift: {field}",
+        )
+    try:
+        actual_deadline = float(candidate.get("deadline_ms"))
+        expected_deadline = float(expected_deadline_ms)
+    except (TypeError, ValueError):
+        raise ContractError(
+            "checkpoint acceptance candidate identity drift: deadline_ms"
+        ) from None
+    _require(
+        not isinstance(candidate.get("deadline_ms"), bool)
+        and not isinstance(expected_deadline_ms, bool)
+        and math.isfinite(actual_deadline)
+        and math.isfinite(expected_deadline)
+        and math.isclose(
+            actual_deadline,
+            expected_deadline,
+            rel_tol=0.0,
+            abs_tol=1e-9,
+        ),
+        "checkpoint acceptance candidate identity drift: deadline_ms",
+    )
+    _require(
+        type(candidate.get("cohort_id")) is str and bool(candidate["cohort_id"]),
+        "checkpoint acceptance candidate cohort_id is invalid",
+    )
+    _require(
+        type(candidate.get("measurement_schedule_fingerprint_sha256")) is str
+        and _SHA256_RE.fullmatch(candidate["measurement_schedule_fingerprint_sha256"])
+        is not None,
+        "checkpoint acceptance candidate schedule fingerprint is invalid",
+    )
+    completed_by_stream = candidate.get("completed_frames_by_stream")
+    _require(
+        type(completed_by_stream) is dict
+        and bool(completed_by_stream)
+        and all(
+            type(stream_id) is str
+            and stream_id.isdigit()
+            and type(count) is int
+            and count > 0
+            for stream_id, count in completed_by_stream.items()
+        ),
+        "checkpoint acceptance candidate completed stream cohort is invalid",
+    )
+    _require(
+        type(candidate.get("summary")) is dict,
+        "checkpoint acceptance candidate summary is invalid",
+    )
+    evidence = candidate.get("evidence_sha256")
+    _require(
+        type(evidence) is dict
+        and set(evidence) == set(_acceptance_evidence_files(expected_policy)),
+        "candidate evidence hash set drifted",
+    )
+    for name, expected_sha in evidence.items():
+        _require(
+            type(name) is str
+            and Path(name).name == name
+            and type(expected_sha) is str
+            and _SHA256_RE.fullmatch(expected_sha) is not None,
+            "candidate evidence identity is invalid",
+        )
+        path = output_dir / name
+        _require(
+            path.is_file() and not path.is_symlink() and _sha256_file(path) == expected_sha,
+            f"candidate evidence hash drift: {name}",
+        )
+    _require(
+        candidate.get("pending_full_resource_evidence") == list(FULL_RESOURCE_EVIDENCE_FILES),
+        "candidate full-resource evidence contract drifted",
+    )
+    for name in FULL_RESOURCE_EVIDENCE_FILES:
+        path = output_dir / name
+        _require(path.is_file() and not path.is_symlink(), f"full-resource evidence is missing: {name}")
+
+    try:
+        validation = validate_full_resource_evidence(
+            output_dir,
+            expected_run_id=expected_run_id,
+            ingress_ledger=pd.read_csv(output_dir / "ingress_ledger.csv"),
+            topology_events=pd.read_csv(output_dir / "topology_events.csv"),
+            frame_events=pd.read_csv(output_dir / "frame_events.csv"),
+            topology_kind=topology_kind,
+        )
+    except ContractError:
+        raise
+    except Exception as error:
+        raise ContractError(f"full-resource final validation failed: {error}") from None
+    _require(
+        type(validation) is dict and type(validation.get("summary")) is dict,
+        "full-resource final validation returned an invalid summary",
+    )
+    resource_summary = dict(validation["summary"])
+    _require(
+        resource_summary.get("resource_contract_version") == 2
+        and resource_summary.get("evidence_accepted") is True
+        and resource_summary.get("publication_bundle_bound") is True
+        and resource_summary.get("full_resource_coverage_complete") is True,
+        "full-resource evidence did not pass final acceptance",
+    )
+    for field in (
+        "nvdec_busy_equivalent_ns",
+        "fanout_thread_cpu_time_ns",
+        "fanout_work_units",
+    ):
+        value = resource_summary.get(field)
+        _require(
+            type(value) is int and value >= 0,
+            f"full-resource summary has invalid {field}",
+        )
+    _require(
+        resource_summary.get("nvdec_counter_scope") == "device_sample",
+        "full-resource summary has invalid nvdec_counter_scope",
+    )
+    _require(
+        resource_summary.get("fanout_counter_scope")
+        == "per_trace_resource_work",
+        "full-resource summary has invalid fanout_counter_scope",
+    )
+    full_resource_hashes = {
+        name: _sha256_file(output_dir / name) for name in FULL_RESOURCE_EVIDENCE_FILES
+    }
+    summary = dict(candidate["summary"])
+    summary.update(
+        {
+            "resource_contract_version": 2,
+            "full_resource_evidence_accepted": True,
+            "full_resource_coverage_complete": True,
+            "nvdec_busy_equivalent_ns": resource_summary["nvdec_busy_equivalent_ns"],
+            "nvdec_counter_scope": resource_summary["nvdec_counter_scope"],
+            "fanout_thread_cpu_time_ns": resource_summary["fanout_thread_cpu_time_ns"],
+            "fanout_work_units": resource_summary["fanout_work_units"],
+            "fanout_counter_scope": resource_summary["fanout_counter_scope"],
+        }
+    )
+    acceptance = {
+        key: value
+        for key, value in candidate.items()
+        if key != "pending_full_resource_evidence"
+    }
+    acceptance.update(
+        {
+            "artifact_kind": "checkpoint_publication_runtime_acceptance",
+            "status": "accepted_native_checkpoint_arm",
+            "summary": summary,
+            "evidence_sha256": {**evidence, **full_resource_hashes},
+            "full_resource_evidence_sha256": full_resource_hashes,
+            "full_resource_summary": resource_summary,
+            "acceptance_finalization": {
+                "hardware_collector_stopped": True,
+                "validation": "full_resource_evidence_v2_passed",
+            },
+        }
+    )
+    return acceptance
+
+
+def commit_checkpoint_publication_acceptance(
+    *,
+    output_dir: Path,
+    acceptance: dict[str, Any],
+    run_metadata_path: Path,
+    expected_execution_binding: dict[str, Any],
+) -> dict[str, Any]:
+    """Bind durable metadata, revalidate it, then persist the last arm commit."""
+
+    _require(
+        type(acceptance) is dict
+        and acceptance.get("artifact_kind")
+        == "checkpoint_publication_runtime_acceptance"
+        and acceptance.get("status") == "accepted_native_checkpoint_arm",
+        "prepared checkpoint acceptance is invalid",
+    )
+    _require(
+        run_metadata_path.resolve() == (output_dir / "run_metadata.json").resolve(),
+        "checkpoint acceptance must bind run_metadata.json in its output directory",
+    )
+    try:
+        execution_binding = validate_full_publication_execution_binding(
+            expected_execution_binding
+        )
+        committed_acceptance = bind_checkpoint_acceptance_to_durable_metadata(
+            acceptance,
+            run_metadata_path=run_metadata_path,
+            expected_execution_binding=execution_binding,
+        )
+        validate_checkpoint_acceptance_metadata_binding(
+            committed_acceptance,
+            run_metadata_path=run_metadata_path,
+            expected_execution_binding=execution_binding,
+        )
+    except AcceptanceMetadataBindingError as error:
+        raise ContractError(
+            f"checkpoint acceptance metadata binding failed: {error}"
+        ) from error
+    _write_immutable_json(
+        output_dir / "checkpoint_publication_acceptance.json",
+        committed_acceptance,
+    )
+    return committed_acceptance
+
+
+def finalize_checkpoint_publication_acceptance(
+    *,
+    output_dir: Path,
+    expected_run_id: str,
+    expected_system: str,
+    expected_scenario: str,
+    expected_codec: str,
+    expected_policy: str,
+    expected_deadline_ms: float,
+    topology_kind: str,
+    hardware_collector_stopped: bool,
+    run_metadata_path: Path,
+    expected_execution_binding: dict[str, Any],
+) -> dict[str, Any]:
+    """Validate and atomically bind final acceptance for direct callers."""
+
+    acceptance = prepare_checkpoint_publication_acceptance(
+        output_dir=output_dir,
+        expected_run_id=expected_run_id,
+        expected_system=expected_system,
+        expected_scenario=expected_scenario,
+        expected_codec=expected_codec,
+        expected_policy=expected_policy,
+        expected_deadline_ms=expected_deadline_ms,
+        topology_kind=topology_kind,
+        hardware_collector_stopped=hardware_collector_stopped,
+    )
+    return commit_checkpoint_publication_acceptance(
+        output_dir=output_dir,
+        acceptance=acceptance,
+        run_metadata_path=run_metadata_path,
+        expected_execution_binding=expected_execution_binding,
+    )
+
+
+def _require_native_execution_sidecars(output_dir: Path) -> None:
+    for name in NATIVE_EXECUTION_SIDECARS:
+        _require(
+            (output_dir / name).is_file(),
+            f"checkpoint publication requires preexisting native {name}; derived fallback is prohibited",
+        )
 
 
 def _linkage_key(row: dict[str, Any]) -> tuple[str, str, int, int]:
@@ -231,7 +613,61 @@ def _accepted_frame_event_rows(
     *,
     ledger_rows: list[dict[str, Any]],
     policy: str,
+    system: str,
+    scenario: str,
+    codec: str,
+    deadline_ms: float,
 ) -> list[dict[str, Any]]:
+    expected_codec = str(codec).strip().lower().replace("hevc", "h265")
+    _require(bool(system), "checkpoint publication system is not explicit")
+    _require(bool(scenario), "checkpoint publication scenario is not explicit")
+    _require(bool(expected_codec), "checkpoint publication codec is not explicit")
+    _require(bool(policy), "checkpoint publication policy is not explicit")
+    _require(
+        math.isfinite(float(deadline_ms)) and float(deadline_ms) > 0,
+        "checkpoint deadline_ms is invalid",
+    )
+
+    def native_execution_binding(
+        row: dict[str, Any],
+        *,
+        key: tuple[str, str, int, int],
+    ) -> tuple[str, str]:
+        required = {
+            "execution_resource",
+            "scheduler_policy",
+            "policy_action",
+            "policy_decision_id",
+            "execution_binding_provenance",
+            "benchmark_system",
+            "benchmark_scenario",
+            "benchmark_codec",
+            "benchmark_deadline_ms",
+        }
+        missing = sorted(field for field in required if row.get(field) in {None, ""})
+        _require(
+            not missing,
+            f"native execution binding is missing fields {','.join(missing)}: {key}",
+        )
+        _require(
+            str(row["execution_binding_provenance"]) == NATIVE_EXECUTION_BINDING_PROVENANCE,
+            f"stage execution binding is not native: {key}",
+        )
+        _require(str(row["benchmark_system"]) == system, f"stage system identity drifted: {key}")
+        _require(str(row["benchmark_scenario"]) == scenario, f"stage scenario identity drifted: {key}")
+        observed_codec = str(row["benchmark_codec"]).strip().lower().replace("hevc", "h265")
+        _require(observed_codec == expected_codec, f"stage codec identity drifted: {key}")
+        _require(
+            math.isclose(float(row["benchmark_deadline_ms"]), float(deadline_ms), rel_tol=0.0, abs_tol=1e-9),
+            f"stage deadline identity drifted: {key}",
+        )
+        _require(str(row["scheduler_policy"]) == policy, f"stage policy identity drifted: {key}")
+        resource = str(row["execution_resource"]).strip().lower()
+        _require(resource in CHECKPOINT_EXECUTION_RESOURCES, f"stage execution resource is invalid: {key}")
+        action = str(row["policy_action"]).strip()
+        _require(action.startswith(f"{policy}:"), f"stage policy action is not bound to requested policy: {key}")
+        return resource, action
+
     ledger_by_key = {_linkage_key(row): row for row in ledger_rows}
     runtime_by_key: dict[tuple[str, str, int, int], list[dict[str, Any]]] = {}
     for source in result.events:
@@ -254,7 +690,9 @@ def _accepted_frame_event_rows(
             end = int(row["timestamp_ms"])
             _require(start <= end, f"native stage interval is negative: {key}")
             stage = str(row["stage"])
-            resource = "gpu" if stage.split("_", 1)[0] == "decode" else "cpu"
+            resource, policy_action = native_execution_binding(row, key=key)
+            if stage.split("_", 1)[0] == "decode":
+                _require(resource == "nvdec", f"decode stage lacks native NVDEC execution binding: {key}")
             accepted.append(
                 {
                     "schema_version": TELEMETRY_SCHEMA_VERSION,
@@ -271,7 +709,7 @@ def _accepted_frame_event_rows(
                     "stage_end_timestamp_ms": end,
                     "queue_depth": 0,
                     "estimated_cost_ms": end - start,
-                    "policy_action": f"{policy}:{resource}",
+                    "policy_action": policy_action,
                 }
             )
 
@@ -290,6 +728,7 @@ def _accepted_frame_event_rows(
             aggregate_end = int(joins[0]["timestamp_ms"])
             _require(aggregate_start <= aggregate_end, f"aggregate interval is negative: {key}")
             host = str(joins[0]["execution_domain"])
+            join_resource, join_policy_action = native_execution_binding(joins[0], key=key)
             for stage, start, end in (
                 ("aggregate", aggregate_start, aggregate_end),
                 ("record", aggregate_end, aggregate_end),
@@ -304,13 +743,13 @@ def _accepted_frame_event_rows(
                         "stage": stage,
                         "role": "local",
                         "host": host,
-                        "resource": "cpu",
+                        "resource": join_resource,
                         "queue_enter_timestamp_ms": start,
                         "stage_start_timestamp_ms": start,
                         "stage_end_timestamp_ms": end,
                         "queue_depth": 0,
                         "estimated_cost_ms": end - start,
-                        "policy_action": f"{policy}:cpu",
+                        "policy_action": join_policy_action,
                     }
                 )
     return sorted(
@@ -397,8 +836,30 @@ def publish_checkpoint_runtime(
     run_id: str,
     policy: str,
     deadline_ms: float,
+    defer_full_resource_acceptance: bool = False,
 ) -> dict[str, Any]:
     """Promote a closed, directly observed native checkpoint arm to accepted v1 sidecars."""
+    system = str(plan.get("system", "")).strip()
+    scenario_name = str(scenario.get("name", "")).strip()
+    planned_scenario = str(plan.get("scenario", "")).strip()
+    codec = str(dataset.get("codec_variant", "")).strip().lower().replace("hevc", "h265")
+    decoder_codec = (
+        str((plan.get("decoder_placement") or {}).get("codec", ""))
+        .strip()
+        .lower()
+        .replace("hevc", "h265")
+    )
+    _require(system == "gstreamer_custom", "checkpoint publication has no genuine runtime for requested system")
+    _require(
+        bool(scenario_name) and scenario_name == planned_scenario,
+        "checkpoint publication scenario identity drifted",
+    )
+    _require(bool(codec) and codec == decoder_codec, "checkpoint publication codec/decoder identity drifted")
+    _require(bool(str(policy).strip()), "checkpoint publication policy is not explicit")
+    _require(
+        math.isfinite(float(deadline_ms)) and float(deadline_ms) > 0,
+        "checkpoint publication deadline_ms is invalid",
+    )
     _require(str(plan.get("benchmark_status")) == "supported", "publication plan is not benchmark-supported")
     workers = list(worker_specs)
     sources = list(source_specs)
@@ -431,6 +892,7 @@ def publish_checkpoint_runtime(
     )
 
     output_dir.mkdir(parents=True, exist_ok=True)
+    _require_native_execution_sidecars(output_dir)
     ledger_rows, cohort_id = _accepted_ingress_rows(result, run_id=run_id)
     required_branches = [str(value) for value in plan["required_branches"]]
     branch_rows = _accepted_branch_rows(
@@ -442,7 +904,15 @@ def publish_checkpoint_runtime(
     frame_rows = _accepted_frames(ledger_rows, branch_rows)
     completed_keys = {_linkage_key(row) for row in frame_rows}
     topology_rows = _accepted_topology_rows(result, completed_keys=completed_keys)
-    frame_event_rows = _accepted_frame_event_rows(result, ledger_rows=ledger_rows, policy=policy)
+    frame_event_rows = _accepted_frame_event_rows(
+        result,
+        ledger_rows=ledger_rows,
+        policy=policy,
+        system=system,
+        scenario=scenario_name,
+        codec=codec,
+        deadline_ms=deadline_ms,
+    )
     accepted_reset_rows = _accepted_reset_rows(reset_rows, cohort_id=cohort_id)
 
     stage_df = pd.read_csv(stage_contract_runtime_path)
@@ -501,6 +971,9 @@ def publish_checkpoint_runtime(
     validate_required_sidecars(
         output_dir,
         require_labeled_provenance=True,
+        require_full_policy_trace=True,
+        require_causal_policy_trace=True,
+        require_online_policy_trace=frozen_policy_requires_feedback(policy),
         require_ingress_ledger=True,
         require_branch_terminals=True,
         require_stage_contracts=True,
@@ -548,24 +1021,17 @@ def publish_checkpoint_runtime(
         "publication arm lacks a positive completed cohort on every logical stream",
     )
 
-    evidence_files = [
-        "frames.csv",
-        "frame_events.csv",
-        "resource_events.csv",
-        "policy_decisions.csv",
-        "drop_counters.csv",
-        "topology_events.csv",
-        "ingress_ledger.csv",
-        "branch_terminals.csv",
-        "stage_contracts.csv",
-        "reset_evidence.csv",
-    ]
     acceptance = {
         "schema_version": PUBLICATION_ACCEPTANCE_SCHEMA_VERSION,
         "artifact_kind": "checkpoint_publication_runtime_acceptance",
         "status": "accepted_native_checkpoint_arm",
         "run_id": run_id,
+        "system": system,
         "scenario": str(scenario["name"]),
+        "codec": codec,
+        "policy": policy,
+        "deadline_ms": float(deadline_ms),
+        "execution_binding_provenance": NATIVE_EXECUTION_BINDING_PROVENANCE,
         "topology_kind": str(plan["topology_kind"]),
         "cohort_id": cohort_id,
         "measurement_schedule_fingerprint_sha256": str(
@@ -574,11 +1040,22 @@ def publish_checkpoint_runtime(
         "completed_frames_by_stream": completed_by_stream,
         "summary": summary,
         "evidence_sha256": {
-            name: _sha256_file(output_dir / name) for name in evidence_files
+            name: _sha256_file(output_dir / name)
+            for name in _acceptance_evidence_files(policy)
         },
     }
-    (output_dir / "checkpoint_publication_acceptance.json").write_text(
-        json.dumps(acceptance, indent=2, sort_keys=True) + "\n",
-        encoding="utf-8",
+    if defer_full_resource_acceptance:
+        candidate = {
+            **acceptance,
+            "artifact_kind": "checkpoint_publication_runtime_candidate",
+            "status": "pending_full_resource_validation",
+            "pending_full_resource_evidence": list(FULL_RESOURCE_EVIDENCE_FILES),
+        }
+        _write_immutable_json(
+            output_dir / "checkpoint_publication_candidate.json", candidate
+        )
+        return candidate
+    _write_immutable_json(
+        output_dir / "checkpoint_publication_acceptance.json", acceptance
     )
     return acceptance

@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -14,6 +15,7 @@ from checkpoint_publication_runtime import (
     _accepted_branch_rows,
     _accepted_frame_event_rows,
     _accepted_ingress_rows,
+    _require_native_execution_sidecars,
 )
 from checkpoint_runtime import RuntimeRunResult
 
@@ -59,8 +61,9 @@ def event(
     parents: str,
     timestamp_ms: int,
     branch_id: str = "not_applicable",
+    native_binding: bool = True,
 ) -> dict[str, object]:
-    return {
+    row: dict[str, object] = {
         "run_id": RUN_ID,
         "trace_id": TRACE_ID,
         "input_frame_key": INPUT_FRAME_KEY,
@@ -74,9 +77,33 @@ def event(
         "execution_domain": "host:pid=100",
         "branch_id": branch_id,
     }
+    if native_binding:
+        row.update(
+            {
+                "execution_resource": "nvdec" if stage == "decode" else "cpu",
+                "scheduler_policy": "static_hybrid",
+                "policy_action": (
+                    "static_hybrid:nvdec" if stage == "decode" else "static_hybrid:cpu"
+                ),
+                "policy_decision_id": f"decision:{execution_id}",
+                "execution_binding_provenance": "native_scheduler_execution_binding_v1",
+                "benchmark_system": "gstreamer_custom",
+                "benchmark_scenario": "checkpoint_video_dag_shared",
+                "benchmark_codec": "h264",
+                "benchmark_deadline_ms": 100.0,
+            }
+        )
+    return row
 
 
 class CheckpointPublicationRuntimeTests(unittest.TestCase):
+    def test_publication_requires_preexisting_native_policy_and_resource_sidecars(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp, self.assertRaisesRegex(
+            ContractError,
+            "native resource_events.csv",
+        ):
+            _require_native_execution_sidecars(Path(tmp))
+
     def test_ingress_promotion_rejects_censoring_and_non_native_terminal_provenance(self) -> None:
         cases = (
             (
@@ -148,6 +175,10 @@ class CheckpointPublicationRuntimeTests(unittest.TestCase):
             runtime_result(events=events),
             ledger_rows=[ingress_row()],
             policy="static_hybrid",
+            system="gstreamer_custom",
+            scenario="checkpoint_video_dag_shared",
+            codec="h264",
+            deadline_ms=100.0,
         )
         by_stage = {str(row["stage"]): row for row in rows}
         self.assertEqual(by_stage["decode"]["stage_start_timestamp_ms"], 1_100)
@@ -156,6 +187,41 @@ class CheckpointPublicationRuntimeTests(unittest.TestCase):
         self.assertEqual(by_stage["aggregate"]["stage_end_timestamp_ms"], 1_153)
         self.assertEqual(by_stage["record"]["stage_start_timestamp_ms"], 1_153)
         self.assertEqual(by_stage["record"]["stage_end_timestamp_ms"], 1_153)
+
+    def test_frame_intervals_reject_inferred_policy_and_resource_labels(self) -> None:
+        events = (
+            event(
+                kind="source_read",
+                stage="source",
+                execution_id="source",
+                parents="[]",
+                timestamp_ms=1_100,
+                native_binding=False,
+            ),
+            event(
+                kind="stage_complete",
+                stage="decode",
+                execution_id="decode",
+                parents='["source"]',
+                timestamp_ms=1_110,
+                native_binding=False,
+            ),
+        )
+        with self.assertRaisesRegex(ContractError, "native execution binding"):
+            _accepted_frame_event_rows(
+                runtime_result(events=events),
+                ledger_rows=[
+                    ingress_row(
+                        terminal_status="drop",
+                        terminal_provenance="native_drop_event",
+                    )
+                ],
+                policy="static_hybrid",
+                system="gstreamer_custom",
+                scenario="checkpoint_video_dag_shared",
+                codec="h264",
+                deadline_ms=100.0,
+            )
 
 
 if __name__ == "__main__":

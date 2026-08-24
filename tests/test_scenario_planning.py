@@ -128,7 +128,7 @@ class ScenarioPlanningTests(unittest.TestCase):
         body = (ROOT / "scripts" / "run_experiments.py").read_text(encoding="utf-8")
 
         self.assertIn("PROJECT_ROOT = Path(__file__).resolve().parents[1]", body)
-        self.assertIn("cwd=PROJECT_ROOT", body)
+        self.assertIn("cwd=caller_project_root", body)
         self.assertNotIn("Path.cwd()", body)
 
     def test_summary_csv_serializes_pairing_passport_and_reset_fields(self) -> None:
@@ -647,7 +647,7 @@ class ScenarioPlanningTests(unittest.TestCase):
         self.assertEqual(assessment["assessment_schema_version"], 1)
         self.assertEqual(
             assessment["status"],
-            "ready_validator_and_fanout_source_not_target_verified_not_publication_bound",
+            "ready_validator_and_native_interval_sources_not_target_verified_not_publication_bound",
         )
         self.assertTrue(assessment["validator_verified"])
         self.assertTrue(assessment["fanout_emitter_source_verified"])
@@ -665,6 +665,10 @@ class ScenarioPlanningTests(unittest.TestCase):
             assessment["remaining_gates"],
         )
         self.assertIn(
+            "native_nvdec_submit_complete_interval_emitter_not_target_executed_or_accepted",
+            assessment["remaining_gates"],
+        )
+        self.assertIn(
             "native_nvdec_busy_resource_counter_missing",
             assessment["remaining_gates"],
         )
@@ -674,6 +678,10 @@ class ScenarioPlanningTests(unittest.TestCase):
         )
         self.assertNotIn(
             "native_fanout_interval_emitter_missing",
+            assessment["remaining_gates"],
+        )
+        self.assertNotIn(
+            "native_nvdec_submit_complete_interval_emitter_missing",
             assessment["remaining_gates"],
         )
 
@@ -904,7 +912,10 @@ class ScenarioPlanningTests(unittest.TestCase):
                     mode="benchmark",
                 )
                 self.assertEqual(plan.contract, "strict_native_schema_v2_topology_v1")
-                with self.assertRaisesRegex(ContractError, "implemented only for gstreamer_custom"):
+                with self.assertRaisesRegex(
+                    ContractError,
+                    "publication runtime is not grant-authorized: deepstream",
+                ):
                     validate_benchmark_adapter(
                         system_key="deepstream",
                         scenario=scenario,

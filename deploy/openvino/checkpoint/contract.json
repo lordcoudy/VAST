@@ -1,0 +1,27 @@
+{
+  "artifact_kind": "vast_openvino_checkpoint_deployment_contract",
+  "baseline_worker_processes": 24,
+  "branches": [
+    "plate_number",
+    "vehicle_type",
+    "damage",
+    "foreign_object"
+  ],
+  "codecs": [
+    "h264",
+    "h265"
+  ],
+  "generic_probe_relabelled": false,
+  "logical_streams": 6,
+  "measurement_execution_allowed": false,
+  "queued_branches_per_stream": 4,
+  "scenarios": [
+    "checkpoint_independent_processes_baseline",
+    "checkpoint_video_dag_shared"
+  ],
+  "schema_version": 1,
+  "shared_graph_processes": 6,
+  "status": "capability_preflight_and_plan_only",
+  "system": "openvino_gstreamer",
+  "topology_runtime_implemented": false
+}

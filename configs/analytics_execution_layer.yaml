@@ -1,0 +1,29 @@
+schema_version: 1
+artifact_kind: vast_analytics_execution_layer_config
+config_id: kpp-analytics-execution-layer-v1
+protocol_identity_sha256: cbd56bae6b8862165ad596a5ccbf5d043f82f91d010fcb4731aa40901ce08df8
+model_parity_manifest: configs/checkpoint_analytics_model_parity.yaml
+transport:
+  kind: unix_seqpacket_scm_rights_sealed_memfd
+  max_control_bytes: 65536
+  max_tensor_bytes: 67108864
+  max_inflight_requests_per_worker: 1
+workers:
+  cpu:
+    engine: openvino_cpu
+    base_image: vast/openvino-native-probe:dlstreamer-2026.1
+    base_image_id: sha256:1cd1537d05f9d83a82024d8742afb6d8b325f951f62d55ce1aeb904b1e88ec6d
+    image: vast/analytics-openvino-worker:v2
+    image_id: sha256:1c484b47ce6cced890f83a653767df5dcd57c81ebb4ef8be3076d48273c26a1e
+    worker_implementation_sha256: 11bb76091b0380fae4a374abae8f305c216b17ee96019106902e2e987730f182
+    entrypoint: /opt/vast/analytics/openvino_worker.py
+    requires_nvidia_runtime: false
+  gpu:
+    engine: tensorrt_cuda
+    base_image: vast/deepstream-native-probe:7.0
+    base_image_id: sha256:277bb99b1b23b5b763332041703905242a1238c3faeb72533aa6045c9d2d7489
+    image: vast/analytics-tensorrt-worker:v2
+    image_id: sha256:29ad51f4057f5aa77eb18e572c5055ed465fac39d49365d8eb5ffafe4fe8001f
+    worker_implementation_sha256: 7a09892dc72f86c825b3ec9055fdb25859f497caf86e9e32c4d35d79f96c5c46
+    entrypoint: /opt/vast/bin/vast_tensorrt_worker
+    requires_nvidia_runtime: true

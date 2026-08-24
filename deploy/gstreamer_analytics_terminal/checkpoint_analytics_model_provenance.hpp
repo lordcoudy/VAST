@@ -140,6 +140,28 @@ inline std::string verified_model_identity(
   return identity;
 }
 
+inline std::string verified_openvino_cpu_device(
+    GstElement* detector,
+    const gchar* expected_device) {
+  if (g_strcmp0(expected_device, "CPU") != 0) {
+    throw std::runtime_error(
+        "OpenVINO terminal accepts only CPU; device=GPU is not NVIDIA CUDA evidence");
+  }
+  GParamSpec* device_property =
+      g_object_class_find_property(G_OBJECT_GET_CLASS(detector), "device");
+  if (device_property == nullptr || G_PARAM_SPEC_VALUE_TYPE(device_property) != G_TYPE_STRING) {
+    throw std::runtime_error("detector has no string device property");
+  }
+  gchar* raw_device = nullptr;
+  g_object_get(detector, "device", &raw_device, nullptr);
+  const std::string device = raw_device == nullptr ? std::string() : std::string(raw_device);
+  g_free(raw_device);
+  if (device != "CPU") {
+    throw std::runtime_error("loaded OpenVINO detector device is not exact CPU");
+  }
+  return device;
+}
+
 inline GstElement* immediate_peer_element(GstPad* pad) {
   GstPad* peer = gst_pad_get_peer(pad);
   if (peer == nullptr) {

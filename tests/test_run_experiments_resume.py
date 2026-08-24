@@ -5,6 +5,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 import yaml
 
@@ -13,6 +14,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 
 from benchmark_contract import (  # noqa: E402
     ContractError,
+    FULL_RESOURCE_PUBLICATION_SCOPE,
     PRIMARY_ARCHITECTURE_REQUIRED_SIDECARS,
     PUBLICATION_EVIDENCE_BUNDLE_POLICY_ONLINE_SCOPE,
     PUBLICATION_EVIDENCE_BUNDLE_SCOPE,
@@ -31,6 +33,88 @@ from run_experiments import load_resumable_result, run_directory, summary_fieldn
 
 
 class RunExperimentsResumeTests(unittest.TestCase):
+    def test_full_resource_resume_rejects_candidate_without_final_acceptance(self) -> None:
+        result = {field: "" for field in summary_fieldnames()}
+        result.update({
+            "timestamp": "2026-08-12T00:00:00+00:00",
+            "status": "completed",
+            "run_mode": "benchmark",
+            "system": "gstreamer_custom",
+            "scenario": "checkpoint_video_dag_shared",
+            "repeat": 1,
+            "streams": 6,
+            "duration_s": 180,
+            "policy": "cpu_only",
+            "dataset": "kpp_real_h264",
+            "deadline_ms": 100.0,
+            "telemetry_source": "native",
+        })
+        identity = {"schema_version": 1, "sha256": "a" * 64}
+        metadata = {
+            "schema_version": 2,
+            "mode": "benchmark",
+            "result": result,
+            "publication_run_contract": {"bound": True},
+            "publication_run_contract_identity": identity,
+            "publication_evidence_bundle": {"bound": True},
+            "publication_evidence_bundle_identity": identity,
+            "resolved_scenario": {"topology": {"kind": "shared_video_dag"}},
+            "scenario_contract_identity": identity,
+        }
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            current_model_parity_grant = {"caller": "current-model-parity-grant"}
+            metadata_path = root / "run_metadata.json"
+            metadata_path.write_text(json.dumps(metadata), encoding="utf-8")
+            (root / "checkpoint_publication_candidate.json").write_text(
+                "{}\n", encoding="utf-8"
+            )
+            with (
+                mock.patch(
+                    "run_experiments.resolve_publication_run_contract",
+                    return_value={"bound": True},
+                ) as resolve_contract,
+                mock.patch(
+                    "run_experiments.publication_run_contract_identity",
+                    return_value=identity,
+                ),
+                mock.patch(
+                    "run_experiments.scenario_contract_identity",
+                    return_value=identity,
+                ),
+                mock.patch(
+                    "run_experiments.resolve_publication_evidence_bundle_scope",
+                    return_value=FULL_RESOURCE_PUBLICATION_SCOPE,
+                ),
+                mock.patch("run_experiments.validate_publication_evidence_bundle"),
+                self.assertRaisesRegex(
+                    ContractError,
+                    "final full-resource checkpoint acceptance is missing",
+                ),
+            ):
+                load_resumable_result(
+                    metadata_path,
+                    system_key="gstreamer_custom",
+                    scenario_key="checkpoint_video_dag_shared",
+                    repeat_index=1,
+                    streams=6,
+                    duration_s=180,
+                    policy="cpu_only",
+                    dataset_name="kpp_real_h264",
+                    mode="benchmark",
+                    deadline_ms=100.0,
+                    scenario_contract={"topology": {"kind": "shared_video_dag"}},
+                    config={},
+                    resource_capability_grant={"verified": True},
+                    backend_runtime_grant={"verified": True},
+                    model_parity_grant=current_model_parity_grant,
+                    expected_execution_binding={"current": "execution-binding"},
+                )
+            self.assertIs(
+                resolve_contract.call_args.kwargs["model_parity_grant"],
+                current_model_parity_grant,
+            )
+
     def test_run_directory_matches_canonical_layout(self) -> None:
         scenario = {"name": "checkpoint_video_dag_shared", "workload": {}}
 
@@ -334,13 +418,17 @@ class RunExperimentsResumeTests(unittest.TestCase):
 
         with tempfile.TemporaryDirectory() as tmp:
             run_dir = Path(tmp)
-            for relative_name in sorted(PRIMARY_ARCHITECTURE_REQUIRED_SIDECARS):
+            for relative_name in publication_evidence_bundle_files(
+                PUBLICATION_EVIDENCE_BUNDLE_SCOPE,
+                policy="static_hybrid",
+            ):
                 (run_dir / relative_name).write_bytes(
                     (relative_name + "\n").encode("utf-8")
                 )
             evidence_bundle = build_publication_evidence_bundle(
                 run_dir,
                 scope=PUBLICATION_EVIDENCE_BUNDLE_SCOPE,
+                policy="static_hybrid",
             )
             evidence_identity = publication_evidence_bundle_identity(evidence_bundle)
             metadata["publication_evidence_bundle"] = evidence_bundle
@@ -435,7 +523,8 @@ class RunExperimentsResumeTests(unittest.TestCase):
                 "sha256": online_run_identity["sha256"],
             }
             for relative_name in publication_evidence_bundle_files(
-                PUBLICATION_EVIDENCE_BUNDLE_POLICY_ONLINE_SCOPE
+                PUBLICATION_EVIDENCE_BUNDLE_POLICY_ONLINE_SCOPE,
+                policy="ql_heft_online",
             ):
                 path = run_dir / relative_name
                 if not path.exists():
@@ -443,6 +532,7 @@ class RunExperimentsResumeTests(unittest.TestCase):
             online_bundle = build_publication_evidence_bundle(
                 run_dir,
                 scope=PUBLICATION_EVIDENCE_BUNDLE_POLICY_ONLINE_SCOPE,
+                policy="ql_heft_online",
             )
             online_bundle_identity = publication_evidence_bundle_identity(
                 online_bundle
@@ -494,9 +584,9 @@ class RunExperimentsResumeTests(unittest.TestCase):
             metadata.pop("primary_policy_pair")
             metadata_path.write_text(json.dumps(metadata), encoding="utf-8")
 
-            feedback_path = run_dir / "policy_feedback.csv"
-            original_feedback = feedback_path.read_bytes()
-            feedback_path.write_bytes(original_feedback + b"tampered")
+            decisions_path = run_dir / "publication_policy_decisions.jsonl"
+            original_decisions = decisions_path.read_bytes()
+            decisions_path.write_bytes(original_decisions + b"tampered")
             with self.assertRaisesRegex(
                 ContractError,
                 "publication evidence bundle drift",

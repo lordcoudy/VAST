@@ -4,6 +4,7 @@ import argparse
 import csv
 import math
 import os
+import socket
 import struct
 import sys
 import threading
@@ -228,7 +229,7 @@ class NativeEventWriter:
                 "frame_id": frame_id,
                 "stage": self.stage,
                 "role": self.role,
-                "host": os.uname().nodename,
+                "host": socket.gethostname(),
                 "resource": self.resource,
                 "queue_enter_timestamp_ms": start_ms,
                 "stage_start_timestamp_ms": start_ms,

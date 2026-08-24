@@ -1,0 +1,704 @@
+#!/usr/bin/env python3
+"""Physical, fail-closed acceptance for the schema-3 model-parity manifest."""
+
+from __future__ import annotations
+
+import copy
+import hashlib
+import json
+import os
+import re
+import stat
+from pathlib import Path
+from typing import Any, Mapping
+
+
+SCHEMA_VERSION = 1
+ASSESSMENT_KIND = "vast_checkpoint_model_parity_accepted_assessment"
+RECEIPT_KIND = "vast_checkpoint_model_parity_acceptance_receipt"
+RECEIPT_STATUS = "accepted_physical_model_parity_v3"
+BINDING_KIND = "vast_verified_model_parity_acceptance_binding"
+BRANCHES = ("plate_number", "vehicle_type", "damage", "foreign_object")
+EVIDENCE_NAMES = (
+    "cpu_execution_probe",
+    "cuda_execution_probe",
+    "calibration_corpus",
+    "evaluation_corpus",
+    "cpu_policy_calibration",
+    "cuda_policy_calibration",
+    "cpu_raw_output_bundle",
+    "cuda_raw_output_bundle",
+)
+_SHA_RE = re.compile(r"^[0-9a-f]{64}$")
+
+
+class ModelParityAcceptanceError(RuntimeError):
+    """Accepted parity material is incomplete, aliased, or has drifted."""
+
+
+def _require(condition: bool, message: str) -> None:
+    if not condition:
+        raise ModelParityAcceptanceError(message)
+
+
+def _canonical_bytes(value: Any) -> bytes:
+    try:
+        return json.dumps(
+            value,
+            sort_keys=True,
+            separators=(",", ":"),
+            ensure_ascii=True,
+            allow_nan=False,
+        ).encode("utf-8")
+    except (TypeError, ValueError) as error:
+        raise ModelParityAcceptanceError(
+            "model-parity acceptance value is not canonical JSON"
+        ) from error
+
+
+def _canonical_sha(value: Any) -> str:
+    return hashlib.sha256(_canonical_bytes(value)).hexdigest()
+
+
+def _valid_sha(value: Any) -> bool:
+    return type(value) is str and _SHA_RE.fullmatch(value) is not None
+
+
+def _json_copy(value: Any) -> Any:
+    return json.loads(_canonical_bytes(value).decode("utf-8"))
+
+
+def _exact(value: Any, fields: set[str], label: str) -> Mapping[str, Any]:
+    _require(isinstance(value, Mapping), f"{label} must be a mapping")
+    _require(set(value) == fields, f"{label} fields drifted")
+    return value
+
+
+def _is_reparse_or_link(path: Path) -> bool:
+    try:
+        info = path.lstat()
+    except OSError as error:
+        raise ModelParityAcceptanceError(
+            f"model-parity artifact stat failed: {path}: {error}"
+        ) from error
+    attributes = int(getattr(info, "st_file_attributes", 0))
+    return stat.S_ISLNK(info.st_mode) or bool(
+        attributes
+        & int(getattr(stat, "FILE_ATTRIBUTE_REPARSE_POINT", 0x400))
+    )
+
+
+def _physical_root(project_root: Path | str) -> Path:
+    lexical = Path(os.path.abspath(os.fspath(project_root)))
+    try:
+        resolved = lexical.resolve(strict=True)
+    except OSError as error:
+        raise ModelParityAcceptanceError(f"project_root is unavailable: {error}") from error
+    _require(lexical == resolved, "project_root is an alias")
+    _require(resolved.is_dir(), "project_root is not a directory")
+    _require(not _is_reparse_or_link(resolved), "project_root is a symlink/reparse point")
+    _require(resolved != Path(resolved.anchor), "project_root cannot be a filesystem root")
+    return resolved
+
+
+def _normalized_relative(value: Any, label: str) -> Path:
+    _require(type(value) is str and value and "\\" not in value, f"{label} path is invalid")
+    relative = Path(value)
+    _require(
+        not relative.is_absolute()
+        and relative.as_posix() == value
+        and all(part not in {"", ".", ".."} for part in relative.parts),
+        f"{label} path is not normalized",
+    )
+    return relative
+
+
+def _resolve_existing_file(root: Path, value: Any, label: str) -> Path:
+    relative = _normalized_relative(value, label)
+    cursor = root
+    for part in relative.parts:
+        cursor = cursor / part
+        _require(cursor.exists() or os.path.lexists(cursor), f"{label} is missing")
+        _require(not _is_reparse_or_link(cursor), f"{label} contains a symlink/reparse point")
+    try:
+        resolved = cursor.resolve(strict=True)
+        resolved.relative_to(root)
+    except (OSError, ValueError) as error:
+        raise ModelParityAcceptanceError(f"{label} escaped project_root") from error
+    _require(resolved == cursor, f"{label} is an alias")
+    info = cursor.lstat()
+    _require(stat.S_ISREG(info.st_mode), f"{label} is not a regular file")
+    _require(int(info.st_nlink) == 1, f"{label} hardlink alias is prohibited")
+    return cursor
+
+
+def _relative_input(root: Path, value: Path | str, label: str) -> str:
+    raw = Path(value)
+    candidate = Path(os.path.abspath(os.fspath(raw if raw.is_absolute() else root / raw)))
+    try:
+        relative = candidate.relative_to(root).as_posix()
+    except ValueError as error:
+        raise ModelParityAcceptanceError(f"{label} escaped project_root") from error
+    _resolve_existing_file(root, relative, label)
+    return relative
+
+
+def _hash_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as source:
+        for chunk in iter(lambda: source.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def _stable_descriptor(root: Path, relative: str, label: str) -> tuple[dict[str, Any], tuple[int, int]]:
+    path = _resolve_existing_file(root, relative, label)
+    before = path.stat()
+    first = _hash_file(path)
+    middle = path.stat()
+    second = _hash_file(path)
+    after = path.stat()
+    identities = [
+        (
+            int(item.st_dev),
+            int(item.st_ino),
+            int(item.st_size),
+            int(item.st_mtime_ns),
+            int(getattr(item, "st_ctime_ns", 0)),
+            int(item.st_nlink),
+        )
+        for item in (before, middle, after)
+    ]
+    _require(
+        identities[0] == identities[1] == identities[2] and first == second,
+        f"{label} changed while hashing",
+    )
+    return (
+        {"path": relative, "size_bytes": int(after.st_size), "sha256": first},
+        (int(after.st_dev), int(after.st_ino)),
+    )
+
+
+def _validate_descriptor(value: Any, label: str) -> dict[str, Any]:
+    item = _exact(value, {"path", "size_bytes", "sha256"}, f"{label} descriptor")
+    _normalized_relative(item.get("path"), label)
+    _require(type(item.get("size_bytes")) is int and item["size_bytes"] > 0, f"{label} size is invalid")
+    _require(_valid_sha(item.get("sha256")), f"{label} SHA-256 is invalid")
+    return _json_copy(item)
+
+
+class _FileRegistry:
+    def __init__(self, root: Path) -> None:
+        self.root = root
+        self.records: dict[str, dict[str, Any]] = {}
+        self.identities: dict[tuple[int, int], str] = {}
+
+    def add_path(self, relative: str, label: str) -> dict[str, Any]:
+        record, identity = _stable_descriptor(self.root, relative, label)
+        _require(relative not in self.records, f"{label} duplicates artifact path")
+        _require(identity not in self.identities, f"{label} aliases artifact {self.identities.get(identity, '')}")
+        self.records[relative] = record
+        self.identities[identity] = relative
+        return record
+
+    def add_descriptor(self, descriptor: Any, label: str) -> dict[str, Any]:
+        expected = _validate_descriptor(descriptor, label)
+        actual = self.add_path(expected["path"], label)
+        _require(actual == expected, f"{label} descriptor drifted")
+        return actual
+
+
+def _load_parity_manifest(path: Path) -> Mapping[str, Any]:
+    from checkpoint_model_parity import load_parity_manifest
+
+    return load_parity_manifest(path)
+
+
+def _assess_model_parity(path: Path, root: Path) -> Mapping[str, Any]:
+    from checkpoint_model_parity import assess_model_parity
+
+    return assess_model_parity(path, project_root=root)
+
+
+def _validate_identity(value: Mapping[str, Any], label: str) -> str:
+    identity = _exact(
+        value.get("identity"),
+        {"schema_version", "algorithm", "canonicalization", "sha256"},
+        f"{label} identity",
+    )
+    unsigned = {key: item for key, item in value.items() if key != "identity"}
+    expected = _canonical_sha(unsigned)
+    _require(
+        identity
+        == {
+            "schema_version": 2,
+            "algorithm": "sha256",
+            "canonicalization": "sorted_compact_json_utf8_v2",
+            "sha256": expected,
+        },
+        f"{label} identity drifted",
+    )
+    return expected
+
+
+def _manifest_material(
+    root: Path,
+    manifest_record: Mapping[str, Any],
+    manifest: Mapping[str, Any],
+    *,
+    registry: _FileRegistry,
+) -> dict[str, Any]:
+    _require(
+        manifest.get("schema_version") == 3
+        and manifest.get("artifact_kind")
+        == "checkpoint_analytics_model_parity_manifest",
+        "accepted model-parity manifest is not schema 3",
+    )
+    manifest_identity = _validate_identity(manifest, "accepted model-parity manifest")
+    slots = _exact(
+        manifest.get("workload_slots"), set(BRANCHES), "accepted parity workload slots"
+    )
+    evidence_records: list[dict[str, Any]] = []
+    for branch in BRANCHES:
+        slot = slots[branch]
+        _require(isinstance(slot, Mapping), f"accepted parity slot {branch} is invalid")
+        evidence = _exact(
+            slot.get("evidence"), set(EVIDENCE_NAMES), f"accepted parity evidence {branch}"
+        )
+        for name in EVIDENCE_NAMES:
+            reference = _exact(
+                evidence[name], {"path", "sha256"}, f"accepted parity reference {branch}/{name}"
+            )
+            _require(
+                _valid_sha(reference.get("sha256")),
+                f"accepted parity reference {branch}/{name} must have a non-null SHA-256",
+            )
+            path_value = reference.get("path")
+            _normalized_relative(path_value, f"accepted parity reference {branch}/{name}")
+            record = registry.add_path(
+                str(path_value), f"accepted parity evidence {branch}/{name}"
+            )
+            _require(
+                record["sha256"] == reference["sha256"],
+                f"accepted parity evidence {branch}/{name} SHA-256 drifted",
+            )
+            evidence_records.append(
+                {"branch": branch, "evidence_name": name, **record}
+            )
+    _require(len(evidence_records) == 32, "accepted parity evidence coverage is not exact 32")
+    toolchains = manifest.get("toolchain_registry")
+    workers = manifest.get("worker_runtime_registry")
+    _require(type(toolchains) is dict and bool(toolchains), "toolchain registry is missing")
+    _require(type(workers) is dict and bool(workers), "worker runtime registry is missing")
+    registries = {
+        "toolchain_registry": _json_copy(toolchains),
+        "worker_runtime_registry": _json_copy(workers),
+    }
+    return {
+        "accepted_manifest": _json_copy(manifest_record),
+        "accepted_manifest_content_identity_sha256": manifest_identity,
+        "evidence": evidence_records,
+        "evidence_count": 32,
+        "evidence_sha256": _canonical_sha(evidence_records),
+        **registries,
+        "runtime_registries_sha256": _canonical_sha(registries),
+    }
+
+
+def _validate_canonical_assessment(
+    value: Mapping[str, Any], *, manifest_identity: str
+) -> dict[str, Any]:
+    _require(type(value) is dict, "model-parity assessor result must be a dictionary")
+    assessment_identity = _validate_identity(value, "model-parity assessor result")
+    _require(
+        value.get("schema_version") == 3
+        and value.get("artifact_kind") == "checkpoint_analytics_model_parity_assessment",
+        "model-parity assessor schema/kind drifted",
+    )
+    _require(
+        value.get("manifest_identity_sha256") == manifest_identity,
+        "model-parity assessor manifest identity drifted",
+    )
+    _require(
+        value.get("publication_ready") is True and value.get("blockers") == [],
+        "model-parity assessor is not publication-ready",
+    )
+    _require(
+        value.get("openvino_gpu_counted_as_nvidia_cuda") is False
+        and value.get("network_or_download_performed") is False
+        and value.get("permitted_external_command") == "docker image inspect only"
+        and value.get("claimed_aggregate_metrics_accepted") is False
+        and value.get("raw_per_sample_outputs_recomputed") is True,
+        "model-parity assessor safety or raw per-sample boundary drifted",
+    )
+    runtime_images = _exact(
+        value.get("runtime_images"), {"cpu", "gpu"}, "model-parity runtime images"
+    )
+    image_facts: dict[str, Any] = {}
+    for resource in ("cpu", "gpu"):
+        record = runtime_images[resource]
+        _require(isinstance(record, Mapping), f"runtime image {resource} is invalid")
+        _require(
+            _valid_sha(str(record.get("image_id", "")).removeprefix("sha256:")),
+            f"runtime image {resource} identity is invalid",
+        )
+        _require(
+            type(record.get("reference")) is str
+            and bool(record["reference"])
+            and type(record.get("repo_digests")) is list
+            and bool(record["repo_digests"])
+            and type(record.get("architecture")) is str
+            and bool(record["architecture"])
+            and type(record.get("os")) is str
+            and bool(record["os"]),
+            f"runtime image {resource} inspect facts are incomplete",
+        )
+        image_facts[resource] = _json_copy(record)
+    branches = _exact(value.get("branches"), set(BRANCHES), "model-parity assessment branches")
+    for branch in BRANCHES:
+        _require(
+            isinstance(branches[branch], Mapping)
+            and branches[branch].get("ready") is True
+            and branches[branch].get("blockers") == [],
+            f"model-parity branch {branch} is not ready",
+        )
+    return {
+        "canonical_assessment_identity_sha256": assessment_identity,
+        "runtime_images": image_facts,
+        "runtime_images_sha256": _canonical_sha(image_facts),
+    }
+
+
+def _read_json_object(path: Path, label: str) -> dict[str, Any]:
+    try:
+        value = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, json.JSONDecodeError) as error:
+        raise ModelParityAcceptanceError(f"invalid {label}: {error}") from error
+    _require(type(value) is dict, f"{label} must be a JSON object")
+    return value
+
+
+def _write_new_json(path: Path, value: Mapping[str, Any], label: str) -> dict[str, Any]:
+    _require(not path.exists() and not os.path.lexists(path), f"{label} immutable collision")
+    _require(path.parent.is_dir(), f"{label} parent is missing")
+    _require(not _is_reparse_or_link(path.parent), f"{label} parent is unsafe")
+    payload = _canonical_bytes(value) + b"\n"
+    flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | int(getattr(os, "O_CLOEXEC", 0))
+    descriptor = os.open(path, flags, 0o444)
+    try:
+        offset = 0
+        while offset < len(payload):
+            offset += os.write(descriptor, payload[offset:])
+        os.fsync(descriptor)
+    finally:
+        os.close(descriptor)
+    path.chmod(0o444)
+    record, _ = _stable_descriptor(path.parent, path.name, label)
+    return {"path": path.name, "size_bytes": record["size_bytes"], "sha256": record["sha256"]}
+
+
+def _output_path(root: Path, value: Path | str, label: str) -> Path:
+    raw = Path(value)
+    candidate = Path(os.path.abspath(os.fspath(raw if raw.is_absolute() else root / raw)))
+    try:
+        candidate.relative_to(root)
+    except ValueError as error:
+        raise ModelParityAcceptanceError(f"{label} escaped project_root") from error
+    _require(candidate != root and candidate.parent.is_dir(), f"{label} parent is missing")
+    cursor = root
+    for part in candidate.parent.relative_to(root).parts:
+        cursor = cursor / part
+        _require(not _is_reparse_or_link(cursor), f"{label} parent contains reparse point")
+    _require(candidate.parent.resolve() == candidate.parent, f"{label} parent is an alias")
+    return candidate
+
+
+def promote_model_parity_acceptance(
+    *,
+    project_root: Path | str,
+    accepted_manifest_path: Path | str,
+    accepted_assessment_path: Path | str,
+    acceptance_receipt_path: Path | str,
+) -> dict[str, Any]:
+    """Assess final physical evidence, then atomically create assessment and receipt."""
+
+    root = _physical_root(project_root)
+    manifest_relative = _relative_input(
+        root, accepted_manifest_path, "accepted model-parity manifest"
+    )
+    assessment_path = _output_path(root, accepted_assessment_path, "accepted assessment")
+    receipt_path = _output_path(root, acceptance_receipt_path, "acceptance receipt")
+    _require(assessment_path != receipt_path, "assessment and receipt paths must be distinct")
+    _require(
+        not assessment_path.exists()
+        and not os.path.lexists(assessment_path)
+        and not receipt_path.exists()
+        and not os.path.lexists(receipt_path),
+        "model-parity acceptance output immutable collision",
+    )
+    registry = _FileRegistry(root)
+    manifest_record = registry.add_path(manifest_relative, "accepted model-parity manifest")
+    manifest_path = root / manifest_relative
+    try:
+        manifest = _load_parity_manifest(manifest_path)
+    except Exception as error:
+        raise ModelParityAcceptanceError(
+            f"accepted model-parity manifest loader rejected artifact: {error}"
+        ) from error
+    material = _manifest_material(root, manifest_record, manifest, registry=registry)
+    # The production assessor performs only read-only local Docker image inspect.
+    try:
+        assessor_result = _assess_model_parity(manifest_path, root)
+    except Exception as error:
+        raise ModelParityAcceptanceError(f"model-parity assessment failed: {error}") from error
+    assessment_binding = _validate_canonical_assessment(
+        assessor_result,
+        manifest_identity=material["accepted_manifest_content_identity_sha256"],
+    )
+    # Rehash manifest and all 32 evidence files after assessment; no time-of-check gap.
+    post_registry = _FileRegistry(root)
+    post_manifest = post_registry.add_path(manifest_relative, "post-assessment manifest")
+    _require(post_manifest == manifest_record, "accepted manifest drifted during assessment")
+    for evidence in material["evidence"]:
+        post = post_registry.add_path(
+            evidence["path"],
+            f"post-assessment evidence {evidence['branch']}/{evidence['evidence_name']}",
+        )
+        _require(
+            post == {key: evidence[key] for key in ("path", "size_bytes", "sha256")},
+            f"parity evidence {evidence['branch']}/{evidence['evidence_name']} drifted during assessment",
+        )
+    accepted_assessment = {
+        "schema_version": SCHEMA_VERSION,
+        "artifact_kind": ASSESSMENT_KIND,
+        "status": RECEIPT_STATUS,
+        "accepted_manifest": material["accepted_manifest"],
+        "accepted_manifest_content_identity_sha256": material[
+            "accepted_manifest_content_identity_sha256"
+        ],
+        "canonical_assessment_identity_sha256": assessment_binding[
+            "canonical_assessment_identity_sha256"
+        ],
+        "publication_ready": True,
+        "blockers": [],
+        "evidence_count": 32,
+        "evidence_sha256": material["evidence_sha256"],
+        "runtime_images": assessment_binding["runtime_images"],
+        "runtime_images_sha256": assessment_binding["runtime_images_sha256"],
+        "runtime_registries_sha256": material["runtime_registries_sha256"],
+    }
+    accepted_assessment["assessment_sha256"] = _canonical_sha(accepted_assessment)
+    assessment_relative = assessment_path.relative_to(root).as_posix()
+    local_assessment_record = _write_new_json(
+        assessment_path, accepted_assessment, "accepted assessment"
+    )
+    assessment_record = {
+        "path": assessment_relative,
+        "size_bytes": local_assessment_record["size_bytes"],
+        "sha256": local_assessment_record["sha256"],
+    }
+    receipt = {
+        "schema_version": SCHEMA_VERSION,
+        "artifact_kind": RECEIPT_KIND,
+        "status": RECEIPT_STATUS,
+        "accepted_manifest": material["accepted_manifest"],
+        "accepted_manifest_content_identity_sha256": material[
+            "accepted_manifest_content_identity_sha256"
+        ],
+        "accepted_assessment": assessment_record,
+        "accepted_assessment_identity_sha256": accepted_assessment[
+            "assessment_sha256"
+        ],
+        "canonical_assessment_identity_sha256": assessment_binding[
+            "canonical_assessment_identity_sha256"
+        ],
+        "publication_ready": True,
+        "blockers": [],
+        "evidence": material["evidence"],
+        "evidence_count": 32,
+        "evidence_sha256": material["evidence_sha256"],
+        "toolchain_registry": material["toolchain_registry"],
+        "worker_runtime_registry": material["worker_runtime_registry"],
+        "runtime_registries_sha256": material["runtime_registries_sha256"],
+        "runtime_images": assessment_binding["runtime_images"],
+        "runtime_images_sha256": assessment_binding["runtime_images_sha256"],
+    }
+    receipt["receipt_sha256"] = _canonical_sha(receipt)
+    try:
+        _write_new_json(receipt_path, receipt, "model-parity acceptance receipt")
+    except Exception:
+        # The assessment is not authorization. Remove only our exact just-created file.
+        current, _ = _stable_descriptor(root, assessment_relative, "orphan assessment")
+        _require(current == assessment_record, "assessment changed before rollback")
+        assessment_path.chmod(0o600)
+        assessment_path.unlink()
+        raise
+    return load_verified_model_parity_acceptance(
+        project_root=root,
+        receipt_path=receipt_path,
+        parity_loader=lambda _path: _json_copy(manifest),
+        parity_assessor=lambda _path, _root: _json_copy(assessor_result),
+    )
+
+
+def _validate_self_hash(value: Mapping[str, Any], field: str, label: str) -> str:
+    declared = value.get(field)
+    _require(_valid_sha(declared), f"{label} {field} is invalid")
+    expected = _canonical_sha({key: item for key, item in value.items() if key != field})
+    _require(declared == expected, f"{label} self-hash drifted")
+    return str(declared)
+
+
+def load_verified_model_parity_acceptance(
+    *,
+    project_root: Path | str,
+    receipt_path: Path | str,
+    parity_loader: Any = None,
+    parity_assessor: Any = None,
+) -> dict[str, Any]:
+    """Rehash and re-assess every authorization input on every load/resume."""
+
+    root = _physical_root(project_root)
+    receipt_relative = _relative_input(root, receipt_path, "model-parity acceptance receipt")
+    registry = _FileRegistry(root)
+    receipt_record = registry.add_path(receipt_relative, "model-parity acceptance receipt")
+    receipt = _read_json_object(root / receipt_relative, "model-parity acceptance receipt")
+    expected_receipt_fields = {
+        "schema_version", "artifact_kind", "status", "accepted_manifest",
+        "accepted_manifest_content_identity_sha256", "accepted_assessment",
+        "accepted_assessment_identity_sha256", "canonical_assessment_identity_sha256",
+        "publication_ready", "blockers", "evidence", "evidence_count",
+        "evidence_sha256", "toolchain_registry", "worker_runtime_registry",
+        "runtime_registries_sha256", "runtime_images", "runtime_images_sha256",
+        "receipt_sha256",
+    }
+    _exact(receipt, expected_receipt_fields, "model-parity acceptance receipt")
+    _require(
+        receipt.get("schema_version") == SCHEMA_VERSION
+        and receipt.get("artifact_kind") == RECEIPT_KIND
+        and receipt.get("status") == RECEIPT_STATUS
+        and receipt.get("publication_ready") is True
+        and receipt.get("blockers") == [],
+        "model-parity acceptance receipt is not accepted",
+    )
+    receipt_identity = _validate_self_hash(
+        receipt, "receipt_sha256", "model-parity acceptance receipt"
+    )
+    manifest_record = registry.add_descriptor(
+        receipt["accepted_manifest"], "accepted model-parity manifest"
+    )
+    assessment_record = registry.add_descriptor(
+        receipt["accepted_assessment"], "accepted model-parity assessment"
+    )
+    manifest_path = root / manifest_record["path"]
+    loader = parity_loader or _load_parity_manifest
+    assessor = parity_assessor or _assess_model_parity
+    try:
+        manifest = loader(manifest_path)
+    except Exception as error:
+        raise ModelParityAcceptanceError(f"accepted parity manifest rejected: {error}") from error
+    manifest_material = _manifest_material(root, manifest_record, manifest, registry=registry)
+    _require(
+        manifest_material["accepted_manifest_content_identity_sha256"]
+        == receipt["accepted_manifest_content_identity_sha256"],
+        "accepted parity manifest content identity drifted",
+    )
+    assessment = _read_json_object(
+        root / assessment_record["path"], "accepted model-parity assessment"
+    )
+    assessment_fields = {
+        "schema_version", "artifact_kind", "status", "accepted_manifest",
+        "accepted_manifest_content_identity_sha256", "canonical_assessment_identity_sha256",
+        "publication_ready", "blockers", "evidence_count", "evidence_sha256",
+        "runtime_images", "runtime_images_sha256", "runtime_registries_sha256",
+        "assessment_sha256",
+    }
+    _exact(assessment, assessment_fields, "accepted model-parity assessment")
+    _require(
+        assessment.get("schema_version") == SCHEMA_VERSION
+        and assessment.get("artifact_kind") == ASSESSMENT_KIND
+        and assessment.get("status") == RECEIPT_STATUS
+        and assessment.get("publication_ready") is True
+        and assessment.get("blockers") == [],
+        "accepted model-parity assessment is not ready",
+    )
+    assessment_identity = _validate_self_hash(
+        assessment, "assessment_sha256", "accepted model-parity assessment"
+    )
+    _require(
+        assessment_identity == receipt["accepted_assessment_identity_sha256"],
+        "accepted model-parity assessment identity drifted",
+    )
+    expected_evidence = manifest_material["evidence"]
+    _require(
+        receipt.get("evidence_count") == 32
+        and receipt.get("evidence") == expected_evidence
+        and receipt.get("evidence_sha256") == _canonical_sha(expected_evidence)
+        and assessment.get("evidence_count") == 32
+        and assessment.get("evidence_sha256") == receipt["evidence_sha256"],
+        "accepted model-parity evidence set drifted",
+    )
+    registries = {
+        "toolchain_registry": manifest_material["toolchain_registry"],
+        "worker_runtime_registry": manifest_material["worker_runtime_registry"],
+    }
+    _require(
+        receipt["toolchain_registry"] == registries["toolchain_registry"]
+        and receipt["worker_runtime_registry"] == registries["worker_runtime_registry"]
+        and receipt["runtime_registries_sha256"] == _canonical_sha(registries)
+        and assessment["runtime_registries_sha256"] == receipt["runtime_registries_sha256"],
+        "accepted model-parity runtime registry drifted",
+    )
+    try:
+        current_assessment = assessor(manifest_path, root)
+    except Exception as error:
+        raise ModelParityAcceptanceError(f"model-parity re-assessment failed: {error}") from error
+    assessed = _validate_canonical_assessment(
+        current_assessment,
+        manifest_identity=manifest_material["accepted_manifest_content_identity_sha256"],
+    )
+    _require(
+        assessed["canonical_assessment_identity_sha256"]
+        == receipt["canonical_assessment_identity_sha256"]
+        == assessment["canonical_assessment_identity_sha256"]
+        and assessed["runtime_images"] == receipt["runtime_images"] == assessment["runtime_images"]
+        and assessed["runtime_images_sha256"]
+        == receipt["runtime_images_sha256"]
+        == assessment["runtime_images_sha256"],
+        "model-parity accepted assessment has drifted",
+    )
+    files = [registry.records[path] for path in sorted(registry.records)]
+    binding = {
+        "schema_version": SCHEMA_VERSION,
+        "artifact_kind": BINDING_KIND,
+        "receipt": receipt_record,
+        "accepted_manifest": manifest_record,
+        "accepted_assessment": assessment_record,
+        "acceptance_identity_sha256": receipt_identity,
+        "accepted_manifest_content_identity_sha256": manifest_material[
+            "accepted_manifest_content_identity_sha256"
+        ],
+        "canonical_assessment_identity_sha256": assessed[
+            "canonical_assessment_identity_sha256"
+        ],
+        "evidence_count": 32,
+        "evidence_sha256": receipt["evidence_sha256"],
+        "runtime_registries_sha256": receipt["runtime_registries_sha256"],
+        "runtime_images_sha256": receipt["runtime_images_sha256"],
+        "files": files,
+        "files_sha256": _canonical_sha(files),
+    }
+    binding["binding_sha256"] = _canonical_sha(binding)
+    return _json_copy(binding)
+
+
+__all__ = [
+    "ASSESSMENT_KIND",
+    "BINDING_KIND",
+    "ModelParityAcceptanceError",
+    "RECEIPT_KIND",
+    "RECEIPT_STATUS",
+    "SCHEMA_VERSION",
+    "load_verified_model_parity_acceptance",
+    "promote_model_parity_acceptance",
+]

@@ -1,0 +1,355 @@
+from __future__ import annotations
+
+import copy
+import hashlib
+import json
+import sys
+import unittest
+from pathlib import Path
+
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
+
+from backend_runtime_grant import (  # noqa: E402
+    BackendRuntimeGrantError,
+    SYSTEMS,
+    assess_pre_run_backend_runtime_grant,
+    backend_runtime_grant_from_identity_artifacts,
+    validate_pre_run_backend_runtime_grant,
+)
+from backend_publication_dispatch import (  # noqa: E402
+    launcher_invocation_contract,
+    runtime_binding_identity,
+)
+
+
+def canonical_sha(value: object) -> str:
+    return hashlib.sha256(
+        json.dumps(
+            value,
+            sort_keys=True,
+            separators=(",", ":"),
+            ensure_ascii=True,
+            allow_nan=False,
+        ).encode("utf-8")
+    ).hexdigest()
+
+
+def descriptor(path: str, marker: str) -> dict[str, object]:
+    return {
+        "path": path,
+        "size_bytes": 100 + len(marker),
+        "sha256": hashlib.sha256(marker.encode("utf-8")).hexdigest(),
+    }
+
+
+def cell(system: str, ordinal: int) -> dict[str, object]:
+    codec = ("h264", "h265")[(ordinal // 70) % 2]
+    topology = ("independent_processes", "shared_video_dag")[(ordinal // 35) % 2]
+    policies = (
+        "cpu_only",
+        "gpu_only",
+        "static_hybrid",
+        "heft",
+        "deadline_aware_heft",
+        "queue_aware_edf",
+        "adaptive_weights",
+    )
+    policy = policies[(ordinal // 5) % len(policies)]
+    deadline = (16.7, 33.3, 50, 100, 500)[ordinal % 5]
+    coordinate = {
+        "system": system,
+        "codec": codec,
+        "topology_kind": topology,
+        "policy": policy,
+        "deadline_ms": deadline,
+    }
+    return {
+        **coordinate,
+        "cell_identity_sha256": canonical_sha(coordinate),
+        "raw_evidence": descriptor(
+            f"accepted/backend/{system}/cells/{ordinal:03d}.json",
+            f"raw:{system}:{ordinal}",
+        ),
+        "launcher_invocation_sha256": launcher_invocation_contract()[
+            "invocation_sha256"
+        ],
+        "validator_identity_sha256": hashlib.sha256(
+            b"backend-cell-raw-validator-v2"
+        ).hexdigest(),
+        "validation_record_sha256": hashlib.sha256(
+            f"validation:{system}:{ordinal}".encode("utf-8")
+        ).hexdigest(),
+    }
+
+
+def system_binding(
+    system: str, upstream_identities: dict[str, object]
+) -> dict[str, object]:
+    cells = [cell(system, ordinal) for ordinal in range(140)]
+    launcher = descriptor(
+        f"scripts/checkpoint_{system}_publication_launcher.py",
+        f"launcher:{system}",
+    )
+    invocation = launcher_invocation_contract()
+    return {
+        "system": system,
+        "runtime_binding_identity_sha256": runtime_binding_identity(
+            system=system,
+            launcher=launcher,
+            launcher_invocation=invocation,
+            upstream_identities=upstream_identities,
+        ),
+        "launcher": launcher,
+        "launcher_invocation": invocation,
+        "launcher_kind": "dedicated_publication_runtime",
+        "publication_capable": True,
+        "qualified_cells": cells,
+        "qualified_cells_sha256": canonical_sha(cells),
+        "raw_evidence_set_sha256": canonical_sha(
+            [item["raw_evidence"] for item in cells]
+        ),
+    }
+
+
+def v2_identity() -> dict[str, object]:
+    index = descriptor(
+        "accepted/checkpoint_backend_runtime_qualification_binding_index.json",
+        "binding-index-v2",
+    )
+    receipts = {
+        system: descriptor(
+            f"accepted/checkpoint_{system}_backend_runtime_qualification_receipt.json",
+            f"receipt:{system}:v2",
+        )
+        for system in SYSTEMS
+    }
+    upstream_identities = {
+        "dataset_manifest_sha256": hashlib.sha256(b"dataset").hexdigest(),
+        "policy_contract_sha256": hashlib.sha256(b"policy-contract").hexdigest(),
+        "policy_qualification_receipt_sha256": hashlib.sha256(b"policy-receipt").hexdigest(),
+        "resource_contract_identity_sha256": hashlib.sha256(b"resource-contract").hexdigest(),
+        "resource_qualification_receipt_sha256": hashlib.sha256(b"resource-receipt").hexdigest(),
+        "analytics_execution_config_identity_sha256": hashlib.sha256(b"execution").hexdigest(),
+        "model_parity_manifest_identity_sha256": hashlib.sha256(b"parity").hexdigest(),
+        "model_parity_acceptance_binding_sha256": hashlib.sha256(
+            b"parity-acceptance-binding"
+        ).hexdigest(),
+    }
+    systems = {
+        system: system_binding(system, upstream_identities)
+        for system in SYSTEMS
+    }
+    backend = {
+        "schema_version": 2,
+        "qualification_index_sha256": hashlib.sha256(b"qualification-index-v2").hexdigest(),
+        "binding_index": index,
+        "receipts": receipts,
+        "upstream_identities": upstream_identities,
+        "systems": systems,
+        "coverage": {
+            "system_count": 4,
+            "runtime_cell_count": 560,
+            "cells_per_system": 140,
+        },
+        "post_run_per_arm_evidence_required": True,
+        "configuration_evidence_accepted_mutated": False,
+    }
+    files = [index, *receipts.values()]
+    files.extend(systems[system]["launcher"] for system in SYSTEMS)
+    files.extend(
+        item["raw_evidence"]
+        for system in SYSTEMS
+        for item in systems[system]["qualified_cells"]
+    )
+    identity = {
+        "schema_version": 2,
+        "artifact_kind": "vast_full_publication_identity_artifact_binding",
+        "manifest": descriptor("configs/full_publication_identity_artifacts.yaml", "manifest"),
+        "bindings": {
+            "analytics_model_parity": {
+                "binding_sha256": upstream_identities[
+                    "model_parity_acceptance_binding_sha256"
+                ]
+            },
+            "analytics_execution_layer": {},
+            "policy_qualification": {},
+            "resource_qualification": {},
+            "backend_runtime_qualification": backend,
+        },
+        "files": files,
+        "files_sha256": canonical_sha(files),
+    }
+    identity["binding_sha256"] = canonical_sha(identity)
+    return identity
+
+
+class BackendRuntimeGrantTests(unittest.TestCase):
+    def test_derives_exact_self_hashed_v2_grant_from_validated_identity(self) -> None:
+        identity = v2_identity()
+        grant = backend_runtime_grant_from_identity_artifacts(identity)
+
+        self.assertEqual(grant["schema_version"], 2)
+        self.assertEqual(
+            grant["artifact_kind"],
+            "vast_verified_pre_run_backend_runtime_grant",
+        )
+        self.assertEqual(
+            grant["identity_artifact_binding_sha256"], identity["binding_sha256"]
+        )
+        self.assertEqual(grant["coverage"]["runtime_cell_count"], 560)
+        self.assertEqual(set(grant["systems"]), set(SYSTEMS))
+        self.assertEqual(
+            grant["upstream_identities"][
+                "model_parity_acceptance_binding_sha256"
+            ],
+            identity["bindings"]["analytics_model_parity"]["binding_sha256"],
+        )
+        self.assertTrue(validate_pre_run_backend_runtime_grant(grant))
+        self.assertTrue(assess_pre_run_backend_runtime_grant(grant)["passed"])
+
+    def test_legacy_schema1_identity_is_rejected_before_backend_promotion(self) -> None:
+        identity = v2_identity()
+        identity["schema_version"] = 1
+        identity.pop("binding_sha256")
+        identity["binding_sha256"] = canonical_sha(identity)
+
+        with self.assertRaisesRegex(BackendRuntimeGrantError, "schema-2"):
+            backend_runtime_grant_from_identity_artifacts(identity)
+
+    def test_backend_upstream_must_bind_nested_physical_parity_acceptance(self) -> None:
+        identity = v2_identity()
+        backend = identity["bindings"]["backend_runtime_qualification"]
+        backend["upstream_identities"][
+            "model_parity_acceptance_binding_sha256"
+        ] = "0" * 64
+        for system in SYSTEMS:
+            system_value = backend["systems"][system]
+            system_value["runtime_binding_identity_sha256"] = runtime_binding_identity(
+                system=system,
+                launcher=system_value["launcher"],
+                launcher_invocation=system_value["launcher_invocation"],
+                upstream_identities=backend["upstream_identities"],
+            )
+        identity.pop("binding_sha256")
+        identity["binding_sha256"] = canonical_sha(identity)
+
+        with self.assertRaisesRegex(BackendRuntimeGrantError, "model parity acceptance"):
+            backend_runtime_grant_from_identity_artifacts(identity)
+
+    def test_current_v1_backend_binding_cannot_be_promoted(self) -> None:
+        identity = v2_identity()
+        backend = identity["bindings"]["backend_runtime_qualification"]
+        backend.clear()
+        backend.update(
+            {
+                "binding_index": descriptor("accepted/index.json", "v1-index"),
+                "receipts": {
+                    system: descriptor(f"accepted/{system}.json", f"v1:{system}")
+                    for system in SYSTEMS
+                },
+            }
+        )
+        identity["files"] = [backend["binding_index"], *backend["receipts"].values()]
+        identity["files_sha256"] = canonical_sha(identity["files"])
+        identity.pop("binding_sha256")
+        identity["binding_sha256"] = canonical_sha(identity)
+
+        with self.assertRaisesRegex(BackendRuntimeGrantError, "backend qualification v2"):
+            backend_runtime_grant_from_identity_artifacts(identity)
+
+    def test_identity_self_hash_and_descriptor_membership_are_required(self) -> None:
+        identity = v2_identity()
+        identity["binding_sha256"] = "0" * 64
+        with self.assertRaisesRegex(BackendRuntimeGrantError, "self-hash"):
+            backend_runtime_grant_from_identity_artifacts(identity)
+
+        identity = v2_identity()
+        identity["files"].pop()
+        identity["files_sha256"] = canonical_sha(identity["files"])
+        identity.pop("binding_sha256")
+        identity["binding_sha256"] = canonical_sha(identity)
+        with self.assertRaisesRegex(BackendRuntimeGrantError, "unbound"):
+            backend_runtime_grant_from_identity_artifacts(identity)
+
+    def test_missing_duplicate_relabelled_and_raw_evidence_drift_fail_closed(self) -> None:
+        mutations = []
+        missing = v2_identity()
+        missing["bindings"]["backend_runtime_qualification"]["systems"][SYSTEMS[0]]["qualified_cells"].pop()
+        mutations.append(missing)
+        duplicate = v2_identity()
+        cells = duplicate["bindings"]["backend_runtime_qualification"]["systems"][SYSTEMS[0]]["qualified_cells"]
+        cells[-1] = copy.deepcopy(cells[0])
+        mutations.append(duplicate)
+        relabelled = v2_identity()
+        relabelled["bindings"]["backend_runtime_qualification"]["systems"][SYSTEMS[0]]["qualified_cells"][0]["system"] = SYSTEMS[1]
+        mutations.append(relabelled)
+        evidence_drift = v2_identity()
+        evidence_drift["bindings"]["backend_runtime_qualification"]["systems"][SYSTEMS[0]]["qualified_cells"][0]["raw_evidence"]["sha256"] = "f" * 64
+        mutations.append(evidence_drift)
+
+        for position, identity in enumerate(mutations):
+            with self.subTest(position=position):
+                identity.pop("binding_sha256")
+                identity["binding_sha256"] = canonical_sha(identity)
+                with self.assertRaises(BackendRuntimeGrantError):
+                    backend_runtime_grant_from_identity_artifacts(identity)
+
+    def test_launcher_must_be_dedicated_publication_capable_and_exact(self) -> None:
+        for field, value in (
+            ("launcher_kind", "engineering_probe"),
+            ("publication_capable", False),
+        ):
+            identity = v2_identity()
+            identity["bindings"]["backend_runtime_qualification"]["systems"][SYSTEMS[0]][field] = value
+            identity.pop("binding_sha256")
+            identity["binding_sha256"] = canonical_sha(identity)
+            with self.subTest(field=field):
+                with self.assertRaisesRegex(BackendRuntimeGrantError, "launcher"):
+                    backend_runtime_grant_from_identity_artifacts(identity)
+
+    def test_launcher_and_raw_evidence_must_be_members_of_identity_file_set(self) -> None:
+        for target_path in (
+            "scripts/checkpoint_deepstream_publication_launcher.py",
+            "accepted/backend/deepstream/cells/000.json",
+        ):
+            identity = v2_identity()
+            identity["files"] = [
+                item for item in identity["files"] if item["path"] != target_path
+            ]
+            identity["files_sha256"] = canonical_sha(identity["files"])
+            identity.pop("binding_sha256")
+            identity["binding_sha256"] = canonical_sha(identity)
+            with self.subTest(target_path=target_path):
+                with self.assertRaisesRegex(BackendRuntimeGrantError, "unbound"):
+                    backend_runtime_grant_from_identity_artifacts(identity)
+
+    def test_grant_validator_rejects_every_authorization_boundary_drift(self) -> None:
+        grant = backend_runtime_grant_from_identity_artifacts(v2_identity())
+        mutations = []
+        extra = copy.deepcopy(grant)
+        extra["extra"] = True
+        mutations.append(extra)
+        self_hash = copy.deepcopy(grant)
+        self_hash["grant_sha256"] = "0" * 64
+        mutations.append(self_hash)
+        cell = copy.deepcopy(grant)
+        cell["systems"][SYSTEMS[0]]["qualified_cells"][0]["deadline_ms"] = 75
+        cell.pop("grant_sha256")
+        cell["grant_sha256"] = canonical_sha(cell)
+        mutations.append(cell)
+        launcher = copy.deepcopy(grant)
+        launcher["systems"][SYSTEMS[0]]["launcher"]["sha256"] = "1" * 64
+        mutations.append(launcher)
+
+        for position, value in enumerate(mutations):
+            with self.subTest(position=position):
+                assessment = assess_pre_run_backend_runtime_grant(value)
+                self.assertFalse(assessment["passed"])
+                with self.assertRaises(BackendRuntimeGrantError):
+                    validate_pre_run_backend_runtime_grant(value)
+
+
+if __name__ == "__main__":
+    unittest.main()

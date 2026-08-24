@@ -13,6 +13,7 @@ namespace {
 vast::CheckpointAdmissionFrame sample_frame() {
   vast::CheckpointAdmissionFrame frame;
   frame.sequence = 7;
+  frame.keyframe = true;
   frame.source_cycle = 2;
   frame.access_unit_pts_ns = 90'000;
   frame.transport_pts_ns = 20'000'090'000;
@@ -26,7 +27,8 @@ vast::CheckpointAdmissionFrame sample_frame() {
 }
 
 bool same(const vast::CheckpointAdmissionFrame& left, const vast::CheckpointAdmissionFrame& right) {
-  return left.sequence == right.sequence && left.source_cycle == right.source_cycle &&
+  return left.sequence == right.sequence && left.keyframe == right.keyframe &&
+         left.source_cycle == right.source_cycle &&
          left.access_unit_pts_ns == right.access_unit_pts_ns &&
          left.transport_pts_ns == right.transport_pts_ns &&
          left.access_unit_dts_ns == right.access_unit_dts_ns && left.duration_ns == right.duration_ns &&

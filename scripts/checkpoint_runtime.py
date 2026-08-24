@@ -36,6 +36,7 @@ RUNTIME_ADMISSION_EVENT_FD_ENV = "VAST_CHECKPOINT_ADMISSION_EVENT_FD"
 RUNTIME_ADMISSION_ACK_FD_ENV = "VAST_CHECKPOINT_ADMISSION_ACK_FD"
 RUNTIME_ADMISSION_CONSUMER_FDS_ENV = "VAST_CHECKPOINT_ADMISSION_CONSUMER_FDS_JSON"
 RUNTIME_ADMISSION_DATA_FD_ENV = "VAST_CHECKPOINT_ADMISSION_DATA_FD"
+RUNTIME_POLICY_FD_ENV = "VAST_CHECKPOINT_POLICY_FD"
 RUNTIME_LIFECYCLE_PROTOCOL_VERSION = 1
 RUNTIME_LIFECYCLE_STATES = {
     "READY",
@@ -1137,6 +1138,7 @@ def run_worker_processes(
     start_lead_s: float = 0.1,
     require_decoder_placement_verification: bool = False,
     measurement_end_boundary_guard_ns: int = 0,
+    policy_socket_handler: Callable[[str, socket.socket], None] | None = None,
 ) -> RuntimeRunResult:
     _require(os.name == "posix", "direct checkpoint event pipes require a POSIX runtime")
     spec_values = list(specs)
@@ -1190,6 +1192,7 @@ def run_worker_processes(
     control_write_fds: dict[str, int] = {}
     status_read_fds: dict[str, int] = {}
     admission_delivery_fds: dict[str, tuple[int, int]] = {}
+    policy_endpoints: dict[str, socket.socket] = {}
     bindings: list[WorkerBinding] = []
     source_bindings: list[SourceBinding] = []
     try:
@@ -1222,6 +1225,15 @@ def run_worker_processes(
                 }
             )
             inherited_fds = [write_fd]
+            policy_child_endpoint: socket.socket | None = None
+            if policy_socket_handler is not None:
+                policy_parent_endpoint, policy_child_endpoint = socket.socketpair(
+                    socket.AF_UNIX,
+                    socket.SOCK_SEQPACKET,
+                )
+                policy_endpoints[spec.worker_id] = policy_parent_endpoint
+                environment[RUNTIME_POLICY_FD_ENV] = str(policy_child_endpoint.fileno())
+                inherited_fds.append(policy_child_endpoint.fileno())
             if source_spec_values:
                 delivery_read_fd, _ = admission_delivery_fds[spec.worker_id]
                 environment[RUNTIME_ADMISSION_DATA_FD_ENV] = str(delivery_read_fd)
@@ -1234,6 +1246,8 @@ def run_worker_processes(
                 process = subprocess.Popen(spec.command, env=environment, pass_fds=tuple(inherited_fds))
             finally:
                 os.close(write_fd)
+                if policy_child_endpoint is not None:
+                    policy_child_endpoint.close()
                 if synchronized_lifecycle:
                     os.close(control_read_fd)
                     os.close(status_write_fd)
@@ -1318,6 +1332,8 @@ def run_worker_processes(
                 )
             )
     except Exception:
+        for endpoint in policy_endpoints.values():
+            endpoint.close()
         for read_fd in read_fds.values():
             os.close(read_fd)
         for fd in control_write_fds.values():
@@ -1418,6 +1434,16 @@ def run_worker_processes(
         finally:
             os.close(ack_write_fd)
 
+    def consume_policy(worker_id: str, endpoint: socket.socket) -> None:
+        try:
+            _require(policy_socket_handler is not None, "policy socket has no handler")
+            policy_socket_handler(worker_id, endpoint)
+        except BaseException as exc:
+            with output_lock:
+                errors.append(exc)
+        finally:
+            endpoint.close()
+
     threads = [
         threading.Thread(
             target=consume,
@@ -1457,6 +1483,18 @@ def run_worker_processes(
         for worker_id in status_read_fds
     ]
     for thread in status_threads:
+        thread.start()
+
+    policy_threads = [
+        threading.Thread(
+            target=consume_policy,
+            args=(worker_id, endpoint),
+            name=f"checkpoint-policy-{worker_id}",
+            daemon=True,
+        )
+        for worker_id, endpoint in policy_endpoints.items()
+    ]
+    for thread in policy_threads:
         thread.start()
 
     ready_deadline = time.monotonic() + (
@@ -1610,6 +1648,12 @@ def run_worker_processes(
         for thread in status_threads:
             thread.join(timeout=max(0.0, deadline - time.monotonic()))
         _require(not any(thread.is_alive() for thread in status_threads), "checkpoint status pipe did not close")
+        for thread in policy_threads:
+            thread.join(timeout=max(0.0, deadline - time.monotonic()))
+        _require(
+            not any(thread.is_alive() for thread in policy_threads),
+            "checkpoint policy socket did not close",
+        )
         if errors:
             raise errors[0]
         if synchronized_lifecycle:
@@ -1630,12 +1674,14 @@ def run_worker_processes(
                     f"{worker_id}: lifecycle must end with DRAINED or CENSORED",
                 )
     except Exception:
+        for endpoint in policy_endpoints.values():
+            endpoint.close()
         for fd in control_write_fds.values():
             os.close(fd)
         control_write_fds.clear()
         _terminate_processes(processes)
         _terminate_processes(source_processes)
-        for thread in (*threads, *admission_threads, *status_threads):
+        for thread in (*threads, *admission_threads, *status_threads, *policy_threads):
             thread.join(timeout=2)
         raise
 

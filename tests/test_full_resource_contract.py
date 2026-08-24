@@ -107,7 +107,14 @@ class FullResourceContractTests(unittest.TestCase):
             with (
                 patch(
                     "full_resource_contract.validate_resource_intervals",
-                    return_value=pd.DataFrame(),
+                    return_value=pd.DataFrame(
+                        [
+                            {
+                                "component": "nvdec_submit_complete",
+                                "device_id": "nvdec:0",
+                            }
+                        ]
+                    ),
                 ) as validate_intervals,
                 patch(
                     "full_resource_contract.summarize_resource_interval_extension",

@@ -1,0 +1,25 @@
+ARG BASE_IMAGE=vast/openvino-native-probe:dlstreamer-2026.1
+FROM ${BASE_IMAGE}
+
+ARG EXPECTED_BASE_IMAGE_ID=sha256:1cd1537d05f9d83a82024d8742afb6d8b325f951f62d55ce1aeb904b1e88ec6d
+LABEL org.vast.analytics_worker.base_image_id="${EXPECTED_BASE_IMAGE_ID}"
+LABEL org.vast.analytics_worker.engine="openvino_cpu"
+
+USER root
+
+RUN install -d -m 0755 /opt/vast/analytics
+
+COPY scripts/analytics_execution_protocol.py /opt/vast/analytics/analytics_execution_protocol.py
+COPY scripts/analytics_execution_worker.py /opt/vast/analytics/analytics_execution_worker.py
+COPY deploy/analytics_execution/openvino_worker.py /opt/vast/analytics/openvino_worker.py
+
+RUN chmod 0555 /opt/vast/analytics/openvino_worker.py \
+  && chmod 0444 \
+      /opt/vast/analytics/analytics_execution_protocol.py \
+      /opt/vast/analytics/analytics_execution_worker.py
+
+ENV PYTHONPATH=/opt/vast/analytics
+
+USER dlstreamer
+
+ENTRYPOINT ["/opt/vast/analytics/openvino_worker.py"]

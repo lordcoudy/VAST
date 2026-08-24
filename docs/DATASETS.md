@@ -79,6 +79,51 @@ metadata through ffprobe, annotation bytes, ordered aggregate identity, and the
 full logical manifest identity. The tool never edits `configs/datasets.yaml`.
 `--dry-run` performs source/checksum planning without writing a target.
 
+### Legacy ISS v2 candidate
+
+`kpp_legacy_iss_v2_avi`, `kpp_legacy_iss_v2_h264`, and
+`kpp_legacy_iss_v2_h265` are a separate generation recovered from two legacy
+ISS archive streams. They are not byte- or identity-equivalent to the frozen
+`kpp_real_*` generation. The source roles are `front_gate` and `underbody`;
+the front-gate recording is reused by the plate-number, vehicle-type, and
+damage logical branches, while the foreign-object branch uses the underbody
+recording. This is a topology-load mapping, not accepted accuracy ground truth
+or evidence of four statistically independent branch corpora.
+
+The recovered AVI files, four pinned CFR-600 transcodes, normalized metadata,
+and their three source receipts are installed as one no-replace directory
+transaction under `data/videos/kpp/kpp_legacy_iss_v2/`. The materialization
+receipt binds the exact ten-file tree. Manifest preparation for this generation
+is therefore check-only: it revalidates the receipt, all file hashes, link
+counts, tree shape, and embedded dataset entry, and never invokes an unpinned
+re-encode path.
+
+Verify the installed candidate with:
+
+```bash
+python scripts/prepare_benchmark_dataset.py --dataset kpp_legacy_iss_v2_avi
+python scripts/prepare_benchmark_dataset.py --dataset kpp_legacy_iss_v2_h264
+python scripts/prepare_benchmark_dataset.py --dataset kpp_legacy_iss_v2_h265
+python scripts/check_dataset.py --dataset kpp_legacy_iss_v2_h264 --mode smoke
+```
+
+All three v2 manifests deliberately retain `publishable: false`,
+`publication_authorized: false`, `analytics_routing: unresolved`, and
+`identity_equivalent: false`. The two recordings have different durations;
+their source timestamps were not preserved as a shared clock, so they must not
+be described as a synchronized two-camera interval. Promoting v2 to a primary,
+secondary, or sensitivity benchmark cell requires a pre-result preregistration
+amendment with a new matrix identity and run root. It must not silently replace
+the existing `kpp_real_*` coordinates.
+
+The PI-scoped amendment for the current nonpublication pilot is recorded in
+`configs/kpp_legacy_iss_v2_secondary_sensitivity_decision.json`. It authorizes
+v2 only as a secondary/sensitivity `topology_load_proxy_only` corpus, confirms
+the 60-sample 30/30 and 15/15 codec allocation, and permits shared front-gate
+frames for topology load. It does not authorize primary replacement, accepted
+evidence, publication-readiness elevation, network download, or upload. The
+existing primary matrix therefore remains unchanged.
+
 ## Dataset identity and preflight
 
 `scripts/check_dataset.py` validates every local file against the expected

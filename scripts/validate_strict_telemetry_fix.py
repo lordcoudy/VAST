@@ -27,6 +27,7 @@ DEFAULT_SYSTEMS = [
 DEFAULT_SCENARIO = "all"
 DEFAULT_DATASET = "kpp_real_h264"
 DEFAULT_OUTPUT_ROOT = Path("runs/strict_validation")
+STRICT_OUTPUT_NAMESPACE = Path("runs/strict_validation")
 
 
 def load_config(path: Path) -> dict:
@@ -56,13 +57,43 @@ def guard_repo_child(path: Path, project_root: Path) -> Path:
 
 def runtime_artifact_paths(project_root: Path, output_root: Path) -> list[Path]:
     project_root = project_root.resolve()
+    expected_output = (project_root / STRICT_OUTPUT_NAMESPACE).resolve()
+    requested_output = resolve_project_path(project_root, output_root)
+    if requested_output != expected_output:
+        raise StrictValidationError(
+            f"strict validation output root must be exactly {expected_output}"
+        )
     return [
-        project_root / ".cache" / "savant",
-        resolve_project_path(project_root, output_root),
+        (project_root / ".cache" / "savant").resolve(),
+        expected_output,
     ]
 
 
-def docker_clear_directory(path: Path, *, image: str | None = None) -> bool:
+def _guard_cleanup_target(path: Path, *, allowed_targets: Sequence[Path]) -> Path:
+    lexical = Path(os.path.abspath(os.fspath(path)))
+    resolved = lexical.resolve()
+    allowed = {candidate.resolve() for candidate in allowed_targets}
+    is_junction = getattr(os.path, "isjunction", lambda _path: False)
+    if (
+        not lexical.is_absolute()
+        or lexical != resolved
+        or lexical.is_symlink()
+        or is_junction(lexical)
+        or resolved not in allowed
+    ):
+        raise StrictValidationError(f"refusing unsafe runtime cleanup target: {lexical}")
+    if resolved.exists() and not resolved.is_dir():
+        raise StrictValidationError(f"runtime cleanup target is not a directory: {resolved}")
+    return resolved
+
+
+def docker_clear_directory(
+    path: Path,
+    *,
+    allowed_targets: Sequence[Path],
+    image: str | None = None,
+) -> bool:
+    path = _guard_cleanup_target(path, allowed_targets=allowed_targets)
     if shutil.which("docker") is None:
         return False
     cleanup_image = image or os.environ.get(
@@ -86,25 +117,28 @@ def docker_clear_directory(path: Path, *, image: str | None = None) -> bool:
     return int(completed.returncode) == 0
 
 
-def remove_tree(path: Path) -> None:
+def remove_tree(path: Path, *, allowed_targets: Sequence[Path]) -> None:
+    path = _guard_cleanup_target(path, allowed_targets=allowed_targets)
     try:
         shutil.rmtree(path)
         return
     except PermissionError:
-        if not docker_clear_directory(path):
+        if not docker_clear_directory(path, allowed_targets=allowed_targets):
             raise
     if path.exists():
+        path = _guard_cleanup_target(path, allowed_targets=allowed_targets)
         shutil.rmtree(path)
 
 
 def clear_runtime_artifacts(project_root: Path, output_root: Path, *, dry_run: bool = False) -> None:
-    for path in runtime_artifact_paths(project_root, output_root):
+    allowed_targets = runtime_artifact_paths(project_root, output_root)
+    for path in allowed_targets:
         guarded = guard_repo_child(path, project_root)
         if dry_run:
             print(f"[strict-validation] would remove {guarded}")
             continue
         if guarded.exists():
-            remove_tree(guarded)
+            remove_tree(guarded, allowed_targets=allowed_targets)
             print(f"[strict-validation] removed {guarded}")
         else:
             print(f"[strict-validation] already absent {guarded}")

@@ -1,0 +1,18 @@
+ARG BASE_IMAGE=vast/deepstream-runtime-base:c11befa808af8270
+FROM ${BASE_IMAGE}
+
+LABEL org.vast.component="deepstream-checkpoint-native-sdk-runtime"
+LABEL org.vast.base-image-id="sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759"
+LABEL org.vast.claim-status="native-sdk-runtime-not-kpp-pair-accepted"
+LABEL org.vast.publication-ready="false"
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONPATH=/opt/vast/checkpoint
+
+COPY scripts/analytics_execution_endpoint.py scripts/analytics_execution_protocol.py scripts/analytics_execution_worker.py scripts/checkpoint_deepstream_protocol_adapter.py scripts/checkpoint_deepstream_protocol_bridge.py scripts/checkpoint_deepstream_sdk_runtime.py scripts/checkpoint_gstreamer_analytics_bridge.py /opt/vast/checkpoint/
+COPY deploy/deepstream/checkpoint/vast_deepstream_meta_bridge.cpp deploy/deepstream/checkpoint/vast_deepstream_meta_bridge.h /tmp/vast-deepstream-meta/
+COPY deploy/deepstream/checkpoint/vast_deepstream_checkpoint_runtime /usr/local/bin/vast_deepstream_checkpoint_runtime
+
+RUN g++ -std=c++17 -shared -fPIC -Wall -Wextra -Werror $(pkg-config --cflags gstreamer-1.0) -I/opt/nvidia/deepstream/deepstream/sources/includes /tmp/vast-deepstream-meta/vast_deepstream_meta_bridge.cpp -o /opt/vast/checkpoint/libvast_deepstream_meta_bridge.so $(pkg-config --libs gstreamer-1.0) -L/opt/nvidia/deepstream/deepstream/lib -lnvdsgst_meta -lnvds_meta -Wl,-rpath,/opt/nvidia/deepstream/deepstream/lib && chmod 0555 /usr/local/bin/vast_deepstream_checkpoint_runtime && chmod 0444 /opt/vast/checkpoint/*.py /opt/vast/checkpoint/libvast_deepstream_meta_bridge.so && rm -rf /tmp/vast-deepstream-meta && /usr/local/bin/vast_deepstream_checkpoint_runtime --help >/dev/null
+
+ENTRYPOINT ["/usr/local/bin/vast_deepstream_checkpoint_runtime"]

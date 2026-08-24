@@ -58,6 +58,7 @@ enum {
   PROP_EXPECTED_MODEL_SHA256,
   PROP_EXPECTED_WEIGHTS_SHA256,
   PROP_MAX_BUFFERS,
+  PROP_CURRENT_LEVEL_BUFFERS,
   N_PROPERTIES,
 };
 
@@ -428,6 +429,13 @@ static void get_property(GObject* object, guint prop_id, GValue* value, GParamSp
     case PROP_MAX_BUFFERS:
       g_value_set_uint(value, self->max_buffers);
       break;
+    case PROP_CURRENT_LEVEL_BUFFERS: {
+      g_mutex_lock(&self->lock);
+      const guint queued_buffers = self->queued_buffers;
+      g_mutex_unlock(&self->lock);
+      g_value_set_uint(value, queued_buffers);
+      break;
+    }
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
       break;
@@ -495,6 +503,11 @@ static void gst_vast_analytics_queue_class_init(GstVastAnalyticsQueueClass* klas
       "Pre-registered number of waiting buffers; a full queue drops the newest admission",
       0, G_MAXUINT, 0,
       static_cast<GParamFlags>(G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+  properties[PROP_CURRENT_LEVEL_BUFFERS] = g_param_spec_uint(
+      "current-level-buffers", "Current level buffers",
+      "Exact number of buffers still waiting ahead of the detector input path",
+      0, G_MAXUINT, 0,
+      static_cast<GParamFlags>(G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
   g_object_class_install_properties(object_class, N_PROPERTIES, properties);
 
   gst_element_class_set_static_metadata(

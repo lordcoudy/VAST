@@ -10620,3 +10620,119 @@ Claim-state остаётся `blocked_missing_required_pairs_or_gates`: целе
 Итоги когорт: baseline — 10 800 ingress, 10 751 completed, 49 native drops, 0 censored; shared — 10 800 ingress, 10 800 completed, 0 drops, 0 censored. Штатная повторная raw-валидация сформировала `reports/primary_architecture_20260811_003541` и состояние `favorable_preregistered_rule_satisfied_partial_resource_coverage`: приняты 10/10 пар, blockers отсутствуют, все пять preregistered interval conditions выполнены. Медиана наблюдаемого относительного reuse-эффекта `Delta_reuse_obs` равна 0,65858, 95% paired percentile-bootstrap CI [0,65667; 0,66042]; `Delta F_decode = 3` и `Delta F_preprocess = 3`, их нижние границы равны 3. Верхняя граница изменения Vmax равна 0 п.п., drop-max — -1,1111 п.п.
 
 Научная граница сохранена: положительное состояние относится только к этой primary cell и измеренным CPU/GPU stage-интервалам. Оно не доказывает полную экономию NVDEC/transfer/fanout, энергии, FLOPs или универсальное превосходство архитектуры. Относительный Vmax guardrail проходит из-за отсутствия ухудшения, но абсолютная доля нарушений 100-ms SLO равна 100% в обеих руках; поэтому серия не подтверждает соблюдение абсолютного SLO. Для последующего использования в статье подготовлены `primary_architecture_pairs.csv`, `primary_architecture_inference.csv`, `primary_architecture_claim_state.json` и `benchmark_verification.json`; сама статья не изменялась.
+
+## 11 августа 2026 — подготовка полного publication benchmark продолжается
+
+После отдельного запроса на полный прогон прежняя 20-arm серия переклассифицирована: это принятая предварительная primary-cell серия, но не полный benchmark всех систем, кодеков, политик и deadline. Её evidence сохранён; она не заменяет и не сокращает новую полную матрицу. Устаревший незавершённый прогон `runs/kpp_publishable_20260629_121408` по-прежнему отсутствует, его данные не используются.
+
+Текущая frozen matrix schema v2 содержит 2800 упорядоченных пар и 5600 arms: 4 системы (`deepstream`, `savant`, `openvino_gva`, `gstreamer_custom`), H.264/H.265, 7 политик, 5 deadline, 10 повторов и две checkpoint-архитектуры. Identity матрицы: `62cd76bd181b333e4c7a1c6d2bdc11e1d3241526f5190270fbe69f6b9b9fa9cd`.
+
+Перед измерениями введён fail-closed аудит каждой руки. На текущем состоянии готовы 0/5600 arms, поэтому полный measurement run намеренно не запущен. Блокируются все 1400 arms каждого backend: DeepStream, Savant и OpenVINO GVA ещё не имеют собственных topology-specific protocol-v3 checkpoint runtimes; GStreamer требует завершения нативного CPU/GPU policy routing, H.265 и всех deadline. Дополнительно не промотированы policy capability manifest и full-resource-v2 evidence contract.
+
+Подготовлен транзакционный исполнитель полного порядка: durable resume на границе принятой пары, строгая immutable identity, блокировка run root, повторная remote verification перед finalization и pair-level Seafile archive/readback. Локальные тяжёлые данные могут удаляться только после проверенного remote receipt и durable hash-chain ledger; acceptance/receipt остаются локально. Capability links исключаются из окружения benchmark-процессов, разрешён только HTTPS same-origin transport.
+
+Arm acceptance теперь создаётся только после остановки внешнего NVML collector, полной валидации `resource_intervals.csv`, `hardware_resource_samples.csv` и `fanout_work_counters.csv` и привязки их SHA-256. До этого runtime создаёт только pending candidate, который не считается научным результатом.
+
+Живой Seafile preflight и загрузка ещё не выполнялись: `VAST_SEAFILE_UPLOAD_LINK` и `VAST_SEAFILE_READ_LINK` в окружении отсутствуют. Полный запуск и pair-level промежуточные загрузки начнутся только после готовности 5600/5600 arms, аппаратных pilots и успешного read-only cloud preflight; blocked/dry-run/smoke результаты в статью не допускаются.
+
+## 11 августа 2026 — аварийное восстановление и актуальный fail-closed статус
+
+Этот раздел является более новым и отменяет прежнюю формулировку о сохранении 20-arm preliminary-серии. Незавершённый старый прогон `runs/kpp_publishable_20260629_121408` был остановлен и удалён по запросу пользователя ещё до текущей подготовки. Серия `runs/primary_architecture/20260811_003541` и её отчёты также не восстановлены, не используются и не могут подменять полный benchmark. Принятых результатов матрицы 5600 arms до инцидента не существовало.
+
+Во время подготовки отдельного analytics execution layer дефект cleanup-sentinel (`Path()` после успешного rename интерпретировался как текущий каталог) привёл к рекурсивному удалению рабочего дерева `E:\STUDY\VAST`. Процесс был остановлен, но исходники, Git-метаданные, private KPP data, модели и локальные run-артефакты на E: были удалены. Том E: после этого не использовался для восстановления: это NVMe/NTFS с включённым TRIM, VSS/File History/OneDrive-копий не обнаружено. Старые артефакты из Корзины относятся только к устаревшей 20-arm серии и намеренно не восстанавливаются.
+
+Git/source восстановлены из immutable base `8c327abb0ab12a5f5d200b960d9dc32b226d0476` и полного хронологического replay всех 320 успешных mutation calls. Для 88 изменённых targets получено точное соответствие pre-incident postimages; две дополнительные разницы — только post-incident safety fixes. `git fsck`, Python AST, JSON/YAML, shell/C/C++ static checks и import-graph audit чистые. Рабочая recovery-копия находится в `C:\Users\s-a-balashov\.codex\visualizations\2026\08\10\019feb79-e5aa-7673-a7f8-b0dca8e5646a\VAST_RECOVERY_SAFE_20260811`; повреждённый E: пока не перезаписывался.
+
+Frozen full matrix отдельно пересобрана и проверена без run root, dataset, Docker, hardware и Seafile: 2800 уникальных пар, 5600 уникальных arms, 4 системы, 2 кодека, 7 политик, 5 deadline, 10 повторов и ровно две разные checkpoint-топологии на пару. Все pair/arm IDs и координаты уникальны; повторная сборка детерминирована. Распределение полное: по 700 пар на систему, 1400 на кодек, 400 на policy, 560 на deadline и 280 на repeat. Matrix identity остаётся `62cd76bd181b333e4c7a1c6d2bdc11e1d3241526f5190270fbe69f6b9b9fa9cd`, policy identity — `4168818527ced4b3611c9aeabff6b04a7962314f4d80beb3da9dc814ba369016`.
+
+Readiness-аудит остаётся fail-closed: готовы 0/5600 arms. DeepStream, Savant и OpenVINO GVA блокируют по 1400 arms из-за отсутствия собственных topology-specific protocol-v3 runtimes. GStreamer блокирует 200 `cpu_only` arms до accepted native capability/calibration и 1200 GPU/mixed arms до CUDA/TensorRT parity и native terminal evidence. Глобально также отсутствуют accepted policy capability manifest и promotion полного resource-v2 bundle: NVDEC sampling, fanout work и три hash-bound resource evidence-файла на arm.
+
+Публичные model sources восстановлены по pinned revision/size/SHA. Четыре OpenVINO IR пары воспроизведены byte-identically объявленным SHA. Утраченные TensorRT engines не выдаются за прежние артефакты: выполнен формальный pre-measurement refreeze на том же pinned image, TensorRT 8.6.1.6/CUDA 12.2.2, RTX 3060 UUID, CC 8.6, driver 610.47 и frozen argv. Новые engine identities:
+
+- RN18: `07031b0493b5f1d9e27beffd51e622b74cc204505536f8a1618bde3e904d8fbe`, 62 258 620 bytes;
+- RN34: `bfa8303f89639d4033ee71389e77c009bf3bf1ab7e526e91949e0e0870f885d9`, 126 793 356 bytes;
+- RN50: `ecd41a7f7037a233da5629f87ff8d51e455b582c996963815a085cd139c3a7a5`, 118 354 276 bytes;
+- RN101: `f981e1da75813ae30d18b03d422c37d6047245962d2b5552eb54c4deedb48f97`, 225 698 788 bytes.
+
+Новая model-parity manifest identity — `62034940c0b5283a18172017c7f652588fc10e83cdfc1cc9f8b1a5caf61e7413`; старые engine identities несовместимы и не должны смешиваться с будущими результатами. Runtime image IDs OpenVINO и TensorRT совпали, referenced ONNX/IR/engine artifacts приняты по SHA. Publication readiness модели всё ещё false: отсутствуют 32 materialized evidence JSON и их 32 manifest SHA bindings — execution probes, disjoint calibration/evaluation corpora, CPU/CUDA policy calibration и raw-output bundles для четырёх ветвей.
+
+Опасные пути после инцидента усилены TDD: materialization cleanup, dataset output/install, OpenVINO chunk cleanup, telemetry cleanup, run-root selection, pair archive/cloud prune и evidence staging теперь требуют exact dedicated namespace, canonical non-reparse paths, immutable marker/ledger binding и повторную `lstat`/hash-проверку непосредственно перед mutation. Cloud credentials удаляются из окружения дочерних benchmark-процессов; транспорт только HTTPS same-origin; pair удаляется локально лишь после remote readback, durable receipt и повторной верификации.
+
+Обязательные private KPP inputs в recovery-копии отсутствуют: `h264/1.mp4`, `h264/2.mp4`, `h265/1.mp4`, `h265/2.mp4` и `Timestamps.txt`. Их нельзя заменять публичным dataset без изменения scientific contract и новой freeze identity. Также отсутствуют `VAST_SEAFILE_UPLOAD_LINK`, `VAST_SEAFILE_READ_LINK`, `VAST_SEAFILE_CAPACITY_CONFIRMED_GIB` и стабильный `VAST_SEAFILE_DESTINATION_ID`; cloud preflight и промежуточные загрузки равны нулю.
+
+Полный measurement run не запущен. Старт разрешён только после checksum-проверки KPP inputs, готовности 5600/5600 runtime cells, accepted model/policy/resource evidence и успешного Seafile read/write/capacity preflight. До этого любые synthetic smoke, dry-run или capability probe остаются инженерной проверкой и не считаются результатом для статьи. Статья не изменялась.
+
+После исправления lifetime-дефекта input `mmap` выполнен отдельный synthetic non-publication smoke: 4/4 OpenVINO CPU и 4/4 TensorRT CUDA inference прошли с exact model/engine binding, protocol handshake, sealed memfd/SCM_RIGHTS, output receipt и durable bundle reread. Binding-set identity: `f24224d2f90e348231b460cce5df7e5b45999e13d30598bfe920610f673a9d7b`. Smoke использовал явный read-only source override поверх pinned image IDs, потому что сохранённые worker images содержат pre-fix код; поэтому он не снимает readiness blocker. Перед publication evidence требуется deterministic rebuild/refreeze worker images, а synthetic tensors не заменяют KPP calibration/evaluation corpus.
+
+## 12 августа 2026 — post-recovery runtime checkpoint
+
+Этот раздел уточняет более ранний абзац о pre-fix worker images. Оба analytics worker image после него были детерминированно пересобраны из SAFE recovery-source без network/pull. Два независимых no-cache build каждого образа с нормализованным timestamp дали одинаковые image/rootfs/config identities:
+
+- OpenVINO CPU: image `sha256:1c484b47ce6cced890f83a653767df5dcd57c81ebb4ef8be3076d48273c26a1e`, implementation `11bb76091b0380fae4a374abae8f305c216b17ee96019106902e2e987730f182`;
+- TensorRT CUDA: image `sha256:29ad51f4057f5aa77eb18e572c5055ed465fac39d49365d8eb5ffafe4fe8001f`, implementation `7a09892dc72f86c825b3ec9055fdb25859f497caf86e9e32c4d35d79f96c5c46`.
+
+Повторный 4-model × 2-runtime smoke прошёл 8/8 без source override: exact handshake/capability, sealed memfd/SCM_RIGHTS, byte-bound request/response, worker exit 0 и durable evidence reread. Analytics execution regression — 33/33. Это закрывает только stale-image engineering blocker; publication model-parity всё ещё заблокирован отсутствием 64 hash-bound corpus/calibration/raw-output evidence bindings и accepted parity assessment.
+
+Восстановлены все восемь declared Open Model Zoo XML/BIN артефактов по versioned HTTPS URL, size и SHA; model contract проходит. Resource-v2 source/config hash drift пересчитан после восстановленных native edits, документация синхронизирована, 121/121 связанных regressions проходят. Это не является accepted per-arm resource evidence: target-run transfer/NVDEC/fanout work sidecars и promotion по-прежнему отсутствуют.
+
+Topology-specific engineering progress, не являющийся publication acceptance:
+
+- OpenVINO GVA: реальный offline pinned-image smoke прошёл для H.264 baseline (24 отдельных процесса/24 terminal) и H.265 shared (6 процессов, 24 terminal), с SO_PEERCRED, common admission, sealed dispatch и reset closure.
+- Savant: byte-exact VASTAU01→native `SourceRunner` ingress подтверждён реальным dealer/router round-trip для H.264 и H.265→HEVC; external ZeroMQ content, восемь admission attributes и EOS ACK совпали. Module configs/native topology runtime ещё не приняты.
+- DeepStream SDK runtime и GStreamer→analytics native bridge остаются в разработке и не повышают готовность матрицы до завершённых hardware pilots, native resource-v2 и accepted policy/model evidence.
+
+Во время OpenVINO launcher slice один вызов patch без заданного workdir случайно создал на повреждённом E: только новый untracked файл `scripts/checkpoint_openvino_gva_launcher.py` (9497 bytes). Файл был немедленно exact-идентифицирован и удалён штатным apply-patch; существующие файлы E: не изменялись. Дальнейшие правки выполняются только в SAFE C:-копии с явным workdir и проверкой identity patch helper.
+
+Private KPP inputs и четыре обязательных Seafile environment bindings всё ещё отсутствуют. Publication readiness остаётся 0/5600, полный measurement run не запущен, cloud uploads равны нулю. Старые 20-arm данные не восстанавливаются и не используются.
+
+## 24 августа 2026 — текущий checkpoint KPP v2 secondary перед sensitivity
+
+Этот раздел является самым новым статусом для текущей линии `kpp_legacy_iss_v2_secondary_sensitivity_executor` и не переопределяет научные ограничения предыдущих разделов. Работа продолжается; текущие source/test bytes являются WIP, а не formal freeze.
+
+### Операционный итог последнего runtime
+
+- Secondary-v4 был запущен ровно один раз под frozen bounded wrapper. Повторного normal запуска, sensitivity, ручного Docker cleanup, GPU pilot или network/pull после него не было.
+- Wrapper завершился fail-closed: внешний результат не принят, child вернул `78`, assessment не был создан. Формально принятая inference-истина остаётся `null` / `attested=false`.
+- Read-only Docker Desktop API trace независимо показывает, что все четыре worker прошли handshake и общий pre-infer barrier, после чего каждый вернул по два валидированных inference-ответа. Итого `8/8` inference responses подтверждены только как unsealed operational corroboration, а не как accepted evidence.
+- Высоковероятная причина `rc78` (>0,98 по source/API correlation) — post-inference cleanup inventory race в Docker 29: четыре параллельных worker cleanup пересекли `DELETE` с глобальным `container ls --all --format={{json .}}`; три inventory-запроса получили backend decode error, первый запрос после завершения всех DELETE прошёл. Probe ранее прошёл ту же wait/log/postinspect схему без конкурентных DELETE, поэтому общий exited-inspect mismatch практически исключён.
+- Generic child failure artifact оказался неточным: он заявил preflight/nonexecution и `inference_performed=false` после фактически выполненных 8 inference responses. Внешний wrapper правильно сохранил консервативное `null/attested=false`; source TDD теперь вводит monotonic progress ledger и phase-aware truthful failure diagnostic.
+
+### Запечатанная форензика и poststate
+
+- Postexecution forensic collector выполнен один раз после двух независимых exact-byte CLEAN reviews.
+- Запечатанный набор: `38` файлов, `244030` байт, aggregate SHA-256 `8c7f68885ca2b3e02fe9a95ec2cd7bf6700c9e42dafe422306808fa4c470f19e`.
+- Forensic self SHA-256: `c7ec08db55cedae68854b323ab9ba0007278a04ff9ba33713774268af43edf3d`; poststate self SHA-256 начинается с `fbdf793e` и был независимо пересчитан.
+- Два независимых post-collector review завершились `P0/P1/P2 = 0/0/0` в рамках nonpublication forensic contract.
+- Sealed poststate: Docker catalog exact empty; все пять deterministic container names отсутствуют; image identity не изменилась; IPC/process/watchdog отсутствуют; lease свободен; persistent pycache reservation остаётся exact regular `0600`, size `0`, nlink `1`.
+- Исторический unresolved marker в host `/tmp` не трогать и не удалять вручную: `/tmp/vk2u-37866a9dc0fd94c3974292f059830eef8bdc56b6a6c8d03b/op-ca09d4537e797e384e45c9ad24d13339c5a1795e86f14f0b`. Последнее наблюдение: inode `5019`, mode `0600`, uid/gid `1000`, size `0`, nlink `1`. POSIX tests должны выполняться только в отдельном user+mount namespace с fresh ext-backed `/tmp` из `/var/tmp/vast-wsl-qual.*`.
+
+### Исправления, уже реализованные в WIP
+
+- Cleanup DELETE и inventory LIST переведены под один native cross-process mutex с отдельными open-file descriptions для controller/watchdogs. Финальный gate проверяет deterministic names/IDs и exact-empty catalog под тем же mutex.
+- Введены global admission/retention locks и durable unresolved-operation markers для container create и IPC namespace. Состояние `D&&!T` сохраняет независимого cleanup owner; новый run не может войти при retained owner или marker/`.resolving` guard.
+- Введён durable O_EXCL progress ledger с dispatched/returned/validated counters, chain validation и truthful tri-state inference: `false` только до dispatch, `null` при неоднозначности, `true` после хотя бы одного валидированного response.
+- Failure artifact теперь сохраняет primary + ordered supplemental errors, typed Docker stdout/stderr facts, progress truth, assessment persistence и exact-one stdout write semantics.
+- Dead terminal nonzero container watchdog takeover выполняет recovery до marker resolution; live/unknown и `D&&!T` не перехватываются controller.
+- Container-v4 deterministic name/branch binding закрыт. Strict mount validator теперь связывает worker mount topology, branch binding, model-staging root и analytics source с полным 64-hex run identity.
+- Docker inspect интегрирован с тем же mount validator. Current Windows fake tests GREEN для exact real Docker29 fixtures и для критического near-miss: другой full run с тем же first-16 prefix больше не принимается.
+- IPC parent prevalidation выполняется до marker/Popen; unsupported filesystem больше не оставляет ложный durable blocker. IPC guardian удерживает ownership при `EBUSY/ENOTEMPTY` без эвристического quiet-window deadline.
+
+### Текущие незакрытые RED и byte state
+
+- Executor WIP: `scripts/kpp_legacy_iss_v2_secondary_sensitivity_executor.py`, `560515` байт, `14606` строк, SHA-256 `ecea63369bb7614e6960c2318866f412cb60b1311a465c3cb245d65607fc86ef`.
+- Tests WIP после добавления нового POSIX RED: `tests/test_kpp_legacy_iss_v2_secondary_sensitivity_executor.py`, `451104` байт, `10698` строк, SHA-256 `9c32cb3cf87f839c32eac16d0e659649c0d6f71dfc7d63fb9e336414bb8d7975`.
+- Эти hashes не frozen и изменятся после GREEN patches.
+- Failure-safe runtime poststate schema и partial-registry finalizer уже существуют, но outer producer пока не вызывается перед закрытием cleanup mutex/run lease. Поэтому main-level exact-eight test намеренно RED: `runtime_cleanup.attempted` остаётся `false` вместо `true`.
+- Новый isolated WSL ABA-test намеренно RED: `_observe_unresolved_operation_root` повторно сравнивает только список имён и не замечает unlink/recreate того же marker name. Test подтвердил отсутствие ожидаемого `ExecutorContractError`; teardown затем закономерно получил `_DescriptorClosureError`, потому что synthetic replacement уже не совпадал с исходным marker contract. Временный `/var/tmp/vast-wsl-qual.*` удалён; host marker не затронут.
+- Требуемый GREEN: observer должен держать каждый marker через `O_NOFOLLOW|O_CLOEXEC` fd, cross-bind handle↔named inode до и после второго list/fsync, попытаться закрыть все descriptors и сохранить primary + ordered close failures.
+- После race-closed observer outer failure-safe producer должен, пока mutex/lease ещё удерживаются, независимо выполнить только read-only Docker `inspect/list` и unresolved-root snapshot, записать runtime cleanup facts, затем всегда закрыть mutex и release lease. Никаких `rm/create/start` в этом poststate шаге быть не должно.
+
+### Следующие обязательные gates
+
+1. Получить GREEN для marker ABA/custody test и тихого read-only inode-unchanged случая.
+2. Подключить failure-safe outer producer; получить GREEN main-level after-8 cleanup failure, lease-close и mutex-close tests с сохранением точного порядка ошибок.
+3. Исправить оставшийся POSIX IPC unknown-entry fixture на truthful nested `_DescriptorClosureError` и controller-owned exact cleanup, без прямого удаления durable marker.
+4. Прогнать полный Windows fake suite и полный WSL suite в isolated ext-backed `/tmp`, затем concurrency/SIGKILL/fault stress и compile/provenance checks.
+5. Объявить новые executor/test hashes formal freeze и получить две независимые exact-byte проверки `P0/P1/P2`.
+6. Старый secondary-v4 wrapper `bce4f403...` считать ABI-stale и не использовать. После source freeze построить новый bounded wrapper, пройти read-only preflight и только затем решить вопрос об одном новом secondary invocation.
+7. Sensitivity разрешается только после CLEAN secondary assessment и отдельного GO. До этого никаких повторов runtime, Docker/GPU mutations или научных claims.

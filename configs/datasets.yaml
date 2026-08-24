@@ -373,6 +373,671 @@ datasets:
       fps_policy: cfr_600_from_source_pts
       duration_s: 135.288333
       frame_count: 81173
+  kpp_legacy_iss_v2_avi:
+    analytics_routing: unresolved
+    annotations:
+      accuracy_ground_truth: false
+      normalization_receipt_sha256: f0227c867e2399816b4d4eb76ca32eb628c42c004a1136cf2447e4579315fce8
+      path: data/videos/kpp/kpp_legacy_iss_v2/metadata/iss_v2_underbody_metadata.json
+      sha256: d23872d4b4706ef7d804f917a72407f82326eb3cdd5d39d347913f20cc65b0d4
+      use: underbody_foreign_object_events_and_realism_metadata_only
+    dataset_contract_version: 2
+    description: Legacy ISS checkpoint captures extracted headlessly as a distinct v2 generation.
+    experimental_routing_profiles:
+    - name: architecture_reuse_all_branches_v1
+      production_semantics: false
+      routing_mode: all_branches_per_stream
+      scope: topology_only_stress
+    fps_policy: receipt_validated_mixed_source_timeline
+    generation_id: kpp_legacy_iss_v2
+    kind: real_avi
+    lineage:
+      identity_equivalent: false
+      predecessor_dataset: kpp_real_avi
+      predecessor_manifest_identity_schema_version: 1
+      predecessor_manifest_identity_sha256: 940cf02d9f7fd7b0179fd4eaf858fb7f095bc860df1dfb72681a4f86ca69379f
+      reason: headless_legacy_iss_stream_copy_and_derived_transcodes_are_distinct_from_the_v1_archiveplayer_generation
+    logical_stream_instances: 6
+    provenance:
+      extraction_receipt:
+        artifact_kind: vast_kpp_legacy_iss_extraction_receipt
+        file_sha256: f160ce153804f92dd02068ad48547b396636bd2cb7dfc8fb39114210f23a0e05
+        path: staging/kpp_legacy_iss_v2_extraction/kpp_iss_v2_extraction_receipt.json
+        receipt_sha256: e944d7bb0de69fff94f7c2a8ea4cd84379dcd73af665c8be28bcce419bac2d48
+        size_bytes: 2495
+        status: headless_stream_copy_candidate
+      generation_id: kpp_legacy_iss_v2
+      media_artifacts:
+      - path: data/videos/kpp/kpp_legacy_iss_v2/avi/iss_v2_underbody.avi
+        receipt_path: staging/kpp_legacy_iss_v2_extraction/kpp_iss_v2_extraction_receipt.json
+        receipt_sha256: e944d7bb0de69fff94f7c2a8ea4cd84379dcd73af665c8be28bcce419bac2d48
+        role: underbody
+        sha256: 31bee18de7cd08d6012d093a5774e17e1a702998f85f44b87f1d4971fa9c9a2d
+        size_bytes: 2465052990
+      - path: data/videos/kpp/kpp_legacy_iss_v2/avi/iss_v2_front_gate.avi
+        receipt_path: staging/kpp_legacy_iss_v2_extraction/kpp_iss_v2_extraction_receipt.json
+        receipt_sha256: e944d7bb0de69fff94f7c2a8ea4cd84379dcd73af665c8be28bcce419bac2d48
+        role: front_gate
+        sha256: 4a5f619b8ab0b19945cea37603d6203a77cb28aae61d09d299eaea60bb9fd4ca
+        size_bytes: 33088368
+      metadata_receipt:
+        artifact_kind: vast_kpp_legacy_iss_metadata
+        file_sha256: d23872d4b4706ef7d804f917a72407f82326eb3cdd5d39d347913f20cc65b0d4
+        path: staging/kpp_legacy_iss_v2_metadata/kpp_iss_v2_metadata.json
+        receipt_sha256: f0227c867e2399816b4d4eb76ca32eb628c42c004a1136cf2447e4579315fce8
+        size_bytes: 12731945
+        status: authoritative_windows_candidate
+      physical_artifact_bytes_assessed: true
+      publication_authorized: false
+      schema_version: 1
+    publishable: false
+    status: physically_assessed_candidate
+    streams:
+    - avg_frame_rate: 25/1
+      camera_role: plate_number
+      codec_name: h264
+      container: avi
+      duration_s: 55.2
+      fps_policy: constant
+      frame_count: 1380
+      height: 1080
+      path: data/videos/kpp/kpp_legacy_iss_v2/avi/iss_v2_front_gate.avi
+      r_frame_rate: 25/1
+      sha256: 4a5f619b8ab0b19945cea37603d6203a77cb28aae61d09d299eaea60bb9fd4ca
+      source_id: kpp_iss_v2_front_gate
+      stream_id: 0
+      width: 1920
+    - avg_frame_rate: 25/1
+      camera_role: plate_number
+      codec_name: h264
+      container: avi
+      duration_s: 55.2
+      fps_policy: constant
+      frame_count: 1380
+      height: 1080
+      path: data/videos/kpp/kpp_legacy_iss_v2/avi/iss_v2_front_gate.avi
+      r_frame_rate: 25/1
+      sha256: 4a5f619b8ab0b19945cea37603d6203a77cb28aae61d09d299eaea60bb9fd4ca
+      source_id: kpp_iss_v2_front_gate
+      stream_id: 1
+      width: 1920
+    - avg_frame_rate: 25/1
+      camera_role: vehicle_type
+      codec_name: h264
+      container: avi
+      duration_s: 55.2
+      fps_policy: constant
+      frame_count: 1380
+      height: 1080
+      path: data/videos/kpp/kpp_legacy_iss_v2/avi/iss_v2_front_gate.avi
+      r_frame_rate: 25/1
+      sha256: 4a5f619b8ab0b19945cea37603d6203a77cb28aae61d09d299eaea60bb9fd4ca
+      source_id: kpp_iss_v2_front_gate
+      stream_id: 2
+      width: 1920
+    - avg_frame_rate: 25/1
+      camera_role: damage
+      codec_name: h264
+      container: avi
+      duration_s: 55.2
+      fps_policy: constant
+      frame_count: 1380
+      height: 1080
+      path: data/videos/kpp/kpp_legacy_iss_v2/avi/iss_v2_front_gate.avi
+      r_frame_rate: 25/1
+      sha256: 4a5f619b8ab0b19945cea37603d6203a77cb28aae61d09d299eaea60bb9fd4ca
+      source_id: kpp_iss_v2_front_gate
+      stream_id: 3
+      width: 1920
+    - avg_frame_rate: 25/1
+      camera_role: damage
+      codec_name: h264
+      container: avi
+      duration_s: 55.2
+      fps_policy: constant
+      frame_count: 1380
+      height: 1080
+      path: data/videos/kpp/kpp_legacy_iss_v2/avi/iss_v2_front_gate.avi
+      r_frame_rate: 25/1
+      sha256: 4a5f619b8ab0b19945cea37603d6203a77cb28aae61d09d299eaea60bb9fd4ca
+      source_id: kpp_iss_v2_front_gate
+      stream_id: 4
+      width: 1920
+    - avg_frame_rate: 200/1
+      camera_role: foreign_object
+      codec_name: mjpeg
+      container: avi
+      duration_s: 59.41
+      fps_policy: constant
+      frame_count: 11882
+      height: 236
+      path: data/videos/kpp/kpp_legacy_iss_v2/avi/iss_v2_underbody.avi
+      r_frame_rate: 200/1
+      sha256: 31bee18de7cd08d6012d093a5774e17e1a702998f85f44b87f1d4971fa9c9a2d
+      source_id: kpp_iss_v2_underbody
+      stream_id: 5
+      width: 1700
+    timestamp_contract:
+      accuracy_ground_truth: false
+      clock_domains:
+        frame_clock:
+          epoch: null
+          present_only_when_observed: true
+          source: tag_4_frame_time_and_magnet_time_integers
+          unit: null
+        header_clock:
+          resolution: millisecond
+          source: record_header_8xu16_calendar_fields
+          timezone: null
+      clock_domains_equated: false
+      demuxed_or_decoded_frame_index_alignment: not_claimed
+      derived_codec_frame_index_alignment: not_applicable
+      event_semantics_validated: false
+      frame_clock_epoch_validated: false
+      frame_clock_unit_validated: false
+      metadata_scope: underbody_source_avi_only
+      schema_version: 1
+      source_timestamps_preserved: false
+      timestamps_interpolated: false
+      timezone_validated: false
+      underbody_avi_physical_movi_packet_index_alignment: validated_exact_physical_packet_sequence
+      video_timeline_authority: receipt_bound_pinned_ffprobe_validation
+      video_timeline_policy: synthetic_demux_rates_200_underbody_25_front_gate
+    unique_recorded_sources: 2
+    workload_scope: replicated_logical_streams_from_two_recordings
+    preparation:
+      mode: check_only_materialized_v1
+      materialization_receipt:
+        path: data/videos/kpp/kpp_legacy_iss_v2/kpp_iss_v2_materialization_receipt.json
+        size_bytes: 28131
+        sha256: dd0d2aa38da1281a750806858b555b994a9dcf3c9bcd35e8379dbc9d339f2b33
+        materialization_receipt_sha256: 56e09fd82ab83d4f3e0a711d93658a1cfc69f3bee9fd381df41713ac5b42bda4
+  kpp_legacy_iss_v2_h264:
+    analytics_routing: unresolved
+    annotations:
+      accuracy_ground_truth: false
+      normalization_receipt_sha256: f0227c867e2399816b4d4eb76ca32eb628c42c004a1136cf2447e4579315fce8
+      path: data/videos/kpp/kpp_legacy_iss_v2/metadata/iss_v2_underbody_metadata.json
+      sha256: d23872d4b4706ef7d804f917a72407f82326eb3cdd5d39d347913f20cc65b0d4
+      use: underbody_foreign_object_events_and_realism_metadata_only
+    benchmark_playback:
+      contract_version: 1
+      encoded_timeline_fps: 600
+      offered_playback_fps: 1
+      selection_basis: discarded_prebenchmark_capacity_pilots_positive_completed_frames_guardrail_no_effect_estimation
+      timestamp_scale: 600
+    codec_variant: h264
+    dataset_contract_version: 2
+    description: Legacy ISS v2 checkpoint captures frozen as H264 at 600 FPS CFR.
+    experimental_routing_profiles:
+    - name: architecture_reuse_all_branches_v1
+      production_semantics: false
+      routing_mode: all_branches_per_stream
+      scope: topology_only_stress
+    fps_policy: cfr_600_from_source_pts
+    generation_id: kpp_legacy_iss_v2
+    kind: real_codec_transcode
+    lineage:
+      identity_equivalent: false
+      predecessor_dataset: kpp_real_h264
+      predecessor_manifest_identity_schema_version: 1
+      predecessor_manifest_identity_sha256: 1d3b7a0c7e4b9b0a51c901371763e6f52019d69f257fd78a6c74664f4e233951
+      reason: headless_legacy_iss_stream_copy_and_derived_transcodes_are_distinct_from_the_v1_archiveplayer_generation
+    logical_stream_instances: 6
+    provenance:
+      extraction_receipt:
+        artifact_kind: vast_kpp_legacy_iss_extraction_receipt
+        file_sha256: f160ce153804f92dd02068ad48547b396636bd2cb7dfc8fb39114210f23a0e05
+        path: staging/kpp_legacy_iss_v2_extraction/kpp_iss_v2_extraction_receipt.json
+        receipt_sha256: e944d7bb0de69fff94f7c2a8ea4cd84379dcd73af665c8be28bcce419bac2d48
+        size_bytes: 2495
+        status: headless_stream_copy_candidate
+      generation_id: kpp_legacy_iss_v2
+      media_artifacts:
+      - path: data/videos/kpp/kpp_legacy_iss_v2/h264/iss_v2_underbody.mp4
+        receipt_path: staging/kpp_legacy_iss_v2_transcodes/kpp_iss_v2_transcode_receipt.json
+        receipt_sha256: ef41fe97a19690faec4f02c48d34f889b98e2f929ae9d391bbd55d6d112e93f7
+        role: underbody
+        sha256: b7e5165549172266a5617ff7bbca6e5b888775b0a2490e27b7cbe17640e3b102
+        size_bytes: 1079445865
+      - path: data/videos/kpp/kpp_legacy_iss_v2/h264/iss_v2_front_gate.mp4
+        receipt_path: staging/kpp_legacy_iss_v2_transcodes/kpp_iss_v2_transcode_receipt.json
+        receipt_sha256: ef41fe97a19690faec4f02c48d34f889b98e2f929ae9d391bbd55d6d112e93f7
+        role: front_gate
+        sha256: 08991b572d2d990a07536c9a4a7eed7780b27127c0e38abe7b607ba97dd59273
+        size_bytes: 63131711
+      metadata_receipt:
+        artifact_kind: vast_kpp_legacy_iss_metadata
+        file_sha256: d23872d4b4706ef7d804f917a72407f82326eb3cdd5d39d347913f20cc65b0d4
+        path: staging/kpp_legacy_iss_v2_metadata/kpp_iss_v2_metadata.json
+        receipt_sha256: f0227c867e2399816b4d4eb76ca32eb628c42c004a1136cf2447e4579315fce8
+        size_bytes: 12731945
+        status: authoritative_windows_candidate
+      physical_artifact_bytes_assessed: true
+      publication_authorized: false
+      schema_version: 1
+      transcode_receipt:
+        artifact_kind: vast_kpp_legacy_iss_v2_transcode_receipt
+        file_sha256: f78406237d539224a25c38bf40f913f18069e120e8e66e9d11270ff88ceb5470
+        path: staging/kpp_legacy_iss_v2_transcodes/kpp_iss_v2_transcode_receipt.json
+        receipt_sha256: ef41fe97a19690faec4f02c48d34f889b98e2f929ae9d391bbd55d6d112e93f7
+        size_bytes: 7092
+        status: pinned_codec_transcode_candidate
+    publishable: false
+    source_dataset: kpp_legacy_iss_v2_avi
+    status: physically_assessed_candidate
+    streams:
+    - avg_frame_rate: 600/1
+      camera_role: plate_number
+      codec_name: h264
+      container: mp4
+      duration_s: 55.2
+      fps_policy: cfr_600_from_source_pts
+      frame_count: 33120
+      height: 1080
+      path: data/videos/kpp/kpp_legacy_iss_v2/h264/iss_v2_front_gate.mp4
+      pix_fmt: yuv420p
+      r_frame_rate: 600/1
+      sha256: 08991b572d2d990a07536c9a4a7eed7780b27127c0e38abe7b607ba97dd59273
+      source_id: kpp_iss_v2_front_gate
+      source_path: data/videos/kpp/kpp_legacy_iss_v2/avi/iss_v2_front_gate.avi
+      stream_id: 0
+      width: 1920
+    - avg_frame_rate: 600/1
+      camera_role: plate_number
+      codec_name: h264
+      container: mp4
+      duration_s: 55.2
+      fps_policy: cfr_600_from_source_pts
+      frame_count: 33120
+      height: 1080
+      path: data/videos/kpp/kpp_legacy_iss_v2/h264/iss_v2_front_gate.mp4
+      pix_fmt: yuv420p
+      r_frame_rate: 600/1
+      sha256: 08991b572d2d990a07536c9a4a7eed7780b27127c0e38abe7b607ba97dd59273
+      source_id: kpp_iss_v2_front_gate
+      source_path: data/videos/kpp/kpp_legacy_iss_v2/avi/iss_v2_front_gate.avi
+      stream_id: 1
+      width: 1920
+    - avg_frame_rate: 600/1
+      camera_role: vehicle_type
+      codec_name: h264
+      container: mp4
+      duration_s: 55.2
+      fps_policy: cfr_600_from_source_pts
+      frame_count: 33120
+      height: 1080
+      path: data/videos/kpp/kpp_legacy_iss_v2/h264/iss_v2_front_gate.mp4
+      pix_fmt: yuv420p
+      r_frame_rate: 600/1
+      sha256: 08991b572d2d990a07536c9a4a7eed7780b27127c0e38abe7b607ba97dd59273
+      source_id: kpp_iss_v2_front_gate
+      source_path: data/videos/kpp/kpp_legacy_iss_v2/avi/iss_v2_front_gate.avi
+      stream_id: 2
+      width: 1920
+    - avg_frame_rate: 600/1
+      camera_role: damage
+      codec_name: h264
+      container: mp4
+      duration_s: 55.2
+      fps_policy: cfr_600_from_source_pts
+      frame_count: 33120
+      height: 1080
+      path: data/videos/kpp/kpp_legacy_iss_v2/h264/iss_v2_front_gate.mp4
+      pix_fmt: yuv420p
+      r_frame_rate: 600/1
+      sha256: 08991b572d2d990a07536c9a4a7eed7780b27127c0e38abe7b607ba97dd59273
+      source_id: kpp_iss_v2_front_gate
+      source_path: data/videos/kpp/kpp_legacy_iss_v2/avi/iss_v2_front_gate.avi
+      stream_id: 3
+      width: 1920
+    - avg_frame_rate: 600/1
+      camera_role: damage
+      codec_name: h264
+      container: mp4
+      duration_s: 55.2
+      fps_policy: cfr_600_from_source_pts
+      frame_count: 33120
+      height: 1080
+      path: data/videos/kpp/kpp_legacy_iss_v2/h264/iss_v2_front_gate.mp4
+      pix_fmt: yuv420p
+      r_frame_rate: 600/1
+      sha256: 08991b572d2d990a07536c9a4a7eed7780b27127c0e38abe7b607ba97dd59273
+      source_id: kpp_iss_v2_front_gate
+      source_path: data/videos/kpp/kpp_legacy_iss_v2/avi/iss_v2_front_gate.avi
+      stream_id: 4
+      width: 1920
+    - avg_frame_rate: 600/1
+      camera_role: foreign_object
+      codec_name: h264
+      container: mp4
+      duration_s: 59.41
+      fps_policy: cfr_600_from_source_pts
+      frame_count: 35646
+      height: 236
+      path: data/videos/kpp/kpp_legacy_iss_v2/h264/iss_v2_underbody.mp4
+      pix_fmt: yuv420p
+      r_frame_rate: 600/1
+      sha256: b7e5165549172266a5617ff7bbca6e5b888775b0a2490e27b7cbe17640e3b102
+      source_id: kpp_iss_v2_underbody
+      source_path: data/videos/kpp/kpp_legacy_iss_v2/avi/iss_v2_underbody.avi
+      stream_id: 5
+      width: 1700
+    timestamp_contract:
+      accuracy_ground_truth: false
+      clock_domains:
+        frame_clock:
+          epoch: null
+          present_only_when_observed: true
+          source: tag_4_frame_time_and_magnet_time_integers
+          unit: null
+        header_clock:
+          resolution: millisecond
+          source: record_header_8xu16_calendar_fields
+          timezone: null
+      clock_domains_equated: false
+      demuxed_or_decoded_frame_index_alignment: not_claimed
+      derived_codec_frame_index_alignment: not_claimed
+      event_semantics_validated: false
+      frame_clock_epoch_validated: false
+      frame_clock_unit_validated: false
+      metadata_scope: underbody_source_avi_only
+      schema_version: 1
+      source_timestamps_preserved: false
+      timestamps_interpolated: false
+      timezone_validated: false
+      underbody_avi_physical_movi_packet_index_alignment: validated_exact_physical_packet_sequence
+      video_timeline_authority: receipt_bound_pinned_ffprobe_validation
+      video_timeline_policy: cfr_600_from_source_pts
+    transcode:
+      recipes:
+      - bitstream_filter: h264_metadata=video_full_range_flag=0
+        codec_variant: h264
+        color_range: tv
+        container: mp4
+        crf: 23
+        encoder: libx264
+        encoder_time_base: 1/600
+        expected_frame_count: 35646
+        ffmpeg_filter: scale=w=1700:h=236:in_range=auto:out_range=tv,format=pix_fmts=yuv420p,fps=fps=600:start_time=0:round=near:eof_action=round
+        fps_mode: cfr
+        output_frame_rate: 600/1
+        pix_fmt: yuv420p
+        preset: veryfast
+        reinit_filter: 0
+        role: underbody
+        video_track_timescale: 600
+      - bitstream_filter: h264_metadata=video_full_range_flag=0
+        codec_variant: h264
+        color_range: tv
+        container: mp4
+        crf: 23
+        encoder: libx264
+        encoder_time_base: 1/600
+        expected_frame_count: 33120
+        ffmpeg_filter: scale=w=1920:h=1080:in_range=auto:out_range=tv,format=pix_fmts=yuv420p,fps=fps=600:start_time=0:round=near:eof_action=round
+        fps_mode: cfr
+        output_frame_rate: 600/1
+        pix_fmt: yuv420p
+        preset: veryfast
+        reinit_filter: 0
+        role: front_gate
+        video_track_timescale: 600
+      source_paths:
+      - data/videos/kpp/kpp_legacy_iss_v2/avi/iss_v2_underbody.avi
+      - data/videos/kpp/kpp_legacy_iss_v2/avi/iss_v2_front_gate.avi
+    unique_recorded_sources: 2
+    workload_scope: replicated_logical_streams_from_two_recordings
+    preparation:
+      mode: check_only_materialized_v1
+      materialization_receipt:
+        path: data/videos/kpp/kpp_legacy_iss_v2/kpp_iss_v2_materialization_receipt.json
+        size_bytes: 28131
+        sha256: dd0d2aa38da1281a750806858b555b994a9dcf3c9bcd35e8379dbc9d339f2b33
+        materialization_receipt_sha256: 56e09fd82ab83d4f3e0a711d93658a1cfc69f3bee9fd381df41713ac5b42bda4
+  kpp_legacy_iss_v2_h265:
+    analytics_routing: unresolved
+    annotations:
+      accuracy_ground_truth: false
+      normalization_receipt_sha256: f0227c867e2399816b4d4eb76ca32eb628c42c004a1136cf2447e4579315fce8
+      path: data/videos/kpp/kpp_legacy_iss_v2/metadata/iss_v2_underbody_metadata.json
+      sha256: d23872d4b4706ef7d804f917a72407f82326eb3cdd5d39d347913f20cc65b0d4
+      use: underbody_foreign_object_events_and_realism_metadata_only
+    benchmark_playback:
+      contract_version: 1
+      encoded_timeline_fps: 600
+      offered_playback_fps: 1
+      selection_basis: discarded_prebenchmark_capacity_pilots_positive_completed_frames_guardrail_no_effect_estimation
+      timestamp_scale: 600
+    codec_variant: h265
+    dataset_contract_version: 2
+    description: Legacy ISS v2 checkpoint captures frozen as H265 at 600 FPS CFR.
+    experimental_routing_profiles:
+    - name: architecture_reuse_all_branches_v1
+      production_semantics: false
+      routing_mode: all_branches_per_stream
+      scope: topology_only_stress
+    fps_policy: cfr_600_from_source_pts
+    generation_id: kpp_legacy_iss_v2
+    kind: real_codec_transcode
+    lineage:
+      identity_equivalent: false
+      predecessor_dataset: kpp_real_h265
+      predecessor_manifest_identity_schema_version: 1
+      predecessor_manifest_identity_sha256: 0f166e745e36ae979a3cb89fb3214636422a4a55f5255664d9b5089af7ec59db
+      reason: headless_legacy_iss_stream_copy_and_derived_transcodes_are_distinct_from_the_v1_archiveplayer_generation
+    logical_stream_instances: 6
+    provenance:
+      extraction_receipt:
+        artifact_kind: vast_kpp_legacy_iss_extraction_receipt
+        file_sha256: f160ce153804f92dd02068ad48547b396636bd2cb7dfc8fb39114210f23a0e05
+        path: staging/kpp_legacy_iss_v2_extraction/kpp_iss_v2_extraction_receipt.json
+        receipt_sha256: e944d7bb0de69fff94f7c2a8ea4cd84379dcd73af665c8be28bcce419bac2d48
+        size_bytes: 2495
+        status: headless_stream_copy_candidate
+      generation_id: kpp_legacy_iss_v2
+      media_artifacts:
+      - path: data/videos/kpp/kpp_legacy_iss_v2/h265/iss_v2_underbody.mp4
+        receipt_path: staging/kpp_legacy_iss_v2_transcodes/kpp_iss_v2_transcode_receipt.json
+        receipt_sha256: ef41fe97a19690faec4f02c48d34f889b98e2f929ae9d391bbd55d6d112e93f7
+        role: underbody
+        sha256: 5368c94a26659c529106724427fc6c3e60fe6788d56699da14c93bc4222e7839
+        size_bytes: 223684192
+      - path: data/videos/kpp/kpp_legacy_iss_v2/h265/iss_v2_front_gate.mp4
+        receipt_path: staging/kpp_legacy_iss_v2_transcodes/kpp_iss_v2_transcode_receipt.json
+        receipt_sha256: ef41fe97a19690faec4f02c48d34f889b98e2f929ae9d391bbd55d6d112e93f7
+        role: front_gate
+        sha256: fa400ecc8b84afc8144fac1da522ef3e9e321c7feb89a5086ac1a1e3ccbe7728
+        size_bytes: 14910770
+      metadata_receipt:
+        artifact_kind: vast_kpp_legacy_iss_metadata
+        file_sha256: d23872d4b4706ef7d804f917a72407f82326eb3cdd5d39d347913f20cc65b0d4
+        path: staging/kpp_legacy_iss_v2_metadata/kpp_iss_v2_metadata.json
+        receipt_sha256: f0227c867e2399816b4d4eb76ca32eb628c42c004a1136cf2447e4579315fce8
+        size_bytes: 12731945
+        status: authoritative_windows_candidate
+      physical_artifact_bytes_assessed: true
+      publication_authorized: false
+      schema_version: 1
+      transcode_receipt:
+        artifact_kind: vast_kpp_legacy_iss_v2_transcode_receipt
+        file_sha256: f78406237d539224a25c38bf40f913f18069e120e8e66e9d11270ff88ceb5470
+        path: staging/kpp_legacy_iss_v2_transcodes/kpp_iss_v2_transcode_receipt.json
+        receipt_sha256: ef41fe97a19690faec4f02c48d34f889b98e2f929ae9d391bbd55d6d112e93f7
+        size_bytes: 7092
+        status: pinned_codec_transcode_candidate
+    publishable: false
+    source_dataset: kpp_legacy_iss_v2_avi
+    status: physically_assessed_candidate
+    streams:
+    - avg_frame_rate: 600/1
+      camera_role: plate_number
+      codec_name: hevc
+      container: mp4
+      duration_s: 55.2
+      fps_policy: cfr_600_from_source_pts
+      frame_count: 33120
+      height: 1080
+      path: data/videos/kpp/kpp_legacy_iss_v2/h265/iss_v2_front_gate.mp4
+      pix_fmt: yuv420p
+      r_frame_rate: 600/1
+      sha256: fa400ecc8b84afc8144fac1da522ef3e9e321c7feb89a5086ac1a1e3ccbe7728
+      source_id: kpp_iss_v2_front_gate
+      source_path: data/videos/kpp/kpp_legacy_iss_v2/avi/iss_v2_front_gate.avi
+      stream_id: 0
+      width: 1920
+    - avg_frame_rate: 600/1
+      camera_role: plate_number
+      codec_name: hevc
+      container: mp4
+      duration_s: 55.2
+      fps_policy: cfr_600_from_source_pts
+      frame_count: 33120
+      height: 1080
+      path: data/videos/kpp/kpp_legacy_iss_v2/h265/iss_v2_front_gate.mp4
+      pix_fmt: yuv420p
+      r_frame_rate: 600/1
+      sha256: fa400ecc8b84afc8144fac1da522ef3e9e321c7feb89a5086ac1a1e3ccbe7728
+      source_id: kpp_iss_v2_front_gate
+      source_path: data/videos/kpp/kpp_legacy_iss_v2/avi/iss_v2_front_gate.avi
+      stream_id: 1
+      width: 1920
+    - avg_frame_rate: 600/1
+      camera_role: vehicle_type
+      codec_name: hevc
+      container: mp4
+      duration_s: 55.2
+      fps_policy: cfr_600_from_source_pts
+      frame_count: 33120
+      height: 1080
+      path: data/videos/kpp/kpp_legacy_iss_v2/h265/iss_v2_front_gate.mp4
+      pix_fmt: yuv420p
+      r_frame_rate: 600/1
+      sha256: fa400ecc8b84afc8144fac1da522ef3e9e321c7feb89a5086ac1a1e3ccbe7728
+      source_id: kpp_iss_v2_front_gate
+      source_path: data/videos/kpp/kpp_legacy_iss_v2/avi/iss_v2_front_gate.avi
+      stream_id: 2
+      width: 1920
+    - avg_frame_rate: 600/1
+      camera_role: damage
+      codec_name: hevc
+      container: mp4
+      duration_s: 55.2
+      fps_policy: cfr_600_from_source_pts
+      frame_count: 33120
+      height: 1080
+      path: data/videos/kpp/kpp_legacy_iss_v2/h265/iss_v2_front_gate.mp4
+      pix_fmt: yuv420p
+      r_frame_rate: 600/1
+      sha256: fa400ecc8b84afc8144fac1da522ef3e9e321c7feb89a5086ac1a1e3ccbe7728
+      source_id: kpp_iss_v2_front_gate
+      source_path: data/videos/kpp/kpp_legacy_iss_v2/avi/iss_v2_front_gate.avi
+      stream_id: 3
+      width: 1920
+    - avg_frame_rate: 600/1
+      camera_role: damage
+      codec_name: hevc
+      container: mp4
+      duration_s: 55.2
+      fps_policy: cfr_600_from_source_pts
+      frame_count: 33120
+      height: 1080
+      path: data/videos/kpp/kpp_legacy_iss_v2/h265/iss_v2_front_gate.mp4
+      pix_fmt: yuv420p
+      r_frame_rate: 600/1
+      sha256: fa400ecc8b84afc8144fac1da522ef3e9e321c7feb89a5086ac1a1e3ccbe7728
+      source_id: kpp_iss_v2_front_gate
+      source_path: data/videos/kpp/kpp_legacy_iss_v2/avi/iss_v2_front_gate.avi
+      stream_id: 4
+      width: 1920
+    - avg_frame_rate: 600/1
+      camera_role: foreign_object
+      codec_name: hevc
+      container: mp4
+      duration_s: 59.41
+      fps_policy: cfr_600_from_source_pts
+      frame_count: 35646
+      height: 236
+      path: data/videos/kpp/kpp_legacy_iss_v2/h265/iss_v2_underbody.mp4
+      pix_fmt: yuv420p
+      r_frame_rate: 600/1
+      sha256: 5368c94a26659c529106724427fc6c3e60fe6788d56699da14c93bc4222e7839
+      source_id: kpp_iss_v2_underbody
+      source_path: data/videos/kpp/kpp_legacy_iss_v2/avi/iss_v2_underbody.avi
+      stream_id: 5
+      width: 1700
+    timestamp_contract:
+      accuracy_ground_truth: false
+      clock_domains:
+        frame_clock:
+          epoch: null
+          present_only_when_observed: true
+          source: tag_4_frame_time_and_magnet_time_integers
+          unit: null
+        header_clock:
+          resolution: millisecond
+          source: record_header_8xu16_calendar_fields
+          timezone: null
+      clock_domains_equated: false
+      demuxed_or_decoded_frame_index_alignment: not_claimed
+      derived_codec_frame_index_alignment: not_claimed
+      event_semantics_validated: false
+      frame_clock_epoch_validated: false
+      frame_clock_unit_validated: false
+      metadata_scope: underbody_source_avi_only
+      schema_version: 1
+      source_timestamps_preserved: false
+      timestamps_interpolated: false
+      timezone_validated: false
+      underbody_avi_physical_movi_packet_index_alignment: validated_exact_physical_packet_sequence
+      video_timeline_authority: receipt_bound_pinned_ffprobe_validation
+      video_timeline_policy: cfr_600_from_source_pts
+    transcode:
+      recipes:
+      - bitstream_filter: hevc_metadata=video_full_range_flag=0
+        codec_variant: h265
+        color_range: tv
+        container: mp4
+        crf: 30
+        encoder: libx265
+        encoder_time_base: 1/600
+        expected_frame_count: 35646
+        ffmpeg_filter: scale=w=1700:h=236:in_range=auto:out_range=tv,format=pix_fmts=yuv420p,fps=fps=600:start_time=0:round=near:eof_action=round
+        fps_mode: cfr
+        output_frame_rate: 600/1
+        pix_fmt: yuv420p
+        preset: ultrafast
+        reinit_filter: 0
+        role: underbody
+        video_track_timescale: 600
+      - bitstream_filter: hevc_metadata=video_full_range_flag=0
+        codec_variant: h265
+        color_range: tv
+        container: mp4
+        crf: 30
+        encoder: libx265
+        encoder_time_base: 1/600
+        expected_frame_count: 33120
+        ffmpeg_filter: scale=w=1920:h=1080:in_range=auto:out_range=tv,format=pix_fmts=yuv420p,fps=fps=600:start_time=0:round=near:eof_action=round
+        fps_mode: cfr
+        output_frame_rate: 600/1
+        pix_fmt: yuv420p
+        preset: ultrafast
+        reinit_filter: 0
+        role: front_gate
+        video_track_timescale: 600
+      source_paths:
+      - data/videos/kpp/kpp_legacy_iss_v2/avi/iss_v2_underbody.avi
+      - data/videos/kpp/kpp_legacy_iss_v2/avi/iss_v2_front_gate.avi
+    unique_recorded_sources: 2
+    workload_scope: replicated_logical_streams_from_two_recordings
+    preparation:
+      mode: check_only_materialized_v1
+      materialization_receipt:
+        path: data/videos/kpp/kpp_legacy_iss_v2/kpp_iss_v2_materialization_receipt.json
+        size_bytes: 28131
+        sha256: dd0d2aa38da1281a750806858b555b994a9dcf3c9bcd35e8379dbc9d339f2b33
+        materialization_receipt_sha256: 56e09fd82ab83d4f3e0a711d93658a1cfc69f3bee9fd381df41713ac5b42bda4
   mot17_uadetrac_public:
     kind: public_clips
     description: Legacy normalized MOT17/UA-DETRAC clips retained for manual compatibility,

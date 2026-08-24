@@ -44,6 +44,7 @@ from checkpoint_gstreamer_runtime import (
     build_runtime_cohort_audit,
     build_gstreamer_source_specs,
     build_gstreamer_worker_specs,
+    build_publication_pair_plans,
     load_analytics_model_bindings,
     merge_runtime_fanout_intervals,
     merge_runtime_fanout_work_counters,
@@ -122,6 +123,40 @@ def admission_message(
 
 
 class CheckpointRuntimeTests(unittest.TestCase):
+    def test_full_publication_pair_plan_binds_h264_and_h265_exactly(self) -> None:
+        config = load_config(ROOT / "configs" / "experiments.yaml")
+        datasets = load_config(ROOT / "configs" / "datasets.yaml")["datasets"]
+        expected = {
+            "h264": ("kpp_real_h264", "nvh264dec,nvv4l2decoder"),
+            "h265": ("kpp_real_h265", "nvh265dec,nvv4l2decoder"),
+        }
+        for codec, (dataset_id, factories) in expected.items():
+            with self.subTest(codec=codec):
+                pair = build_publication_pair_plans(
+                    config=config,
+                    datasets=datasets,
+                    system="gstreamer_custom",
+                    codec=codec,
+                )
+                self.assertEqual(set(pair), {"baseline", "shared"})
+                for plan in pair.values():
+                    self.assertEqual(plan["dataset"], dataset_id)
+                    self.assertEqual(plan["decoder_placement"]["codec"], codec)
+                    self.assertEqual(
+                        ",".join(plan["decoder_placement"]["allowed_factories"]),
+                        factories,
+                    )
+                    worker_codecs = {
+                        str(owner["source_codec"])
+                        for stream in plan["streams"]
+                        for owner in (
+                            stream["workers"]
+                            if plan["topology_kind"] == INDEPENDENT_PROCESSES
+                            else [stream["graph_process"]]
+                        )
+                    }
+                    self.assertEqual(worker_codecs, {codec})
+
     def test_native_subprocess_environment_does_not_leak_python_import_paths(self) -> None:
         with mock.patch.dict(
             os.environ,
@@ -334,6 +369,116 @@ class CheckpointRuntimeTests(unittest.TestCase):
                 for spec in specs
             )
         )
+
+    def test_native_policy_worker_specs_bind_exact_policy_and_deadline(self) -> None:
+        config = load_config(ROOT / "configs" / "experiments.yaml")
+        datasets = load_config(ROOT / "configs" / "datasets.yaml")["datasets"]
+        plan = build_primary_pair_plans(
+            config=config,
+            datasets=datasets,
+            system="gstreamer_custom",
+        )["shared"]
+        common = {
+            "plan": plan,
+            "binary": Path("/tmp/vast_native_gst_probe"),
+            "output_root": Path("/tmp/vast-checkpoint-engineering"),
+            "project_root": ROOT,
+            "run_id": "native-policy-run",
+            "duration_s": 5,
+            "detect_bin": "vastanalytics branch={branch}",
+            "analytics_terminal_mode": NATIVE_TERMINAL_ANALYTICS_MODE,
+        }
+        preprocessing_sha256 = hashlib.sha256(
+            b"frozen-gstreamer-preprocessing-contract"
+        ).hexdigest()
+
+        specs = build_gstreamer_worker_specs(
+            native_policy="cpu_only",
+            native_policy_deadline_ms=100.0,
+            analytics_execution_socket="/tmp/vast-analytics-execution.sock",
+            analytics_preprocessing_contract_sha256=preprocessing_sha256,
+            **common,
+        )
+        self.assertTrue(specs)
+        for spec in specs:
+            command = list(spec.command)
+            self.assertEqual(command[command.index("--policy") + 1], "cpu_only")
+            self.assertEqual(command[command.index("--deadline-ms") + 1], "100.0")
+            self.assertEqual(spec.environment["SCHEDULER_POLICY"], "cpu_only")
+            self.assertEqual(spec.environment["DEADLINE_MS"], "100.0")
+            self.assertEqual(
+                spec.environment["VAST_CHECKPOINT_ANALYTICS_EXECUTION_SOCKET"],
+                "/tmp/vast-analytics-execution.sock",
+            )
+            for branch in BRANCHES:
+                self.assertEqual(
+                    spec.environment[
+                        f"VAST_CHECKPOINT_ANALYTICS_PREPROCESSING_SHA256_{branch}"
+                    ],
+                    preprocessing_sha256,
+                )
+
+        with self.assertRaisesRegex(ContractError, "analytics execution socket"):
+            build_gstreamer_worker_specs(
+                native_policy="cpu_only",
+                native_policy_deadline_ms=100.0,
+                analytics_preprocessing_contract_sha256=preprocessing_sha256,
+                **common,
+            )
+        with self.assertRaisesRegex(ContractError, "absolute bounded POSIX"):
+            build_gstreamer_worker_specs(
+                native_policy="cpu_only",
+                native_policy_deadline_ms=100.0,
+                analytics_execution_socket="relative.sock",
+                analytics_preprocessing_contract_sha256=preprocessing_sha256,
+                **common,
+            )
+        with self.assertRaisesRegex(ContractError, "must be canonical"):
+            build_gstreamer_worker_specs(
+                native_policy="cpu_only",
+                native_policy_deadline_ms=100.0,
+                analytics_execution_socket="/tmp/../tmp/vast-analytics-execution.sock",
+                analytics_preprocessing_contract_sha256=preprocessing_sha256,
+                **common,
+            )
+        with self.assertRaisesRegex(ContractError, "preprocessing contract SHA-256"):
+            build_gstreamer_worker_specs(
+                native_policy="cpu_only",
+                native_policy_deadline_ms=100.0,
+                analytics_execution_socket="/tmp/vast-analytics-execution.sock",
+                **common,
+            )
+        with self.assertRaisesRegex(ContractError, "lowercase SHA-256"):
+            build_gstreamer_worker_specs(
+                native_policy="cpu_only",
+                native_policy_deadline_ms=100.0,
+                analytics_execution_socket="/tmp/vast-analytics-execution.sock",
+                analytics_preprocessing_contract_sha256="A" * 64,
+                **common,
+            )
+
+        for policy in (
+            "gpu_only",
+            "static_hybrid",
+            "heft",
+            "deadline_aware_heft",
+            "queue_aware_edf",
+            "adaptive_weights",
+        ):
+            with self.subTest(policy=policy):
+                with self.assertRaisesRegex(ContractError, "currently supports only exact cpu_only"):
+                    build_gstreamer_worker_specs(
+                        native_policy=policy,
+                        native_policy_deadline_ms=100.0,
+                        **common,
+                    )
+
+        with self.assertRaisesRegex(ContractError, "currently supports only exact cpu_only"):
+            build_gstreamer_worker_specs(
+                native_policy="cpu_only",
+                native_policy_deadline_ms=None,
+                **common,
+            )
 
     def test_reference_analytics_terminal_requires_verified_branch_model_manifest(self) -> None:
         config = load_config(ROOT / "configs" / "experiments.yaml")
@@ -646,6 +791,10 @@ class CheckpointRuntimeTests(unittest.TestCase):
         self.assertIn('from checkpoint_publication_runtime import publish_checkpoint_runtime', launcher_body)
         self.assertIn('--execute-publication-runtime', launcher_body)
         self.assertIn('publication_acceptance = publish_checkpoint_runtime(', launcher_body)
+        self.assertIn(
+            'defer_full_resource_acceptance=full_resource_requested',
+            launcher_body,
+        )
         self.assertIn('checkpoint_publication_acceptance.json', publication_body)
         self.assertIn('require_reset_evidence=True', publication_body)
         self.assertIn('"runtime_loaded_configuration"', body)
@@ -1151,6 +1300,48 @@ class CheckpointRuntimeTests(unittest.TestCase):
             completed = subprocess.run([str(binary)], text=True, capture_output=True, check=False)
             self.assertEqual(completed.returncode, 0, completed.stderr)
 
+    def test_cpp_gstreamer_frame_mapping_uses_negotiated_video_info(self) -> None:
+        compiler = shutil.which("c++") or shutil.which("g++") or shutil.which("clang++")
+        pkg_config = shutil.which("pkg-config")
+        if compiler is None or pkg_config is None:
+            self.skipTest("C++/pkg-config toolchain is not available")
+        flags = subprocess.run(
+            [
+                pkg_config,
+                "--cflags",
+                "--libs",
+                "gstreamer-1.0",
+                "gstreamer-video-1.0",
+            ],
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        if flags.returncode != 0:
+            self.skipTest("GStreamer video development packages are not available")
+        with tempfile.TemporaryDirectory() as tmp:
+            binary = Path(tmp) / "checkpoint-gstreamer-analytics-frame-test"
+            compiled = subprocess.run(
+                [
+                    compiler,
+                    "-std=c++17",
+                    "-I",
+                    str(ROOT / "deploy" / "native_gst_probe"),
+                    str(ROOT / "tests" / "cpp" / "checkpoint_gstreamer_analytics_frame_test.cpp"),
+                    *shlex.split(flags.stdout),
+                    "-o",
+                    str(binary),
+                ],
+                text=True,
+                capture_output=True,
+                check=False,
+            )
+            self.assertEqual(compiled.returncode, 0, compiled.stderr)
+            completed = subprocess.run(
+                [str(binary)], text=True, capture_output=True, check=False, timeout=10
+            )
+            self.assertEqual(completed.returncode, 0, completed.stderr)
+
     def test_gstreamer_analytics_terminal_and_queue_emit_native_outcomes(self) -> None:
         compiler = shutil.which("c++") or shutil.which("g++") or shutil.which("clang++")
         cmake = shutil.which("cmake")
@@ -1367,6 +1558,50 @@ class CheckpointRuntimeTests(unittest.TestCase):
         self.assertTrue(audit["baseline_branch_input_key_sets_identical"])
         self.assertFalse(audit["external_ingress_schedule_proven"])
         self.assertFalse(audit["accepted_ingress_ledger_written"])
+
+    def test_worker_policy_sock_seqpacket_fd_is_inherited_and_served(self) -> None:
+        observed: list[tuple[str, dict[str, object], int]] = []
+
+        def serve(worker_id: str, endpoint: socket.socket) -> None:
+            packet, _ancillary, flags, _address = endpoint.recvmsg(4096)
+            observed.append((worker_id, json.loads(packet.decode("utf-8")), flags))
+            endpoint.sendall(b'{"message_type":"fixture_ack","schema_version":1}')
+
+        spec = WorkerLaunchSpec(
+            worker_id="stream-0-shared-policy",
+            stream_id=0,
+            branch_id=None,
+            command=(
+                sys.executable,
+                str(FIXTURE),
+                "--mode",
+                "shared",
+                "--branches",
+                ",".join(BRANCHES),
+            ),
+            environment={"VAST_TEST_POLICY_PING": "1"},
+        )
+        result = run_worker_processes(
+            run_id="run-policy-fd",
+            topology_kind=SHARED_VIDEO_DAG,
+            branches=BRANCHES,
+            specs=[spec],
+            timeout_s=3.0,
+            policy_socket_handler=serve,
+        )
+        self.assertEqual(result.unresolved_frames, ())
+        self.assertEqual(len(observed), 1)
+        worker_id, request, flags = observed[0]
+        self.assertEqual(worker_id, spec.worker_id)
+        self.assertEqual(flags & socket.MSG_TRUNC, 0)
+        self.assertEqual(
+            request,
+            {
+                "schema_version": 1,
+                "message_type": "fixture_ping",
+                "worker_id": spec.worker_id,
+            },
+        )
 
     def test_decoder_placement_status_closes_during_warmup_before_measurement(self) -> None:
         specs = [

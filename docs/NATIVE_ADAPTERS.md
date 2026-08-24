@@ -378,8 +378,8 @@ the native inference or trace propagation contract.
 
 ## Resource interval extension
 
-`scripts/resource_interval_contract.py` specifies a version-1, non-publication
-extension for native transfer, NVDEC-busy, and fanout durations. An adapter
+`scripts/resource_interval_contract.py` specifies a version-2, non-publication
+extension for native transfer, NVDEC submit-to-output, and fanout intervals. An adapter
 that eventually emits `resource_intervals.csv` must preserve the exact
 run/trace/stream/frame/input key, stage, branch, and execution identity from
 accepted ingress, topology, and frame-stage sidecars. Transfer rows use native
@@ -391,12 +391,20 @@ payload bytes, an explicit device, `counter_scope=per_trace_interval`, and
 `telemetry_source=native`.
 
 This is an emitter specification and fail-closed validator, not accepted
-telemetry. No current adapter emits the sidecar. The contract is deliberately
-outside measurement passport v4 and publication evidence bundle v1, and every
-validator summary keeps `publication_bundle_bound=false` and
-`evidence_accepted=false`. Full-resource publication would require native
-emitters, accepted sidecars for both frozen arms, and a separately
-preregistered `primary_architecture_full_resource_raw_evidence_v2` scope.
+telemetry. The checkpoint native source writes runtime-only decoder
+submit-to-output intervals around every exact hardware-decode execution in both
+topologies. The shared source additionally writes runtime-only fanout intervals,
+and the coordinator requires exact topology-bound coverage before merging
+`resource_intervals.runtime.csv`; an independent-process baseline fragment must
+contain no fanout. These paths have not run on the target stand and no current
+adapter emits the accepted `resource_intervals.csv` sidecar. A native CUDA-event
+transfer emitter is still missing, and submit-to-output/fanout elapsed spans are
+not true NVDEC-busy or fanout-work counters. The contract remains outside
+measurement passport v4 and publication evidence bundle v1, and every validator
+summary keeps `publication_bundle_bound=false` and `evidence_accepted=false`.
+Full-resource publication would require the missing native measurements,
+accepted sidecars for both frozen arms, and a separately preregistered
+`primary_architecture_full_resource_raw_evidence_v2` scope.
 
 `--run-kind single-server-distributed` still uses SSH role launches, but all
 roles target one server. The executor disables project sync and records

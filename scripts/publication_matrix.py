@@ -5,14 +5,26 @@ import hashlib
 import json
 import random
 import re
+from collections import Counter
 from typing import Any
 
-from benchmark_contract import ContractError
+from backend_publication_dispatch import (
+    BackendPublicationDispatchError,
+    BackendPublicationDispatchResolver,
+)
+from backend_runtime_grant import assess_pre_run_backend_runtime_grant
+from benchmark_contract import ContractError, assess_pre_run_resource_capability_grant
+from publication_policy_contract import (
+    POLICIES as PUBLICATION_POLICIES,
+    assess_capability_manifest,
+    policy_contract_identity,
+)
+from model_parity_grant import assess_pre_run_model_parity_grant
 
 
 FULL_RESOURCE_PUBLICATION_SCOPE = "primary_architecture_full_resource_raw_evidence_v2"
-FULL_MATRIX_SCHEMA_VERSION = 1
-FULL_MATRIX_IDENTITY_SCHEMA_VERSION = 1
+FULL_MATRIX_SCHEMA_VERSION = 2
+FULL_MATRIX_IDENTITY_SCHEMA_VERSION = 2
 PUBLISHABLE_SYSTEMS = (
     "deepstream",
     "savant",
@@ -92,8 +104,10 @@ def build_full_publication_matrix(config: dict[str, Any]) -> dict[str, Any]:
     measurement_s = int(protocol.get("measurement_s", 0) or 0)
     seed = int(benchmark.get("default_seed", 0) or 0)
 
-    if len(policies) != 7 or len(set(policies)) != 7:
-        raise ContractError("full publication matrix requires exactly seven unique policies")
+    if policies != PUBLICATION_POLICIES:
+        raise ContractError(
+            "full publication matrix scheduler_policies must match the frozen policy contract"
+        )
     if len(deadlines) != 5 or len(set(deadlines)) != 5:
         raise ContractError("full publication matrix requires exactly five unique deadlines")
     if repeats != 10:
@@ -168,6 +182,7 @@ def build_full_publication_matrix(config: dict[str, Any]) -> dict[str, Any]:
         "publication_scope": FULL_RESOURCE_PUBLICATION_SCOPE,
         "selection_basis": "frozen_config_before_full_matrix_results",
         "order_strategy": "deterministic_seeded_pair_shuffle_hash_balanced_arm_order_v1",
+        "policy_contract_identity": policy_contract_identity(),
         "seed": seed,
         "systems": list(PUBLISHABLE_SYSTEMS),
         "scenarios": list(CHECKPOINT_SCENARIOS),
@@ -183,11 +198,23 @@ def build_full_publication_matrix(config: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def validate_full_publication_readiness(config: dict[str, Any]) -> dict[str, Any]:
-    build_full_publication_matrix(config)
+def validate_full_publication_readiness(
+    config: dict[str, Any],
+    *,
+    resource_capability_grant: dict[str, Any] | None = None,
+    backend_runtime_grant: dict[str, Any] | None = None,
+    model_parity_grant: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    matrix = build_full_publication_matrix(config)
     blockers: list[str] = []
+    benchmark = config.get("benchmark") or {}
     scenarios = config.get("scenarios") or {}
     systems = config.get("systems") or {}
+
+    policy_capabilities = assess_capability_manifest(
+        benchmark.get("publication_policy_capability_manifest")
+    )
+    blockers.extend(str(value) for value in policy_capabilities["blockers"])
 
     for scenario_name in CHECKPOINT_SCENARIOS:
         scenario = scenarios.get(scenario_name)
@@ -207,7 +234,7 @@ def validate_full_publication_readiness(config: dict[str, Any]) -> dict[str, Any
         if status != "supported":
             blockers.append(f"system:{system_name}:{status}")
 
-    extension = (config.get("benchmark") or {}).get("resource_interval_extension")
+    extension = benchmark.get("resource_interval_extension")
     if not isinstance(extension, dict):
         raise ContractError("benchmark.resource_interval_extension must be declared")
     if int(extension.get("contract_version", 0) or 0) != 2:
@@ -217,18 +244,81 @@ def validate_full_publication_readiness(config: dict[str, Any]) -> dict[str, Any
     if str(extension.get("counter_scope", "")) != "per_trace_interval":
         raise ContractError("resource interval extension counter_scope must be per_trace_interval")
 
-    if str(extension.get("status", "")) != "accepted_full_resource_publication_v2":
-        blockers.append("full_resource_extension_not_accepted")
-    if str(extension.get("current_publication_bundle_scope", "")) != FULL_RESOURCE_PUBLICATION_SCOPE:
-        blockers.append("full_resource_publication_scope_not_active")
-    if not bool(extension.get("publication_bundle_bound")):
-        blockers.append("full_resource_publication_bundle_not_bound")
-    if not bool(extension.get("evidence_accepted")):
-        blockers.append("full_resource_evidence_not_accepted")
-    if str(extension.get("true_nvdec_busy_status", "")) != "device_level_nvml_sampled":
-        blockers.append("nvdec_busy_sampling_not_accepted")
-    if str(extension.get("fanout_resource_work_status", "")) != "native_cpu_thread_time_sampled":
-        blockers.append("fanout_resource_work_not_accepted")
+    resource_capability = assess_pre_run_resource_capability_grant(
+        resource_capability_grant
+    )
+    blockers.extend(str(value) for value in resource_capability["blockers"])
+    parity_capability = assess_pre_run_model_parity_grant(model_parity_grant)
+    blockers.extend(
+        f"pre_run_model_parity_grant:{value}"
+        for value in parity_capability["blockers"]
+    )
+    backend_capability = assess_pre_run_backend_runtime_grant(
+        backend_runtime_grant
+    )
+    blockers.extend(
+        f"pre_run_backend_runtime_grant:{value}"
+        for value in backend_capability["blockers"]
+    )
+    backend_resolver: BackendPublicationDispatchResolver | None = None
+    try:
+        backend_resolver = BackendPublicationDispatchResolver(
+            backend_runtime_grant
+        )
+    except BackendPublicationDispatchError:
+        pass
+    launcher_output_receipt_protocol_ready = False
+
+    blocked_arms = 0
+    blocked_by_system: Counter[str] = Counter()
+    runtime_blocker_counts: Counter[str] = Counter()
+    runtime_samples: list[dict[str, Any]] = []
+    for pair in matrix["pairs"]:
+        for arm in pair["arms"]:
+            try:
+                if not launcher_output_receipt_protocol_ready:
+                    raise BackendPublicationDispatchError(
+                        "backend_launcher_output_receipt_protocol_not_implemented"
+                    )
+                if backend_resolver is None:
+                    raise BackendPublicationDispatchError(
+                        "pre-run backend runtime grant is unavailable or invalid"
+                    )
+                backend_resolver.resolve(
+                    system=str(arm["system"]),
+                    scenario=str(arm["scenario"]),
+                    codec=str(arm["codec"]),
+                    policy=str(arm["policy"]),
+                    deadline_ms=float(arm["deadline_ms"]),
+                )
+                cell_blockers = []
+            except BackendPublicationDispatchError as error:
+                cell_blockers = [str(error)]
+            if not cell_blockers:
+                continue
+            blocked_arms += 1
+            blocked_by_system[str(arm["system"])] += 1
+            runtime_blocker_counts.update(str(value) for value in cell_blockers)
+            if len(runtime_samples) < 12:
+                runtime_samples.append(
+                    {
+                        "arm_id": str(arm["arm_id"]),
+                        "system": str(arm["system"]),
+                        "scenario": str(arm["scenario"]),
+                        "codec": str(arm["codec"]),
+                        "policy": str(arm["policy"]),
+                        "deadline_ms": float(arm["deadline_ms"]),
+                        "blockers": [str(value) for value in cell_blockers],
+                    }
+                )
+    if blocked_arms:
+        blockers.append(
+            f"checkpoint_runtime_cells_blocked:{blocked_arms}/{matrix['expected_arms']}"
+        )
+        blockers.extend(
+            f"checkpoint_backend:{system}:blocked_arms:{count}"
+            for system, count in sorted(blocked_by_system.items())
+        )
 
     blockers = list(dict.fromkeys(blockers))
     return {
@@ -238,4 +328,18 @@ def validate_full_publication_readiness(config: dict[str, Any]) -> dict[str, Any
         "status": "ready" if not blockers else "blocked",
         "publication_scope": FULL_RESOURCE_PUBLICATION_SCOPE,
         "blockers": blockers,
+        "pre_run_resource_capability_assessment": resource_capability,
+        "pre_run_model_parity_grant_assessment": parity_capability,
+        "pre_run_backend_runtime_grant_assessment": backend_capability,
+        "backend_launcher_output_receipt_protocol_ready": (
+            launcher_output_receipt_protocol_ready
+        ),
+        "runtime_cell_assessment": {
+            "assessed_arms": int(matrix["expected_arms"]),
+            "blocked_arms": blocked_arms,
+            "ready_arms": int(matrix["expected_arms"]) - blocked_arms,
+            "blocked_by_system": dict(sorted(blocked_by_system.items())),
+            "blocker_counts": dict(sorted(runtime_blocker_counts.items())),
+            "samples": runtime_samples,
+        },
     }

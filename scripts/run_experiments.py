@@ -10,15 +10,39 @@ import os
 import shlex
 import subprocess
 import sys
+import tempfile
 import time
+from contextlib import contextmanager
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Iterator
 
 import pandas as pd
 import psutil
 import yaml
+from backend_runtime_grant import (
+    BackendRuntimeGrantError,
+    backend_runtime_grant_from_identity_artifacts,
+    validate_pre_run_backend_runtime_grant,
+)
+from model_parity_grant import (
+    ModelParityGrantError,
+    model_parity_grant_from_identity_artifacts,
+    validate_pre_run_model_parity_grant,
+)
+from backend_publication_dispatch import (
+    BackendPublicationDispatchError,
+    BackendPublicationDispatchResolver,
+    build_backend_publication_command,
+)
+from backend_publication_output_receipt import (
+    ARM_CONTRACT_FILENAME,
+    BackendPublicationOutputReceiptError,
+    launcher_output_protocol,
+    validate_backend_publication_output_receipt,
+    write_immutable_backend_publication_arm_contract,
+)
 from benchmark_contract import (
     ContractError,
     FULL_RESOURCE_PUBLICATION_SCOPE,
@@ -54,6 +78,16 @@ from benchmark_contract import (
     write_json,
 )
 from benchmark_adapters import select_scenarios, validate_benchmark_adapter
+from checkpoint_publication_runtime import (
+    commit_checkpoint_publication_acceptance,
+    prepare_checkpoint_publication_acceptance,
+)
+from checkpoint_acceptance_metadata_binding import (
+    AcceptanceMetadataBindingError,
+    validate_checkpoint_acceptance_metadata_binding,
+    validate_full_publication_execution_binding,
+)
+from publication_acceptance_evidence import accepted_arm_evidence_files
 from collect_metrics import HardwareResourceCollector, MetricsCollector
 from distributed_executor import (
     build_distributed_plan,
@@ -470,6 +504,24 @@ def validate_checkpoint_workload(dataset: dict[str, Any], scenario: dict[str, An
         raise ContractError(f"dataset '{dataset.get('name', '')}' unique_recorded_sources metadata mismatch")
 
 
+def resolve_checkpoint_codec(
+    dataset: dict[str, Any], scenario: dict[str, Any]
+) -> str | None:
+    if scenario.get("name") not in {
+        "checkpoint_independent_processes_baseline",
+        "checkpoint_video_dag_shared",
+    }:
+        return None
+    codec = str(dataset.get("codec_variant", "")).strip().lower()
+    if codec == "hevc":
+        codec = "h265"
+    if codec not in {"h264", "h265"}:
+        raise ContractError(
+            "checkpoint dataset codec_variant must be explicitly h264 or h265"
+        )
+    return codec
+
+
 def scenario_env_prefix(
     scenario: dict[str, Any],
     *,
@@ -681,6 +733,7 @@ def make_hardware_resource_collector(
     run_dir: Path,
     run_id: str,
     interval_s: float,
+    resource_capability_grant: dict[str, Any] | None = None,
 ) -> HardwareResourceCollector | None:
     if mode != "benchmark" or not bool(scenario.get("topology")):
         return None
@@ -691,6 +744,7 @@ def make_hardware_resource_collector(
             "scenario": scenario_name,
             "policy": policy,
         },
+        resource_capability_grant=resource_capability_grant,
     )
     if scope != FULL_RESOURCE_PUBLICATION_SCOPE:
         return None
@@ -699,6 +753,187 @@ def make_hardware_resource_collector(
         run_id=run_id,
         interval_s=interval_s,
     )
+
+
+def _authoritative_full_resource_summary(
+    acceptance: Any,
+) -> dict[str, Any]:
+    if (
+        type(acceptance) is not dict
+        or acceptance.get("artifact_kind")
+        != "checkpoint_publication_runtime_acceptance"
+        or acceptance.get("status") != "accepted_native_checkpoint_arm"
+        or type(acceptance.get("summary")) is not dict
+        or acceptance.get("acceptance_finalization")
+        != {
+            "hardware_collector_stopped": True,
+            "validation": "full_resource_evidence_v2_passed",
+        }
+    ):
+        raise ContractError("checkpoint full-resource finalizer returned invalid acceptance")
+    resource = acceptance.get("full_resource_summary")
+    if (
+        type(resource) is not dict
+        or type(resource.get("resource_contract_version")) is not int
+        or resource["resource_contract_version"] != 2
+        or resource.get("evidence_accepted") is not True
+        or resource.get("publication_bundle_bound") is not True
+        or resource.get("full_resource_coverage_complete") is not True
+    ):
+        raise ContractError("checkpoint finalized full-resource summary is not accepted")
+    integer_fields = (
+        "nvdec_busy_equivalent_ns",
+        "fanout_thread_cpu_time_ns",
+        "fanout_work_units",
+    )
+    if any(
+        type(resource.get(field)) is not int or resource[field] < 0
+        for field in integer_fields
+    ):
+        raise ContractError("checkpoint finalized full-resource counters are invalid")
+    if (
+        resource.get("nvdec_counter_scope") != "device_sample"
+        or resource.get("fanout_counter_scope") != "per_trace_resource_work"
+    ):
+        raise ContractError("checkpoint finalized full-resource counter scope drifted")
+    return {
+        "resource_contract_version": resource["resource_contract_version"],
+        "full_resource_evidence_accepted": resource["evidence_accepted"],
+        "full_resource_coverage_complete": resource[
+            "full_resource_coverage_complete"
+        ],
+        "nvdec_busy_equivalent_ns": resource["nvdec_busy_equivalent_ns"],
+        "nvdec_counter_scope": resource["nvdec_counter_scope"],
+        "fanout_thread_cpu_time_ns": resource["fanout_thread_cpu_time_ns"],
+        "fanout_work_units": resource["fanout_work_units"],
+        "fanout_counter_scope": resource["fanout_counter_scope"],
+    }
+
+
+def write_durable_json(path: Path, payload: dict[str, Any]) -> None:
+    """Atomically replace JSON after flushing its bytes before acceptance commit."""
+
+    serialized = json.dumps(payload, indent=2, sort_keys=True).encode("utf-8")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    descriptor, temporary_name = tempfile.mkstemp(
+        prefix=f".{path.name}.", suffix=".tmp", dir=path.parent
+    )
+    temporary = Path(temporary_name)
+    try:
+        with os.fdopen(descriptor, "wb") as output:
+            output.write(serialized)
+            output.flush()
+            os.fsync(output.fileno())
+        os.replace(temporary, path)
+        with path.open("rb+") as persisted:
+            os.fsync(persisted.fileno())
+        if os.name != "nt":
+            directory_descriptor: int | None = None
+            try:
+                directory_descriptor = os.open(
+                    path.parent,
+                    os.O_RDONLY | getattr(os, "O_DIRECTORY", 0),
+                )
+                os.fsync(directory_descriptor)
+            except OSError:
+                # Some mounted filesystems do not expose directory fsync. The
+                # file itself is still flushed before and after atomic replace.
+                pass
+            finally:
+                if directory_descriptor is not None:
+                    os.close(directory_descriptor)
+    finally:
+        temporary.unlink(missing_ok=True)
+
+
+@contextmanager
+def checkpoint_full_resource_acceptance_transaction(
+    *,
+    full_resource_required: bool,
+    mode: str,
+    scenario: dict[str, Any],
+    checkpoint_codec: str | None,
+    hardware_collector: HardwareResourceCollector | None,
+    hardware_collector_started: bool,
+    hardware_collector_closed: bool,
+    output_dir: Path,
+    expected_run_id: str,
+    expected_system: str,
+    expected_policy: str,
+    expected_deadline_ms: float,
+    run_metadata_path: Path,
+    expected_execution_binding: dict[str, Any],
+) -> Iterator[dict[str, Any] | None]:
+    """Prepare one arm, then commit acceptance only after the body succeeds."""
+
+    if not full_resource_required:
+        yield None
+        return
+    scenario_name = str(scenario.get("name", ""))
+    topology = scenario.get("topology") or {}
+    if (
+        mode != "benchmark"
+        or scenario_name
+        not in {
+            "checkpoint_independent_processes_baseline",
+            "checkpoint_video_dag_shared",
+        }
+        or not bool(topology)
+        or checkpoint_codec is None
+    ):
+        raise ContractError(
+            "full-resource acceptance requires an exact checkpoint benchmark topology"
+        )
+    if hardware_collector is None:
+        raise ContractError("full-resource acceptance requires a hardware collector")
+    if not hardware_collector_started:
+        raise ContractError(
+            "hardware collector must have started before full-resource acceptance"
+        )
+    if not hardware_collector_closed:
+        raise ContractError(
+            "hardware collector must be closed and failure-checked before acceptance"
+        )
+    if hardware_collector.is_alive():
+        raise ContractError("hardware collector is still alive before acceptance")
+
+    acceptance_path = output_dir / "checkpoint_publication_acceptance.json"
+    if acceptance_path.exists():
+        raise ContractError("final checkpoint acceptance already exists")
+    acceptance = prepare_checkpoint_publication_acceptance(
+        output_dir=output_dir,
+        expected_run_id=expected_run_id,
+        expected_system=expected_system,
+        expected_scenario=scenario_name,
+        expected_codec=checkpoint_codec,
+        expected_policy=expected_policy,
+        expected_deadline_ms=float(expected_deadline_ms),
+        topology_kind=str(topology.get("kind", "")),
+        hardware_collector_stopped=True,
+    )
+    finalized_summary = _authoritative_full_resource_summary(acceptance)
+    yield finalized_summary
+    commit_checkpoint_publication_acceptance(
+        output_dir=output_dir,
+        acceptance=acceptance,
+        run_metadata_path=run_metadata_path,
+        expected_execution_binding=expected_execution_binding,
+    )
+
+
+_BENCHMARK_CHILD_SECRET_ENV = {
+    "VAST_SEAFILE_UPLOAD_LINK",
+    "VAST_SEAFILE_READ_LINK",
+}
+
+
+def benchmark_child_environment(*, run_seed: int, repeat_index: int) -> dict[str, str]:
+    child_env = os.environ.copy()
+    for name in _BENCHMARK_CHILD_SECRET_ENV:
+        child_env.pop(name, None)
+    child_env["EXPERIMENT_RUN_SEED"] = str(run_seed)
+    child_env["EXPERIMENT_REPEAT_INDEX"] = str(repeat_index)
+    return child_env
 
 
 def configured_system_names(config: dict[str, Any], requested: list[str], *, mode: str) -> list[str]:
@@ -885,6 +1120,10 @@ def load_resumable_result(
     run_seed: int | None = None,
     primary_architecture_pair: dict[str, Any] | None = None,
     primary_policy_pair: dict[str, Any] | None = None,
+    resource_capability_grant: dict[str, Any] | None = None,
+    backend_runtime_grant: dict[str, Any] | None = None,
+    model_parity_grant: dict[str, Any] | None = None,
+    expected_execution_binding: dict[str, Any] | None = None,
 ) -> dict[str, Any] | None:
     if not metadata_path.exists():
         return None
@@ -1062,9 +1301,28 @@ def load_resumable_result(
                 + ", ".join(dataset_mismatches)
             )
     if config is not None:
+        stored_contract = metadata.get("publication_run_contract")
+        stored_arm_authority = (
+            stored_contract.get("backend_publication_arm_contract_authority")
+            if type(stored_contract) is dict
+            else None
+        )
+        stored_receipt_authority = (
+            stored_contract.get("backend_publication_output_receipt_authority")
+            if type(stored_contract) is dict
+            else None
+        )
         expected_publication_contract = resolve_publication_run_contract(
             config,
             result,
+            resource_capability_grant=resource_capability_grant,
+            backend_runtime_grant=backend_runtime_grant,
+            model_parity_grant=model_parity_grant,
+            full_publication_execution_binding=expected_execution_binding,
+            backend_publication_arm_contract_authority=stored_arm_authority,
+            backend_publication_output_receipt_authority=(
+                stored_receipt_authority
+            ),
         )
         expected_publication_identity = publication_run_contract_identity(
             expected_publication_contract
@@ -1115,6 +1373,7 @@ def load_resumable_result(
         expected_evidence_scope = resolve_publication_evidence_bundle_scope(
             config,
             result,
+            resource_capability_grant=resource_capability_grant,
         )
         try:
             validate_publication_evidence_bundle(
@@ -1122,7 +1381,80 @@ def load_resumable_result(
                 metadata.get("publication_evidence_bundle"),
                 metadata.get("publication_evidence_bundle_identity"),
                 expected_scope=expected_evidence_scope,
+                expected_policy=str(result.get("policy", "")),
             )
+            if expected_evidence_scope == FULL_RESOURCE_PUBLICATION_SCOPE:
+                if resource_capability_grant is None:
+                    raise ContractError(
+                        "full-resource resume requires the pre-run resource capability grant"
+                    )
+                if backend_runtime_grant is None:
+                    raise ContractError(
+                        "full-resource resume requires the pre-run backend runtime grant"
+                    )
+                if model_parity_grant is None:
+                    raise ContractError(
+                        "full-resource resume requires the pre-run model-parity grant"
+                    )
+                if expected_execution_binding is None:
+                    raise ContractError(
+                        "full-resource resume requires the immutable execution binding"
+                    )
+                acceptance_path = metadata_path.parent / "checkpoint_publication_acceptance.json"
+                if acceptance_path.is_symlink() or not acceptance_path.is_file():
+                    raise ContractError("final full-resource checkpoint acceptance is missing")
+                try:
+                    acceptance = json.loads(acceptance_path.read_text(encoding="utf-8"))
+                except (OSError, UnicodeError, json.JSONDecodeError) as exc:
+                    raise ContractError(
+                        f"final full-resource checkpoint acceptance is invalid: {exc}"
+                    ) from exc
+                expected_acceptance = {
+                    "schema_version": 2,
+                    "artifact_kind": "checkpoint_publication_runtime_acceptance",
+                    "status": "accepted_native_checkpoint_arm",
+                    "system": result.get("system"),
+                    "scenario": result.get("scenario"),
+                    "policy": result.get("policy"),
+                }
+                if type(acceptance) is not dict or any(
+                    acceptance.get(field) != value
+                    for field, value in expected_acceptance.items()
+                ):
+                    raise ContractError("final full-resource checkpoint acceptance identity drift")
+                try:
+                    validate_checkpoint_acceptance_metadata_binding(
+                        acceptance,
+                        run_metadata_path=metadata_path,
+                        expected_execution_binding=expected_execution_binding,
+                    )
+                except AcceptanceMetadataBindingError as exc:
+                    raise ContractError(
+                        f"final full-resource checkpoint acceptance metadata binding drift: {exc}"
+                    ) from exc
+                evidence = acceptance.get("evidence_sha256")
+                expected_files = set(
+                    accepted_arm_evidence_files(policy, full_resource=True)
+                )
+                if type(evidence) is not dict or set(evidence) != expected_files:
+                    raise ContractError("final full-resource checkpoint acceptance evidence set drift")
+                for name, digest in evidence.items():
+                    evidence_path = metadata_path.parent / name
+                    if (
+                        type(digest) is not str
+                        or re.fullmatch(r"[0-9a-f]{64}", digest) is None
+                        or evidence_path.is_symlink()
+                        or not evidence_path.is_file()
+                        or sha256_file(evidence_path) != digest
+                    ):
+                        raise ContractError(
+                            f"final full-resource checkpoint acceptance evidence drift: {name}"
+                        )
+                if acceptance.get("acceptance_finalization") != {
+                    "hardware_collector_stopped": True,
+                    "validation": "full_resource_evidence_v2_passed",
+                }:
+                    raise ContractError("final full-resource checkpoint acceptance is not finalized")
         except ContractError as exc:
             raise ContractError(
                 f"resumable metadata publication evidence bundle drift at {metadata_path}: {exc}"
@@ -1186,6 +1518,101 @@ def failed_result_row(
     return result
 
 
+def build_backend_publication_arm_contract(
+    *,
+    dispatch_resolution: dict[str, Any],
+    execution_binding: dict[str, Any],
+    resource_capability_grant: dict[str, Any],
+    model_parity_grant: dict[str, Any],
+    dataset: dict[str, Any],
+    scenario: dict[str, Any],
+    run_id: str,
+    run_seed: int,
+    streams: int,
+    duration_s: int,
+    repeat_index: int,
+    base_seed: int,
+    output_dir: Path,
+) -> dict[str, Any]:
+    """Build the closed, self-hashed input consumed by a dedicated launcher."""
+
+    resource_grant_sha = resource_capability_grant.get("grant_sha256")
+    parity_grant_sha = model_parity_grant.get("grant_sha256")
+    parity_acceptance_sha = model_parity_grant.get(
+        "parity_acceptance_binding_sha256"
+    )
+    if (
+        type(resource_grant_sha) is not str
+        or len(resource_grant_sha) != 64
+        or any(character not in "0123456789abcdef" for character in resource_grant_sha)
+    ):
+        raise ContractError(
+            "backend publication dispatch requires an exact resource grant identity"
+        )
+    if (
+        type(parity_grant_sha) is not str
+        or len(parity_grant_sha) != 64
+        or any(character not in "0123456789abcdef" for character in parity_grant_sha)
+        or type(parity_acceptance_sha) is not str
+        or len(parity_acceptance_sha) != 64
+        or any(
+            character not in "0123456789abcdef"
+            for character in parity_acceptance_sha
+        )
+    ):
+        raise ContractError(
+            "backend publication dispatch requires an exact model-parity grant identity"
+        )
+    material = {
+        "schema_version": 2,
+        "artifact_kind": "vast_backend_publication_arm_dispatch_contract",
+        "full_publication_execution_binding": json.loads(
+            json.dumps(execution_binding, sort_keys=True)
+        ),
+        "resource_capability_grant_sha256": resource_grant_sha,
+        "model_parity_grant_sha256": parity_grant_sha,
+        "model_parity_acceptance_binding_sha256": parity_acceptance_sha,
+        "backend_runtime_grant_sha256": dispatch_resolution[
+            "backend_runtime_grant_sha256"
+        ],
+        "identity_artifact_binding_sha256": dispatch_resolution[
+            "identity_artifact_binding_sha256"
+        ],
+        "dispatch_resolution": json.loads(
+            json.dumps(dispatch_resolution, sort_keys=True)
+        ),
+        "runtime_inputs": {
+            "system": dispatch_resolution["system"],
+            "scenario": str(scenario["name"]),
+            "topology_kind": dispatch_resolution["topology_kind"],
+            "codec": dispatch_resolution["codec"],
+            "policy": dispatch_resolution["policy"],
+            "deadline_ms": dispatch_resolution["deadline_ms"],
+            "dataset": json.loads(json.dumps(dataset, sort_keys=True)),
+            "streams": int(streams),
+            "duration_s": int(duration_s),
+            "repeat_index": int(repeat_index),
+            "base_seed": int(base_seed),
+            "run_seed": int(run_seed),
+            "run_id": str(run_id),
+            "output_dir": str(Path(output_dir).resolve()),
+        },
+        "launcher_output_protocol": launcher_output_protocol(
+            dispatch_resolution["policy"]
+        ),
+    }
+    material["contract_sha256"] = hashlib.sha256(
+        json.dumps(
+            material,
+            sort_keys=True,
+            separators=(",", ":"),
+            ensure_ascii=True,
+            allow_nan=False,
+        ).encode("utf-8")
+    ).hexdigest()
+    return material
+
+
 def run_one(
     config: dict[str, Any],
     dataset: dict[str, Any],
@@ -1207,11 +1634,132 @@ def run_one(
     directory_policy: str | None = None,
     primary_architecture_pair: dict[str, Any] | None = None,
     primary_policy_pair: dict[str, Any] | None = None,
+    *,
+    resource_capability_grant: dict[str, Any] | None = None,
+    backend_runtime_grant: dict[str, Any] | None = None,
+    model_parity_grant: dict[str, Any] | None = None,
+    full_publication_execution_binding: dict[str, Any] | None = None,
+    full_publication_identity_artifacts: dict[str, Any] | None = None,
+    project_root: Path | None = None,
 ) -> dict[str, Any]:
+    if backend_runtime_grant is not None and project_root is None:
+        raise ContractError(
+            "backend publication dispatch requires an explicit caller project_root"
+        )
+    caller_project_root = (
+        PROJECT_ROOT if project_root is None else Path(project_root).resolve(strict=True)
+    )
+    if not caller_project_root.is_dir():
+        raise ContractError("caller project_root is not a directory")
     protocol = config["protocol"]
     scenario_key = scenario["name"]
     resolved_scenario_identity = scenario_contract_identity(scenario)
     system_config = config["systems"][system_key]
+    resolved_backend_runtime_grant: dict[str, Any] | None = None
+    resolved_model_parity_grant: dict[str, Any] | None = None
+    resolved_execution_binding: dict[str, Any] | None = None
+    if backend_runtime_grant is not None:
+        try:
+            resolved_backend_runtime_grant = (
+                validate_pre_run_backend_runtime_grant(backend_runtime_grant)
+            )
+        except BackendRuntimeGrantError as error:
+            raise ContractError(f"invalid pre-run backend runtime grant: {error}") from error
+    if model_parity_grant is not None:
+        try:
+            resolved_model_parity_grant = validate_pre_run_model_parity_grant(
+                model_parity_grant
+            )
+        except ModelParityGrantError as error:
+            raise ContractError(f"invalid pre-run model-parity grant: {error}") from error
+    if full_publication_execution_binding is not None:
+        try:
+            resolved_execution_binding = validate_full_publication_execution_binding(
+                full_publication_execution_binding
+            )
+        except AcceptanceMetadataBindingError as error:
+            raise ContractError(
+                f"invalid full-publication execution binding: {error}"
+            ) from error
+    backend_dispatch_resolution: dict[str, Any] | None = None
+    if resolved_backend_runtime_grant is not None:
+        if type(full_publication_identity_artifacts) is not dict:
+            raise ContractError(
+                "backend publication dispatch requires validated identity artifacts"
+            )
+        try:
+            identity_grant = backend_runtime_grant_from_identity_artifacts(
+                full_publication_identity_artifacts
+            )
+        except BackendRuntimeGrantError as error:
+            raise ContractError(
+                f"backend publication identity artifacts are invalid: {error}"
+            ) from error
+        if identity_grant != resolved_backend_runtime_grant:
+            raise ContractError(
+                "backend runtime grant differs from validated identity artifacts"
+            )
+        if resolved_model_parity_grant is None:
+            raise ContractError(
+                "backend publication dispatch requires a validated model-parity grant"
+            )
+        try:
+            identity_parity_grant = model_parity_grant_from_identity_artifacts(
+                full_publication_identity_artifacts
+            )
+        except ModelParityGrantError as error:
+            raise ContractError(
+                f"model-parity identity artifacts are invalid: {error}"
+            ) from error
+        if identity_parity_grant != resolved_model_parity_grant:
+            raise ContractError(
+                "model-parity grant differs from validated identity artifacts"
+            )
+        grant_identities = {
+            resource_capability_grant.get("identity_artifact_binding_sha256")
+            if type(resource_capability_grant) is dict else None,
+            resolved_backend_runtime_grant["identity_artifact_binding_sha256"],
+            resolved_model_parity_grant["identity_artifact_binding_sha256"],
+            full_publication_identity_artifacts.get("binding_sha256"),
+        }
+        if len(grant_identities) != 1 or None in grant_identities:
+            raise ContractError(
+                "resource/backend/model-parity grants differ from validated identity artifacts"
+            )
+        if (
+            resolved_backend_runtime_grant["upstream_identities"][
+                "model_parity_acceptance_binding_sha256"
+            ]
+            != resolved_model_parity_grant[
+                "parity_acceptance_binding_sha256"
+            ]
+        ):
+            raise ContractError(
+                "backend and model-parity grants bind different parity acceptances"
+            )
+        if resolved_execution_binding is None:
+            raise ContractError(
+                "backend publication dispatch requires an immutable execution binding"
+            )
+        checkpoint_codec_probe = resolve_checkpoint_codec(dataset, scenario)
+        if checkpoint_codec_probe is None:
+            raise ContractError(
+                "backend publication dispatch requires an exact checkpoint codec"
+            )
+        try:
+            backend_dispatch_resolution = BackendPublicationDispatchResolver(
+                resolved_backend_runtime_grant
+            ).resolve(
+                system=system_key,
+                scenario=str(scenario["name"]),
+                codec=checkpoint_codec_probe,
+                policy=policy,
+                deadline_ms=deadline_ms,
+            )
+        except BackendPublicationDispatchError as error:
+            raise ContractError(
+                f"backend publication dispatch is blocked: {error}"
+            ) from error
     if primary_architecture_pair is not None and primary_policy_pair is not None:
         raise ContractError(
             "primary architecture and policy pair metadata are mutually exclusive"
@@ -1228,6 +1776,7 @@ def run_one(
         scenario=scenario,
         distributed=execution_context.distributed_enabled,
         mode=mode,
+        backend_dispatch=backend_dispatch_resolution,
     )
     resolved_primary_architecture_pair: dict[str, Any] | None = None
     if primary_architecture_pair is not None:
@@ -1317,25 +1866,47 @@ def run_one(
         run_dir=scenario_dir,
         run_id=run_id,
         interval_s=metric_interval_s,
+        resource_capability_grant=resource_capability_grant,
     )
     full_resource_required = hardware_collector is not None
+    if full_resource_required and resolved_backend_runtime_grant is None:
+        raise ContractError(
+            "full-resource publication requires a validated pre-run backend runtime grant"
+        )
+    if full_resource_required and resolved_execution_binding is None:
+        raise ContractError(
+            "full-resource publication requires an immutable execution binding"
+        )
+    if backend_dispatch_resolution is not None and not full_resource_required:
+        raise ContractError(
+            "backend publication dispatch requires verified full-resource collection"
+        )
+    if full_resource_required and backend_dispatch_resolution is None:
+        raise ContractError(
+            "full-resource publication requires an exact backend dispatch resolution"
+        )
 
-    command_template = system_config["command"]
-    base_cmd = command_template.format(
-        scenario=scenario_key,
-        duration_s=duration_s,
-        streams=streams,
-        min_objects=min_objects,
-        max_objects=max_objects,
-        output_dir=scenario_dir,
-        deadline_ms=deadline_ms,
-    )
+    command_template: str | None = None
+    base_cmd: str | None = None
+    if backend_dispatch_resolution is None:
+        command_template = str(system_config["command"])
+        base_cmd = command_template.format(
+            scenario=scenario_key,
+            duration_s=duration_s,
+            streams=streams,
+            min_objects=min_objects,
+            max_objects=max_objects,
+            output_dir=scenario_dir,
+            deadline_ms=deadline_ms,
+        )
     video_layout_dir = str(Path(dataset["streams"][0]["absolute_path"]).parent)
     ql_heft_artifact = str(config.get("benchmark", {}).get("ql_heft_policy_artifact", ""))
     if ql_heft_artifact:
         ql_heft_path = Path(ql_heft_artifact)
         ql_heft_artifact = str(
-            ql_heft_path if ql_heft_path.is_absolute() else PROJECT_ROOT / ql_heft_path
+            ql_heft_path
+            if ql_heft_path.is_absolute()
+            else caller_project_root / ql_heft_path
         )
     distributed_enabled = execution_context.distributed_enabled
     cmd_timeout_env = os.environ.get("EXPERIMENT_CMD_TIMEOUT_S", "").strip()
@@ -1362,7 +1933,13 @@ def run_one(
         "SCHEDULER_POLICY": policy,
         "VIDEO_LAYOUT_DIR": video_layout_dir,
         "DEADLINE_MS": str(float(deadline_ms)),
+        "CHECKPOINT_DEFER_FULL_RESOURCE_ACCEPTANCE": (
+            "1" if full_resource_required else "0"
+        ),
     }
+    checkpoint_codec = resolve_checkpoint_codec(dataset, scenario)
+    if checkpoint_codec is not None:
+        command_env["CHECKPOINT_CODEC"] = checkpoint_codec
     if resolved_primary_policy_pair is not None:
         command_env["PRIMARY_POLICY_PAIR_JSON"] = json.dumps(
             resolved_primary_policy_pair,
@@ -1375,14 +1952,23 @@ def run_one(
             sort_keys=True,
             separators=(",", ":"),
         )
-    cmd = (
-        f"{scenario_env_prefix(scenario, distributed=execution_context.distributed_enabled, extra=command_env)} "
-        f"{base_cmd}"
-    )
+    cmd: str | list[str]
+    if backend_dispatch_resolution is None:
+        assert base_cmd is not None
+        cmd = (
+            f"{scenario_env_prefix(scenario, distributed=execution_context.distributed_enabled, extra=command_env)} "
+            f"{base_cmd}"
+        )
+    else:
+        cmd = []
 
     run_relpath = str(scenario_dir)
     distributed_steps: list[dict[str, Any]] = []
     if distributed_enabled:
+        if backend_dispatch_resolution is not None or command_template is None:
+            raise ContractError(
+                "backend publication dispatch prohibits distributed generic execution"
+            )
         distributed_steps = build_distributed_plan(
             hosts_config=execution_context.hosts_config,
             scenario=scenario,
@@ -1410,7 +1996,8 @@ def run_one(
         else:
             print(
                 f"[plan] {execution_context.deployment_mode} scenario={scenario_key} streams={streams} "
-                f"system={system_key} command={cmd}"
+                f"system={system_key} command="
+                f"{backend_dispatch_resolution['launcher']['path'] if backend_dispatch_resolution else cmd}"
             )
         result = {
             "timestamp": datetime.now(timezone.utc).isoformat(),
@@ -1445,24 +2032,106 @@ def run_one(
         validate_summary_rows([result])
         return result
 
+    backend_arm_contract_path: Path | None = None
+    backend_arm_contract_authority: dict[str, Any] | None = None
+    backend_output_receipt_authority: dict[str, Any] | None = None
+    if backend_dispatch_resolution is not None:
+        assert resolved_execution_binding is not None
+        assert type(resource_capability_grant) is dict
+        backend_arm_contract_path = scenario_dir / ARM_CONTRACT_FILENAME
+        if backend_arm_contract_path.exists():
+            raise ContractError(
+                "immutable backend publication arm contract already exists"
+            )
+        backend_arm_contract = build_backend_publication_arm_contract(
+            dispatch_resolution=backend_dispatch_resolution,
+            execution_binding=resolved_execution_binding,
+            resource_capability_grant=resource_capability_grant,
+            model_parity_grant=resolved_model_parity_grant,
+            dataset=dataset,
+            scenario=scenario,
+            run_id=run_id,
+            run_seed=run_seed,
+            streams=streams,
+            duration_s=duration_s,
+            repeat_index=repeat_index,
+            base_seed=base_seed,
+            output_dir=scenario_dir,
+        )
+        try:
+            backend_arm_contract_authority = (
+                write_immutable_backend_publication_arm_contract(
+                    backend_arm_contract_path,
+                    backend_arm_contract,
+                )
+            )
+        except BackendPublicationOutputReceiptError as error:
+            raise ContractError(
+                f"backend publication arm contract commit failed: {error}"
+            ) from error
+
     warmup_s = float(protocol.get("warmup_s", 0))
     if warmup_s > 0 and not bool(scenario.get("topology")):
         time.sleep(warmup_s)
 
-    child_env = os.environ.copy()
-    child_env["EXPERIMENT_RUN_SEED"] = str(run_seed)
-    child_env["EXPERIMENT_REPEAT_INDEX"] = str(repeat_index)
+    child_env = benchmark_child_environment(
+        run_seed=run_seed,
+        repeat_index=repeat_index,
+    )
 
     distributed_result = None
+    hardware_collector_started = False
+    hardware_collector_closed = False
     collector.start()
     try:
         if hardware_collector is not None:
             hardware_collector.start()
+            hardware_collector_started = True
             hardware_collector.wait_until_ready(timeout_s=10)
-        if distributed_enabled:
+        if backend_dispatch_resolution is not None:
+            assert backend_arm_contract_path is not None
+            assert type(full_publication_identity_artifacts) is dict
+            try:
+                cmd = build_backend_publication_command(
+                    backend_dispatch_resolution,
+                    project_root=caller_project_root,
+                    identity_artifacts=full_publication_identity_artifacts,
+                    python_executable=Path(sys.executable),
+                    arm_contract_path=backend_arm_contract_path,
+                    output_dir=scenario_dir,
+                )
+            except BackendPublicationDispatchError as error:
+                raise ContractError(
+                    f"backend publication launcher pre-spawn validation failed: {error}"
+                ) from error
+            completed = subprocess.run(
+                cmd,
+                shell=False,
+                check=False,
+                timeout=cmd_timeout_s,
+                env={},
+                cwd=caller_project_root,
+            )
+            if completed.returncode == 0:
+                assert backend_arm_contract_authority is not None
+                try:
+                    backend_output_receipt_authority = (
+                        validate_backend_publication_output_receipt(
+                            output_dir=scenario_dir,
+                            expected_arm_contract_authority=(
+                                backend_arm_contract_authority
+                            ),
+                        )
+                    )
+                except BackendPublicationOutputReceiptError as error:
+                    raise ContractError(
+                        "backend publication launcher output receipt failed "
+                        f"post-spawn validation: {error}"
+                    ) from error
+        elif distributed_enabled:
             distributed_result = run_distributed(
                 steps=distributed_steps,
-                project_root=PROJECT_ROOT,
+                project_root=caller_project_root,
                 local_run_dir=scenario_dir,
                 frames_csv=frames_path,
                 frame_events_csv=frame_events_path,
@@ -1488,7 +2157,7 @@ def run_one(
                 check=False,
                 timeout=cmd_timeout_s,
                 env=child_env,
-                cwd=PROJECT_ROOT,
+                cwd=caller_project_root,
             )
     except subprocess.TimeoutExpired as exc:
         completed = subprocess.CompletedProcess(exc.cmd, returncode=124)
@@ -1498,14 +2167,17 @@ def run_one(
             f"Inspect run directory: {scenario_dir}"
         ) from exc
     finally:
-        if hardware_collector is not None:
-            hardware_collector.stop()
-            hardware_collector.join(timeout=5)
-            if hardware_collector.is_alive():
-                raise RuntimeError("hardware resource collector did not stop")
-            hardware_collector.raise_if_failed()
-        collector.stop()
-        collector.join(timeout=2)
+        try:
+            if hardware_collector is not None:
+                hardware_collector.stop()
+                hardware_collector.join(timeout=5)
+                if hardware_collector.is_alive():
+                    raise RuntimeError("hardware resource collector did not stop")
+                hardware_collector.raise_if_failed()
+                hardware_collector_closed = True
+        finally:
+            collector.stop()
+            collector.join(timeout=2)
 
     sampled_s = measured_metrics_duration_s(metrics_path)
     accepted_timeout_stop = False
@@ -1542,7 +2214,14 @@ def run_one(
             "telemetry_source": "",
         }
         validate_summary_rows([result])
-        publication_run_contract = resolve_publication_run_contract(config, result)
+        publication_run_contract = resolve_publication_run_contract(
+            config,
+            result,
+            resource_capability_grant=resource_capability_grant,
+            backend_runtime_grant=resolved_backend_runtime_grant,
+            model_parity_grant=resolved_model_parity_grant,
+            full_publication_execution_binding=resolved_execution_binding,
+        )
         publication_run_identity = publication_run_contract_identity(
             publication_run_contract
         )
@@ -1563,7 +2242,7 @@ def run_one(
                     "sha256": publication_run_identity["sha256"],
                 },
                 "dataset": dataset,
-                "git": git_manifest(PROJECT_ROOT),
+                "git": git_manifest(caller_project_root),
                 "adapter": adapter_manifest(system_config),
                 "benchmark_adapter": benchmark_adapter.metadata() if benchmark_adapter else {},
                 "primary_architecture_pair": resolved_primary_architecture_pair,
@@ -1616,6 +2295,13 @@ def run_one(
             f"Real-mode execution failed for system={system_key}, scenario={scenario_key}, "
             f"repeat={repeat_index} with exit code {completed.returncode}. "
             f"Inspect run directory: {scenario_dir}"
+        )
+    if backend_dispatch_resolution is not None and (
+        backend_arm_contract_authority is None
+        or backend_output_receipt_authority is None
+    ):
+        raise ContractError(
+            "backend publication launcher returned without a validated output receipt"
         )
 
     if not frames_path.exists() and mode == "smoke":
@@ -1732,7 +2418,20 @@ def run_one(
         **summary,
     }
     validate_summary_rows([result])
-    publication_run_contract = resolve_publication_run_contract(config, result)
+    publication_run_contract = resolve_publication_run_contract(
+        config,
+        result,
+        resource_capability_grant=resource_capability_grant,
+        backend_runtime_grant=resolved_backend_runtime_grant,
+        model_parity_grant=resolved_model_parity_grant,
+        full_publication_execution_binding=resolved_execution_binding,
+        backend_publication_arm_contract_authority=(
+            backend_arm_contract_authority
+        ),
+        backend_publication_output_receipt_authority=(
+            backend_output_receipt_authority
+        ),
+    )
     publication_run_identity = publication_run_contract_identity(
         publication_run_contract
     )
@@ -1740,10 +2439,12 @@ def run_one(
         publication_evidence_scope = resolve_publication_evidence_bundle_scope(
             config,
             result,
+            resource_capability_grant=resource_capability_grant,
         )
         publication_evidence_bundle = build_publication_evidence_bundle(
             scenario_dir,
             scope=publication_evidence_scope,
+            policy=policy,
         )
         publication_evidence_identity = publication_evidence_bundle_identity(
             publication_evidence_bundle
@@ -1768,7 +2469,7 @@ def run_one(
         "host_topology": execution_context.host_topology,
         "policy": policy,
         "dataset": dataset,
-        "git": git_manifest(PROJECT_ROOT),
+        "git": git_manifest(caller_project_root),
         "adapter": adapter_manifest(system_config),
         "benchmark_adapter": benchmark_adapter.metadata() if benchmark_adapter else {},
         "primary_architecture_pair": resolved_primary_architecture_pair,
@@ -1806,7 +2507,48 @@ def run_one(
             "sha256": publication_evidence_identity["sha256"],
         }
 
-    write_json(metadata_path, metadata)
+    with checkpoint_full_resource_acceptance_transaction(
+        full_resource_required=full_resource_required,
+        mode=mode,
+        scenario=scenario,
+        checkpoint_codec=checkpoint_codec,
+        hardware_collector=hardware_collector,
+        hardware_collector_started=hardware_collector_started,
+        hardware_collector_closed=hardware_collector_closed,
+        output_dir=scenario_dir,
+        expected_run_id=run_id,
+        expected_system=system_key,
+        expected_policy=policy,
+        expected_deadline_ms=float(deadline_ms),
+        run_metadata_path=metadata_path,
+        expected_execution_binding=resolved_execution_binding,
+    ) as finalized_resource_summary:
+        if finalized_resource_summary is not None:
+            result.update(finalized_resource_summary)
+        validate_summary_rows([result])
+        publication_run_contract = resolve_publication_run_contract(
+            config,
+            result,
+            resource_capability_grant=resource_capability_grant,
+            backend_runtime_grant=resolved_backend_runtime_grant,
+            model_parity_grant=resolved_model_parity_grant,
+            full_publication_execution_binding=resolved_execution_binding,
+            backend_publication_arm_contract_authority=(
+                backend_arm_contract_authority
+            ),
+            backend_publication_output_receipt_authority=(
+                backend_output_receipt_authority
+            ),
+        )
+        publication_run_identity = publication_run_contract_identity(
+            publication_run_contract
+        )
+        metadata["publication_run_contract"] = publication_run_contract
+        metadata["publication_run_contract_identity"] = {
+            "schema_version": publication_run_identity["schema_version"],
+            "sha256": publication_run_identity["sha256"],
+        }
+        write_durable_json(metadata_path, metadata)
     return result
 
 

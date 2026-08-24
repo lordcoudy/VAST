@@ -19,6 +19,7 @@ from prepare_benchmark_dataset import (  # noqa: E402
     VideoTranscodePlan,
     build_clip_plans,
     ffmpeg_command,
+    main,
     prepare_clip,
 )
 
@@ -29,7 +30,7 @@ def digest(data: bytes) -> str:
 
 def write_manifest(root: Path, target_name: str, sha256: str) -> Path:
     manifest = root / "configs" / "datasets.yaml"
-    manifest.parent.mkdir(parents=True)
+    manifest.parent.mkdir(parents=True, exist_ok=True)
     manifest.write_text(
         yaml.safe_dump(
             {
@@ -65,7 +66,7 @@ def write_kpp_transcode_manifest(
     duplicate_target_sha256: str | None = None,
 ) -> Path:
     manifest = root / "configs" / "datasets.yaml"
-    manifest.parent.mkdir(parents=True)
+    manifest.parent.mkdir(parents=True, exist_ok=True)
     streams = [
         {
             "stream_id": 0,
@@ -150,14 +151,13 @@ class PrepareBenchmarkDatasetTests(unittest.TestCase):
         self.assertEqual(plans, [])
 
     def test_public_manifest_maps_all_expected_sources(self) -> None:
-        with tempfile.TemporaryDirectory() as tmp:
-            plans = build_clip_plans(
-                manifest=ROOT / "configs" / "datasets.yaml",
-                dataset_name="mot17_uadetrac_public",
-                project_root=ROOT,
-                source_root=Path("data/videos"),
-                output_dir=Path(tmp),
-            )
+        plans = build_clip_plans(
+            manifest=ROOT / "configs" / "datasets.yaml",
+            dataset_name="mot17_uadetrac_public",
+            project_root=ROOT,
+            source_root=Path("data/videos"),
+            output_dir=Path("data/benchmark"),
+        )
 
         self.assertEqual(
             {plan.target.name for plan in plans},
@@ -358,7 +358,7 @@ class PrepareBenchmarkDatasetTests(unittest.TestCase):
             with self.assertRaisesRegex(DatasetPrepError, "missing raw source directory"):
                 prepare_clip(plan)
 
-    def test_mismatched_output_triggers_regeneration(self) -> None:
+    def test_mismatched_output_requires_force_and_is_not_overwritten(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             prepared = b"prepared bytes"
@@ -381,10 +381,233 @@ class PrepareBenchmarkDatasetTests(unittest.TestCase):
                 Path(command[-1]).write_bytes(prepared)
                 return subprocess.CompletedProcess(command, 0)
 
-            self.assertEqual(prepare_clip(plan, runner=fake_runner), "checksum_mismatch")
+            with self.assertRaisesRegex(DatasetPrepError, "refusing to overwrite"):
+                prepare_clip(plan, runner=fake_runner)
+
+            self.assertEqual(target.read_bytes(), b"stale")
+            self.assertEqual(commands, [])
+
+    def test_force_replaces_a_stable_mismatched_output(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            prepared = b"prepared bytes"
+            manifest = write_manifest(root, "mot17_02.mp4", digest(prepared))
+            make_source_frame(root, Path("MOT17/train/MOT17-02-FRCNN/img1"))
+            target = root / "data" / "benchmark" / "mot17_02.mp4"
+            target.parent.mkdir(parents=True)
+            target.write_bytes(b"stale")
+            plan = build_clip_plans(
+                manifest=manifest,
+                dataset_name="mot17_uadetrac_public",
+                project_root=root,
+                source_root=Path("data/videos"),
+                output_dir=Path("data/benchmark"),
+            )[0]
+            commands: list[Sequence[str]] = []
+
+            def fake_runner(command):  # type: ignore[no-untyped-def]
+                commands.append(command)
+                Path(command[-1]).write_bytes(prepared)
+                return subprocess.CompletedProcess(command, 0)
+
+            self.assertEqual(
+                prepare_clip(plan, force=True, runner=fake_runner),
+                "forced",
+            )
             self.assertEqual(target.read_bytes(), prepared)
             self.assertEqual(len(commands), 1)
             self.assertIn("%06d.jpg", " ".join(commands[0]))
+
+    def test_public_output_outside_project_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            sandbox = Path(tmp)
+            root = sandbox / "project"
+            manifest = write_manifest(root, "mot17_02.mp4", digest(b"expected"))
+            outside = sandbox / "outside"
+
+            with self.assertRaisesRegex(DatasetPrepError, "public output directory"):
+                build_clip_plans(
+                    manifest=manifest,
+                    dataset_name="mot17_uadetrac_public",
+                    project_root=root,
+                    source_root=Path("data/videos"),
+                    output_dir=outside,
+                )
+
+    def test_cli_project_root_cannot_rebind_the_output_safety_boundary(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            manifest = root / "configs" / "datasets.yaml"
+            manifest.parent.mkdir(parents=True)
+            manifest.write_text(
+                yaml.safe_dump(
+                    {
+                        "datasets": {
+                            "kpp_real_avi": {
+                                "kind": "real_avi",
+                                "streams": [
+                                    {
+                                        "path": "data/videos/kpp/1.avi",
+                                        "sha256": digest(b"source"),
+                                    }
+                                ],
+                            }
+                        }
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            with self.assertRaisesRegex(DatasetPrepError, "project root"):
+                main(
+                    [
+                        "--project-root",
+                        str(root),
+                        "--manifest",
+                        str(manifest),
+                        "--dataset",
+                        "kpp_real_avi",
+                        "--dry-run",
+                    ]
+                )
+
+    def test_public_output_symlink_is_rejected_without_touching_canary(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            sandbox = Path(tmp)
+            root = sandbox / "project"
+            manifest = write_manifest(root, "mot17_02.mp4", digest(b"expected"))
+            outside = sandbox / "outside"
+            outside.mkdir()
+            canary = outside / "keep"
+            canary.write_bytes(b"do not touch")
+            output = root / "data" / "benchmark"
+            output.parent.mkdir(parents=True)
+            try:
+                output.symlink_to(outside, target_is_directory=True)
+            except OSError as exc:
+                self.skipTest(f"directory symlink is unavailable: {exc}")
+
+            with self.assertRaisesRegex(DatasetPrepError, "symlink|junction|reparse"):
+                build_clip_plans(
+                    manifest=manifest,
+                    dataset_name="mot17_uadetrac_public",
+                    project_root=root,
+                    source_root=Path("data/videos"),
+                    output_dir=Path("data/benchmark"),
+                )
+
+            self.assertEqual(canary.read_bytes(), b"do not touch")
+
+    def test_manifest_transcode_target_cannot_be_absolute_or_traverse(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            sandbox = Path(tmp)
+            root = sandbox / "project"
+            manifest = write_kpp_transcode_manifest(
+                root,
+                source_sha256=digest(b"source"),
+                target_sha256=digest(b"target"),
+            )
+            unsafe_targets = (
+                sandbox / "outside" / "victim.mp4",
+                Path("data/videos/kpp/h264/../../../../outside/victim.mp4"),
+            )
+            for unsafe_target in unsafe_targets:
+                with self.subTest(target=unsafe_target):
+                    payload = yaml.safe_load(manifest.read_text(encoding="utf-8"))
+                    payload["datasets"]["kpp_h264"]["streams"][0]["path"] = str(
+                        unsafe_target
+                    )
+                    manifest.write_text(yaml.safe_dump(payload), encoding="utf-8")
+
+                    with self.assertRaisesRegex(
+                        DatasetPrepError,
+                        "transcode target|relative|parent traversal",
+                    ):
+                        build_clip_plans(
+                            manifest=manifest,
+                            dataset_name="kpp_h264",
+                            project_root=root,
+                            source_root=Path("data/videos"),
+                            output_dir=Path("data/benchmark"),
+                        )
+
+                    manifest = write_kpp_transcode_manifest(
+                        root,
+                        source_sha256=digest(b"source"),
+                        target_sha256=digest(b"target"),
+                    )
+
+    def test_force_rejects_target_changed_while_encoder_runs(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            prepared = b"prepared bytes"
+            manifest = write_manifest(root, "mot17_02.mp4", digest(prepared))
+            make_source_frame(root, Path("MOT17/train/MOT17-02-FRCNN/img1"))
+            target = root / "data" / "benchmark" / "mot17_02.mp4"
+            target.parent.mkdir(parents=True)
+            target.write_bytes(b"stale")
+            plan = build_clip_plans(
+                manifest=manifest,
+                dataset_name="mot17_uadetrac_public",
+                project_root=root,
+                source_root=Path("data/videos"),
+                output_dir=Path("data/benchmark"),
+            )[0]
+
+            def racing_runner(command):  # type: ignore[no-untyped-def]
+                Path(command[-1]).write_bytes(prepared)
+                target.write_bytes(b"concurrent writer")
+                return subprocess.CompletedProcess(command, 0)
+
+            with self.assertRaisesRegex(DatasetPrepError, "target changed"):
+                prepare_clip(plan, force=True, runner=racing_runner)
+
+            self.assertEqual(target.read_bytes(), b"concurrent writer")
+
+    def test_failure_cleanup_does_not_follow_a_swapped_output_parent(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            sandbox = Path(tmp)
+            root = sandbox / "project"
+            prepared = b"prepared bytes"
+            manifest = write_manifest(root, "mot17_02.mp4", digest(prepared))
+            make_source_frame(root, Path("MOT17/train/MOT17-02-FRCNN/img1"))
+            output = root / "data" / "benchmark"
+            output.mkdir(parents=True)
+            outside = sandbox / "outside"
+            outside.mkdir()
+            external_target = outside / "mot17_02.mp4"
+            external_target.write_bytes(b"canary target")
+            link_probe = sandbox / "link-probe"
+            try:
+                link_probe.symlink_to(outside, target_is_directory=True)
+                link_probe.unlink()
+            except OSError as exc:
+                self.skipTest(f"directory symlink is unavailable: {exc}")
+            plan = build_clip_plans(
+                manifest=manifest,
+                dataset_name="mot17_uadetrac_public",
+                project_root=root,
+                source_root=Path("data/videos"),
+                output_dir=Path("data/benchmark"),
+            )[0]
+            decoys: list[Path] = []
+
+            def failing_racing_runner(command):  # type: ignore[no-untyped-def]
+                candidate = Path(command[-1])
+                candidate.write_bytes(b"partial encoder output")
+                output.rename(root / "data" / "benchmark-owned")
+                output.symlink_to(outside, target_is_directory=True)
+                decoy = outside / candidate.name
+                decoy.write_bytes(b"external decoy")
+                decoys.append(decoy)
+                return subprocess.CompletedProcess(command, 9)
+
+            with self.assertRaisesRegex(DatasetPrepError, "ffmpeg failed"):
+                prepare_clip(plan, runner=failing_racing_runner)
+
+            self.assertEqual(len(decoys), 1)
+            self.assertEqual(decoys[0].read_bytes(), b"external decoy")
+            self.assertEqual(external_target.read_bytes(), b"canary target")
 
     def test_dry_run_does_not_write_output(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

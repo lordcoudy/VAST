@@ -431,8 +431,19 @@ def validate_checkpoint_runtime_plan(plan: dict[str, Any]) -> None:
         plan.get("analytics_queue") == PRIMARY_ANALYTICS_QUEUE_CONTRACT,
         "checkpoint analytics queue contract drifted",
     )
+    decoder_placement = dict(plan.get("decoder_placement") or {})
+    decoder_codec = str(decoder_placement.get("codec", "")).strip().lower()
+    expected_decoder = dict(PRIMARY_ARCHITECTURE_DECODER_PLACEMENT_CONTRACT)
+    expected_decoder["codec"] = decoder_codec
+    expected_decoder["allowed_factories"] = list(
+        {
+            "h264": ("nvh264dec", "nvv4l2decoder"),
+            "h265": ("nvh265dec", "nvv4l2decoder"),
+        }.get(decoder_codec, ())
+    )
     _require(
-        plan.get("decoder_placement") == PRIMARY_ARCHITECTURE_DECODER_PLACEMENT_CONTRACT,
+        decoder_codec in {"h264", "h265"}
+        and decoder_placement == expected_decoder,
         "checkpoint decoder placement contract drifted",
     )
     _require(
@@ -452,7 +463,7 @@ def validate_checkpoint_runtime_plan(plan: dict[str, Any]) -> None:
     def validate_source(owner: dict[str, Any]) -> None:
         _require(owner.get("source_container") == "mp4", "checkpoint source container must be MP4")
         _require(
-            owner.get("source_codec") == PRIMARY_ARCHITECTURE_DECODER_PLACEMENT_CONTRACT["codec"],
+            owner.get("source_codec") == decoder_codec,
             "checkpoint source codec differs from the decoder placement contract",
         )
         duration_ns = int(owner.get("source_duration_ns", 0) or 0)

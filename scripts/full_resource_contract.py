@@ -144,8 +144,8 @@ def validate_hardware_resource_samples(
     rows: list[dict[str, Any]] = []
     previous_end_by_device: dict[str, int] = {}
     expected_seq_by_device: dict[str, int] = {}
-    first_start = None
-    last_end = None
+    first_start_by_device: dict[str, int] = {}
+    last_end_by_device: dict[str, int] = {}
     for row_number, raw in enumerate(raw_rows, start=2):
         row: dict[str, Any] = {}
         for column in HARDWARE_RESOURCE_SAMPLE_COLUMNS:
@@ -212,13 +212,27 @@ def validate_hardware_resource_samples(
                     f"{path}:{row_number}: NVML sampling gap is not allowed"
                 )
         previous_end_by_device[device] = interval_end
-        first_start = interval_start if first_start is None else min(first_start, interval_start)
-        last_end = interval_end if last_end is None else max(last_end, interval_end)
+        first_start_by_device[device] = min(
+            interval_start,
+            first_start_by_device.get(device, interval_start),
+        )
+        last_end_by_device[device] = max(
+            interval_end,
+            last_end_by_device.get(device, interval_end),
+        )
         rows.append(row)
 
-    covered = bool(first_start is not None and first_start <= window_start_ns and last_end >= window_end_ns)
-    if not covered:
-        raise FullResourceContractError("NVML samples do not cover the measurement window")
+    uncovered_devices = sorted(
+        device
+        for device in first_start_by_device
+        if first_start_by_device[device] > window_start_ns
+        or last_end_by_device[device] < window_end_ns
+    )
+    if uncovered_devices:
+        raise FullResourceContractError(
+            "NVML samples for each GPU device must cover the measurement window: "
+            + ", ".join(uncovered_devices)
+        )
     frame = pd.DataFrame(rows, columns=HARDWARE_RESOURCE_SAMPLE_COLUMNS)
     frame.attrs["measurement_window_covered"] = True
     frame.attrs["window_start_ns"] = int(window_start_ns)
@@ -421,6 +435,54 @@ def validate_full_resource_evidence(
         window_end_ns=window_end_ns,
     )
     hardware_summary = summarize_hardware_resource_samples(hardware_samples)
+    if "component" not in intervals.columns or "device_id" not in intervals.columns:
+        raise FullResourceContractError("resource intervals lack NVDEC component provenance")
+    nvdec_interval_devices = {
+        str(value)
+        for value in intervals.loc[
+            intervals["component"].astype(str) == "nvdec_submit_complete",
+            "device_id",
+        ]
+    }
+    if not nvdec_interval_devices:
+        raise FullResourceContractError("full resource evidence has no native NVDEC interval")
+    invalid_nvdec_devices = sorted(
+        value for value in nvdec_interval_devices if re.fullmatch(r"nvdec:[0-9]+", value) is None
+    )
+    if invalid_nvdec_devices:
+        raise FullResourceContractError(
+            "NVDEC interval device identity is not index-bound: "
+            + ", ".join(invalid_nvdec_devices)
+        )
+    sampled_gpu_devices = set(hardware_samples["device_id"].astype(str))
+    required_gpu_devices = {
+        "gpu:" + value.split(":", 1)[1] for value in nvdec_interval_devices
+    }
+    missing_gpu_devices = sorted(required_gpu_devices - sampled_gpu_devices)
+    if missing_gpu_devices:
+        raise FullResourceContractError(
+            "NVDEC interval does not have a sampled GPU device: "
+            + ", ".join(missing_gpu_devices)
+        )
+    busy_by_device = {
+        device_id: sum(
+            round(
+                float(row["nvdec_util_percent"])
+                / 100.0
+                * int(row["sample_period_us"])
+                * 1000
+            )
+            for row in hardware_samples.to_dict(orient="records")
+            if str(row["device_id"]) == device_id
+        )
+        for device_id in required_gpu_devices
+    }
+    idle_devices = sorted(device for device, busy_ns in busy_by_device.items() if busy_ns <= 0)
+    if idle_devices:
+        raise FullResourceContractError(
+            "full resource evidence requires positive NVDEC utilization on each bound GPU: "
+            + ", ".join(idle_devices)
+        )
     fanout_counters = validate_fanout_work_counters(
         run_dir / "fanout_work_counters.csv",
         expected_run_id=expected_run_id,
@@ -442,6 +504,8 @@ def validate_full_resource_evidence(
         "measurement_window_start_ns": int(window_start_ns),
         "measurement_window_end_ns": int(window_end_ns),
         "nvdec_busy_equivalent_ns": int(hardware_summary["nvdec_busy_equivalent_ns"]),
+        "nvdec_interval_device_ids": sorted(nvdec_interval_devices),
+        "nvdec_sampled_gpu_device_ids": sorted(required_gpu_devices),
         "nvdec_counter_scope": hardware_summary["counter_scope"],
         "fanout_thread_cpu_time_ns": fanout_thread_cpu_time_ns,
         "fanout_work_units": fanout_work_units,

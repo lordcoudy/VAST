@@ -625,6 +625,7 @@ class SourceCoordinator {
     try {
       vast::CheckpointAdmissionFrame frame;
       frame.sequence = ++sequence_;
+      frame.keyframe = !GST_BUFFER_FLAG_IS_SET(buffer, GST_BUFFER_FLAG_DELTA_UNIT);
       frame.source_cycle = source_cycle_;
       frame.access_unit_pts_ns = native_pts;
       const auto checked_multiply = [](std::uint64_t left, std::uint64_t right, const char* field) {

@@ -4,12 +4,18 @@ __pycache__/
 *.egg-info/
 .venv/
 .pytest_cache/
+.env
+.env.*
+!.env.example
+*.credentials.json
+seafile.txt
 
 # Experiment outputs
 runs/
 reports/
 plots/
 build/
+staging/
 
 # OS/editor
 .DS_Store

@@ -16,6 +16,163 @@ class ChunkRunError(RuntimeError):
     pass
 
 
+CHUNK_OWNER_MARKER = ".vast_openvino_chunk_owner"
+
+
+def _is_link_or_junction(path: Path) -> bool:
+    is_junction = getattr(os.path, "isjunction", lambda _path: False)
+    return path.is_symlink() or bool(is_junction(path))
+
+
+def _lexical_absolute(path: Path) -> Path:
+    return Path(os.path.abspath(os.fspath(path)))
+
+
+def _require_plain_path_chain(path: Path, *, stop: Path, label: str) -> None:
+    lexical = _lexical_absolute(path)
+    boundary = _lexical_absolute(stop)
+    try:
+        relative = lexical.relative_to(boundary)
+    except ValueError as exc:
+        raise ChunkRunError(f"{label} escapes its expected root") from exc
+    current = boundary
+    for part in relative.parts:
+        current = current / part
+        if _is_link_or_junction(current):
+            raise ChunkRunError(f"{label} contains a symlink or junction: {current}")
+
+
+def guard_chunk_output_dir(project_dir: Path | str, output_dir: Path | str) -> Path:
+    """Bind chunk output to a real directory below the project runs namespace."""
+
+    project_raw = Path(project_dir)
+    output_raw = Path(output_dir)
+    if not project_raw.is_absolute() or not output_raw.is_absolute():
+        raise ChunkRunError("project and OpenVINO chunk output paths must be absolute")
+    project = _lexical_absolute(project_raw)
+    output = _lexical_absolute(output_raw)
+    if (
+        not project.is_dir()
+        or _is_link_or_junction(project)
+        or project.resolve() != project
+    ):
+        raise ChunkRunError("OpenVINO chunk project directory is unsafe")
+    runs_root = project / "runs"
+    resolved_output = output.resolve()
+    resolved_runs = runs_root.resolve()
+    try:
+        relative = resolved_output.relative_to(resolved_runs)
+    except ValueError as exc:
+        raise ChunkRunError("OpenVINO chunk output must be below project/runs") from exc
+    if not relative.parts or output != resolved_output:
+        raise ChunkRunError("OpenVINO chunk output must be a dedicated plain child below project/runs")
+    _require_plain_path_chain(output, stop=project, label="OpenVINO chunk output")
+    if output.exists() and not output.is_dir():
+        raise ChunkRunError("OpenVINO chunk output exists but is not a directory")
+    if output in {project, runs_root, Path.cwd().resolve()}:
+        raise ChunkRunError("OpenVINO chunk output is not a dedicated run directory")
+    return output
+
+
+def _expected_chunk_directory(
+    output_dir: Path | str,
+    chunk_dir: Path | str,
+    *,
+    chunk_index: int,
+) -> tuple[Path, Path]:
+    if type(chunk_index) is not int or chunk_index <= 0:
+        raise ChunkRunError("OpenVINO chunk index must be a positive integer")
+    output = _lexical_absolute(Path(output_dir))
+    chunk = _lexical_absolute(Path(chunk_dir))
+    expected = output / "chunks" / f"chunk_{chunk_index:02d}"
+    if chunk != expected:
+        raise ChunkRunError("OpenVINO chunk cleanup target is not the exact expected directory")
+    if output.resolve() != output or _is_link_or_junction(output):
+        raise ChunkRunError("OpenVINO chunk output became a symlink, junction, or alias")
+    _require_plain_path_chain(chunk, stop=output, label="OpenVINO chunk cleanup target")
+    if chunk in {output, Path.cwd().resolve()}:
+        raise ChunkRunError("refusing to remove a broad OpenVINO chunk path")
+    return output, chunk
+
+
+def _owner_payload(*, run_id: str, chunk_index: int) -> str:
+    if (
+        type(run_id) is not str
+        or not run_id
+        or len(run_id) > 512
+        or "\n" in run_id
+        or "\r" in run_id
+    ):
+        raise ChunkRunError("OpenVINO chunk run_id is invalid")
+    return f"{run_id}\n{chunk_index}\n"
+
+
+def remove_owned_chunk_directory(
+    output_dir: Path | str,
+    chunk_dir: Path | str,
+    *,
+    run_id: str,
+    chunk_index: int,
+) -> None:
+    """Remove only a previously marked directory for this exact run/chunk."""
+
+    output, chunk = _expected_chunk_directory(
+        output_dir,
+        chunk_dir,
+        chunk_index=chunk_index,
+    )
+    if not chunk.exists() and not _is_link_or_junction(chunk):
+        return
+    if _is_link_or_junction(chunk) or not chunk.is_dir() or chunk.resolve() != chunk:
+        raise ChunkRunError("OpenVINO chunk cleanup target is not a plain directory")
+    before = chunk.lstat()
+    before_identity = (before.st_dev, before.st_ino, before.st_mode)
+    marker = chunk / CHUNK_OWNER_MARKER
+    if (
+        _is_link_or_junction(marker)
+        or not marker.is_file()
+        or marker.resolve() != marker
+        or marker.stat().st_size > 1024
+    ):
+        raise ChunkRunError("OpenVINO chunk ownership marker is missing or unsafe")
+    try:
+        observed_owner = marker.read_text(encoding="utf-8")
+    except (OSError, UnicodeError) as exc:
+        raise ChunkRunError("OpenVINO chunk ownership marker cannot be read") from exc
+    if observed_owner != _owner_payload(run_id=run_id, chunk_index=chunk_index):
+        raise ChunkRunError("OpenVINO chunk ownership marker does not match this run")
+    _require_plain_path_chain(chunk, stop=output, label="OpenVINO chunk cleanup target")
+    if _is_link_or_junction(chunk) or chunk.resolve() != chunk:
+        raise ChunkRunError("OpenVINO chunk cleanup target changed during verification")
+    after = chunk.lstat()
+    if (after.st_dev, after.st_ino, after.st_mode) != before_identity:
+        raise ChunkRunError("OpenVINO chunk cleanup target changed during verification")
+    shutil.rmtree(chunk)
+
+
+def _initialize_owned_chunk_directory(
+    output_dir: Path,
+    chunk_dir: Path,
+    *,
+    run_id: str,
+    chunk_index: int,
+) -> None:
+    output, chunk = _expected_chunk_directory(
+        output_dir,
+        chunk_dir,
+        chunk_index=chunk_index,
+    )
+    chunk.mkdir(parents=True, exist_ok=False)
+    _require_plain_path_chain(chunk, stop=output, label="OpenVINO chunk directory")
+    if _is_link_or_junction(chunk) or chunk.resolve() != chunk:
+        raise ChunkRunError("OpenVINO chunk directory became unsafe during creation")
+    marker = chunk / CHUNK_OWNER_MARKER
+    with marker.open("x", encoding="utf-8", newline="\n") as handle:
+        handle.write(_owner_payload(run_id=run_id, chunk_index=chunk_index))
+        handle.flush()
+        os.fsync(handle.fileno())
+
+
 def append_csv(src: Path, dst: Path, *, run_id: str, stream_index: int) -> None:
     if not src.exists() or src.stat().st_size == 0:
         raise ChunkRunError(f"chunk CSV was not produced: {src}")
@@ -175,12 +332,15 @@ def run_stream(command: list[str], *, chunk_index: int, stream_index: int, chunk
 
 
 def run_chunks(args: argparse.Namespace) -> None:
-    output_dir = Path(args.output_dir)
+    output_dir = guard_chunk_output_dir(args.project_dir, args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
+    output_dir = guard_chunk_output_dir(args.project_dir, output_dir)
     frames_out = output_dir / "frames.csv"
     events_out = output_dir / "frame_events.csv"
     for path in (frames_out, events_out):
         if path.exists():
+            if path.is_symlink() or not path.is_file() or path.resolve() != path:
+                raise ChunkRunError(f"refusing to replace unsafe chunk aggregate: {path}")
             path.unlink()
 
     stream_sources = parse_stream_sources(args)
@@ -190,9 +350,18 @@ def run_chunks(args: argparse.Namespace) -> None:
     while remaining > 0:
         chunk_duration = min(int(args.chunk_s), remaining)
         chunk_dir = output_dir / "chunks" / f"chunk_{chunk_index:02d}"
-        if chunk_dir.exists():
-            shutil.rmtree(chunk_dir)
-        chunk_dir.mkdir(parents=True, exist_ok=True)
+        remove_owned_chunk_directory(
+            output_dir,
+            chunk_dir,
+            run_id=str(args.run_id),
+            chunk_index=chunk_index,
+        )
+        _initialize_owned_chunk_directory(
+            output_dir,
+            chunk_dir,
+            run_id=str(args.run_id),
+            chunk_index=chunk_index,
+        )
         jobs: list[tuple[int, str, Path, list[str]]] = []
         for stream_index, stream_source in enumerate(stream_sources):
             stream_run_id, command = build_stream_command(

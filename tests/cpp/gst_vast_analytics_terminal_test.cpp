@@ -21,6 +21,7 @@ typedef struct _GstMockGvaDetectClass GstMockGvaDetectClass;
 struct _GstMockGvaDetect {
   GstBaseTransform parent;
   gchar* model;
+  gchar* device;
 };
 
 struct _GstMockGvaDetectClass {
@@ -32,6 +33,7 @@ G_DEFINE_TYPE(GstMockGvaDetect, gst_mock_gva_detect, GST_TYPE_BASE_TRANSFORM)
 enum {
   PROP_0,
   PROP_MODEL,
+  PROP_DEVICE,
   N_PROPERTIES,
 };
 
@@ -55,12 +57,13 @@ static void gst_mock_gva_detect_set_property(
     const GValue* value,
     GParamSpec* pspec) {
   GstMockGvaDetect* self = reinterpret_cast<GstMockGvaDetect*>(object);
-  if (prop_id != PROP_MODEL) {
+  if (prop_id != PROP_MODEL && prop_id != PROP_DEVICE) {
     G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
     return;
   }
-  g_free(self->model);
-  self->model = g_value_dup_string(value);
+  gchar** target = prop_id == PROP_MODEL ? &self->model : &self->device;
+  g_free(*target);
+  *target = g_value_dup_string(value);
 }
 
 static void gst_mock_gva_detect_get_property(
@@ -69,21 +72,23 @@ static void gst_mock_gva_detect_get_property(
     GValue* value,
     GParamSpec* pspec) {
   GstMockGvaDetect* self = reinterpret_cast<GstMockGvaDetect*>(object);
-  if (prop_id != PROP_MODEL) {
+  if (prop_id != PROP_MODEL && prop_id != PROP_DEVICE) {
     G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
     return;
   }
-  g_value_set_string(value, self->model);
+  g_value_set_string(value, prop_id == PROP_MODEL ? self->model : self->device);
 }
 
 static void gst_mock_gva_detect_finalize(GObject* object) {
   GstMockGvaDetect* self = reinterpret_cast<GstMockGvaDetect*>(object);
   g_free(self->model);
+  g_free(self->device);
   G_OBJECT_CLASS(gst_mock_gva_detect_parent_class)->finalize(object);
 }
 
 static void gst_mock_gva_detect_init(GstMockGvaDetect* self) {
   self->model = nullptr;
+  self->device = g_strdup("CPU");
   gst_base_transform_set_in_place(GST_BASE_TRANSFORM(self), TRUE);
 }
 
@@ -98,6 +103,12 @@ static void gst_mock_gva_detect_class_init(GstMockGvaDetectClass* klass) {
       "Model",
       "Test-only model property",
       nullptr,
+      static_cast<GParamFlags>(G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+  properties[PROP_DEVICE] = g_param_spec_string(
+      "device",
+      "Device",
+      "Test-only device property",
+      "CPU",
       static_cast<GParamFlags>(G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
   g_object_class_install_properties(object_class, N_PROPERTIES, properties);
   gst_element_class_set_static_metadata(
@@ -116,6 +127,7 @@ static bool run_terminal(
     const char* model_path,
     const char* expected_model_sha256,
     const char* expected_weights_sha256,
+    const char* expected_device,
     bool expect_start) {
   GstElement* upstream = gst_element_factory_make(upstream_factory, nullptr);
   GstElement* terminal = gst_element_factory_make("vastanalyticsterminal", nullptr);
@@ -135,6 +147,8 @@ static bool run_terminal(
       expected_model_sha256,
       "expected-weights-sha256",
       expected_weights_sha256,
+      "expected-device",
+      expected_device,
       nullptr);
   if (!gst_element_link(upstream, terminal)) {
     gst_object_unref(upstream);
@@ -240,6 +254,7 @@ int main(int argc, char** argv) {
           model_path.c_str(),
           model_sha256.c_str(),
           weights_sha256.c_str(),
+          "CPU",
           true)) {
     return 8;
   }
@@ -252,7 +267,7 @@ int main(int argc, char** argv) {
       terminal.detector !=
           "contract-test-detector;model_sha256=" + model_sha256 +
               ";weights_sha256=" + weights_sha256 ||
-      terminal.backend != "openvino-dlstreamer:gvadetect") {
+      terminal.backend != "openvino-dlstreamer:gvadetect;device=CPU") {
     return 9;
   }
   if (!run_terminal(
@@ -261,6 +276,7 @@ int main(int argc, char** argv) {
           model_path.c_str(),
           model_sha256.c_str(),
           weights_sha256.c_str(),
+          "CPU",
           false)) {
     return 10;
   }
@@ -270,6 +286,7 @@ int main(int argc, char** argv) {
           model_path.c_str(),
           "0000000000000000000000000000000000000000000000000000000000000000",
           weights_sha256.c_str(),
+          "CPU",
           false)) {
     return 11;
   }
@@ -279,8 +296,19 @@ int main(int argc, char** argv) {
           model_path.c_str(),
           model_sha256.c_str(),
           "0000000000000000000000000000000000000000000000000000000000000000",
+          "CPU",
           false)) {
     return 12;
+  }
+  if (!run_terminal(
+          "gvadetect",
+          "gvadetect",
+          model_path.c_str(),
+          model_sha256.c_str(),
+          weights_sha256.c_str(),
+          "GPU",
+          false)) {
+    return 13;
   }
 
   ::unsetenv(vast::CheckpointAnalyticsTerminalTransport::kFdEnvironment);

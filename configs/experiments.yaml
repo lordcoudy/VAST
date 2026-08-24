@@ -35,13 +35,13 @@ benchmark:
     benchmark_eligible: false
   resource_interval_extension:
     contract_version: 2
-    status: validator_and_fanout_source_ready_not_emitted_not_publication_bound
+    status: validator_and_native_interval_sources_ready_not_emitted_not_publication_bound
     validator: scripts/resource_interval_contract.py
     validator_sha256: 9efa89efd0dd3aba9fa86a189099318e29b307192a46756cebe04f4fecbfeb5b
     fanout_emitter: deploy/native_gst_probe/checkpoint_resource_interval_emitter.hpp
-    fanout_emitter_sha256: b80cd581b2bfd43adc6cf5152f7919714db6dff0972a066eb46da5c01eec9165
+    fanout_emitter_sha256: aa54401630c0483713853f395e1cdfb28498aac050d5488ebcda5a11a8eaf52b
     fanout_binding: deploy/native_gst_probe/vast_native_gst_probe.cpp
-    fanout_binding_sha256: 5269a1e030bdbc5a479d7e3677ca35861ed2ed5e7fceb61c0c74b3b8ed010fb2
+    fanout_binding_sha256: 18723aaa0a82e26ced6d88966bc87b807671b675ec875fdf8060ec1ff332babf
     fanout_runtime_sidecar: resource_intervals.runtime.csv
     fanout_runtime_status: source_implemented_not_target_executed_not_accepted
     sidecar: resource_intervals.csv

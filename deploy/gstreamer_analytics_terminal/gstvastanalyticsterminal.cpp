@@ -26,8 +26,10 @@ struct _GstVastAnalyticsTerminal {
   gchar* expected_upstream_factory;
   gchar* expected_model_sha256;
   gchar* expected_weights_sha256;
+  gchar* expected_device;
   gchar* verified_upstream_factory;
   gchar* verified_detector_identity;
+  gchar* verified_device;
   vast::CheckpointAnalyticsTerminalEmitter* emitter;
 };
 
@@ -44,6 +46,7 @@ enum {
   PROP_EXPECTED_UPSTREAM_FACTORY,
   PROP_EXPECTED_MODEL_SHA256,
   PROP_EXPECTED_WEIGHTS_SHA256,
+  PROP_EXPECTED_DEVICE,
   PROP_CURRENT_LEVEL_BUFFERS,
   N_PROPERTIES,
 };
@@ -78,12 +81,13 @@ static gboolean gst_vast_analytics_terminal_start(GstBaseTransform* transform) {
   GstVastAnalyticsTerminal* self = GST_VAST_ANALYTICS_TERMINAL(transform);
   if (!vast::gstanalytics::valid_branch_id(self->branch_id) ||
       !vast::gstanalytics::valid_detector_id(self->detector_id) ||
-      self->expected_upstream_factory == nullptr || self->expected_upstream_factory[0] == '\0') {
+      self->expected_upstream_factory == nullptr || self->expected_upstream_factory[0] == '\0' ||
+      self->expected_device == nullptr || self->expected_device[0] == '\0') {
     GST_ELEMENT_ERROR(
         self,
         RESOURCE,
         SETTINGS,
-        ("branch-id, valid detector-id, and expected-upstream-factory are required"),
+        ("branch-id, valid detector-id, expected-upstream-factory, and expected-device are required"),
         (nullptr));
     return FALSE;
   }
@@ -123,12 +127,16 @@ static gboolean gst_vast_analytics_terminal_start(GstBaseTransform* transform) {
   }
 
   std::string detector_identity;
+  std::string device;
   try {
     detector_identity = vast::gstanalytics::verified_model_identity(
         upstream,
         self->detector_id,
         self->expected_model_sha256,
         self->expected_weights_sha256);
+    device = vast::gstanalytics::verified_openvino_cpu_device(
+        upstream,
+        self->expected_device);
   } catch (const std::exception& exc) {
     GST_ELEMENT_ERROR(
         self,
@@ -155,8 +163,10 @@ static gboolean gst_vast_analytics_terminal_start(GstBaseTransform* transform) {
   }
   g_free(self->verified_upstream_factory);
   g_free(self->verified_detector_identity);
+  g_free(self->verified_device);
   self->verified_upstream_factory = g_strdup(factory.c_str());
   self->verified_detector_identity = g_strdup(detector_identity.c_str());
+  self->verified_device = g_strdup(device.c_str());
   return TRUE;
 }
 
@@ -166,6 +176,7 @@ static gboolean gst_vast_analytics_terminal_stop(GstBaseTransform* transform) {
   self->emitter = nullptr;
   g_clear_pointer(&self->verified_upstream_factory, g_free);
   g_clear_pointer(&self->verified_detector_identity, g_free);
+  g_clear_pointer(&self->verified_device, g_free);
   return TRUE;
 }
 
@@ -174,7 +185,7 @@ static GstFlowReturn gst_vast_analytics_terminal_transform_ip(
     GstBuffer* buffer) {
   GstVastAnalyticsTerminal* self = GST_VAST_ANALYTICS_TERMINAL(transform);
   if (self->emitter == nullptr || self->verified_upstream_factory == nullptr ||
-      self->verified_detector_identity == nullptr) {
+      self->verified_detector_identity == nullptr || self->verified_device == nullptr) {
     GST_ELEMENT_ERROR(self, RESOURCE, FAILED, ("analytics terminal is not started"), (nullptr));
     return GST_FLOW_ERROR;
   }
@@ -195,7 +206,8 @@ static GstFlowReturn gst_vast_analytics_terminal_transform_ip(
   terminal.branch_id = self->branch_id;
   terminal.terminal_reason = "native_roi_metadata_committed";
   terminal.detector = self->verified_detector_identity;
-  terminal.backend = std::string("openvino-dlstreamer:") + self->verified_upstream_factory;
+  terminal.backend = std::string("openvino-dlstreamer:") + self->verified_upstream_factory +
+                     ";device=" + self->verified_device;
   try {
     self->emitter->emit(terminal);
   } catch (const std::exception& exc) {
@@ -233,6 +245,9 @@ static void gst_vast_analytics_terminal_set_property(
     case PROP_EXPECTED_WEIGHTS_SHA256:
       target = &self->expected_weights_sha256;
       break;
+    case PROP_EXPECTED_DEVICE:
+      target = &self->expected_device;
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
       return;
@@ -263,6 +278,9 @@ static void gst_vast_analytics_terminal_get_property(
     case PROP_EXPECTED_WEIGHTS_SHA256:
       g_value_set_string(value, self->expected_weights_sha256);
       break;
+    case PROP_EXPECTED_DEVICE:
+      g_value_set_string(value, self->expected_device);
+      break;
     case PROP_CURRENT_LEVEL_BUFFERS:
       g_value_set_uint(value, 0);
       break;
@@ -280,8 +298,10 @@ static void gst_vast_analytics_terminal_finalize(GObject* object) {
   g_free(self->expected_upstream_factory);
   g_free(self->expected_model_sha256);
   g_free(self->expected_weights_sha256);
+  g_free(self->expected_device);
   g_free(self->verified_upstream_factory);
   g_free(self->verified_detector_identity);
+  g_free(self->verified_device);
   G_OBJECT_CLASS(gst_vast_analytics_terminal_parent_class)->finalize(object);
 }
 
@@ -291,8 +311,10 @@ static void gst_vast_analytics_terminal_init(GstVastAnalyticsTerminal* self) {
   self->expected_upstream_factory = nullptr;
   self->expected_model_sha256 = nullptr;
   self->expected_weights_sha256 = nullptr;
+  self->expected_device = nullptr;
   self->verified_upstream_factory = nullptr;
   self->verified_detector_identity = nullptr;
+  self->verified_device = nullptr;
   self->emitter = nullptr;
   gst_base_transform_set_in_place(GST_BASE_TRANSFORM(self), TRUE);
   gst_base_transform_set_passthrough(GST_BASE_TRANSFORM(self), FALSE);
@@ -335,6 +357,12 @@ static void gst_vast_analytics_terminal_class_init(GstVastAnalyticsTerminalClass
       "expected-weights-sha256",
       "Expected weights SHA-256",
       "Lowercase SHA-256 of the sibling .bin file required by an OpenVINO IR model",
+      nullptr,
+      static_cast<GParamFlags>(G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+  properties[PROP_EXPECTED_DEVICE] = g_param_spec_string(
+      "expected-device",
+      "Expected device",
+      "Exact OpenVINO CPU device; GPU is not accepted as NVIDIA CUDA evidence",
       nullptr,
       static_cast<GParamFlags>(G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
   properties[PROP_CURRENT_LEVEL_BUFFERS] = g_param_spec_uint(

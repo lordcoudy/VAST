@@ -796,7 +796,7 @@ python scripts/resource_interval_contract.py
 The standalone validator result must remain
 `validator_ready_not_emitted_not_publication_bound`, while the configuration
 assessment reports
-`ready_validator_and_fanout_source_not_target_verified_not_publication_bound`.
+`ready_validator_and_native_interval_sources_not_target_verified_not_publication_bound`.
 Both keep
 `publication_bundle_bound=false` and `evidence_accepted=false`. A future
 adapter may validate a candidate `resource_intervals.csv` only by supplying
@@ -809,12 +809,15 @@ CUDA-event transfer duration is additive resource work. Decoder
 submit-to-output and queue sink-to-src spans are non-additive diagnostics; do
 not sum them as NVDEC busy time, fanout resource work, or `C_obs`. Do not add this
 sidecar to measurement passport v4 or publication evidence bundle v1. The
-shared checkpoint source contains paired GStreamer queue sink/src probes and a
-runtime-only `resource_intervals.runtime.csv` fanout emitter. The coordinator
-requires exact fanout-topology coverage and forbids the fragment in the
-independent-process baseline. This path has not run on the target stand and is
-not an accepted sidecar; native CUDA-event and decoder submit/complete emitters
-still do not exist, and true NVDEC/fanout activity counters are absent. A
+checkpoint native source writes runtime-only decoder submit-to-output intervals
+around every exact hardware-decode execution in both topologies. The shared
+source additionally pairs GStreamer queue sink/src probes and writes
+runtime-only fanout intervals. The coordinator requires exact NVDEC coverage
+in both topologies and exact fanout coverage in the shared topology; an
+independent-process baseline fragment must contain no fanout. These paths have
+not run on the target stand and are not accepted sidecars. A native CUDA-event
+transfer emitter is still missing, and true NVDEC/fanout activity counters are
+absent. A
 publishable use requires a new preregistered
 full-resource evidence scope before any result is inspected.
 

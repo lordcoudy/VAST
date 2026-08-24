@@ -240,9 +240,13 @@ int main(int argc, char** argv) {
       gst_app_src_push_buffer(GST_APP_SRC(source), buffer_with_pts(300)) != GST_FLOW_OK) {
     return 12;
   }
-
   const vast::CheckpointAnalyticsTerminal terminal =
       vast::CheckpointAnalyticsTerminalTransport::receive(descriptors[1]);
+  guint current_level_buffers = 0;
+  g_object_get(queue, "current-level-buffers", &current_level_buffers, nullptr);
+  if (current_level_buffers != 1) {
+    return 14;
+  }
   if (terminal.transport_pts_ns != 300 ||
       terminal.status != vast::CheckpointAnalyticsTerminalStatus::kDrop ||
       terminal.objects != 0 || terminal.branch_id != "damage" ||

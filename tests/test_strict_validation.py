@@ -32,7 +32,9 @@ from run_openvino_container_chunks import (  # noqa: E402
     ChunkRunError,
     append_csv as append_openvino_chunk_csv,
     build_stream_command,
+    guard_chunk_output_dir,
     parse_stream_sources,
+    remove_owned_chunk_directory,
 )
 
 
@@ -57,6 +59,22 @@ class StrictValidationAutomationTests(unittest.TestCase):
             self.assertEqual(paths[1], (root / "runs" / "strict_validation").resolve())
             for path in paths:
                 self.assertEqual(guard_repo_child(path, root), path.resolve())
+
+    def test_runtime_artifact_paths_reject_arbitrary_repository_subtrees(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "repo"
+            root.mkdir()
+            for unsafe in (
+                Path("scripts"),
+                Path(".git"),
+                Path("data"),
+                Path("runs"),
+                Path("runs/strict_validation/nested"),
+            ):
+                with self.subTest(unsafe=unsafe), self.assertRaisesRegex(
+                    StrictValidationError, "must be exactly"
+                ):
+                    runtime_artifact_paths(root, unsafe)
 
     def test_clear_runtime_artifacts_keeps_dataset_assets(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -213,6 +231,78 @@ class StrictValidationAutomationTests(unittest.TestCase):
                 "data/benchmark/a.mp4",
             ],
         )
+
+    def test_openvino_chunk_output_is_confined_to_runs_namespace(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            project = Path(tmp) / "repo"
+            project.mkdir()
+            allowed = project / "runs" / "publication" / "arm"
+
+            self.assertEqual(
+                guard_chunk_output_dir(project, allowed),
+                allowed.resolve(),
+            )
+            for unsafe in (
+                project,
+                project / "runs",
+                project / "scripts",
+                project / ".git",
+                Path(tmp) / "outside",
+            ):
+                with self.subTest(unsafe=unsafe), self.assertRaises(ChunkRunError):
+                    guard_chunk_output_dir(project, unsafe)
+
+    def test_openvino_chunk_cleanup_requires_exact_owned_marker(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            project = Path(tmp) / "repo"
+            output = project / "runs" / "publication" / "arm"
+            chunk = output / "chunks" / "chunk_01"
+            chunk.mkdir(parents=True)
+            chunk.joinpath("payload.bin").write_bytes(b"evidence")
+
+            with self.assertRaisesRegex(ChunkRunError, "ownership marker"):
+                remove_owned_chunk_directory(
+                    output,
+                    chunk,
+                    run_id="run-a",
+                    chunk_index=1,
+                )
+            self.assertTrue(chunk.exists())
+
+            chunk.joinpath(".vast_openvino_chunk_owner").write_text(
+                "run-a\n1\n",
+                encoding="utf-8",
+            )
+            remove_owned_chunk_directory(
+                output,
+                chunk,
+                run_id="run-a",
+                chunk_index=1,
+            )
+            self.assertFalse(chunk.exists())
+
+    def test_openvino_chunk_cleanup_rejects_symlink_alias(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            project = Path(tmp) / "repo"
+            output = project / "runs" / "publication" / "arm"
+            outside = Path(tmp) / "outside"
+            outside.mkdir()
+            outside.joinpath("keep.txt").write_text("keep", encoding="utf-8")
+            alias = output / "chunks" / "chunk_01"
+            alias.parent.mkdir(parents=True)
+            try:
+                alias.symlink_to(outside, target_is_directory=True)
+            except (OSError, NotImplementedError):
+                self.skipTest("directory symlinks are unavailable")
+
+            with self.assertRaises(ChunkRunError):
+                remove_owned_chunk_directory(
+                    output,
+                    alias,
+                    run_id="run-a",
+                    chunk_index=1,
+                )
+            self.assertEqual(outside.joinpath("keep.txt").read_text(encoding="utf-8"), "keep")
 
     def test_openvino_chunk_merge_rewrites_stream_identity(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

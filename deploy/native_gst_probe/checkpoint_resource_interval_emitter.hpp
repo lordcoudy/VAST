@@ -15,6 +15,8 @@ class CheckpointResourceIntervalEmitter {
   static constexpr std::uint64_t kTelemetrySchemaVersion = 2;
   static constexpr std::uint64_t kIntervalContractVersion = 2;
   static constexpr const char* kRuntimeFilename = "resource_intervals.runtime.csv";
+  static constexpr const char* kNvdecDurationProvenance =
+      "native_decoder_submit_complete_interval_v1";
   static constexpr const char* kFanoutDurationProvenance =
       "native_gstreamer_pad_probe_interval_v1";
 
@@ -29,6 +31,71 @@ class CheckpointResourceIntervalEmitter {
            "host_start_timestamp_ns,host_end_timestamp_ns,duration_ns,bytes,device_id,"
            "counter_scope,native_event_id,duration_provenance,telemetry_source\n";
     output_.flush();
+  }
+
+  void emit_nvdec_submit_complete(
+      const std::string& run_id,
+      const std::string& trace_id,
+      std::uint64_t stream_id,
+      std::uint64_t frame_id,
+      const std::string& input_frame_key,
+      const std::string& branch_id,
+      const std::string& execution_id,
+      std::uint64_t host_start_timestamp_ns,
+      std::uint64_t host_end_timestamp_ns,
+      std::uint64_t bytes,
+      const std::string& device_id,
+      const std::string& native_event_id) {
+    require_text(run_id, "run_id");
+    require_text(trace_id, "trace_id");
+    require_text(input_frame_key, "input_frame_key");
+    require_text(branch_id, "branch_id");
+    require_text(execution_id, "execution_id");
+    if (host_start_timestamp_ns >= host_end_timestamp_ns) {
+      throw std::runtime_error("NVDEC submit-to-output interval must have positive width");
+    }
+    if (bytes == 0) {
+      throw std::runtime_error("NVDEC submit-to-output interval must report positive bytes");
+    }
+    if (!valid_device_id(device_id) || device_id.rfind("nvdec:", 0) != 0) {
+      throw std::runtime_error("NVDEC interval device_id must be canonical and start with nvdec:");
+    }
+    if (!valid_sha256(native_event_id)) {
+      throw std::runtime_error("NVDEC native_event_id must be lowercase SHA-256");
+    }
+
+    std::lock_guard<std::mutex> lock(mutex_);
+    if (!native_event_ids_.insert(native_event_id).second) {
+      throw std::runtime_error("NVDEC native_event_id is duplicated in one runtime fragment");
+    }
+    if (!execution_ids_.insert(execution_id).second) {
+      throw std::runtime_error("NVDEC execution_id has more than one runtime interval");
+    }
+    const std::string stage = branch_id == "shared" ? "decode" : "decode_" + branch_id;
+    const std::vector<std::string> values = {
+        std::to_string(kTelemetrySchemaVersion),
+        std::to_string(kIntervalContractVersion),
+        run_id,
+        trace_id,
+        std::to_string(stream_id),
+        std::to_string(frame_id),
+        input_frame_key,
+        "nvdec_submit_complete",
+        "none",
+        stage,
+        branch_id,
+        execution_id,
+        std::to_string(host_start_timestamp_ns),
+        std::to_string(host_end_timestamp_ns),
+        std::to_string(host_end_timestamp_ns - host_start_timestamp_ns),
+        std::to_string(bytes),
+        device_id,
+        "per_trace_interval",
+        native_event_id,
+        kNvdecDurationProvenance,
+        "native",
+    };
+    write_values(values, "NVDEC submit-to-output interval");
   }
 
   void emit_fanout(
@@ -88,17 +155,7 @@ class CheckpointResourceIntervalEmitter {
         kFanoutDurationProvenance,
         "native",
     };
-    for (std::size_t index = 0; index < values.size(); ++index) {
-      if (index != 0) {
-        output_ << ',';
-      }
-      output_ << csv_field(values[index]);
-    }
-    output_ << '\n';
-    output_.flush();
-    if (!output_) {
-      throw std::runtime_error("failed to write runtime fanout interval");
-    }
+    write_values(values, "fanout interval");
   }
 
  private:
@@ -124,6 +181,34 @@ class CheckpointResourceIntervalEmitter {
       }
     }
     return true;
+  }
+
+  static bool valid_device_id(const std::string& value) {
+    if (value.empty() || value.front() < 'a' || value.front() > 'z') {
+      return false;
+    }
+    for (const char character : value) {
+      if (!((character >= 'a' && character <= 'z') ||
+            (character >= '0' && character <= '9') || character == '_' ||
+            character == '.' || character == ':' || character == '-')) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  void write_values(const std::vector<std::string>& values, const char* kind) {
+    for (std::size_t index = 0; index < values.size(); ++index) {
+      if (index != 0) {
+        output_ << ',';
+      }
+      output_ << csv_field(values[index]);
+    }
+    output_ << '\n';
+    output_.flush();
+    if (!output_) {
+      throw std::runtime_error(std::string("failed to write runtime ") + kind);
+    }
   }
 
   static std::string csv_field(const std::string& value) {

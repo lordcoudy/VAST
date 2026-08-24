@@ -978,6 +978,7 @@ def validate_run_metadata_identity(
                     metadata.get("publication_evidence_bundle"),
                     metadata.get("publication_evidence_bundle_identity"),
                     expected_scope=expected_evidence_scope,
+                    expected_policy=str(result.get("policy", "")),
                 )
             except ContractError as exc:
                 mismatches.append(f"metadata.publication_evidence_bundle:{exc}")

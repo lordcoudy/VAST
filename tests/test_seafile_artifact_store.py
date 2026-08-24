@@ -17,8 +17,10 @@ sys.path.insert(0, str(ROOT / "scripts"))
 
 from seafile_artifact_store import (  # noqa: E402
     ArtifactIntegrityError,
-    SeafileArtifactStore,
-    SeafileShareLinks,
+)
+from tests.test_seafile_artifact_store_security import (  # noqa: E402
+    FakeOpener,
+    FixtureStore,
 )
 
 
@@ -117,27 +119,17 @@ class SeafileFixtureHandler(BaseHTTPRequestHandler):
 
 class SeafileArtifactStoreTests(unittest.TestCase):
     def setUp(self) -> None:
-        SeafileFixtureHandler.stored = {}
-        self.server = ThreadingHTTPServer(("127.0.0.1", 0), SeafileFixtureHandler)
-        self.thread = threading.Thread(target=self.server.serve_forever, daemon=True)
-        self.thread.start()
-        base = f"http://127.0.0.1:{self.server.server_port}"
-        links = SeafileShareLinks.from_urls(
-            f"{base}/u/d/uploadtoken/",
-            f"{base}/d/readtoken/",
-        )
-        self.store = SeafileArtifactStore(links, timeout_s=5)
+        self.opener = FakeOpener()
+        self.store = FixtureStore(self.opener)
 
     def tearDown(self) -> None:
-        self.server.shutdown()
-        self.server.server_close()
-        self.thread.join(timeout=5)
+        pass
 
     def test_link_tokens_are_parsed_but_redacted_from_repr(self) -> None:
         representation = repr(self.store.links)
         self.assertNotIn("uploadtoken", representation)
         self.assertNotIn("readtoken", representation)
-        self.assertIn("127.0.0.1", representation)
+        self.assertIn("seafile.example", representation)
 
     def test_upload_is_verified_by_streamed_readback_sha256(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -149,12 +141,12 @@ class SeafileArtifactStoreTests(unittest.TestCase):
 
         self.assertEqual(result["status"], "uploaded_and_verified")
         self.assertEqual(result["sha256"], expected)
-        self.assertEqual(result["size_bytes"], len(SeafileFixtureHandler.stored["pair-0001.tar.zst"]))
+        self.assertEqual(result["size_bytes"], len(self.opener.stored["pair-0001.tar.zst"]))
         self.assertNotIn("uploadtoken", json.dumps(result))
         self.assertNotIn("readtoken", json.dumps(result))
 
     def test_hash_mismatch_fails_closed(self) -> None:
-        SeafileFixtureHandler.stored["pair.tar.zst"] = b"remote-bytes"
+        self.opener.stored["pair.tar.zst"] = b"remote-bytes"
         with self.assertRaisesRegex(ArtifactIntegrityError, "SHA-256"):
             self.store.verify_remote(
                 "pair.tar.zst",

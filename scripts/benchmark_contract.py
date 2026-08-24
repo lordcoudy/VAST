@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import copy
 import csv
 import hashlib
 import json
@@ -14,10 +15,40 @@ from typing import Any
 import pandas as pd
 import yaml
 
+from kpp_legacy_iss_v2_manifest import (
+    KppLegacyIssV2ManifestError,
+    validate_kpp_legacy_iss_v2_manifest_entry,
+)
+from backend_runtime_grant import (
+    BackendRuntimeGrantError,
+    validate_pre_run_backend_runtime_grant,
+)
+from model_parity_grant import (
+    ModelParityGrantError,
+    validate_pre_run_model_parity_grant,
+)
+from checkpoint_acceptance_metadata_binding import (
+    AcceptanceMetadataBindingError,
+    validate_full_publication_execution_binding,
+)
+from backend_publication_output_receipt import (
+    BackendPublicationOutputReceiptError,
+    validate_backend_publication_arm_contract_authority,
+    validate_backend_publication_output_receipt_authority,
+)
 from formal_aw_heft_reference import FormalAwHeftError, validate_reference_artifact
+from publication_acceptance_evidence import (
+    FROZEN_POLICY_DECISIONS_JSONL,
+    FROZEN_POLICY_FEEDBACK_JSONL,
+    FROZEN_PUBLICATION_FEEDBACK_POLICIES,
+    accepted_arm_evidence_files,
+    frozen_policy_requires_feedback,
+    pre_finalization_acceptance_evidence_files,
+)
 
 
 TELEMETRY_SCHEMA_VERSION = 2
+LEGACY_PROXY_FEEDBACK_POLICIES = frozenset({"ql_heft_online"})
 HARDWARE_TARGET_ASSESSMENT_VERSION = 1
 HARDWARE_RAM_TOLERANCE_GB = 2.0
 DATASET_MANIFEST_IDENTITY_VERSION = 1
@@ -612,7 +643,33 @@ PRIMARY_ARCHITECTURE_REQUIRED_SIDECARS = {
 }
 PUBLICATION_EVIDENCE_BUNDLE_SCOPE = "primary_architecture_raw_evidence_v1"
 FULL_RESOURCE_PUBLICATION_SCOPE = "primary_architecture_full_resource_raw_evidence_v2"
-FULL_RESOURCE_PUBLICATION_EVIDENCE_FILES = PRIMARY_ARCHITECTURE_REQUIRED_SIDECARS | {
+PRE_RUN_RESOURCE_CAPABILITY_GRANT_KIND = (
+    "vast_verified_pre_run_resource_capability_grant"
+)
+PRE_RUN_RESOURCE_CAPABILITY_STATUS = (
+    "accepted_pre_run_resource_capability_qualification"
+)
+PRE_RUN_RESOURCE_CAPABILITY_GRANT_FIELDS = frozenset(
+    {
+        "schema_version",
+        "artifact_kind",
+        "status",
+        "publication_scope",
+        "identity_artifact_binding_sha256",
+        "qualification_receipt",
+        "capability_manifest",
+        "post_run_per_arm_evidence_required",
+        "configuration_evidence_accepted_mutated",
+        "grant_sha256",
+    }
+)
+FULL_PUBLICATION_SYSTEMS = frozenset(
+    {"deepstream", "savant", "openvino_gva", "gstreamer_custom"}
+)
+FULL_RESOURCE_PUBLICATION_EVIDENCE_FILES = set(
+    accepted_arm_evidence_files("cpu_only", full_resource=True)
+)
+FULL_RESOURCE_PUBLICATION_RESOURCE_FILES = {
     "resource_intervals.csv",
     "hardware_resource_samples.csv",
     "fanout_work_counters.csv",
@@ -623,6 +680,211 @@ PUBLICATION_EVIDENCE_BUNDLE_POLICY_FROZEN_SCOPE = (
 PUBLICATION_EVIDENCE_BUNDLE_POLICY_ONLINE_SCOPE = (
     "primary_policy_online_raw_evidence_v1"
 )
+
+
+def _canonical_grant_sha256(value: dict[str, Any], *, exclude_self: bool) -> str:
+    material = (
+        {key: item for key, item in value.items() if key != "grant_sha256"}
+        if exclude_self
+        else value
+    )
+    try:
+        payload = json.dumps(
+            material,
+            sort_keys=True,
+            separators=(",", ":"),
+            ensure_ascii=True,
+            allow_nan=False,
+        ).encode("utf-8")
+    except (TypeError, ValueError) as error:
+        raise ContractError(
+            f"pre-run resource capability grant is not canonical JSON: {error}"
+        ) from error
+    return hashlib.sha256(payload).hexdigest()
+
+
+def _grant_descriptor_valid(value: Any) -> bool:
+    if type(value) is not dict or set(value) != {"path", "size_bytes", "sha256"}:
+        return False
+    path = value.get("path")
+    if type(path) is not str or not path or "\\" in path or path.startswith("/"):
+        return False
+    parts = path.split("/")
+    return (
+        all(part not in {"", ".", ".."} for part in parts)
+        and type(value.get("size_bytes")) is int
+        and value["size_bytes"] > 0
+        and type(value.get("sha256")) is str
+        and re.fullmatch(r"[0-9a-f]{64}", value["sha256"]) is not None
+    )
+
+
+def assess_pre_run_resource_capability_grant(value: Any) -> dict[str, Any]:
+    """Assess the immutable pre-run capability grant without trusting config flags."""
+
+    blockers: list[str] = []
+    if value is None:
+        blockers.append("pre_run_resource_capability_qualification_missing")
+    elif type(value) is not dict:
+        blockers.append("pre_run_resource_capability_grant_not_mapping")
+    else:
+        if set(value) != PRE_RUN_RESOURCE_CAPABILITY_GRANT_FIELDS:
+            blockers.append("pre_run_resource_capability_grant_fields_drifted")
+        if value.get("schema_version") != 1:
+            blockers.append("pre_run_resource_capability_grant_schema_version_mismatch")
+        if value.get("artifact_kind") != PRE_RUN_RESOURCE_CAPABILITY_GRANT_KIND:
+            blockers.append("pre_run_resource_capability_grant_artifact_kind_mismatch")
+        if value.get("status") != PRE_RUN_RESOURCE_CAPABILITY_STATUS:
+            blockers.append("pre_run_resource_capability_grant_status_mismatch")
+        if value.get("publication_scope") != FULL_RESOURCE_PUBLICATION_SCOPE:
+            blockers.append("pre_run_resource_capability_grant_publication_scope_mismatch")
+        identity = value.get("identity_artifact_binding_sha256")
+        if type(identity) is not str or re.fullmatch(r"[0-9a-f]{64}", identity) is None:
+            blockers.append("pre_run_resource_capability_grant_binding_identity_invalid")
+        if not _grant_descriptor_valid(value.get("qualification_receipt")):
+            blockers.append("pre_run_resource_capability_grant_receipt_descriptor_invalid")
+        if not _grant_descriptor_valid(value.get("capability_manifest")):
+            blockers.append("pre_run_resource_capability_grant_manifest_descriptor_invalid")
+        if value.get("post_run_per_arm_evidence_required") is not True:
+            blockers.append("pre_run_resource_capability_grant_post_run_boundary_mismatch")
+        if value.get("configuration_evidence_accepted_mutated") is not False:
+            blockers.append("pre_run_resource_capability_grant_config_boundary_mismatch")
+        grant_sha256 = value.get("grant_sha256")
+        if (
+            type(grant_sha256) is not str
+            or re.fullmatch(r"[0-9a-f]{64}", grant_sha256) is None
+            or grant_sha256 != _canonical_grant_sha256(value, exclude_self=True)
+        ):
+            blockers.append("pre_run_resource_capability_grant_self_hash_mismatch")
+    blockers = list(dict.fromkeys(blockers))
+    return {
+        "schema_version": 1,
+        "artifact_kind": "vast_pre_run_resource_capability_grant_assessment",
+        "passed": not blockers,
+        "status": "accepted" if not blockers else "blocked",
+        "publication_scope": FULL_RESOURCE_PUBLICATION_SCOPE,
+        "blockers": blockers,
+        "grant_sha256": (
+            str(value.get("grant_sha256"))
+            if type(value) is dict and not blockers
+            else None
+        ),
+    }
+
+
+def validate_pre_run_resource_capability_grant(value: Any) -> dict[str, Any]:
+    assessment = assess_pre_run_resource_capability_grant(value)
+    if not assessment["passed"]:
+        raise ContractError(
+            "pre-run resource capability grant is invalid: "
+            + ", ".join(str(item) for item in assessment["blockers"])
+        )
+    return copy.deepcopy(value)
+
+
+def resource_capability_grant_from_identity_artifacts(
+    identity_artifacts: dict[str, Any],
+) -> dict[str, Any]:
+    """Derive a grant only from the loader's canonical, validated identity binding."""
+
+    if (
+        type(identity_artifacts) is not dict
+        or set(identity_artifacts)
+        != {
+            "schema_version",
+            "artifact_kind",
+            "manifest",
+            "bindings",
+            "files",
+            "files_sha256",
+            "binding_sha256",
+        }
+        or identity_artifacts.get("schema_version") != 2
+        or identity_artifacts.get("artifact_kind")
+        != "vast_full_publication_identity_artifact_binding"
+        or type(identity_artifacts.get("binding_sha256")) is not str
+        or re.fullmatch(
+            r"[0-9a-f]{64}", identity_artifacts["binding_sha256"]
+        )
+        is None
+    ):
+        raise ContractError("validated full publication identity binding is invalid")
+    binding_material = {
+        key: item
+        for key, item in identity_artifacts.items()
+        if key != "binding_sha256"
+    }
+    try:
+        binding_payload = json.dumps(
+            binding_material,
+            sort_keys=True,
+            separators=(",", ":"),
+            ensure_ascii=True,
+            allow_nan=False,
+        ).encode("utf-8")
+    except (TypeError, ValueError) as error:
+        raise ContractError("validated identity binding is not canonical JSON") from error
+    if hashlib.sha256(binding_payload).hexdigest() != identity_artifacts["binding_sha256"]:
+        raise ContractError("validated identity artifact binding self-hash drift")
+    bindings = identity_artifacts.get("bindings")
+    if type(bindings) is not dict or set(bindings) != {
+        "analytics_model_parity",
+        "analytics_execution_layer",
+        "policy_qualification",
+        "resource_qualification",
+        "backend_runtime_qualification",
+    }:
+        raise ContractError("validated full publication identity bindings have drifted")
+    files = identity_artifacts.get("files")
+    if type(files) is not list or not files:
+        raise ContractError("validated identity artifact file set is empty")
+    if any(not _grant_descriptor_valid(record) for record in files):
+        raise ContractError("validated identity artifact file descriptor is invalid")
+    if len({record["path"] for record in files}) != len(files):
+        raise ContractError("validated identity artifact file paths collide")
+    if identity_artifacts.get("files_sha256") != _canonical_grant_sha256(
+        {"files": files}, exclude_self=False
+    ):
+        expected_files_sha256 = hashlib.sha256(
+            json.dumps(
+                files,
+                sort_keys=True,
+                separators=(",", ":"),
+                ensure_ascii=True,
+                allow_nan=False,
+            ).encode("utf-8")
+        ).hexdigest()
+        if identity_artifacts.get("files_sha256") != expected_files_sha256:
+            raise ContractError("validated identity artifact file set hash drift")
+    resource = bindings.get("resource_qualification") if type(bindings) is dict else None
+    if type(resource) is not dict or set(resource) != {"receipt", "outputs"}:
+        raise ContractError("validated resource qualification binding is missing")
+    outputs = resource.get("outputs")
+    if type(outputs) is not dict or set(outputs) != {"capability_manifest"}:
+        raise ContractError("validated resource qualification outputs have drifted")
+    receipt = copy.deepcopy(resource.get("receipt"))
+    capability = copy.deepcopy(outputs.get("capability_manifest"))
+    if not _grant_descriptor_valid(receipt) or not _grant_descriptor_valid(capability):
+        raise ContractError("validated resource qualification descriptors are invalid")
+    records_by_path = {record["path"]: record for record in files}
+    if (
+        records_by_path.get(receipt["path"]) != receipt
+        or records_by_path.get(capability["path"]) != capability
+    ):
+        raise ContractError("validated resource qualification descriptors are unbound")
+    grant = {
+        "schema_version": 1,
+        "artifact_kind": PRE_RUN_RESOURCE_CAPABILITY_GRANT_KIND,
+        "status": PRE_RUN_RESOURCE_CAPABILITY_STATUS,
+        "publication_scope": FULL_RESOURCE_PUBLICATION_SCOPE,
+        "identity_artifact_binding_sha256": identity_artifacts["binding_sha256"],
+        "qualification_receipt": receipt,
+        "capability_manifest": capability,
+        "post_run_per_arm_evidence_required": True,
+        "configuration_evidence_accepted_mutated": False,
+    }
+    grant["grant_sha256"] = _canonical_grant_sha256(grant, exclude_self=False)
+    return validate_pre_run_resource_capability_grant(grant)
 PRIMARY_POLICY_ARTIFACT_SHA256 = "0a961ae5e9e500dc3f07b386743b1a17c1991398018a44c5756d0f3a3b6045b5"
 PRIMARY_POLICY_PASSPORT = {
     "artifact_schema_version": 2,
@@ -724,16 +986,23 @@ RESOURCE_INTERVAL_EXTENSION_SOURCE_MARKERS = {
 RESOURCE_INTERVAL_FANOUT_EMITTER_MARKERS = {
     "CheckpointResourceIntervalEmitter",
     "resource_intervals.runtime.csv",
+    "emit_nvdec_submit_complete",
     "emit_fanout",
+    "native_decoder_submit_complete_interval_v1",
     "native_gstreamer_pad_probe_interval_v1",
+    "nvdec:",
     "gstreamer:tee-queue",
     "per_trace_interval",
     "telemetry_source",
 }
 RESOURCE_INTERVAL_FANOUT_BINDING_MARKERS = {
+    "checkpoint-nvdec-start",
+    "checkpoint-nvdec-complete",
     "checkpoint-fanout-start",
     "checkpoint-fanout",
+    "checkpoint_nvdec_starts_by_pts",
     "checkpoint_fanout_starts_by_branch",
+    "emit_nvdec_submit_complete",
     "FanoutIntervalStart",
     "checkpoint_resource_interval_emitter_",
     'branch,\n                "sink"',
@@ -1253,7 +1522,7 @@ def assess_resource_interval_extension(config: dict[str, Any]) -> dict[str, Any]
     extension = benchmark.get("resource_interval_extension") or {}
     expected_declaration = {
         "contract_version": 2,
-        "status": "validator_and_fanout_source_ready_not_emitted_not_publication_bound",
+        "status": "validator_and_native_interval_sources_ready_not_emitted_not_publication_bound",
         "validator": "scripts/resource_interval_contract.py",
         "fanout_emitter": "deploy/native_gst_probe/checkpoint_resource_interval_emitter.hpp",
         "fanout_binding": "deploy/native_gst_probe/vast_native_gst_probe.cpp",
@@ -1366,7 +1635,7 @@ def assess_resource_interval_extension(config: dict[str, Any]) -> dict[str, Any]
     return {
         "assessment_schema_version": 1,
         "status": (
-            "ready_validator_and_fanout_source_not_target_verified_not_publication_bound"
+            "ready_validator_and_native_interval_sources_not_target_verified_not_publication_bound"
             if validator_verified
             else "blocked_resource_interval_contract_invalid"
         ),
@@ -1402,7 +1671,7 @@ def assess_resource_interval_extension(config: dict[str, Any]) -> dict[str, Any]
         "blockers": blockers,
         "remaining_gates": [
             "native_cuda_transfer_interval_emitter_missing",
-            "native_nvdec_submit_complete_interval_emitter_missing",
+            "native_nvdec_submit_complete_interval_emitter_not_target_executed_or_accepted",
             "native_nvdec_busy_resource_counter_missing",
             "native_fanout_interval_emitter_not_target_executed_or_accepted",
             "native_fanout_resource_work_counter_missing",
@@ -1414,11 +1683,13 @@ def assess_resource_interval_extension(config: dict[str, Any]) -> dict[str, Any]
             "and summarize native transfer, decoder submit-to-output, and fanout linkage. "
             "Only CUDA-event transfer duration is declared additive resource work. Decoder "
             "submit-to-output and queue sink-to-src spans are non-additive diagnostics, not "
-            "NVDEC busy time or fanout resource work. The source-bound fanout emitter pairs "
-            "native GStreamer queue sink/src probes, but it has not "
-            "run on the target stand and its runtime-only fragment is not accepted. It is not "
+            "NVDEC busy time or fanout resource work. The source-bound native interval emitter "
+            "records decoder submit-to-output around the explicit hardware decoder in both "
+            "checkpoint topologies and pairs GStreamer queue sink/src probes for shared fanout. "
+            "These paths have not run on the target stand and their runtime-only fragments are "
+            "not accepted. They are not "
             "bound to measurement passport v4 or publication evidence bundle v1, "
-            "so it cannot upgrade the primary claim from partial resource coverage."
+            "so they cannot upgrade the primary claim from partial resource coverage."
         ),
     }
 
@@ -2269,6 +2540,13 @@ _PUBLICATION_RUN_COORDINATE_FIELDS = (
 def resolve_publication_run_contract(
     config: dict[str, Any],
     result: dict[str, Any],
+    *,
+    resource_capability_grant: dict[str, Any] | None = None,
+    backend_runtime_grant: dict[str, Any] | None = None,
+    model_parity_grant: dict[str, Any] | None = None,
+    full_publication_execution_binding: dict[str, Any] | None = None,
+    backend_publication_arm_contract_authority: dict[str, Any] | None = None,
+    backend_publication_output_receipt_authority: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Resolve the configuration and frozen-analysis contract for one run."""
 
@@ -2307,6 +2585,135 @@ def resolve_publication_run_contract(
             "configuration": dict(system_config),
         },
     }
+    if resource_capability_grant is not None:
+        contract["pre_run_resource_capability_grant"] = (
+            validate_pre_run_resource_capability_grant(resource_capability_grant)
+        )
+    if backend_runtime_grant is not None:
+        try:
+            contract["pre_run_backend_runtime_grant"] = (
+                validate_pre_run_backend_runtime_grant(backend_runtime_grant)
+            )
+        except BackendRuntimeGrantError as error:
+            raise ContractError(f"invalid pre-run backend runtime grant: {error}") from error
+    if model_parity_grant is not None:
+        try:
+            contract["pre_run_model_parity_grant"] = (
+                validate_pre_run_model_parity_grant(model_parity_grant)
+            )
+        except ModelParityGrantError as error:
+            raise ContractError(
+                f"invalid pre-run model-parity grant: {error}"
+            ) from error
+    if backend_runtime_grant is not None:
+        if resource_capability_grant is None or model_parity_grant is None:
+            raise ContractError(
+                "backend publication requires resource, backend, and model-parity grants"
+            )
+        identities = {
+            contract["pre_run_resource_capability_grant"]["identity_artifact_binding_sha256"],
+            contract["pre_run_backend_runtime_grant"]["identity_artifact_binding_sha256"],
+            contract["pre_run_model_parity_grant"]["identity_artifact_binding_sha256"],
+        }
+        if len(identities) != 1:
+            raise ContractError(
+                "resource/backend/model-parity grants bind different identity artifacts"
+            )
+        if (
+            contract["pre_run_backend_runtime_grant"]["upstream_identities"][
+                "model_parity_acceptance_binding_sha256"
+            ]
+            != contract["pre_run_model_parity_grant"][
+                "parity_acceptance_binding_sha256"
+            ]
+        ):
+            raise ContractError(
+                "backend and model-parity grants bind different parity acceptances"
+            )
+    if full_publication_execution_binding is not None:
+        try:
+            contract["full_publication_execution_binding"] = (
+                validate_full_publication_execution_binding(
+                    full_publication_execution_binding
+                )
+            )
+        except AcceptanceMetadataBindingError as error:
+            raise ContractError(
+                f"invalid full-publication execution binding: {error}"
+            ) from error
+    receipt_authorities = (
+        backend_publication_arm_contract_authority,
+        backend_publication_output_receipt_authority,
+    )
+    if any(value is not None for value in receipt_authorities):
+        if any(value is None for value in receipt_authorities):
+            raise ContractError(
+                "backend publication contract/receipt authorities must be supplied together"
+            )
+        try:
+            arm_authority = validate_backend_publication_arm_contract_authority(
+                backend_publication_arm_contract_authority
+            )
+            receipt_authority = (
+                validate_backend_publication_output_receipt_authority(
+                    backend_publication_output_receipt_authority
+                )
+            )
+        except BackendPublicationOutputReceiptError as error:
+            raise ContractError(
+                f"invalid backend publication contract/receipt authority: {error}"
+            ) from error
+        crossbind_fields = (
+            "full_publication_execution_binding",
+            "run_identity_sha256",
+            "run_id",
+            "output_dir",
+            "dispatch_resolution_sha256",
+            "cell_identity_sha256",
+            "launcher_sha256",
+            "launcher_invocation_sha256",
+            "backend_runtime_grant_sha256",
+            "resource_capability_grant_sha256",
+            "model_parity_grant_sha256",
+            "model_parity_acceptance_binding_sha256",
+            "identity_artifact_binding_sha256",
+        )
+        if any(
+            arm_authority[field] != receipt_authority[field]
+            for field in crossbind_fields
+        ):
+            raise ContractError(
+                "backend publication contract/receipt authorities are not crossbound"
+            )
+        if (
+            full_publication_execution_binding is None
+            or arm_authority["full_publication_execution_binding"]
+            != contract.get("full_publication_execution_binding")
+            or backend_runtime_grant is None
+            or arm_authority["backend_runtime_grant_sha256"]
+            != contract["pre_run_backend_runtime_grant"]["grant_sha256"]
+            or resource_capability_grant is None
+            or arm_authority["resource_capability_grant_sha256"]
+            != contract["pre_run_resource_capability_grant"]["grant_sha256"]
+            or model_parity_grant is None
+            or arm_authority["model_parity_grant_sha256"]
+            != contract["pre_run_model_parity_grant"]["grant_sha256"]
+            or arm_authority[
+                "model_parity_acceptance_binding_sha256"
+            ]
+            != contract["pre_run_model_parity_grant"][
+                "parity_acceptance_binding_sha256"
+            ]
+            or arm_authority["identity_artifact_binding_sha256"]
+            != contract["pre_run_model_parity_grant"][
+                "identity_artifact_binding_sha256"
+            ]
+        ):
+            raise ContractError(
+                "backend publication authorities differ from execution/resource/backend/model-parity grants"
+            )
+        contract["backend_publication_arm_contract_authority"] = arm_authority
+        contract["backend_publication_output_receipt_authority"] = receipt_authority
 
     scenario_name = str(result.get("scenario", ""))
     policy_name = str(result.get("policy", ""))
@@ -2348,22 +2755,21 @@ def publication_run_contract_identity(contract: dict[str, Any]) -> dict[str, Any
 def resolve_publication_evidence_bundle_scope(
     config: dict[str, Any],
     result: dict[str, Any],
+    *,
+    resource_capability_grant: dict[str, Any] | None = None,
 ) -> str:
     """Select the frozen byte-manifest scope from run coordinates."""
 
     benchmark = config.get("benchmark") or {}
-    extension = benchmark.get("resource_interval_extension")
     matrix_policies = {str(value) for value in benchmark.get("scheduler_policies") or ()}
     matrix_scenarios = {str(value) for value in benchmark.get("active_scenarios") or ()}
+    if resource_capability_grant is not None:
+        validate_pre_run_resource_capability_grant(resource_capability_grant)
     if (
-        isinstance(extension, dict)
+        resource_capability_grant is not None
+        and str(result.get("system", "")) in FULL_PUBLICATION_SYSTEMS
         and str(result.get("policy", "")) in matrix_policies
         and str(result.get("scenario", "")) in matrix_scenarios
-        and str(extension.get("status", "")) == "accepted_full_resource_publication_v2"
-        and str(extension.get("current_publication_bundle_scope", ""))
-        == FULL_RESOURCE_PUBLICATION_SCOPE
-        and bool(extension.get("publication_bundle_bound"))
-        and bool(extension.get("evidence_accepted"))
     ):
         return FULL_RESOURCE_PUBLICATION_SCOPE
     ablation = benchmark.get("primary_policy_ablation")
@@ -2382,36 +2788,53 @@ def resolve_publication_evidence_bundle_scope(
     return PUBLICATION_EVIDENCE_BUNDLE_SCOPE
 
 
-def publication_evidence_bundle_files(scope: str) -> tuple[str, ...]:
+def publication_evidence_bundle_files(
+    scope: str,
+    *,
+    policy: str | None = None,
+) -> tuple[str, ...]:
     """Return the exact, ordered raw-file set for one publication scope."""
 
-    files_by_scope = {
-        PUBLICATION_EVIDENCE_BUNDLE_SCOPE: PRIMARY_ARCHITECTURE_REQUIRED_SIDECARS,
-        FULL_RESOURCE_PUBLICATION_SCOPE: FULL_RESOURCE_PUBLICATION_EVIDENCE_FILES,
-        PUBLICATION_EVIDENCE_BUNDLE_POLICY_FROZEN_SCOPE: (
-            PRIMARY_ARCHITECTURE_REQUIRED_SIDECARS
-        ),
-        PUBLICATION_EVIDENCE_BUNDLE_POLICY_ONLINE_SCOPE: (
-            PRIMARY_ARCHITECTURE_REQUIRED_SIDECARS | {"policy_feedback.csv"}
-        ),
+    supported = {
+        PUBLICATION_EVIDENCE_BUNDLE_SCOPE,
+        FULL_RESOURCE_PUBLICATION_SCOPE,
+        PUBLICATION_EVIDENCE_BUNDLE_POLICY_FROZEN_SCOPE,
+        PUBLICATION_EVIDENCE_BUNDLE_POLICY_ONLINE_SCOPE,
     }
-    try:
-        return tuple(sorted(files_by_scope[scope]))
-    except KeyError as exc:
+    if scope not in supported:
         raise ContractError(
             f"publication evidence bundle uses an unsupported scope: {scope}"
-        ) from exc
+        )
+    if scope == PUBLICATION_EVIDENCE_BUNDLE_SCOPE and policy is None:
+        return tuple(sorted(PRIMARY_ARCHITECTURE_REQUIRED_SIDECARS))
+    normalized_policy = str(policy or "").strip()
+    if not normalized_policy:
+        raise ContractError("policy-aware publication evidence bundle requires policy")
+    if scope == FULL_RESOURCE_PUBLICATION_SCOPE:
+        files = accepted_arm_evidence_files(
+            normalized_policy,
+            full_resource=True,
+        )
+    elif scope in {
+        PUBLICATION_EVIDENCE_BUNDLE_POLICY_FROZEN_SCOPE,
+        PUBLICATION_EVIDENCE_BUNDLE_POLICY_ONLINE_SCOPE,
+    }:
+        files = pre_finalization_acceptance_evidence_files(normalized_policy)
+    else:
+        files = pre_finalization_acceptance_evidence_files(normalized_policy)
+    return tuple(sorted(files))
 
 
 def build_publication_evidence_bundle(
     run_dir: Path,
     *,
     scope: str,
+    policy: str | None = None,
 ) -> dict[str, Any]:
     """Hash the exact claim-critical raw files after accepted-sidecar validation."""
 
     records: list[dict[str, Any]] = []
-    for relative_name in publication_evidence_bundle_files(scope):
+    for relative_name in publication_evidence_bundle_files(scope, policy=policy):
         path = run_dir / relative_name
         if path.is_symlink():
             raise ContractError(
@@ -2426,11 +2849,14 @@ def build_publication_evidence_bundle(
                 "sha256": sha256_file(path),
             }
         )
-    return {
+    bundle = {
         "schema_version": PUBLICATION_EVIDENCE_BUNDLE_IDENTITY_VERSION,
         "scope": scope,
         "files": records,
     }
+    if policy is not None:
+        bundle["policy"] = str(policy).strip()
+    return bundle
 
 
 def publication_evidence_bundle_identity(bundle: dict[str, Any]) -> dict[str, Any]:
@@ -2449,6 +2875,7 @@ def validate_publication_evidence_bundle(
     declared_identity: Any,
     *,
     expected_scope: str,
+    expected_policy: str | None = None,
 ) -> dict[str, Any]:
     """Recompute bundle bytes and reject absent, replaced, or re-ordered evidence."""
 
@@ -2458,12 +2885,16 @@ def validate_publication_evidence_bundle(
         raise ContractError(
             "publication evidence bundle uses an unsupported schema version"
         )
-    publication_evidence_bundle_files(expected_scope)
+    publication_evidence_bundle_files(expected_scope, policy=expected_policy)
     if bundle.get("scope") != expected_scope:
         raise ContractError(
             "publication evidence bundle scope does not match the expected run scope"
         )
-    expected = build_publication_evidence_bundle(run_dir, scope=expected_scope)
+    expected = build_publication_evidence_bundle(
+        run_dir,
+        scope=expected_scope,
+        policy=expected_policy,
+    )
     if bundle != expected:
         raise ContractError(
             "publication evidence bundle does not match current claim-critical raw files"
@@ -2492,6 +2923,8 @@ def load_dataset(
     require_files: bool,
     allow_placeholder_checksums: bool = False,
 ) -> dict[str, Any]:
+    if type(mode) is not str or mode not in {"smoke", "benchmark"}:
+        raise ContractError("dataset mode must be exactly 'smoke' or 'benchmark'")
     with manifest_path.open("r", encoding="utf-8") as f:
         manifest = yaml.safe_load(f) or {}
     datasets = manifest.get("datasets", {})
@@ -2499,6 +2932,15 @@ def load_dataset(
         raise ContractError(f"unknown dataset '{dataset_name}' in {manifest_path}")
 
     dataset = dict(datasets[dataset_name] or {})
+    try:
+        validate_kpp_legacy_iss_v2_manifest_entry(
+            dataset_name,
+            dataset,
+            project_root=project_root,
+            require_files=require_files,
+        )
+    except KppLegacyIssV2ManifestError as exc:
+        raise ContractError(str(exc)) from exc
     dataset["name"] = dataset_name
     streams = list(dataset.get("streams") or [])
     if not streams:
@@ -3594,6 +4036,397 @@ def validate_policy_decisions(
     )
 
 
+_FROZEN_FEEDBACK_FIELDS = {
+    "schema_version",
+    "artifact_kind",
+    "policy_contract_sha256",
+    "engine_implementation_id",
+    "policy",
+    "system",
+    "arm_id",
+    "decision_id",
+    "actual_service_ms",
+    "completed_at_ms",
+    "deadline_ms",
+    "outcome",
+    "state_before",
+    "state_after",
+    "sha256",
+}
+_FROZEN_DECISION_FEEDBACK_FIELDS = {
+    "artifact_kind",
+    "policy_contract_sha256",
+    "engine_implementation_id",
+    "policy",
+    "system",
+    "arm_id",
+    "decision_id",
+    "decision_seq",
+    "branch",
+    "request",
+    "state_before",
+    "selected_resource",
+    "record_status",
+    "native_decision_evidence",
+    "sha256",
+}
+
+
+def _read_canonical_policy_jsonl(path: Path, *, artifact_kind: str) -> list[dict[str, Any]]:
+    if not path.is_file():
+        raise ContractError(f"required frozen policy evidence is missing: {path}")
+    raw = path.read_text(encoding="utf-8")
+    if not raw or not raw.endswith("\n"):
+        raise ContractError(f"{path}: canonical JSONL must be non-empty and newline terminated")
+    records: list[dict[str, Any]] = []
+    for line_number, line in enumerate(raw.splitlines(), start=1):
+        if not line:
+            raise ContractError(f"{path}:{line_number}: blank JSONL record")
+        try:
+            record = json.loads(line)
+        except json.JSONDecodeError as exc:
+            raise ContractError(f"{path}:{line_number}: invalid policy JSON") from exc
+        if not isinstance(record, dict) or record.get("artifact_kind") != artifact_kind:
+            raise ContractError(f"{path}:{line_number}: policy artifact kind drifted")
+        try:
+            canonical = json.dumps(
+                record,
+                sort_keys=True,
+                separators=(",", ":"),
+                ensure_ascii=True,
+                allow_nan=False,
+            )
+        except (TypeError, ValueError) as exc:
+            raise ContractError(f"{path}:{line_number}: non-canonical policy JSON") from exc
+        if line != canonical:
+            raise ContractError(f"{path}:{line_number}: policy JSONL record is not canonical")
+        payload = dict(record)
+        digest = str(payload.pop("sha256", ""))
+        actual = hashlib.sha256(
+            json.dumps(
+                payload,
+                sort_keys=True,
+                separators=(",", ":"),
+                ensure_ascii=True,
+                allow_nan=False,
+            ).encode("utf-8")
+        ).hexdigest()
+        if not re.fullmatch(r"[0-9a-f]{64}", digest) or digest != actual:
+            raise ContractError(f"{path}:{line_number}: policy record SHA-256 mismatch")
+        records.append(record)
+    return records
+
+
+def _frozen_adaptive_state(
+    value: Any,
+    *,
+    path: Path,
+    line_number: int,
+    field: str,
+) -> dict[str, Any]:
+    if not isinstance(value, dict) or set(value) != {
+        "arm_id",
+        "weights",
+        "service_ewma_ms",
+    }:
+        raise ContractError(f"{path}:{line_number}: {field} schema drifted")
+    arm_id = str(value["arm_id"]).strip()
+    weights = value["weights"]
+    ewma = value["service_ewma_ms"]
+    if not arm_id or not isinstance(weights, dict) or set(weights) != {"cpu", "gpu"}:
+        raise ContractError(f"{path}:{line_number}: {field} identity or weights drifted")
+    normalized_weights: dict[str, float] = {}
+    for resource in ("cpu", "gpu"):
+        try:
+            weight = float(weights[resource])
+        except (TypeError, ValueError) as exc:
+            raise ContractError(f"{path}:{line_number}: {field} weight is not numeric") from exc
+        if not math.isfinite(weight) or not 0.5 <= weight <= 1.5:
+            raise ContractError(f"{path}:{line_number}: {field} weight is outside frozen bounds")
+        normalized_weights[resource] = weight
+    if not isinstance(ewma, dict):
+        raise ContractError(f"{path}:{line_number}: {field} EWMA state drifted")
+    normalized_ewma: dict[str, dict[str, float]] = {}
+    for branch, resources in ewma.items():
+        if not str(branch).strip() or not isinstance(resources, dict):
+            raise ContractError(f"{path}:{line_number}: {field} EWMA branch drifted")
+        if not resources or not set(resources).issubset({"cpu", "gpu"}):
+            raise ContractError(f"{path}:{line_number}: {field} EWMA resource set drifted")
+        normalized_ewma[str(branch)] = {}
+        for resource, raw_service in resources.items():
+            try:
+                service = float(raw_service)
+            except (TypeError, ValueError) as exc:
+                raise ContractError(f"{path}:{line_number}: {field} EWMA is not numeric") from exc
+            if not math.isfinite(service) or service <= 0.0:
+                raise ContractError(f"{path}:{line_number}: {field} EWMA must be positive")
+            normalized_ewma[str(branch)][str(resource)] = service
+    return {
+        "arm_id": arm_id,
+        "weights": normalized_weights,
+        "service_ewma_ms": normalized_ewma,
+    }
+
+
+def _adaptive_states_close(left: Any, right: Any) -> bool:
+    if isinstance(left, dict) and isinstance(right, dict):
+        return set(left) == set(right) and all(
+            _adaptive_states_close(left[key], right[key]) for key in left
+        )
+    if isinstance(left, (int, float)) and isinstance(right, (int, float)):
+        return math.isclose(float(left), float(right), rel_tol=1e-12, abs_tol=1e-12)
+    return left == right
+
+
+def validate_frozen_policy_feedback(
+    path: Path,
+    *,
+    decisions: pd.DataFrame,
+    decision_records_path: Path | None = None,
+    require_complete: bool = False,
+) -> pd.DataFrame:
+    """Validate canonical native feedback for frozen adaptive_weights."""
+
+    feedback_records = _read_canonical_policy_jsonl(
+        path,
+        artifact_kind="vast_publication_policy_feedback",
+    )
+    resolved_decisions_path = (
+        decision_records_path or path.parent / FROZEN_POLICY_DECISIONS_JSONL
+    )
+    decision_records = _read_canonical_policy_jsonl(
+        resolved_decisions_path,
+        artifact_kind="vast_publication_policy_decision",
+    )
+    adaptive = decisions[
+        decisions["policy"].astype(str).str.strip().str.lower().map(
+            frozen_policy_requires_feedback
+        )
+    ].copy()
+    if adaptive.empty:
+        raise ContractError(f"{path}: frozen feedback requires adaptive_weights decisions")
+    if not bool(adaptive["causal_policy_claim_eligible"].all()):
+        raise ContractError(f"{path}: adaptive_weights decisions lack complete causal trace")
+    csv_by_id = {
+        str(row["decision_id"]).strip(): row
+        for _index, row in adaptive.iterrows()
+    }
+    if len(csv_by_id) != len(adaptive):
+        raise ContractError(f"{path}: adaptive_weights decision IDs are not unique")
+
+    canonical_by_id: dict[str, dict[str, Any]] = {}
+    for line_number, record in enumerate(decision_records, start=1):
+        if not _FROZEN_DECISION_FEEDBACK_FIELDS.issubset(record):
+            raise ContractError(
+                f"{resolved_decisions_path}:{line_number}: "
+                "accepted decision lacks feedback linkage fields"
+            )
+        if not frozen_policy_requires_feedback(record["policy"]):
+            continue
+        decision_id = str(record["decision_id"]).strip()
+        if decision_id in canonical_by_id:
+            raise ContractError(f"{path}: duplicate canonical adaptive_weights decision")
+        if record["record_status"] != "accepted_native_runtime_decision":
+            raise ContractError(f"{path}: adaptive feedback decision is not native-runtime accepted")
+        canonical_by_id[decision_id] = record
+    if set(canonical_by_id) != set(csv_by_id):
+        raise ContractError(f"{path}: canonical and CSV adaptive decision sets differ")
+
+    feedback_by_id: dict[str, dict[str, Any]] = {}
+    result_rows: list[dict[str, Any]] = []
+    prior_state: dict[str, Any] | None = None
+    for feedback_seq, record in enumerate(feedback_records, start=1):
+        if set(record) != _FROZEN_FEEDBACK_FIELDS:
+            raise ContractError(f"{path}:{feedback_seq}: frozen feedback schema drifted")
+        if record["schema_version"] != 1 or not frozen_policy_requires_feedback(record["policy"]):
+            raise ContractError(f"{path}:{feedback_seq}: frozen feedback policy/version drifted")
+        decision_id = str(record["decision_id"]).strip()
+        decision = canonical_by_id.get(decision_id)
+        csv_row = csv_by_id.get(decision_id)
+        if decision is None or csv_row is None or decision_id in feedback_by_id:
+            raise ContractError(f"{path}:{feedback_seq}: feedback decision linkage is invalid")
+        for field in (
+            "policy_contract_sha256",
+            "engine_implementation_id",
+            "policy",
+            "system",
+            "arm_id",
+        ):
+            if record[field] != decision[field]:
+                raise ContractError(f"{path}:{feedback_seq}: feedback {field} differs from decision")
+        request = decision["request"]
+        evidence = decision["native_decision_evidence"]
+        if not isinstance(request, dict) or not isinstance(evidence, dict):
+            raise ContractError(f"{path}:{feedback_seq}: decision request/evidence is incomplete")
+        try:
+            actual_service_ms = float(record["actual_service_ms"])
+            completed_at_ms = float(record["completed_at_ms"])
+            deadline_ms = float(record["deadline_ms"])
+        except (TypeError, ValueError) as exc:
+            raise ContractError(f"{path}:{feedback_seq}: feedback timing is not numeric") from exc
+        if (
+            not math.isfinite(actual_service_ms)
+            or actual_service_ms <= 0.0
+            or not math.isfinite(completed_at_ms)
+            or not math.isfinite(deadline_ms)
+        ):
+            raise ContractError(f"{path}:{feedback_seq}: feedback timing is invalid")
+        if not math.isclose(deadline_ms, float(request["deadline_ms"]), abs_tol=1e-9):
+            raise ContractError(f"{path}:{feedback_seq}: feedback deadline differs from decision")
+        if not math.isclose(
+            completed_at_ms,
+            float(evidence["terminal_timestamp_ms"]),
+            abs_tol=1e-9,
+        ) or not math.isclose(
+            completed_at_ms,
+            float(csv_row["terminal_timestamp_ms"]),
+            abs_tol=1e-9,
+        ):
+            raise ContractError(f"{path}:{feedback_seq}: feedback terminal timestamp drifted")
+        if not math.isclose(
+            actual_service_ms,
+            float(evidence["actual_service_ms"]),
+            abs_tol=1e-9,
+        ):
+            raise ContractError(f"{path}:{feedback_seq}: feedback service time is not native evidence")
+        late = completed_at_ms > deadline_ms
+        if record["outcome"] != ("late" if late else "on_time"):
+            raise ContractError(f"{path}:{feedback_seq}: feedback outcome differs from deadline")
+
+        before = _frozen_adaptive_state(
+            record["state_before"],
+            path=path,
+            line_number=feedback_seq,
+            field="state_before",
+        )
+        after = _frozen_adaptive_state(
+            record["state_after"],
+            path=path,
+            line_number=feedback_seq,
+            field="state_after",
+        )
+        if before["arm_id"] != record["arm_id"] or after["arm_id"] != record["arm_id"]:
+            raise ContractError(f"{path}:{feedback_seq}: feedback state crosses an arm boundary")
+        if prior_state is None:
+            initial = {
+                "arm_id": record["arm_id"],
+                "weights": {"cpu": 1.0, "gpu": 1.0},
+                "service_ewma_ms": {},
+            }
+            if not _adaptive_states_close(before, initial):
+                raise ContractError(f"{path}:{feedback_seq}: first adaptive state is not reset")
+        elif not _adaptive_states_close(before, prior_state):
+            raise ContractError(f"{path}:{feedback_seq}: adaptive feedback state chain is discontinuous")
+
+        branch = str(decision["branch"])
+        resource = str(decision["selected_resource"])
+        if resource not in {"cpu", "gpu"}:
+            raise ContractError(f"{path}:{feedback_seq}: selected feedback resource drifted")
+        expected_after = copy.deepcopy(before)
+        previous_service = expected_after["service_ewma_ms"].get(branch, {}).get(resource)
+        expected_after["service_ewma_ms"].setdefault(branch, {})[resource] = (
+            actual_service_ms
+            if previous_service is None
+            else 0.1 * actual_service_ms + 0.9 * previous_service
+        )
+        delta = 0.002 if late else -0.0002
+        expected_after["weights"][resource] = min(
+            1.5,
+            max(0.5, expected_after["weights"][resource] + delta),
+        )
+        if not _adaptive_states_close(after, expected_after):
+            raise ContractError(f"{path}:{feedback_seq}: adaptive feedback transition drifted")
+        prior_state = after
+        feedback_by_id[decision_id] = record
+        result_rows.append(
+            {
+                "schema_version": 1,
+                "run_id": str(csv_row["run_id"]),
+                "policy": "adaptive_weights",
+                "feedback_seq": feedback_seq,
+                "decision_id": decision_id,
+                "completed_at_ms": completed_at_ms,
+                "actual_service_ms": actual_service_ms,
+                "outcome": str(record["outcome"]),
+                "policy_feedback_claim_eligible": True,
+            }
+        )
+
+    complete = set(feedback_by_id) == set(canonical_by_id)
+    if require_complete and not complete:
+        raise ContractError(f"{path}: adaptive_weights feedback does not cover every decision")
+    result = pd.DataFrame(result_rows)
+    if result.empty:
+        result = pd.DataFrame(
+            columns=[
+                "schema_version",
+                "run_id",
+                "policy",
+                "feedback_seq",
+                "decision_id",
+                "completed_at_ms",
+                "actual_service_ms",
+                "outcome",
+                "policy_feedback_claim_eligible",
+            ]
+        )
+    return result
+
+
+def validate_frozen_policy_decisions(
+    path: Path,
+    *,
+    decisions: pd.DataFrame,
+    expected_policy: str,
+) -> list[dict[str, Any]]:
+    """Validate canonical native decision JSONL and its CSV identity projection."""
+
+    records = _read_canonical_policy_jsonl(
+        path,
+        artifact_kind="vast_publication_policy_decision",
+    )
+    csv_by_id = {
+        str(row["decision_id"]).strip(): row
+        for _index, row in decisions.iterrows()
+    }
+    if len(csv_by_id) != len(decisions):
+        raise ContractError(f"{path}: policy decision CSV IDs are not unique")
+    canonical_by_id: dict[str, dict[str, Any]] = {}
+    required = {
+        "schema_version", "artifact_kind", "policy", "decision_id",
+        "decision_seq", "trace_id", "branch", "selected_resource",
+        "record_status", "native_decision_evidence", "sha256",
+    }
+    for line_number, record in enumerate(records, start=1):
+        decision_id = str(record.get("decision_id", "")).strip()
+        evidence = record.get("native_decision_evidence")
+        csv_row = csv_by_id.get(decision_id)
+        if not required.issubset(record):
+            raise ContractError(f"{path}:{line_number}: canonical decision schema drifted")
+        if (
+            record["policy"] != expected_policy
+            or record["record_status"] != "accepted_native_runtime_decision"
+            or type(evidence) is not dict
+            or decision_id in canonical_by_id
+            or csv_row is None
+            or str(csv_row["trace_id"]) != str(record["trace_id"])
+            or str(csv_row["stage"]) != str(record["branch"])
+            or str(csv_row["resource"]) != str(record["selected_resource"])
+            or str(csv_row["policy"]) != expected_policy
+            or str(evidence.get("decision_id", "")) != decision_id
+            or str(evidence.get("telemetry_source", "")) != "native"
+            or str(evidence.get("terminal_status", "")) != "completed"
+        ):
+            raise ContractError(f"{path}:{line_number}: canonical/CSV native decision linkage drifted")
+        canonical_by_id[decision_id] = record
+    if set(canonical_by_id) != set(csv_by_id):
+        raise ContractError(f"{path}: canonical and CSV policy decision sets differ")
+    sequence = [int(record["decision_seq"]) for record in records]
+    if sorted(sequence) != list(range(1, len(records) + 1)):
+        raise ContractError(f"{path}: canonical decision sequence is not contiguous")
+    return records
+
+
 def validate_policy_feedback(
     path: Path,
     *,
@@ -3618,7 +4451,9 @@ def validate_policy_feedback(
 
     decision_path = path.parent / "policy_decisions.csv"
     online_decisions = decisions[
-        decisions["policy"].astype(str).str.lower().str.endswith("_online")
+        decisions["policy"].astype(str).str.strip().str.lower().isin(
+            FROZEN_PUBLICATION_FEEDBACK_POLICIES | LEGACY_PROXY_FEEDBACK_POLICIES
+        )
     ].copy()
     if online_decisions.empty:
         raise ContractError(f"{path}: policy feedback requires online policy decisions")
@@ -3692,7 +4527,12 @@ def validate_policy_feedback(
             continue
 
         key = (str(row["run_id"]), str(row["policy"]).strip())
-        if key not in configs or not key[1].lower().endswith("_online"):
+        if (
+            key not in configs
+            or key[1].strip().lower()
+            not in FROZEN_PUBLICATION_FEEDBACK_POLICIES
+            | LEGACY_PROXY_FEEDBACK_POLICIES
+        ):
             raise ContractError(f"{path}:{row_number}: feedback row has no matching online policy trace")
         config = configs[key]
         expected_seq = expected_feedback_seq.get(key, 1)
@@ -5643,7 +6483,28 @@ def validate_required_sidecars(
         path=run_dir / "policy_decisions.csv",
     )
     feedback_path = run_dir / "policy_feedback.csv"
-    if feedback_path.exists() or require_online_policy_trace:
+    frozen_feedback_path = run_dir / FROZEN_POLICY_FEEDBACK_JSONL
+    decision_policies = {
+        str(value).strip().lower()
+        for value in sidecars["policy_decisions"]["policy"].tolist()
+    }
+    frozen_feedback_expected = any(
+        frozen_policy_requires_feedback(policy) for policy in decision_policies
+    )
+    if frozen_feedback_expected and feedback_path.exists():
+        raise ContractError(
+            f"{run_dir}: adaptive_weights must use canonical "
+            f"{FROZEN_POLICY_FEEDBACK_JSONL}, not legacy policy_feedback.csv"
+        )
+    if frozen_feedback_path.exists() or (
+        require_online_policy_trace and frozen_feedback_expected
+    ):
+        sidecars["policy_feedback"] = validate_frozen_policy_feedback(
+            frozen_feedback_path,
+            decisions=sidecars["policy_decisions"],
+            require_complete=require_online_policy_trace,
+        )
+    elif feedback_path.exists() or require_online_policy_trace:
         sidecars["policy_feedback"] = validate_policy_feedback(
             feedback_path,
             decisions=sidecars["policy_decisions"],

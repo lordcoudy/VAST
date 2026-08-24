@@ -3,13 +3,18 @@ from __future__ import annotations
 
 import argparse
 import csv
+import dataclasses
 import hashlib
 import json
+import math
 import os
+import posixpath
 import re
 import shutil
 import socket
+import stat
 import subprocess
+import tempfile
 from pathlib import Path
 from typing import Any
 
@@ -23,6 +28,7 @@ from benchmark_contract import (
     BRANCH_TERMINAL_COLUMNS,
     ContractError,
     INGRESS_LEDGER_COLUMNS,
+    FULL_RESOURCE_PUBLICATION_SCOPE,
     PRIMARY_ARCHITECTURE_DECODER_PLACEMENT_CONTRACT,
     PRIMARY_ANALYTICS_QUEUE_CONTRACT,
     RESET_EVIDENCE_COLUMNS,
@@ -40,13 +46,31 @@ from full_resource_contract import (
     FANOUT_COUNTER_PROVENANCE,
     FANOUT_WORK_COUNTER_COLUMNS,
     FULL_RESOURCE_CONTRACT_VERSION,
+    HARDWARE_RESOURCE_SAMPLE_COLUMNS,
+    FullResourceContractError,
+    validate_fanout_work_counters,
+    validate_full_resource_evidence,
 )
-from checkpoint_runtime_plan import CLAIM_STATUS, build_primary_pair_plans
+from checkpoint_runtime_plan import (
+    CLAIM_STATUS,
+    build_checkpoint_runtime_plan,
+    build_primary_pair_plans,
+)
+from checkpoint_native_policy_runtime import (
+    NativePolicyRuntimeCoordinator,
+    assess_gstreamer_native_policy_execution_manifest,
+    canonical_frames_from_events,
+    require_exact_native_cpu_capability_bindings,
+)
 from checkpoint_publication_runtime import publish_checkpoint_runtime
+from publication_policy_contract import POLICIES
 from resource_interval_contract import (
     RESOURCE_INTERVAL_COLUMNS,
     RESOURCE_INTERVAL_CONTRACT_VERSION,
+    ResourceIntervalContractError,
     TELEMETRY_SCHEMA_VERSION,
+    summarize_resource_interval_extension,
+    validate_resource_intervals,
 )
 from topology_contract import INDEPENDENT_PROCESSES, TOPOLOGY_EVENT_COLUMNS
 
@@ -90,6 +114,174 @@ CHECKPOINT_KEYS = {
     "checkpoint_independent_processes_baseline": "baseline",
     "checkpoint_video_dag_shared": "shared",
 }
+
+CHECKPOINT_DECODER_FACTORIES_BY_CODEC = {
+    "h264": ("nvh264dec", "nvv4l2decoder"),
+    "h265": ("nvh265dec", "nvv4l2decoder"),
+}
+
+
+def checkpoint_decoder_factories(codec: str) -> tuple[str, ...]:
+    """Return the frozen hardware-decoder allowlist for one elementary stream codec."""
+
+    normalized = str(codec).strip().lower()
+    factories = CHECKPOINT_DECODER_FACTORIES_BY_CODEC.get(normalized)
+    _require(factories is not None, f"unsupported checkpoint codec: {codec}")
+    return factories
+
+
+def _decoder_placement_contract(codec: str) -> dict[str, Any]:
+    contract = dict(PRIMARY_ARCHITECTURE_DECODER_PLACEMENT_CONTRACT)
+    contract["codec"] = str(codec).strip().lower()
+    contract["allowed_factories"] = list(checkpoint_decoder_factories(codec))
+    return contract
+
+
+def _analytics_execution_socket_path(value: Path | str | None) -> str:
+    _require(
+        value is not None,
+        "native policy runtime requires --analytics-execution-socket",
+    )
+    raw = os.fspath(value)
+    _require(
+        type(raw) is str
+        and raw.startswith("/")
+        and "\\" not in raw
+        and "\x00" not in raw
+        and len(os.fsencode(raw)) < 108,
+        "analytics execution socket path must be an absolute bounded POSIX path",
+    )
+    _require(
+        posixpath.normpath(raw) == raw,
+        "analytics execution socket path must be canonical",
+    )
+    if os.name == "posix":
+        parent = posixpath.dirname(raw)
+        parent_path = Path(parent)
+        _require(
+            parent_path.is_dir()
+            and not parent_path.is_symlink()
+            and os.path.realpath(parent) == parent,
+            "analytics execution socket parent must be an existing canonical directory",
+        )
+        if os.path.lexists(raw):
+            _require(
+                stat.S_ISSOCK(os.lstat(raw).st_mode),
+                "analytics execution socket path exists but is not a socket",
+            )
+    return raw
+
+
+def _analytics_preprocessing_contract_sha256(value: str | None) -> str:
+    _require(
+        value is not None,
+        "native policy runtime requires --analytics-preprocessing-contract-sha256",
+    )
+    resolved = str(value)
+    _require(
+        re.fullmatch(r"[0-9a-f]{64}", resolved) is not None,
+        "analytics preprocessing contract SHA-256 must be a lowercase SHA-256 digest",
+    )
+    return resolved
+
+
+def build_publication_pair_plans(
+    *,
+    config: dict[str, Any],
+    datasets: dict[str, Any],
+    system: str,
+    codec: str,
+) -> dict[str, dict[str, Any]]:
+    """Build the exact frozen full-matrix pair for one codec."""
+
+    normalized_codec = str(codec).strip().lower().replace("hevc", "h265")
+    _require(normalized_codec in {"h264", "h265"}, "unsupported publication codec")
+    benchmark = dict(config.get("benchmark") or {})
+    declared_datasets = [
+        str(value) for value in benchmark.get("benchmark_datasets", [])
+    ]
+    matching = [
+        dataset_name
+        for dataset_name in declared_datasets
+        if dataset_name in datasets
+        and str(datasets[dataset_name].get("codec_variant", ""))
+        .strip()
+        .lower()
+        .replace("hevc", "h265")
+        == normalized_codec
+    ]
+    _require(
+        len(matching) == 1,
+        f"publication codec {normalized_codec} must bind exactly one frozen benchmark dataset",
+    )
+    protocol = dict(config.get("protocol") or {})
+    cohort_protocol = {
+        "warmup_s": int(protocol.get("warmup_s", 0) or 0),
+        "measurement_s": int(protocol.get("measurement_s", 0) or 0),
+    }
+    _require(
+        cohort_protocol == {"warmup_s": 30, "measurement_s": 180},
+        "full publication cohort protocol drifted",
+    )
+    primary = dict(benchmark.get("primary_architecture_contrast") or {})
+    analytics_queue = dict(primary.get("analytics_queue") or {})
+    _require(
+        analytics_queue == PRIMARY_ANALYTICS_QUEUE_CONTRACT,
+        "full publication analytics queue differs from the frozen contract",
+    )
+    dataset_name = matching[0]
+    dataset = dict(datasets[dataset_name])
+    decoder_placement = _decoder_placement_contract(normalized_codec)
+    plans = {
+        key: build_checkpoint_runtime_plan(
+            scenario_name=scenario_name,
+            scenario=dict((config.get("scenarios") or {})[scenario_name]),
+            dataset_name=dataset_name,
+            dataset=dataset,
+            system=system,
+            cohort_protocol=cohort_protocol,
+            analytics_queue=analytics_queue,
+            decoder_placement=decoder_placement,
+        )
+        for scenario_name, key in CHECKPOINT_KEYS.items()
+    }
+    baseline = plans["baseline"]
+    shared = plans["shared"]
+    _require(
+        baseline["required_branches"] == shared["required_branches"],
+        "publication pair analytics branches differ",
+    )
+    _require(
+        len(baseline["streams"]) == len(shared["streams"]) == 6,
+        "publication pair must bind six streams per arm",
+    )
+    for left, right in zip(baseline["streams"], shared["streams"], strict=True):
+        left_sources = {
+            str(worker["source_sha256"]) for worker in left["workers"]
+        }
+        right_source = str(right["graph_process"]["source_sha256"])
+        _require(
+            left_sources == {right_source},
+            "publication pair source identities differ",
+        )
+    return plans
+
+
+def full_resource_publication_requested(
+    config: dict[str, Any],
+    *,
+    explicit_defer: bool = False,
+) -> bool:
+    extension = dict((config.get("benchmark") or {}).get("resource_interval_extension") or {})
+    return (
+        explicit_defer
+        or (
+        extension.get("status") == "accepted_full_resource_publication_v2"
+        and extension.get("current_publication_bundle_scope") == FULL_RESOURCE_PUBLICATION_SCOPE
+        and extension.get("publication_bundle_bound") is True
+        and extension.get("evidence_accepted") is True
+        )
+    )
 
 
 def build_runtime_cohort_audit(
@@ -307,32 +499,66 @@ def seed_gstreamer_registry_copies(
         "checkpoint registry copy must not overwrite its template",
     )
     seeded_template = resolved_template
-    hardware_refresh = {"performed": False, "factory": ""}
+    hardware_refresh: dict[str, Any] = {
+        "performed": False,
+        "factory": "",
+        "factories_by_codec": {},
+    }
+    generated_seed = False
     if refresh_hardware_plugins:
-        seeded_template = Path("/tmp/vast-gst-registry-hardware-template.bin")
+        declared_codecs: set[str] = set()
+        for spec in (*specs, *source_specs):
+            command = list(spec.command)
+            _require(
+                "--checkpoint-codec" in command,
+                "hardware registry refresh requires a codec-bound checkpoint command",
+            )
+            codec = command[command.index("--checkpoint-codec") + 1]
+            checkpoint_decoder_factories(codec)
+            declared_codecs.add(codec)
+        _require(bool(declared_codecs), "hardware registry refresh requires checkpoint codecs")
+        descriptor, seed_name = tempfile.mkstemp(
+            prefix="vast-gst-registry-hardware-",
+            suffix=".bin",
+        )
+        os.close(descriptor)
+        seeded_template = Path(seed_name)
         seeded_template.unlink(missing_ok=True)
+        generated_seed = True
         refresh_environment = os.environ.copy()
         refresh_environment["GST_REGISTRY"] = str(seeded_template)
         refresh_environment.pop("GST_REGISTRY_UPDATE", None)
-        completed = subprocess.run(
-            ("gst-inspect-1.0", "nvh264dec"),
-            check=False,
-            capture_output=True,
-            text=True,
-            timeout=60,
-            env=refresh_environment,
-        )
-        _require(
-            completed.returncode == 0,
-            "GPU-aware GStreamer registry refresh did not expose nvh264dec: "
-            + completed.stderr.strip(),
-        )
+        selected_factories: dict[str, str] = {}
+        for codec in sorted(declared_codecs):
+            failures: list[str] = []
+            for factory in checkpoint_decoder_factories(codec):
+                completed = subprocess.run(
+                    ("gst-inspect-1.0", factory),
+                    check=False,
+                    capture_output=True,
+                    text=True,
+                    timeout=60,
+                    env=refresh_environment,
+                )
+                if completed.returncode == 0:
+                    selected_factories[codec] = factory
+                    break
+                failures.append(f"{factory}: {completed.stderr.strip()}")
+            _require(
+                codec in selected_factories,
+                f"GPU-aware GStreamer registry exposes no decoder for {codec}: "
+                + "; ".join(failures),
+            )
         _require(
             seeded_template.is_file() and seeded_template.stat().st_size > 0,
             "GPU-aware GStreamer registry refresh did not create its seed",
         )
         seeded_template.chmod(0o600)
-        hardware_refresh = {"performed": True, "factory": "nvh264dec"}
+        hardware_refresh = {
+            "performed": True,
+            "factory": ",".join(selected_factories[codec] for codec in sorted(selected_factories)),
+            "factories_by_codec": selected_factories,
+        }
     seeded_template_sha256 = _sha256_file(seeded_template)
     for destination in destinations:
         destination.parent.mkdir(parents=True, exist_ok=True)
@@ -342,6 +568,8 @@ def seed_gstreamer_registry_copies(
             _sha256_file(destination) == seeded_template_sha256,
             f"GStreamer registry copy digest mismatch: {destination}",
         )
+    if generated_seed:
+        seeded_template.unlink(missing_ok=True)
     return {
         "schema_version": 1,
         "base_template_path": str(resolved_template),
@@ -575,6 +803,10 @@ def build_gstreamer_worker_specs(
     analytics_terminal_mode: str = TOPOLOGY_ONLY_ANALYTICS_MODE,
     analytics_model_bindings: dict[str, dict[str, str]] | None = None,
     analytics_queue_max_buffers: int | None = None,
+    native_policy: str | None = None,
+    native_policy_deadline_ms: float | None = None,
+    analytics_execution_socket: Path | str | None = None,
+    analytics_preprocessing_contract_sha256: str | None = None,
 ) -> list[WorkerLaunchSpec]:
     _require(plan.get("claim_status") == CLAIM_STATUS, "checkpoint launch plan must remain planning-only")
     _require(duration_s > 0, "checkpoint engineering duration must be positive")
@@ -591,11 +823,66 @@ def build_gstreamer_worker_specs(
             "{branch}" in detect_bin,
             "native checkpoint analytics detect bin must contain the {branch} placeholder",
         )
+    policy_runtime_enabled = (
+        native_policy is not None
+        or native_policy_deadline_ms is not None
+        or analytics_execution_socket is not None
+        or analytics_preprocessing_contract_sha256 is not None
+    )
+    _require(
+        not policy_runtime_enabled
+        or (
+            native_policy == "cpu_only"
+            and native_policy_deadline_ms is not None
+            and math.isfinite(float(native_policy_deadline_ms))
+            and float(native_policy_deadline_ms) > 0
+            and analytics_terminal_mode == NATIVE_TERMINAL_ANALYTICS_MODE
+            and analytics_execution_socket is not None
+            and analytics_preprocessing_contract_sha256 is not None
+        ),
+        "gstreamer_custom native policy runtime currently supports only exact cpu_only with a positive deadline, an analytics execution socket, and a preprocessing contract SHA-256",
+    )
+    resolved_execution_socket = (
+        _analytics_execution_socket_path(analytics_execution_socket)
+        if policy_runtime_enabled
+        else None
+    )
+    resolved_preprocessing_sha256 = (
+        _analytics_preprocessing_contract_sha256(
+            analytics_preprocessing_contract_sha256
+        )
+        if policy_runtime_enabled
+        else None
+    )
+    policy_args = (
+        (
+            "--policy",
+            str(native_policy),
+            "--deadline-ms",
+            str(float(native_policy_deadline_ms)),
+        )
+        if policy_runtime_enabled
+        else ()
+    )
     branches = [str(value) for value in plan["required_branches"]]
+    worker_codecs = {
+        str(owner["source_codec"])
+        for stream in plan["streams"]
+        for owner in (
+            stream["workers"]
+            if plan["topology_kind"] == INDEPENDENT_PROCESSES
+            else [stream["graph_process"]]
+        )
+    }
+    _require(
+        len(worker_codecs) == 1,
+        "checkpoint worker specs require one codec across the arm",
+    )
+    source_codec = next(iter(worker_codecs))
     decoder_placement = dict(plan.get("decoder_placement") or {})
     _require(
-        decoder_placement == PRIMARY_ARCHITECTURE_DECODER_PLACEMENT_CONTRACT,
-        "checkpoint worker specs require the frozen primary decoder-placement contract",
+        decoder_placement == _decoder_placement_contract(source_codec),
+        "checkpoint worker specs require the codec-specific frozen decoder-placement contract",
     )
     allowed_decoder_factories = ",".join(
         str(value) for value in decoder_placement["allowed_factories"]
@@ -672,7 +959,7 @@ def build_gstreamer_worker_specs(
                     detect_bin,
                     "--checkpoint-analytics-mode",
                     analytics_terminal_mode,
-                )
+                ) + policy_args
                 specs.append(
                     WorkerLaunchSpec(
                         worker_id=worker_id,
@@ -691,6 +978,23 @@ def build_gstreamer_worker_specs(
                             "VAST_CHECKPOINT_SOURCE_REPLAY": "continuous",
                             "VAST_CHECKPOINT_ADMISSION_MODE": "native_common_source_coordinator",
                             "VAST_CHECKPOINT_ANALYTICS_MODE": analytics_terminal_mode,
+                            **(
+                                {
+                                    "SCHEDULER_POLICY": str(native_policy),
+                                    "DEADLINE_MS": str(float(native_policy_deadline_ms)),
+                                    "VAST_CHECKPOINT_ANALYTICS_EXECUTION_SOCKET": str(
+                                        resolved_execution_socket
+                                    ),
+                                    **{
+                                        _binding_environment_name(
+                                            "PREPROCESSING_SHA256", required_branch
+                                        ): str(resolved_preprocessing_sha256)
+                                        for required_branch in branches
+                                    },
+                                }
+                                if policy_runtime_enabled
+                                else {}
+                            ),
                             **(
                                 _binding_environment(binding_values, [branch])
                                 if uses_reference_element
@@ -747,7 +1051,7 @@ def build_gstreamer_worker_specs(
                 detect_bin,
                 "--checkpoint-analytics-mode",
                 analytics_terminal_mode,
-            )
+            ) + policy_args
             specs.append(
                 WorkerLaunchSpec(
                     worker_id=worker_id,
@@ -767,6 +1071,23 @@ def build_gstreamer_worker_specs(
                         "VAST_CHECKPOINT_SOURCE_REPLAY": "continuous",
                         "VAST_CHECKPOINT_ADMISSION_MODE": "native_common_source_coordinator",
                         "VAST_CHECKPOINT_ANALYTICS_MODE": analytics_terminal_mode,
+                        **(
+                            {
+                                "SCHEDULER_POLICY": str(native_policy),
+                                "DEADLINE_MS": str(float(native_policy_deadline_ms)),
+                                "VAST_CHECKPOINT_ANALYTICS_EXECUTION_SOCKET": str(
+                                    resolved_execution_socket
+                                ),
+                                **{
+                                    _binding_environment_name(
+                                        "PREPROCESSING_SHA256", required_branch
+                                    ): str(resolved_preprocessing_sha256)
+                                    for required_branch in branches
+                                },
+                            }
+                            if policy_runtime_enabled
+                            else {}
+                        ),
                         **(
                             _binding_environment(binding_values, branches)
                             if uses_reference_element
@@ -794,9 +1115,6 @@ def _assert_output_location(output_root: Path, project_root: Path) -> None:
 
 
 def validate_worker_source_provenance(specs: list[WorkerLaunchSpec]) -> None:
-    expected_decoder_factories = ",".join(
-        PRIMARY_ARCHITECTURE_DECODER_PLACEMENT_CONTRACT["allowed_factories"]
-    )
     for spec in specs:
         command = list(spec.command)
         _require(
@@ -814,10 +1132,10 @@ def validate_worker_source_provenance(specs: list[WorkerLaunchSpec]) -> None:
         source_replay = command[command.index("--source-replay") + 1]
         _require(source_container == "mp4", f"{spec.worker_id}: checkpoint container must be MP4")
         _require(source_codec in {"h264", "h265"}, f"{spec.worker_id}: checkpoint codec is unsupported")
-        _require(source_codec == "h264", f"{spec.worker_id}: primary decoder-placement gate requires H.264")
+        expected_decoder_factories = ",".join(checkpoint_decoder_factories(source_codec))
         _require(
             allowed_decoder_factories == expected_decoder_factories,
-            f"{spec.worker_id}: decoder-factory allowlist differs from preregistration",
+            f"{spec.worker_id}: decoder-factory allowlist differs from codec contract",
         )
         _require(int(source_duration_ns) > 0, f"{spec.worker_id}: source duration must be positive")
         _require(source_replay == "continuous", f"{spec.worker_id}: finite source replay must be continuous")
@@ -969,6 +1287,216 @@ def merge_runtime_stage_contracts(
     topology = pd.DataFrame(topology_events)
     validated = validate_stage_contracts(merged, topology_events=topology)
     _require(len(validated) == len(rows), "runtime stage-contract validation changed row coverage")
+    return merged
+
+
+def merge_runtime_resource_intervals(
+    *,
+    specs: list[WorkerLaunchSpec],
+    output_root: Path,
+    run_id: str,
+    topology_events: list[dict[str, Any]] | tuple[dict[str, Any], ...],
+) -> Path:
+    """Merge exact native NVDEC/fanout fragments without accepting them for publication."""
+
+    _require(bool(specs), "resource interval merge requires checkpoint workers")
+    shared = all(spec.branch_id is None for spec in specs)
+    independent = all(spec.branch_id is not None for spec in specs)
+    _require(shared or independent, "resource interval merge cannot mix topology kinds")
+
+    topology_by_execution: dict[tuple[str, str, int, int, str], dict[str, Any]] = {}
+    expected_nvdec: set[tuple[str, str, int, int, str]] = set()
+    expected_fanout: set[tuple[str, str, int, int, str]] = set()
+    for raw in topology_events:
+        key = (
+            str(raw["run_id"]),
+            str(raw["trace_id"]),
+            int(raw["stream_id"]),
+            int(raw["frame_id"]),
+            str(raw["execution_id"]),
+        )
+        _require(key not in topology_by_execution, "runtime topology contains duplicate execution IDs")
+        topology_by_execution[key] = raw
+        event_kind = str(raw["event_kind"])
+        stage = str(raw["stage"])
+        if event_kind == "stage_complete" and (stage == "decode" or stage.startswith("decode_")):
+            expected_nvdec.add(key)
+        if event_kind == "fanout":
+            expected_fanout.add(key)
+    _require(bool(expected_nvdec), "runtime topology produced no decode executions for NVDEC coverage")
+    _require(
+        bool(expected_fanout) == shared,
+        "runtime fanout topology does not match the worker topology kind",
+    )
+
+    rows: list[dict[str, str]] = []
+    observed_nvdec: set[tuple[str, str, int, int, str]] = set()
+    observed_fanout: set[tuple[str, str, int, int, str]] = set()
+    native_event_ids: set[str] = set()
+    for spec in specs:
+        worker_output = Path(spec.command[spec.command.index("--output-dir") + 1])
+        fragment = worker_output / "resource_intervals.runtime.csv"
+        _require(
+            fragment.is_file() and not fragment.is_symlink(),
+            f"{spec.worker_id}: native resource interval fragment was not produced as a regular file",
+        )
+        with fragment.open("r", newline="", encoding="utf-8") as source:
+            reader = csv.DictReader(source)
+            _require(
+                reader.fieldnames == RESOURCE_INTERVAL_COLUMNS,
+                f"{spec.worker_id}: resource interval fragment has an unexpected schema",
+            )
+            fragment_rows = list(reader)
+        _require(bool(fragment_rows), f"{spec.worker_id}: resource interval fragment is empty")
+        for row in fragment_rows:
+            integer_columns = (
+                "schema_version",
+                "interval_contract_version",
+                "stream_id",
+                "frame_id",
+                "host_start_timestamp_ns",
+                "host_end_timestamp_ns",
+                "duration_ns",
+                "bytes",
+            )
+            _require(
+                all(re.fullmatch(r"0|[1-9][0-9]*", str(row[column])) for column in integer_columns),
+                f"{spec.worker_id}: resource interval integer is not canonical",
+            )
+            try:
+                schema_version = int(row["schema_version"])
+                contract_version = int(row["interval_contract_version"])
+                stream_id = int(row["stream_id"])
+                frame_id = int(row["frame_id"])
+                start_ns = int(row["host_start_timestamp_ns"])
+                end_ns = int(row["host_end_timestamp_ns"])
+                duration_ns = int(row["duration_ns"])
+                payload_bytes = int(row["bytes"])
+            except (TypeError, ValueError) as exc:
+                raise ContractError(f"{spec.worker_id}: resource interval integer is invalid") from exc
+            _require(
+                schema_version == TELEMETRY_SCHEMA_VERSION
+                and contract_version == RESOURCE_INTERVAL_CONTRACT_VERSION,
+                f"{spec.worker_id}: resource interval contract version drifted",
+            )
+            _require(str(row["run_id"]) == run_id, f"{spec.worker_id}: resource interval run_id mismatch")
+            _require(stream_id == int(spec.stream_id), f"{spec.worker_id}: resource interval stream mismatch")
+            _require(
+                start_ns < end_ns and duration_ns == end_ns - start_ns and payload_bytes > 0,
+                f"{spec.worker_id}: native diagnostic interval is invalid",
+            )
+            native_event_id = str(row["native_event_id"])
+            _require(
+                re.fullmatch(r"[0-9a-f]{64}", native_event_id) is not None
+                and native_event_id not in native_event_ids,
+                f"{spec.worker_id}: native event identity is invalid or duplicated",
+            )
+            native_event_ids.add(native_event_id)
+            trace_id = str(row["trace_id"])
+            execution_id = str(row["execution_id"])
+            branch_id = str(row["branch_id"])
+            key = (run_id, trace_id, stream_id, frame_id, execution_id)
+            topology = topology_by_execution.get(key)
+            _require(topology is not None, f"{spec.worker_id}: resource interval has no topology event")
+            _require(
+                str(topology["input_frame_key"]) == str(row["input_frame_key"])
+                and str(topology["stage"]) == str(row["stage"])
+                and str(topology["branch_id"]) == branch_id,
+                f"{spec.worker_id}: resource interval topology linkage drifted",
+            )
+            topology_ns = int(topology["timestamp_ms"]) * 1_000_000
+            _require(
+                end_ns <= topology_ns + 1_000_000,
+                f"{spec.worker_id}: resource interval ends after its topology event",
+            )
+            try:
+                parents = json.loads(str(topology["parent_execution_ids_json"]))
+            except json.JSONDecodeError as exc:
+                raise ContractError(f"{spec.worker_id}: resource topology parents are invalid") from exc
+            _require(isinstance(parents, list) and bool(parents), f"{spec.worker_id}: resource interval has no parent")
+            parent_times = []
+            for parent_id in parents:
+                parent = topology_by_execution.get((run_id, trace_id, stream_id, frame_id, str(parent_id)))
+                _require(parent is not None, f"{spec.worker_id}: resource interval parent is missing")
+                parent_times.append(int(parent["timestamp_ms"]) * 1_000_000)
+            _require(
+                start_ns >= max(parent_times),
+                f"{spec.worker_id}: resource interval starts before its topology parent",
+            )
+
+            component = str(row["component"])
+            if component == "nvdec_submit_complete":
+                _require(
+                    (
+                        str(row["direction"]),
+                        str(row["counter_scope"]),
+                        str(row["duration_provenance"]),
+                        str(row["telemetry_source"]),
+                    )
+                    == (
+                        "none",
+                        "per_trace_interval",
+                        "native_decoder_submit_complete_interval_v1",
+                        "native",
+                    ),
+                    f"{spec.worker_id}: NVDEC interval provenance drifted",
+                )
+                _require(
+                    str(row["device_id"]).startswith("nvdec:")
+                    and re.fullmatch(r"[a-z][a-z0-9_.:-]*", str(row["device_id"])) is not None,
+                    f"{spec.worker_id}: NVDEC interval device identity drifted",
+                )
+                _require(
+                    str(topology["event_kind"]) == "stage_complete"
+                    and (str(row["stage"]) == "decode" or str(row["stage"]).startswith("decode_"))
+                    and execution_id == f"{trace_id}:{branch_id}:decode",
+                    f"{spec.worker_id}: NVDEC interval execution identity drifted",
+                )
+                _require(key not in observed_nvdec, "NVDEC execution has more than one interval")
+                observed_nvdec.add(key)
+            elif component == "fanout":
+                _require(shared, f"{spec.worker_id}: independent worker emitted fanout resource evidence")
+                _require(
+                    (
+                        str(row["direction"]),
+                        str(row["stage"]),
+                        str(row["device_id"]),
+                        str(row["counter_scope"]),
+                        str(row["duration_provenance"]),
+                        str(row["telemetry_source"]),
+                    )
+                    == (
+                        "none",
+                        "fanout",
+                        "gstreamer:tee-queue",
+                        "per_trace_interval",
+                        "native_gstreamer_pad_probe_interval_v1",
+                        "native",
+                    )
+                    and str(topology["event_kind"]) == "fanout"
+                    and execution_id == f"{trace_id}:{branch_id}:fanout",
+                    f"{spec.worker_id}: fanout interval provenance or identity drifted",
+                )
+                _require(key not in observed_fanout, "fanout execution has more than one interval")
+                observed_fanout.add(key)
+            else:
+                raise ContractError(
+                    f"{spec.worker_id}: runtime resource fragment contains unsupported component {component}"
+                )
+            rows.append({column: str(row[column]) for column in RESOURCE_INTERVAL_COLUMNS})
+
+    _require(observed_nvdec == expected_nvdec, "runtime NVDEC interval coverage is not exact")
+    _require(observed_fanout == expected_fanout, "runtime fanout interval coverage is not exact")
+    output_root.mkdir(parents=True, exist_ok=True)
+    merged = output_root / "resource_intervals.runtime.csv"
+    with merged.open("w", newline="", encoding="utf-8") as output:
+        writer = csv.DictWriter(output, fieldnames=RESOURCE_INTERVAL_COLUMNS)
+        writer.writeheader()
+        writer.writerows(rows)
+    _require(
+        not (output_root / "resource_intervals.csv").exists(),
+        "runtime resource merge must not overwrite an accepted resource sidecar",
+    )
     return merged
 
 
@@ -1295,6 +1823,288 @@ def merge_runtime_fanout_work_counters(
         "runtime fanout work merge must not create an accepted resource sidecar",
     )
     return merged
+
+
+def promote_runtime_interval_and_fanout_evidence(
+    *,
+    runtime_resource_intervals: Path,
+    runtime_fanout_work_counters: Path | None,
+    output_root: Path,
+    expected_run_id: str,
+    ingress_ledger: pd.DataFrame,
+    topology_events: pd.DataFrame,
+    frame_events: pd.DataFrame,
+    topology_kind: str,
+) -> dict[str, Any]:
+    """Promote native per-frame evidence; the external NVML collector closes v2 later."""
+
+    accepted_names = ("resource_intervals.csv", "fanout_work_counters.csv")
+    output_root.mkdir(parents=True, exist_ok=True)
+    existing = [name for name in accepted_names if (output_root / name).exists()]
+    if existing:
+        raise FullResourceContractError(
+            "runtime resource promotion refuses to overwrite accepted sidecars: "
+            + ", ".join(existing)
+        )
+    required_identity = {"run_id", "trace_id", "stream_id", "frame_id"}
+    if ingress_ledger.empty or not required_identity.issubset(ingress_ledger.columns):
+        raise FullResourceContractError("runtime resource promotion requires accepted ingress rows")
+    accepted_keys = {
+        (
+            str(row["run_id"]),
+            str(row["trace_id"]),
+            int(row["stream_id"]),
+            int(row["frame_id"]),
+        )
+        for row in ingress_ledger.to_dict(orient="records")
+    }
+    if {key[0] for key in accepted_keys} != {expected_run_id}:
+        raise FullResourceContractError("runtime resource promotion run identity drifted")
+
+    def read_exact(path: Path, columns: list[str], label: str) -> list[dict[str, str]]:
+        if path.is_symlink() or not path.is_file():
+            raise FullResourceContractError(f"{label} must be a regular runtime file: {path}")
+        with path.open("r", newline="", encoding="utf-8") as source:
+            reader = csv.DictReader(source)
+            if reader.fieldnames != columns:
+                raise FullResourceContractError(f"{label} runtime schema drifted")
+            rows = list(reader)
+        if any(str(row.get("run_id")) != expected_run_id for row in rows):
+            raise FullResourceContractError(f"{label} contains another run identity")
+        return rows
+
+    interval_rows = read_exact(
+        runtime_resource_intervals,
+        RESOURCE_INTERVAL_COLUMNS,
+        "resource intervals",
+    )
+    accepted_interval_rows = [
+        row
+        for row in interval_rows
+        if (
+            str(row["run_id"]),
+            str(row["trace_id"]),
+            int(row["stream_id"]),
+            int(row["frame_id"]),
+        )
+        in accepted_keys
+    ]
+    if not accepted_interval_rows:
+        raise FullResourceContractError("accepted cohort has no runtime resource intervals")
+    counter_rows = (
+        read_exact(
+            runtime_fanout_work_counters,
+            FANOUT_WORK_COUNTER_COLUMNS,
+            "fanout work counters",
+        )
+        if runtime_fanout_work_counters is not None
+        else []
+    )
+    accepted_counter_rows = [
+        row
+        for row in counter_rows
+        if (
+            str(row["run_id"]),
+            str(row["trace_id"]),
+            int(row["stream_id"]),
+            int(row["frame_id"]),
+        )
+        in accepted_keys
+    ]
+    expected_fanout_keys = {
+        (
+            str(row["trace_id"]),
+            int(row["stream_id"]),
+            int(row["frame_id"]),
+            str(row["branch_id"]),
+            str(row["execution_id"]),
+        )
+        for row in topology_events.to_dict(orient="records")
+        if str(row["event_kind"]) == "fanout"
+    }
+    require_fanout = topology_kind == "shared_video_dag"
+    if require_fanout and runtime_fanout_work_counters is None:
+        raise FullResourceContractError("shared runtime lacks fanout work evidence")
+    if require_fanout != bool(expected_fanout_keys):
+        raise FullResourceContractError("accepted fanout topology coverage is inconsistent")
+
+    try:
+        with tempfile.TemporaryDirectory(prefix=".resource-frame-staging-", dir=output_root) as tmp:
+            staging = Path(tmp)
+            for name, columns, rows in (
+                ("resource_intervals.csv", RESOURCE_INTERVAL_COLUMNS, accepted_interval_rows),
+                ("fanout_work_counters.csv", FANOUT_WORK_COUNTER_COLUMNS, accepted_counter_rows),
+            ):
+                with (staging / name).open("w", newline="", encoding="utf-8") as output:
+                    writer = csv.DictWriter(output, fieldnames=columns)
+                    writer.writeheader()
+                    writer.writerows(rows)
+            intervals = validate_resource_intervals(
+                staging / "resource_intervals.csv",
+                ingress_ledger=ingress_ledger,
+                topology_events=topology_events,
+                frame_events=frame_events,
+            )
+            interval_summary = summarize_resource_interval_extension(
+                intervals,
+                topology_events=topology_events,
+                frame_events=frame_events,
+                topology_kind=topology_kind,
+            )
+            if not bool(interval_summary.get("coverage_complete")):
+                raise FullResourceContractError("accepted runtime interval linkage is incomplete")
+            validate_fanout_work_counters(
+                staging / "fanout_work_counters.csv",
+                expected_run_id=expected_run_id,
+                expected_fanout_keys=expected_fanout_keys,
+                require_rows=require_fanout,
+            )
+            for name in accepted_names:
+                os.replace(staging / name, output_root / name)
+    except (OSError, ValueError, KeyError, ResourceIntervalContractError) as exc:
+        raise FullResourceContractError(f"runtime resource promotion failed validation: {exc}") from exc
+    return {
+        "interval_summary": interval_summary,
+        "accepted_paths": {name: str(output_root / name) for name in accepted_names},
+        "accepted_interval_count": len(accepted_interval_rows),
+        "accepted_fanout_work_count": len(accepted_counter_rows),
+        "hardware_samples_pending_external_collector": True,
+    }
+
+
+def promote_runtime_full_resource_evidence(
+    *,
+    runtime_resource_intervals: Path,
+    runtime_hardware_samples: Path,
+    runtime_fanout_work_counters: Path | None,
+    output_root: Path,
+    expected_run_id: str,
+    ingress_ledger: pd.DataFrame,
+    topology_events: pd.DataFrame,
+    frame_events: pd.DataFrame,
+    topology_kind: str,
+) -> dict[str, Any]:
+    """Validate a closed accepted cohort in staging before exposing v2 sidecars."""
+
+    accepted_names = (
+        "resource_intervals.csv",
+        "hardware_resource_samples.csv",
+        "fanout_work_counters.csv",
+    )
+    output_root.mkdir(parents=True, exist_ok=True)
+    existing = [name for name in accepted_names if (output_root / name).exists()]
+    if existing:
+        raise FullResourceContractError(
+            "full-resource promotion refuses to overwrite accepted sidecars: "
+            + ", ".join(existing)
+        )
+    required_identity = {"run_id", "trace_id", "stream_id", "frame_id"}
+    if ingress_ledger.empty or not required_identity.issubset(ingress_ledger.columns):
+        raise FullResourceContractError("full-resource promotion requires an accepted ingress cohort")
+    accepted_keys = {
+        (
+            str(row["run_id"]),
+            str(row["trace_id"]),
+            int(row["stream_id"]),
+            int(row["frame_id"]),
+        )
+        for row in ingress_ledger.to_dict(orient="records")
+    }
+    if not accepted_keys or {key[0] for key in accepted_keys} != {expected_run_id}:
+        raise FullResourceContractError("accepted ingress cohort run identity drifted")
+
+    def read_exact(path: Path, columns: list[str], label: str) -> list[dict[str, str]]:
+        if path.is_symlink() or not path.is_file():
+            raise FullResourceContractError(f"{label} must be a regular runtime file: {path}")
+        with path.open("r", newline="", encoding="utf-8") as source:
+            reader = csv.DictReader(source)
+            if reader.fieldnames != columns:
+                raise FullResourceContractError(f"{label} runtime schema drifted")
+            rows = list(reader)
+        if any(str(row.get("run_id")) != expected_run_id for row in rows):
+            raise FullResourceContractError(f"{label} contains another run identity")
+        return rows
+
+    interval_rows = read_exact(
+        runtime_resource_intervals,
+        RESOURCE_INTERVAL_COLUMNS,
+        "resource intervals",
+    )
+    accepted_interval_rows = [
+        row
+        for row in interval_rows
+        if (
+            str(row["run_id"]),
+            str(row["trace_id"]),
+            int(row["stream_id"]),
+            int(row["frame_id"]),
+        )
+        in accepted_keys
+    ]
+    if not accepted_interval_rows:
+        raise FullResourceContractError("accepted cohort has no native resource intervals")
+    hardware_rows = read_exact(
+        runtime_hardware_samples,
+        HARDWARE_RESOURCE_SAMPLE_COLUMNS,
+        "hardware resource samples",
+    )
+    counter_rows = (
+        read_exact(
+            runtime_fanout_work_counters,
+            FANOUT_WORK_COUNTER_COLUMNS,
+            "fanout work counters",
+        )
+        if runtime_fanout_work_counters is not None
+        else []
+    )
+    accepted_counter_rows = [
+        row
+        for row in counter_rows
+        if (
+            str(row["run_id"]),
+            str(row["trace_id"]),
+            int(row["stream_id"]),
+            int(row["frame_id"]),
+        )
+        in accepted_keys
+    ]
+    if topology_kind == "shared_video_dag" and runtime_fanout_work_counters is None:
+        raise FullResourceContractError("shared topology lacks native fanout work counters")
+    if topology_kind == "independent_processes" and accepted_counter_rows:
+        raise FullResourceContractError("independent topology reported fanout work counters")
+
+    try:
+        with tempfile.TemporaryDirectory(prefix=".resource-v2-staging-", dir=output_root) as tmp:
+            staging = Path(tmp)
+            for name, columns, rows in (
+                ("resource_intervals.csv", RESOURCE_INTERVAL_COLUMNS, accepted_interval_rows),
+                ("hardware_resource_samples.csv", HARDWARE_RESOURCE_SAMPLE_COLUMNS, hardware_rows),
+                ("fanout_work_counters.csv", FANOUT_WORK_COUNTER_COLUMNS, accepted_counter_rows),
+            ):
+                with (staging / name).open("w", newline="", encoding="utf-8") as output:
+                    writer = csv.DictWriter(output, fieldnames=columns)
+                    writer.writeheader()
+                    writer.writerows(rows)
+            evidence = validate_full_resource_evidence(
+                staging,
+                expected_run_id=expected_run_id,
+                ingress_ledger=ingress_ledger,
+                topology_events=topology_events,
+                frame_events=frame_events,
+                topology_kind=topology_kind,
+            )
+            for name in accepted_names:
+                os.replace(staging / name, output_root / name)
+    except (OSError, ValueError, KeyError, ResourceIntervalContractError) as exc:
+        raise FullResourceContractError(f"full-resource promotion failed validation: {exc}") from exc
+    return {
+        "summary": evidence["summary"],
+        "accepted_paths": {name: str(output_root / name) for name in accepted_names},
+        "accepted_interval_count": len(accepted_interval_rows),
+        "accepted_fanout_work_count": len(accepted_counter_rows),
+    }
+
+
 def write_runtime_branch_terminals(
     *,
     records: list[dict[str, Any]] | tuple[dict[str, Any], ...],
@@ -1476,6 +2286,18 @@ def main() -> int:
     parser.add_argument("--datasets", type=Path, default=Path("configs/datasets.yaml"))
     parser.add_argument("--scenario", choices=tuple(CHECKPOINT_KEYS), required=True)
     parser.add_argument("--system", default="gstreamer_custom")
+    parser.add_argument("--codec", choices=("h264", "h265"))
+    parser.add_argument("--policy")
+    parser.add_argument("--deadline-ms", type=float)
+    parser.add_argument(
+        "--analytics-execution-socket",
+        type=Path,
+        help="Absolute canonical AF_UNIX pathname of the pre-started analytics bridge",
+    )
+    parser.add_argument(
+        "--analytics-preprocessing-contract-sha256",
+        help="Exact lowercase SHA-256 of the frozen GStreamer preprocessing contract",
+    )
     parser.add_argument("--binary", type=Path, default=Path("build/bin/vast_native_gst_probe"))
     parser.add_argument("--source-binary", type=Path, default=Path("build/bin/vast_checkpoint_source"))
     parser.add_argument("--output-dir", type=Path, default=Path("/tmp/vast-checkpoint-engineering-runtime"))
@@ -1492,6 +2314,9 @@ def main() -> int:
         type=Path,
         help="Strict branch model/digest bindings required by vastanalyticsterminal",
     )
+    parser.add_argument("--policy-capability-manifest", type=Path)
+    parser.add_argument("--policy-calibration", type=Path)
+    parser.add_argument("--static-hybrid-map", type=Path)
     parser.add_argument(
         "--analytics-queue-max-buffers",
         type=int,
@@ -1505,14 +2330,79 @@ def main() -> int:
     execution_mode = parser.add_mutually_exclusive_group()
     execution_mode.add_argument("--execute-engineering-runtime", action="store_true")
     execution_mode.add_argument("--execute-publication-runtime", action="store_true")
+    parser.add_argument(
+        "--defer-full-resource-acceptance",
+        action="store_true",
+        help="Emit only the candidate/resource evidence; the parent transaction commits acceptance last.",
+    )
     args = parser.parse_args()
 
     project_root = args.config.resolve().parents[1]
     config = _load_yaml(args.config)
     datasets = dict(_load_yaml(args.datasets).get("datasets") or {})
-    pair = build_primary_pair_plans(config=config, datasets=datasets, system=args.system)
-    plan = pair[CHECKPOINT_KEYS[args.scenario]]
     publication_mode = bool(args.execute_publication_runtime)
+    if publication_mode:
+        _require(args.codec is not None, "publication runtime requires exact --codec")
+        _require(
+            args.analytics_execution_socket is not None,
+            "publication runtime requires exact --analytics-execution-socket",
+        )
+        _require(
+            args.analytics_preprocessing_contract_sha256 is not None,
+            "publication runtime requires exact --analytics-preprocessing-contract-sha256",
+        )
+        _require(
+            args.system == "gstreamer_custom",
+            "checkpoint publication runtime is topology-specific to gstreamer_custom",
+        )
+        pair = build_publication_pair_plans(
+            config=config,
+            datasets=datasets,
+            system=args.system,
+            codec=str(args.codec),
+        )
+    else:
+        pair = build_primary_pair_plans(
+            config=config,
+            datasets=datasets,
+            system=args.system,
+        )
+    plan = pair[CHECKPOINT_KEYS[args.scenario]]
+    primary = dict((config.get("benchmark") or {}).get("primary_architecture_contrast") or {})
+    dataset_identity = dict(datasets[str(plan["dataset"])])
+    if publication_mode:
+        _require(args.policy is not None, "publication runtime requires exact --policy")
+        _require(args.deadline_ms is not None, "publication runtime requires exact --deadline-ms")
+        _require(args.codec == str(dataset_identity.get("codec_variant")), "publication codec differs from dataset")
+        configured_policies = tuple(
+            str(value)
+            for value in (config.get("benchmark") or {}).get("scheduler_policies", [])
+        )
+        _require(
+            configured_policies == POLICIES and str(args.policy) in POLICIES,
+            "publication policy differs from the frozen seven-policy matrix",
+        )
+        configured_deadlines = tuple(
+            float(value)
+            for value in (config.get("benchmark") or {}).get("deadline_ms", [])
+        )
+        _require(
+            len(configured_deadlines) == 5
+            and any(
+                math.isclose(
+                    float(args.deadline_ms),
+                    expected,
+                    rel_tol=0.0,
+                    abs_tol=1e-9,
+                )
+                for expected in configured_deadlines
+            ),
+            "publication deadline differs from the frozen full matrix",
+        )
+    full_resource_requested = publication_mode and full_resource_publication_requested(
+        config,
+        explicit_defer=args.defer_full_resource_acceptance,
+    )
     runtime_output_dir = (
         args.output_dir / "native_runtime"
         if publication_mode
@@ -1543,6 +2433,58 @@ def main() -> int:
             args.analytics_model_manifest,
             required_branches=plan["required_branches"],
         )
+    native_policy_runtime: NativePolicyRuntimeCoordinator | None = None
+    native_policy_capability_assessment: dict[str, Any] | None = None
+    if publication_mode:
+        _require(
+            args.analytics_model_manifest is not None and analytics_model_bindings is not None,
+            "publication policy runtime requires an exact analytics execution manifest",
+        )
+        native_policy_capability_assessment = assess_gstreamer_native_policy_execution_manifest(
+            _load_yaml(args.analytics_model_manifest)
+        )
+        _require(
+            str(args.policy) in native_policy_capability_assessment["eligible_policies"],
+            "native gstreamer policy is blocked by execution capabilities: "
+            + ",".join(native_policy_capability_assessment["blockers"][:8]),
+        )
+        _require(
+            args.policy == "cpu_only",
+            "native gstreamer GPU/mixed policy paths require frozen TensorRT/CUDA parity bindings",
+        )
+        _require(
+            args.policy_capability_manifest is not None,
+            "publication policy capability manifest is required",
+        )
+        _require(args.policy_calibration is not None, "publication policy calibration is required")
+        capability_manifest = _load_yaml(args.policy_capability_manifest)
+        calibration = _load_yaml(args.policy_calibration)
+        static_hybrid_map = (
+            _load_yaml(args.static_hybrid_map)
+            if args.static_hybrid_map is not None
+            else None
+        )
+        require_exact_native_cpu_capability_bindings(
+            binary=args.binary,
+            analytics_bindings=analytics_model_bindings,
+            capability_manifest=capability_manifest,
+        )
+        native_policy_runtime = NativePolicyRuntimeCoordinator(
+            run_id=args.run_id,
+            arm_id=(
+                f"{args.run_id}:{args.scenario}:{args.codec}:{args.policy}:"
+                f"{float(args.deadline_ms)}"
+            ),
+            system=args.system,
+            scenario=args.scenario,
+            codec=str(args.codec),
+            policy=str(args.policy),
+            deadline_ms=float(args.deadline_ms),
+            branches=plan["required_branches"],
+            capability_manifest=capability_manifest,
+            calibration=calibration,
+            static_hybrid_map=static_hybrid_map,
+        )
     resolved_queue_max_buffers = _resolve_analytics_queue_max_buffers(
         plan=plan,
         detect_bin=args.detect_bin,
@@ -1559,6 +2501,20 @@ def main() -> int:
         analytics_terminal_mode=args.checkpoint_analytics_mode,
         analytics_model_bindings=analytics_model_bindings,
         analytics_queue_max_buffers=resolved_queue_max_buffers,
+        native_policy=(str(args.policy) if native_policy_runtime is not None else None),
+        native_policy_deadline_ms=(
+            float(args.deadline_ms) if native_policy_runtime is not None else None
+        ),
+        analytics_execution_socket=(
+            args.analytics_execution_socket
+            if native_policy_runtime is not None
+            else None
+        ),
+        analytics_preprocessing_contract_sha256=(
+            args.analytics_preprocessing_contract_sha256
+            if native_policy_runtime is not None
+            else None
+        ),
     )
     source_specs = build_gstreamer_source_specs(
         plan=plan,
@@ -1594,6 +2550,17 @@ def main() -> int:
             else None
         ),
         "analytics_model_bindings": analytics_model_bindings,
+        "native_policy_capability_assessment": native_policy_capability_assessment,
+        "analytics_execution_socket": (
+            str(args.analytics_execution_socket)
+            if native_policy_runtime is not None
+            else None
+        ),
+        "analytics_preprocessing_contract_sha256": (
+            str(args.analytics_preprocessing_contract_sha256)
+            if native_policy_runtime is not None
+            else None
+        ),
         "analytics_queue": plan["analytics_queue"],
         "decoder_placement": plan["decoder_placement"],
         "decoder_placement_runtime_gate": plan["decoder_placement_runtime_gate"],
@@ -1612,6 +2579,7 @@ def main() -> int:
         "worker_commands": [list(spec.command) for spec in specs],
         "source_commands": [list(spec.command) for spec in source_specs],
         "accepted_benchmark_sidecars_written": False,
+        "full_resource_publication_requested": full_resource_requested,
     }
     if not args.execute_engineering_runtime and not args.execute_publication_runtime:
         print(json.dumps(preview, indent=2, sort_keys=True))
@@ -1677,6 +2645,21 @@ def main() -> int:
             measurement_end_boundary_guard_ns=int(
                 plan["source_playback"]["measurement_end_boundary_guard_ns"]
             ),
+            policy_socket_handler=(
+                native_policy_runtime.serve_worker_socket
+                if native_policy_runtime is not None
+                else None
+            ),
+        )
+    native_policy_promotion: dict[str, Any] | None = None
+    if native_policy_runtime is not None:
+        native_policy_promotion = native_policy_runtime.promote(
+            args.output_dir,
+            canonical_frames=canonical_frames_from_events(result.events),
+        )
+        result = dataclasses.replace(
+            result,
+            events=native_policy_runtime.enrich_runtime_events(result.events),
         )
     cohort_audit = build_runtime_cohort_audit(
         events=result.events,
@@ -1750,7 +2733,7 @@ def main() -> int:
             run_id=args.run_id,
             topology_events=result.events,
         )
-        runtime_resource_interval_path = merge_runtime_fanout_intervals(
+        runtime_resource_interval_path = merge_runtime_resource_intervals(
             specs=specs,
             output_root=runtime_output_dir,
             run_id=args.run_id,
@@ -1778,12 +2761,15 @@ def main() -> int:
             encoding="utf-8",
         )
     publication_acceptance: dict[str, Any] | None = None
+    resource_runtime_acceptance: dict[str, Any] | None = None
     if publication_mode:
         _require(runtime_reset_audit is not None, "publication runtime reset audit is absent")
         _require(runtime_stage_contract_path is not None, "publication runtime stage contract is absent")
-        primary = dict((config.get("benchmark") or {}).get("primary_architecture_contrast") or {})
         _require(str(primary.get("system")) == args.system, "publication runtime system differs from primary cell")
-        _require(str(primary.get("dataset")) == str(plan["dataset"]), "publication runtime dataset differs from primary cell")
+        _require(
+            str(dataset_identity.get("codec_variant")) == str(args.codec),
+            "publication runtime dataset/codec binding drifted",
+        )
         scenario = dict((config.get("scenarios") or {}).get(args.scenario) or {})
         scenario["name"] = args.scenario
         dataset = dict(datasets[str(plan["dataset"])])
@@ -1800,13 +2786,30 @@ def main() -> int:
             worker_specs=specs,
             source_specs=source_specs,
             run_id=args.run_id,
-            policy=str(primary["policy"]),
-            deadline_ms=float(primary["deadline_ms"]),
+            policy=str(args.policy),
+            deadline_ms=float(args.deadline_ms),
+            defer_full_resource_acceptance=full_resource_requested,
         )
+        if full_resource_requested:
+            _require(
+                runtime_resource_interval_path is not None,
+                "full-resource publication lacks merged native intervals",
+            )
+            resource_runtime_acceptance = promote_runtime_interval_and_fanout_evidence(
+                runtime_resource_intervals=runtime_resource_interval_path,
+                runtime_fanout_work_counters=runtime_fanout_work_path,
+                output_root=args.output_dir,
+                expected_run_id=args.run_id,
+                ingress_ledger=pd.read_csv(args.output_dir / "ingress_ledger.csv"),
+                topology_events=pd.read_csv(args.output_dir / "topology_events.csv"),
+                frame_events=pd.read_csv(args.output_dir / "frame_events.csv"),
+                topology_kind=str(plan["topology_kind"]),
+            )
 
     status = {
         **preview,
         "gstreamer_registry_seed": registry_seed,
+        "native_policy_promotion": native_policy_promotion,
         "runtime_topology_path": str(topology_path),
         "runtime_stage_contract_path": (
             str(runtime_stage_contract_path) if runtime_stage_contract_path is not None else None
@@ -1863,6 +2866,7 @@ def main() -> int:
         "window_end_timestamp_ms": result.window_end_timestamp_ms,
         "drain_end_timestamp_ms": result.drain_end_timestamp_ms,
         "publication_acceptance": publication_acceptance,
+        "resource_runtime_acceptance": resource_runtime_acceptance,
         "accepted_benchmark_sidecars_written": publication_acceptance is not None,
         "publication_blockers": [
             "accepted frames.csv is not emitted by the join coordinator",
@@ -1872,7 +2876,7 @@ def main() -> int:
             "paired baseline/shared schedule fingerprints have not been observed on the target stand",
             "bounded asynchronous compressed-AU fanout has not been exercised on the target stand",
             "protocol-v3 runtime outcomes are not accepted branch_terminals.csv linkage",
-            "native CUDA-transfer and NVDEC-busy intervals are not emitted; fanout intervals remain engineering-only",
+            "native NVDEC submit-to-output and fanout intervals remain runtime-only until full-resource promotion",
             "accepted reset_evidence.csv is not emitted; reset_evidence.runtime.csv is engineering-only",
             "target-hardware execution has not been accepted",
         ] if publication_acceptance is None else [],

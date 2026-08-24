@@ -50,6 +50,7 @@ from benchmark_contract import (
     canonicalize_frames_csv,
     dataset_manifest_identity,
     evaluate_primary_policy_proxy_replay,
+    frozen_policy_requires_feedback,
     load_dataset,
     network_profile_matches,
     publication_run_contract_identity,
@@ -380,12 +381,13 @@ def write_publication_evidence_fixture(
     root: Path,
     *,
     scope: str = PUBLICATION_EVIDENCE_BUNDLE_SCOPE,
+    policy: str | None = None,
 ) -> tuple[dict, dict]:
-    for relative_name in publication_evidence_bundle_files(scope):
+    for relative_name in publication_evidence_bundle_files(scope, policy=policy):
         path = root / relative_name
         if not path.exists():
             path.write_bytes((relative_name + "\n").encode("utf-8"))
-    bundle = build_publication_evidence_bundle(root, scope=scope)
+    bundle = build_publication_evidence_bundle(root, scope=scope, policy=policy)
     identity = publication_evidence_bundle_identity(bundle)
     return bundle, identity
 
@@ -1006,6 +1008,47 @@ class BenchmarkContractTests(unittest.TestCase):
             self.assertEqual(summary["semantic_prefix_contract_sha256"], "unavailable")
             with self.assertRaisesRegex(ContractError, "without a replayable full policy trace"):
                 validate_policy_decisions(root / "policy_decisions.csv", require_full_trace=True)
+
+    def test_adaptive_weights_requires_canonical_feedback_without_suffix_heuristic(self) -> None:
+        self.assertTrue(frozen_policy_requires_feedback("adaptive_weights"))
+        self.assertFalse(frozen_policy_requires_feedback("ql_heft_online"))
+        self.assertFalse(frozen_policy_requires_feedback("heft"))
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            frames = pd.DataFrame([native_frame_row()])
+            events = pd.DataFrame(
+                [
+                    native_event_row(stage="decode", resource="cpu"),
+                    native_event_row(stage="plate_number", resource="cpu"),
+                ]
+            )
+            write_provenance_labeled_sidecars(
+                root,
+                frames=frames,
+                events=events,
+                dataset={
+                    "streams": [
+                        {
+                            "stream_id": 0,
+                            "camera_role": "plate_number",
+                            "width": 1920,
+                            "height": 1080,
+                        }
+                    ]
+                },
+                policy="adaptive_weights",
+                deadline_ms=100.0,
+            )
+            events.to_csv(root / "frame_events.csv", index=False)
+
+            with self.assertRaisesRegex(
+                ContractError,
+                "required frozen policy evidence is missing",
+            ):
+                validate_required_sidecars(
+                    root,
+                    require_online_policy_trace=True,
+                )
 
     def test_stage_contracts_validate_semantic_prefix_and_stable_hash(self) -> None:
         topology = stage_contract_topology(
@@ -3183,8 +3226,14 @@ class BenchmarkContractTests(unittest.TestCase):
             publication_run_identity = publication_run_contract_identity(
                 publication_run_contract
             )
+            evidence_scope = resolve_publication_evidence_bundle_scope(
+                config,
+                metadata_result,
+            )
             evidence_bundle, evidence_identity = write_publication_evidence_fixture(
-                run_dir
+                run_dir,
+                scope=evidence_scope,
+                policy=metadata_result["policy"],
             )
             (run_dir / "run_metadata.json").write_text(
                 json.dumps(
@@ -3362,6 +3411,7 @@ class BenchmarkContractTests(unittest.TestCase):
                 write_publication_evidence_fixture(
                     run_dir,
                     scope=PUBLICATION_EVIDENCE_BUNDLE_POLICY_ONLINE_SCOPE,
+                    policy=online_result["policy"],
                 )
             )
             (run_dir / "run_metadata.json").write_text(
@@ -3411,9 +3461,9 @@ class BenchmarkContractTests(unittest.TestCase):
                 expected_mode="benchmark",
                 config=config,
             )
-            feedback_path = run_dir / "policy_feedback.csv"
-            original_feedback = feedback_path.read_bytes()
-            feedback_path.write_bytes(original_feedback + b"tampered")
+            decisions_path = run_dir / "publication_policy_decisions.jsonl"
+            original_decisions = decisions_path.read_bytes()
+            decisions_path.write_bytes(original_decisions + b"tampered")
             with self.assertRaisesRegex(
                 ContractError,
                 "metadata.publication_evidence_bundle",
@@ -3491,11 +3541,17 @@ class BenchmarkContractTests(unittest.TestCase):
                 / "rep_01"
             )
             run_dir.mkdir(parents=True)
-            evidence_bundle, evidence_identity = write_publication_evidence_fixture(
-                run_dir
-            )
             metadata_result = dict(row)
             metadata_result["scenario_variant"] = ""
+            evidence_scope = resolve_publication_evidence_bundle_scope(
+                config,
+                metadata_result,
+            )
+            evidence_bundle, evidence_identity = write_publication_evidence_fixture(
+                run_dir,
+                scope=evidence_scope,
+                policy=metadata_result["policy"],
+            )
             metadata = {
                 "schema_version": 2,
                 "mode": "benchmark",
@@ -5173,16 +5229,18 @@ class BenchmarkContractTests(unittest.TestCase):
             resolve_publication_evidence_bundle_scope(config, result),
             PUBLICATION_EVIDENCE_BUNDLE_POLICY_ONLINE_SCOPE,
         )
+        self.assertIn(
+            "publication_policy_decisions.jsonl",
+            publication_evidence_bundle_files(
+                PUBLICATION_EVIDENCE_BUNDLE_POLICY_FROZEN_SCOPE,
+                policy="ql_heft_frozen",
+            ),
+        )
         self.assertNotIn(
             "policy_feedback.csv",
             publication_evidence_bundle_files(
-                PUBLICATION_EVIDENCE_BUNDLE_POLICY_FROZEN_SCOPE
-            ),
-        )
-        self.assertIn(
-            "policy_feedback.csv",
-            publication_evidence_bundle_files(
-                PUBLICATION_EVIDENCE_BUNDLE_POLICY_ONLINE_SCOPE
+                PUBLICATION_EVIDENCE_BUNDLE_POLICY_ONLINE_SCOPE,
+                policy="ql_heft_online",
             ),
         )
 
@@ -5191,12 +5249,14 @@ class BenchmarkContractTests(unittest.TestCase):
             bundle, identity = write_publication_evidence_fixture(
                 root,
                 scope=PUBLICATION_EVIDENCE_BUNDLE_POLICY_ONLINE_SCOPE,
+                policy="ql_heft_online",
             )
             validate_publication_evidence_bundle(
                 root,
                 bundle,
                 identity,
                 expected_scope=PUBLICATION_EVIDENCE_BUNDLE_POLICY_ONLINE_SCOPE,
+                expected_policy="ql_heft_online",
             )
             with self.assertRaisesRegex(ContractError, "scope does not match"):
                 validate_publication_evidence_bundle(
@@ -5206,15 +5266,16 @@ class BenchmarkContractTests(unittest.TestCase):
                     expected_scope=PUBLICATION_EVIDENCE_BUNDLE_SCOPE,
                 )
 
-            feedback_path = root / "policy_feedback.csv"
-            original_feedback = feedback_path.read_bytes()
-            feedback_path.write_bytes(original_feedback + b"tampered")
+            decisions_path = root / "publication_policy_decisions.jsonl"
+            original_feedback = decisions_path.read_bytes()
+            decisions_path.write_bytes(original_feedback + b"tampered")
             with self.assertRaisesRegex(ContractError, "does not match current"):
                 validate_publication_evidence_bundle(
                     root,
                     bundle,
                     identity,
                     expected_scope=PUBLICATION_EVIDENCE_BUNDLE_POLICY_ONLINE_SCOPE,
+                    expected_policy="ql_heft_online",
                 )
 
     def test_dataset_preflight_prints_byte_and_manifest_identities(self) -> None:

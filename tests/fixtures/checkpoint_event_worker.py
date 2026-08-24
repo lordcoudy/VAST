@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import socket
 import time
 
 
@@ -31,6 +32,23 @@ def main() -> int:
     protocol_version = 1
     sequence = 0
     timestamp_ms = int(time.time() * 1000)
+
+    if os.environ.get("VAST_TEST_POLICY_PING") == "1":
+        endpoint = socket.socket(fileno=int(os.environ["VAST_CHECKPOINT_POLICY_FD"]))
+        endpoint.sendall(
+            json.dumps(
+                {
+                    "schema_version": 1,
+                    "message_type": "fixture_ping",
+                    "worker_id": worker_id,
+                },
+                separators=(",", ":"),
+            ).encode("utf-8")
+        )
+        response = json.loads(endpoint.recv(4096).decode("utf-8"))
+        if response != {"schema_version": 1, "message_type": "fixture_ack"}:
+            raise RuntimeError("invalid fixture policy response")
+        endpoint.close()
 
     control = None
     status = None

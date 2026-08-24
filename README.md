@@ -697,16 +697,17 @@ The runner also exports scenario context to templates:
   incomplete and is never accepted. Version 2 declares only CUDA-event transfer
   duration as additive resource work. Decoder submit-to-output and queue
   sink-to-src spans are non-additive diagnostics: their sums are not NVDEC busy
-  time or fanout resource work and must not be inserted into `C_obs`. The shared
-  checkpoint source now contains a runtime-only
-  fanout emitter: paired probes on the sink and source pads of each branch
-  queue delimit the interval, bind it to the direct-admission trace and native
-  fanout execution, and write `resource_intervals.runtime.csv`. The launcher
-  merges this engineering fragment only after exact topology coverage and
-  parent-time checks; the independent-process baseline must not emit it.
-  This source-level path has not run on the target stand, does not emit CUDA
-  transfer or decoder submit-to-output intervals, does not measure true NVDEC
-  busy time or fanout resource work, and does not create the accepted
+  time or fanout resource work and must not be inserted into `C_obs`. The
+  checkpoint native source now writes runtime-only decoder submit-to-output
+  intervals around every exact hardware-decode execution in both topologies.
+  The shared source additionally pairs probes on the sink and source pads of
+  each branch queue and writes runtime-only fanout intervals. The launcher
+  merges `resource_intervals.runtime.csv` only after exact NVDEC coverage and,
+  for the shared topology, exact fanout coverage; the independent-process
+  baseline fragment must not contain fanout. These source paths have not run
+  on the target stand. A native CUDA-event transfer emitter is still missing;
+  the existing diagnostic intervals do not measure true NVDEC busy time or
+  fanout resource work and do not create the accepted
   `resource_intervals.csv`. No accepted interval packet exists, and the
   extension remains `publication_bundle_bound=false` and
   `evidence_accepted=false`. Measurement passport v4 and publication evidence

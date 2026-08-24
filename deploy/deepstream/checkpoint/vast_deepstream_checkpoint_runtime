@@ -1,0 +1,2 @@
+#!/bin/sh
+exec python3 -B /opt/vast/checkpoint/checkpoint_deepstream_sdk_runtime.py "$@"

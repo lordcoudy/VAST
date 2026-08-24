@@ -23,6 +23,18 @@ require_cmd() {
   fi
 }
 
+validate_install_root() {
+  local requested="$1"
+  local normalized
+  [[ "$requested" == /* ]] || die "DLSTREAMER_INSTALL_ROOT must be absolute"
+  normalized="$(realpath -m -- "$requested")"
+  [[ "$requested" == "$normalized" ]] || die "DLSTREAMER_INSTALL_ROOT must be canonical"
+  [[ "$normalized" == "/opt/vast/dlstreamer" ]] || \
+    die "DLSTREAMER_INSTALL_ROOT must be exactly /opt/vast/dlstreamer"
+  [[ ! -L "$normalized" ]] || die "DLSTREAMER_INSTALL_ROOT must not be a symlink"
+  printf '%s\n' "$normalized"
+}
+
 is_ubuntu() {
   [[ -f /etc/os-release ]] || return 1
   # shellcheck source=/dev/null
@@ -111,8 +123,10 @@ verify_gvadetect_with_env() {
 
 install_from_intel_dlstreamer_image() {
   local image="${DLSTREAMER_IMAGE:-intel/dlstreamer:latest}"
-  local install_root="${DLSTREAMER_INSTALL_ROOT:-/opt/vast/dlstreamer}"
+  local install_root
   local cid profile_file
+
+  install_root="$(validate_install_root "${DLSTREAMER_INSTALL_ROOT:-/opt/vast/dlstreamer}")"
 
   if ! command -v docker >/dev/null 2>&1; then
     warn "Docker is unavailable; cannot use image fallback"
@@ -262,4 +276,6 @@ main() {
   die "Neither gvadetect nor object_detect is available. Run 'apt-cache search dlstreamer' and install a package providing DL Streamer GStreamer elements for your distro."
 }
 
-main "$@"
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+  main "$@"
+fi
