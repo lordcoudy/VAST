@@ -16,6 +16,7 @@ from checkpoint_publication_runtime import (
     _accepted_frame_event_rows,
     _accepted_ingress_rows,
     _require_native_execution_sidecars,
+    checkpoint_aggregate_backend,
 )
 from checkpoint_runtime import RuntimeRunResult
 
@@ -97,6 +98,18 @@ def event(
 
 
 class CheckpointPublicationRuntimeTests(unittest.TestCase):
+    def test_checkpoint_aggregate_backend_is_exact_and_fail_closed_per_native_system(self) -> None:
+        self.assertEqual(
+            checkpoint_aggregate_backend("gstreamer_custom"),
+            "openvino_dlstreamer_branch_aggregate_v1",
+        )
+        self.assertEqual(
+            checkpoint_aggregate_backend("deepstream"),
+            "deepstream_native_branch_aggregate_v1",
+        )
+        with self.assertRaisesRegex(ContractError, "genuine runtime"):
+            checkpoint_aggregate_backend("synthetic")
+
     def test_publication_requires_preexisting_native_policy_and_resource_sidecars(self) -> None:
         with tempfile.TemporaryDirectory() as tmp, self.assertRaisesRegex(
             ContractError,

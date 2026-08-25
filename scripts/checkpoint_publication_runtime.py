@@ -79,6 +79,10 @@ _CANDIDATE_FIELDS = {
     "evidence_sha256",
     "pending_full_resource_evidence",
 }
+_CHECKPOINT_AGGREGATE_BACKENDS = {
+    "gstreamer_custom": "openvino_dlstreamer_branch_aggregate_v1",
+    "deepstream": "deepstream_native_branch_aggregate_v1",
+}
 
 
 def _acceptance_evidence_files(policy: str) -> tuple[str, ...]:
@@ -91,6 +95,12 @@ def _acceptance_evidence_files(policy: str) -> tuple[str, ...]:
 def _require(condition: bool, message: str) -> None:
     if not condition:
         raise ContractError(message)
+
+
+def checkpoint_aggregate_backend(system: str) -> str:
+    backend = _CHECKPOINT_AGGREGATE_BACKENDS.get(str(system).strip())
+    _require(backend is not None, "checkpoint publication has no genuine runtime for requested system")
+    return backend
 
 
 def _write_csv(path: Path, columns: list[str], rows: Iterable[dict[str, Any]]) -> None:
@@ -553,7 +563,13 @@ def _accepted_branch_rows(
 def _accepted_frames(
     ledger_rows: list[dict[str, Any]],
     branch_rows: list[dict[str, Any]],
+    *,
+    aggregate_backend: str,
 ) -> list[dict[str, Any]]:
+    _require(
+        aggregate_backend in set(_CHECKPOINT_AGGREGATE_BACKENDS.values()),
+        "checkpoint aggregate backend is not exact",
+    )
     objects_by_key: dict[tuple[str, str, int, int], int] = {}
     for row in branch_rows:
         key = _linkage_key(row)
@@ -577,7 +593,7 @@ def _accepted_frames(
                 "e2e_latency_ms": egress - ingress,
                 "objects": objects_by_key[key],
                 "detector": CHECKPOINT_FRAME_AGGREGATE_DETECTOR,
-                "backend": "openvino_dlstreamer_branch_aggregate_v1",
+                "backend": aggregate_backend,
                 "telemetry_source": "native",
             }
         )
@@ -849,7 +865,7 @@ def publish_checkpoint_runtime(
         .lower()
         .replace("hevc", "h265")
     )
-    _require(system == "gstreamer_custom", "checkpoint publication has no genuine runtime for requested system")
+    aggregate_backend = checkpoint_aggregate_backend(system)
     _require(
         bool(scenario_name) and scenario_name == planned_scenario,
         "checkpoint publication scenario identity drifted",
@@ -901,7 +917,11 @@ def publish_checkpoint_runtime(
         cohort_id=cohort_id,
         required_branches=required_branches,
     )
-    frame_rows = _accepted_frames(ledger_rows, branch_rows)
+    frame_rows = _accepted_frames(
+        ledger_rows,
+        branch_rows,
+        aggregate_backend=aggregate_backend,
+    )
     completed_keys = {_linkage_key(row) for row in frame_rows}
     topology_rows = _accepted_topology_rows(result, completed_keys=completed_keys)
     frame_event_rows = _accepted_frame_event_rows(
@@ -945,7 +965,7 @@ def publish_checkpoint_runtime(
         mode="benchmark",
         run_id=run_id,
         detector=CHECKPOINT_FRAME_AGGREGATE_DETECTOR,
-        backend="openvino_dlstreamer_branch_aggregate_v1",
+        backend=aggregate_backend,
     )
     events_df = validate_frame_events(output_dir / "frame_events.csv")
     validate_stage_trace_coverage(

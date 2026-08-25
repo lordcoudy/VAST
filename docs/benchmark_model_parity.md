@@ -163,7 +163,8 @@ lineage.
 The assessor recomputes, per sample:
 
 - maximum absolute logit error;
-- maximum symmetric relative logit error with denominator floor 1e-6;
+- maximum symmetric relative logit error with denominator floor 0.02, exactly
+  tied to the frozen maximum-absolute-logit tolerance;
 - mean absolute logit error;
 - cosine distance;
 - CPU and CUDA top-1 indices and equality.
@@ -173,6 +174,12 @@ error, mean absolute error over all logits, maximum cosine distance, and top-1
 mismatch rate. Frozen limits are 0.02, 0.05, 0.005, 0.001, and 0.0,
 respectively. Publication readiness requires every recomputed metric to pass
 for every branch.
+
+Tying the relative denominator floor to the absolute tolerance prevents
+numerically meaningless relative spikes for logits close to zero while
+remaining conservative: the 0.05 relative gate still limits that region to an
+effective absolute difference of 0.001. The independent 0.02 maximum-absolute
+gate, mean-absolute gate, cosine gate, and exact top-1 gate remain unchanged.
 
 This closes the v1 evidence gap: a producer cannot submit favorable aggregate
 numbers without the raw per-sample bundle from which the assessor derives

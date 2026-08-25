@@ -261,7 +261,10 @@ class SavantRuntimePlanTests(unittest.TestCase):
                                 deadline_ms=deadline_ms,
                             )
                             self.assertEqual(plan["codec"], codec)
-                            self.assertEqual(plan["dataset"], f"kpp_real_{codec}")
+                            self.assertEqual(
+                                plan["dataset"],
+                                f"kpp_iss_publication_v3_{codec}",
+                            )
                             self.assertEqual(plan["parser_factory"], f"{codec}parse")
                             self.assertEqual(plan["policy"], policy)
                             self.assertEqual(plan["deadline_ms"], float(deadline_ms))
@@ -314,7 +317,9 @@ class SavantRuntimePlanTests(unittest.TestCase):
                 deadline_ms=100.0,
             )
         bad_dataset = copy.deepcopy(datasets)
-        bad_dataset["kpp_real_h264"]["streams"][0]["codec_name"] = "h265"
+        bad_dataset["kpp_iss_publication_v3_h264"]["streams"][0][
+            "codec_name"
+        ] = "h265"
         with self.assertRaisesRegex(ContractError, "codec"):
             build_savant_runtime_plan(
                 config=config,

@@ -164,8 +164,132 @@ def commit(
 
 
 class PublicationCloudTransactionTests(unittest.TestCase):
+    def test_ledger_bytes_are_exact_across_crash_and_restart_recovery(self) -> None:
+        with tempfile.TemporaryDirectory(dir=ROOT) as tmp:
+            run_root = Path(tmp) / "run"
+            pair_dir, acceptance = prepare_pair(run_root)
+            store = FakeStore()
+
+            def crash_after_first(state: str) -> None:
+                if state == "accepted":
+                    raise SimulatedCrash(state)
+
+            with self.assertRaises(SimulatedCrash):
+                commit(
+                    PublicationCloudTransaction(
+                        store=store,
+                        run_root=run_root,
+                        transition_hook=crash_after_first,
+                    ),
+                    pair_dir,
+                    acceptance,
+                )
+
+            ledger = run_root / "cloud_ledger.jsonl"
+            first_rows = verify_cloud_ledger(ledger)
+            expected_first = b"".join(
+                _canonical_json(row) + b"\n" for row in first_rows
+            )
+            actual_first = ledger.read_bytes()
+            self.assertEqual(ledger.stat().st_size, len(expected_first))
+            self.assertEqual(actual_first, expected_first)
+            self.assertEqual(
+                hashlib.sha256(actual_first).hexdigest(),
+                hashlib.sha256(expected_first).hexdigest(),
+            )
+
+            result = commit(
+                PublicationCloudTransaction(store=store, run_root=run_root),
+                pair_dir,
+                acceptance,
+            )
+
+            self.assertEqual(result["state"], "local_pruned")
+            recovered_rows = verify_cloud_ledger(ledger)
+            expected_recovered = b"".join(
+                _canonical_json(row) + b"\n" for row in recovered_rows
+            )
+            actual_recovered = ledger.read_bytes()
+            self.assertEqual(ledger.stat().st_size, len(expected_recovered))
+            self.assertEqual(actual_recovered, expected_recovered)
+            self.assertEqual(
+                hashlib.sha256(actual_recovered).hexdigest(),
+                hashlib.sha256(expected_recovered).hexdigest(),
+            )
+
+    def test_all_ledger_write_descriptors_use_portable_binary_mode(self) -> None:
+        with tempfile.TemporaryDirectory(dir=ROOT) as tmp:
+            base = Path(tmp)
+            append_root = base / "append"
+            append_transaction = PublicationCloudTransaction(
+                store=FakeStore(), run_root=append_root
+            )
+            snapshot = {
+                "matrix_sha256": MATRIX_SHA256,
+                "run_id": "full-run-001",
+                "pair_sequence": 1,
+                "pair_id": "pair-0001",
+            }
+            observed_flags: list[int] = []
+            real_open = os.open
+
+            def recording_open(
+                path: os.PathLike[str] | str,
+                flags: int,
+                mode: int = 0o777,
+                *,
+                dir_fd: int | None = None,
+            ) -> int:
+                resolved = Path(path).resolve()
+                if (
+                    resolved.name == "cloud_ledger.jsonl"
+                    and flags & os.O_WRONLY
+                ):
+                    observed_flags.append(flags)
+                if dir_fd is None:
+                    return real_open(path, flags, mode)
+                return real_open(path, flags, mode, dir_fd=dir_fd)
+
+            with mock.patch(
+                "publication_cloud_transaction.os.open",
+                side_effect=recording_open,
+            ):
+                entry = append_transaction._append_transition(
+                    snapshot, state="accepted"
+                )
+                payload = _canonical_json(entry) + b"\n"
+
+                recovery_root = base / "recovery"
+                recovery_root.mkdir()
+                recovery_ledger = recovery_root / "cloud_ledger.jsonl"
+                recovery_ledger.write_bytes(payload[: len(payload) // 2])
+                pending = {
+                    "schema_version": "vast-cloud-ledger-pending/v1",
+                    "expected_ledger_size": 0,
+                    "payload_size": len(payload),
+                    "payload_sha256": hashlib.sha256(payload).hexdigest(),
+                    "entry": entry,
+                }
+                (recovery_root / "cloud_ledger.jsonl.pending").write_bytes(
+                    _canonical_json(pending) + b"\n"
+                )
+                recovered = PublicationCloudTransaction(
+                    store=FakeStore(), run_root=recovery_root
+                )._load_entries()
+
+            self.assertEqual(recovered, [])
+            self.assertEqual(recovery_ledger.read_bytes(), b"")
+            self.assertEqual(len(observed_flags), 2)
+            append_flags = [flags for flags in observed_flags if flags & os.O_APPEND]
+            recovery_flags = [flags for flags in observed_flags if not flags & os.O_APPEND]
+            self.assertEqual(len(append_flags), 1)
+            self.assertEqual(len(recovery_flags), 1)
+            binary_flag = getattr(os, "O_BINARY", 0)
+            for flags in observed_flags:
+                self.assertEqual(flags & binary_flag, binary_flag)
+
     def test_pending_journal_recovers_torn_and_fully_appended_ledger_rows(self) -> None:
-        with tempfile.TemporaryDirectory() as source_tmp:
+        with tempfile.TemporaryDirectory(dir=ROOT) as source_tmp:
             source_root = Path(source_tmp) / "run"
             pair_dir, acceptance = prepare_pair(source_root)
             source_transaction = PublicationCloudTransaction(
@@ -190,7 +314,7 @@ class PublicationCloudTransactionTests(unittest.TestCase):
             (max(1, len(payload) // 2), 0),
             (len(payload), 1),
         ):
-            with self.subTest(suffix_size=suffix_size), tempfile.TemporaryDirectory() as tmp:
+            with self.subTest(suffix_size=suffix_size), tempfile.TemporaryDirectory(dir=ROOT) as tmp:
                 run_root = Path(tmp) / "run"
                 run_root.mkdir()
                 ledger = run_root / "cloud_ledger.jsonl"

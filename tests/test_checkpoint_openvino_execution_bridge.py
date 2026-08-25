@@ -160,6 +160,26 @@ class FakeExecutionClient:
         self.requests.append(request)
         output = hashlib.sha256(bytes(tensor) + request["engine"].encode()).digest()
         cpu = request["engine"] == ENGINE_OPENVINO_CPU
+        transfer_intervals = [] if cpu else [
+            {
+                "direction": "h2d",
+                "host_start_monotonic_ns": 1_000_000,
+                "host_end_monotonic_ns": 1_400_000,
+                "device_elapsed_ns": 250_000,
+                "bytes": len(tensor),
+                "device_id": self.expected["device_id"],
+                "timing_source": "cudaEventElapsedTime",
+            },
+            {
+                "direction": "d2h",
+                "host_start_monotonic_ns": 1_500_000,
+                "host_end_monotonic_ns": 1_800_000,
+                "device_elapsed_ns": 200_000,
+                "bytes": len(output),
+                "device_id": self.expected["device_id"],
+                "timing_source": "cudaEventElapsedTime",
+            },
+        ]
         response = {
             "schema_version": 1,
             "message_type": "infer_response",
@@ -225,6 +245,7 @@ class FakeExecutionClient:
                 "accelerator_memory_bytes": 0 if cpu else 4096,
                 "cuda_h2d_bytes": 0 if cpu else len(tensor),
                 "cuda_d2h_bytes": 0 if cpu else len(output),
+                "cuda_transfer_intervals": transfer_intervals,
             },
         }
         return response, output
@@ -259,6 +280,30 @@ class SyntheticNativeBackend:
             accelerator_memory_bytes=0 if cpu else 4096,
             cuda_h2d_bytes=0 if cpu else len(payload),
             cuda_d2h_bytes=0 if cpu else len(output),
+            cuda_transfer_intervals=(
+                ()
+                if cpu
+                else (
+                    {
+                        "direction": "h2d",
+                        "host_start_monotonic_ns": 1_000_000,
+                        "host_end_monotonic_ns": 1_400_000,
+                        "device_elapsed_ns": 250_000,
+                        "bytes": len(payload),
+                        "device_id": self.expected["device_id"],
+                        "timing_source": "cudaEventElapsedTime",
+                    },
+                    {
+                        "direction": "d2h",
+                        "host_start_monotonic_ns": 1_500_000,
+                        "host_end_monotonic_ns": 1_800_000,
+                        "device_elapsed_ns": 200_000,
+                        "bytes": len(output),
+                        "device_id": self.expected["device_id"],
+                        "timing_source": "cudaEventElapsedTime",
+                    },
+                )
+            ),
         )
 
 
@@ -308,6 +353,9 @@ def context(
         "branch": branch,
         "selected_resource": resource,
         "parent_execution_id": parent_execution_id,
+        "postprocess_execution_id": (
+            f"{topology_worker_trace_id}-{branch}-postprocess"
+        ),
         "terminal_execution_id": f"{topology_worker_trace_id}-{branch}-terminal",
         "admission_id": "admission-stream-0-frame-7",
         "payload_sha256": PAYLOAD_SHA,
@@ -442,11 +490,93 @@ class OpenVINOGVAExecutionBridgeTests(unittest.TestCase):
         self.assertEqual(len(clients[("plate_number", "cpu")].requests), 1)
         self.assertEqual(len(clients[("damage", "gpu")].requests), 1)
         for result in (cpu_result, gpu_result):
+            self.assertEqual(
+                [event["event_kind"] for event in result["runtime_events"]],
+                ["stage_complete", "branch_complete"],
+            )
+            postprocess, terminal = result["runtime_events"]
+            self.assertEqual(postprocess["stage"], f"postprocess_{result['branch']}")
+            self.assertEqual(
+                postprocess["parent_execution_ids"],
+                [
+                    "plate-number-analytics"
+                    if result["branch"] == "plate_number"
+                    else "damage-analytics"
+                ],
+            )
+            self.assertEqual(
+                terminal["parent_execution_ids"], [postprocess["execution_id"]]
+            )
             parsed = RuntimeMessage.parse(json.dumps(result["terminal_event"]))
             self.assertEqual(parsed.protocol_version, 3)
             self.assertEqual(parsed.event_kind, "branch_complete")
             self.assertFalse(result["publication_ready"])
             self.assertFalse(result["accepted_evidence_written"])
+
+        resource_fields = {
+            "process_cpu_time_ns",
+            "rss_before_bytes",
+            "rss_after_bytes",
+            "accelerator_memory_bytes",
+            "cuda_h2d_bytes",
+            "cuda_d2h_bytes",
+            "cuda_transfer_intervals",
+        }
+        self.assertEqual(set(cpu_result["resource"]), resource_fields)
+        self.assertEqual(cpu_result["resource"]["cuda_transfer_intervals"], [])
+        self.assertEqual(cpu_result["cuda_interval_bindings"], [])
+        self.assertEqual(set(gpu_result["resource"]), resource_fields)
+        self.assertEqual(
+            [row["direction"] for row in gpu_result["resource"]["cuda_transfer_intervals"]],
+            ["h2d", "d2h"],
+        )
+        self.assertEqual(
+            gpu_result["cuda_interval_bindings"],
+            [
+                {
+                    "direction": "h2d",
+                    "execution_id": "damage-analytics",
+                    "stage": "damage",
+                },
+                {
+                    "direction": "d2h",
+                    "execution_id": "trace-shared-damage-postprocess",
+                    "stage": "postprocess_damage",
+                },
+            ],
+        )
+        self.assertEqual(
+            set(gpu_result["runtime_identity"]),
+            {
+                "runtime_backend",
+                "device_api",
+                "gpu_id",
+                "worker_image_digest",
+                "implementation_version",
+                "terminal_detector",
+                "terminal_backend",
+            },
+        )
+        self.assertEqual(
+            gpu_result["runtime_identity"]["worker_image_digest"],
+            capability("damage", "gpu")["worker_image_id"],
+        )
+        self.assertEqual(cpu_result["runtime_identity"]["device_api"], "CPU")
+        self.assertIsNone(cpu_result["runtime_identity"]["gpu_id"])
+        self.assertTrue(
+            cpu_result["runtime_identity"]["terminal_backend"].endswith(";device=CPU")
+        )
+        self.assertEqual(gpu_result["runtime_identity"]["device_api"], "NVIDIA_CUDA")
+        self.assertEqual(gpu_result["runtime_identity"]["gpu_id"], 0)
+        self.assertTrue(
+            gpu_result["runtime_identity"]["terminal_backend"].endswith(
+                ";device=NVIDIA_CUDA:0"
+            )
+        )
+        self.assertEqual(
+            gpu_result["runtime_identity"]["terminal_detector"],
+            capability("damage", "gpu")["model_id"],
+        )
 
     @unittest.skipUnless(
         hasattr(socket, "SOCK_SEQPACKET"),
@@ -553,6 +683,29 @@ class OpenVINOGVAExecutionBridgeTests(unittest.TestCase):
             )
         self.assertFalse(clients[("plate_number", "cpu")].requests)
 
+    def test_rejects_aliased_topology_execution_ids_before_inference(self) -> None:
+        endpoints, clients = endpoint_inventory()
+        bridge = OpenVINOGVAExecutionBridge(endpoints)
+        bridge.handshake_all()
+        raw = context(
+            branch="plate_number",
+            resource="cpu",
+            topology_kind=INDEPENDENT_PROCESSES,
+            topology_worker_id="stream-0-branch-plate_number",
+            topology_worker_trace_id="trace-plate-number",
+            event_sequence=5,
+            parent_execution_id="plate-number-analytics",
+        )
+        raw["postprocess_execution_id"] = raw["parent_execution_id"]
+
+        with self.assertRaisesRegex(ProtocolError, "execution IDs must be distinct"):
+            bridge.execute(
+                context=raw,
+                tensor=bytes(range(12)),
+                tensor_descriptor=tensor_descriptor(),
+            )
+        self.assertFalse(clients[("plate_number", "cpu")].requests)
+
     def test_baseline_and_shared_events_close_live_protocol_v3_joins(self) -> None:
         payload = bytes(range(12))
 
@@ -575,6 +728,7 @@ class OpenVINOGVAExecutionBridgeTests(unittest.TestCase):
             topology_kind=INDEPENDENT_PROCESSES,
             branches=BRANCHES,
             bindings=baseline_bindings,
+            topology_contract_version=2,
             clock_ms=lambda: 1000,
         )
         for index, branch in enumerate(BRANCHES):
@@ -592,7 +746,7 @@ class OpenVINOGVAExecutionBridgeTests(unittest.TestCase):
             )
             for event in events:
                 baseline.accept(json.dumps(event), observed_worker_id=worker, observed_pid=2000 + index)
-            terminal = baseline_bridge.execute(
+            result = baseline_bridge.execute(
                 context=context(
                     branch=branch,
                     resource="cpu",
@@ -604,13 +758,14 @@ class OpenVINOGVAExecutionBridgeTests(unittest.TestCase):
                 ),
                 tensor=payload,
                 tensor_descriptor=tensor_descriptor(),
-            )["terminal_event"]
-            baseline.accept(json.dumps(terminal), observed_worker_id=worker, observed_pid=2000 + index)
+            )
+            for event in result["runtime_events"]:
+                baseline.accept(json.dumps(event), observed_worker_id=worker, observed_pid=2000 + index)
         self.assertTrue(baseline.terminal_frame_records()[0]["joined"])
         self.assertEqual(len(baseline.branch_terminal_records()), 4)
 
         endpoints, _ = endpoint_inventory()
-        terminal_times = iter((100, 200, 300, 400))
+        terminal_times = iter((70, 80, 170, 180, 270, 280, 370, 380))
         shared_bridge = OpenVINOGVAExecutionBridge(
             endpoints,
             clock_ms=lambda: next(terminal_times),
@@ -632,6 +787,7 @@ class OpenVINOGVAExecutionBridgeTests(unittest.TestCase):
                     native_event_source=True,
                 )
             ],
+            topology_contract_version=2,
             clock_ms=lambda: 1000,
         )
         source, decode, preprocess = "shared-source", "shared-decode", "shared-preprocess"
@@ -659,7 +815,7 @@ class OpenVINOGVAExecutionBridgeTests(unittest.TestCase):
             )
             sequence += 1
             resource = "cpu" if index % 2 == 0 else "gpu"
-            terminal = shared_bridge.execute(
+            result = shared_bridge.execute(
                 context=context(
                     branch=branch,
                     resource=resource,
@@ -671,9 +827,10 @@ class OpenVINOGVAExecutionBridgeTests(unittest.TestCase):
                 ),
                 tensor=payload,
                 tensor_descriptor=tensor_descriptor(),
-            )["terminal_event"]
-            shared.accept(json.dumps(terminal), observed_worker_id=worker, observed_pid=3000)
-            sequence += 1
+            )
+            for event in result["runtime_events"]:
+                shared.accept(json.dumps(event), observed_worker_id=worker, observed_pid=3000)
+            sequence += 2
         self.assertTrue(shared.terminal_frame_records()[0]["joined"])
         terminals = shared.branch_terminal_records()
         self.assertEqual(len(terminals), 4)

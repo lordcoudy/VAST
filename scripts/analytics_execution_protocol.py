@@ -47,6 +47,15 @@ PROTOCOL_CONTRACT: dict[str, Any] = {
     "max_inflight_requests_per_worker": 1,
     "engines": list(ENGINES),
     "branches": list(BRANCHES),
+    "native_transfer_timing": {
+        ENGINE_OPENVINO_CPU: "forbidden_no_cuda_transfer",
+        ENGINE_TENSORRT_CUDA: {
+            "intervals": ["h2d", "d2h"],
+            "duration_provenance": "native_cuda_event_interval_v1",
+            "duration_api": "cudaEventElapsedTime",
+            "host_envelope_clock": "CLOCK_MONOTONIC",
+        },
+    },
 }
 
 _SHA256_RE = re.compile(r"^[0-9a-f]{64}$")

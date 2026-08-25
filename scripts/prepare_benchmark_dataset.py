@@ -18,6 +18,10 @@ from kpp_legacy_iss_v2_manifest import (
     KppLegacyIssV2ManifestError,
     validate_kpp_legacy_iss_v2_manifest_entry,
 )
+from kpp_iss_publication_v3_dataset import (
+    KppIssPublicationV3DatasetError,
+    validate_kpp_iss_publication_v3_manifest_entry,
+)
 
 
 class DatasetPrepError(RuntimeError):
@@ -298,13 +302,20 @@ def _is_check_only_materialized_v2(
     project_root: Path,
 ) -> bool:
     try:
-        return validate_kpp_legacy_iss_v2_manifest_entry(
+        if validate_kpp_legacy_iss_v2_manifest_entry(
+            dataset_name,
+            dataset,
+            project_root=project_root,
+            require_files=False,
+        ):
+            return True
+        return validate_kpp_iss_publication_v3_manifest_entry(
             dataset_name,
             dataset,
             project_root=project_root,
             require_files=False,
         )
-    except KppLegacyIssV2ManifestError as exc:
+    except (KppLegacyIssV2ManifestError, KppIssPublicationV3DatasetError) as exc:
         raise DatasetPrepError(str(exc)) from exc
 
 

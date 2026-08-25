@@ -33,6 +33,7 @@ TRANSACTION_STATES = (
 )
 _STATE_INDEX = {state: index for index, state in enumerate(TRANSACTION_STATES)}
 _GENESIS_HASH = "0" * 64
+_O_BINARY = getattr(os, "O_BINARY", 0)
 _SHA256_RE = re.compile(r"[0-9a-f]{64}")
 _IDENTIFIER_RE = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]{0,127}")
 _QUALIFICATION_AUTHORITY_FIELDS = frozenset({
@@ -753,7 +754,7 @@ class PublicationCloudTransaction:
         if len(suffix) == payload_size:
             self._clear_ledger_pending()
             return
-        descriptor = os.open(self.ledger_path, os.O_WRONLY)
+        descriptor = os.open(self.ledger_path, os.O_WRONLY | _O_BINARY)
         try:
             os.ftruncate(descriptor, expected_size)
             os.fsync(descriptor)
@@ -856,7 +857,7 @@ class PublicationCloudTransaction:
         existed = self.ledger_path.exists()
         descriptor = os.open(
             self.ledger_path,
-            os.O_APPEND | os.O_CREAT | os.O_WRONLY,
+            os.O_APPEND | os.O_CREAT | os.O_WRONLY | _O_BINARY,
             0o600,
         )
         try:

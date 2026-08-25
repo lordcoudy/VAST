@@ -131,8 +131,8 @@ def _scenario_contract(scenario_name: str, scenario: dict[str, Any]) -> tuple[st
     _require(expected_kind is not None, f"unsupported checkpoint scenario: {scenario_name}")
     topology = dict(scenario.get("topology") or {})
     _require(
-        int(topology.get("contract_version", 0) or 0) == 1,
-        f"{scenario_name}: topology contract version 1 is required",
+        int(topology.get("contract_version", 0) or 0) == 2,
+        f"{scenario_name}: topology contract version 2 is required",
     )
     _require(
         str(topology.get("kind", "")) == expected_kind,
@@ -351,7 +351,7 @@ def build_checkpoint_runtime_plan(
         "dataset": dataset_name,
         "system": system,
         "benchmark_status": str(scenario.get("benchmark_status", "")),
-        "topology_contract_version": 1,
+        "topology_contract_version": 2,
         "topology_kind": topology_kind,
         "routing_mode": "all_branches_per_stream",
         "required_branches": branches,

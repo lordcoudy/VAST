@@ -52,7 +52,29 @@ class FakeNativeSession:
     def infer(self, array: np.ndarray) -> bytes:
         self.retained_input = array
         self.seen.append(np.array(array, copy=True))
-        return np.asarray([[float(array.sum()), float(array.mean())]], dtype=np.float32).tobytes()
+        output = np.asarray(
+            [[float(array.sum()), float(array.mean())]], dtype=np.float32
+        ).tobytes()
+        return output, (
+            {
+                "direction": "h2d",
+                "host_start_monotonic_ns": 1_000_000,
+                "host_end_monotonic_ns": 1_400_000,
+                "device_elapsed_ns": 250_000,
+                "bytes": array.nbytes,
+                "device_id": self.gpu_uuid,
+                "timing_source": "cudaEventElapsedTime",
+            },
+            {
+                "direction": "d2h",
+                "host_start_monotonic_ns": 1_500_000,
+                "host_end_monotonic_ns": 1_800_000,
+                "device_elapsed_ns": 200_000,
+                "bytes": len(output),
+                "device_id": self.gpu_uuid,
+                "timing_source": "cudaEventElapsedTime",
+            },
+        )
 
 
 class TensorRTExecutionWorkerTests(unittest.TestCase):
@@ -113,6 +135,34 @@ class TensorRTExecutionWorkerTests(unittest.TestCase):
             self.assertEqual(result.cuda_h2d_bytes, input_array.nbytes)
             self.assertEqual(result.cuda_d2h_bytes, len(result.output))
             self.assertEqual(result.accelerator_memory_bytes, 4096)
+            self.assertEqual(
+                [item["direction"] for item in result.cuda_transfer_intervals],
+                ["h2d", "d2h"],
+            )
+            self.assertTrue(
+                all(
+                    item["timing_source"] == "cudaEventElapsedTime"
+                    and item["device_elapsed_ns"] > 0
+                    and item["device_elapsed_ns"]
+                    <= item["host_end_monotonic_ns"]
+                    - item["host_start_monotonic_ns"]
+                    for item in result.cuda_transfer_intervals
+                )
+            )
+
+    def test_native_backend_source_uses_cuda_events_for_both_transfers(self) -> None:
+        source = (
+            ROOT / "deploy" / "analytics_execution" / "tensorrt_backend.cpp"
+        ).read_text(encoding="utf-8")
+        for marker in (
+            "cudaEventCreateWithFlags",
+            "cudaEventRecord",
+            "cudaEventElapsedTime",
+            "h2d_device_elapsed_ns",
+            "d2h_device_elapsed_ns",
+            "CLOCK_MONOTONIC",
+        ):
+            self.assertIn(marker, source)
 
     def test_backend_rejects_native_session_on_different_gpu_uuid(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

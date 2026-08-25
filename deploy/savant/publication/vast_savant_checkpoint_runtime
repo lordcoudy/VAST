@@ -1,0 +1,10 @@
+#!/bin/sh
+set -eu
+
+if [ "$#" -lt 1 ] || [ "$1" != "arm" ]; then
+  echo "Savant publication runtime requires the arm command" >&2
+  exit 2
+fi
+shift
+exec python3 -B \
+  /opt/vast/checkpoint/checkpoint_savant_container_runtime_v3.py "$@"

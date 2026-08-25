@@ -94,19 +94,31 @@ class Fixture:
                 evidence.append(descriptor(self.root, path))
         self.parity_assessment = self.output / "checkpoint_model_parity_accepted_assessment.json"
         self.parity_receipt = self.output / "checkpoint_model_parity_acceptance_receipt.json"
+        self.parity_transaction = self.root / "evidence/model_parity/v4/transaction_index.json"
         write_json(self.parity_assessment, {"accepted": True})
         write_json(self.parity_receipt, {"accepted": True})
+        write_json(self.parity_transaction, {"transaction": "physical-model-parity-v2"})
+        transaction_record = descriptor(self.root, self.parity_transaction)
+        transaction = {
+            **transaction_record,
+            "transaction_sha256": hashlib.sha256(b"transaction").hexdigest(),
+            "files_sha256": hashlib.sha256(b"transaction-files").hexdigest(),
+            "output_segments_sha256": hashlib.sha256(b"output-segments").hexdigest(),
+            "execution_bundle_count": 480,
+            "execution_bundles_sha256": hashlib.sha256(b"execution-bundles").hexdigest(),
+        }
         parity_files = sorted(
             [
                 descriptor(self.root, parity),
                 descriptor(self.root, self.parity_assessment),
                 descriptor(self.root, self.parity_receipt),
+                transaction_record,
                 *evidence,
             ],
             key=lambda item: item["path"],
         )
         self.parity_acceptance = {
-            "schema_version": 1,
+            "schema_version": 2,
             "artifact_kind": "vast_verified_model_parity_acceptance_binding",
             "receipt": descriptor(self.root, self.parity_receipt),
             "accepted_manifest": descriptor(self.root, parity),
@@ -120,6 +132,7 @@ class Fixture:
             "runtime_images_sha256": hashlib.sha256(b"runtime-images").hexdigest(),
             "files": parity_files,
             "files_sha256": canonical_sha(parity_files),
+            "transaction_index": transaction,
         }
         self.parity_acceptance["binding_sha256"] = canonical_sha(self.parity_acceptance)
         return parity, execution
@@ -160,7 +173,7 @@ class Fixture:
 
     def _resource(self) -> tuple[Path, Path]:
         contract = {"contract_version": 2, "publication_scope": target.PUBLICATION_SCOPE, "full_resource_validator_sha256": hashlib.sha256(b"full-validator").hexdigest(), "interval_validator_sha256": hashlib.sha256(b"interval-validator").hexdigest()}
-        datasets = {codec: {"dataset_name": f"kpp_real_{codec}", "manifest_identity_sha256": hashlib.sha256((codec + "-manifest").encode()).hexdigest(), "source_sha256": sorted(hashlib.sha256((codec + str(i)).encode()).hexdigest() for i in (1, 2)), "annotation_sha256": hashlib.sha256((codec + "-annotations").encode()).hexdigest()} for codec in CODECS}
+        datasets = {codec: {"dataset_name": f"kpp_iss_publication_v3_{codec}", "manifest_identity_sha256": hashlib.sha256((codec + "-manifest").encode()).hexdigest(), "source_sha256": sorted(hashlib.sha256((codec + str(i)).encode()).hexdigest() for i in (1, 2)), "annotation_sha256": hashlib.sha256((codec + "-annotations").encode()).hexdigest()} for codec in CODECS}
         systems = {}
         for system in SYSTEMS:
             resources = {}
@@ -174,7 +187,7 @@ class Fixture:
             system, resource, codec, topology = coordinate
             stem = "-".join(coordinate)
             samples = {branch: 30 for branch in BRANCHES}
-            pilots.append({"system": system, "resource": resource, "codec": codec, "topology_kind": topology, "run_id": f"accepted-pilot-{stem}", "dataset_name": f"kpp_real_{codec}", "source_sha256": datasets[codec]["source_sha256"], "evidence_sha256": {role: hashlib.sha256((stem + role).encode()).hexdigest() for role in ("checkpoint_acceptance", "frames", "frame_events", "ingress_ledger", "topology_events", "resource_intervals", "hardware_resource_samples", "fanout_work_counters")}, "resource_summary": {"resource_contract_version": 2, "evidence_accepted": True, "publication_bundle_bound": True, "full_resource_coverage_complete": True, "nvdec_busy_equivalent_ns": 1, "nvdec_counter_scope": "device_sample", "fanout_thread_cpu_time_ns": 1 if topology == "shared_video_dag" else 0, "fanout_work_units": 1 if topology == "shared_video_dag" else 0, "fanout_counter_scope": "per_trace_resource_work"}, "accepted_samples_by_branch": samples, "accepted_branch_sample_count": 120})
+            pilots.append({"system": system, "resource": resource, "codec": codec, "topology_kind": topology, "run_id": f"accepted-pilot-{stem}", "dataset_name": f"kpp_iss_publication_v3_{codec}", "source_sha256": datasets[codec]["source_sha256"], "evidence_sha256": {role: hashlib.sha256((stem + role).encode()).hexdigest() for role in ("checkpoint_acceptance", "frames", "frame_events", "ingress_ledger", "topology_events", "resource_intervals", "hardware_resource_samples", "fanout_work_counters")}, "resource_summary": {"resource_contract_version": 2, "evidence_accepted": True, "publication_bundle_bound": True, "full_resource_coverage_complete": True, "nvdec_busy_equivalent_ns": 1, "nvdec_counter_scope": "device_sample", "fanout_thread_cpu_time_ns": 1 if topology == "shared_video_dag" else 0, "fanout_work_units": 1 if topology == "shared_video_dag" else 0, "fanout_counter_scope": "per_trace_resource_work"}, "accepted_samples_by_branch": samples, "accepted_branch_sample_count": 120})
         coverage = {"binding_count": 8, "pilot_cell_count": 32, "accepted_branch_sample_count": 3840, "minimum_samples_per_branch_coordinate": 30, "systems": 4, "resources": 2, "codecs": 2, "topology_kinds": 2, "branches": 4}
         capability = {"schema_version": 1, "artifact_kind": "vast_pre_run_full_resource_capability_manifest", "qualification_scope": "pre_run_hardware_and_emitter_capability_only", "publication_scope": target.PUBLICATION_SCOPE, "resource_contract": contract, "resource_contract_identity_sha256": canonical_sha(contract), "dataset_manifest_sha256": self.dataset_sha, "datasets": datasets, "systems": systems, "pilot_cells": pilots, "coverage": coverage, "post_run_per_arm_evidence": {"required": True, "acceptance_artifact_kind": "checkpoint_publication_runtime_acceptance", "validator": "validate_full_resource_evidence", "configuration_evidence_accepted_mutated": False}}
         capability = self_hashed(capability, "content_sha256")
@@ -265,6 +278,15 @@ class Fixture:
 
 
 class FullPublicationIdentityArtifactTests(unittest.TestCase):
+    def test_active_publication_dataset_ids_are_kpp_iss_v3(self) -> None:
+        self.assertEqual(
+            target.KPP_DATASET_BY_CODEC,
+            {
+                "h264": "kpp_iss_publication_v3_h264",
+                "h265": "kpp_iss_publication_v3_h265",
+            },
+        )
+
     def setUp(self) -> None:
         self.temp = tempfile.TemporaryDirectory()
         self.root = Path(self.temp.name)
@@ -283,8 +305,43 @@ class FullPublicationIdentityArtifactTests(unittest.TestCase):
         self.assertIn("accepted/checkpoint_policy_qualification_receipt.json", paths)
         self.assertIn("accepted/checkpoint_full_resource_qualification_receipt.json", paths)
         self.assertIn("accepted/checkpoint_model_parity_acceptance_receipt.json", paths)
+        self.assertIn("evidence/model_parity/v4/transaction_index.json", paths)
+        self.assertEqual(result["bindings"]["analytics_model_parity"]["schema_version"], 2)
         self.assertEqual(result["bindings"]["analytics_model_parity"]["evidence_count"], 32)
+        self.assertEqual(
+            result["bindings"]["analytics_model_parity"]["transaction_index"]["execution_bundle_count"],
+            480,
+        )
         self.assertEqual(len(result["bindings"]["backend_runtime_qualification"]["receipts"]), 4)
+
+    def test_legacy_parity_acceptance_is_rejected_for_full_publication(self) -> None:
+        acceptance = self.fixture.parity_acceptance
+        acceptance.pop("transaction_index")
+        acceptance["schema_version"] = 1
+        acceptance["files"] = [
+            item
+            for item in acceptance["files"]
+            if item["path"] != "evidence/model_parity/v4/transaction_index.json"
+        ]
+        acceptance["files_sha256"] = canonical_sha(acceptance["files"])
+        acceptance.pop("binding_sha256")
+        acceptance["binding_sha256"] = canonical_sha(acceptance)
+        with self.assertRaisesRegex(
+            target.IdentityArtifactError,
+            "physical acceptance binding is invalid",
+        ):
+            self.fixture.load()
+
+    def test_parity_transaction_descriptor_drift_fails_closed(self) -> None:
+        acceptance = self.fixture.parity_acceptance
+        acceptance["transaction_index"]["sha256"] = "0" * 64
+        acceptance.pop("binding_sha256")
+        acceptance["binding_sha256"] = canonical_sha(acceptance)
+        with self.assertRaisesRegex(
+            target.IdentityArtifactError,
+            "transaction index descriptor drift",
+        ):
+            self.fixture.load()
 
     def test_descriptor_drift_and_unaccepted_receipt_fail_closed(self) -> None:
         calibration = self.fixture.output / "checkpoint_policy_calibration_mapping.json"

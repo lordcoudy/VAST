@@ -63,6 +63,17 @@ _PLACEHOLDER_IDS = {
     "derived",
     "placeholder",
 }
+_RUNTIME_IDENTITY_FIELDS = frozenset(
+    {
+        "runtime_backend",
+        "device_api",
+        "gpu_id",
+        "worker_image_digest",
+        "implementation_version",
+        "terminal_detector",
+        "terminal_backend",
+    }
+)
 
 
 class PolicyContractError(ContractError):
@@ -99,6 +110,59 @@ def _valid_sha256(value: Any) -> bool:
 def _real_id(value: Any) -> bool:
     text = str(value)
     return bool(_REAL_ID_RE.fullmatch(text)) and text.lower() not in _PLACEHOLDER_IDS
+
+
+def _stable_runtime_text(value: Any) -> bool:
+    return (
+        type(value) is str
+        and len(value) >= 8
+        and value == value.strip()
+        and not any(character in value for character in "\r\n\x00")
+    )
+
+
+def _assess_runtime_identity(
+    binding: Mapping[str, Any],
+    *,
+    resource: str,
+    prefix: str,
+    blockers: list[str],
+) -> None:
+    identity = binding.get("runtime_identity")
+    if not isinstance(identity, Mapping) or set(identity) != _RUNTIME_IDENTITY_FIELDS:
+        blockers.append(f"{prefix}:runtime_identity_fields_invalid")
+        return
+
+    string_fields = _RUNTIME_IDENTITY_FIELDS - {"device_api", "gpu_id"}
+    if any(not _stable_runtime_text(identity.get(field)) for field in string_fields):
+        blockers.append(f"{prefix}:runtime_identity_value_invalid")
+    image = str(identity.get("worker_image_digest", ""))
+    if not image.startswith("sha256:") or not _valid_sha256(image[7:]):
+        blockers.append(f"{prefix}:worker_image_digest_invalid")
+    if any(field not in binding or binding.get(field) != identity.get(field) for field in _RUNTIME_IDENTITY_FIELDS):
+        blockers.append(f"{prefix}:runtime_identity_projection_mismatch")
+
+    device_api = identity.get("device_api")
+    gpu_id = identity.get("gpu_id")
+    terminal_backend = identity.get("terminal_backend")
+    if resource == "cpu":
+        matches_resource = (
+            device_api == "CPU"
+            and gpu_id is None
+            and type(terminal_backend) is str
+            and "device=CPU" in terminal_backend
+            and "NVIDIA_CUDA" not in terminal_backend
+        )
+    else:
+        matches_resource = (
+            device_api == "NVIDIA_CUDA"
+            and type(gpu_id) is int
+            and gpu_id == 0
+            and type(terminal_backend) is str
+            and "device=NVIDIA_CUDA:0" in terminal_backend
+        )
+    if not matches_resource:
+        blockers.append(f"{prefix}:runtime_identity_resource_mismatch")
 
 
 def _finite(value: Any, name: str) -> float:
@@ -305,6 +369,12 @@ def assess_capability_manifest(manifest: Mapping[str, Any] | None) -> dict[str, 
                     blockers.append(f"{prefix}:implementation_sha256_invalid")
                 if not _real_id(binding.get("runtime_binding")):
                     blockers.append(f"{prefix}:runtime_binding_not_real")
+                _assess_runtime_identity(
+                    binding,
+                    resource=resource,
+                    prefix=prefix,
+                    blockers=blockers,
+                )
 
                 evidence = binding.get("native_evidence")
                 native_bound = isinstance(evidence, Mapping) and all(

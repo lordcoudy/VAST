@@ -1,17 +1,19 @@
 ARG BASE_IMAGE=vast/deepstream-native-probe:7.0
-FROM ${BASE_IMAGE}
+ARG SOURCE_DATE_EPOCH=0
 
-ARG EXPECTED_BASE_IMAGE_ID=sha256:277bb99b1b23b5b763332041703905242a1238c3faeb72533aa6045c9d2d7489
-LABEL org.vast.analytics_worker.base_image_id="${EXPECTED_BASE_IMAGE_ID}"
-LABEL org.vast.analytics_worker.engine="tensorrt_cuda"
+FROM ${BASE_IMAGE} AS worker_builder
 
+ARG SOURCE_DATE_EPOCH
 USER root
 
-RUN install -d -m 0755 /opt/vast/analytics /opt/vast/bin /opt/vast/lib
+RUN install -d -m 0755 \
+      /opt/vast/worker-root/opt/vast/analytics \
+      /opt/vast/worker-root/opt/vast/bin \
+      /opt/vast/worker-root/opt/vast/lib
 
-COPY scripts/analytics_execution_protocol.py /opt/vast/analytics/analytics_execution_protocol.py
-COPY scripts/analytics_execution_worker.py /opt/vast/analytics/analytics_execution_worker.py
-COPY deploy/analytics_execution/tensorrt_worker.py /opt/vast/bin/vast_tensorrt_worker
+COPY scripts/analytics_execution_protocol.py /opt/vast/worker-root/opt/vast/analytics/analytics_execution_protocol.py
+COPY scripts/analytics_execution_worker.py /opt/vast/worker-root/opt/vast/analytics/analytics_execution_worker.py
+COPY deploy/analytics_execution/tensorrt_worker.py /opt/vast/worker-root/opt/vast/bin/vast_tensorrt_worker
 COPY deploy/analytics_execution/tensorrt_backend.cpp /tmp/vast_tensorrt_backend.cpp
 
 RUN g++ -std=c++17 -O2 -fPIC -shared \
@@ -21,13 +23,23 @@ RUN g++ -std=c++17 -O2 -fPIC -shared \
       -Wl,-z,relro,-z,now \
       -Wl,--no-undefined \
       -lnvinfer -lcudart -lcrypto \
-      -o /opt/vast/lib/libvast_tensorrt_backend.so \
-  && rm -f /tmp/vast_tensorrt_backend.cpp \
-  && chmod 0555 /opt/vast/bin/vast_tensorrt_worker \
+      -o /opt/vast/worker-root/opt/vast/lib/libvast_tensorrt_backend.so \
+  && chmod 0555 /opt/vast/worker-root/opt/vast/bin/vast_tensorrt_worker \
   && chmod 0444 \
-      /opt/vast/analytics/analytics_execution_protocol.py \
-      /opt/vast/analytics/analytics_execution_worker.py \
-      /opt/vast/lib/libvast_tensorrt_backend.so
+      /opt/vast/worker-root/opt/vast/analytics/analytics_execution_protocol.py \
+      /opt/vast/worker-root/opt/vast/analytics/analytics_execution_worker.py \
+      /opt/vast/worker-root/opt/vast/lib/libvast_tensorrt_backend.so \
+  && find /opt/vast/worker-root -exec touch -h -d "@${SOURCE_DATE_EPOCH}" {} +
+
+FROM ${BASE_IMAGE}
+
+ARG EXPECTED_BASE_IMAGE_ID=sha256:16d284eb311f04a95f148746f0dc5637d54d527cc42be9a6cced5fcf0240770c
+LABEL org.vast.analytics_worker.base_image_id="${EXPECTED_BASE_IMAGE_ID}"
+LABEL org.vast.analytics_worker.engine="tensorrt_cuda"
+
+USER root
+
+COPY --from=worker_builder /opt/vast/worker-root/ /
 
 ENV PYTHONPATH=/opt/vast/analytics
 ENV VAST_TENSORRT_BACKEND_LIBRARY=/opt/vast/lib/libvast_tensorrt_backend.so

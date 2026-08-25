@@ -72,11 +72,11 @@ def measurement_passport_fields(*, ingress_count: int = 1) -> dict[str, object]:
     }
 
 
-def scenario(kind: str) -> dict:
+def scenario(kind: str, *, contract_version: int = 1) -> dict:
     return {
         "name": "topology_fixture",
         "topology": {
-            "contract_version": 1,
+            "contract_version": contract_version,
             "kind": kind,
             "routing_mode": "all_branches_per_stream",
             "required_branches": BRANCHES,
@@ -306,6 +306,46 @@ def shared_rows() -> list[dict[str, object]]:
     return rows
 
 
+def postprocess_v2_rows(rows: list[dict[str, object]]) -> list[dict[str, object]]:
+    result = [dict(row) for row in rows]
+    additions: list[dict[str, object]] = []
+    for branch in BRANCHES:
+        analytics = next(
+            row
+            for row in result
+            if row["event_kind"] == "stage_complete"
+            and row["stage"] == branch
+            and row["branch_id"] == branch
+        )
+        complete = next(
+            row
+            for row in result
+            if row["event_kind"] == "branch_complete" and row["branch_id"] == branch
+        )
+        postprocess_id = f"{branch}:postprocess"
+        postprocess = topology_row(
+            topology_kind=str(analytics["topology_kind"]),
+            event_kind="stage_complete",
+            stage=f"postprocess_{branch}",
+            branch_id=branch,
+            execution_id=postprocess_id,
+            parents=[str(analytics["execution_id"])],
+            execution_domain=str(analytics["execution_domain"]),
+            timestamp_ms=int(analytics["timestamp_ms"]) + 1,
+        )
+        complete["parent_execution_ids_json"] = json.dumps([postprocess_id])
+        complete["timestamp_ms"] = int(postprocess["timestamp_ms"]) + 1
+        additions.append(postprocess)
+    join = next(row for row in result if row["event_kind"] == "join_complete")
+    join["timestamp_ms"] = max(
+        int(row["timestamp_ms"])
+        for row in result
+        if row["event_kind"] == "branch_complete"
+    ) + 1
+    result.extend(additions)
+    return result
+
+
 def frame_events(rows: list[dict[str, object]]) -> pd.DataFrame:
     return pd.DataFrame(
         [
@@ -331,7 +371,13 @@ def write_rows(path: Path, rows: list[dict[str, object]]) -> None:
 
 
 class TopologyContractTests(unittest.TestCase):
-    def validate(self, rows: list[dict[str, object]], kind: str) -> pd.DataFrame:
+    def validate(
+        self,
+        rows: list[dict[str, object]],
+        kind: str,
+        *,
+        contract_version: int = 1,
+    ) -> pd.DataFrame:
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "topology_events.csv"
             write_rows(path, rows)
@@ -339,7 +385,7 @@ class TopologyContractTests(unittest.TestCase):
                 path,
                 frames=frames(),
                 frame_events=frame_events(rows),
-                scenario=scenario(kind),
+                scenario=scenario(kind, contract_version=contract_version),
             )
 
     def test_valid_independent_process_topology(self) -> None:
@@ -355,6 +401,31 @@ class TopologyContractTests(unittest.TestCase):
 
     def test_valid_shared_fanout_and_join_topology(self) -> None:
         self.assertEqual(len(self.validate(shared_rows(), "shared_video_dag")), 10)
+
+    def test_v2_requires_explicit_cpu_postprocess_after_every_analytics_stage(self) -> None:
+        baseline = postprocess_v2_rows(baseline_rows())
+        shared = postprocess_v2_rows(shared_rows())
+        self.assertEqual(
+            len(self.validate(baseline, "independent_processes", contract_version=2)),
+            13,
+        )
+        self.assertEqual(
+            len(self.validate(shared, "shared_video_dag", contract_version=2)),
+            12,
+        )
+        missing = [
+            row for row in shared if row["execution_id"] != "damage:postprocess"
+        ]
+        with self.assertRaisesRegex(ContractError, "damage:postprocess"):
+            self.validate(missing, "shared_video_dag", contract_version=2)
+
+    def test_v1_rejects_unregistered_postprocess_stage(self) -> None:
+        with self.assertRaisesRegex(ContractError, "parents .* expected"):
+            self.validate(
+                postprocess_v2_rows(shared_rows()),
+                "shared_video_dag",
+                contract_version=1,
+            )
 
     def test_shared_topology_requires_every_fanout_execution(self) -> None:
         rows = [row for row in shared_rows() if row["execution_id"] != "damage:fanout"]

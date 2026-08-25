@@ -326,15 +326,15 @@ def validate_benchmark_adapter(
             if scenario_name == "checkpoint_independent_processes_baseline"
             else "shared_video_dag"
         )
-        if int(topology.get("contract_version", 0) or 0) != 1:
-            raise ContractError(f"scenario '{scenario_name}' must declare topology contract version 1")
+        if int(topology.get("contract_version", 0) or 0) != 2:
+            raise ContractError(f"scenario '{scenario_name}' must declare topology contract version 2")
         if str(topology.get("kind", "")) != expected_kind:
             raise ContractError(f"scenario '{scenario_name}' must declare topology kind '{expected_kind}'")
         routing_mode = str(topology.get("routing_mode", ""))
         if routing_mode != "all_branches_per_stream":
             raise ContractError(
                 f"scenario '{scenario_name}' must resolve routing_mode=all_branches_per_stream "
-                "before topology contract v1 can be enabled"
+                "before topology contract v2 can be enabled"
             )
         branches = [str(value) for value in topology.get("required_branches", [])]
         if not branches or len(branches) != len(set(branches)):
@@ -378,8 +378,8 @@ def validate_benchmark_adapter(
             else "scripts/run_system_template.sh"
         ),
         contract=(
-            "strict_native_schema_v2_topology_v1"
-            if int(topology.get("contract_version", 0) or 0) == 1
+            "strict_native_schema_v2_topology_v2"
+            if int(topology.get("contract_version", 0) or 0) == 2
             else "strict_native_schema_v2"
         ),
         scenario=scenario_name,

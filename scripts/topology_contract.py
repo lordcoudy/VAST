@@ -13,7 +13,8 @@ import pandas as pd
 from benchmark_contract import ContractError, TELEMETRY_SCHEMA_VERSION
 
 
-TOPOLOGY_CONTRACT_VERSION = 1
+TOPOLOGY_CONTRACT_VERSION = 2
+SUPPORTED_TOPOLOGY_CONTRACT_VERSIONS = frozenset({1, 2})
 TOPOLOGY_EVENT_COLUMNS = [
     "schema_version",
     "run_id",
@@ -195,6 +196,7 @@ def _validate_independent_frame(
     rows: list[dict[str, Any]],
     branches: list[str],
     *,
+    contract_version: int,
     path: Path,
 ) -> None:
     expected_ids: set[str] = set()
@@ -213,12 +215,30 @@ def _validate_independent_frame(
             path=path,
         )
         analytics = _single(rows, event_kind="stage_complete", stage=branch, branch_id=branch, path=path)
+        postprocess = (
+            _single(
+                rows,
+                event_kind="stage_complete",
+                stage=f"postprocess_{branch}",
+                branch_id=branch,
+                path=path,
+            )
+            if contract_version == 2
+            else None
+        )
         complete = _single(rows, event_kind="branch_complete", stage=branch, branch_id=branch, path=path)
         _require_parents(decode, {source["execution_id"]}, path=path)
         _require_parents(preprocess, {decode["execution_id"]}, path=path)
         _require_parents(analytics, {preprocess["execution_id"]}, path=path)
-        _require_parents(complete, {analytics["execution_id"]}, path=path)
-        domains = {row["execution_domain"] for row in (source, decode, preprocess, analytics, complete)}
+        terminal_parent = analytics
+        if postprocess is not None:
+            _require_parents(postprocess, {analytics["execution_id"]}, path=path)
+            terminal_parent = postprocess
+        _require_parents(complete, {terminal_parent["execution_id"]}, path=path)
+        branch_rows = (source, decode, preprocess, analytics, complete) + (
+            (postprocess,) if postprocess is not None else ()
+        )
+        domains = {row["execution_domain"] for row in branch_rows}
         if len(domains) != 1:
             raise ContractError(f"{path}: baseline branch {branch} crosses execution domains")
         domain = next(iter(domains))
@@ -226,7 +246,7 @@ def _validate_independent_frame(
             raise ContractError(f"{path}: baseline branches do not use independent execution domains")
         branch_domains.add(domain)
         branch_completions.append(complete)
-        expected_ids.update(row["execution_id"] for row in (source, decode, preprocess, analytics, complete))
+        expected_ids.update(row["execution_id"] for row in branch_rows)
     join = _single(rows, event_kind="join_complete", stage="join", branch_id="shared", path=path)
     _require_parents(join, {row["execution_id"] for row in branch_completions}, path=path)
     expected_ids.add(join["execution_id"])
@@ -241,6 +261,7 @@ def _validate_shared_frame(
     rows: list[dict[str, Any]],
     branches: list[str],
     *,
+    contract_version: int,
     path: Path,
 ) -> None:
     expected_ids: set[str] = set()
@@ -256,12 +277,30 @@ def _validate_shared_frame(
     for branch in branches:
         fanout = _single(rows, event_kind="fanout", stage="fanout", branch_id=branch, path=path)
         analytics = _single(rows, event_kind="stage_complete", stage=branch, branch_id=branch, path=path)
+        postprocess = (
+            _single(
+                rows,
+                event_kind="stage_complete",
+                stage=f"postprocess_{branch}",
+                branch_id=branch,
+                path=path,
+            )
+            if contract_version == 2
+            else None
+        )
         complete = _single(rows, event_kind="branch_complete", stage=branch, branch_id=branch, path=path)
         _require_parents(fanout, {preprocess["execution_id"]}, path=path)
         _require_parents(analytics, {fanout["execution_id"]}, path=path)
-        _require_parents(complete, {analytics["execution_id"]}, path=path)
+        terminal_parent = analytics
+        if postprocess is not None:
+            _require_parents(postprocess, {analytics["execution_id"]}, path=path)
+            terminal_parent = postprocess
+        _require_parents(complete, {terminal_parent["execution_id"]}, path=path)
         branch_completions.append(complete)
-        expected_ids.update(row["execution_id"] for row in (fanout, analytics, complete))
+        branch_rows = (fanout, analytics, complete) + (
+            (postprocess,) if postprocess is not None else ()
+        )
+        expected_ids.update(row["execution_id"] for row in branch_rows)
     join = _single(rows, event_kind="join_complete", stage="join", branch_id="shared", path=path)
     _require_parents(join, {row["execution_id"] for row in branch_completions}, path=path)
     expected_ids.add(join["execution_id"])
@@ -281,9 +320,9 @@ def validate_topology_events(
 ) -> pd.DataFrame:
     topology = dict(scenario.get("topology") or {})
     version = int(topology.get("contract_version", 0) or 0)
-    if version != TOPOLOGY_CONTRACT_VERSION:
+    if version not in SUPPORTED_TOPOLOGY_CONTRACT_VERSIONS:
         raise ContractError(
-            f"scenario '{scenario.get('name', '')}' must declare topology contract version {TOPOLOGY_CONTRACT_VERSION}"
+            f"scenario '{scenario.get('name', '')}' must declare a supported topology contract version"
         )
     topology_kind = str(topology.get("kind", ""))
     if topology_kind not in SUPPORTED_TOPOLOGY_KINDS:
@@ -291,7 +330,7 @@ def validate_topology_events(
     routing_mode = str(topology.get("routing_mode", ""))
     if routing_mode != "all_branches_per_stream":
         raise ContractError(
-            f"scenario '{scenario.get('name', '')}' topology contract v1 requires resolved "
+            f"scenario '{scenario.get('name', '')}' topology contract v{version} requires resolved "
             "routing_mode=all_branches_per_stream"
         )
     if str((scenario.get("workload") or {}).get("routing_mode", "")) != routing_mode:
@@ -352,8 +391,18 @@ def validate_topology_events(
                 if int(parent["timestamp_ms"]) > timestamp:
                     raise ContractError(f"{path}: topology parent {parent_id!r} completes after its child")
         if topology_kind == INDEPENDENT_PROCESSES:
-            _validate_independent_frame(frame_rows, branches, path=path)
+            _validate_independent_frame(
+                frame_rows,
+                branches,
+                contract_version=version,
+                path=path,
+            )
         else:
-            _validate_shared_frame(frame_rows, branches, path=path)
+            _validate_shared_frame(
+                frame_rows,
+                branches,
+                contract_version=version,
+                path=path,
+            )
 
     return pd.DataFrame([{column: row[column] for column in TOPOLOGY_EVENT_COLUMNS} for row in rows])

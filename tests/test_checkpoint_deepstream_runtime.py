@@ -126,6 +126,7 @@ class DeepStreamRuntimePlanTests(unittest.TestCase):
             "dedicated_native_sdk_runtime_source_and_offline_image_recipe_implemented_not_kpp_pair_piloted",
         )
         self.assertEqual(plan["topology_kind"], "independent_processes")
+        self.assertEqual(plan["topology_contract_version"], 2)
         self.assertEqual(plan["stream_count"], 6)
         self.assertEqual(len(plan["processes"]), 24)
         self.assertEqual({value["branch"] for value in plan["processes"]}, set(BRANCHES))
@@ -237,7 +238,9 @@ class DeepStreamRuntimePlanTests(unittest.TestCase):
                         deadline_ms=deadline_ms,
                     )
                     self.assertEqual(plan["codec"], "h265")
-                    self.assertEqual(plan["dataset"], "kpp_real_h265")
+                    self.assertEqual(
+                        plan["dataset"], "kpp_iss_publication_v3_h265"
+                    )
                     self.assertEqual(plan["policy"], policy)
                     self.assertEqual(plan["deadline_ms"], float(deadline_ms))
                     self.assertEqual(plan["parser_factory"], "h265parse")
@@ -246,7 +249,7 @@ class DeepStreamRuntimePlanTests(unittest.TestCase):
                     )
                     self.assertEqual(
                         plan["sources"][0]["source_duration_ns"],
-                        54_718_999_800_000,
+                        33_120_000_000_000,
                     )
                     validate_deepstream_runtime_plan(plan)
 
@@ -279,7 +282,9 @@ class DeepStreamRuntimePlanTests(unittest.TestCase):
             )
 
         bad_dataset = copy.deepcopy(datasets)
-        bad_dataset["kpp_real_h264"]["streams"][0]["codec_name"] = "h265"
+        bad_dataset["kpp_iss_publication_v3_h264"]["streams"][0][
+            "codec_name"
+        ] = "h265"
         with self.assertRaisesRegex(ContractError, "codec"):
             build_deepstream_runtime_plan(
                 config=config,

@@ -51,6 +51,17 @@ _NUMPY_TYPES = {"uint8": np.uint8, "float16": np.float16, "float32": np.float32}
 _NATIVE_DTYPES = {0: "uint8", 1: "float16", 2: "float32"}
 
 
+class _VastCudaTransferTiming(ctypes.Structure):
+    _fields_ = [
+        ("h2d_host_start_monotonic_ns", ctypes.c_uint64),
+        ("h2d_host_end_monotonic_ns", ctypes.c_uint64),
+        ("h2d_device_elapsed_ns", ctypes.c_uint64),
+        ("d2h_host_start_monotonic_ns", ctypes.c_uint64),
+        ("d2h_host_end_monotonic_ns", ctypes.c_uint64),
+        ("d2h_device_elapsed_ns", ctypes.c_uint64),
+    ]
+
+
 def _require(condition: bool, message: str) -> None:
     if not condition:
         raise ProtocolError(message)
@@ -212,7 +223,17 @@ class NativeTensorRTSession:
         lib.vast_trt_tensor_info.restype = ctypes.c_int
         lib.vast_trt_device_allocation_bytes.argtypes = [ctypes.c_void_p, ctypes.POINTER(ctypes.c_uint64)]
         lib.vast_trt_device_allocation_bytes.restype = ctypes.c_int
-        lib.vast_trt_infer.argtypes = [ctypes.c_void_p, ctypes.c_void_p, ctypes.c_uint64, ctypes.c_void_p, ctypes.c_uint64, ctypes.POINTER(ctypes.c_uint64), ctypes.c_char_p, ctypes.c_size_t]
+        lib.vast_trt_infer.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_void_p,
+            ctypes.c_uint64,
+            ctypes.c_void_p,
+            ctypes.c_uint64,
+            ctypes.POINTER(ctypes.c_uint64),
+            ctypes.POINTER(_VastCudaTransferTiming),
+            ctypes.c_char_p,
+            ctypes.c_size_t,
+        ]
         lib.vast_trt_infer.restype = ctypes.c_int
 
     def _query_tensor(self, *, input_tensor: bool, index: int) -> dict[str, Any]:
@@ -231,18 +252,53 @@ class NativeTensorRTSession:
         _require(math.prod(shape) * DTYPE_BYTES[dtype_name] == byte_length.value, "TensorRT native tensor byte length mismatch")
         return {"name": name.value.decode("utf-8"), "dtype": dtype_name, "shape": shape}
 
-    def infer(self, array: np.ndarray) -> bytes:
+    def infer(
+        self, array: np.ndarray
+    ) -> tuple[bytes, tuple[dict[str, Any], dict[str, Any]]]:
         contiguous = np.ascontiguousarray(array)
         output = ctypes.create_string_buffer(self._output_bytes)
         written = ctypes.c_uint64()
+        timing = _VastCudaTransferTiming()
         error = ctypes.create_string_buffer(1024)
         status = self._lib.vast_trt_infer(
             self._handle, ctypes.c_void_p(contiguous.ctypes.data), contiguous.nbytes,
-            output, self._output_bytes, ctypes.byref(written), error, len(error),
+            output, self._output_bytes, ctypes.byref(written), ctypes.byref(timing),
+            error, len(error),
         )
         _require(status == 0, f"TensorRT native inference failed: {error.value.decode('utf-8', 'replace')}")
         _require(written.value == self._output_bytes, "TensorRT native inference returned an unexpected byte length")
-        return output.raw[: written.value]
+        payload = output.raw[: written.value]
+        intervals = (
+            {
+                "direction": "h2d",
+                "host_start_monotonic_ns": int(timing.h2d_host_start_monotonic_ns),
+                "host_end_monotonic_ns": int(timing.h2d_host_end_monotonic_ns),
+                "device_elapsed_ns": int(timing.h2d_device_elapsed_ns),
+                "bytes": int(contiguous.nbytes),
+                "device_id": self.gpu_uuid,
+                "timing_source": "cudaEventElapsedTime",
+            },
+            {
+                "direction": "d2h",
+                "host_start_monotonic_ns": int(timing.d2h_host_start_monotonic_ns),
+                "host_end_monotonic_ns": int(timing.d2h_host_end_monotonic_ns),
+                "device_elapsed_ns": int(timing.d2h_device_elapsed_ns),
+                "bytes": len(payload),
+                "device_id": self.gpu_uuid,
+                "timing_source": "cudaEventElapsedTime",
+            },
+        )
+        for interval in intervals:
+            _require(
+                interval["host_start_monotonic_ns"]
+                < interval["host_end_monotonic_ns"]
+                and 0
+                < interval["device_elapsed_ns"]
+                <= interval["host_end_monotonic_ns"]
+                - interval["host_start_monotonic_ns"],
+                f"TensorRT native {interval['direction']} timing is invalid",
+            )
+        return payload, intervals
 
     def close(self) -> None:
         handle = getattr(self, "_handle", None)
@@ -310,7 +366,7 @@ class TensorRTBackend:
         array = np.frombuffer(
             tensor, dtype=_NUMPY_TYPES[record["dtype"]]
         ).reshape(record["shape"]).copy(order="C")
-        output = self._native.infer(array)
+        output, transfer_intervals = self._native.infer(array)
         descriptors: list[dict[str, Any]] = []
         offset = 0
         for contract in self._binding["outputs"]:
@@ -323,6 +379,7 @@ class TensorRTBackend:
             terminal_reason="native_inference_completed",
             accelerator_memory_bytes=self._native.device_allocation_bytes,
             cuda_h2d_bytes=array.nbytes, cuda_d2h_bytes=len(output),
+            cuda_transfer_intervals=tuple(transfer_intervals),
         )
 
 

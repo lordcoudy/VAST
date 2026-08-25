@@ -14,6 +14,7 @@
 #include <stdexcept>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include <linux/memfd.h>
 #include <sys/socket.h>
@@ -41,6 +42,16 @@ struct CheckpointAnalyticsExecutionRequest {
   std::uint64_t stride = 0;
   std::string preprocessing_contract_sha256;
   std::string raw_input_sha256;
+};
+
+struct CheckpointCudaTransferInterval {
+  std::string direction;
+  std::uint64_t host_start_monotonic_ns = 0;
+  std::uint64_t host_end_monotonic_ns = 0;
+  std::uint64_t device_elapsed_ns = 0;
+  std::uint64_t bytes = 0;
+  std::string device_id;
+  std::string timing_source;
 };
 
 struct CheckpointAnalyticsExecutionResult {
@@ -78,6 +89,13 @@ struct CheckpointAnalyticsExecutionResult {
   std::uint64_t inference_finished_monotonic_ns = 0;
   std::uint64_t worker_completed_monotonic_ns = 0;
   std::uint64_t inference_latency_ns = 0;
+  std::uint64_t process_cpu_time_ns = 0;
+  std::uint64_t rss_before_bytes = 0;
+  std::uint64_t rss_after_bytes = 0;
+  std::uint64_t accelerator_memory_bytes = 0;
+  std::uint64_t cuda_h2d_bytes = 0;
+  std::uint64_t cuda_d2h_bytes = 0;
+  std::vector<CheckpointCudaTransferInterval> cuda_transfer_intervals;
 };
 
 class CheckpointAnalyticsExecutionClient {
@@ -86,6 +104,14 @@ class CheckpointAnalyticsExecutionClient {
   static constexpr const char* kSocketEnvironment = "VAST_CHECKPOINT_ANALYTICS_EXECUTION_SOCKET";
   static constexpr std::uint64_t kSchemaVersion = 1;
   static constexpr std::size_t kMaximumMessageBytes = 64U * 1024U;
+  static constexpr const char* kProtocolIdentitySha256 =
+      "3bed4ad0e5cd46b01649b054fa520c0f728a1ceeb14502fb9fe1f0f8f5941eff";
+
+  static std::string cuda_transfer_native_event_material(
+      const CheckpointAnalyticsExecutionRequest& request,
+      const CheckpointAnalyticsExecutionResult& result,
+      const std::string& execution_id,
+      const CheckpointCudaTransferInterval& interval);
 
   explicit CheckpointAnalyticsExecutionClient(int fd) : fd_(fd) {
     if (fd_ < 0) {
@@ -206,12 +232,14 @@ class CheckpointAnalyticsExecutionClient {
   }
 
  private:
-  enum class ValueKind { kString, kInteger };
+  enum class ValueKind { kString, kInteger, kObject, kArray };
 
   struct FlatValue {
     ValueKind kind = ValueKind::kString;
     std::string text;
     std::uint64_t integer = 0;
+    std::map<std::string, FlatValue> object;
+    std::vector<FlatValue> array;
   };
 
   using FlatObject = std::map<std::string, FlatValue>;
@@ -405,11 +433,18 @@ class CheckpointAnalyticsExecutionClient {
     throw std::runtime_error("analytics execution response has an unterminated string");
   }
 
-  static FlatObject parse_object(const std::string& json) {
-    std::size_t offset = 0;
-    skip_space(json, offset);
-    require(offset < json.size() && json[offset++] == '{',
-            "analytics execution response must be a JSON object");
+  static FlatValue parse_value(
+      const std::string& json,
+      std::size_t& offset,
+      std::size_t depth);
+
+  static FlatObject parse_nested_object(
+      const std::string& json,
+      std::size_t& offset,
+      std::size_t depth) {
+    require(
+        depth <= 5 && offset < json.size() && json[offset++] == '{',
+        "analytics execution response object nesting is invalid");
     FlatObject result;
     skip_space(json, offset);
     if (offset < json.size() && json[offset] == '}') {
@@ -422,21 +457,7 @@ class CheckpointAnalyticsExecutionClient {
         require(offset < json.size() && json[offset++] == ':',
                 "analytics execution response object lacks a colon");
         skip_space(json, offset);
-        FlatValue value;
-        if (offset < json.size() && json[offset] == '\"') {
-          value.kind = ValueKind::kString;
-          value.text = parse_string(json, offset);
-        } else {
-          value.kind = ValueKind::kInteger;
-          require(offset < json.size() && json[offset] >= '0' && json[offset] <= '9',
-                  "analytics execution response value type is unsupported");
-          while (offset < json.size() && json[offset] >= '0' && json[offset] <= '9') {
-            const std::uint64_t digit = static_cast<std::uint64_t>(json[offset++] - '0');
-            require(value.integer <= (UINT64_MAX - digit) / 10,
-                    "analytics execution response integer overflows uint64");
-            value.integer = value.integer * 10 + digit;
-          }
-        }
+        FlatValue value = parse_value(json, offset, depth + 1);
         require(result.emplace(key, std::move(value)).second,
                 "analytics execution response contains a duplicate field");
         skip_space(json, offset);
@@ -446,6 +467,41 @@ class CheckpointAnalyticsExecutionClient {
         require(delimiter == ',', "analytics execution response object delimiter is invalid");
       }
     }
+    return result;
+  }
+
+  static std::vector<FlatValue> parse_array(
+      const std::string& json,
+      std::size_t& offset,
+      std::size_t depth) {
+    require(
+        depth <= 5 && offset < json.size() && json[offset++] == '[',
+        "analytics execution response array nesting is invalid");
+    std::vector<FlatValue> result;
+    skip_space(json, offset);
+    if (offset < json.size() && json[offset] == ']') {
+      ++offset;
+      return result;
+    }
+    while (true) {
+      skip_space(json, offset);
+      require(
+          result.size() < 16,
+          "analytics execution response array exceeds its bounded cardinality");
+      result.push_back(parse_value(json, offset, depth + 1));
+      skip_space(json, offset);
+      require(offset < json.size(), "analytics execution response array is truncated");
+      const char delimiter = json[offset++];
+      if (delimiter == ']') break;
+      require(delimiter == ',', "analytics execution response array delimiter is invalid");
+    }
+    return result;
+  }
+
+  static FlatObject parse_object(const std::string& json) {
+    std::size_t offset = 0;
+    skip_space(json, offset);
+    FlatObject result = parse_nested_object(json, offset, 1);
     skip_space(json, offset);
     require(offset == json.size(), "analytics execution response has trailing bytes");
     return result;
@@ -465,6 +521,22 @@ class CheckpointAnalyticsExecutionClient {
     return iterator->second.integer;
   }
 
+  static const FlatObject& object_value(const FlatObject& object, const char* key) {
+    const auto iterator = object.find(key);
+    require(iterator != object.end() && iterator->second.kind == ValueKind::kObject,
+            std::string("analytics execution response object field is missing: ") + key);
+    return iterator->second.object;
+  }
+
+  static const std::vector<FlatValue>& array_value(
+      const FlatObject& object,
+      const char* key) {
+    const auto iterator = object.find(key);
+    require(iterator != object.end() && iterator->second.kind == ValueKind::kArray,
+            std::string("analytics execution response array field is missing: ") + key);
+    return iterator->second.array;
+  }
+
   static CheckpointAnalyticsExecutionResult validate_response(
       const FlatObject& response,
       const CheckpointAnalyticsExecutionRequest& request) {
@@ -478,7 +550,7 @@ class CheckpointAnalyticsExecutionClient {
         "output_contract_sha256", "raw_input_sha256", "input_sha256", "output_sha256",
         "output_bytes", "worker_received_monotonic_ns", "inference_started_monotonic_ns",
         "inference_finished_monotonic_ns", "worker_completed_monotonic_ns",
-        "inference_latency_ns",
+        "inference_latency_ns", "resource",
     };
     std::set<std::string> observed;
     for (const auto& entry : response) observed.insert(entry.first);
@@ -522,6 +594,27 @@ class CheckpointAnalyticsExecutionClient {
     result.inference_finished_monotonic_ns = integer_value(response, "inference_finished_monotonic_ns");
     result.worker_completed_monotonic_ns = integer_value(response, "worker_completed_monotonic_ns");
     result.inference_latency_ns = integer_value(response, "inference_latency_ns");
+    const FlatObject& resource = object_value(response, "resource");
+    const std::set<std::string> expected_resource_fields = {
+        "process_cpu_time_ns",
+        "rss_before_bytes",
+        "rss_after_bytes",
+        "accelerator_memory_bytes",
+        "cuda_h2d_bytes",
+        "cuda_d2h_bytes",
+        "cuda_transfer_intervals",
+    };
+    std::set<std::string> observed_resource_fields;
+    for (const auto& entry : resource) observed_resource_fields.insert(entry.first);
+    require(
+        observed_resource_fields == expected_resource_fields,
+        "analytics execution response resource fields drifted");
+    result.process_cpu_time_ns = integer_value(resource, "process_cpu_time_ns");
+    result.rss_before_bytes = integer_value(resource, "rss_before_bytes");
+    result.rss_after_bytes = integer_value(resource, "rss_after_bytes");
+    result.accelerator_memory_bytes = integer_value(resource, "accelerator_memory_bytes");
+    result.cuda_h2d_bytes = integer_value(resource, "cuda_h2d_bytes");
+    result.cuda_d2h_bytes = integer_value(resource, "cuda_d2h_bytes");
     require(
         result.request_id == request.request_id &&
             result.decision_id == request.decision.decision_id &&
@@ -534,9 +627,92 @@ class CheckpointAnalyticsExecutionClient {
         "analytics execution response is not bound to the exact request/decision");
     const bool cpu = result.selected_resource == "cpu";
     require(
-        (cpu && result.engine == "openvino_cpu" && result.device_api == "CPU") ||
-            (!cpu && result.engine == "tensorrt_cuda" && result.device_api == "NVIDIA_CUDA"),
+        (cpu &&
+         result.engine == "openvino_cpu" &&
+         result.runtime_name == "OpenVINO" &&
+         result.device_api == "CPU" &&
+         result.device_id == "CPU" &&
+         result.native_inference_api == "openvino.CompiledModel.__call__" &&
+         result.execution_path == "openvino_cpu_native") ||
+            (!cpu &&
+             result.engine == "tensorrt_cuda" &&
+             result.runtime_name == "TensorRT" &&
+             result.device_api == "NVIDIA_CUDA" &&
+             result.native_inference_api ==
+                 "nvinfer1::IExecutionContext::enqueueV3" &&
+             result.execution_path == "tensorrt_cuda_native"),
         "analytics execution response resource/backend identity drifted");
+    const std::vector<FlatValue>& transfer_values =
+        array_value(resource, "cuda_transfer_intervals");
+    if (cpu) {
+      require(
+          result.accelerator_memory_bytes == 0 &&
+              result.cuda_h2d_bytes == 0 &&
+              result.cuda_d2h_bytes == 0 &&
+              transfer_values.empty(),
+          "OpenVINO CPU analytics response claims CUDA resource work");
+    } else {
+      require(
+          result.accelerator_memory_bytes > 0 &&
+              result.cuda_h2d_bytes > 0 &&
+              result.cuda_d2h_bytes == result.output_bytes &&
+              transfer_values.size() == 2,
+          "TensorRT CUDA analytics response resource counters drifted");
+      const std::array<std::pair<const char*, std::uint64_t>, 2> expected_transfers = {{
+          {"h2d", result.cuda_h2d_bytes},
+          {"d2h", result.cuda_d2h_bytes},
+      }};
+      const std::set<std::string> expected_interval_fields = {
+          "direction",
+          "host_start_monotonic_ns",
+          "host_end_monotonic_ns",
+          "device_elapsed_ns",
+          "bytes",
+          "device_id",
+          "timing_source",
+      };
+      for (std::size_t index = 0; index < transfer_values.size(); ++index) {
+        require(
+            transfer_values[index].kind == ValueKind::kObject,
+            "CUDA transfer interval must be an object");
+        const FlatObject& interval = transfer_values[index].object;
+        std::set<std::string> observed_interval_fields;
+        for (const auto& entry : interval) observed_interval_fields.insert(entry.first);
+        require(
+            observed_interval_fields == expected_interval_fields,
+            "CUDA transfer interval fields drifted");
+        CheckpointCudaTransferInterval parsed;
+        parsed.direction = string_value(interval, "direction");
+        parsed.host_start_monotonic_ns =
+            integer_value(interval, "host_start_monotonic_ns");
+        parsed.host_end_monotonic_ns =
+            integer_value(interval, "host_end_monotonic_ns");
+        parsed.device_elapsed_ns = integer_value(interval, "device_elapsed_ns");
+        parsed.bytes = integer_value(interval, "bytes");
+        parsed.device_id = string_value(interval, "device_id");
+        parsed.timing_source = string_value(interval, "timing_source");
+        require(
+            parsed.direction == expected_transfers[index].first &&
+                parsed.host_start_monotonic_ns > 0 &&
+                parsed.host_start_monotonic_ns < parsed.host_end_monotonic_ns &&
+                parsed.device_elapsed_ns > 0 &&
+                parsed.device_elapsed_ns <=
+                    parsed.host_end_monotonic_ns - parsed.host_start_monotonic_ns &&
+                parsed.bytes == expected_transfers[index].second &&
+                parsed.device_id == result.device_id &&
+                parsed.timing_source == "cudaEventElapsedTime",
+            "CUDA transfer interval identity/timing/bytes drifted");
+        result.cuda_transfer_intervals.push_back(std::move(parsed));
+      }
+      require(
+          result.cuda_transfer_intervals[0].host_start_monotonic_ns >=
+                  result.inference_started_monotonic_ns &&
+              result.cuda_transfer_intervals[0].host_end_monotonic_ns <=
+                  result.cuda_transfer_intervals[1].host_start_monotonic_ns &&
+              result.cuda_transfer_intervals[1].host_end_monotonic_ns <=
+                  result.inference_finished_monotonic_ns,
+          "CUDA transfer intervals are outside or reorder the inference lifetime");
+    }
     for (const auto& field : {
              std::make_pair(&result.terminal_reason, "terminal_reason"),
              std::make_pair(&result.detector, "detector"),
@@ -553,6 +729,25 @@ class CheckpointAnalyticsExecutionClient {
     }
     require(result.detector != "identity" && result.backend != "identity",
             "analytics execution terminal cannot be identity-only");
+    if (!cpu) {
+      require(
+          result.device_id.size() == 40 &&
+              result.device_id.rfind("GPU-", 0) == 0 &&
+              result.device_id[12] == '-' &&
+              result.device_id[17] == '-' &&
+              result.device_id[22] == '-' &&
+              result.device_id[27] == '-',
+          "TensorRT CUDA analytics response GPU UUID is invalid");
+      for (std::size_t index = 4; index < result.device_id.size(); ++index) {
+        if (index == 12 || index == 17 || index == 22 || index == 27) continue;
+        const char character = result.device_id[index];
+        require(
+            (character >= '0' && character <= '9') ||
+                (character >= 'a' && character <= 'f') ||
+                (character >= 'A' && character <= 'F'),
+            "TensorRT CUDA analytics response GPU UUID is invalid");
+      }
+    }
     require(
         result.worker_image_id.rfind("sha256:", 0) == 0 &&
             result.worker_image_id.size() == 71,
@@ -581,5 +776,98 @@ class CheckpointAnalyticsExecutionClient {
     return result;
   }
 };
+
+inline CheckpointAnalyticsExecutionClient::FlatValue
+CheckpointAnalyticsExecutionClient::parse_value(
+    const std::string& json,
+    std::size_t& offset,
+    std::size_t depth) {
+  require(depth <= 5 && offset < json.size(),
+          "analytics execution response value nesting is invalid");
+  FlatValue value;
+  if (json[offset] == '\"') {
+    value.kind = ValueKind::kString;
+    value.text = parse_string(json, offset);
+  } else if (json[offset] == '{') {
+    value.kind = ValueKind::kObject;
+    value.object = parse_nested_object(json, offset, depth);
+  } else if (json[offset] == '[') {
+    value.kind = ValueKind::kArray;
+    value.array = parse_array(json, offset, depth);
+  } else {
+    value.kind = ValueKind::kInteger;
+    require(json[offset] >= '0' && json[offset] <= '9',
+            "analytics execution response value type is unsupported");
+    while (offset < json.size() && json[offset] >= '0' && json[offset] <= '9') {
+      const std::uint64_t digit = static_cast<std::uint64_t>(json[offset++] - '0');
+      require(value.integer <= (UINT64_MAX - digit) / 10,
+              "analytics execution response integer overflows uint64");
+      value.integer = value.integer * 10 + digit;
+    }
+  }
+  return value;
+}
+
+inline std::string
+CheckpointAnalyticsExecutionClient::cuda_transfer_native_event_material(
+    const CheckpointAnalyticsExecutionRequest& request,
+    const CheckpointAnalyticsExecutionResult& result,
+    const std::string& execution_id,
+    const CheckpointCudaTransferInterval& interval) {
+  require_text(request.run_id, "CUDA event run_id");
+  require_text(request.arm_id, "CUDA event arm_id");
+  require_text(request.input_frame_key, "CUDA event input_frame_key");
+  require_text(execution_id, "CUDA event execution_id");
+  require_sha256(
+      result.worker_implementation_sha256,
+      "CUDA event worker_implementation_sha256");
+  require(
+      result.selected_resource == "gpu" &&
+          (interval.direction == "h2d" || interval.direction == "d2h") &&
+          interval.host_start_monotonic_ns > 0 &&
+          interval.host_start_monotonic_ns < interval.host_end_monotonic_ns &&
+          interval.device_elapsed_ns > 0 &&
+          interval.device_elapsed_ns <=
+              interval.host_end_monotonic_ns - interval.host_start_monotonic_ns &&
+          interval.bytes > 0 &&
+          interval.device_id == result.device_id &&
+          interval.timing_source == "cudaEventElapsedTime",
+      "CUDA native event interval is not bound to the validated GPU result");
+  std::size_t exact_matches = 0;
+  for (const CheckpointCudaTransferInterval& candidate :
+       result.cuda_transfer_intervals) {
+    if (candidate.direction == interval.direction &&
+        candidate.host_start_monotonic_ns == interval.host_start_monotonic_ns &&
+        candidate.host_end_monotonic_ns == interval.host_end_monotonic_ns &&
+        candidate.device_elapsed_ns == interval.device_elapsed_ns &&
+        candidate.bytes == interval.bytes &&
+        candidate.device_id == interval.device_id &&
+        candidate.timing_source == interval.timing_source) {
+      ++exact_matches;
+    }
+  }
+  require(
+      exact_matches == 1,
+      "CUDA native event interval is absent or duplicated in the validated result");
+
+  std::ostringstream material;
+  material
+      << "{\"arm_id\":\"" << escape(request.arm_id)
+      << "\",\"direction\":\"" << interval.direction
+      << "\",\"execution_id\":\"" << escape(execution_id)
+      << "\",\"input_frame_key\":\"" << escape(request.input_frame_key)
+      << "\",\"interval\":{\"bytes\":" << interval.bytes
+      << ",\"device_elapsed_ns\":" << interval.device_elapsed_ns
+      << ",\"device_id\":\"" << interval.device_id
+      << "\",\"direction\":\"" << interval.direction
+      << "\",\"host_end_monotonic_ns\":" << interval.host_end_monotonic_ns
+      << ",\"host_start_monotonic_ns\":" << interval.host_start_monotonic_ns
+      << ",\"timing_source\":\"" << interval.timing_source
+      << "\"},\"protocol_identity_sha256\":\"" << kProtocolIdentitySha256
+      << "\",\"run_id\":\"" << escape(request.run_id)
+      << "\",\"worker_implementation_sha256\":\""
+      << result.worker_implementation_sha256 << "\"}";
+  return material.str();
+}
 
 }  // namespace vast

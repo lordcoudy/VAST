@@ -67,12 +67,26 @@ def _safe_url(value: Any, *, field: str) -> str:
     return url
 
 
-def _artifact_path(value: Any, *, manifest: Path, field: str) -> Path:
+def _artifact_path(
+    value: Any,
+    *,
+    manifest: Path,
+    field: str,
+    expected_sha256: str,
+    pinned_file_paths_by_sha256: dict[str, str] | None,
+) -> Path:
     raw = str(value or "")
     _require(bool(raw), f"{field} is required")
     _require(not any(char in raw for char in ('"', "\r", "\n")), f"{field} contains unsafe characters")
-    path = Path(raw)
-    path = (path if path.is_absolute() else manifest.parent / path).resolve()
+    if pinned_file_paths_by_sha256 is not None:
+        _require(
+            expected_sha256 in pinned_file_paths_by_sha256,
+            f"{field} has no exact pinned descriptor",
+        )
+        path = Path(pinned_file_paths_by_sha256[expected_sha256])
+    else:
+        path = Path(raw)
+        path = (path if path.is_absolute() else manifest.parent / path).resolve()
     _require(path.is_file(), f"{field} artifact was not found: {path}")
     return path
 
@@ -139,6 +153,7 @@ def _validate_branch(
     *,
     manifest: Path,
     catalog_revision: str,
+    pinned_file_paths_by_sha256: dict[str, str] | None,
 ) -> dict[str, str]:
     _require(isinstance(raw, dict), f"analytics model binding {branch} must be a mapping")
     expected_fields = {
@@ -198,17 +213,27 @@ def _validate_branch(
     _require(ie_config == DETECTOR_IE_CONFIG, f"{branch}: ie_config has drifted")
     _require(_STABLE_ID_RE.fullmatch(detector_id) is not None, f"{branch}: detector_id is invalid")
 
-    model_path = _artifact_path(raw.get("model_path"), manifest=manifest, field=f"{branch}: model_path")
-    weights_path = _artifact_path(
-        raw.get("weights_path"), manifest=manifest, field=f"{branch}: weights_path"
-    )
-    _require(model_path.suffix == ".xml", f"{branch}: model_path must be an OpenVINO .xml file")
-    _require(weights_path == model_path.with_suffix(".bin"), f"{branch}: weights_path must be the sibling .bin")
-
     model_sha256 = str(raw.get("model_sha256") or "")
     weights_sha256 = str(raw.get("weights_sha256") or "")
     _require(_SHA256_RE.fullmatch(model_sha256) is not None, f"{branch}: model_sha256 is invalid")
     _require(_SHA256_RE.fullmatch(weights_sha256) is not None, f"{branch}: weights_sha256 is invalid")
+    model_path = _artifact_path(
+        raw.get("model_path"),
+        manifest=manifest,
+        field=f"{branch}: model_path",
+        expected_sha256=model_sha256,
+        pinned_file_paths_by_sha256=pinned_file_paths_by_sha256,
+    )
+    weights_path = _artifact_path(
+        raw.get("weights_path"),
+        manifest=manifest,
+        field=f"{branch}: weights_path",
+        expected_sha256=weights_sha256,
+        pinned_file_paths_by_sha256=pinned_file_paths_by_sha256,
+    )
+    _require(model_path.suffix == ".xml", f"{branch}: model_path must be an OpenVINO .xml file")
+    _require(weights_path == model_path.with_suffix(".bin"), f"{branch}: weights_path must be the sibling .bin")
+
     _require(_sha256_file(model_path) == model_sha256, f"{branch}: model SHA-256 differs from the manifest")
     _require(
         _sha256_file(weights_path) == weights_sha256,
@@ -270,11 +295,12 @@ def load_analytics_model_bindings(
     path: Path,
     *,
     required_branches: Iterable[str],
+    pinned_file_paths_by_sha256: dict[str, str] | None = None,
 ) -> dict[str, dict[str, str]]:
     """Load the frozen, source-attributed OpenVINO proxy model set fail-closed."""
 
     resolved_manifest = path.resolve()
-    raw = _load_yaml(resolved_manifest)
+    raw = _load_yaml(path if pinned_file_paths_by_sha256 is not None else resolved_manifest)
     expected_top_level = {
         "schema_version",
         "artifact_kind",
@@ -340,6 +366,7 @@ def load_analytics_model_bindings(
             raw_branches[branch],
             manifest=resolved_manifest,
             catalog_revision=provenance["catalog_revision"],
+            pinned_file_paths_by_sha256=pinned_file_paths_by_sha256,
         )
         for branch in sorted(expected)
     }

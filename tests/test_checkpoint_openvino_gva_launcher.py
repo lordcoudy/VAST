@@ -102,30 +102,51 @@ def _drained(spec: GVAWorkerSpec, pid: int) -> dict[str, object]:
 
 
 def _terminal(context: dict[str, object]) -> dict[str, object]:
+    postprocess = {
+        "protocol_version": 2,
+        "worker_id": context["topology_worker_id"],
+        "sequence": context["event_sequence"],
+        "run_id": context["run_id"],
+        "trace_id": context["topology_worker_trace_id"],
+        "stream_id": context["stream_id"],
+        "frame_id": context["frame_id"],
+        "input_frame_key": context["input_frame_key"],
+        "topology_kind": context["topology_kind"],
+        "event_kind": "stage_complete",
+        "stage": f"postprocess_{context['branch']}",
+        "branch_id": context["branch"],
+        "execution_id": context["postprocess_execution_id"],
+        "parent_execution_ids": [context["parent_execution_id"]],
+        "timestamp_ms": 999,
+        "admission_id": context["admission_id"],
+        "payload_sha256": context["payload_sha256"],
+    }
+    terminal = {
+        "protocol_version": 3,
+        "worker_id": context["topology_worker_id"],
+        "sequence": int(context["event_sequence"]) + 1,
+        "run_id": context["run_id"],
+        "trace_id": context["topology_worker_trace_id"],
+        "stream_id": context["stream_id"],
+        "frame_id": context["frame_id"],
+        "input_frame_key": context["input_frame_key"],
+        "topology_kind": context["topology_kind"],
+        "event_kind": "branch_complete",
+        "stage": context["branch"],
+        "branch_id": context["branch"],
+        "execution_id": context["terminal_execution_id"],
+        "parent_execution_ids": [context["postprocess_execution_id"]],
+        "timestamp_ms": 1000,
+        "admission_id": context["admission_id"],
+        "payload_sha256": context["payload_sha256"],
+        "terminal_reason": "engineering_test_completed",
+        "objects": 0,
+        "detector": "engineering-test",
+        "backend": "engineering-test",
+    }
     return {
-        "terminal_event": {
-            "protocol_version": 3,
-            "worker_id": context["topology_worker_id"],
-            "sequence": context["event_sequence"],
-            "run_id": context["run_id"],
-            "trace_id": context["topology_worker_trace_id"],
-            "stream_id": context["stream_id"],
-            "frame_id": context["frame_id"],
-            "input_frame_key": context["input_frame_key"],
-            "topology_kind": context["topology_kind"],
-            "event_kind": "branch_complete",
-            "stage": context["branch"],
-            "branch_id": context["branch"],
-            "execution_id": context["terminal_execution_id"],
-            "parent_execution_ids": [context["parent_execution_id"]],
-            "timestamp_ms": 1000,
-            "admission_id": context["admission_id"],
-            "payload_sha256": context["payload_sha256"],
-            "terminal_reason": "engineering_test_completed",
-            "objects": 0,
-            "detector": "engineering-test",
-            "backend": "engineering-test",
-        },
+        "runtime_events": [postprocess, terminal],
+        "terminal_event": terminal,
         "publication_ready": False,
         "accepted_evidence_written": False,
     }
@@ -213,6 +234,9 @@ class OpenVINOGVATopologyLauncherTests(unittest.TestCase):
             {context["selected_resource"] for context in contexts.values()},
             {"cpu", "gpu"},
         )
+        for context in contexts.values():
+            self.assertTrue(str(context["postprocess_execution_id"]).endswith(":postprocess"))
+            self.assertTrue(str(context["terminal_execution_id"]).endswith(":terminal"))
 
     @unittest.skipUnless(hasattr(os, "memfd_create"), "Linux sealed memfd is required")
     def test_verified_gst_tensor_is_owned_and_dispatched_to_ready_bridge(self) -> None:

@@ -6,6 +6,7 @@ must still emit and pass its own resource-v2 evidence after it runs.
 """
 from __future__ import annotations
 
+import argparse
 import hashlib
 import json
 import os
@@ -15,9 +16,9 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Any, Callable, Mapping
 
-from checkpoint_acceptance_metadata_binding import (
-    AcceptanceMetadataBindingError,
-    validate_checkpoint_acceptance_metadata_binding_envelope,
+from checkpoint_qualification_pilot_acceptance_v1 import (
+    QualificationPilotAcceptanceV1Error,
+    validate_checkpoint_qualification_pilot_acceptance_v1,
 )
 
 
@@ -30,6 +31,10 @@ PUBLICATION_SCOPE = "primary_architecture_full_resource_raw_evidence_v2"
 SYSTEMS = ("deepstream", "savant", "openvino_gva", "gstreamer_custom")
 RESOURCES = ("cpu", "gpu")
 CODECS = ("h264", "h265")
+KPP_DATASET_BY_CODEC = {
+    "h264": "kpp_iss_publication_v3_h264",
+    "h265": "kpp_iss_publication_v3_h265",
+}
 TOPOLOGIES = ("independent_processes", "shared_video_dag")
 BRANCHES = ("plate_number", "vehicle_type", "damage", "foreign_object")
 MINIMUM_SAMPLES_PER_BRANCH_COORDINATE = 30
@@ -188,6 +193,8 @@ class _ArtifactRegistry:
     def __init__(self) -> None:
         self.paths: set[str] = set()
         self.identities: set[tuple[int, int]] = set()
+        self.records: dict[str, dict[str, Any]] = {}
+        self.identity_paths: dict[tuple[int, int], str] = {}
 
     def add(self, artifact: Mapping[str, Any], label: str) -> None:
         path = str(artifact["path"])
@@ -196,6 +203,30 @@ class _ArtifactRegistry:
             raise FullResourceQualificationError(f"{label} artifact alias is prohibited")
         self.paths.add(path)
         self.identities.add(identity)
+        self.records[path] = dict(artifact)
+        self.identity_paths[identity] = path
+
+    def add_shared(self, artifact: Mapping[str, Any], label: str) -> None:
+        """Allow only the exact same physical source to implement many emitter roles."""
+
+        path = str(artifact["path"])
+        identity = tuple(artifact["filesystem_identity"])
+        existing = self.records.get(path)
+        if existing is not None:
+            if existing != dict(artifact) or self.identity_paths.get(identity) != path:
+                raise FullResourceQualificationError(
+                    f"{label} shared artifact descriptor drifted"
+                )
+            return
+        aliased_path = self.identity_paths.get(identity)
+        if aliased_path is not None:
+            raise FullResourceQualificationError(
+                f"{label} artifact aliases {aliased_path} through another path"
+            )
+        self.paths.add(path)
+        self.identities.add(identity)
+        self.records[path] = dict(artifact)
+        self.identity_paths[identity] = path
 
 
 def _verify_resource_contract(
@@ -301,7 +332,7 @@ def _verify_bindings(
                 root, emitter["artifact"], f"binding {key}/{role}",
                 forbid_hardlinks=True,
             )
-            registry.add(artifact, f"binding {key}/{role}")
+            registry.add_shared(artifact, f"binding {key}/{role}")
             emitters[role] = {
                 "status": "native_emitter_implementation_bound",
                 "emitter_id": emitter_id,
@@ -358,7 +389,7 @@ def _load_and_verify_kpp_datasets(
     manifest_path = project_root / str(dataset_manifest["path"])
     datasets: dict[str, Any] = {}
     for codec in CODECS:
-        name = f"kpp_real_{codec}"
+        name = KPP_DATASET_BY_CODEC[codec]
         try:
             dataset = load_dataset(
                 manifest_path, name, mode="benchmark", project_root=project_root,
@@ -416,27 +447,19 @@ def _default_pilot_validator(
         role: root / descriptor["path"]
         for role, descriptor in context["pilot_evidence"].items()
     }
-    acceptance = _load_json_object(paths["checkpoint_acceptance"], "checkpoint acceptance")
-    expected_identity = {
-        "schema_version": 2,
-        "artifact_kind": "checkpoint_publication_runtime_acceptance",
-        "status": "accepted_native_checkpoint_arm",
-        "system": pilot["system"],
-        "codec": pilot["codec"],
-        "topology_kind": pilot["topology_kind"],
-        "policy": "cpu_only" if pilot["resource"] == "cpu" else "gpu_only",
-        "execution_binding_provenance": "native_scheduler_execution_binding_v1",
-    }
-    for field, expected in expected_identity.items():
-        if acceptance.get(field) != expected:
-            raise FullResourceQualificationError(
-                f"checkpoint acceptance identity drift: {field}"
-            )
+    expected_policy = "cpu_only" if pilot["resource"] == "cpu" else "gpu_only"
     try:
-        validate_checkpoint_acceptance_metadata_binding_envelope(acceptance)
-    except AcceptanceMetadataBindingError as exc:
+        acceptance = validate_checkpoint_qualification_pilot_acceptance_v1(
+            project_root=root,
+            acceptance_path=paths["checkpoint_acceptance"],
+            expected_system=pilot["system"],
+            expected_resource=pilot["resource"],
+            expected_codec=pilot["codec"],
+            expected_topology_kind=pilot["topology_kind"],
+        )
+    except QualificationPilotAcceptanceV1Error as exc:
         raise FullResourceQualificationError(
-            f"checkpoint acceptance metadata binding is invalid: {exc}"
+            f"checkpoint acceptance is not a qualification pilot: {exc}"
         ) from exc
     run_id = acceptance.get("run_id")
     if not _stable_id(run_id):
@@ -450,15 +473,15 @@ def _default_pilot_validator(
         raise FullResourceQualificationError(
             "checkpoint acceptance scenario/topology mismatch"
         )
-    if acceptance.get("acceptance_finalization") != {
+    if acceptance.get("full_resource_finalization") != {
         "hardware_collector_stopped": True,
         "validation": "full_resource_evidence_v2_passed",
+        "prepared_by": "prepare_checkpoint_publication_acceptance",
     }:
         raise FullResourceQualificationError(
             "checkpoint acceptance full-resource finalization is absent"
         )
     evidence_hashes = acceptance.get("evidence_sha256")
-    expected_policy = expected_identity["policy"]
     validators = _load_resource_validators()
     expected_files = set(
         validators["accepted_arm_evidence_files"](
@@ -1090,10 +1113,37 @@ def promote_full_resource_qualification(
     }
 
 
+def _parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--project-root", type=Path, default=Path(__file__).resolve().parents[1]
+    )
+    parser.add_argument("--index-path", type=Path, required=True)
+    parser.add_argument("--output-dir", type=Path, required=True)
+    return parser.parse_args()
+
+
+def main() -> int:
+    args = _parse_args()
+    result = promote_full_resource_qualification(
+        project_root=args.project_root,
+        index_path=args.index_path,
+        output_dir=args.output_dir,
+    )
+    print(json.dumps(result, sort_keys=True, separators=(",", ":")))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
+
+
 __all__ = [
     "CAPABILITY_MANIFEST_FILENAME",
     "QUALIFICATION_RECEIPT_FILENAME",
     "FullResourceQualificationError",
+    "KPP_DATASET_BY_CODEC",
     "assess_full_resource_qualification",
+    "main",
     "promote_full_resource_qualification",
 ]

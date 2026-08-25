@@ -1,0 +1,2 @@
+#!/bin/sh
+exec /usr/bin/python3 -B /opt/vast/checkpoint/checkpoint_openvino_gva_container_coordinator_v3.py "$@"

@@ -148,7 +148,7 @@ class Fixture:
             "resource_contract": {"contract_version": 2, "publication_scope": "primary_architecture_full_resource_raw_evidence_v2", "full_resource_validator_sha256": hashlib.sha256(b"full-validator").hexdigest(), "interval_validator_sha256": hashlib.sha256(b"interval-validator").hexdigest()},
             "resource_contract_identity_sha256": self.resource_contract_sha,
             "dataset_manifest_sha256": self.dataset_descriptor["sha256"],
-            "datasets": {codec: {"dataset_name": f"kpp_real_{codec}", "source_sha256": self.sources[codec]} for codec in CODECS},
+            "datasets": {codec: {"dataset_name": f"kpp_iss_publication_v3_{codec}", "source_sha256": self.sources[codec]} for codec in CODECS},
             "systems": resource_systems, "pilot_cells": [],
             "coverage": {"binding_count": 8, "pilot_cell_count": 32, "accepted_branch_sample_count": 3840, "minimum_samples_per_branch_coordinate": 30, "systems": 4, "resources": 2, "codecs": 2, "topology_kinds": 2, "branches": 4},
             "post_run_per_arm_evidence": {"required": True, "acceptance_artifact_kind": "checkpoint_publication_runtime_acceptance", "validator": "validate_full_resource_evidence", "configuration_evidence_accepted_mutated": False},
@@ -260,7 +260,7 @@ def fake_validator(pilot: dict, context: dict) -> dict:
             })
     return {
         "system": system, "codec": codec, "topology_kind": topology,
-        "dataset_name": f"kpp_real_{codec}", "source_sha256": context["dataset_sources"][codec],
+        "dataset_name": f"kpp_iss_publication_v3_{codec}", "source_sha256": context["dataset_sources"][codec],
         "publication_scope": "backend_native_runtime_hardware_capability_only",
         "accepted": True, "synthetic": False, "nonpublication": False,
         "runtime_id": context["runtime_binding"]["runtime_id"],
@@ -272,6 +272,58 @@ def fake_validator(pilot: dict, context: dict) -> dict:
 
 
 class BackendRuntimeQualificationTests(unittest.TestCase):
+    def test_active_publication_dataset_ids_are_kpp_iss_v3(self) -> None:
+        self.assertEqual(
+            target.KPP_DATASET_BY_CODEC,
+            {
+                "h264": "kpp_iss_publication_v3_h264",
+                "h265": "kpp_iss_publication_v3_h265",
+            },
+        )
+
+    def test_default_loader_reduces_six_v3_streams_to_two_physical_sources(self) -> None:
+        sources = {
+            codec: [
+                hashlib.sha256(f"{codec}-underbody".encode()).hexdigest(),
+                hashlib.sha256(f"{codec}-front-gate".encode()).hexdigest(),
+            ]
+            for codec in CODECS
+        }
+
+        def load_dataset(_path: Path, name: str, **_kwargs: object) -> dict:
+            codec = name.rsplit("_", 1)[1]
+            underbody, front_gate = sources[codec]
+            return {
+                "streams": [
+                    {"resolved_sha256": underbody},
+                    *({"resolved_sha256": front_gate} for _ in range(5)),
+                ]
+            }
+
+        with mock.patch("benchmark_contract.load_dataset", side_effect=load_dataset) as loader:
+            result = target._default_dataset_loader(
+                {"path": "configs/datasets.yaml"},
+                project_root=self.root,
+            )
+
+        self.assertEqual(
+            result,
+            {
+                codec: {
+                    "dataset_name": f"kpp_iss_publication_v3_{codec}",
+                    "source_sha256": sorted(sources[codec]),
+                }
+                for codec in CODECS
+            },
+        )
+        self.assertEqual(
+            [call.args[1] for call in loader.call_args_list],
+            [
+                "kpp_iss_publication_v3_h264",
+                "kpp_iss_publication_v3_h265",
+            ],
+        )
+
     def setUp(self) -> None:
         self.temp = tempfile.TemporaryDirectory()
         self.root = Path(self.temp.name)
@@ -286,7 +338,7 @@ class BackendRuntimeQualificationTests(unittest.TestCase):
             project_root=item.root, index_path=item.index_path,
             pilot_validator=fake_validator,
             dataset_loader=lambda *_args, **_kwargs: {
-                codec: {"dataset_name": f"kpp_real_{codec}", "source_sha256": item.sources[codec]}
+                codec: {"dataset_name": f"kpp_iss_publication_v3_{codec}", "source_sha256": item.sources[codec]}
                 for codec in CODECS
             },
             execution_identity_loader=lambda *_args, **_kwargs: (item.execution_identity, item.parity_identity),
@@ -358,7 +410,7 @@ class BackendRuntimeQualificationTests(unittest.TestCase):
                 result = target.assess_backend_runtime_qualification(
                     project_root=self.root, index_path=self.fixture.index_path,
                     pilot_validator=invalid,
-                    dataset_loader=lambda *_a, **_k: {codec: {"dataset_name": f"kpp_real_{codec}", "source_sha256": self.fixture.sources[codec]} for codec in CODECS},
+                    dataset_loader=lambda *_a, **_k: {codec: {"dataset_name": f"kpp_iss_publication_v3_{codec}", "source_sha256": self.fixture.sources[codec]} for codec in CODECS},
                     execution_identity_loader=lambda *_a, **_k: (self.fixture.execution_identity, self.fixture.parity_identity),
                 )
                 self.assertFalse(result["passed"])
@@ -371,7 +423,7 @@ class BackendRuntimeQualificationTests(unittest.TestCase):
         result = target.assess_backend_runtime_qualification(
             project_root=self.root, index_path=self.fixture.index_path,
             pilot_validator=incomplete,
-            dataset_loader=lambda *_a, **_k: {codec: {"dataset_name": f"kpp_real_{codec}", "source_sha256": self.fixture.sources[codec]} for codec in CODECS},
+            dataset_loader=lambda *_a, **_k: {codec: {"dataset_name": f"kpp_iss_publication_v3_{codec}", "source_sha256": self.fixture.sources[codec]} for codec in CODECS},
             execution_identity_loader=lambda *_a, **_k: (self.fixture.execution_identity, self.fixture.parity_identity),
         )
         self.assertFalse(result["passed"])
@@ -383,7 +435,7 @@ class BackendRuntimeQualificationTests(unittest.TestCase):
         result = target.assess_backend_runtime_qualification(
             project_root=self.root, index_path=self.fixture.index_path,
             pilot_validator=drift,
-            dataset_loader=lambda *_a, **_k: {codec: {"dataset_name": f"kpp_real_{codec}", "source_sha256": self.fixture.sources[codec]} for codec in CODECS},
+            dataset_loader=lambda *_a, **_k: {codec: {"dataset_name": f"kpp_iss_publication_v3_{codec}", "source_sha256": self.fixture.sources[codec]} for codec in CODECS},
             execution_identity_loader=lambda *_a, **_k: (self.fixture.execution_identity, self.fixture.parity_identity),
         )
         self.assertFalse(result["passed"])
@@ -430,7 +482,7 @@ class BackendRuntimeQualificationTests(unittest.TestCase):
         kwargs = {
             "project_root": self.root, "index_path": self.fixture.index_path,
             "output_dir": output, "pilot_validator": fake_validator,
-            "dataset_loader": lambda *_a, **_k: {codec: {"dataset_name": f"kpp_real_{codec}", "source_sha256": self.fixture.sources[codec]} for codec in CODECS},
+            "dataset_loader": lambda *_a, **_k: {codec: {"dataset_name": f"kpp_iss_publication_v3_{codec}", "source_sha256": self.fixture.sources[codec]} for codec in CODECS},
             "execution_identity_loader": lambda *_a, **_k: (self.fixture.execution_identity, self.fixture.parity_identity),
         }
         with mock.patch.object(target, "_write_immutable_json", side_effect=recording):
@@ -461,7 +513,7 @@ class BackendRuntimeQualificationTests(unittest.TestCase):
         result = target.promote_backend_runtime_qualification(
             project_root=self.root, index_path=self.fixture.index_path,
             output_dir=output, pilot_validator=fake_validator,
-            dataset_loader=lambda *_a, **_k: {codec: {"dataset_name": f"kpp_real_{codec}", "source_sha256": self.fixture.sources[codec]} for codec in CODECS},
+            dataset_loader=lambda *_a, **_k: {codec: {"dataset_name": f"kpp_iss_publication_v3_{codec}", "source_sha256": self.fixture.sources[codec]} for codec in CODECS},
             execution_identity_loader=lambda *_a, **_k: (self.fixture.execution_identity, self.fixture.parity_identity),
         )
         identity = importlib.import_module("full_publication_identity_artifacts")
@@ -500,7 +552,7 @@ class BackendRuntimeQualificationTests(unittest.TestCase):
             target.promote_backend_runtime_qualification(
                 project_root=self.root, index_path=self.fixture.index_path,
                 output_dir=output, pilot_validator=fake_validator,
-                dataset_loader=lambda *_a, **_k: {codec: {"dataset_name": f"kpp_real_{codec}", "source_sha256": self.fixture.sources[codec]} for codec in CODECS},
+                dataset_loader=lambda *_a, **_k: {codec: {"dataset_name": f"kpp_iss_publication_v3_{codec}", "source_sha256": self.fixture.sources[codec]} for codec in CODECS},
                 execution_identity_loader=lambda *_a, **_k: (self.fixture.execution_identity, self.fixture.parity_identity),
             )
         self.assertFalse((output / target.BINDING_INDEX_FILENAME).exists())
@@ -510,7 +562,7 @@ class BackendRuntimeQualificationTests(unittest.TestCase):
     def test_default_validator_never_accepts_declared_fixture_evidence(self) -> None:
         result = target.assess_backend_runtime_qualification(
             project_root=self.root, index_path=self.fixture.index_path,
-            dataset_loader=lambda *_a, **_k: {codec: {"dataset_name": f"kpp_real_{codec}", "source_sha256": self.fixture.sources[codec]} for codec in CODECS},
+            dataset_loader=lambda *_a, **_k: {codec: {"dataset_name": f"kpp_iss_publication_v3_{codec}", "source_sha256": self.fixture.sources[codec]} for codec in CODECS},
             execution_identity_loader=lambda *_a, **_k: (self.fixture.execution_identity, self.fixture.parity_identity),
         )
         self.assertFalse(result["passed"])

@@ -34,8 +34,8 @@ from checkpoint_gstreamer_analytics_bridge import (  # noqa: E402
 )
 
 
-CPU_IMAGE = "sha256:1c484b47ce6cced890f83a653767df5dcd57c81ebb4ef8be3076d48273c26a1e"
-GPU_IMAGE = "sha256:29ad51f4057f5aa77eb18e572c5055ed465fac39d49365d8eb5ffafe4fe8001f"
+CPU_IMAGE = "sha256:41735f9c51fe9fb54b618f78983f312b5bd1135cc59e33526d24e1853e8d8235"
+GPU_IMAGE = "sha256:75205ae88ebe9b53eec71bcdcc65b620437609dd8d84e582223cd0a8cf2495a6"
 CPU_IMPLEMENTATION = "11bb76091b0380fae4a374abae8f305c216b17ee96019106902e2e987730f182"
 GPU_IMPLEMENTATION = "7a09892dc72f86c825b3ec9055fdb25859f497caf86e9e32c4d35d79f96c5c46"
 GPU_UUID = "GPU-00000000-0000-0000-0000-000000000001"
@@ -179,6 +179,30 @@ class _FixedBackend:
             accelerator_memory_bytes=4096 if gpu else 0,
             cuda_h2d_bytes=len(payload) if gpu else 0,
             cuda_d2h_bytes=len(output) if gpu else 0,
+            cuda_transfer_intervals=(
+                (
+                    {
+                        "direction": "h2d",
+                        "host_start_monotonic_ns": 1_000_000,
+                        "host_end_monotonic_ns": 1_400_000,
+                        "device_elapsed_ns": 250_000,
+                        "bytes": len(payload),
+                        "device_id": self._capability["device_id"],
+                        "timing_source": "cudaEventElapsedTime",
+                    },
+                    {
+                        "direction": "d2h",
+                        "host_start_monotonic_ns": 1_500_000,
+                        "host_end_monotonic_ns": 1_800_000,
+                        "device_elapsed_ns": 200_000,
+                        "bytes": len(output),
+                        "device_id": self._capability["device_id"],
+                        "timing_source": "cudaEventElapsedTime",
+                    },
+                )
+                if gpu
+                else ()
+            ),
         )
 
 
@@ -289,6 +313,42 @@ class GStreamerAnalyticsBridgeTests(unittest.TestCase):
                 self.assertEqual(response["worker_image_id"], CPU_IMAGE if resource == "cpu" else GPU_IMAGE)
                 self.assertEqual(response["raw_input_sha256"], hashlib.sha256(payload).hexdigest())
                 self.assertRegex(response["output_sha256"], r"^[0-9a-f]{64}$")
+                receipt = response["resource"]
+                self.assertEqual(
+                    set(receipt),
+                    {
+                        "process_cpu_time_ns",
+                        "rss_before_bytes",
+                        "rss_after_bytes",
+                        "accelerator_memory_bytes",
+                        "cuda_h2d_bytes",
+                        "cuda_d2h_bytes",
+                        "cuda_transfer_intervals",
+                    },
+                )
+                if resource == "cpu":
+                    self.assertEqual(receipt["accelerator_memory_bytes"], 0)
+                    self.assertEqual(receipt["cuda_h2d_bytes"], 0)
+                    self.assertEqual(receipt["cuda_d2h_bytes"], 0)
+                    self.assertEqual(receipt["cuda_transfer_intervals"], [])
+                else:
+                    self.assertEqual(receipt["accelerator_memory_bytes"], 4096)
+                    self.assertEqual(receipt["cuda_h2d_bytes"], len(payload))
+                    self.assertEqual(receipt["cuda_d2h_bytes"], 32)
+                    intervals = receipt["cuda_transfer_intervals"]
+                    self.assertEqual(
+                        [interval["direction"] for interval in intervals],
+                        ["h2d", "d2h"],
+                    )
+                    self.assertTrue(
+                        all(interval["device_id"] == GPU_UUID for interval in intervals)
+                    )
+                    self.assertTrue(
+                        all(
+                            interval["timing_source"] == "cudaEventElapsedTime"
+                            for interval in intervals
+                        )
+                    )
                 sequence += 1
 
     def test_front_transport_rejects_relabel_and_accepts_one_sealed_tensor(self) -> None:

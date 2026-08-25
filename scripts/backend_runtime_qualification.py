@@ -18,6 +18,10 @@ from typing import Any, Callable, Mapping
 
 SYSTEMS = ("deepstream", "savant", "openvino_gva", "gstreamer_custom")
 CODECS = ("h264", "h265")
+KPP_DATASET_BY_CODEC = {
+    "h264": "kpp_iss_publication_v3_h264",
+    "h265": "kpp_iss_publication_v3_h265",
+}
 TOPOLOGIES = ("independent_processes", "shared_video_dag")
 RESOURCES = ("cpu", "gpu")
 BRANCHES = ("plate_number", "vehicle_type", "damage", "foreign_object")
@@ -511,17 +515,22 @@ def _default_dataset_loader(
     for codec in CODECS:
         try:
             dataset = load_dataset(
-                path, f"kpp_real_{codec}", mode="benchmark",
+                path, KPP_DATASET_BY_CODEC[codec], mode="benchmark",
                 project_root=project_root, require_files=True,
             )
         except Exception as exc:
             raise BackendRuntimeQualificationError(
                 f"frozen real KPP {codec} dataset is not ready: {exc}"
             ) from exc
-        sources = sorted(str(stream["resolved_sha256"]) for stream in dataset["streams"])
+        sources = sorted({
+            str(stream["resolved_sha256"]) for stream in dataset["streams"]
+        })
         if len(sources) != 2 or not all(_valid_sha(value) for value in sources):
             raise BackendRuntimeQualificationError(f"KPP {codec} source coverage drifted")
-        result[codec] = {"dataset_name": f"kpp_real_{codec}", "source_sha256": sources}
+        result[codec] = {
+            "dataset_name": KPP_DATASET_BY_CODEC[codec],
+            "source_sha256": sources,
+        }
     return result
 
 
@@ -748,7 +757,7 @@ def assess_backend_runtime_qualification(
                 raise BackendRuntimeQualificationError(f"dataset {codec} fields drifted")
             sources = value["source_sha256"]
             if (
-                value["dataset_name"] != f"kpp_real_{codec}"
+                value["dataset_name"] != KPP_DATASET_BY_CODEC[codec]
                 or not isinstance(sources, list) or len(sources) != 2
                 or len(set(sources)) != 2 or not all(_valid_sha(item) for item in sources)
             ):
@@ -1042,6 +1051,7 @@ def promote_backend_runtime_qualification(
 
 __all__ = [
     "BINDING_INDEX_FILENAME", "BackendRuntimeQualificationError",
+    "KPP_DATASET_BY_CODEC",
     "assess_backend_runtime_qualification",
     "promote_backend_runtime_qualification",
 ]

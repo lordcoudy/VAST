@@ -30,6 +30,72 @@ warn() {
   echo "[warning] $*" >&2
 }
 
+is_wsl() {
+  if [[ -n "${WSL_INTEROP:-}" || -n "${WSL_DISTRO_NAME:-}" ]]; then
+    return 0
+  fi
+
+  [[ -r /proc/sys/kernel/osrelease ]] && grep -qiE '(microsoft|wsl)' /proc/sys/kernel/osrelease
+}
+
+parse_args() {
+  local requested_venv_dir="${VENV_DIR:-}"
+  local running_wsl=0
+
+  while [[ "$#" -gt 0 ]]; do
+    case "$1" in
+      --venv-dir)
+        if [[ "$#" -lt 2 ]]; then
+          echo "[error] --venv-dir requires an absolute Linux path" >&2
+          return 2
+        fi
+        if [[ -z "$2" ]]; then
+          echo "[error] --venv-dir requires an absolute Linux path" >&2
+          return 2
+        fi
+        requested_venv_dir="$2"
+        shift 2
+        ;;
+      --venv-dir=*)
+        requested_venv_dir="${1#*=}"
+        if [[ -z "$requested_venv_dir" ]]; then
+          echo "[error] --venv-dir requires an absolute Linux path" >&2
+          return 2
+        fi
+        shift
+        ;;
+      *)
+        echo "[error] Unknown argument: $1" >&2
+        return 2
+        ;;
+    esac
+  done
+
+  if is_wsl; then
+    running_wsl=1
+  fi
+
+  if [[ -z "$requested_venv_dir" ]]; then
+    if [[ "$running_wsl" == "1" ]]; then
+      requested_venv_dir="${HOME}/.local/state/vast/publication/runtime/full-publication-cp312-v1"
+    else
+      requested_venv_dir="$PROJECT_DIR/.venv"
+    fi
+  fi
+
+  if [[ "$requested_venv_dir" != /* ]]; then
+    echo "[error] --venv-dir must be an absolute Linux path: $requested_venv_dir" >&2
+    return 2
+  fi
+
+  if [[ "$running_wsl" == "1" && "$requested_venv_dir" =~ ^/mnt/[[:alpha:]](/|$) ]]; then
+    echo "[error] --venv-dir must use the WSL Linux filesystem, not /mnt/<drive>: $requested_venv_dir" >&2
+    return 2
+  fi
+
+  VENV_DIR="$requested_venv_dir"
+}
+
 require_cmd() {
   if ! command -v "$1" >/dev/null 2>&1; then
     echo "[error] Required command missing: $1" >&2
@@ -163,12 +229,12 @@ install_nvidia_container_toolkit() {
 setup_python_env() {
   log "Setting up Python virtual environment"
   cd "$PROJECT_DIR"
-  if [[ ! -d .venv ]]; then
-    "$PYTHON_BIN" -m venv .venv
+  if [[ ! -d "$VENV_DIR" ]]; then
+    "$PYTHON_BIN" -m venv --copies "$VENV_DIR"
   fi
 
   # shellcheck disable=SC1091
-  source .venv/bin/activate
+  source "$VENV_DIR/bin/activate"
   python -m pip install --upgrade pip wheel setuptools
   if [[ -f requirements.txt ]]; then
     python -m pip install -r requirements.txt
@@ -318,6 +384,8 @@ final_checks() {
 }
 
 main() {
+  parse_args "$@"
+
   require_cmd sudo
   require_cmd curl
 
@@ -338,18 +406,20 @@ main() {
   build_native_probe_images
   final_checks
 
-  cat <<'EOF'
+  cat <<EOF
 
 Next actions:
 1) Re-login if docker group changed.
-2) Activate venv: source .venv/bin/activate
+2) Activate venv: source "$VENV_DIR/bin/activate"
 3) Verify project hardware check: python scripts/check_system.py
 4) Run smoke benchmark:
    python scripts/run_experiments.py --mode smoke --run-kind heterogeneous --systems custom_cpp_cuda_qt --scenarios canonical_heterogeneous --repeats 1 --warmup 0 --measurement 5
 5) Run one strict benchmark:
-   GST_PLUGIN_PATH="$PWD/build/lib" python scripts/run_experiments.py --mode benchmark --run-kind heterogeneous --systems deepstream savant openvino_gva gstreamer_custom --scenarios canonical_heterogeneous --repeats 1 --warmup 0 --measurement 30
+   GST_PLUGIN_PATH="\$PWD/build/lib" python scripts/run_experiments.py --mode benchmark --run-kind heterogeneous --systems deepstream savant openvino_gva gstreamer_custom --scenarios canonical_heterogeneous --repeats 1 --warmup 0 --measurement 30
 
 EOF
 }
 
-main "$@"
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+  main "$@"
+fi

@@ -13,6 +13,7 @@ the DeepStream helper are loaded lazily after the runtime has validated its FDs.
 from __future__ import annotations
 
 import argparse
+import csv
 import ctypes
 import hashlib
 import importlib
@@ -65,6 +66,33 @@ ANALYTICS_BRANCHES = (
 )
 _SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 _PROTOCOL_TEXT_RE = re.compile(r"^[^\x00-\x20\x7f]+$")
+STAGE_CONTRACT_COLUMNS = (
+    "schema_version",
+    "semantic_contract_version",
+    "run_id",
+    "contract_id",
+    "execution_domain",
+    "stage",
+    "base_stage",
+    "implementation_name",
+    "implementation_version",
+    "implementation_config_json",
+    "config_sha256",
+    "implementation_artifacts_json",
+    "implementation_artifacts_sha256",
+    "implementation_artifact_provenance",
+    "transform_json",
+    "output_media_type",
+    "output_format",
+    "output_dtype",
+    "output_shape_json",
+    "ordering_contract",
+    "contract_provenance",
+    "telemetry_source",
+)
+_STAGE_ARTIFACT_KINDS = {
+    "container_image", "executable", "model", "plugin", "policy", "shared_library",
+}
 
 
 class DeepStreamSdkRuntimeError(RuntimeError):
@@ -78,6 +106,143 @@ class AdmissionTransportError(DeepStreamSdkRuntimeError):
 def _require(condition: bool, message: str) -> None:
     if not condition:
         raise DeepStreamSdkRuntimeError(message)
+
+
+def _canonical_json_text(value: Any, label: str) -> str:
+    try:
+        return json.dumps(
+            value,
+            sort_keys=True,
+            separators=(",", ":"),
+            ensure_ascii=True,
+            allow_nan=False,
+        )
+    except (TypeError, ValueError) as exc:
+        raise DeepStreamSdkRuntimeError(f"{label} is not canonical JSON") from exc
+
+
+def _canonical_stage_artifacts(
+    raw: Sequence[Mapping[str, Any]], *, label: str,
+) -> list[dict[str, str]]:
+    _require(bool(raw), f"{label} runtime artifact manifest is empty")
+    result: list[dict[str, str]] = []
+    identities: set[tuple[str, str, str]] = set()
+    for index, value in enumerate(raw):
+        _require(
+            isinstance(value, Mapping)
+            and set(value) == {"role", "kind", "logical_name", "sha256"},
+            f"{label} runtime artifact {index} fields drifted",
+        )
+        role = str(value["role"]).strip()
+        kind = str(value["kind"]).strip()
+        logical_name = str(value["logical_name"]).strip()
+        sha256 = str(value["sha256"]).strip()
+        _require(re.fullmatch(r"[a-z][a-z0-9_.-]*", role) is not None, f"{label} artifact role is invalid")
+        _require(kind in _STAGE_ARTIFACT_KINDS, f"{label} artifact kind is invalid")
+        _require(bool(logical_name) and "\n" not in logical_name and "\r" not in logical_name, f"{label} artifact name is invalid")
+        _require(_SHA256_RE.fullmatch(sha256) is not None, f"{label} artifact SHA-256 is invalid")
+        identity = (role, kind, logical_name)
+        _require(identity not in identities, f"{label} runtime artifact identity is duplicated")
+        identities.add(identity)
+        result.append({"role": role, "kind": kind, "logical_name": logical_name, "sha256": sha256})
+    return sorted(result, key=lambda value: (value["role"], value["kind"], value["logical_name"], value["sha256"]))
+
+
+def build_deepstream_stage_contract_rows(
+    *,
+    run_id: str,
+    worker_id: str,
+    topology_kind: str,
+    branches: Sequence[str],
+    execution_domain: str,
+    implementation_version: str,
+    decode_config: Mapping[str, Any],
+    preprocess_config: Mapping[str, Any],
+    artifacts_by_stage: Mapping[str, Sequence[Mapping[str, Any]]],
+    decode_output: Mapping[str, Any],
+    preprocess_output: Mapping[str, Any],
+) -> list[dict[str, Any]]:
+    """Build semantic-contract rows only from an observed, loaded SDK graph."""
+
+    _require(bool(str(run_id).strip()), "DeepStream stage run_id is empty")
+    _require(bool(str(worker_id).strip()), "DeepStream stage worker_id is empty")
+    _require(bool(str(execution_domain).strip()), "DeepStream stage execution domain is empty")
+    _require(bool(str(implementation_version).strip()), "DeepStream implementation version is empty")
+    branch_values = tuple(str(value) for value in branches)
+    if topology_kind == INDEPENDENT_PROCESSES:
+        _require(len(branch_values) == 1 and branch_values[0] in ANALYTICS_BRANCHES, "baseline stage contract requires one branch")
+        suffix = f"_{branch_values[0]}"
+    else:
+        _require(topology_kind == SHARED_VIDEO_DAG and branch_values == ANALYTICS_BRANCHES, "shared stage contract requires the frozen branch order")
+        suffix = ""
+    _require(set(artifacts_by_stage) == {"decode", "preprocess"}, "DeepStream stage artifact set drifted")
+    rows: list[dict[str, Any]] = []
+    for base_stage, config, output in (
+        ("decode", dict(decode_config), dict(decode_output)),
+        ("preprocess", dict(preprocess_config), dict(preprocess_output)),
+    ):
+        _require(bool(config), f"DeepStream {base_stage} runtime configuration is empty")
+        _require(set(output) == {"media_type", "format", "shape"}, f"DeepStream {base_stage} output fields drifted")
+        media_type = str(output["media_type"]).strip()
+        output_format = str(output["format"]).strip()
+        shape = output["shape"]
+        _require(bool(media_type) and bool(output_format), f"DeepStream {base_stage} output identity is empty")
+        _require(type(shape) is list and bool(shape) and all((type(value) is int and value > 0) or (type(value) is str and bool(value.strip())) for value in shape), f"DeepStream {base_stage} output shape is invalid")
+        config_json = _canonical_json_text(config, f"DeepStream {base_stage} configuration")
+        artifacts = _canonical_stage_artifacts(artifacts_by_stage[base_stage], label=base_stage)
+        artifacts_json = _canonical_json_text(artifacts, f"DeepStream {base_stage} artifacts")
+        if base_stage == "decode":
+            transform = {"normalization": {"mode": "identity"}, "resize": {"mode": "identity"}}
+        else:
+            transform = {"normalization": {"mode": "identity"}, "resize": {"algorithm": "nvstreammux", "mode": "fixed", "output_height": int(shape[0]), "output_width": int(shape[1])}}
+        stage = base_stage + suffix
+        rows.append({
+            "schema_version": 2,
+            "semantic_contract_version": 2,
+            "run_id": str(run_id),
+            "contract_id": f"{run_id}:{execution_domain}:{stage}",
+            "execution_domain": str(execution_domain),
+            "stage": stage,
+            "base_stage": base_stage,
+            "implementation_name": f"vast-deepstream-checkpoint-{base_stage}",
+            "implementation_version": str(implementation_version),
+            "implementation_config_json": config_json,
+            "config_sha256": hashlib.sha256(config_json.encode("utf-8")).hexdigest(),
+            "implementation_artifacts_json": artifacts_json,
+            "implementation_artifacts_sha256": hashlib.sha256(artifacts_json.encode("utf-8")).hexdigest(),
+            "implementation_artifact_provenance": "runtime_loaded_artifacts_v1",
+            "transform_json": _canonical_json_text(transform, f"DeepStream {base_stage} transform"),
+            "output_media_type": media_type,
+            "output_format": output_format,
+            "output_dtype": "uint8",
+            "output_shape_json": _canonical_json_text(shape, f"DeepStream {base_stage} output shape"),
+            "ordering_contract": "native_pts_preserved_with_gap_free_decode_order_admission_v3",
+            "contract_provenance": "runtime_loaded_configuration",
+            "telemetry_source": "native",
+        })
+    return rows
+
+
+def write_deepstream_stage_contracts(
+    output_dir: Path, rows: Sequence[Mapping[str, Any]],
+) -> Path:
+    """Atomically claim and write the exact per-worker runtime fragment."""
+
+    directory = Path(output_dir)
+    _require(directory.is_dir() and not directory.is_symlink(), "DeepStream worker output directory is invalid")
+    path = directory / "stage_contracts.runtime.csv"
+    try:
+        with path.open("x", encoding="utf-8", newline="") as output:
+            writer = csv.DictWriter(output, fieldnames=STAGE_CONTRACT_COLUMNS, extrasaction="raise")
+            writer.writeheader()
+            for value in rows:
+                _require(set(value) == set(STAGE_CONTRACT_COLUMNS), "DeepStream stage contract fields drifted")
+                writer.writerow(dict(value))
+            output.flush()
+            os.fsync(output.fileno())
+    except FileExistsError as exc:
+        raise DeepStreamSdkRuntimeError("DeepStream stage contract already exists") from exc
+    return path
 
 
 def _read_exact(fd: int, size: int, *, clean_eof_allowed: bool = False) -> bytes | None:
@@ -675,6 +840,7 @@ class EngineeringCallbackRecorder:
 class _PendingFrame:
     frame: AdmissionTransportFrame
     identity_sha256: bytes
+    decode_submit_start_ns: int | None = None
     identity: dict[str, Any] | None = None
     preprocessed: bool = False
     fanout_branches: set[str] | None = None
@@ -716,19 +882,25 @@ class DeepStreamSdkPipeline:
         callbacks: DeepStreamCallbacks,
         meta_bridge: NvDsMetaBridge,
         decoder_gpu_id: int = 0,
+        resource_recorder: Any | None = None,
     ) -> None:
         _require(decoder_gpu_id == 0, "checkpoint DeepStream decoder GPU must remain zero")
         self.graph = graph
         self.callbacks = callbacks
         self.meta_bridge = meta_bridge
         self.decoder_gpu_id = decoder_gpu_id
+        self.resource_recorder = resource_recorder
         self._pending: dict[int, _PendingFrame] = {}
         self._seen_transport_pts: set[int] = set()
         self._pending_lock = threading.RLock()
         self._callback_error: BaseException | None = None
         self._callback_error_lock = threading.Lock()
         self.decoded_seen = threading.Event()
+        self.preprocessed_seen = threading.Event()
         self._eos_seen = threading.Event()
+        self._terminal_eos_seen = threading.Event()
+        self._terminal_eos_branches: set[str] = set()
+        self._terminal_eos_lock = threading.Lock()
         self._executor_stop = threading.Event()
         self._queues: dict[str, NativeBranchQueue] = {}
         self._executor_threads: list[threading.Thread] = []
@@ -828,6 +1000,13 @@ class DeepStreamSdkPipeline:
         mux.set_property("width", 1920)
         mux.set_property("height", 1080)
         rgb_caps.set_property("caps", Gst.Caps.from_string("video/x-raw,format=RGB"))
+        self._stage_elements = {
+            "parser": parser,
+            "decoder": decoder,
+            "stream_mux": mux,
+            "format_converter": converter,
+            "caps_filter": rgb_caps,
+        }
 
         _require(appsrc.link(parser), "DeepStream appsrc->parser link failed")
         _require(parser.link(decoder), "DeepStream parser->NVDEC link failed")
@@ -844,6 +1023,8 @@ class DeepStreamSdkPipeline:
         )
         _require(mux.link(converter), "DeepStream nvstreammux->nvvideoconvert link failed")
         _require(converter.link(rgb_caps), "DeepStream nvvideoconvert->RGB download link failed")
+        if tee is not None:
+            _require(rgb_caps.link(tee), "DeepStream RGB download->shared tee link failed")
 
         mux_src = mux.get_static_pad("src")
         rgb_src = rgb_caps.get_static_pad("src")
@@ -858,6 +1039,7 @@ class DeepStreamSdkPipeline:
             sink.set_property("max-buffers", 1)
             sink.set_property("drop", False)
             sink.connect("new-sample", self._on_new_sample, branch)
+            sink.connect("eos", self._on_sink_eos, branch)
             pipeline.add(sink)
             if tee is None:
                 _require(rgb_caps.link(sink), f"DeepStream baseline sink link failed: {branch}")
@@ -928,10 +1110,26 @@ class DeepStreamSdkPipeline:
             pending = self._pending_for_buffer(buffer)
             observed = self.meta_bridge.bind(**self._metadata_values(pending, buffer))
             identity = self._native_identity(pending, observed)
+            completed_ns = time.time_ns()
             with self._pending_lock:
                 _require(pending.identity is None, "DeepStream decode callback was duplicated")
                 pending.identity = identity
-            self.callbacks.observe_decoded_frame(identity, observed_timestamp_ms=_now_ms())
+            self.callbacks.observe_decoded_frame(
+                identity,
+                observed_timestamp_ms=completed_ns / 1_000_000.0,
+            )
+            if self.resource_recorder is not None:
+                _require(
+                    pending.decode_submit_start_ns is not None,
+                    "DeepStream NVDEC callback lacks its native submit timestamp",
+                )
+                self.resource_recorder.record_nvdec(
+                    frame_id=pending.frame.frame_id,
+                    input_frame_key=pending.frame.input_frame_key,
+                    payload_bytes=len(pending.frame.payload),
+                    start_timestamp_ns=pending.decode_submit_start_ns,
+                    end_timestamp_ns=completed_ns,
+                )
             self.decoded_seen.set()
         except BaseException as exc:
             self._record_error(exc)
@@ -952,6 +1150,7 @@ class DeepStreamSdkPipeline:
                 pending.identity,
                 observed_timestamp_ms=_now_ms(),
             )
+            self.preprocessed_seen.set()
         except BaseException as exc:
             self._record_error(exc)
             return self.Gst.PadProbeReturn.DROP
@@ -965,17 +1164,33 @@ class DeepStreamSdkPipeline:
             _require(buffer is not None, f"DeepStream appsink sample has no buffer: {branch}")
             pending = self._pending_for_buffer(buffer)
             _require(pending.identity is not None and pending.preprocessed, "DeepStream route precedes preprocessing")
+            fanout_started_ns = time.time_ns()
+            fanout_started_thread_ns = time.thread_time_ns()
             self.meta_bridge.verify(**self._metadata_values(pending, buffer))
             if self.graph.topology_kind == SHARED_VIDEO_DAG:
                 with self._pending_lock:
                     assert pending.fanout_branches is not None
                     _require(branch not in pending.fanout_branches, "DeepStream fanout callback was duplicated")
                     pending.fanout_branches.add(branch)
+                fanout_completed_ns = time.time_ns()
                 self.callbacks.observe_fanout(
                     pending.identity,
                     branch=branch,
-                    observed_timestamp_ms=_now_ms(),
+                    observed_timestamp_ms=fanout_completed_ns / 1_000_000.0,
                 )
+                fanout_completed_thread_ns = time.thread_time_ns()
+                if self.resource_recorder is not None:
+                    self.resource_recorder.record_fanout(
+                        frame_id=pending.frame.frame_id,
+                        input_frame_key=pending.frame.input_frame_key,
+                        branch=branch,
+                        payload_bytes=int(buffer.get_size()),
+                        start_timestamp_ns=fanout_started_ns,
+                        end_timestamp_ns=fanout_completed_ns,
+                        thread_cpu_time_ns=(
+                            fanout_completed_thread_ns - fanout_started_thread_ns
+                        ),
+                    )
             self._queues[branch].submit(
                 _BranchWork(identity=dict(pending.identity), branch=branch, sample=sample)
             )
@@ -983,6 +1198,17 @@ class DeepStreamSdkPipeline:
             self._record_error(exc)
             return self.Gst.FlowReturn.ERROR
         return self.Gst.FlowReturn.OK
+
+    def _on_sink_eos(self, _sink: Any, branch: str) -> None:
+        try:
+            _require(branch in self.graph.branches, "DeepStream EOS branch is unknown")
+            with self._terminal_eos_lock:
+                _require(branch not in self._terminal_eos_branches, "DeepStream branch EOS was duplicated")
+                self._terminal_eos_branches.add(branch)
+                if self._terminal_eos_branches == set(self.graph.branches):
+                    self._terminal_eos_seen.set()
+        except BaseException as exc:
+            self._record_error(exc)
 
     def _on_native_drop(self, raw: Any, reason: str) -> None:
         _require(isinstance(raw, _BranchWork), "DeepStream native queue dropped an unknown item")
@@ -1060,15 +1286,18 @@ class DeepStreamSdkPipeline:
 
     def push(self, frame: AdmissionTransportFrame) -> None:
         self.raise_callback_error()
+        self.callbacks.admit_transport_frame(frame, observed_timestamp_ms=_now_ms())
         with self._pending_lock:
             _require(
                 frame.transport_pts_ns not in self._seen_transport_pts,
                 "DeepStream transport PTS was admitted twice",
             )
-            pending = _PendingFrame(frame=frame, identity_sha256=admission_identity_sha256(frame))
+            pending = _PendingFrame(
+                frame=frame,
+                identity_sha256=admission_identity_sha256(frame),
+            )
             self._pending[frame.transport_pts_ns] = pending
             self._seen_transport_pts.add(frame.transport_pts_ns)
-        self.callbacks.admit_transport_frame(frame, observed_timestamp_ms=_now_ms())
         buffer = self.Gst.Buffer.new_allocate(None, len(frame.payload), None)
         _require(buffer is not None, "DeepStream GstBuffer allocation failed")
         _require(buffer.fill(0, frame.payload) == len(frame.payload), "DeepStream GstBuffer fill was truncated")
@@ -1080,6 +1309,14 @@ class DeepStreamSdkPipeline:
             buffer.unset_flags(self.Gst.BufferFlags.DELTA_UNIT)
         else:
             buffer.set_flags(self.Gst.BufferFlags.DELTA_UNIT)
+        with self._pending_lock:
+            pending = self._pending.get(frame.transport_pts_ns)
+            _require(
+                pending is not None and pending.frame is frame
+                and pending.decode_submit_start_ns is None,
+                "DeepStream NVDEC submission identity drifted",
+            )
+            pending.decode_submit_start_ns = time.time_ns()
         result = self.appsrc.emit("push-buffer", buffer)
         _require(result == self.Gst.FlowReturn.OK, f"DeepStream appsrc push failed: {result}")
 
@@ -1087,8 +1324,17 @@ class DeepStreamSdkPipeline:
         _require(timeout_s > 0, "DeepStream drain timeout must be positive")
         result = self.appsrc.emit("end-of-stream")
         _require(result == self.Gst.FlowReturn.OK, f"DeepStream appsrc EOS failed: {result}")
-        _require(self._eos_seen.wait(timeout_s), "DeepStream pipeline EOS timed out")
         deadline = time.monotonic() + timeout_s
+        while not self._terminal_eos_seen.is_set():
+            self.raise_callback_error()
+            remaining = deadline - time.monotonic()
+            _require(remaining > 0, "DeepStream pipeline EOS timed out")
+            self._terminal_eos_seen.wait(min(0.05, remaining))
+        with self._terminal_eos_lock:
+            _require(
+                self._terminal_eos_branches == set(self.graph.branches),
+                "DeepStream did not observe EOS at every physical branch terminal",
+            )
         for native_queue in self._queues.values():
             while native_queue._queue.unfinished_tasks:  # exact queue drain, no inference.
                 self.raise_callback_error()
@@ -1100,6 +1346,140 @@ class DeepStreamSdkPipeline:
                 not self._pending,
                 "DeepStream frames remain without exact branch terminal callbacks",
             )
+
+    @staticmethod
+    def _sha256_regular_file(path: Path, label: str) -> tuple[Path, str]:
+        try:
+            resolved = path.resolve(strict=True)
+        except (OSError, RuntimeError) as exc:
+            raise DeepStreamSdkRuntimeError(f"{label} runtime artifact cannot be resolved") from exc
+        _require(resolved.is_file(), f"{label} runtime artifact is not a regular file")
+        digest = hashlib.sha256()
+        try:
+            with resolved.open("rb") as source:
+                for chunk in iter(lambda: source.read(1024 * 1024), b""):
+                    digest.update(chunk)
+        except OSError as exc:
+            raise DeepStreamSdkRuntimeError(f"{label} runtime artifact cannot be hashed") from exc
+        return resolved, digest.hexdigest()
+
+    def _plugin_artifact(self, element_key: str, role: str) -> tuple[dict[str, str], str]:
+        element = self._stage_elements[element_key]
+        factory = element.get_factory()
+        _require(factory is not None, f"DeepStream {element_key} has no loaded factory")
+        factory_name = str(factory.get_name()).strip()
+        _require(bool(factory_name), f"DeepStream {element_key} factory name is empty")
+        plugin = factory.get_plugin()
+        _require(plugin is not None, f"DeepStream {factory_name} has no loaded plugin")
+        filename = str(plugin.get_filename() or "").strip()
+        version = str(plugin.get_version() or "").strip()
+        _require(bool(filename) and bool(version), f"DeepStream {factory_name} plugin identity is incomplete")
+        _, sha256 = self._sha256_regular_file(Path(filename), f"DeepStream {factory_name} plugin")
+        return {
+            "role": role,
+            "kind": "plugin",
+            "logical_name": factory_name,
+            "sha256": sha256,
+        }, f"{factory_name}-{version}"
+
+    @staticmethod
+    def _negotiated_output(pad: Any, label: str) -> tuple[dict[str, Any], str]:
+        caps = pad.get_current_caps()
+        _require(caps is not None and not caps.is_empty() and caps.get_size() == 1, f"DeepStream {label} has no single negotiated caps")
+        structure = caps.get_structure(0)
+        _require(structure is not None, f"DeepStream {label} caps structure is unavailable")
+        media_type = str(structure.get_name() or "").strip()
+        pixel_format = str(structure.get_string("format") or "").strip()
+        try:
+            width = int(structure.get_value("width"))
+            height = int(structure.get_value("height"))
+        except (TypeError, ValueError) as exc:
+            raise DeepStreamSdkRuntimeError(f"DeepStream {label} caps dimensions are invalid") from exc
+        _require(media_type == "video/x-raw" and bool(pixel_format), f"DeepStream {label} caps identity drifted")
+        _require(width > 0 and height > 0, f"DeepStream {label} caps dimensions are non-positive")
+        caps_text = str(caps.to_string()).strip()
+        _require(bool(caps_text), f"DeepStream {label} caps serialization is empty")
+        if "memory:NVMM" in caps_text:
+            media_type += "(memory:NVMM)"
+        output_format = "rgb24" if pixel_format == "RGB" else pixel_format.lower()
+        return {
+            "media_type": media_type,
+            "format": output_format,
+            "shape": [height, width, 3],
+        }, caps_text
+
+    def runtime_stage_contract_rows(
+        self,
+        *,
+        run_id: str,
+        worker_id: str,
+        nvds_meta_library: Path,
+    ) -> list[dict[str, Any]]:
+        """Inspect the loaded SDK graph and bind its artifacts/configuration to this PID."""
+
+        _require(self.decoded_seen.is_set() and self.preprocessed_seen.is_set(), "DeepStream stage contracts require observed decode and preprocess callbacks")
+        hostname = socket.gethostname().strip()
+        _require(bool(hostname), "DeepStream runtime hostname is empty")
+        execution_domain = f"{hostname}:pid-{os.getpid()}:worker-{worker_id}"
+        decode_output, decode_caps = self._negotiated_output(
+            self._stage_elements["stream_mux"].get_static_pad("src"), "decode output",
+        )
+        preprocess_output, preprocess_caps = self._negotiated_output(
+            self._stage_elements["caps_filter"].get_static_pad("src"), "preprocess output",
+        )
+        decode_artifacts: list[dict[str, str]] = []
+        preprocess_artifacts: list[dict[str, str]] = []
+        versions: list[str] = []
+        for key, role in (("parser", "codec_parser"), ("decoder", "decoder"), ("stream_mux", "stream_mux")):
+            artifact, version = self._plugin_artifact(key, role)
+            decode_artifacts.append(artifact)
+            versions.append(version)
+        for key, role in (("format_converter", "format_converter"), ("caps_filter", "caps_filter")):
+            artifact, version = self._plugin_artifact(key, role)
+            preprocess_artifacts.append(artifact)
+            versions.append(version)
+        stage_host, stage_host_sha = self._sha256_regular_file(Path(__file__), "DeepStream SDK worker")
+        meta_bridge, meta_bridge_sha = self._sha256_regular_file(nvds_meta_library, "DeepStream NvDs meta bridge")
+        common_artifacts = [
+            {"role": "stage_host", "kind": "executable", "logical_name": stage_host.name, "sha256": stage_host_sha},
+            {"role": "metadata_bridge", "kind": "shared_library", "logical_name": meta_bridge.name, "sha256": meta_bridge_sha},
+        ]
+        gst_version = ".".join(str(value) for value in self.Gst.version()[:3])
+        implementation_version = "GStreamer-" + gst_version + "/" + "/".join(sorted(set(versions)))
+        return build_deepstream_stage_contract_rows(
+            run_id=run_id,
+            worker_id=worker_id,
+            topology_kind=self.graph.topology_kind,
+            branches=self.graph.branches,
+            execution_domain=execution_domain,
+            implementation_version=implementation_version,
+            decode_config={
+                "backend": "deepstream",
+                "codec": self.graph.codec,
+                "decoder_factory": "nvv4l2decoder",
+                "decoder_gpu_id": self.decoder_gpu_id,
+                "output_caps": decode_caps,
+                "parser_factory": f"{self.graph.codec}parse",
+                "pipeline_role": "checkpoint",
+                "software_fallback": "prohibited",
+                "stream_mux_batch_size": 1,
+                "stream_mux_factory": "nvstreammux",
+            },
+            preprocess_config={
+                "backend": "deepstream",
+                "converter_factory": "nvvideoconvert",
+                "output_caps": preprocess_caps,
+                "pipeline_role": "checkpoint",
+                "stream_mux_height": int(preprocess_output["shape"][0]),
+                "stream_mux_width": int(preprocess_output["shape"][1]),
+            },
+            artifacts_by_stage={
+                "decode": [*common_artifacts, *decode_artifacts],
+                "preprocess": [*common_artifacts, *preprocess_artifacts],
+            },
+            decode_output=decode_output,
+            preprocess_output=preprocess_output,
+        )
 
     def close(self) -> None:
         self.pipeline.set_state(self.Gst.State.NULL)
@@ -1163,6 +1543,9 @@ def run_fd_worker(args: argparse.Namespace) -> dict[str, Any]:
     stream_id = _integer_environment(STREAM_ID_ENV)
     _require(args.topology_kind == topology_kind, "DeepStream topology differs between argv and coordinator")
     _require(args.stream_id == stream_id, "DeepStream stream differs between argv and coordinator")
+    output_dir = Path(args.output_dir)
+    _require(output_dir.is_absolute(), "DeepStream worker output directory must be absolute")
+    _require(output_dir.is_dir() and not output_dir.is_symlink(), "DeepStream worker output directory is invalid")
     branches = tuple(value for value in args.branches.split(",") if value)
     graph = DeepStreamGraphSpec.build(
         topology_kind=topology_kind,
@@ -1188,17 +1571,40 @@ def run_fd_worker(args: argparse.Namespace) -> dict[str, Any]:
         "codec": args.codec,
         "claim_status": "native_sdk_runtime_requires_external_acceptance",
     }
-    callbacks = _load_callback_factory(
-        args.callback_factory,
-        context=context,
-        event_sink=event_sink,
-        policy_exchange=policy,
+    from checkpoint_deepstream_resource_runtime_v3 import (
+        DeepStreamNativeResourceRecorderV3,
     )
-    pipeline = DeepStreamSdkPipeline(
-        graph=graph,
-        callbacks=callbacks,
-        meta_bridge=NvDsMetaBridge(args.nvds_meta_library),
+
+    resource_recorder = DeepStreamNativeResourceRecorderV3(
+        output_dir=output_dir,
+        run_id=run_id,
+        worker_id=worker_id,
+        stream_id=stream_id,
+        topology_kind=topology_kind,
+        branches=branches,
     )
+    context["resource_recorder"] = resource_recorder
+    callbacks = None
+    try:
+        callbacks = _load_callback_factory(
+            args.callback_factory,
+            context=context,
+            event_sink=event_sink,
+            policy_exchange=policy,
+        )
+        pipeline = DeepStreamSdkPipeline(
+            graph=graph,
+            callbacks=callbacks,
+            meta_bridge=NvDsMetaBridge(args.nvds_meta_library),
+            resource_recorder=resource_recorder,
+        )
+    except BaseException:
+        resource_recorder.close()
+        policy.close()
+        close_callbacks = getattr(callbacks, "close", None) if callbacks is not None else None
+        if callable(close_callbacks):
+            close_callbacks()
+        raise
     stop_event = threading.Event()
     stop_timestamp: list[int] = []
 
@@ -1222,6 +1628,7 @@ def run_fd_worker(args: argparse.Namespace) -> dict[str, Any]:
     selector = selectors.DefaultSelector()
     selector.register(admission_fd, selectors.EVENT_READ)
     frame_count = 0
+    resource_paths: dict[str, Path] = {}
     try:
         while not stop_event.is_set():
             pipeline.raise_callback_error()
@@ -1243,6 +1650,15 @@ def run_fd_worker(args: argparse.Namespace) -> dict[str, Any]:
             lifecycle.decoder_placement_verified()
             decoder_status_sent = True
         _require(decoder_status_sent, "DeepStream NVDEC placement was never observed")
+        stage_contract_path = write_deepstream_stage_contracts(
+            output_dir,
+            pipeline.runtime_stage_contract_rows(
+                run_id=run_id,
+                worker_id=worker_id,
+                nvds_meta_library=args.nvds_meta_library,
+            ),
+        )
+        resource_paths = resource_recorder.close()
         lifecycle.drained(_now_ms())
     except BaseException:
         lifecycle.censored(min(_now_ms(), window.drain_end_timestamp_ms))
@@ -1254,6 +1670,7 @@ def run_fd_worker(args: argparse.Namespace) -> dict[str, Any]:
         close_callbacks = getattr(callbacks, "close", None)
         if callable(close_callbacks):
             close_callbacks()
+        resource_paths = resource_recorder.close()
         stop_thread.join(timeout=2)
     return {
         "schema_version": 1,
@@ -1263,6 +1680,13 @@ def run_fd_worker(args: argparse.Namespace) -> dict[str, Any]:
         "physical_graph_count": 1,
         "decoded_process_count": 1,
         "admission_frames": frame_count,
+        "stage_contract_runtime_path": str(stage_contract_path),
+        "resource_interval_runtime_path": str(resource_paths["resource_intervals"]),
+        "fanout_work_runtime_path": (
+            str(resource_paths["fanout_work_counters"])
+            if "fanout_work_counters" in resource_paths
+            else None
+        ),
         "publication_ready": False,
     }
 
@@ -1334,6 +1758,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     run_parser.add_argument("--stream-id", type=int, required=True)
     run_parser.add_argument("--branches", required=True)
     run_parser.add_argument("--arm-id", required=True)
+    run_parser.add_argument("--output-dir", type=Path, required=True)
     run_parser.add_argument("--callback-factory", required=True)
     run_parser.add_argument(
         "--nvds-meta-library",

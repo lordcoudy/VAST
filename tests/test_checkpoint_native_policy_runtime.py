@@ -46,24 +46,28 @@ def capability_manifest() -> dict:
             bindings: dict[str, dict] = {}
             for resource_index, resource in enumerate(RESOURCES, start=1):
                 marker = system_index * 100 + branch_index * 10 + resource_index
-                bindings[resource] = {
-                    "status": "implemented_and_native_evidence_bound",
-                    "implementation_id": f"{system}-{branch}-{resource}-runtime-v1",
-                    "implementation_sha256": f"{marker:064x}",
-                    "runtime_binding": f"{system}:{branch}:{resource}:worker",
+                runtime_identity = {
                     "runtime_backend": (
                         "openvino_dlstreamer" if resource == "cpu" else "cuda_tensorrt"
                     ),
                     "device_api": "CPU" if resource == "cpu" else "NVIDIA_CUDA",
                     "gpu_id": None if resource == "cpu" else 0,
-                    "terminal_detector": (
-                        f"{system}-{branch}-{resource}-native-detector-v1"
-                    ),
+                    "worker_image_digest": "sha256:" + f"{marker + 2:064x}",
+                    "implementation_version": f"{system}-{branch}-{resource}-implementation-v3",
+                    "terminal_detector": f"{system}-{branch}-{resource}-native-detector-v1",
                     "terminal_backend": (
                         "openvino-dlstreamer:gvadetect;device=CPU"
                         if resource == "cpu"
                         else "cuda-tensorrt:nvinfer;device=NVIDIA_CUDA:0"
                     ),
+                }
+                bindings[resource] = {
+                    "status": "implemented_and_native_evidence_bound",
+                    "implementation_id": f"{system}-{branch}-{resource}-runtime-v1",
+                    "implementation_sha256": f"{marker:064x}",
+                    "runtime_binding": f"{system}:{branch}:{resource}:worker",
+                    "runtime_identity": runtime_identity,
+                    **runtime_identity,
                     "native_evidence": {
                         "status": "accepted_native_runtime_emitter",
                         "telemetry_source": "native",
@@ -84,7 +88,7 @@ def capability_manifest() -> dict:
     }
 
 
-def calibration(manifest: dict) -> dict:
+def calibration(manifest: dict, system: str = "gstreamer_custom") -> dict:
     costs = {
         "plate_number": {"cpu": (2.0, 0.0), "gpu": (9.0, 0.5)},
         "vehicle_type": {"cpu": (3.0, 0.0), "gpu": (8.0, 0.5)},
@@ -92,7 +96,7 @@ def calibration(manifest: dict) -> dict:
         "foreign_object": {"cpu": (8.0, 0.0), "gpu": (3.0, 0.5)},
     }
     rows: dict[str, dict] = {}
-    bindings = manifest["systems"]["gstreamer_custom"]["branches"]
+    bindings = manifest["systems"][system]["branches"]
     for branch in ANALYTICS_BRANCHES:
         rows[branch] = {}
         for resource in RESOURCES:
@@ -106,7 +110,7 @@ def calibration(manifest: dict) -> dict:
     return {
         "schema_version": 1,
         "artifact_kind": "vast_publication_policy_calibration",
-        "system": "gstreamer_custom",
+        "system": system,
         "policy_contract_sha256": manifest["policy_contract_sha256"],
         "costs": rows,
     }
@@ -131,11 +135,16 @@ def coordinator(policy: str) -> NativePolicyRuntimeCoordinator:
     )
 
 
-def request_message(*, branch: str = "plate_number", frame_id: int = 1) -> dict:
+def request_message(
+    *,
+    branch: str = "plate_number",
+    frame_id: int = 1,
+    run_id: str = "run-native-policy-0001",
+) -> dict:
     return {
         "schema_version": 1,
         "message_type": "decision_request",
-        "run_id": "run-native-policy-0001",
+        "run_id": run_id,
         "worker_id": "worker-shared-0001",
         "input_frame_key": f"dataset:0:source:{frame_id}:1000",
         "trace_id": f"run-native-policy-0001:0:{frame_id}",
@@ -150,10 +159,16 @@ def request_message(*, branch: str = "plate_number", frame_id: int = 1) -> dict:
     }
 
 
-def path_message(response: dict, *, request: dict, resource: str | None = None) -> dict:
+def path_message(
+    response: dict,
+    *,
+    request: dict,
+    resource: str | None = None,
+    system: str = "gstreamer_custom",
+) -> dict:
     selected = resource or str(response["selected_resource"])
     manifest = capability_manifest()
-    binding = manifest["systems"]["gstreamer_custom"]["branches"][request["branch"]][selected]
+    binding = manifest["systems"][system]["branches"][request["branch"]][selected]
     return {
         "schema_version": 1,
         "message_type": "path_enter",
@@ -172,9 +187,14 @@ def path_message(response: dict, *, request: dict, resource: str | None = None) 
     }
 
 
-def terminal_message(response: dict, *, request: dict) -> dict:
+def terminal_message(
+    response: dict,
+    *,
+    request: dict,
+    system: str = "gstreamer_custom",
+) -> dict:
     resource = str(response["selected_resource"])
-    binding = capability_manifest()["systems"]["gstreamer_custom"]["branches"][
+    binding = capability_manifest()["systems"][system]["branches"][
         request["branch"]
     ][resource]
     return {
@@ -196,6 +216,58 @@ def terminal_message(response: dict, *, request: dict) -> dict:
 
 
 class NativePolicyRuntimeCoordinatorTests(unittest.TestCase):
+    def test_all_four_publishable_systems_use_the_same_terminal_bound_coordinator(self) -> None:
+        manifest = capability_manifest()
+        for system in PUBLISHABLE_SYSTEMS:
+            with self.subTest(system=system):
+                run_id = f"run-{system}-policy-0001"
+                runtime = NativePolicyRuntimeCoordinator(
+                    run_id=run_id,
+                    arm_id=f"arm-{system}-policy-cpu-0001",
+                    system=system,
+                    scenario="checkpoint_video_dag_shared",
+                    codec="h264",
+                    policy="cpu_only",
+                    deadline_ms=50.0,
+                    branches=ANALYTICS_BRANCHES,
+                    capability_manifest=manifest,
+                    calibration=calibration(manifest, system),
+                )
+                request = request_message(run_id=run_id)
+                response = runtime.handle_message(request["worker_id"], request)
+                runtime.handle_message(
+                    request["worker_id"],
+                    path_message(response, request=request, system=system),
+                )
+                terminal = runtime.handle_message(
+                    request["worker_id"],
+                    terminal_message(response, request=request, system=system),
+                )
+                self.assertTrue(terminal["accepted"])
+
+    def test_deepstream_uses_the_same_frozen_native_policy_coordinator_contract(self) -> None:
+        manifest = capability_manifest()
+        profile = calibration(manifest)
+        profile["system"] = "deepstream"
+        bindings = manifest["systems"]["deepstream"]["branches"]
+        for branch in ANALYTICS_BRANCHES:
+            for resource in RESOURCES:
+                profile["costs"][branch][resource]["implementation_id"] = bindings[branch][resource]["implementation_id"]
+        runtime = NativePolicyRuntimeCoordinator(
+            run_id="run-deepstream-policy-0001",
+            arm_id="arm-deepstream-policy-cpu-0001",
+            system="deepstream",
+            scenario="checkpoint_video_dag_shared",
+            codec="h264",
+            policy="cpu_only",
+            deadline_ms=50.0,
+            branches=ANALYTICS_BRANCHES,
+            capability_manifest=manifest,
+            calibration=profile,
+        )
+        self.assertEqual(runtime.system, "deepstream")
+        self.assertEqual(runtime.policy, "cpu_only")
+
     def test_current_openvino_manifest_blocks_every_nvidia_gpu_policy_path(self) -> None:
         manifest = yaml.safe_load(
             (ROOT / "configs" / "checkpoint_analytics_models_openvino.yaml").read_text(

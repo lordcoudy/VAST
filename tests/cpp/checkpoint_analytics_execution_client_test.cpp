@@ -203,6 +203,17 @@ int main() {
             "\"output_sha256\":\"5123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\"," 
             "\"preprocessing_contract_sha256\":\"" + contract_sha + "\"," 
             "\"raw_input_sha256\":\"" + raw_sha + "\",\"request_id\":\"analytics-request-0001\"," 
+            "\"resource\":{\"accelerator_memory_bytes\":4096,\"cuda_d2h_bytes\":32,"
+            "\"cuda_h2d_bytes\":4,\"cuda_transfer_intervals\":["
+            "{\"bytes\":4,\"device_elapsed_ns\":3,"
+            "\"device_id\":\"GPU-00000000-0000-0000-0000-000000000001\","
+            "\"direction\":\"h2d\",\"host_end_monotonic_ns\":115,"
+            "\"host_start_monotonic_ns\":111,\"timing_source\":\"cudaEventElapsedTime\"},"
+            "{\"bytes\":32,\"device_elapsed_ns\":3,"
+            "\"device_id\":\"GPU-00000000-0000-0000-0000-000000000001\","
+            "\"direction\":\"d2h\",\"host_end_monotonic_ns\":129,"
+            "\"host_start_monotonic_ns\":125,\"timing_source\":\"cudaEventElapsedTime\"}],"
+            "\"process_cpu_time_ns\":50,\"rss_after_bytes\":8192,\"rss_before_bytes\":4096},"
             "\"runtime_name\":\"TensorRT\",\"runtime_version\":\"8.6.1.6\",\"schema_version\":1," 
             "\"selected_resource\":\"gpu\",\"source_model_sha256\":\"6123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\"," 
             "\"terminal_reason\":\"native_fixed_tensor_completed\",\"terminal_status\":\"completed\"," 
@@ -256,7 +267,10 @@ int main() {
     if (result.decision_id != request.decision.decision_id ||
         result.selected_resource != "gpu" || result.device_api != "NVIDIA_CUDA" ||
         result.raw_input_sha256 != raw_sha || result.terminal_status != "completed" ||
-        result.detector != "damage-gpu-detector-v1" || result.objects != 1) {
+        result.detector != "damage-gpu-detector-v1" || result.objects != 1 ||
+        result.cuda_transfer_intervals.size() != 2 ||
+        result.cuda_transfer_intervals[0].direction != "h2d" ||
+        result.cuda_transfer_intervals[1].direction != "d2h") {
       throw std::runtime_error("validated analytics execution result drifted");
     }
   } catch (const std::exception& exc) {

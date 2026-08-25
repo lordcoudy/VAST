@@ -6,6 +6,7 @@
 #include <stdexcept>
 #include <string>
 #include <unordered_set>
+#include <utility>
 #include <vector>
 
 namespace vast {
@@ -19,6 +20,8 @@ class CheckpointResourceIntervalEmitter {
       "native_decoder_submit_complete_interval_v1";
   static constexpr const char* kFanoutDurationProvenance =
       "native_gstreamer_pad_probe_interval_v1";
+  static constexpr const char* kCudaDurationProvenance =
+      "native_cuda_event_interval_v1";
 
   explicit CheckpointResourceIntervalEmitter(const std::string& path)
       : output_(path, std::ios::out | std::ios::trunc) {
@@ -158,11 +161,166 @@ class CheckpointResourceIntervalEmitter {
     write_values(values, "fanout interval");
   }
 
+  static std::pair<std::uint64_t, std::uint64_t>
+  correlate_monotonic_envelope_to_realtime(
+      std::uint64_t host_start_monotonic_ns,
+      std::uint64_t host_end_monotonic_ns,
+      std::uint64_t clock_monotonic_anchor_ns,
+      std::uint64_t clock_realtime_anchor_ns) {
+    if (host_start_monotonic_ns == 0 ||
+        host_start_monotonic_ns >= host_end_monotonic_ns ||
+        host_end_monotonic_ns > clock_monotonic_anchor_ns) {
+      throw std::runtime_error(
+          "CUDA transfer CLOCK_MONOTONIC envelope is invalid or after its anchor");
+    }
+    if (clock_realtime_anchor_ns <= clock_monotonic_anchor_ns) {
+      throw std::runtime_error("CUDA transfer clock correlation is invalid");
+    }
+    const std::uint64_t start_delta =
+        clock_monotonic_anchor_ns - host_start_monotonic_ns;
+    const std::uint64_t end_delta =
+        clock_monotonic_anchor_ns - host_end_monotonic_ns;
+    if (clock_realtime_anchor_ns <= start_delta ||
+        clock_realtime_anchor_ns <= end_delta) {
+      throw std::runtime_error("CUDA transfer realtime conversion underflows");
+    }
+    const std::uint64_t host_start_timestamp_ns =
+        clock_realtime_anchor_ns - start_delta;
+    const std::uint64_t host_end_timestamp_ns =
+        clock_realtime_anchor_ns - end_delta;
+    if (host_start_timestamp_ns >= host_end_timestamp_ns) {
+      throw std::runtime_error("CUDA transfer realtime envelope is invalid");
+    }
+    return {host_start_timestamp_ns, host_end_timestamp_ns};
+  }
+
+  static std::uint64_t correlate_monotonic_point_to_realtime(
+      std::uint64_t point_monotonic_ns,
+      std::uint64_t clock_monotonic_anchor_ns,
+      std::uint64_t clock_realtime_anchor_ns) {
+    if (point_monotonic_ns == 0 ||
+        point_monotonic_ns > clock_monotonic_anchor_ns) {
+      throw std::runtime_error(
+          "monotonic point is invalid or after its realtime anchor");
+    }
+    if (clock_realtime_anchor_ns <= clock_monotonic_anchor_ns) {
+      throw std::runtime_error("monotonic point clock correlation is invalid");
+    }
+    const std::uint64_t delta =
+        clock_monotonic_anchor_ns - point_monotonic_ns;
+    if (clock_realtime_anchor_ns <= delta) {
+      throw std::runtime_error("monotonic point realtime conversion underflows");
+    }
+    return clock_realtime_anchor_ns - delta;
+  }
+
+  void emit_cuda_transfer(
+      const std::string& run_id,
+      const std::string& trace_id,
+      std::uint64_t stream_id,
+      std::uint64_t frame_id,
+      const std::string& input_frame_key,
+      const std::string& branch_id,
+      const std::string& stage,
+      const std::string& execution_id,
+      const std::string& direction,
+      std::uint64_t host_start_monotonic_ns,
+      std::uint64_t host_end_monotonic_ns,
+      std::uint64_t device_elapsed_ns,
+      std::uint64_t bytes,
+      const std::string& gpu_uuid,
+      const std::string& timing_source,
+      std::uint64_t clock_monotonic_anchor_ns,
+      std::uint64_t clock_realtime_anchor_ns,
+      const std::string& native_event_id) {
+    require_text(run_id, "run_id");
+    require_text(trace_id, "trace_id");
+    require_text(input_frame_key, "input_frame_key");
+    require_text(branch_id, "branch_id");
+    require_text(stage, "stage");
+    require_text(execution_id, "execution_id");
+    if (direction != "h2d" && direction != "d2h") {
+      throw std::runtime_error("CUDA transfer direction must be h2d or d2h");
+    }
+    const auto correlated = correlate_monotonic_envelope_to_realtime(
+        host_start_monotonic_ns,
+        host_end_monotonic_ns,
+        clock_monotonic_anchor_ns,
+        clock_realtime_anchor_ns);
+    if (device_elapsed_ns == 0 ||
+        device_elapsed_ns > host_end_monotonic_ns - host_start_monotonic_ns) {
+      throw std::runtime_error(
+          "CUDA event elapsed duration is invalid or exceeds its host envelope");
+    }
+    if (bytes == 0) {
+      throw std::runtime_error("CUDA transfer interval must report positive bytes");
+    }
+    if (!valid_gpu_uuid(gpu_uuid)) {
+      throw std::runtime_error("CUDA transfer interval GPU UUID is invalid");
+    }
+    if (timing_source != "cudaEventElapsedTime") {
+      throw std::runtime_error(
+          "CUDA transfer interval timing source must be cudaEventElapsedTime");
+    }
+    const std::uint64_t host_start_timestamp_ns = correlated.first;
+    const std::uint64_t host_end_timestamp_ns = correlated.second;
+    if (!valid_sha256(native_event_id)) {
+      throw std::runtime_error("CUDA transfer native_event_id must be lowercase SHA-256");
+    }
+
+    std::string canonical_gpu_uuid = gpu_uuid;
+    for (char& character : canonical_gpu_uuid) {
+      if (character >= 'A' && character <= 'Z') {
+        character = static_cast<char>(character - 'A' + 'a');
+      }
+    }
+    const std::string device_id = "gpu:" + canonical_gpu_uuid;
+    if (!valid_device_id(device_id)) {
+      throw std::runtime_error("CUDA transfer row device_id is not canonical");
+    }
+
+    std::lock_guard<std::mutex> lock(mutex_);
+    if (!native_event_ids_.insert(native_event_id).second) {
+      throw std::runtime_error(
+          "CUDA transfer native_event_id is duplicated in one runtime fragment");
+    }
+    const std::string execution_direction = execution_id + "\n" + direction;
+    if (!transfer_execution_directions_.insert(execution_direction).second) {
+      throw std::runtime_error(
+          "CUDA transfer execution/direction is duplicated in one runtime fragment");
+    }
+    const std::vector<std::string> values = {
+        std::to_string(kTelemetrySchemaVersion),
+        std::to_string(kIntervalContractVersion),
+        run_id,
+        trace_id,
+        std::to_string(stream_id),
+        std::to_string(frame_id),
+        input_frame_key,
+        "transfer",
+        direction,
+        stage,
+        branch_id,
+        execution_id,
+        std::to_string(host_start_timestamp_ns),
+        std::to_string(host_end_timestamp_ns),
+        std::to_string(device_elapsed_ns),
+        std::to_string(bytes),
+        device_id,
+        "per_trace_interval",
+        native_event_id,
+        kCudaDurationProvenance,
+        "native",
+    };
+    write_values(values, "CUDA transfer interval");
+  }
+
  private:
   std::ofstream output_;
   std::mutex mutex_;
   std::unordered_set<std::string> native_event_ids_;
   std::unordered_set<std::string> execution_ids_;
+  std::unordered_set<std::string> transfer_execution_directions_;
 
   static void require_text(const std::string& value, const char* name) {
     if (value.empty() || value.find_first_of("\r\n") != std::string::npos) {
@@ -191,6 +349,26 @@ class CheckpointResourceIntervalEmitter {
       if (!((character >= 'a' && character <= 'z') ||
             (character >= '0' && character <= '9') || character == '_' ||
             character == '.' || character == ':' || character == '-')) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  static bool valid_gpu_uuid(const std::string& value) {
+    if (value.size() != 40 || value.rfind("GPU-", 0) != 0 ||
+        value[12] != '-' || value[17] != '-' ||
+        value[22] != '-' || value[27] != '-') {
+      return false;
+    }
+    for (std::size_t index = 4; index < value.size(); ++index) {
+      if (index == 12 || index == 17 || index == 22 || index == 27) {
+        continue;
+      }
+      const char character = value[index];
+      if (!((character >= '0' && character <= '9') ||
+            (character >= 'a' && character <= 'f') ||
+            (character >= 'A' && character <= 'F'))) {
         return false;
       }
     }

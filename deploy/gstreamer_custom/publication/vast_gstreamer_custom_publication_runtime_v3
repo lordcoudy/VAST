@@ -1,0 +1,2 @@
+#!/bin/sh
+exec /usr/bin/python3 -B /opt/vast/checkpoint/checkpoint_gstreamer_custom_container_coordinator_v3.py "$@"

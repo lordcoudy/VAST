@@ -40,7 +40,7 @@ def _descriptor(root: Path, path: Path) -> dict:
 def _datasets() -> dict:
     return {
         codec: {
-            "dataset_name": f"kpp_real_{codec}",
+            "dataset_name": f"kpp_iss_publication_v3_{codec}",
             "manifest_identity_sha256": ("1" if codec == "h264" else "2") * 64,
             "source_sha256": [
                 ("3" if codec == "h264" else "5") * 64,
@@ -102,7 +102,7 @@ def _fixture(root: Path) -> tuple[Path, dict]:
             })
 
     evidence_names = {
-        "checkpoint_acceptance": "checkpoint_publication_acceptance.json",
+        "checkpoint_acceptance": "checkpoint_qualification_pilot_acceptance.json",
         "frames": "frames.csv",
         "frame_events": "frame_events.csv",
         "ingress_ledger": "ingress_ledger.csv",
@@ -178,7 +178,7 @@ def _fake_pilot_validator(pilot: dict, context: dict) -> dict:
         "codec": codec,
         "topology_kind": topology,
         "run_id": f"resource-pilot-{cell}",
-        "dataset_name": f"kpp_real_{codec}",
+        "dataset_name": f"kpp_iss_publication_v3_{codec}",
         "source_sha256": context["datasets"][codec]["source_sha256"],
         "evidence_sha256": {
             role: descriptor["sha256"]
@@ -200,6 +200,15 @@ def _fake_pilot_validator(pilot: dict, context: dict) -> dict:
 
 
 class FullResourceQualificationTests(unittest.TestCase):
+    def test_active_publication_dataset_ids_are_kpp_iss_v3(self) -> None:
+        self.assertEqual(
+            target.KPP_DATASET_BY_CODEC,
+            {
+                "h264": "kpp_iss_publication_v3_h264",
+                "h265": "kpp_iss_publication_v3_h265",
+            },
+        )
+
     def _assess(self, root: Path, index_path: Path, validator=_fake_pilot_validator) -> dict:
         with mock.patch.object(target, "_load_and_verify_kpp_datasets", return_value=_datasets()):
             return target.assess_full_resource_qualification(
@@ -225,6 +234,34 @@ class FullResourceQualificationTests(unittest.TestCase):
             self.assertEqual(manifest["qualification_scope"], "pre_run_hardware_and_emitter_capability_only")
             self.assertTrue(manifest["post_run_per_arm_evidence"]["required"])
             self.assertFalse(manifest["post_run_per_arm_evidence"]["configuration_evidence_accepted_mutated"])
+
+    def test_exact_shared_native_emitter_sources_are_not_false_aliases(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            index_path, index = _fixture(root)
+            shared_header = root / "artifacts" / "shared-resource-emitter.hpp"
+            shared_collector = root / "artifacts" / "shared-hardware-collector.py"
+            shared_header.write_text("// native interval and fanout emitter\n", encoding="utf-8")
+            shared_collector.write_text("# native hardware collector\n", encoding="utf-8")
+            header_descriptor = _descriptor(root, shared_header)
+            collector_descriptor = _descriptor(root, shared_collector)
+            for binding in index["bindings"]:
+                binding["emitters"]["resource_intervals"]["artifact"] = copy.deepcopy(
+                    header_descriptor
+                )
+                binding["emitters"]["fanout_work_counters"]["artifact"] = copy.deepcopy(
+                    header_descriptor
+                )
+                binding["emitters"]["hardware_resource_samples"]["artifact"] = copy.deepcopy(
+                    collector_descriptor
+                )
+            index_path.write_text(
+                json.dumps(index, sort_keys=True) + "\n", encoding="utf-8"
+            )
+
+            result = self._assess(root, index_path)
+            self.assertTrue(result["passed"], result["blockers"])
+            self.assertEqual(result["coverage"]["binding_count"], 8)
 
     def test_missing_cell_duplicate_sample_hash_drift_and_self_declaration_fail_closed(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -318,6 +355,12 @@ class FullResourceQualificationTests(unittest.TestCase):
 
     def test_validator_contract_requires_policy_aware_hash_set_and_semantic_decisions(self) -> None:
         source = inspect.getsource(target._default_pilot_validator)
+        self.assertIn(
+            "validate_checkpoint_qualification_pilot_acceptance_v1", source
+        )
+        self.assertNotIn(
+            "validate_checkpoint_acceptance_metadata_binding_envelope", source
+        )
         self.assertIn('accepted_arm_evidence_files', source)
         self.assertIn('validate_frozen_policy_decisions', source)
         self.assertIn('publication_policy_decisions.jsonl', source)

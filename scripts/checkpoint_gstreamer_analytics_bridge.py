@@ -575,6 +575,34 @@ class AnalyticsExecutionBridge:
         provenance = response["provenance"]
         terminal = response["terminal"]
         timing = response["timing"]
+        worker_resource = _exact(
+            response["resource"],
+            {
+                "process_cpu_time_ns",
+                "rss_before_bytes",
+                "rss_after_bytes",
+                "accelerator_memory_bytes",
+                "cuda_h2d_bytes",
+                "cuda_d2h_bytes",
+                "cuda_transfer_intervals",
+            },
+            "GStreamer analytics bridge worker resource",
+        )
+        resource_receipt = {
+            field: worker_resource[field]
+            for field in (
+                "process_cpu_time_ns",
+                "rss_before_bytes",
+                "rss_after_bytes",
+                "accelerator_memory_bytes",
+                "cuda_h2d_bytes",
+                "cuda_d2h_bytes",
+            )
+        }
+        resource_receipt["cuda_transfer_intervals"] = [
+            dict(_mapping(interval, "GStreamer analytics bridge CUDA transfer interval"))
+            for interval in worker_resource["cuda_transfer_intervals"]
+        ]
         _require(hashlib.sha256(output).hexdigest() == provenance["output_sha256"], "bridge output digest mismatch")
         return {
             "schema_version": BRIDGE_SCHEMA_VERSION,
@@ -613,6 +641,7 @@ class AnalyticsExecutionBridge:
             "inference_finished_monotonic_ns": timing["inference_finished_monotonic_ns"],
             "worker_completed_monotonic_ns": timing["worker_completed_monotonic_ns"],
             "inference_latency_ns": timing["inference_latency_ns"],
+            "resource": resource_receipt,
         }
 
     def serve_connection(self, endpoint: socket.socket, *, max_requests: int) -> None:

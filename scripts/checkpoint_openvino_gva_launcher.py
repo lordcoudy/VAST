@@ -197,7 +197,8 @@ def build_dispatch_contexts(
             f"engineering-{normalized_codec}-stream-{spec.stream_id}-frame-0"
         )
         trace_id = f"{normalized_run_id}:{spec.stream_id}:0:{spec.worker_id}"
-        for sequence, branch in enumerate(spec.branches, start=1):
+        for branch_index, branch in enumerate(spec.branches):
+            sequence = 1 + branch_index * 2
             resource = resources[branch]
             decision_payload = {
                 "claim_status": "engineering_synthetic_resource_selection_nonpublication",
@@ -231,6 +232,7 @@ def build_dispatch_contexts(
                     if spec.topology_kind == SHARED_VIDEO_DAG
                     else f"{trace_id}:{branch}:preprocess"
                 ),
+                "postprocess_execution_id": f"{trace_id}:{branch}:postprocess",
                 "terminal_execution_id": f"{trace_id}:{branch}:terminal",
                 "admission_id": admission_id,
                 "payload_sha256": payload_sha,
@@ -447,6 +449,7 @@ def audit_openvino_gva_run(
              "GVA terminal coverage is incomplete")
     for (worker_id, branch), result in terminal_results.items():
         terminal = result.get("terminal_event")
+        runtime_events = result.get("runtime_events")
         _require(
             result.get("publication_ready") is False
             and result.get("accepted_evidence_written") is False
@@ -457,6 +460,17 @@ def audit_openvino_gva_run(
             and terminal.get("event_kind") in {"branch_complete", "branch_drop"},
             f"GVA terminal closure drifted for {worker_id}/{branch}",
         )
+        if terminal.get("event_kind") == "branch_complete":
+            _require(
+                type(runtime_events) is list
+                and len(runtime_events) == 2
+                and runtime_events[1] == terminal
+                and isinstance(runtime_events[0], Mapping)
+                and runtime_events[0].get("protocol_version") == 2
+                and runtime_events[0].get("event_kind") == "stage_complete"
+                and runtime_events[0].get("stage") == f"postprocess_{branch}",
+                f"GVA topology-v2 postprocess closure drifted for {worker_id}/{branch}",
+            )
 
     _require(
         dispatch_contexts is not None,
@@ -475,8 +489,22 @@ def audit_openvino_gva_run(
             "GVA common admission context coordinate drifted",
         )
         terminal = terminal_results[(worker_id, branch)]["terminal_event"]
+        postprocess = terminal_results[(worker_id, branch)]["runtime_events"][0]
         _require(
-            terminal.get("sequence") == context.get("event_sequence")
+            postprocess.get("sequence") == context.get("event_sequence")
+            and postprocess.get("run_id") == context.get("run_id")
+            and postprocess.get("trace_id") == context.get("topology_worker_trace_id")
+            and postprocess.get("stream_id") == context.get("stream_id")
+            and postprocess.get("frame_id") == context.get("frame_id")
+            and postprocess.get("input_frame_key") == context.get("input_frame_key")
+            and postprocess.get("topology_kind") == context.get("topology_kind")
+            and postprocess.get("execution_id")
+            == context.get("postprocess_execution_id")
+            and postprocess.get("parent_execution_ids")
+            == [context.get("parent_execution_id")]
+            and postprocess.get("admission_id") == context.get("admission_id")
+            and postprocess.get("payload_sha256") == context.get("payload_sha256")
+            and terminal.get("sequence") == int(context.get("event_sequence")) + 1
             and terminal.get("run_id") == context.get("run_id")
             and terminal.get("trace_id") == context.get("topology_worker_trace_id")
             and terminal.get("stream_id") == context.get("stream_id")
@@ -485,7 +513,7 @@ def audit_openvino_gva_run(
             and terminal.get("topology_kind") == context.get("topology_kind")
             and terminal.get("execution_id") == context.get("terminal_execution_id")
             and terminal.get("parent_execution_ids")
-            == [context.get("parent_execution_id")]
+            == [context.get("postprocess_execution_id")]
             and terminal.get("admission_id") == context.get("admission_id")
             and terminal.get("payload_sha256") == context.get("payload_sha256"),
             f"GVA terminal is not bound to dispatch context for {worker_id}/{branch}",
@@ -834,6 +862,49 @@ class EngineeringSyntheticBridge:
         _require(bool(payload), "synthetic bridge tensor is empty")
         _require(tensor_descriptor.get("contiguous") is True,
                  "synthetic bridge tensor is not contiguous")
+        timestamp_ms = int(time.monotonic_ns() // 1_000_000)
+        postprocess = {
+            "protocol_version": 2,
+            "worker_id": context["topology_worker_id"],
+            "sequence": context["event_sequence"],
+            "run_id": context["run_id"],
+            "trace_id": context["topology_worker_trace_id"],
+            "stream_id": context["stream_id"],
+            "frame_id": context["frame_id"],
+            "input_frame_key": context["input_frame_key"],
+            "topology_kind": context["topology_kind"],
+            "event_kind": "stage_complete",
+            "stage": f"postprocess_{context['branch']}",
+            "branch_id": context["branch"],
+            "execution_id": context["postprocess_execution_id"],
+            "parent_execution_ids": [context["parent_execution_id"]],
+            "timestamp_ms": timestamp_ms,
+            "admission_id": context["admission_id"],
+            "payload_sha256": context["payload_sha256"],
+        }
+        terminal = {
+            "protocol_version": 3,
+            "worker_id": context["topology_worker_id"],
+            "sequence": context["event_sequence"] + 1,
+            "run_id": context["run_id"],
+            "trace_id": context["topology_worker_trace_id"],
+            "stream_id": context["stream_id"],
+            "frame_id": context["frame_id"],
+            "input_frame_key": context["input_frame_key"],
+            "topology_kind": context["topology_kind"],
+            "event_kind": "branch_complete",
+            "stage": context["branch"],
+            "branch_id": context["branch"],
+            "execution_id": context["terminal_execution_id"],
+            "parent_execution_ids": [context["postprocess_execution_id"]],
+            "timestamp_ms": timestamp_ms,
+            "admission_id": context["admission_id"],
+            "payload_sha256": context["payload_sha256"],
+            "terminal_reason": "engineering_synthetic_bridge_completed",
+            "objects": 0,
+            "detector": "engineering-synthetic-bridge",
+            "backend": "engineering-synthetic-bridge",
+        }
         return {
             "schema_version": 1,
             "artifact_kind": "vast_openvino_gva_execution_bridge_result",
@@ -843,29 +914,8 @@ class EngineeringSyntheticBridge:
             "input_sha256": hashlib.sha256(payload).hexdigest(),
             "publication_ready": False,
             "accepted_evidence_written": False,
-            "terminal_event": {
-                "protocol_version": 3,
-                "worker_id": context["topology_worker_id"],
-                "sequence": context["event_sequence"],
-                "run_id": context["run_id"],
-                "trace_id": context["topology_worker_trace_id"],
-                "stream_id": context["stream_id"],
-                "frame_id": context["frame_id"],
-                "input_frame_key": context["input_frame_key"],
-                "topology_kind": context["topology_kind"],
-                "event_kind": "branch_complete",
-                "stage": context["branch"],
-                "branch_id": context["branch"],
-                "execution_id": context["terminal_execution_id"],
-                "parent_execution_ids": [context["parent_execution_id"]],
-                "timestamp_ms": int(time.monotonic_ns() // 1_000_000),
-                "admission_id": context["admission_id"],
-                "payload_sha256": context["payload_sha256"],
-                "terminal_reason": "engineering_synthetic_bridge_completed",
-                "objects": 0,
-                "detector": "engineering-synthetic-bridge",
-                "backend": "engineering-synthetic-bridge",
-            },
+            "runtime_events": [postprocess, terminal],
+            "terminal_event": terminal,
         }
 
 

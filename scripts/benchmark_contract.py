@@ -19,6 +19,14 @@ from kpp_legacy_iss_v2_manifest import (
     KppLegacyIssV2ManifestError,
     validate_kpp_legacy_iss_v2_manifest_entry,
 )
+from kpp_iss_publication_v3_dataset import (
+    KppIssPublicationV3DatasetError,
+    validate_kpp_iss_publication_v3_manifest_entry,
+)
+from kpp_frozen_reconstruction_v1_dataset import (
+    KppFrozenReconstructionV1DatasetError,
+    validate_kpp_frozen_reconstruction_v1_manifest_entry,
+)
 from backend_runtime_grant import (
     BackendRuntimeGrantError,
     validate_pre_run_backend_runtime_grant,
@@ -1015,14 +1023,14 @@ def validate_primary_architecture_contrast(config: dict[str, Any]) -> dict[str, 
     if not isinstance(primary, dict):
         raise ContractError("benchmark.primary_architecture_contrast must be declared")
 
-    if int(primary.get("preregistration_version", 0) or 0) != 4:
-        raise ContractError("primary architecture contrast requires preregistration_version: 4")
+    if int(primary.get("preregistration_version", 0) or 0) != 5:
+        raise ContractError("primary architecture contrast requires preregistration_version: 5")
     if str(primary.get("status", "")) != "preregistered_blocked_execution":
         raise ContractError(
             "primary architecture contrast must remain preregistered_blocked_execution until accepted runs exist"
         )
     if str(primary.get("selection_basis", "")) != (
-        "preexisting_defaults_and_contract_capabilities_before_results"
+        "amended_for_frozen_kpp_iss_publication_v3_before_any_full_matrix_results"
     ):
         raise ContractError("primary architecture contrast must record its result-independent selection basis")
 
@@ -1078,8 +1086,11 @@ def validate_primary_architecture_contrast(config: dict[str, Any]) -> dict[str, 
     if dataset not in {str(value) for value in benchmark.get("report_datasets", [])}:
         raise ContractError(f"primary dataset '{dataset}' is not a configured report dataset")
     codec = str(primary.get("codec", ""))
-    if codec != "h264" or dataset != "kpp_real_h264":
-        raise ContractError("primary architecture contrast must bind codec h264 to dataset kpp_real_h264")
+    if codec != "h264" or dataset != "kpp_iss_publication_v3_h264":
+        raise ContractError(
+            "primary architecture contrast must bind codec h264 to dataset "
+            "kpp_iss_publication_v3_h264"
+        )
 
     deadline_ms = float(primary.get("deadline_ms", 0.0) or 0.0)
     if deadline_ms not in {float(value) for value in benchmark.get("report_deadline_ms", [])}:
@@ -1149,8 +1160,8 @@ def validate_primary_policy_ablation(config: dict[str, Any]) -> dict[str, Any]:
         raise ContractError("benchmark.primary_policy_ablation must be declared")
 
     architecture = validate_primary_architecture_contrast(config)
-    if int(ablation.get("preregistration_version", 0) or 0) != 4:
-        raise ContractError("primary policy ablation requires preregistration_version: 4")
+    if int(ablation.get("preregistration_version", 0) or 0) != 5:
+        raise ContractError("primary policy ablation requires preregistration_version: 5")
     if str(ablation.get("status", "")) != "preregistered_blocked_execution":
         raise ContractError(
             "primary policy ablation must remain preregistered_blocked_execution until accepted paired runs exist"
@@ -2939,7 +2950,23 @@ def load_dataset(
             project_root=project_root,
             require_files=require_files,
         )
-    except KppLegacyIssV2ManifestError as exc:
+        validate_kpp_iss_publication_v3_manifest_entry(
+            dataset_name,
+            dataset,
+            project_root=project_root,
+            require_files=require_files,
+        )
+        validate_kpp_frozen_reconstruction_v1_manifest_entry(
+            dataset_name,
+            dataset,
+            project_root=project_root,
+            require_files=require_files,
+        )
+    except (
+        KppLegacyIssV2ManifestError,
+        KppIssPublicationV3DatasetError,
+        KppFrozenReconstructionV1DatasetError,
+    ) as exc:
         raise ContractError(str(exc)) from exc
     dataset["name"] = dataset_name
     streams = list(dataset.get("streams") or [])

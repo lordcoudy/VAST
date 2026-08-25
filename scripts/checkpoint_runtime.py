@@ -293,6 +293,10 @@ class WorkerLaunchSpec:
     command: tuple[str, ...]
     environment: dict[str, str] = field(default_factory=dict)
     native_event_source: bool = False
+    inherited_fds: tuple[int, ...] = ()
+
+    def __post_init__(self) -> None:
+        _validate_declared_inherited_fds(self.inherited_fds)
 
 
 @dataclass(frozen=True)
@@ -304,6 +308,33 @@ class SourceLaunchSpec:
     command: tuple[str, ...]
     environment: dict[str, str] = field(default_factory=dict)
     native_source: bool = False
+    inherited_fds: tuple[int, ...] = ()
+
+    def __post_init__(self) -> None:
+        _validate_declared_inherited_fds(self.inherited_fds)
+
+
+def _validate_declared_inherited_fds(value: Any) -> tuple[int, ...]:
+    if (
+        type(value) is not tuple
+        or any(type(fd) is not int or fd <= 2 for fd in value)
+        or len(value) != len(set(value))
+    ):
+        raise ValueError(
+            "checkpoint inherited_fds must be a unique tuple of descriptors above stderr"
+        )
+    return value
+
+
+def _combined_inherited_fds(
+    spec: WorkerLaunchSpec | SourceLaunchSpec,
+    runtime_fds: tuple[int, ...],
+) -> tuple[int, ...]:
+    """Combine caller-pinned files with coordinator pipes for one exact exec."""
+
+    declared = _validate_declared_inherited_fds(spec.inherited_fds)
+    runtime = _validate_declared_inherited_fds(tuple(sorted(set(runtime_fds))))
+    return declared + tuple(fd for fd in runtime if fd not in declared)
 
 
 @dataclass(frozen=True)
@@ -544,6 +575,7 @@ class DirectRuntimeJoinCoordinator:
         *,
         run_id: str,
         topology_kind: str,
+        topology_contract_version: int = 1,
         branches: Iterable[str],
         bindings: Iterable[WorkerBinding],
         coordinator_pid: int | None = None,
@@ -554,6 +586,12 @@ class DirectRuntimeJoinCoordinator:
         self.run_id = _text(run_id, "run_id")
         self.topology_kind = topology_kind
         _require(topology_kind in {INDEPENDENT_PROCESSES, SHARED_VIDEO_DAG}, "unsupported runtime topology")
+        _require(
+            type(topology_contract_version) is int
+            and topology_contract_version in {1, 2},
+            "unsupported runtime topology contract version",
+        )
+        self.topology_contract_version = topology_contract_version
         self.branches = tuple(str(value) for value in branches)
         _require(bool(self.branches) and len(self.branches) == len(set(self.branches)), "runtime branches must be unique")
         binding_values = list(bindings)
@@ -654,8 +692,25 @@ class DirectRuntimeJoinCoordinator:
                     parent_shapes == {("stage_complete", f"preprocess_{branch}", branch)},
                     "baseline analytics parent mismatch",
                 )
+            elif (
+                self.topology_contract_version == 2
+                and message.event_kind == "stage_complete"
+                and message.stage == f"postprocess_{branch}"
+            ):
+                _require(
+                    parent_shapes == {("stage_complete", branch, branch)},
+                    "baseline postprocess parent mismatch",
+                )
             elif message.event_kind == "branch_complete" and message.stage == branch:
-                _require(parent_shapes == {("stage_complete", branch, branch)}, "baseline completion parent mismatch")
+                expected_stage = (
+                    f"postprocess_{branch}"
+                    if self.topology_contract_version == 2
+                    else branch
+                )
+                _require(
+                    parent_shapes == {("stage_complete", expected_stage, branch)},
+                    "baseline completion parent mismatch",
+                )
             elif message.event_kind == "branch_drop" and message.stage == branch:
                 expected_drop_parents = (
                     {("stage_complete", f"decode_{branch}", branch)}
@@ -683,8 +738,26 @@ class DirectRuntimeJoinCoordinator:
                 )
             elif message.event_kind == "stage_complete" and message.stage == branch and branch in self.branches:
                 _require(parent_shapes == {("fanout", "fanout", branch)}, "shared analytics parent mismatch")
+            elif (
+                self.topology_contract_version == 2
+                and message.event_kind == "stage_complete"
+                and message.stage == f"postprocess_{branch}"
+                and branch in self.branches
+            ):
+                _require(
+                    parent_shapes == {("stage_complete", branch, branch)},
+                    "shared postprocess parent mismatch",
+                )
             elif message.event_kind == "branch_complete" and message.stage == branch and branch in self.branches:
-                _require(parent_shapes == {("stage_complete", branch, branch)}, "shared completion parent mismatch")
+                expected_stage = (
+                    f"postprocess_{branch}"
+                    if self.topology_contract_version == 2
+                    else branch
+                )
+                _require(
+                    parent_shapes == {("stage_complete", expected_stage, branch)},
+                    "shared completion parent mismatch",
+                )
             elif message.event_kind == "branch_drop" and message.stage == branch and branch in self.branches:
                 expected_drop_parents = (
                     {("stage_complete", "decode", "shared")}
@@ -1125,6 +1198,7 @@ def run_worker_processes(
     *,
     run_id: str,
     topology_kind: str,
+    topology_contract_version: int = 1,
     branches: Iterable[str],
     specs: Iterable[WorkerLaunchSpec],
     source_specs: Iterable[SourceLaunchSpec] = (),
@@ -1243,7 +1317,11 @@ def run_worker_processes(
                 environment[RUNTIME_STATUS_FD_ENV] = str(status_write_fd)
                 inherited_fds.extend((control_read_fd, status_write_fd))
             try:
-                process = subprocess.Popen(spec.command, env=environment, pass_fds=tuple(inherited_fds))
+                process = subprocess.Popen(
+                    spec.command,
+                    env=environment,
+                    pass_fds=_combined_inherited_fds(spec, tuple(inherited_fds)),
+                )
             finally:
                 os.close(write_fd)
                 if policy_child_endpoint is not None:
@@ -1309,7 +1387,11 @@ def run_worker_processes(
                 *consumers.values(),
             ]
             try:
-                process = subprocess.Popen(spec.command, env=environment, pass_fds=tuple(inherited_fds))
+                process = subprocess.Popen(
+                    spec.command,
+                    env=environment,
+                    pass_fds=_combined_inherited_fds(spec, tuple(inherited_fds)),
+                )
             finally:
                 os.close(event_write_fd)
                 os.close(ack_read_fd)
@@ -1365,6 +1447,7 @@ def run_worker_processes(
     coordinator = DirectRuntimeJoinCoordinator(
         run_id=run_id,
         topology_kind=topology_kind,
+        topology_contract_version=topology_contract_version,
         branches=branches,
         bindings=bindings,
         admission_coordinator=admission_coordinator,

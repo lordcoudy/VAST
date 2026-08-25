@@ -41,27 +41,47 @@ def sha(value: bytes) -> str:
 
 
 class ModelParityMaterializerTests(unittest.TestCase):
+    def test_active_publication_dataset_ids_are_kpp_iss_v3(self) -> None:
+        self.assertEqual(
+            materializer.KPP_DATASET_BY_CODEC,
+            {
+                "h264": "kpp_iss_publication_v3_h264",
+                "h265": "kpp_iss_publication_v3_h265",
+            },
+        )
+
     def test_frozen_kpp_inventory_is_exact(self) -> None:
         self.assertEqual(
             {item.relative_path for item in FROZEN_KPP_FILES},
             {
-                "data/videos/kpp/h264/1.mp4",
-                "data/videos/kpp/h264/2.mp4",
-                "data/videos/kpp/h265/1.mp4",
-                "data/videos/kpp/h265/2.mp4",
-                "data/videos/kpp/Timestamps.txt",
+                "data/videos/kpp/kpp_iss_publication_v3/h264/iss_v2_underbody.mp4",
+                "data/videos/kpp/kpp_iss_publication_v3/h264/iss_v2_front_gate.mp4",
+                "data/videos/kpp/kpp_iss_publication_v3/h265/iss_v2_underbody.mp4",
+                "data/videos/kpp/kpp_iss_publication_v3/h265/iss_v2_front_gate.mp4",
+                "data/videos/kpp/kpp_iss_publication_v3/receipts/iss_v2_underbody_metadata.json",
             },
         )
         self.assertEqual(
             {item.sha256 for item in FROZEN_KPP_FILES},
             {
-                "5dc0f6a1b0fa0c3e9d015481b3822e9a8d7363b20859c0755348675c0bf9f4b7",
-                "30ddaa1136dbfc9ab9e01e00c46482a644493ed7614def7c56f278aa02d829c1",
-                "1f7b75884945dba4e594dacea3ca9c93a7b293378fcdb3d74e0f39f6a04d4beb",
-                "730be15ef7c22c489f57b6567aec2d02bf86d6c46d90f683328059e4aa1ae965",
-                "39f64f2c35a9e37ff2a19c69f3d3e78e964b5d3afe24b2f3329c080183d0dbd6",
+                "b7e5165549172266a5617ff7bbca6e5b888775b0a2490e27b7cbe17640e3b102",
+                "08991b572d2d990a07536c9a4a7eed7780b27127c0e38abe7b607ba97dd59273",
+                "5368c94a26659c529106724427fc6c3e60fe6788d56699da14c93bc4222e7839",
+                "fa400ecc8b84afc8144fac1da522ef3e9e321c7feb89a5086ac1a1e3ccbe7728",
+                "d23872d4b4706ef7d804f917a72407f82326eb3cdd5d39d347913f20cc65b0d4",
             },
         )
+
+    def test_frozen_dataset_config_rejects_publication_v3_claim_drift(self) -> None:
+        config = yaml.safe_load(
+            (ROOT / "configs" / "datasets.yaml").read_text(encoding="utf-8")
+        )
+        config["datasets"]["kpp_iss_publication_v3_h264"]["provenance"]["claims"][
+            "accuracy_ground_truth_validated"
+        ] = True
+
+        with self.assertRaisesRegex(MaterializerError, "claims|publication-v3"):
+            materializer._validate_frozen_dataset_config(config)
 
     def test_default_real_path_fails_before_outputs_decoder_or_workers(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -123,6 +143,31 @@ class ModelParityMaterializerTests(unittest.TestCase):
             }
             self.assertTrue(calibration.isdisjoint(evaluation))
             self.assertEqual(len({row.sample_id for row in branch_rows}), 60)
+
+    def test_production_runner_owns_attested_worker_lifecycle(self) -> None:
+        plan = build_deterministic_sample_plan()
+        bounds = materializer._worker_request_bounds(plan)
+        self.assertEqual(set(bounds), set(parity.BRANCHES))
+        for branch, request_count in bounds.items():
+            self.assertEqual(
+                request_count,
+                sum(row.branch == branch for row in plan),
+            )
+            self.assertGreater(request_count, 0)
+
+        source = (ROOT / "scripts" / "checkpoint_model_parity_materializer.py").read_text(
+            encoding="utf-8"
+        )
+        runner_source = source[
+            source.index("class NativeEndpointRunner:") : source.index(
+                "class _UniqueKeyLoader"
+            )
+        ]
+        self.assertIn("DockerWorkerProcessFactory", runner_source)
+        self.assertIn("_open_owned_listener", runner_source)
+        self.assertIn("expected_peer_pid", runner_source)
+        self.assertIn("_peer_pid", runner_source)
+        self.assertNotIn("connection.connect(", runner_source)
 
     def test_verify_physical_file_rejects_links_and_hash_drift(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -214,6 +259,150 @@ class ModelParityMaterializerTests(unittest.TestCase):
                 }
             )
 
+    def test_execution_bundle_ledger_persists_every_physical_sample(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary).resolve()
+            staging = root / ".candidate.staging"
+            final = root / "candidate"
+            staging.mkdir()
+            expected = {
+                ("damage", "calibration", "h264", "sample-00", "openvino_cpu"),
+                ("damage", "calibration", "h264", "sample-00", "tensorrt_cuda"),
+            }
+            ledger = materializer._ExecutionBundleLedger(
+                project_root=root,
+                staging_root=staging,
+                final_root=final,
+                expected_coordinates=expected,
+            )
+
+            def response(resource: str, request_id: str):
+                return materializer.ValidatedNativeResponse(
+                    materializer._VALIDATED_RESPONSE_TOKEN,
+                    request={"request_id": request_id},
+                    response={},
+                    capability={},
+                    output=b"output",
+                )
+
+            def persisted(*_args, **kwargs):
+                request_id = kwargs["request"]["request_id"]
+                manifest = {
+                    "request_id": request_id,
+                    "files": {
+                        "request": {"sha256": "1" * 64},
+                        "response": {"sha256": "2" * 64},
+                        "input_tensor": {"sha256": "3" * 64},
+                        "output_tensor": {"sha256": "4" * 64},
+                    },
+                    "identity": {"sha256": "5" * 64},
+                }
+                bundle = staging / "execution_bundles" / request_id
+                bundle.mkdir(parents=True)
+                (bundle / "manifest.json").write_bytes(
+                    materializer._canonical_json(manifest) + b"\n"
+                )
+                return manifest
+
+            with mock.patch.object(
+                materializer, "persist_execution_bundle", side_effect=persisted
+            ) as persist:
+                with mock.patch.object(
+                    materializer,
+                    "verify_execution_bundle",
+                    side_effect=lambda path, *, capability: materializer._load_canonical_json_payload(
+                        (Path(path) / "manifest.json").read_bytes(), label="fixture"
+                    ),
+                ) as verify:
+                    for resource, request_id in (
+                        ("openvino_cpu", "request-cpu"),
+                        ("tensorrt_cuda", "request-gpu"),
+                    ):
+                        ledger.persist(
+                            branch="damage",
+                            role="calibration",
+                            codec="h264",
+                            sample_id="sample-00",
+                            resource=resource,
+                            response=response(resource, request_id),
+                            input_tensor=b"input",
+                        )
+                    rows = ledger.finalize()
+
+            self.assertEqual(persist.call_count, 2)
+            self.assertEqual(verify.call_count, 2)
+            self.assertEqual(len(rows), 2)
+            self.assertEqual(
+                {row["request_id"] for row in rows}, {"request-cpu", "request-gpu"}
+            )
+            self.assertEqual(
+                {row["resource"] for row in rows}, {"openvino_cpu", "tensorrt_cuda"}
+            )
+            self.assertTrue(
+                all(row["manifest"]["path"].startswith("candidate/execution_bundles/") for row in rows)
+            )
+
+            with self.assertRaisesRegex(MaterializerError, "duplicate"):
+                ledger.persist(
+                    branch="damage",
+                    role="calibration",
+                    codec="h264",
+                    sample_id="sample-00",
+                    resource="openvino_cpu",
+                    response=response("openvino_cpu", "request-cpu-repeat"),
+                    input_tensor=b"input",
+                )
+
+    def test_transaction_index_v2_binds_all_execution_bundles_and_self_hash(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary).resolve()
+            staging = root / ".run.staging"
+            final = root / "run"
+            staging.mkdir()
+            (staging / "physical.bin").write_bytes(b"physical\n")
+            output_segments = [{"sample_id": "sample-00", "resource": "openvino_cpu"}]
+            execution_bundles = [
+                {
+                    "request_id": "request-00",
+                    "sample_id": "sample-00",
+                    "resource": "openvino_cpu",
+                }
+            ]
+
+            record = materializer._write_transaction_index(
+                root=root,
+                staging_root=staging,
+                final_root=final,
+                run_id="run",
+                source_inventory={},
+                output_segments=output_segments,
+                execution_bundles=execution_bundles,
+            )
+            index = materializer._load_canonical_json_payload(
+                record.path.read_bytes(), label="transaction fixture"
+            )
+
+            self.assertEqual(index["schema_version"], 2)
+            self.assertEqual(index["execution_bundle_count"], 1)
+            self.assertEqual(index["execution_bundles"], execution_bundles)
+            self.assertEqual(
+                index["execution_bundles_sha256"],
+                sha(materializer._canonical_json(execution_bundles)),
+            )
+            identity = index.pop("transaction_sha256")
+            self.assertEqual(identity, sha(materializer._canonical_json(index)))
+
+            with self.assertRaisesRegex(MaterializerError, "cardinality"):
+                materializer._write_transaction_index(
+                    root=root,
+                    staging_root=staging,
+                    final_root=final,
+                    run_id="run",
+                    source_inventory={},
+                    output_segments=output_segments,
+                    execution_bundles=[],
+                )
+
     def test_fp32_decode_rejects_partial_and_nonfinite_outputs(self) -> None:
         import struct
 
@@ -253,7 +442,7 @@ class ModelParityMaterializerTests(unittest.TestCase):
             "worker_implementation_sha256": execution["workers"]["cpu"]["worker_implementation_sha256"],
             "runtime_name": "OpenVINO",
             "device_api": "CPU",
-            "device_id": "CPU",
+            "device_id": "Intel(R) Core(TM) i7-14700K",
             "source_model_sha256": source["sha256"],
             "model_artifact_sha256": slot["openvino_ir"]["model"]["sha256"],
             "runtime_weights_sha256": slot["openvino_ir"]["weights"]["sha256"],
@@ -282,6 +471,7 @@ class ModelParityMaterializerTests(unittest.TestCase):
             probe["worker_implementation_sha256"],
             execution["workers"]["cpu"]["worker_implementation_sha256"],
         )
+        self.assertEqual(probe["device_id"], "CPU")
         self.assertNotEqual(probe["runtime_image_id"], base["toolchain_registry"]["openvino_cpu"]["image_id"])
         self.assertEqual(
             parity._execution_probe_blockers_v3(

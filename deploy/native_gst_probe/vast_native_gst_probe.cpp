@@ -174,6 +174,7 @@ class NativeProbeRuntime {
           "decode_" + args_.checkpoint_branch,
           "preprocess_" + args_.checkpoint_branch,
           args_.checkpoint_branch,
+          "postprocess_" + args_.checkpoint_branch,
       };
       initialize_checkpoint_runtime();
     } else if (args_.role == "checkpoint_shared") {
@@ -181,7 +182,10 @@ class NativeProbeRuntime {
         throw std::runtime_error("checkpoint_shared role requires --checkpoint-branches");
       }
       stage_names_ = {"decode", "preprocess"};
-      stage_names_.insert(stage_names_.end(), checkpoint_branches_.begin(), checkpoint_branches_.end());
+      for (const std::string& branch : checkpoint_branches_) {
+        stage_names_.push_back(branch);
+        stage_names_.push_back("postprocess_" + branch);
+      }
       initialize_checkpoint_runtime();
     }
     if (stage_names_.empty()) {
@@ -332,6 +336,10 @@ class NativeProbeRuntime {
   static std::uint64_t steady_now_ns() {
     using namespace std::chrono;
     return static_cast<std::uint64_t>(duration_cast<nanoseconds>(steady_clock::now().time_since_epoch()).count());
+  }
+
+  static std::uint64_t floor_milliseconds(std::uint64_t timestamp_ns) {
+    return timestamp_ns / 1'000'000;
   }
   static bool thread_cpu_now_ns(std::uint64_t* value_ns) noexcept {
     if (value_ns == nullptr) {
@@ -1444,7 +1452,25 @@ class NativeProbeRuntime {
   void emit_checkpoint_execution_terminal(
       const Trace& trace,
       const vast::CheckpointAnalyticsTerminal& terminal,
-      std::uint64_t timestamp_ms) {
+      const vast::CheckpointAnalyticsExecutionRequest& execution_request,
+      const vast::CheckpointAnalyticsExecutionResult& result,
+      std::uint64_t path_entry_timestamp_ns,
+      std::uint64_t clock_monotonic_anchor_ns,
+      std::uint64_t clock_realtime_anchor_ns,
+      std::uint64_t terminal_timestamp_ns) {
+    if (!checkpoint_resource_interval_emitter_) {
+      throw std::runtime_error("checkpoint resource interval emitter is not initialized");
+    }
+    if (terminal.status != vast::CheckpointAnalyticsTerminalStatus::kCompleted ||
+        terminal.branch_id != execution_request.branch ||
+        terminal.transport_pts_ns != execution_request.transport_pts_ns ||
+        result.request_id != execution_request.request_id ||
+        result.selected_resource != execution_request.decision.selected_resource ||
+        (result.selected_resource != "cpu" && result.selected_resource != "gpu") ||
+        path_entry_timestamp_ns >= terminal_timestamp_ns ||
+        clock_realtime_anchor_ns != terminal_timestamp_ns) {
+      throw std::runtime_error("checkpoint execution terminal identity/timing drifted");
+    }
     StreamState& state = states_.front();
     const std::string prefix_parent =
         args_.role == "checkpoint_shared"
@@ -1452,6 +1478,111 @@ class NativeProbeRuntime {
             : checkpoint_execution_id(trace, terminal.branch_id, "preprocess");
     const std::string analytics_id =
         checkpoint_execution_id(trace, terminal.branch_id, "analytics");
+    const std::string postprocess_id =
+        checkpoint_execution_id(trace, terminal.branch_id, "postprocess");
+    const std::string postprocess_stage = "postprocess_" + terminal.branch_id;
+
+    std::uint64_t analytics_start_timestamp_ns = path_entry_timestamp_ns;
+    std::uint64_t analytics_end_timestamp_ns =
+        vast::CheckpointResourceIntervalEmitter::correlate_monotonic_point_to_realtime(
+            result.inference_finished_monotonic_ns,
+            clock_monotonic_anchor_ns,
+            clock_realtime_anchor_ns);
+    std::uint64_t postprocess_start_timestamp_ns = analytics_end_timestamp_ns;
+    std::uint64_t postprocess_end_timestamp_ns = terminal_timestamp_ns;
+    if (analytics_end_timestamp_ns < path_entry_timestamp_ns ||
+        analytics_end_timestamp_ns > terminal_timestamp_ns) {
+      throw std::runtime_error(
+          "analytics inference completion escapes the selected path lifetime");
+    }
+
+    if (result.selected_resource == "gpu") {
+      if (result.cuda_transfer_intervals.size() != 2 ||
+          result.cuda_transfer_intervals[0].direction != "h2d" ||
+          result.cuda_transfer_intervals[1].direction != "d2h") {
+        throw std::runtime_error("GPU execution lacks exact ordered H2D/D2H intervals");
+      }
+      const vast::CheckpointCudaTransferInterval& h2d =
+          result.cuda_transfer_intervals[0];
+      const vast::CheckpointCudaTransferInterval& d2h =
+          result.cuda_transfer_intervals[1];
+      const auto h2d_realtime =
+          vast::CheckpointResourceIntervalEmitter::correlate_monotonic_envelope_to_realtime(
+              h2d.host_start_monotonic_ns,
+              h2d.host_end_monotonic_ns,
+              clock_monotonic_anchor_ns,
+              clock_realtime_anchor_ns);
+      const auto d2h_realtime =
+          vast::CheckpointResourceIntervalEmitter::correlate_monotonic_envelope_to_realtime(
+              d2h.host_start_monotonic_ns,
+              d2h.host_end_monotonic_ns,
+              clock_monotonic_anchor_ns,
+              clock_realtime_anchor_ns);
+      if (h2d_realtime.first < path_entry_timestamp_ns ||
+          h2d_realtime.second > d2h_realtime.first ||
+          d2h_realtime.second > terminal_timestamp_ns) {
+        throw std::runtime_error("GPU transfer intervals escape or reorder the selected path lifetime");
+      }
+      analytics_end_timestamp_ns = d2h_realtime.first;
+      postprocess_start_timestamp_ns = d2h_realtime.first;
+
+      const std::string h2d_native_event_id = sha256_text(
+          vast::CheckpointAnalyticsExecutionClient::cuda_transfer_native_event_material(
+              execution_request, result, analytics_id, h2d));
+      checkpoint_resource_interval_emitter_->emit_cuda_transfer(
+          args_.run_id,
+          trace_id(trace),
+          static_cast<std::uint64_t>(trace.stream_id),
+          trace.frame_id,
+          checkpoint_input_frame_key(trace),
+          terminal.branch_id,
+          terminal.branch_id,
+          analytics_id,
+          h2d.direction,
+          h2d.host_start_monotonic_ns,
+          h2d.host_end_monotonic_ns,
+          h2d.device_elapsed_ns,
+          h2d.bytes,
+          h2d.device_id,
+          h2d.timing_source,
+          clock_monotonic_anchor_ns,
+          clock_realtime_anchor_ns,
+          h2d_native_event_id);
+
+      const std::string d2h_native_event_id = sha256_text(
+          vast::CheckpointAnalyticsExecutionClient::cuda_transfer_native_event_material(
+              execution_request, result, postprocess_id, d2h));
+      checkpoint_resource_interval_emitter_->emit_cuda_transfer(
+          args_.run_id,
+          trace_id(trace),
+          static_cast<std::uint64_t>(trace.stream_id),
+          trace.frame_id,
+          checkpoint_input_frame_key(trace),
+          terminal.branch_id,
+          postprocess_stage,
+          postprocess_id,
+          d2h.direction,
+          d2h.host_start_monotonic_ns,
+          d2h.host_end_monotonic_ns,
+          d2h.device_elapsed_ns,
+          d2h.bytes,
+          d2h.device_id,
+          d2h.timing_source,
+          clock_monotonic_anchor_ns,
+          clock_realtime_anchor_ns,
+          d2h_native_event_id);
+    } else if (!result.cuda_transfer_intervals.empty()) {
+      throw std::runtime_error("CPU execution unexpectedly reports CUDA transfer intervals");
+    }
+
+    const std::uint64_t analytics_start_ms =
+        floor_milliseconds(analytics_start_timestamp_ns);
+    const std::uint64_t analytics_end_ms =
+        floor_milliseconds(analytics_end_timestamp_ns);
+    const std::uint64_t postprocess_start_ms =
+        floor_milliseconds(postprocess_start_timestamp_ns);
+    const std::uint64_t postprocess_end_ms =
+        floor_milliseconds(postprocess_end_timestamp_ns);
     emit_checkpoint_event(
         trace,
         terminal.transport_pts_ns,
@@ -1460,9 +1591,30 @@ class NativeProbeRuntime {
         terminal.branch_id,
         "analytics",
         {prefix_parent},
-        timestamp_ms);
-    write_event(trace, terminal.branch_id, timestamp_ms, timestamp_ms);
-    emit_checkpoint_branch_terminal(trace, terminal, {analytics_id}, timestamp_ms);
+        analytics_end_ms);
+    write_event(
+        trace,
+        terminal.branch_id,
+        analytics_start_ms,
+        analytics_end_ms,
+        result.selected_resource);
+    emit_checkpoint_event(
+        trace,
+        terminal.transport_pts_ns,
+        "stage_complete",
+        postprocess_stage,
+        terminal.branch_id,
+        "postprocess",
+        {analytics_id},
+        postprocess_end_ms);
+    write_event(
+        trace,
+        postprocess_stage,
+        postprocess_start_ms,
+        postprocess_end_ms,
+        "cpu");
+    emit_checkpoint_branch_terminal(
+        trace, terminal, {postprocess_id}, postprocess_end_ms);
     auto& completed = state.checkpoint_completed_branches_by_pts[terminal.transport_pts_ns];
     if (!completed.insert(terminal.branch_id).second) {
       throw std::runtime_error("duplicate checkpoint analytics execution terminal");
@@ -1583,6 +1735,10 @@ class NativeProbeRuntime {
     if (resolved_terminal.status == vast::CheckpointAnalyticsTerminalStatus::kCompleted) {
       const std::string analytics_id =
           checkpoint_execution_id(trace, resolved_terminal.branch_id, "analytics");
+      const std::string postprocess_id =
+          checkpoint_execution_id(trace, resolved_terminal.branch_id, "postprocess");
+      const std::string postprocess_stage =
+          "postprocess_" + resolved_terminal.branch_id;
       emit_checkpoint_event(
           trace,
           resolved_terminal.transport_pts_ns,
@@ -1593,7 +1749,18 @@ class NativeProbeRuntime {
           {prefix_parent},
           timestamp_ms);
       write_event(trace, resolved_terminal.branch_id, timestamp_ms, timestamp_ms);
-      emit_checkpoint_branch_terminal(trace, resolved_terminal, {analytics_id}, timestamp_ms);
+      emit_checkpoint_event(
+          trace,
+          resolved_terminal.transport_pts_ns,
+          "stage_complete",
+          postprocess_stage,
+          resolved_terminal.branch_id,
+          "postprocess",
+          {analytics_id},
+          timestamp_ms);
+      write_event(trace, postprocess_stage, timestamp_ms, timestamp_ms, "cpu");
+      emit_checkpoint_branch_terminal(
+          trace, resolved_terminal, {postprocess_id}, timestamp_ms);
     } else {
       emit_checkpoint_branch_terminal(trace, resolved_terminal, {prefix_parent}, timestamp_ms);
     }
@@ -1769,7 +1936,8 @@ class NativeProbeRuntime {
 
   static bool is_stage_base_name(const std::string& value) {
     return value == "decode" || value == "preprocess" || value == "detect" || value == "track" ||
-           value == "classify" || value == "aggregate" || value == "record" || value == "visualize";
+           value == "classify" || value == "aggregate" || value == "record" || value == "visualize" ||
+           value == "postprocess";
   }
 
   static std::string stage_base_name(const std::string& stage) {
@@ -1924,11 +2092,19 @@ class NativeProbeRuntime {
     }
   }
 
-  void write_event(const Trace& trace, const std::string& stage, std::uint64_t start_ms, std::uint64_t end_ms) {
+  void write_event(
+      const Trace& trace,
+      const std::string& stage,
+      std::uint64_t start_ms,
+      std::uint64_t end_ms,
+      const std::string& resource = "cpu") {
+    if (resource != "cpu" && resource != "gpu" && resource != "nvdec") {
+      throw std::runtime_error("native frame event resource is not cpu, gpu, or nvdec");
+    }
     start_measurement_timer_if_needed();
     std::ostringstream row;
     row << "2," << args_.run_id << "," << trace_id(trace) << "," << static_cast<int>(trace.stream_id) << ","
-        << trace.frame_id << "," << stage << "," << args_.role << ",localhost,cpu," << start_ms << ","
+        << trace.frame_id << "," << stage << "," << args_.role << ",localhost," << resource << "," << start_ms << ","
         << start_ms << "," << end_ms << ",0," << std::max<std::uint64_t>(1, end_ms - start_ms)
         << ",native:" << args_.system << "\n";
     std::lock_guard<std::mutex> lock(output_mutex_);
@@ -2450,10 +2626,12 @@ class NativeProbeRuntime {
                   frame.payload.data(),
                   frame.payload.size());
             });
-        const std::uint64_t terminal_timestamp_ns = now_ns();
+        const std::uint64_t clock_monotonic_anchor_ns = steady_now_ns();
+        const std::uint64_t clock_realtime_anchor_ns = now_ns();
+        const std::uint64_t terminal_timestamp_ns = clock_realtime_anchor_ns;
         if (terminal_timestamp_ns <= event_timestamp_ns ||
             result.inference_started_monotonic_ns < execution_started_monotonic_ns ||
-            result.worker_completed_monotonic_ns > steady_now_ns()) {
+            result.worker_completed_monotonic_ns > clock_monotonic_anchor_ns) {
           throw std::runtime_error("analytics execution terminal does not follow path entry");
         }
         vast::checkpoint_external_call(lock, [&]() {
@@ -2483,7 +2661,14 @@ class NativeProbeRuntime {
         const vast::CheckpointAnalyticsTerminal terminal =
             vast::checkpoint_terminal_from_validated_execution(result, pts, ctx->branch);
         self->emit_checkpoint_execution_terminal(
-            trace, terminal, terminal_timestamp_ns / 1'000'000);
+            trace,
+            terminal,
+            execution_request,
+            result,
+            path_entry_timestamp_ns,
+            clock_monotonic_anchor_ns,
+            clock_realtime_anchor_ns,
+            terminal_timestamp_ns);
       } catch (const std::exception& exc) {
         if (!lock.owns_lock()) {
           lock.lock();
@@ -2596,7 +2781,7 @@ class NativeProbeRuntime {
           "decode",
           {source_id},
           end);
-      self->write_event(trace, decode_stage, end, end);
+      self->write_event(trace, decode_stage, end, end, "nvdec");
       return GST_PAD_PROBE_OK;
     }
     if (ctx->kind == "checkpoint-preprocess") {

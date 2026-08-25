@@ -60,9 +60,13 @@ SHARED_PROOF_PIPELINE = [
     "decode",
     "preprocess",
     "plate_number",
+    "postprocess_plate_number",
     "vehicle_type",
+    "postprocess_vehicle_type",
     "damage",
+    "postprocess_damage",
     "foreign_object",
+    "postprocess_foreign_object",
     "aggregate",
     "record",
 ]
@@ -70,15 +74,19 @@ INDEPENDENT_PROOF_PIPELINE = [
     "decode_plate_number",
     "preprocess_plate_number",
     "plate_number",
+    "postprocess_plate_number",
     "decode_vehicle_type",
     "preprocess_vehicle_type",
     "vehicle_type",
+    "postprocess_vehicle_type",
     "decode_damage",
     "preprocess_damage",
     "damage",
+    "postprocess_damage",
     "decode_foreign_object",
     "preprocess_foreign_object",
     "foreign_object",
+    "postprocess_foreign_object",
     "aggregate",
     "record",
 ]
@@ -268,12 +276,25 @@ class ScenarioPlanningTests(unittest.TestCase):
         scenario = normalize_scenario("checkpoint_video_dag_shared", cfg["scenarios"]["checkpoint_video_dag_shared"])
 
         self.assertEqual(scenario["workload"]["streams"], 6)
-        self.assertEqual(scenario["workload"]["seed_group"], "kpp_real_codecs_v1")
+        self.assertEqual(
+            scenario["workload"]["seed_group"],
+            "kpp_iss_publication_v3_codecs_v1",
+        )
         self.assertEqual(scenario["workload"]["logical_stream_instances"], 6)
         self.assertEqual(scenario["workload"]["recorded_source_count"], 2)
         self.assertEqual(scenario["workload"]["analytics_function_types"], 4)
         self.assertEqual(scenario["workload"]["routing_mode"], "all_branches_per_stream")
         self.assertEqual(scenario["workload"]["routing_scope"], "topology_only_stress")
+        camera_layout = scenario["workload"]["camera_layout"]
+        self.assertEqual([item["stream_id"] for item in camera_layout], list(range(6)))
+        self.assertTrue(
+            all(item["source_binding"] == "selected_dataset_stream" for item in camera_layout)
+        )
+        self.assertEqual(
+            [item["source_role"] for item in camera_layout],
+            ["front_gate", "front_gate", "front_gate", "front_gate", "front_gate", "underbody"],
+        )
+        self.assertTrue(all("source" not in item for item in camera_layout))
         self.assertEqual(scenario["pipeline"], SHARED_PROOF_PIPELINE)
         self.assertFalse(scenario["distributed"]["enabled"])
 
@@ -314,14 +335,14 @@ class ScenarioPlanningTests(unittest.TestCase):
 
         primary = validate_primary_architecture_contrast(cfg)
 
-        self.assertEqual(primary["preregistration_version"], 4)
+        self.assertEqual(primary["preregistration_version"], 5)
         self.assertEqual(
             primary["selection_basis"],
-            "preexisting_defaults_and_contract_capabilities_before_results",
+            "amended_for_frozen_kpp_iss_publication_v3_before_any_full_matrix_results",
         )
         self.assertEqual(primary["system"], "gstreamer_custom")
         self.assertEqual(primary["policy"], "static_hybrid")
-        self.assertEqual(primary["dataset"], "kpp_real_h264")
+        self.assertEqual(primary["dataset"], "kpp_iss_publication_v3_h264")
         self.assertEqual(primary["codec"], "h264")
         self.assertEqual(primary["deadline_ms"], 100)
         self.assertEqual(primary["streams"], 6)
@@ -387,7 +408,7 @@ class ScenarioPlanningTests(unittest.TestCase):
         mutations = [
             ("system", "deepstream", "must use system 'gstreamer_custom'"),
             ("policy", "not_configured", "not a configured scheduler policy"),
-            ("dataset", "kpp_real_h265", "bind codec h264"),
+            ("dataset", "kpp_iss_publication_v3_h265", "bind codec h264"),
             ("deadline_ms", 50, "must match hardware_target"),
             ("streams", 5, "stream count does not match"),
             ("effective_batch_size", 2, "must remain 1"),
@@ -455,7 +476,7 @@ class ScenarioPlanningTests(unittest.TestCase):
 
         ablation = validate_primary_policy_ablation(cfg)
 
-        self.assertEqual(ablation["preregistration_version"], 4)
+        self.assertEqual(ablation["preregistration_version"], 5)
         self.assertEqual(ablation["status"], "preregistered_blocked_execution")
         self.assertEqual(ablation["architecture_scenario"], "checkpoint_video_dag_shared")
         self.assertEqual(ablation["system"], "gstreamer_custom")
@@ -465,7 +486,7 @@ class ScenarioPlanningTests(unittest.TestCase):
             ablation["feedback_lag_semantics"],
             "max_staleness_from_oldest_applied_snapshot",
         )
-        self.assertEqual(ablation["dataset"], "kpp_real_h264")
+        self.assertEqual(ablation["dataset"], "kpp_iss_publication_v3_h264")
         self.assertEqual(ablation["deadline_ms"], 100)
         self.assertEqual(ablation["streams"], 6)
         self.assertEqual(ablation["repeats"], 10)
@@ -911,7 +932,7 @@ class ScenarioPlanningTests(unittest.TestCase):
                     distributed=bool(scenario["distributed"]["enabled"]),
                     mode="benchmark",
                 )
-                self.assertEqual(plan.contract, "strict_native_schema_v2_topology_v1")
+                self.assertEqual(plan.contract, "strict_native_schema_v2_topology_v2")
                 with self.assertRaisesRegex(
                     ContractError,
                     "publication runtime is not grant-authorized: deepstream",
@@ -957,8 +978,8 @@ class ScenarioPlanningTests(unittest.TestCase):
             distributed=False,
             mode="benchmark",
         )
-        self.assertEqual(plan.contract, "strict_native_schema_v2_topology_v1")
-        self.assertEqual(plan.topology_contract_version, 1)
+        self.assertEqual(plan.contract, "strict_native_schema_v2_topology_v2")
+        self.assertEqual(plan.topology_contract_version, 2)
         self.assertEqual(plan.topology_kind, "shared_video_dag")
 
         checkpoint["topology"]["required_branches"] = ["plate_number"]

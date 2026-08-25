@@ -52,7 +52,10 @@ SCENARIO_TOPOLOGY = {
     "checkpoint_independent_processes_baseline": "independent_processes",
     "checkpoint_video_dag_shared": "shared_video_dag",
 }
-DATASET_BY_CODEC = {"h264": "kpp_real_h264", "h265": "kpp_real_h265"}
+DATASET_BY_CODEC = {
+    "h264": "kpp_iss_publication_v3_h264",
+    "h265": "kpp_iss_publication_v3_h265",
+}
 PARSER_BY_CODEC = {"h264": "h264parse", "h265": "h265parse"}
 FROZEN_DEADLINES_MS = (16.7, 33.3, 50.0, 100.0, 500.0)
 FROZEN_CPU_MANIFEST_SHA256 = (
@@ -217,7 +220,7 @@ def _frozen_scenario(
     topology = scenario.get("topology")
     _require(isinstance(topology, Mapping), f"{scenario_name}: topology missing")
     _require(
-        topology.get("contract_version") == 1
+        topology.get("contract_version") == 2
         and topology.get("kind") == topology_kind
         and topology.get("routing_mode") == "all_branches_per_stream",
         f"{scenario_name}: topology contract drifted",

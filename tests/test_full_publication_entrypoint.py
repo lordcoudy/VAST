@@ -16,6 +16,7 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
+import full_publication_entrypoint as entrypoint_module  # noqa: E402
 from benchmark_contract import ContractError  # noqa: E402
 from benchmark_contract import FULL_RESOURCE_PUBLICATION_SCOPE  # noqa: E402
 from full_publication_entrypoint import (  # noqa: E402
@@ -95,20 +96,32 @@ def model_parity_identity() -> dict[str, object]:
     receipt = identity_descriptor("accepted/parity-receipt.json")
     manifest = identity_descriptor("configs/parity.accepted.yaml")
     assessment = identity_descriptor("accepted/parity-assessment.json")
+    transaction_file = identity_descriptor(
+        "evidence/model_parity/v4/transaction_index.json"
+    )
+    transaction = {
+        **transaction_file,
+        "transaction_sha256": "1" * 64,
+        "files_sha256": "2" * 64,
+        "output_segments_sha256": "3" * 64,
+        "execution_bundle_count": 480,
+        "execution_bundles_sha256": "4" * 64,
+    }
     evidence = [
         identity_descriptor(f"evidence/model_parity/v3/{index:02d}.json")
         for index in range(32)
     ]
     parity_files = sorted(
-        [receipt, manifest, assessment, *evidence],
+        [receipt, manifest, assessment, transaction_file, *evidence],
         key=lambda item: str(item["path"]),
     )
     parity: dict[str, object] = {
-        "schema_version": 1,
+        "schema_version": 2,
         "artifact_kind": "vast_verified_model_parity_acceptance_binding",
         "receipt": receipt,
         "accepted_manifest": manifest,
         "accepted_assessment": assessment,
+        "transaction_index": transaction,
         "acceptance_identity_sha256": "a" * 64,
         "accepted_manifest_content_identity_sha256": "b" * 64,
         "canonical_assessment_identity_sha256": "c" * 64,
@@ -150,7 +163,7 @@ def frozen_arm(**overrides: object) -> dict[str, object]:
         "scenario": "checkpoint_video_dag_shared",
         "system": "gstreamer_custom",
         "codec": "h264",
-        "dataset": "kpp_real_h264",
+        "dataset": "kpp_iss_publication_v3_h264",
         "policy": "cpu_only",
         "deadline_ms": 100.0,
         "repeat": 1,
@@ -257,16 +270,456 @@ class RealArmRunnerTests(unittest.TestCase):
         self.root = Path(self.temp.name)
         (self.root / "configs").mkdir()
         (self.root / "data").mkdir()
-        (self.root / "data" / "kpp_real_h264.avi").write_bytes(b"h264-data")
-        (self.root / "data" / "kpp_real_h265.avi").write_bytes(b"h265-data")
+        (self.root / "data" / "kpp_iss_publication_v3_h264.avi").write_bytes(b"h264-data")
+        (self.root / "data" / "kpp_iss_publication_v3_h265.avi").write_bytes(b"h265-data")
         self.config = minimal_config(self.root)
         self.datasets = {
-            "kpp_real_h264": resolved_dataset(self.root, "kpp_real_h264", "h264"),
-            "kpp_real_h265": resolved_dataset(self.root, "kpp_real_h265", "h265"),
+            "kpp_iss_publication_v3_h264": resolved_dataset(
+                self.root, "kpp_iss_publication_v3_h264", "h264"
+            ),
+            "kpp_iss_publication_v3_h265": resolved_dataset(
+                self.root, "kpp_iss_publication_v3_h265", "h265"
+            ),
         }
 
     def tearDown(self) -> None:
         self.temp.cleanup()
+
+    def test_default_real_arm_routes_only_through_production_v3_transaction(self) -> None:
+        calls: list[dict[str, object]] = []
+
+        def fake_production_v3_executor(**kwargs: object) -> dict[str, object]:
+            calls.append(kwargs)
+            execution = kwargs["execution_binding"]
+            return {
+                "schema_version": 3,
+                "artifact_kind": (
+                    "vast_backend_publication_production_output_receipt_authority_v3"
+                ),
+                "status": "accepted_publishable_backend_output",
+                "execution_scope": "full_publication_measurement_v3",
+                "full_publication_execution_binding": execution,
+                "run_identity_sha256": RUN_SHA,
+                "dispatch_resolution_sha256": "d" * 64,
+                "evidence_files": [
+                    {
+                        "path": "checkpoint_publication_acceptance.json",
+                        "size_bytes": 101,
+                        "sha256": "e" * 64,
+                    },
+                    {
+                        "path": "run_metadata.json",
+                        "size_bytes": 202,
+                        "sha256": "f" * 64,
+                    },
+                ],
+                "semantic_evidence_assessment": {
+                    "accepted_measurement_evidence": True,
+                    "semantic_evidence_validated": True,
+                    "status": "accepted",
+                    "validator_identity_sha256": kwargs[
+                        "semantic_validator_identity_sha256"
+                    ],
+                },
+                "accepted_measurement_evidence": True,
+                "publication_output_accepted": True,
+                "publication_ready": True,
+                "promotable": True,
+                "semantic_evidence_validated": True,
+                "external_pins_validated": True,
+                "process_tree_quiescent": True,
+            }
+
+        runner = RealArmRunner(
+            config=self.config,
+            project_root=self.root,
+            dataset_manifest_path=self.root / "configs" / "datasets.yaml",
+            verified_datasets=self.datasets,
+            production_v3_executor_fn=fake_production_v3_executor,
+        )
+        arm_root = self.root / "run" / "arm"
+        result = runner(arm_context(), arm_root)
+
+        self.assertEqual(
+            result, {"status": "completed", "arm_id": frozen_arm()["arm_id"]}
+        )
+        self.assertEqual(len(calls), 1)
+        call = calls[0]
+        self.assertEqual(call["arm_root"], arm_root)
+        self.assertEqual(call["arm"], frozen_arm())
+        self.assertEqual(
+            call["semantic_evidence_validator"],
+            entrypoint_module.publication_arm_semantic_evidence_validator_v3,
+        )
+        self.assertRegex(
+            str(call["semantic_validator_identity_sha256"]), r"^[0-9a-f]{64}$"
+        )
+
+    def test_production_v3_rejects_unaccepted_semantic_authority(self) -> None:
+        def rejected_executor(**kwargs: object) -> dict[str, object]:
+            return {
+                "schema_version": 3,
+                "artifact_kind": (
+                    "vast_backend_publication_production_output_receipt_authority_v3"
+                ),
+                "status": "accepted_publishable_backend_output",
+                "execution_scope": "full_publication_measurement_v3",
+                "full_publication_execution_binding": kwargs["execution_binding"],
+                "run_identity_sha256": RUN_SHA,
+                "dispatch_resolution_sha256": "d" * 64,
+                "evidence_files": [],
+                "semantic_evidence_assessment": {
+                    "accepted_measurement_evidence": False,
+                    "semantic_evidence_validated": False,
+                    "status": "rejected",
+                    "validator_identity_sha256": kwargs[
+                        "semantic_validator_identity_sha256"
+                    ],
+                },
+            }
+
+        runner = RealArmRunner(
+            config=self.config,
+            project_root=self.root,
+            dataset_manifest_path=self.root / "configs" / "datasets.yaml",
+            verified_datasets=self.datasets,
+            production_v3_executor_fn=rejected_executor,
+        )
+        with self.assertRaisesRegex(ContractError, "semantic evidence"):
+            runner(arm_context(), self.root / "run" / "arm")
+
+    def test_semantic_validator_crossbinds_acceptance_metadata_and_evidence(self) -> None:
+        arm = {
+            "runtime_inputs": {
+                "system": "gstreamer_custom",
+                "scenario": "checkpoint_video_dag_shared",
+                "codec": "h264",
+                "policy": "cpu_only",
+                "deadline_ms": 100,
+                "dataset": {"name": "kpp_iss_publication_v3_h264"},
+                "streams": 6,
+                "duration_s": 180,
+                "repeat_index": 1,
+                "base_seed": 20260323,
+                "run_seed": 123456,
+                "run_id": "arm-run-id",
+            },
+            "full_publication_execution_binding": {
+                "schema_version": 1,
+                "artifact_kind": "vast_full_publication_arm_execution_binding",
+                "run_identity_sha256": RUN_SHA,
+                "sequence": 0,
+                "pair_id": "pair-0000",
+                "attempt": 1,
+                "arm_id": frozen_arm()["arm_id"],
+            },
+            "resource_capability_grant_sha256": "1" * 64,
+            "backend_runtime_grant_sha256": "2" * 64,
+            "model_parity_grant_sha256": "3" * 64,
+            "model_parity_acceptance_binding_sha256": "4" * 64,
+            "identity_artifact_binding_sha256": "5" * 64,
+        }
+        metadata = {
+            "schema_version": 2,
+            "mode": "benchmark",
+            "run_seed": 123456,
+            "result": {
+                "status": "completed",
+                "system": "gstreamer_custom",
+                "scenario": "checkpoint_video_dag_shared",
+                "policy": "cpu_only",
+                "dataset": "kpp_iss_publication_v3_h264",
+                "repeat": 1,
+                "streams": 6,
+                "duration_s": 180,
+                "seed": 20260323,
+                "run_seed": 123456,
+                "deadline_ms": 100.0,
+                "distributed": False,
+                "deployment_mode": "heterogeneous",
+            },
+            "publication_run_contract": {
+                "full_publication_execution_binding": arm[
+                    "full_publication_execution_binding"
+                ],
+                "pre_run_resource_capability_grant": {"grant_sha256": "1" * 64},
+                "pre_run_backend_runtime_grant": {"grant_sha256": "2" * 64},
+                "pre_run_model_parity_grant": {
+                    "grant_sha256": "3" * 64,
+                    "parity_acceptance_binding_sha256": "4" * 64,
+                },
+            },
+        }
+        metadata_payload = json.dumps(metadata, sort_keys=True).encode("ascii")
+        metadata_sha256 = hashlib.sha256(metadata_payload).hexdigest()
+        evidence_payload = b'{"native":true}\n'
+        evidence_sha256 = hashlib.sha256(evidence_payload).hexdigest()
+        binding = {
+            "schema_version": 2,
+            "artifact_kind": "checkpoint_publication_acceptance_metadata_binding",
+            "run_metadata_file": "run_metadata.json",
+            "run_metadata_size_bytes": len(metadata_payload),
+            "run_metadata_sha256": metadata_sha256,
+            "identity_artifact_binding_sha256": "5" * 64,
+            "resource_capability_grant_sha256": "1" * 64,
+            "backend_runtime_grant_sha256": "2" * 64,
+            "model_parity_grant_sha256": "3" * 64,
+            "model_parity_acceptance_binding_sha256": "4" * 64,
+            "execution_binding": arm["full_publication_execution_binding"],
+            "binding_sha256": "b" * 64,
+        }
+        acceptance = {
+            "schema_version": 2,
+            "artifact_kind": "checkpoint_publication_runtime_acceptance",
+            "status": "accepted_native_checkpoint_arm",
+            "system": "gstreamer_custom",
+            "scenario": "checkpoint_video_dag_shared",
+            "codec": "h264",
+            "policy": "cpu_only",
+            "deadline_ms": 100.0,
+            "run_id": "arm-run-id",
+            "measurement_schedule_fingerprint_sha256": "c" * 64,
+            "summary": {
+                "resource_contract_version": 2,
+                **{
+                    gate: True
+                    for gate in (
+                        "ingress_ledger_complete",
+                        "ingress_cohort_closed",
+                        "branch_terminal_trace_complete",
+                        "checkpoint_frame_aggregation_complete",
+                        "stage_semantic_contract_complete",
+                        "decoder_placement_verified",
+                        "resource_attribution_complete",
+                        "reset_state_verified",
+                        "full_resource_evidence_accepted",
+                        "full_resource_coverage_complete",
+                    )
+                },
+            },
+            "evidence_sha256": {"native-evidence.json": evidence_sha256},
+            "full_resource_evidence_sha256": {
+                "native-evidence.json": evidence_sha256
+            },
+            "full_resource_summary": {
+                "resource_contract_version": 2,
+                "evidence_accepted": True,
+                "publication_bundle_bound": True,
+                "full_resource_coverage_complete": True,
+            },
+            "acceptance_finalization": {
+                "hardware_collector_stopped": True,
+                "validation": "full_resource_evidence_v2_passed",
+            },
+            "publication_metadata_binding": binding,
+        }
+        acceptance_payload = json.dumps(acceptance, sort_keys=True).encode("ascii")
+        acceptance_sha256 = hashlib.sha256(acceptance_payload).hexdigest()
+        descriptors = [
+            {
+                "path": "checkpoint_publication_acceptance.json",
+                "size_bytes": len(acceptance_payload),
+                "sha256": acceptance_sha256,
+            },
+            {
+                "path": "native-evidence.json",
+                "size_bytes": len(evidence_payload),
+                "sha256": evidence_sha256,
+            },
+            {
+                "path": "run_metadata.json",
+                "size_bytes": len(metadata_payload),
+                "sha256": metadata_sha256,
+            },
+        ]
+        request = {
+            "schema_version": 3,
+            "artifact_kind": (
+                "vast_backend_publication_production_semantic_evidence_request_v3"
+            ),
+            "arm_contract": arm,
+            "arm_contract_file": {
+                "path": "backend_publication_arm_contract.json",
+                "size_bytes": 1,
+                "sha256": "f" * 64,
+            },
+            "evidence_files": descriptors,
+            "evidence_aggregate_sha256": "0" * 64,
+            "evidence_payloads": {
+                "checkpoint_publication_acceptance.json": acceptance_payload,
+                "native-evidence.json": evidence_payload,
+                "run_metadata.json": metadata_payload,
+            },
+        }
+
+        accepted = entrypoint_module.publication_arm_semantic_evidence_validator_v3(
+            request
+        )
+        self.assertTrue(accepted["accepted"])
+        tampered = copy.deepcopy(request)
+        tampered_metadata = copy.deepcopy(metadata)
+        tampered_metadata["result"]["policy"] = "gpu_only"
+        tampered["evidence_payloads"]["run_metadata.json"] = json.dumps(
+            tampered_metadata, sort_keys=True
+        ).encode("ascii")
+        rejected = entrypoint_module.publication_arm_semantic_evidence_validator_v3(
+            tampered
+        )
+        self.assertFalse(rejected["accepted"])
+
+    def test_production_executor_passes_ro_ext4_contract_to_transaction(self) -> None:
+        identity_sha = "5" * 64
+        arm = frozen_arm()
+        context = arm_context(arm)
+        execution_binding = {
+            "schema_version": 1,
+            "artifact_kind": "vast_full_publication_arm_execution_binding",
+            "run_identity_sha256": RUN_SHA,
+            "sequence": 0,
+            "pair_id": context.pair_context.pair["pair_id"],
+            "attempt": 1,
+            "arm_id": arm["arm_id"],
+        }
+        invocation = entrypoint_module.publication_launcher_invocation_v3_contract()
+        selected = {
+            "launcher": {
+                "path": "scripts/checkpoint_gstreamer_custom_publication_launcher_v3.py",
+                "size_bytes": 321,
+                "sha256": "6" * 64,
+            },
+            "launcher_invocation": invocation,
+            "cell_identity_sha256": "7" * 64,
+            "validation_record_sha256": "8" * 64,
+            "runtime_authority_sha256": "9" * 64,
+            "model_parity_acceptance_binding_sha256": "4" * 64,
+            "dataset_runtime_input_key": "gstreamer_custom_publication_runtime_v3",
+            "dataset_runtime_input": {
+                "evidence_mapping": {
+                    "checkpoint_publication_acceptance.json": (
+                        "checkpoint_publication_acceptance.json"
+                    ),
+                    "run_metadata.json": "run_metadata.json",
+                }
+            },
+            "launcher_evidence_files": [
+                "checkpoint_publication_acceptance.json",
+                "run_metadata.json",
+            ],
+        }
+        runtime_binding = {
+            "schema_version": 3,
+            "artifact_kind": (
+                "vast_backend_publication_production_runtime_bind_mount_v3"
+            ),
+            "source_runtime_root": "/runtime",
+            "source_python_relative_path": "bin/python",
+            "source_python_size_bytes": 123,
+            "source_python_sha256": "a" * 64,
+            "project_runtime_mount": (
+                ".publication-runtime/full-publication-cp312-v1"
+            ),
+            "project_python_path": (
+                ".publication-runtime/full-publication-cp312-v1/bin/python"
+            ),
+            "runtime_filesystem": "ext4",
+            "source_runtime_mount_read_only": True,
+            "runtime_mount_read_only": True,
+            "binding_sha256": "b" * 64,
+        }
+        grants = {
+            "resource": {
+                "identity_artifact_binding_sha256": identity_sha,
+                "grant_sha256": "1" * 64,
+            },
+            "backend": {
+                "identity_artifact_binding_sha256": identity_sha,
+                "grant_sha256": "2" * 64,
+            },
+            "model": {
+                "identity_artifact_binding_sha256": identity_sha,
+                "grant_sha256": "3" * 64,
+                "parity_acceptance_binding_sha256": "4" * 64,
+            },
+        }
+        run_calls: list[dict[str, object]] = []
+
+        def fake_prepare(**kwargs: object) -> dict[str, object]:
+            payload = (
+                entrypoint_module.backend_dispatch_v3.
+                canonical_backend_publication_arm_contract_bytes_v3(
+                    kwargs["arm_contract"]
+                )
+            )
+            return {
+                "status": "prepared_production_arm_not_executed",
+                "sha256": hashlib.sha256(payload).hexdigest(),
+                **{
+                    field: False
+                    for field in entrypoint_module.production_transaction_v3.
+                    PRODUCTION_ACCEPTANCE_CLAIM_FIELDS
+                },
+            }
+
+        def fake_run(**kwargs: object) -> dict[str, object]:
+            run_calls.append(kwargs)
+            return {"sentinel": "committed"}
+
+        arm_root = self.root / "run" / "production-arm"
+        arm_root.parent.mkdir(parents=True)
+        with (
+            patch(
+                "full_publication_entrypoint._select_production_v3_authority",
+                return_value=selected,
+            ),
+            patch.object(
+                entrypoint_module.production_transaction_v3,
+                "prepare_backend_publication_production_transaction_v3",
+                side_effect=fake_prepare,
+            ) as prepare,
+            patch.object(
+                entrypoint_module.production_transaction_v3,
+                "run_or_resume_backend_publication_production_transaction_v3",
+                side_effect=fake_run,
+            ),
+        ):
+            result = entrypoint_module._execute_production_v3_arm(
+                config=self.config,
+                project_root=self.root.resolve(),
+                arm_root=arm_root,
+                arm=arm,
+                scenario=self.config["scenarios"][arm["scenario"]],
+                dataset=self.datasets[arm["dataset"]],
+                execution_binding=execution_binding,
+                resource_capability_grant=grants["resource"],
+                backend_runtime_grant=grants["backend"],
+                model_parity_grant=grants["model"],
+                identity_artifacts={"binding_sha256": identity_sha},
+                production_runtime_bind_mount=runtime_binding,
+                semantic_evidence_validator=(
+                    entrypoint_module.publication_arm_semantic_evidence_validator_v3
+                ),
+                semantic_validator_identity_sha256="c" * 64,
+            )
+
+        self.assertEqual(result, {"sentinel": "committed"})
+        self.assertEqual(prepare.call_count, 1)
+        self.assertEqual(len(run_calls), 1)
+        transaction = run_calls[0]
+        self.assertEqual(
+            transaction["execution_scope"],
+            entrypoint_module.production_transaction_v3.PRODUCTION_EXECUTION_SCOPE,
+        )
+        self.assertEqual(
+            transaction["expected_production_runtime_bind_mount"], runtime_binding
+        )
+        self.assertEqual(
+            transaction["expected_runtime_binding_identity_sha256"],
+            runtime_binding["binding_sha256"],
+        )
+        self.assertEqual(
+            transaction["semantic_evidence_validator"],
+            entrypoint_module.publication_arm_semantic_evidence_validator_v3,
+        )
 
     def test_exactly_maps_frozen_arm_to_run_one_in_local_heterogeneous_mode(self) -> None:
         calls: list[dict[str, object]] = []
@@ -309,7 +762,7 @@ class RealArmRunnerTests(unittest.TestCase):
         call = calls[0]
         self.assertEqual(call["config"], self.config)
         self.assertEqual(call["project_root"], self.root.resolve())
-        self.assertEqual(call["dataset"]["name"], "kpp_real_h264")
+        self.assertEqual(call["dataset"]["name"], "kpp_iss_publication_v3_h264")
         self.assertEqual(call["system_key"], "gstreamer_custom")
         self.assertEqual(call["scenario"]["name"], "checkpoint_video_dag_shared")
         self.assertEqual(call["streams"], 6)
@@ -321,7 +774,9 @@ class RealArmRunnerTests(unittest.TestCase):
         self.assertEqual(call["deadline_ms"], 100.0)
         self.assertEqual(call["base_seed"], 20260323)
         self.assertFalse(call["dry_run_plan"])
-        self.assertEqual(call["directory_dataset_name"], "kpp_real_h264")
+        self.assertEqual(
+            call["directory_dataset_name"], "kpp_iss_publication_v3_h264"
+        )
         self.assertEqual(call["directory_policy"], "cpu_only")
         self.assertEqual(
             call["resource_capability_grant"], resource_capability_grant()
@@ -413,7 +868,12 @@ class RealArmRunnerTests(unittest.TestCase):
         )
         with self.assertRaisesRegex(ContractError, "codec/dataset"):
             runner(
-                arm_context(frozen_arm(codec="h265", dataset="kpp_real_h264")),
+                arm_context(
+                    frozen_arm(
+                        codec="h265",
+                        dataset="kpp_iss_publication_v3_h264",
+                    )
+                ),
                 self.root / "arm",
             )
 
@@ -431,7 +891,7 @@ class RealArmRunnerTests(unittest.TestCase):
                 "streams": 6,
                 "duration_s": 180,
                 "policy": "cpu_only",
-                "dataset": "kpp_real_h264",
+                "dataset": "kpp_iss_publication_v3_h264",
                 "seed": 20260323,
                 "deadline_ms": 100.0,
                 "distributed": False,
@@ -563,8 +1023,12 @@ class IdentityMaterialTests(unittest.TestCase):
         (self.root / "policies" / "frozen.policy").write_bytes(b"policy")
         (self.root / "CMakeLists.txt").write_text("project(vast)\n", encoding="utf-8")
         (self.root / "requirements.txt").write_text("PyYAML==6.0\n", encoding="utf-8")
-        (self.root / "data" / "kpp_real_h264.avi").write_bytes(b"h264-data")
-        (self.root / "data" / "kpp_real_h265.avi").write_bytes(b"h265-data")
+        (self.root / "data" / "kpp_iss_publication_v3_h264.avi").write_bytes(
+            b"h264-data"
+        )
+        (self.root / "data" / "kpp_iss_publication_v3_h265.avi").write_bytes(
+            b"h265-data"
+        )
         (self.root / "models" / "branch.xml").write_bytes(b"xml-model")
         (self.root / "models" / "branch.bin").write_bytes(b"bin-weights")
 
@@ -690,7 +1154,13 @@ class IdentityMaterialTests(unittest.TestCase):
         self.assertIn("configs/experiments.yaml", source_paths)
         self.assertIn("policies/frozen.policy", source_paths)
         self.assertEqual(identity["config"]["sha256"], hashlib.sha256(self.config_path.read_bytes()).hexdigest())
-        self.assertEqual(set(identity["datasets"]), {"kpp_real_h264", "kpp_real_h265"})
+        self.assertEqual(
+            set(identity["datasets"]),
+            {
+                "kpp_iss_publication_v3_h264",
+                "kpp_iss_publication_v3_h265",
+            },
+        )
         self.assertEqual(identity["models"]["artifacts"][0]["sha256"], hashlib.sha256((self.root / "models" / "branch.xml").read_bytes()).hexdigest())
         self.assertEqual(len(identity["container_images"]), 4)
         self.assertEqual(identity["hardware_runtime"]["detected_hardware"]["ram_gb"], 22.0)
@@ -699,11 +1169,17 @@ class IdentityMaterialTests(unittest.TestCase):
         self.assertNotIn("ReadSecretToken", rendered)
         self.assertNotIn("seafile.example", rendered)
         self.assertRegex(identity["cloud_destination"]["destination_sha256"], r"^[0-9a-f]{64}$")
-        self.assertEqual(set(material.datasets), {"kpp_real_h264", "kpp_real_h265"})
+        self.assertEqual(
+            set(material.datasets),
+            {
+                "kpp_iss_publication_v3_h264",
+                "kpp_iss_publication_v3_h265",
+            },
+        )
         guarded_paths = {guard.path.relative_to(self.root).as_posix() for guard in material.execution_guards}
         self.assertIn("scripts/untracked.py", guarded_paths)
         self.assertIn("models/branch.xml", guarded_paths)
-        self.assertIn("data/kpp_real_h264.avi", guarded_paths)
+        self.assertIn("data/kpp_iss_publication_v3_h264.avi", guarded_paths)
         accepted_guard = next(
             guard
             for guard in material.execution_guards

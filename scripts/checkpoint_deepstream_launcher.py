@@ -10,9 +10,11 @@ the runtime image; launch is invoked by the host coordinator API.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
+import os
 from dataclasses import asdict, dataclass, field
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Any, Callable, Iterable, Mapping, Sequence
 
 
@@ -38,6 +40,30 @@ def _require(condition: bool, message: str) -> None:
         raise DeepStreamLauncherError(message)
 
 
+def _absolute_posix_text(value: Path | str, *, label: str) -> str:
+    """Return a canonical container path independent of the planning host OS."""
+
+    text = value.as_posix() if isinstance(value, Path) else str(value)
+    parsed = PurePosixPath(text)
+    _require(
+        parsed.is_absolute()
+        and not text.startswith("//")
+        and "\\" not in text
+        and ".." not in parsed.parts
+        and parsed.as_posix() == text
+        and all(ord(character) >= 0x20 for character in text)
+        and len(text.encode("utf-8")) < 4096,
+        f"{label} must be a canonical absolute POSIX path",
+    )
+    return text
+
+
+def _gstreamer_registry_path(run_id: str, process_id: str) -> str:
+    identity = f"{run_id}\0{process_id}".encode("utf-8")
+    digest = hashlib.sha256(identity).hexdigest()
+    return f"/tmp/vast-deepstream-gst-registry-{digest}.bin"
+
+
 @dataclass(frozen=True)
 class DeepStreamWorkerLaunchSpec:
     worker_id: str
@@ -46,6 +72,15 @@ class DeepStreamWorkerLaunchSpec:
     command: tuple[str, ...]
     environment: dict[str, str] = field(default_factory=dict)
     native_event_source: bool = True
+    inherited_fds: tuple[int, ...] = ()
+
+    def __post_init__(self) -> None:
+        _require(
+            type(self.inherited_fds) is tuple
+            and len(self.inherited_fds) == len(set(self.inherited_fds))
+            and all(type(fd) is int and fd > 2 for fd in self.inherited_fds),
+            "DeepStream inherited FD set is invalid",
+        )
 
 
 def _source_by_stream(plan: Mapping[str, Any]) -> dict[int, dict[str, str]]:
@@ -70,6 +105,8 @@ def build_deepstream_worker_specs(
     runtime_executable: str = DEFAULT_RUNTIME_EXECUTABLE,
     callback_factory: str = DEFAULT_CALLBACK_FACTORY,
     adapter_config_path: str,
+    output_root: Path | None = None,
+    inherited_fds: tuple[int, ...] = (),
 ) -> tuple[DeepStreamWorkerLaunchSpec, ...]:
     """Map a validated DeepStream arm plan to exactly 24 or six OS processes."""
 
@@ -80,6 +117,19 @@ def build_deepstream_worker_specs(
     _require(codec in {"h264", "h265"}, "DeepStream codec is invalid")
     _require(str(run_id).strip() != "" and str(arm_id).strip() != "", "DeepStream run/arm ID is empty")
     _require(runtime_executable == DEFAULT_RUNTIME_EXECUTABLE, "DeepStream runtime executable drifted")
+    _require(
+        type(inherited_fds) is tuple
+        and len(inherited_fds) == len(set(inherited_fds))
+        and all(type(fd) is int and fd > 2 for fd in inherited_fds),
+        "DeepStream inherited FD set is invalid",
+    )
+    output_root_posix: str | None = None
+    if output_root is not None:
+        output_root_posix = _absolute_posix_text(
+            output_root,
+            label="DeepStream output root",
+        )
+        _require(not output_root.is_symlink(), "DeepStream output root must not be a symlink")
     _require(":" in callback_factory, "DeepStream callback factory must be module:function")
     _require(
         adapter_config_path.startswith("/")
@@ -136,6 +186,11 @@ def build_deepstream_worker_specs(
             "--callback-factory",
             callback_factory,
         )
+        if output_root_posix is not None:
+            command += (
+                "--output-dir",
+                (PurePosixPath(output_root_posix) / "workers" / worker_id).as_posix(),
+            )
         specs.append(
             DeepStreamWorkerLaunchSpec(
                 worker_id=worker_id,
@@ -153,8 +208,12 @@ def build_deepstream_worker_specs(
                     "VAST_DEEPSTREAM_CALLBACK_FACTORY": callback_factory,
                     ADAPTER_CONFIG_ENV: adapter_config_path,
                     "VAST_DEEPSTREAM_CLAIM_STATUS": "native_sdk_runtime_requires_external_acceptance",
+                    "GST_REGISTRY": _gstreamer_registry_path(run_id, worker_id),
+                    "GST_REGISTRY_UPDATE": "no",
+                    "GST_REGISTRY_FORK": "no",
                 },
                 native_event_source=True,
+                inherited_fds=inherited_fds,
             )
         )
 
@@ -178,6 +237,8 @@ def build_deepstream_source_specs(
     source_binary: Path,
     project_root: Path,
     run_id: str,
+    pinned_source_paths_by_sha256: Mapping[str, str] | None = None,
+    inherited_fds: tuple[int, ...] = (),
 ) -> tuple[Any, ...]:
     """Materialize the six exact common-source coordinator processes."""
 
@@ -186,7 +247,16 @@ def build_deepstream_source_specs(
     _require(str(plan.get("system")) == "deepstream", "launcher requires a DeepStream plan")
     root = project_root.resolve()
     _require(root.is_dir() and not root.is_symlink(), "DeepStream project root is unsafe")
-    _require(source_binary.is_absolute(), "DeepStream source binary must be absolute")
+    source_binary_posix = _absolute_posix_text(
+        source_binary,
+        label="DeepStream source binary",
+    )
+    _require(
+        type(inherited_fds) is tuple
+        and len(inherited_fds) == len(set(inherited_fds))
+        and all(type(fd) is int and fd > 2 for fd in inherited_fds),
+        "DeepStream inherited FD set is invalid",
+    )
     raw = plan.get("source_coordinators")
     _require(isinstance(raw, list) and len(raw) == 6, "DeepStream requires six source coordinators")
     specs = []
@@ -194,31 +264,53 @@ def build_deepstream_source_specs(
         _require(isinstance(value, Mapping), "DeepStream source coordinator is invalid")
         stream_id = int(value.get("stream_id", -1))
         _require(stream_id == expected_stream_id, "DeepStream source coordinator order drifted")
-        relative = Path(str(value.get("input_path", "")))
-        _require(not relative.is_absolute() and ".." not in relative.parts, "DeepStream source path is unsafe")
-        lexical = Path(root, relative)
-        resolved = lexical.resolve()
-        try:
-            resolved.relative_to(root)
-        except ValueError as exc:
-            raise DeepStreamLauncherError("DeepStream source path escapes project root") from exc
-        _require(
-            lexical == resolved and resolved.is_file() and not resolved.is_symlink(),
-            "DeepStream source is missing, a symlink, or an alias",
-        )
+        source_sha256 = str(value.get("source_sha256", ""))
+        if pinned_source_paths_by_sha256 is None:
+            relative = Path(str(value.get("input_path", "")))
+            _require(not relative.is_absolute() and ".." not in relative.parts, "DeepStream source path is unsafe")
+            lexical = Path(root, relative)
+            resolved = lexical.resolve()
+            try:
+                resolved.relative_to(root)
+            except ValueError as exc:
+                raise DeepStreamLauncherError("DeepStream source path escapes project root") from exc
+            _require(
+                lexical == resolved and resolved.is_file() and not resolved.is_symlink(),
+                "DeepStream source is missing, a symlink, or an alias",
+            )
+        else:
+            _require(
+                source_sha256 in pinned_source_paths_by_sha256,
+                "DeepStream source has no SHA-bound publication path",
+            )
+            resolved = Path(pinned_source_paths_by_sha256[source_sha256])
+            _require(
+                resolved.is_absolute() and resolved.is_file()
+                and not resolved.is_symlink()
+                and (os.name == "nt" or resolved.resolve() == resolved),
+                "DeepStream SHA-bound publication source is unsafe",
+            )
+            digest = hashlib.sha256()
+            with resolved.open("rb") as source:
+                for chunk in iter(lambda: source.read(1024 * 1024), b""):
+                    digest.update(chunk)
+            _require(
+                digest.hexdigest() == source_sha256,
+                "DeepStream SHA-bound publication source identity drifted",
+            )
         process_id = str(value.get("process_id", ""))
         duration = str(value.get("source_duration_ns", ""))
         scale = str(value.get("playback_timestamp_scale", ""))
         _require(duration.isdigit() and int(duration) > 0, "DeepStream source duration is invalid")
         _require(scale == "600", "DeepStream source timestamp scale drifted")
         command = (
-            str(source_binary),
+            source_binary_posix,
             "--source-path",
             str(resolved),
             "--dataset-id",
             str(plan["dataset"]),
             "--source-sha256",
-            str(value["source_sha256"]),
+            source_sha256,
             "--checkpoint-container",
             str(value["source_container"]),
             "--checkpoint-codec",
@@ -237,11 +329,12 @@ def build_deepstream_source_specs(
                 source_process_id=process_id,
                 stream_id=stream_id,
                 dataset_id=str(plan["dataset"]),
-                source_sha256=str(value["source_sha256"]),
+                source_sha256=source_sha256,
                 command=command,
                 environment={
-                    "GST_REGISTRY": f"/tmp/vast-gst-registry-{run_id}-{process_id}.bin",
+                    "GST_REGISTRY": _gstreamer_registry_path(run_id, process_id),
                     "GST_REGISTRY_UPDATE": "no",
+                    "GST_REGISTRY_FORK": "no",
                     "VAST_CHECKPOINT_SOURCE_CONTAINER": str(value["source_container"]),
                     "VAST_CHECKPOINT_SOURCE_CODEC": str(value["source_codec"]),
                     "VAST_CHECKPOINT_SOURCE_DURATION_NS": duration,
@@ -250,6 +343,7 @@ def build_deepstream_source_specs(
                     "VAST_CHECKPOINT_ADMISSION_MODE": "native_common_source_coordinator",
                 },
                 native_source=True,
+                inherited_fds=inherited_fds,
             )
         )
     _require(len({spec.source_process_id for spec in specs}) == 6, "DeepStream source IDs are duplicated")

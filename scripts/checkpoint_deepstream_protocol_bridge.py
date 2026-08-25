@@ -144,6 +144,7 @@ class DeepStreamBranchExecutionResult:
 class _FrameState:
     admission: "_AdmissionRecord"
     frame_id: int
+    canonical_trace_id: str
     trace_id: str
     source_event_id: str
     decode_event_id: str | None = None
@@ -322,6 +323,7 @@ class DeepStreamProtocolBridge:
         analytics_endpoints: Mapping[
             str, Mapping[str, DeepStreamExecutionEndpoint]
         ],
+        resource_recorder: Any | None = None,
         clock_ms: Callable[[], float] | None = None,
     ) -> None:
         self.run_id = _stable_id(run_id, "DeepStream run_id")
@@ -345,6 +347,12 @@ class DeepStreamProtocolBridge:
         _require(callable(policy_exchange), "DeepStream policy exchange is not callable")
         self._event_sink = event_sink
         self._policy_exchange = policy_exchange
+        if resource_recorder is not None:
+            _require(
+                callable(getattr(resource_recorder, "record_analytics_transfers", None)),
+                "DeepStream resource recorder lacks record_analytics_transfers()",
+            )
+        self._resource_recorder = resource_recorder
         self._clock_ms = clock_ms or (lambda: time.time_ns() / 1_000_000.0)
         self._lock = threading.RLock()
         self._sequence = 0
@@ -422,7 +430,7 @@ class DeepStreamProtocolBridge:
 
     @staticmethod
     def _execution_id(state: _FrameState, suffix: str) -> str:
-        return f"{state.trace_id}:{suffix}"
+        return f"{state.canonical_trace_id}:{suffix}"
 
     def _emit(
         self,
@@ -617,11 +625,13 @@ class DeepStreamProtocolBridge:
                 "DeepStream frame was admitted twice",
             )
             frame_id = admitted.sequence - 1
-            trace_id = f"{self.run_id}:{self.stream_id}:{frame_id}:{self.worker_id}"
+            canonical_trace_id = f"{self.run_id}:{self.stream_id}:{frame_id}"
+            trace_id = f"{canonical_trace_id}:{self.worker_id}"
             source_id = f"{trace_id}:source"
             state = _FrameState(
                 admission=admitted,
                 frame_id=frame_id,
+                canonical_trace_id=canonical_trace_id,
                 trace_id=trace_id,
                 source_event_id=source_id,
             )
@@ -1076,6 +1086,24 @@ class DeepStreamProtocolBridge:
             )
             detector = str(response["provenance"]["model_id"])
             backend = analytics_backend_identity(capability)
+            timing = response["timing"]
+            worker_received_ns = int(timing["worker_received_monotonic_ns"])
+            analytics_timestamp_ms = path_timestamp_ms + (
+                int(timing["inference_finished_monotonic_ns"]) - worker_received_ns
+            ) / 1_000_000.0
+            postprocess_timestamp_ms = path_timestamp_ms + (
+                int(timing["worker_completed_monotonic_ns"]) - worker_received_ns
+            ) / 1_000_000.0
+            if self._resource_recorder is not None:
+                self._resource_recorder.record_analytics_transfers(
+                    frame_id=state.frame_id,
+                    input_frame_key=state.admission.input_frame_key,
+                    branch=branch,
+                    selected_resource=selected,
+                    worker_received_monotonic_ns=worker_received_ns,
+                    path_enter_timestamp_ns=round(path_timestamp_ms * 1_000_000),
+                    resource=response["resource"],
+                )
 
             with self._lock:
                 terminal_timestamp_ms = self._clock_value(
@@ -1090,6 +1118,11 @@ class DeepStreamProtocolBridge:
                     actual_service_ms * 1_000_000
                     >= int(response["timing"]["inference_latency_ns"]),
                     "DeepStream path service time is shorter than native inference",
+                )
+                _require(
+                    terminal_timestamp_ms >= postprocess_timestamp_ms
+                    >= analytics_timestamp_ms >= path_timestamp_ms,
+                    "DeepStream native analytics/postprocess timing is outside its path",
                 )
                 terminal_message = {
                     "schema_version": POLICY_RPC_SCHEMA_VERSION,
@@ -1113,6 +1146,7 @@ class DeepStreamProtocolBridge:
                     message_type="terminal_ack",
                 )
                 analytics_id = self._execution_id(state, f"{branch}:analytics")
+                postprocess_id = self._execution_id(state, f"{branch}:postprocess")
                 terminal_id = self._execution_id(state, f"{branch}:complete")
                 runtime_timestamp = math.ceil(terminal_timestamp_ms)
                 self._emit(
@@ -1122,7 +1156,16 @@ class DeepStreamProtocolBridge:
                     branch=branch,
                     execution_id=analytics_id,
                     parents=[str(analytics_parent)],
-                    observed_timestamp_ms=runtime_timestamp,
+                    observed_timestamp_ms=analytics_timestamp_ms,
+                )
+                self._emit(
+                    state,
+                    event_kind="stage_complete",
+                    stage=f"postprocess_{branch}",
+                    branch=branch,
+                    execution_id=postprocess_id,
+                    parents=[analytics_id],
+                    observed_timestamp_ms=postprocess_timestamp_ms,
                 )
                 self._emit(
                     state,
@@ -1130,7 +1173,7 @@ class DeepStreamProtocolBridge:
                     stage=branch,
                     branch=branch,
                     execution_id=terminal_id,
-                    parents=[analytics_id],
+                    parents=[postprocess_id],
                     observed_timestamp_ms=runtime_timestamp,
                     terminal={
                         "terminal_reason": response["terminal"]["reason"],

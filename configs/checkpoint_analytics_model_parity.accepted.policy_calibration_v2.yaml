@@ -1,0 +1,679 @@
+artifact_kind: checkpoint_analytics_model_parity_manifest
+claim_scope: cpu_openvino_vs_nvidia_cuda_tensorrt
+classification_contract:
+  argmax_tie_break: lowest_class_index
+  class_count: 1000
+  contract_id: imagenet_1000_raw_logits_fp32_v2
+  dtype: float32
+  semantics: raw_logits_pre_softmax
+  softmax_applied: false
+evidence_policy:
+  calibration_and_evaluation_disjoint: true
+  claimed_aggregates_accepted: false
+  max_evidence_json_bytes: 67108864
+  minimum_calibration_samples_per_branch_resource: 30
+  minimum_parity_samples_per_branch: 30
+  relative_error_floor: 0.02
+  tolerances:
+    raw_max_abs_error: 0.02
+    raw_max_cosine_distance: 0.001
+    raw_max_rel_error: 0.05
+    raw_mean_abs_error: 0.005
+    top1_mismatch_rate: 0.0
+manifest_id: kpp-cpu-openvino-nvidia-tensorrt-parity-requirements-v3
+matrix_binding:
+  cpu:
+    device_api: OPENVINO_CPU
+    device_id: CPU
+    image: vast/openvino-native-probe:dlstreamer-2026.1
+    image_id: sha256:5c43c6c1f95b3fbb4a95957d1d293b1272c1db6a44a7a2063aad3aeba7c951d1
+    runtime: openvino
+  gpu:
+    device_api: NVIDIA_CUDA
+    device_id_prefix: GPU-
+    image: vast/deepstream-native-probe:7.0
+    image_id: sha256:16d284eb311f04a95f148746f0dc5637d54d527cc42be9a6cced5fcf0240770c
+    runtime: tensorrt
+  network_download_allowed: false
+  openvino_gpu_accepted: false
+  same_source_semantics_required: true
+preprocessing_contract:
+  border_mode: edge_clamp
+  center_crop:
+  - 224
+  - 224
+  channel_transform: HWC_RGB_to_CHW_RGB
+  contract_id: imagenet_resnet_fp32_center_crop_v2
+  decode_dtype: uint8
+  decoded_color_order: RGB
+  execution_shape:
+  - 1
+  - 3
+  - 224
+  - 224
+  half_pixel_coordinate_formula: src=(dst+0.5)*src_size/dst_size-0.5
+  interpolation_accumulator_dtype: float32
+  interpolation_output_dtype: float32
+  interpolation_rounding: none
+  normalization_accumulator_dtype: float32
+  normalization_evaluation_order: float32((float32(pixel)*scale-mean[channel])/std[channel])
+  normalization_mean:
+  - 0.485
+  - 0.456
+  - 0.406
+  normalization_scale: 0.00392156862745098
+  normalization_std:
+  - 0.229
+  - 0.224
+  - 0.225
+  output_dtype: float32
+  output_layout: NCHW
+  resize_algorithm: bilinear
+  resize_coordinate_transform: half_pixel
+  resize_long_side_formula: floor(long_side*256/short_side+0.5)
+  resize_rounding: round_half_up
+  resize_shorter_side: 256
+  tensor_color_order: RGB
+  tensor_endianness: little
+  tensor_header: none
+  tensor_memory_order: C
+  tensor_serialization: raw_f32_le_c_contiguous_v1
+required_branches:
+- plate_number
+- vehicle_type
+- damage
+- foreign_object
+schema_version: 3
+semantic_claim: topology_load_proxy_only
+source_registry:
+  resnet101_v1_7:
+    filename: resnet101-v1-7.onnx
+    format: onnx
+    input:
+      dtype: float32
+      dynamic_shape_binding:
+        batch_dynamic: true
+        max:
+        - 1
+        - 3
+        - 224
+        - 224
+        min:
+        - 1
+        - 3
+        - 224
+        - 224
+        opt:
+        - 1
+        - 3
+        - 224
+        - 224
+      execution_shape:
+      - 1
+      - 3
+      - 224
+      - 224
+      layout: NCHW
+      name: data
+      source_shape:
+      - batch
+      - 3
+      - 224
+      - 224
+    license: Apache-2.0
+    onnx_ir_version: 0.0.3
+    onnx_opset: 8
+    output:
+      contract_ref: imagenet_1000_raw_logits_fp32_v2
+      dtype: float32
+      execution_shape:
+      - 1
+      - 1000
+      name: resnetv18_dense0_fwd
+      source_shape:
+      - batch
+      - 1000
+    path: models/parity/sources/resnet101-v1-7.onnx
+    repository: https://huggingface.co/onnxmodelzoo/resnet101-v1-7
+    repository_revision: 524206ecbf2cefaa7654d6e6ff29f9a921f2b1d5
+    resolve_url: https://huggingface.co/onnxmodelzoo/resnet101-v1-7/resolve/524206ecbf2cefaa7654d6e6ff29f9a921f2b1d5/resnet101-v1-7.onnx
+    sha256: 760702f6ec0138f71ebac66f4e95d1c72dc9267a8544f4d4667a53075fd0497c
+    size_bytes: 178914043
+  resnet18_v1_7:
+    filename: resnet18-v1-7.onnx
+    format: onnx
+    input:
+      dtype: float32
+      dynamic_shape_binding:
+        batch_dynamic: true
+        max:
+        - 1
+        - 3
+        - 224
+        - 224
+        min:
+        - 1
+        - 3
+        - 224
+        - 224
+        opt:
+        - 1
+        - 3
+        - 224
+        - 224
+      execution_shape:
+      - 1
+      - 3
+      - 224
+      - 224
+      layout: NCHW
+      name: data
+      source_shape:
+      - batch
+      - 3
+      - 224
+      - 224
+    license: Apache-2.0
+    onnx_ir_version: 0.0.3
+    onnx_opset: 8
+    output:
+      contract_ref: imagenet_1000_raw_logits_fp32_v2
+      dtype: float32
+      execution_shape:
+      - 1
+      - 1000
+      name: resnetv15_dense0_fwd
+      source_shape:
+      - batch
+      - 1000
+    path: models/parity/sources/resnet18-v1-7.onnx
+    repository: https://huggingface.co/onnxmodelzoo/resnet18-v1-7
+    repository_revision: e7cb849a949bdceba02356b8b923d53cc01108e1
+    resolve_url: https://huggingface.co/onnxmodelzoo/resnet18-v1-7/resolve/e7cb849a949bdceba02356b8b923d53cc01108e1/resnet18-v1-7.onnx
+    sha256: 4e8f8653e7a2222b3904cc3fe8e304cd8b339ce1d05fd24688162f86fb6df52c
+    size_bytes: 46820737
+  resnet34_v1_7:
+    filename: resnet34-v1-7.onnx
+    format: onnx
+    input:
+      dtype: float32
+      dynamic_shape_binding:
+        batch_dynamic: true
+        max:
+        - 1
+        - 3
+        - 224
+        - 224
+        min:
+        - 1
+        - 3
+        - 224
+        - 224
+        opt:
+        - 1
+        - 3
+        - 224
+        - 224
+      execution_shape:
+      - 1
+      - 3
+      - 224
+      - 224
+      layout: NCHW
+      name: data
+      source_shape:
+      - batch
+      - 3
+      - 224
+      - 224
+    license: Apache-2.0
+    onnx_ir_version: 0.0.3
+    onnx_opset: 8
+    output:
+      contract_ref: imagenet_1000_raw_logits_fp32_v2
+      dtype: float32
+      execution_shape:
+      - 1
+      - 1000
+      name: resnetv16_dense0_fwd
+      source_shape:
+      - batch
+      - 1000
+    path: models/parity/sources/resnet34-v1-7.onnx
+    repository: https://huggingface.co/onnxmodelzoo/resnet34-v1-7
+    repository_revision: 9019d62c2f74b941ae6ce05de1d4013732703765
+    resolve_url: https://huggingface.co/onnxmodelzoo/resnet34-v1-7/resolve/9019d62c2f74b941ae6ce05de1d4013732703765/resnet34-v1-7.onnx
+    sha256: 883a41b2e30ddc2e422c108b091b5e70b92d37dc5c345a2c563dcae27971e2cc
+    size_bytes: 87302588
+  resnet50_v1_12:
+    filename: resnet50-v1-12.onnx
+    format: onnx
+    input:
+      dtype: float32
+      dynamic_shape_binding:
+        batch_dynamic: true
+        max:
+        - 1
+        - 3
+        - 224
+        - 224
+        min:
+        - 1
+        - 3
+        - 224
+        - 224
+        opt:
+        - 1
+        - 3
+        - 224
+        - 224
+      execution_shape:
+      - 1
+      - 3
+      - 224
+      - 224
+      layout: NCHW
+      name: data
+      source_shape:
+      - batch
+      - 3
+      - 224
+      - 224
+    license: Apache-2.0
+    onnx_ir_version: 0.0.4
+    onnx_opset: 12
+    output:
+      contract_ref: imagenet_1000_raw_logits_fp32_v2
+      dtype: float32
+      execution_shape:
+      - 1
+      - 1000
+      name: resnetv17_dense0_fwd
+      source_shape:
+      - batch
+      - 1000
+    path: models/parity/sources/resnet50-v1-12.onnx
+    repository: https://huggingface.co/onnxmodelzoo/resnet50-v1-12
+    repository_revision: 1f95315d8bd3b3ca2ceabe54d274e0cdf5a83bbe
+    resolve_url: https://huggingface.co/onnxmodelzoo/resnet50-v1-12/resolve/1f95315d8bd3b3ca2ceabe54d274e0cdf5a83bbe/resnet50-v1-12.onnx
+    sha256: 3f03fdef724b22947eed826f1eef1dc5c34151bb4c37d634f1db89dfa2dd1526
+    size_bytes: 102576593
+toolchain_registry:
+  openvino_cpu:
+    converter: ovc
+    device: CPU
+    image: vast/openvino-native-probe:dlstreamer-2026.1
+    image_id: sha256:5c43c6c1f95b3fbb4a95957d1d293b1272c1db6a44a7a2063aad3aeba7c951d1
+    precision: float32
+    runtime: openvino
+    version: 2026.1.0-21367-63e31528c62-releases/2026/1
+  tensorrt_cuda:
+    builder: trtexec
+    compute_capability: '8.6'
+    cuda_version: 12.2.2
+    device_api: NVIDIA_CUDA
+    driver_version: '610.47'
+    gpu_name: NVIDIA GeForce RTX 3060
+    gpu_uuid: GPU-00bb784b-60f3-8bf6-bbd3-5a0c09805266
+    image: vast/deepstream-native-probe:7.0
+    image_id: sha256:16d284eb311f04a95f148746f0dc5637d54d527cc42be9a6cced5fcf0240770c
+    pci_bus_id: '00000000:01:00.0'
+    precision: float32
+    runtime: tensorrt
+    tf32: false
+    version: 8.6.1.6
+worker_runtime_registry:
+  execution_config:
+    content_identity_sha256: 3daed67a3e4c6549bf463b929e5de840e5aab7daacac75fff328f624b867b512
+    path: configs/analytics_execution_layer.yaml
+    sha256: d9bec961f22395c005ac6866633aeeb8b9a829fd39bd776776a3b0cd84526033
+    worker_projection_sha256: b515a96dbd8f7d9cd7ebcb375fdeefc5c3f3deb687dfb803bef58faf2ab04b85
+  openvino_cpu:
+    base_image: vast/openvino-native-probe:dlstreamer-2026.1
+    base_image_id: sha256:5c43c6c1f95b3fbb4a95957d1d293b1272c1db6a44a7a2063aad3aeba7c951d1
+    execution_resource: cpu
+    image: vast/analytics-openvino-worker:publication-v3
+    image_id: sha256:e2b01f8f40da08fc59d671e19a7f4eca6dd7d46678de0138ab7af51b09cb9b03
+    toolchain_ref: openvino_cpu
+    worker_implementation_sha256: f15ab5fd7d846376ccba55e55b663f4d16e114ef4cf5519794795cde7a416f8b
+  tensorrt_cuda:
+    base_image: vast/deepstream-native-probe:7.0
+    base_image_id: sha256:16d284eb311f04a95f148746f0dc5637d54d527cc42be9a6cced5fcf0240770c
+    execution_resource: gpu
+    image: vast/analytics-tensorrt-worker:publication-v3
+    image_id: sha256:2ff600e743e6fc089ace1ea40894d73581fcda8007fa758fd0f32eb9b1c72f09
+    toolchain_ref: tensorrt_cuda
+    worker_implementation_sha256: eb6fce9ec42f26e0d38263053aedbb8d9c247c1872be39d67d7f3c0da4c48ab7
+workload_slots:
+  damage:
+    evidence:
+      calibration_corpus:
+        path: evidence/model_parity/v4_policy_calibration_physical_20260824/documents/damage/calibration_corpus.json
+        sha256: 4ca6489258554291cb5065d4c0ac332bb2fc9a61a7dc529baa73c79bcfa42a9b
+      cpu_execution_probe:
+        path: evidence/model_parity/v4_policy_calibration_physical_20260824/documents/damage/cpu_execution_probe.json
+        sha256: 241f431a1d80d7ef0eacfd22d600f97ce14df8ddc6592b1e40040f62899411c1
+      cpu_policy_calibration:
+        path: evidence/model_parity/v4_policy_calibration_physical_20260824/documents/damage/cpu_policy_calibration.json
+        sha256: e99e0ac8c3f9c2faf22d1379dec7f4fdf6f617a968b9318aff425e623140b3c3
+      cpu_raw_output_bundle:
+        path: evidence/model_parity/v4_policy_calibration_physical_20260824/documents/damage/cpu_raw_output_bundle.json
+        sha256: df9fe91a2f3aade7e9d18f498fa1e0c4efd1fef23fac2431e85d8b50d3698497
+      cuda_execution_probe:
+        path: evidence/model_parity/v4_policy_calibration_physical_20260824/documents/damage/cuda_execution_probe.json
+        sha256: e9a85836207a78be18bdfce1bd523eb33f07044f008b5d258a8ac87954b4c3e5
+      cuda_policy_calibration:
+        path: evidence/model_parity/v4_policy_calibration_physical_20260824/documents/damage/cuda_policy_calibration.json
+        sha256: 67c6e1397bc7c5f8e06224ad6150461f29b3af53c5109694e74db331eff77238
+      cuda_raw_output_bundle:
+        path: evidence/model_parity/v4_policy_calibration_physical_20260824/documents/damage/cuda_raw_output_bundle.json
+        sha256: 1bd6b9adfa1f881ab0d21e4c096eae612c87f67e1c6b7fa8835cc6edd072b1c1
+      evaluation_corpus:
+        path: evidence/model_parity/v4_policy_calibration_physical_20260824/documents/damage/evaluation_corpus.json
+        sha256: aaf943a05de6e21b14396a5f7e3fd8f2e915de519def3893c07692ff97a4edcc
+    openvino_ir:
+      canonical_argv:
+      - ovc
+      - SOURCE.onnx
+      - --output_model
+      - DEST.xml
+      - --input
+      - data[1,3,224,224]
+      - --output
+      - resnetv17_dense0_fwd
+      - --compress_to_fp16=False
+      canonical_argv_sha256: e2b5ff1e6f3aeb677346174ca9db6ddfccd050a028baa2da7c9514337c791927
+      derived_from_source_sha256: 3f03fdef724b22947eed826f1eef1dc5c34151bb4c37d634f1db89dfa2dd1526
+      model:
+        path: models/parity/derived/openvino-2026.1.0-fp32-static-b1/resnet50-v1-12.xml
+        sha256: 8ddf516c52c140d33277aaaa9b2d7ed80b038f1940de30ac5e27c43d54f1e5c9
+        size_bytes: 151074
+      reproducibility: byte_reproducible_observed
+      toolchain_ref: openvino_cpu
+      weights:
+        path: models/parity/derived/openvino-2026.1.0-fp32-static-b1/resnet50-v1-12.bin
+        sha256: 703fbee2cc2684970b1748115589ce51c1e788099a995faba0f6a30801b3ad64
+        size_bytes: 102121920
+    semantic_claim: topology_load_proxy_only
+    slot_id: opaque_rn50
+    source_ref: resnet50_v1_12
+    tensorrt_engine:
+      artifact:
+        path: models/parity/derived/tensorrt-8.6.1.6-cuda12.2.2-cc86-fp32-static-b1/resnet50-v1-12.engine
+        sha256: ecd41a7f7037a233da5629f87ff8d51e455b582c996963815a085cd139c3a7a5
+        size_bytes: 118354276
+      canonical_argv:
+      - trtexec
+      - --onnx=SOURCE.onnx
+      - --saveEngine=DEST.engine
+      - --minShapes=data:1x3x224x224
+      - --optShapes=data:1x3x224x224
+      - --maxShapes=data:1x3x224x224
+      - --inputIOFormats=fp32:chw
+      - --outputIOFormats=fp32:chw
+      - --noTF32
+      - --memPoolSize=workspace:2048
+      - --builderOptimizationLevel=3
+      - --minTiming=1
+      - --avgTiming=8
+      - --noBuilderCache
+      - --skipInference
+      - --profilingVerbosity=detailed
+      - --tempfileControls=in_memory:allow,temporary:deny
+      canonical_argv_sha256: e146eb86d0c63617459a9165f2f04b708008370ffdd36695b40e796d68789221
+      derived_from_source_sha256: 3f03fdef724b22947eed826f1eef1dc5c34151bb4c37d634f1db89dfa2dd1526
+      engine_authority: archived_exact_engine_artifact
+      parser_facts:
+        int64_initializers_cast_to_int32: true
+        warning_disposition: non_blocking_if_numeric_parity_passes
+      rebuild_sha_expected: false
+      toolchain_ref: tensorrt_cuda
+  foreign_object:
+    evidence:
+      calibration_corpus:
+        path: evidence/model_parity/v4_policy_calibration_physical_20260824/documents/foreign_object/calibration_corpus.json
+        sha256: e5d87f6f0cc90deda4189488bd059f5974854a1c07743c2c2e21909524d83f10
+      cpu_execution_probe:
+        path: evidence/model_parity/v4_policy_calibration_physical_20260824/documents/foreign_object/cpu_execution_probe.json
+        sha256: 7177ccf2571d9e3d949a02021f408ce7c703842615ab4911caf5e9745cc71cce
+      cpu_policy_calibration:
+        path: evidence/model_parity/v4_policy_calibration_physical_20260824/documents/foreign_object/cpu_policy_calibration.json
+        sha256: 3e473aaa8c17cab8ca8e8be044bb0f952bb6d3766dc102faed8ab640b918cb98
+      cpu_raw_output_bundle:
+        path: evidence/model_parity/v4_policy_calibration_physical_20260824/documents/foreign_object/cpu_raw_output_bundle.json
+        sha256: 99663e015c14cf09936ab1f940e572815ece175d98610aae832fedeb40ccbe8b
+      cuda_execution_probe:
+        path: evidence/model_parity/v4_policy_calibration_physical_20260824/documents/foreign_object/cuda_execution_probe.json
+        sha256: 3aac592051f94656c96e444a5a5900972b5b02bab7c6db75768fcdce93d195a5
+      cuda_policy_calibration:
+        path: evidence/model_parity/v4_policy_calibration_physical_20260824/documents/foreign_object/cuda_policy_calibration.json
+        sha256: 1ace38d9c484e8ee98334ca35cf09145796e557b7c6b0c7b3743dc6c5936e9b8
+      cuda_raw_output_bundle:
+        path: evidence/model_parity/v4_policy_calibration_physical_20260824/documents/foreign_object/cuda_raw_output_bundle.json
+        sha256: b3f9e4e704b448b890f9f5c444f9dacb9731c92131d353ce6a679eaef37eae83
+      evaluation_corpus:
+        path: evidence/model_parity/v4_policy_calibration_physical_20260824/documents/foreign_object/evaluation_corpus.json
+        sha256: 5ce315d6a1bffbef2e9a9a7a1edfe1caa14d971b408402763d8c9ec73d7b684e
+    openvino_ir:
+      canonical_argv:
+      - ovc
+      - SOURCE.onnx
+      - --output_model
+      - DEST.xml
+      - --input
+      - data[1,3,224,224]
+      - --output
+      - resnetv18_dense0_fwd
+      - --compress_to_fp16=False
+      canonical_argv_sha256: 19a506d1fa85b8fb22020c278b78d229f05c0497e48330aeb155d9322f7f01cf
+      derived_from_source_sha256: 760702f6ec0138f71ebac66f4e95d1c72dc9267a8544f4d4667a53075fd0497c
+      model:
+        path: models/parity/derived/openvino-2026.1.0-fp32-static-b1/resnet101-v1-7.xml
+        sha256: c1b9fc3d0c56f9574dd195f10461f4c640167523764a4470225ef2be9cc74124
+        size_bytes: 295738
+      reproducibility: byte_reproducible_observed
+      toolchain_ref: openvino_cpu
+      weights:
+        path: models/parity/derived/openvino-2026.1.0-fp32-static-b1/resnet101-v1-7.bin
+        sha256: 788c9ab3de09c18b234314adb6eddf212754a93e579e1396d9aee2cd2255c4ba
+        size_bytes: 177985984
+    semantic_claim: topology_load_proxy_only
+    slot_id: opaque_rn101
+    source_ref: resnet101_v1_7
+    tensorrt_engine:
+      artifact:
+        path: models/parity/derived/tensorrt-8.6.1.6-cuda12.2.2-cc86-fp32-static-b1/resnet101-v1-7.engine
+        sha256: f981e1da75813ae30d18b03d422c37d6047245962d2b5552eb54c4deedb48f97
+        size_bytes: 225698788
+      canonical_argv:
+      - trtexec
+      - --onnx=SOURCE.onnx
+      - --saveEngine=DEST.engine
+      - --minShapes=data:1x3x224x224
+      - --optShapes=data:1x3x224x224
+      - --maxShapes=data:1x3x224x224
+      - --inputIOFormats=fp32:chw
+      - --outputIOFormats=fp32:chw
+      - --noTF32
+      - --memPoolSize=workspace:2048
+      - --builderOptimizationLevel=3
+      - --minTiming=1
+      - --avgTiming=8
+      - --noBuilderCache
+      - --skipInference
+      - --profilingVerbosity=detailed
+      - --tempfileControls=in_memory:allow,temporary:deny
+      canonical_argv_sha256: e146eb86d0c63617459a9165f2f04b708008370ffdd36695b40e796d68789221
+      derived_from_source_sha256: 760702f6ec0138f71ebac66f4e95d1c72dc9267a8544f4d4667a53075fd0497c
+      engine_authority: archived_exact_engine_artifact
+      parser_facts:
+        int64_initializers_cast_to_int32: true
+        warning_disposition: non_blocking_if_numeric_parity_passes
+      rebuild_sha_expected: false
+      toolchain_ref: tensorrt_cuda
+  plate_number:
+    evidence:
+      calibration_corpus:
+        path: evidence/model_parity/v4_policy_calibration_physical_20260824/documents/plate_number/calibration_corpus.json
+        sha256: c3461f026e86a95a10e96a91c270cf31b69b7cbc6c649453bbaeb75557324658
+      cpu_execution_probe:
+        path: evidence/model_parity/v4_policy_calibration_physical_20260824/documents/plate_number/cpu_execution_probe.json
+        sha256: b347dcfb296b461ef85a3e2692528052ee0ee10d4ae96098468ba2709b9a2232
+      cpu_policy_calibration:
+        path: evidence/model_parity/v4_policy_calibration_physical_20260824/documents/plate_number/cpu_policy_calibration.json
+        sha256: d87bb1b7fbbd8e425f08fb1cc9cf72fc608e68623399325c2f3ee8be4601e96f
+      cpu_raw_output_bundle:
+        path: evidence/model_parity/v4_policy_calibration_physical_20260824/documents/plate_number/cpu_raw_output_bundle.json
+        sha256: 91647ebb8d9362502e369769a19bedafcae27bc0dc6471e6b802426a756cfb85
+      cuda_execution_probe:
+        path: evidence/model_parity/v4_policy_calibration_physical_20260824/documents/plate_number/cuda_execution_probe.json
+        sha256: 3874f79b7dc5d277deb8495e27ecf34b25e1194fc821391a56a2884acd1abd02
+      cuda_policy_calibration:
+        path: evidence/model_parity/v4_policy_calibration_physical_20260824/documents/plate_number/cuda_policy_calibration.json
+        sha256: 63810acd0c333c4adae74ee603699d99c37d3423c4add08bc7dfa16a505ffe1b
+      cuda_raw_output_bundle:
+        path: evidence/model_parity/v4_policy_calibration_physical_20260824/documents/plate_number/cuda_raw_output_bundle.json
+        sha256: 44f48bb7a91446b30a25109a881042de8861aa3ecb87fbadfbed42d10ef61736
+      evaluation_corpus:
+        path: evidence/model_parity/v4_policy_calibration_physical_20260824/documents/plate_number/evaluation_corpus.json
+        sha256: 998931197a1f5d1a3291d33a4a71363f60fc791cea2231aea0da35315affeded
+    openvino_ir:
+      canonical_argv:
+      - ovc
+      - SOURCE.onnx
+      - --output_model
+      - DEST.xml
+      - --input
+      - data[1,3,224,224]
+      - --output
+      - resnetv15_dense0_fwd
+      - --compress_to_fp16=False
+      canonical_argv_sha256: 5534e81997924867ac20f15f1167c262d6dabe59b3b2932ca683b535bc822ab6
+      derived_from_source_sha256: 4e8f8653e7a2222b3904cc3fe8e304cd8b339ce1d05fd24688162f86fb6df52c
+      model:
+        path: models/parity/derived/openvino-2026.1.0-fp32-static-b1/resnet18-v1-7.xml
+        sha256: c77b4b18c61da5a7c66b9b0b1be940afa81de1bd419b608cd4c8c3e1d4cbb579
+        size_bytes: 60599
+      reproducibility: byte_reproducible_observed
+      toolchain_ref: openvino_cpu
+      weights:
+        path: models/parity/derived/openvino-2026.1.0-fp32-static-b1/resnet18-v1-7.bin
+        sha256: 5495508a114ecb2fb6abd4c2fa1cc523fc2181459f108aa60d6d02bc05d17d0b
+        size_bytes: 46738880
+    semantic_claim: topology_load_proxy_only
+    slot_id: opaque_rn18
+    source_ref: resnet18_v1_7
+    tensorrt_engine:
+      artifact:
+        path: models/parity/derived/tensorrt-8.6.1.6-cuda12.2.2-cc86-fp32-static-b1/resnet18-v1-7.engine
+        sha256: 07031b0493b5f1d9e27beffd51e622b74cc204505536f8a1618bde3e904d8fbe
+        size_bytes: 62258620
+      canonical_argv:
+      - trtexec
+      - --onnx=SOURCE.onnx
+      - --saveEngine=DEST.engine
+      - --minShapes=data:1x3x224x224
+      - --optShapes=data:1x3x224x224
+      - --maxShapes=data:1x3x224x224
+      - --inputIOFormats=fp32:chw
+      - --outputIOFormats=fp32:chw
+      - --noTF32
+      - --memPoolSize=workspace:2048
+      - --builderOptimizationLevel=3
+      - --minTiming=1
+      - --avgTiming=8
+      - --noBuilderCache
+      - --skipInference
+      - --profilingVerbosity=detailed
+      - --tempfileControls=in_memory:allow,temporary:deny
+      canonical_argv_sha256: e146eb86d0c63617459a9165f2f04b708008370ffdd36695b40e796d68789221
+      derived_from_source_sha256: 4e8f8653e7a2222b3904cc3fe8e304cd8b339ce1d05fd24688162f86fb6df52c
+      engine_authority: archived_exact_engine_artifact
+      parser_facts:
+        int64_initializers_cast_to_int32: true
+        warning_disposition: non_blocking_if_numeric_parity_passes
+      rebuild_sha_expected: false
+      toolchain_ref: tensorrt_cuda
+  vehicle_type:
+    evidence:
+      calibration_corpus:
+        path: evidence/model_parity/v4_policy_calibration_physical_20260824/documents/vehicle_type/calibration_corpus.json
+        sha256: e98ff94f92c3c019f3a77b32cab97826b7ca33579252dd8978620713ae153105
+      cpu_execution_probe:
+        path: evidence/model_parity/v4_policy_calibration_physical_20260824/documents/vehicle_type/cpu_execution_probe.json
+        sha256: 0269e0109a3053b994eebcb02c57135001344bb54d387d12d8d87d56a5fd132d
+      cpu_policy_calibration:
+        path: evidence/model_parity/v4_policy_calibration_physical_20260824/documents/vehicle_type/cpu_policy_calibration.json
+        sha256: 153e0af9246f23f98b2d466fb919a54cce22c62e63e1e5f89577d4d6da360f6c
+      cpu_raw_output_bundle:
+        path: evidence/model_parity/v4_policy_calibration_physical_20260824/documents/vehicle_type/cpu_raw_output_bundle.json
+        sha256: 8bfb384b30fb1fb16aa11d8f9a165aa204b11ebf974a0e129ce2f8241c96ab64
+      cuda_execution_probe:
+        path: evidence/model_parity/v4_policy_calibration_physical_20260824/documents/vehicle_type/cuda_execution_probe.json
+        sha256: d9f509aa9b3ee4ef370ea6b00dade180975ec7adfc139720a9013dfac725719a
+      cuda_policy_calibration:
+        path: evidence/model_parity/v4_policy_calibration_physical_20260824/documents/vehicle_type/cuda_policy_calibration.json
+        sha256: a7dbb4b683214cf11ed570b386720bb67d83f784eeb3b281521b13c2f495ff2d
+      cuda_raw_output_bundle:
+        path: evidence/model_parity/v4_policy_calibration_physical_20260824/documents/vehicle_type/cuda_raw_output_bundle.json
+        sha256: 9d299c48ea21eb2807863200383f0e60f7250558e8ad7fe9bbb4930e4589ff80
+      evaluation_corpus:
+        path: evidence/model_parity/v4_policy_calibration_physical_20260824/documents/vehicle_type/evaluation_corpus.json
+        sha256: c16f784472548afc6c20740ad092b31642608c9ea8e31dfed198e089f11f6e40
+    openvino_ir:
+      canonical_argv:
+      - ovc
+      - SOURCE.onnx
+      - --output_model
+      - DEST.xml
+      - --input
+      - data[1,3,224,224]
+      - --output
+      - resnetv16_dense0_fwd
+      - --compress_to_fp16=False
+      canonical_argv_sha256: ee643db4c7cd0735b58bee4b2d158cc1c565a2291e51153115b4324894c147c3
+      derived_from_source_sha256: 883a41b2e30ddc2e422c108b091b5e70b92d37dc5c345a2c563dcae27971e2cc
+      model:
+        path: models/parity/derived/openvino-2026.1.0-fp32-static-b1/resnet34-v1-7.xml
+        sha256: 0f22a937abe289a5278c7e628145a6545e98c4857e2b196eb0a983eec1c07147
+        size_bytes: 107535
+      reproducibility: byte_reproducible_observed
+      toolchain_ref: openvino_cpu
+      weights:
+        path: models/parity/derived/openvino-2026.1.0-fp32-static-b1/resnet34-v1-7.bin
+        sha256: 957e1783c07a712c12bc61a22d359ee8fddf7b6e34bdd4bf2a5c09a6f8f212cf
+        size_bytes: 87156672
+    semantic_claim: topology_load_proxy_only
+    slot_id: opaque_rn34
+    source_ref: resnet34_v1_7
+    tensorrt_engine:
+      artifact:
+        path: models/parity/derived/tensorrt-8.6.1.6-cuda12.2.2-cc86-fp32-static-b1/resnet34-v1-7.engine
+        sha256: bfa8303f89639d4033ee71389e77c009bf3bf1ab7e526e91949e0e0870f885d9
+        size_bytes: 126793356
+      canonical_argv:
+      - trtexec
+      - --onnx=SOURCE.onnx
+      - --saveEngine=DEST.engine
+      - --minShapes=data:1x3x224x224
+      - --optShapes=data:1x3x224x224
+      - --maxShapes=data:1x3x224x224
+      - --inputIOFormats=fp32:chw
+      - --outputIOFormats=fp32:chw
+      - --noTF32
+      - --memPoolSize=workspace:2048
+      - --builderOptimizationLevel=3
+      - --minTiming=1
+      - --avgTiming=8
+      - --noBuilderCache
+      - --skipInference
+      - --profilingVerbosity=detailed
+      - --tempfileControls=in_memory:allow,temporary:deny
+      canonical_argv_sha256: e146eb86d0c63617459a9165f2f04b708008370ffdd36695b40e796d68789221
+      derived_from_source_sha256: 883a41b2e30ddc2e422c108b091b5e70b92d37dc5c345a2c563dcae27971e2cc
+      engine_authority: archived_exact_engine_artifact
+      parser_facts:
+        int64_initializers_cast_to_int32: true
+        warning_disposition: non_blocking_if_numeric_parity_passes
+      rebuild_sha_expected: false
+      toolchain_ref: tensorrt_cuda

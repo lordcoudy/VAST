@@ -4,11 +4,13 @@ import sys
 import unittest
 from pathlib import Path
 from types import SimpleNamespace
+from unittest import mock
 
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
+import checkpoint_savant_native_module as native_target  # noqa: E402
 from checkpoint_savant_native_module import (  # noqa: E402
     BASELINE_TOPOLOGY,
     BRANCHES,
@@ -16,6 +18,7 @@ from checkpoint_savant_native_module import (  # noqa: E402
     SavantAdmissionIngressFilter,
     SavantNativeModuleBinding,
     SavantNativeModuleError,
+    SavantNativeRouteBufferPlugin,
     build_native_frame_identity,
     build_native_module_artifact,
     build_native_module_matrix,
@@ -48,7 +51,7 @@ def descriptor(topology: str, stream_id: int = 3, branch: str = "damage") -> dic
         "source_process_id": f"source-stream-{stream_id}",
         "source_sha256": "a" * 64,
         "codec": "h264",
-        "dataset": "kpp_real_h264",
+        "dataset": "kpp_iss_publication_v3_h264",
         "policy": "heft",
         "deadline_ms": 33.3,
         "module_config_path": f"/opt/vast/checkpoint/generated/{module_id}.yml",
@@ -122,6 +125,15 @@ class FakeRuntime:
         self.admitted.append((frame, binding))
 
 
+class FakeBufferRouteRuntime(FakeRuntime):
+    def __init__(self) -> None:
+        super().__init__()
+        self.routes = []
+
+    def observe_route_buffer(self, buffer, binding, branch, *, sample, caps) -> None:
+        self.routes.append((buffer, binding, branch, sample, caps))
+
+
 class NativeModuleTests(unittest.TestCase):
     def test_canary_runtime_stays_nonpublication_and_records_native_identity(self) -> None:
         artifact = build_native_module_artifact(descriptor(BASELINE_TOPOLOGY), source())
@@ -159,21 +171,51 @@ class NativeModuleTests(unittest.TestCase):
         self.assertEqual(topology["routes"][0]["drop_policy"], "drop_newest")
         self.assertEqual(
             [item["element"] for item in config["pipeline"]["elements"]],
-            ["pyfunc", "queue", "pyfunc"],
-        )
-        self.assertEqual(
-            config["pipeline"]["elements"][-1]["class_name"],
-            "SavantNativeRoutePlugin",
+            ["pyfunc"],
         )
         self.assertFalse(artifact["publication_ready"])
         self.assertFalse(artifact["accepted_measurement_evidence_emitted"])
+
+    def test_post_demux_terminal_uses_buffer_pts_without_removed_nvds_batch_meta(self) -> None:
+        artifact = build_native_module_artifact(descriptor(BASELINE_TOPOLOGY), source())
+        binding = SavantNativeModuleBinding.from_json(artifact["binding_json"])
+        runtime = FakeBufferRouteRuntime()
+        register_native_runtime(binding.descriptor_sha256, runtime)
+        try:
+            plugin = SavantNativeRouteBufferPlugin(
+                binding_json=artifact["binding_json"], branch="damage"
+            )
+            buffer = SimpleNamespace(pts=7_000_000)
+            caps = object()
+            pad = SimpleNamespace(get_current_caps=lambda: caps)
+            plugin.gst_element = SimpleNamespace(
+                get_static_pad=lambda name: pad if name == "sink" else None
+            )
+            sample = object()
+            sample_factory = SimpleNamespace(
+                new=lambda actual_buffer, actual_caps, segment, info: (
+                    sample
+                    if (actual_buffer, actual_caps, segment, info)
+                    == (buffer, caps, None, None)
+                    else None
+                )
+            )
+            with mock.patch.object(
+                native_target, "Gst", SimpleNamespace(Sample=sample_factory)
+            ):
+                plugin.process_buffer(buffer)
+            self.assertEqual(
+                runtime.routes, [(buffer, binding, "damage", sample, caps)]
+            )
+        finally:
+            unregister_native_runtime(binding.descriptor_sha256, runtime)
 
     def test_shared_config_declares_native_tee_and_four_exact_routes(self) -> None:
         artifact = build_native_module_artifact(descriptor(SHARED_TOPOLOGY), source())
         topology = artifact["module_config"]["parameters"]["checkpoint_native_topology"]
         self.assertEqual(
             topology["shared_prefix"],
-            ["zeromq_source_bin", "savant_rs_video_decode_bin:nvv4l2decoder", "nvstreammux", "nvvideoconvert", "tee"],
+            ["zeromq_source_bin", "savant_rs_video_decode_bin:nvv4l2decoder", "nvstreammux", "nvvideoconvert", "capsfilter:video/x-raw,format=RGB", "tee"],
         )
         self.assertEqual(topology["route_count"], 4)
         self.assertEqual(tuple(route["branch"] for route in topology["routes"]), BRANCHES)

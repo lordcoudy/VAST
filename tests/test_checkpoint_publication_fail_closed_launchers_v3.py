@@ -94,7 +94,10 @@ class FailClosedPublicationLauncherV3Tests(unittest.TestCase):
                     launcher, self._argv(root, output, contract, digest)
                 )
                 self.assertEqual(status, 78)
-                self.assertFalse(launcher.PUBLICATION_READY)
+                self.assertEqual(
+                    launcher.PUBLICATION_READY,
+                    system == "gstreamer_custom",
+                )
                 self.assertEqual(assessment["system"], system)
                 self.assertTrue(assessment["contract_bytes_externally_pinned"])
                 self.assertTrue(assessment["canonical_contract_bytes_validated"])
@@ -113,7 +116,7 @@ class FailClosedPublicationLauncherV3Tests(unittest.TestCase):
                 self.assertFalse(
                     assessment["python_startup_filesystem_writes_attested"]
                 )
-                self.assertIn("arm_contract_v3_schema_not_implemented", assessment["blockers"])
+                self.assertIn("arm_contract_v3_semantics_invalid", assessment["blockers"])
                 self.assertEqual(
                     assessment["invocation_contract_sha256"],
                     invocation.publication_launcher_invocation_v3_contract()[

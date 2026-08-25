@@ -1,22 +1,32 @@
 ARG BASE_IMAGE=vast/openvino-native-probe:dlstreamer-2026.1
+ARG SOURCE_DATE_EPOCH=0
+
+FROM ${BASE_IMAGE} AS worker_builder
+
+ARG SOURCE_DATE_EPOCH
+USER root
+
+RUN install -d -m 0755 /opt/vast/worker-root/opt/vast/analytics
+
+COPY scripts/analytics_execution_protocol.py /opt/vast/worker-root/opt/vast/analytics/analytics_execution_protocol.py
+COPY scripts/analytics_execution_worker.py /opt/vast/worker-root/opt/vast/analytics/analytics_execution_worker.py
+COPY deploy/analytics_execution/openvino_worker.py /opt/vast/worker-root/opt/vast/analytics/openvino_worker.py
+
+RUN chmod 0555 /opt/vast/worker-root/opt/vast/analytics/openvino_worker.py \
+  && chmod 0444 \
+      /opt/vast/worker-root/opt/vast/analytics/analytics_execution_protocol.py \
+      /opt/vast/worker-root/opt/vast/analytics/analytics_execution_worker.py \
+  && find /opt/vast/worker-root -exec touch -h -d "@${SOURCE_DATE_EPOCH}" {} +
+
 FROM ${BASE_IMAGE}
 
-ARG EXPECTED_BASE_IMAGE_ID=sha256:1cd1537d05f9d83a82024d8742afb6d8b325f951f62d55ce1aeb904b1e88ec6d
+ARG EXPECTED_BASE_IMAGE_ID=sha256:5c43c6c1f95b3fbb4a95957d1d293b1272c1db6a44a7a2063aad3aeba7c951d1
 LABEL org.vast.analytics_worker.base_image_id="${EXPECTED_BASE_IMAGE_ID}"
 LABEL org.vast.analytics_worker.engine="openvino_cpu"
 
 USER root
 
-RUN install -d -m 0755 /opt/vast/analytics
-
-COPY scripts/analytics_execution_protocol.py /opt/vast/analytics/analytics_execution_protocol.py
-COPY scripts/analytics_execution_worker.py /opt/vast/analytics/analytics_execution_worker.py
-COPY deploy/analytics_execution/openvino_worker.py /opt/vast/analytics/openvino_worker.py
-
-RUN chmod 0555 /opt/vast/analytics/openvino_worker.py \
-  && chmod 0444 \
-      /opt/vast/analytics/analytics_execution_protocol.py \
-      /opt/vast/analytics/analytics_execution_worker.py
+COPY --from=worker_builder /opt/vast/worker-root/ /
 
 ENV PYTHONPATH=/opt/vast/analytics
 

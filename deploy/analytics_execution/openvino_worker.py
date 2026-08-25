@@ -281,6 +281,7 @@ class OpenVINOBackend:
             accelerator_memory_bytes=0,
             cuda_h2d_bytes=0,
             cuda_d2h_bytes=0,
+            cuda_transfer_intervals=(),
         )
 
 

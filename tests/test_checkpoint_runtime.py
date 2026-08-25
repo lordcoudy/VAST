@@ -127,8 +127,14 @@ class CheckpointRuntimeTests(unittest.TestCase):
         config = load_config(ROOT / "configs" / "experiments.yaml")
         datasets = load_config(ROOT / "configs" / "datasets.yaml")["datasets"]
         expected = {
-            "h264": ("kpp_real_h264", "nvh264dec,nvv4l2decoder"),
-            "h265": ("kpp_real_h265", "nvh265dec,nvv4l2decoder"),
+            "h264": (
+                "kpp_iss_publication_v3_h264",
+                "nvh264dec,nvv4l2decoder",
+            ),
+            "h265": (
+                "kpp_iss_publication_v3_h265",
+                "nvh265dec,nvv4l2decoder",
+            ),
         }
         for codec, (dataset_id, factories) in expected.items():
             with self.subTest(codec=codec):
@@ -466,17 +472,33 @@ class CheckpointRuntimeTests(unittest.TestCase):
             "adaptive_weights",
         ):
             with self.subTest(policy=policy):
-                with self.assertRaisesRegex(ContractError, "currently supports only exact cpu_only"):
-                    build_gstreamer_worker_specs(
-                        native_policy=policy,
-                        native_policy_deadline_ms=100.0,
-                        **common,
-                    )
+                policy_specs = build_gstreamer_worker_specs(
+                    native_policy=policy,
+                    native_policy_deadline_ms=100.0,
+                    analytics_execution_socket="/tmp/vast-analytics-execution.sock",
+                    analytics_preprocessing_contract_sha256=preprocessing_sha256,
+                    **common,
+                )
+                self.assertTrue(policy_specs)
+                self.assertTrue(all(
+                    spec.environment["SCHEDULER_POLICY"] == policy
+                    and list(spec.command)[list(spec.command).index("--policy") + 1]
+                    == policy
+                    for spec in policy_specs
+                ))
 
-        with self.assertRaisesRegex(ContractError, "currently supports only exact cpu_only"):
+        with self.assertRaisesRegex(ContractError, "requires one frozen policy"):
             build_gstreamer_worker_specs(
                 native_policy="cpu_only",
                 native_policy_deadline_ms=None,
+                **common,
+            )
+        with self.assertRaisesRegex(ContractError, "requires one frozen policy"):
+            build_gstreamer_worker_specs(
+                native_policy="unknown",
+                native_policy_deadline_ms=100.0,
+                analytics_execution_socket="/tmp/vast-analytics-execution.sock",
+                analytics_preprocessing_contract_sha256=preprocessing_sha256,
                 **common,
             )
 
@@ -1841,6 +1863,91 @@ class CheckpointRuntimeTests(unittest.TestCase):
         self.assertEqual({row["input_frame_key"] for row in emitted}, {input_frame_key})
         self.assertEqual(sum(row["event_kind"] == "join_complete" for row in emitted), 1)
         self.assertEqual(coordinator.unresolved_frames(), ())
+
+    def test_join_coordinator_keeps_v1_and_v2_shapes_strictly_separate(self) -> None:
+        bindings = [
+            WorkerBinding(
+                worker_id=branch,
+                stream_id=0,
+                branch_id=branch,
+                pid=1_300 + index,
+                execution_domain=f"host:pid-{1_300 + index}",
+                native_event_source=False,
+            )
+            for index, branch in enumerate(BRANCHES)
+        ]
+
+        def prefix(coordinator: DirectRuntimeJoinCoordinator, *, worker: str, pid: int) -> None:
+            source = f"{worker}:source"
+            decode = f"{worker}:decode"
+            preprocess = f"{worker}:preprocess"
+            analytics = f"{worker}:analytics"
+            for sequence, event_kind, stage, execution_id, parents in (
+                (1, "source_read", "source", source, []),
+                (2, "stage_complete", f"decode_{worker}", decode, [source]),
+                (3, "stage_complete", f"preprocess_{worker}", preprocess, [decode]),
+                (4, "stage_complete", worker, analytics, [preprocess]),
+            ):
+                coordinator.accept(
+                    message(
+                        worker_id=worker,
+                        sequence=sequence,
+                        event_kind=event_kind,
+                        stage=stage,
+                        branch_id=worker,
+                        execution_id=execution_id,
+                        parents=parents,
+                    ),
+                    observed_worker_id=worker,
+                    observed_pid=pid,
+                )
+
+        branch = BRANCHES[0]
+        v1 = DirectRuntimeJoinCoordinator(
+            run_id="run-1",
+            topology_kind=INDEPENDENT_PROCESSES,
+            topology_contract_version=1,
+            branches=BRANCHES,
+            bindings=bindings,
+        )
+        prefix(v1, worker=branch, pid=1_300)
+        with self.assertRaisesRegex(ContractError, "outside its .* chain"):
+            v1.accept(
+                message(
+                    worker_id=branch,
+                    sequence=5,
+                    event_kind="stage_complete",
+                    stage=f"postprocess_{branch}",
+                    branch_id=branch,
+                    execution_id=f"{branch}:postprocess",
+                    parents=[f"{branch}:analytics"],
+                ),
+                observed_worker_id=branch,
+                observed_pid=1_300,
+            )
+
+        v2 = DirectRuntimeJoinCoordinator(
+            run_id="run-1",
+            topology_kind=INDEPENDENT_PROCESSES,
+            topology_contract_version=2,
+            branches=BRANCHES,
+            bindings=bindings,
+        )
+        prefix(v2, worker=branch, pid=1_300)
+        with self.assertRaisesRegex(ContractError, "completion parent mismatch"):
+            v2.accept(
+                message(
+                    worker_id=branch,
+                    sequence=5,
+                    event_kind="branch_complete",
+                    stage=branch,
+                    branch_id=branch,
+                    execution_id=f"{branch}:complete",
+                    parents=[f"{branch}:analytics"],
+                ),
+                observed_worker_id=branch,
+                observed_pid=1_300,
+            )
 
     def test_native_predecode_ingress_drop_is_rejected_for_baseline(self) -> None:
         bindings = [

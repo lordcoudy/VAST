@@ -6,7 +6,7 @@ benchmark:
   dataset_manifest: configs/datasets.yaml
   default_dataset:
     smoke: smoke_testsrc
-    benchmark: kpp_real_h264
+    benchmark: kpp_iss_publication_v3_h264
   telemetry_schema_version: 2
   publishable_telemetry_sources:
   - native
@@ -39,9 +39,9 @@ benchmark:
     validator: scripts/resource_interval_contract.py
     validator_sha256: 9efa89efd0dd3aba9fa86a189099318e29b307192a46756cebe04f4fecbfeb5b
     fanout_emitter: deploy/native_gst_probe/checkpoint_resource_interval_emitter.hpp
-    fanout_emitter_sha256: aa54401630c0483713853f395e1cdfb28498aac050d5488ebcda5a11a8eaf52b
+    fanout_emitter_sha256: bfe4acf693999a48ee0d1f6aa902d9bd9bd7390593ea7d0b0b971f14a5143ee4
     fanout_binding: deploy/native_gst_probe/vast_native_gst_probe.cpp
-    fanout_binding_sha256: 18723aaa0a82e26ced6d88966bc87b807671b675ec875fdf8060ec1ff332babf
+    fanout_binding_sha256: 1422d194ed73af4737d6a462384359e355c66c7139d17865e9172114d778d571
     fanout_runtime_sidecar: resource_intervals.runtime.csv
     fanout_runtime_status: source_implemented_not_target_executed_not_accepted
     sidecar: resource_intervals.csv
@@ -92,25 +92,25 @@ benchmark:
   - 100
   - 500
   benchmark_datasets:
-  - kpp_real_h264
-  - kpp_real_h265
+  - kpp_iss_publication_v3_h264
+  - kpp_iss_publication_v3_h265
   report_datasets:
-  - kpp_real_h264
-  - kpp_real_h265
+  - kpp_iss_publication_v3_h264
+  - kpp_iss_publication_v3_h265
   scheduler_ablations:
   - no_queues
   - no_transfer_cost
   - no_deadline_penalty
   - no_adaptive_weights
   primary_architecture_contrast:
-    preregistration_version: 4
+    preregistration_version: 5
     status: preregistered_blocked_execution
-    selection_basis: preexisting_defaults_and_contract_capabilities_before_results
+    selection_basis: amended_for_frozen_kpp_iss_publication_v3_before_any_full_matrix_results
     baseline_scenario: checkpoint_independent_processes_baseline
     shared_scenario: checkpoint_video_dag_shared
     system: gstreamer_custom
     policy: static_hybrid
-    dataset: kpp_real_h264
+    dataset: kpp_iss_publication_v3_h264
     codec: h264
     deadline_ms: 100
     streams: 6
@@ -249,7 +249,7 @@ benchmark:
     - reset_state_verified
     - slo_drop_balance
   primary_policy_ablation:
-    preregistration_version: 4
+    preregistration_version: 5
     status: preregistered_blocked_execution
     selection_basis: reuse_preregistered_shared_cell_before_policy_results
     architecture_scenario: checkpoint_video_dag_shared
@@ -262,7 +262,7 @@ benchmark:
     feedback_lag_semantics: max_staleness_from_oldest_applied_snapshot
     policy_artifact: policies/ql_heft_frozen.policy
     policy_artifact_sha256: 0a961ae5e9e500dc3f07b386743b1a17c1991398018a44c5756d0f3a3b6045b5
-    dataset: kpp_real_h264
+    dataset: kpp_iss_publication_v3_h264
     codec: h264
     deadline_ms: 100
     streams: 6
@@ -412,7 +412,7 @@ scenarios:
     benchmark_status: supported
     benchmark_reason: The local gstreamer_custom publication adapter launches native process-per-detector workers, a common source coordinator, and fail-closed accepted telemetry.
     topology:
-      contract_version: 1
+      contract_version: 2
       kind: independent_processes
       routing_mode: all_branches_per_stream
       runtime_blueprint:
@@ -425,7 +425,7 @@ scenarios:
       - damage
       - foreign_object
     workload:
-      seed_group: kpp_real_codecs_v1
+      seed_group: kpp_iss_publication_v3_codecs_v1
       streams: 6
       logical_stream_instances: 6
       recorded_source_count: 2
@@ -437,22 +437,28 @@ scenarios:
       camera_layout:
       - stream_id: 0
         camera_role: plate_number
-        source: data/videos/kpp/2.avi
+        source_binding: selected_dataset_stream
+        source_role: front_gate
       - stream_id: 1
         camera_role: plate_number
-        source: data/videos/kpp/2.avi
+        source_binding: selected_dataset_stream
+        source_role: front_gate
       - stream_id: 2
         camera_role: vehicle_type
-        source: data/videos/kpp/2.avi
+        source_binding: selected_dataset_stream
+        source_role: front_gate
       - stream_id: 3
         camera_role: damage
-        source: data/videos/kpp/2.avi
+        source_binding: selected_dataset_stream
+        source_role: front_gate
       - stream_id: 4
         camera_role: damage
-        source: data/videos/kpp/2.avi
+        source_binding: selected_dataset_stream
+        source_role: front_gate
       - stream_id: 5
         camera_role: foreign_object
-        source: data/videos/kpp/1.avi
+        source_binding: selected_dataset_stream
+        source_role: underbody
       object_density:
         min: 1
         max: 12
@@ -460,15 +466,19 @@ scenarios:
     - decode_plate_number
     - preprocess_plate_number
     - plate_number
+    - postprocess_plate_number
     - decode_vehicle_type
     - preprocess_vehicle_type
     - vehicle_type
+    - postprocess_vehicle_type
     - decode_damage
     - preprocess_damage
     - damage
+    - postprocess_damage
     - decode_foreign_object
     - preprocess_foreign_object
     - foreign_object
+    - postprocess_foreign_object
     - aggregate
     - record
     placement:
@@ -477,15 +487,19 @@ scenarios:
         decode_plate_number: local
         preprocess_plate_number: local
         plate_number: local
+        postprocess_plate_number: local
         decode_vehicle_type: local
         preprocess_vehicle_type: local
         vehicle_type: local
+        postprocess_vehicle_type: local
         decode_damage: local
         preprocess_damage: local
         damage: local
+        postprocess_damage: local
         decode_foreign_object: local
         preprocess_foreign_object: local
         foreign_object: local
+        postprocess_foreign_object: local
         aggregate: local
         record: local
     network:
@@ -501,7 +515,7 @@ scenarios:
     benchmark_status: supported
     benchmark_reason: The local gstreamer_custom publication adapter launches the physical shared graph, a common source coordinator, and fail-closed accepted telemetry.
     topology:
-      contract_version: 1
+      contract_version: 2
       kind: shared_video_dag
       routing_mode: all_branches_per_stream
       runtime_blueprint:
@@ -515,7 +529,7 @@ scenarios:
       - damage
       - foreign_object
     workload:
-      seed_group: kpp_real_codecs_v1
+      seed_group: kpp_iss_publication_v3_codecs_v1
       streams: 6
       logical_stream_instances: 6
       recorded_source_count: 2
@@ -527,22 +541,28 @@ scenarios:
       camera_layout:
       - stream_id: 0
         camera_role: plate_number
-        source: data/videos/kpp/2.avi
+        source_binding: selected_dataset_stream
+        source_role: front_gate
       - stream_id: 1
         camera_role: plate_number
-        source: data/videos/kpp/2.avi
+        source_binding: selected_dataset_stream
+        source_role: front_gate
       - stream_id: 2
         camera_role: vehicle_type
-        source: data/videos/kpp/2.avi
+        source_binding: selected_dataset_stream
+        source_role: front_gate
       - stream_id: 3
         camera_role: damage
-        source: data/videos/kpp/2.avi
+        source_binding: selected_dataset_stream
+        source_role: front_gate
       - stream_id: 4
         camera_role: damage
-        source: data/videos/kpp/2.avi
+        source_binding: selected_dataset_stream
+        source_role: front_gate
       - stream_id: 5
         camera_role: foreign_object
-        source: data/videos/kpp/1.avi
+        source_binding: selected_dataset_stream
+        source_role: underbody
       object_density:
         min: 1
         max: 12
@@ -550,9 +570,13 @@ scenarios:
     - decode
     - preprocess
     - plate_number
+    - postprocess_plate_number
     - vehicle_type
+    - postprocess_vehicle_type
     - damage
+    - postprocess_damage
     - foreign_object
+    - postprocess_foreign_object
     - aggregate
     - record
     placement:
@@ -561,9 +585,13 @@ scenarios:
         decode: local
         preprocess: local
         plate_number: local
+        postprocess_plate_number: local
         vehicle_type: local
+        postprocess_vehicle_type: local
         damage: local
+        postprocess_damage: local
         foreign_object: local
+        postprocess_foreign_object: local
         aggregate: local
         record: local
     network:

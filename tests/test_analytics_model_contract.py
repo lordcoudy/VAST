@@ -118,6 +118,29 @@ class AnalyticsModelContractTests(unittest.TestCase):
         self.assertEqual(bindings["foreign_object"]["input_layout"], "NCHW")
         self.assertEqual(bindings["vehicle_type"]["output_semantics"], "openvino_detection_output_1x1nx7")
 
+    def test_exact_pin_map_uses_custodied_artifacts_not_mutated_manifest_paths(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            manifest = self._write_manifest(root)
+            secure = root / "secure"
+            secure.mkdir()
+            pinned: dict[str, str] = {}
+            for artifact in sorted(root.glob("model-*.*")):
+                target = secure / artifact.name
+                target.write_bytes(artifact.read_bytes())
+                pinned[_digest(target)] = str(target)
+                artifact.write_bytes(b"transient replacement\n")
+            bindings = load_analytics_model_bindings(
+                manifest,
+                required_branches=BRANCHES,
+                pinned_file_paths_by_sha256=pinned,
+            )
+        self.assertTrue(all(
+            Path(binding["model_path"]).parent.name == "secure"
+            and Path(binding["weights_path"]).parent.name == "secure"
+            for binding in bindings.values()
+        ))
+
     def test_rejects_duplicate_detector_ids_and_source_models(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             path = self._write_manifest(Path(tmp))

@@ -34,7 +34,8 @@ _MODULE = re.compile(
     r"vehicle_type|damage|foreign_object))|(?P<shared>shared-video-dag))$"
 )
 _INPUT_KEY = re.compile(
-    r"^(?P<dataset>kpp_real_h26[45]):(?P<stream>[0-5]):(?P<sha>[0-9a-f]{64}):"
+    r"^(?P<dataset>kpp_iss_publication_v3_h26[45]):(?P<stream>[0-5]):"
+    r"(?P<sha>[0-9a-f]{64}):"
     r"(?P<cycle>[0-9]+):(?P<pts>[0-9]+)$"
 )
 _FD_CONTRACT = {
@@ -198,10 +199,12 @@ def build_native_module_artifact(descriptor: Mapping[str, Any], source: Mapping[
         "route_count": len(routes),
         "shared_prefix": [
             "zeromq_source_bin", "savant_rs_video_decode_bin:nvv4l2decoder",
-            "nvstreammux", "nvvideoconvert", "tee",
+            "nvstreammux", "nvvideoconvert",
+            "capsfilter:video/x-raw,format=RGB", "tee",
         ] if binding.topology_kind == SHARED_TOPOLOGY else [
             "zeromq_source_bin", "savant_rs_video_decode_bin:nvv4l2decoder",
             "nvstreammux", "nvvideoconvert",
+            "capsfilter:video/x-raw,format=RGB",
         ],
         "routes": routes, "descriptor_sha256": binding.descriptor_sha256,
         "publication_ready": False,
@@ -213,18 +216,6 @@ def build_native_module_artifact(descriptor: Mapping[str, Any], source: Mapping[
         "kwargs": {"binding_json": binding_json},
     }
     elements = [prefix]
-    if binding.topology_kind == BASELINE_TOPOLOGY:
-        elements.extend([{
-            "element": "queue", "name": routes[0]["queue_name"],
-            "properties": {"max-size-buffers": 1, "max-size-bytes": 0,
-                           "max-size-time": 0, "leaky": "upstream"},
-        }, {
-            "element": "pyfunc", "name": routes[0]["terminal_name"],
-            "module": "checkpoint_savant_native_module",
-            "class_name": "SavantNativeRoutePlugin",
-            "kwargs": {"binding_json": binding_json,
-                       "branch": binding.branches[0]},
-        }])
     config = {
         "name": binding.module_id,
         "parameters": {
@@ -640,8 +631,13 @@ class SavantEngineeringCanaryRuntime:
 
 
 try:
+    from savant.base.pyfunc import BasePyFuncPlugin as _BasePyFuncPlugin
     from savant.deepstream.pyfunc import NvDsPyFuncPlugin as _PyFuncBase
 except (ImportError, OSError):
+    class _BasePyFuncPlugin:  # type: ignore[no-redef]
+        def __init__(self, **_: Any) -> None:
+            pass
+
     class _PyFuncBase:  # type: ignore[no-redef]
         def __init__(self, **_: Any) -> None:
             pass
@@ -681,6 +677,13 @@ class SavantNativePrefixPlugin(_PyFuncBase):
         _require(callable(getattr(runtime, "bind_decoder", None)),
                  "Savant runtime lacks decoder placement callback")
         runtime.bind_decoder("nvv4l2decoder", gpu_id)
+        graph_callback = getattr(runtime, "bind_loaded_graph", None)
+        if callable(graph_callback):
+            graph_callback(
+                root=root,
+                decoder=decoder,
+                prefix_element=self.gst_element,
+            )
         self._decoder_observation = ("nvv4l2decoder", gpu_id)
 
     def process_frame(self, buffer: Any, frame_meta: Any) -> None:
@@ -709,6 +712,37 @@ class SavantNativeRoutePlugin(_PyFuncBase):
             _require(callable(getattr(runtime, "await_route_join", None)),
                      "Savant runtime lacks physical route join")
             runtime.await_route_join(identity["input_frame_key"], self.binding)
+
+
+class SavantNativeRouteBufferPlugin(_BasePyFuncPlugin):
+    """Post-demux terminal that does not depend on removed NvDs batch metadata."""
+
+    def __init__(self, *, binding_json: str, branch: str, **kwargs: Any) -> None:
+        super().__init__(**kwargs)
+        self.binding = SavantNativeModuleBinding.from_json(binding_json)
+        _require(branch in self.binding.branches, "Savant route branch drifted")
+        self.branch = branch
+
+    def process_buffer(self, buffer: Any) -> None:
+        _require(int(getattr(buffer, "pts", -1)) >= 0,
+                 "Savant route buffer PTS is invalid")
+        runtime = _runtime(self.binding)
+        _require(
+            Gst is not None and getattr(self, "gst_element", None) is not None,
+            "Savant post-demux GStreamer element is unavailable",
+        )
+        pad = self.gst_element.get_static_pad("sink")
+        _require(pad is not None,
+                 "Savant post-demux terminal sink pad is missing")
+        caps = pad.get_current_caps()
+        _require(caps is not None,
+                 "Savant post-demux negotiated caps are missing")
+        sample = Gst.Sample.new(buffer, caps, None, None)
+        _require(sample is not None,
+                 "Savant post-demux Gst.Sample allocation failed")
+        callback = getattr(runtime, "observe_route_buffer", None)
+        _require(callable(callback), "Savant runtime lacks post-demux route callback")
+        callback(buffer, self.binding, self.branch, sample=sample, caps=caps)
 
 
 try:
@@ -746,28 +780,44 @@ class SavantCheckpointNvDsPipeline(_NvDsPipeline):
         return result
 
     def _add_source_output(self, source_info: Any, *args: Any, **kwargs: Any) -> Any:
-        if self.checkpoint_binding.topology_kind != SHARED_TOPOLOGY:
-            output_sink = super()._add_source_output(source_info, *args, **kwargs)
-            queue = self._pipeline.get_by_name(
-                self.checkpoint_topology["routes"][0]["queue_name"])
-            _require(queue is not None, "Savant baseline native queue is missing")
-            queue.connect("overrun", self._on_queue_overrun,
-                          self.checkpoint_binding.branches[0])
-            return output_sink
         self._check_pipeline_is_running()
         output_sink = super()._add_source_output(
             source_info, link_to_demuxer=False,
             source_output=kwargs.get("source_output"),
             buffer_processor=kwargs.get("buffer_processor"))
-        tee = self.add_element(PipelineElement(
-            "tee", name=f"vast_savant_shared_tee_{self.checkpoint_binding.stream_id}"),
+
+        converter = self.add_element(PipelineElement(
+            "nvvideoconvert",
+            name=f"vast_savant_rgb_converter_{self.checkpoint_binding.stream_id}"),
             link=False)
-        tee.sync_state_with_parent()
-        source_info.after_demuxer.append(tee)
-        self._link_demuxer_src_pad(tee.get_static_pad("sink"), source_info)
+        rgb_caps = self.add_element(PipelineElement(
+            "capsfilter",
+            name=f"vast_savant_rgb_caps_{self.checkpoint_binding.stream_id}",
+            properties={"caps": "video/x-raw,format=RGB"}),
+            link=False)
+        _require(converter.link(rgb_caps),
+                 "Savant native RGB conversion link failed")
+        self._link_demuxer_src_pad(converter.get_static_pad("sink"), source_info)
+        converter.sync_state_with_parent()
+        rgb_caps.sync_state_with_parent()
+        source_info.after_demuxer.extend([converter, rgb_caps])
+
+        tee = None
+        if self.checkpoint_binding.topology_kind == SHARED_TOPOLOGY:
+            tee = self.add_element(PipelineElement(
+                "tee",
+                name=f"vast_savant_shared_tee_{self.checkpoint_binding.stream_id}"),
+                link=False)
+            _require(rgb_caps.link(tee),
+                     "Savant native RGB prefix/tee link failed")
+            tee.sync_state_with_parent()
+            source_info.after_demuxer.append(tee)
+
         routes = list(self.checkpoint_topology.get("routes") or ())
-        _require(tuple(str(route.get("branch")) for route in routes) == BRANCHES,
-                 "Savant physical shared route order drifted")
+        _require(
+            tuple(str(route.get("branch")) for route in routes)
+            == self.checkpoint_binding.branches,
+            "Savant physical route order drifted")
         for index, route in enumerate(routes):
             branch = str(route["branch"])
             queue = self.add_element(PipelineElement(
@@ -777,7 +827,7 @@ class SavantCheckpointNvDsPipeline(_NvDsPipeline):
             queue.connect("overrun", self._on_queue_overrun, branch)
             plugin = self.add_element(PyFuncElement(
                 module="checkpoint_savant_native_module",
-                class_name="SavantNativeRoutePlugin",
+                class_name="SavantNativeRouteBufferPlugin",
                 kwargs={"binding_json": self.checkpoint_binding.to_json(),
                         "branch": branch},
                 name=str(route["terminal_name"])), link=False)
@@ -785,14 +835,20 @@ class SavantCheckpointNvDsPipeline(_NvDsPipeline):
             plugin.set_property("gst-pipeline", self)
             plugin.set_property("stream-pool-size", self._batch_size)
             _require(queue.link(plugin), "Savant native route queue link failed")
-            tee_pad = tee.request_pad_simple("src_%u")
-            _require(tee_pad is not None and
-                     tee_pad.link(queue.get_static_pad("sink")) == Gst.PadLinkReturn.OK,
-                     "Savant native tee route link failed")
+            if tee is None:
+                _require(rgb_caps.link(queue),
+                         "Savant native baseline route link failed")
+            else:
+                tee_pad = tee.request_pad_simple("src_%u")
+                _require(
+                    tee_pad is not None
+                    and tee_pad.link(queue.get_static_pad("sink"))
+                    == Gst.PadLinkReturn.OK,
+                    "Savant native tee route link failed")
             queue.sync_state_with_parent()
             plugin.sync_state_with_parent()
             source_info.after_demuxer.extend([queue, plugin])
-            if index == len(routes) - 1:
+            if tee is None or index == len(routes) - 1:
                 _require(plugin.get_static_pad("src").link(output_sink) == Gst.PadLinkReturn.OK,
                          "Savant native owner route output link failed")
             else:
@@ -823,6 +879,7 @@ __all__ = [
     "SavantAdmissionIngressFilter", "SavantCheckpointNvDsPipeline",
     "SavantNativeModuleBinding", "SavantNativeModuleError",
     "SavantNativePrefixPlugin", "SavantNativeRoutePlugin",
+    "SavantNativeRouteBufferPlugin",
     "SavantProtocolNativeRuntime", "SavantEngineeringCanaryRuntime",
     "build_native_frame_identity",
     "build_native_module_artifact", "build_native_module_matrix",

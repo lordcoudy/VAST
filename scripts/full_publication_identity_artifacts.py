@@ -19,12 +19,29 @@ BINDING_KIND = "vast_full_publication_identity_artifact_binding"
 SYSTEMS = ("deepstream", "savant", "openvino_gva", "gstreamer_custom")
 RESOURCES = ("cpu", "gpu")
 CODECS = ("h264", "h265")
+KPP_DATASET_BY_CODEC = {
+    "h264": "kpp_iss_publication_v3_h264",
+    "h265": "kpp_iss_publication_v3_h265",
+}
 TOPOLOGIES = ("independent_processes", "shared_video_dag")
 BRANCHES = ("plate_number", "vehicle_type", "damage", "foreign_object")
 PUBLICATION_SCOPE = "primary_architecture_full_resource_raw_evidence_v2"
 _SHA_RE = re.compile(r"^[0-9a-f]{64}$")
 _ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:+/-]{7,160}$")
 _PLACEHOLDERS = frozenset({"unknown", "placeholder", "unavailable", "engineering_canary"})
+_PARITY_ACCEPTANCE_FIELDS_V2 = {
+    "schema_version", "artifact_kind", "receipt", "accepted_manifest",
+    "accepted_assessment", "acceptance_identity_sha256",
+    "accepted_manifest_content_identity_sha256",
+    "canonical_assessment_identity_sha256", "evidence_count",
+    "evidence_sha256", "runtime_registries_sha256", "runtime_images_sha256",
+    "files", "files_sha256", "transaction_index", "binding_sha256",
+}
+_PARITY_TRANSACTION_FIELDS = {
+    "path", "size_bytes", "sha256", "transaction_sha256", "files_sha256",
+    "output_segments_sha256", "execution_bundle_count",
+    "execution_bundles_sha256",
+}
 _WINDOWS_RESERVED_NAMES = frozenset({
     "CON", "PRN", "AUX", "NUL",
     *(f"COM{index}" for index in range(1, 10)),
@@ -374,10 +391,15 @@ def _validate_parity_acceptance_binding(
         ) from error
     _require(
         isinstance(accepted, Mapping)
-        and accepted.get("schema_version") == 1
+        and accepted.get("schema_version") == 2
         and accepted.get("artifact_kind")
         == "vast_verified_model_parity_acceptance_binding",
         "model parity physical acceptance binding is invalid",
+    )
+    _exact(
+        accepted,
+        _PARITY_ACCEPTANCE_FIELDS_V2,
+        "model parity physical acceptance binding",
     )
     for field, expected in (
         ("receipt", receipt_record),
@@ -390,14 +412,35 @@ def _validate_parity_acceptance_binding(
         )
     files = accepted.get("files")
     _require(
-        type(files) is list and len(files) == 35,
-        "model parity acceptance must bind exact 35 files",
+        type(files) is list and len(files) == 36,
+        "model parity acceptance must bind exact 36 files",
     )
     _require(
         accepted.get("evidence_count") == 32
         and _valid_sha(accepted.get("evidence_sha256"))
+        and _valid_sha(accepted.get("acceptance_identity_sha256"))
+        and _valid_sha(accepted.get("accepted_manifest_content_identity_sha256"))
+        and _valid_sha(accepted.get("canonical_assessment_identity_sha256"))
+        and _valid_sha(accepted.get("runtime_registries_sha256"))
+        and _valid_sha(accepted.get("runtime_images_sha256"))
         and _valid_sha(accepted.get("binding_sha256")),
         "model parity physical acceptance coverage/identity drift",
+    )
+    transaction = _exact(
+        accepted.get("transaction_index"),
+        _PARITY_TRANSACTION_FIELDS,
+        "model parity transaction index",
+    )
+    _require(
+        transaction.get("execution_bundle_count") == 480
+        and all(
+            _valid_sha(transaction.get(field))
+            for field in (
+                "sha256", "transaction_sha256", "files_sha256",
+                "output_segments_sha256", "execution_bundles_sha256",
+            )
+        ),
+        "model parity transaction index coverage/identity drift",
     )
     _require(
         accepted.get("files_sha256") == _canonical_sha(files)
@@ -407,10 +450,31 @@ def _validate_parity_acceptance_binding(
         ),
         "model parity physical acceptance self-hash drift",
     )
-    expected_paths = {item["path"] for item in files}
+    file_descriptors: dict[str, Mapping[str, Any]] = {}
+    for position, descriptor in enumerate(files):
+        record = _exact(
+            descriptor,
+            {"path", "size_bytes", "sha256"},
+            f"model parity accepted file[{position}] descriptor",
+        )
+        path = record.get("path")
+        _require(
+            type(path) is str and path not in file_descriptors,
+            "model parity acceptance file set contains aliases",
+        )
+        file_descriptors[path] = record
+    expected_paths = set(file_descriptors)
     _require(
-        len(expected_paths) == 35,
+        len(expected_paths) == 36,
         "model parity acceptance file set contains aliases",
+    )
+    transaction_descriptor = {
+        field: transaction[field] for field in ("path", "size_bytes", "sha256")
+    }
+    _require(
+        file_descriptors.get(str(transaction.get("path")))
+        == transaction_descriptor,
+        "model parity transaction index descriptor drift",
     )
     # The parity loader has already physically rehashed them. Add the same exact
     # descriptors to the global identity registry so all downstream grants bind them.
@@ -528,7 +592,7 @@ def _validate_resource_capability(value: Mapping[str, Any]) -> None:
     datasets = _exact(value["datasets"], set(CODECS), "resource datasets")
     for codec in CODECS:
         dataset = _exact(datasets[codec], {"dataset_name", "manifest_identity_sha256", "source_sha256", "annotation_sha256"}, f"resource dataset {codec}")
-        _require(dataset["dataset_name"] == f"kpp_real_{codec}" and _valid_sha(dataset["manifest_identity_sha256"]) and _valid_sha(dataset["annotation_sha256"]), f"resource dataset {codec} identity drift")
+        _require(dataset["dataset_name"] == KPP_DATASET_BY_CODEC[codec] and _valid_sha(dataset["manifest_identity_sha256"]) and _valid_sha(dataset["annotation_sha256"]), f"resource dataset {codec} identity drift")
         sources = dataset["source_sha256"]
         _require(type(sources) is list and len(sources) == 2 and sources == sorted(set(sources)) and all(_valid_sha(source) for source in sources), f"resource dataset {codec} source identity drift")
     _validate_resource_systems(value["systems"])
@@ -598,7 +662,7 @@ def _validate_resource_pilots(value: Any, datasets: Mapping[str, Any]) -> None:
         observed.append(coordinate)
         _require(_valid_id(cell["run_id"]), f"resource pilot {coordinate} run_id is invalid")
         codec = coordinate[2]
-        _require(codec in CODECS and cell["dataset_name"] == f"kpp_real_{codec}" and cell["source_sha256"] == datasets[codec]["source_sha256"], f"resource pilot {coordinate} dataset binding drift")
+        _require(codec in CODECS and cell["dataset_name"] == KPP_DATASET_BY_CODEC[codec] and cell["source_sha256"] == datasets[codec]["source_sha256"], f"resource pilot {coordinate} dataset binding drift")
         evidence = _exact(cell["evidence_sha256"], evidence_roles, f"resource pilot {coordinate} evidence")
         _require(all(_valid_sha(item) for item in evidence.values()), f"resource pilot {coordinate} evidence identity is invalid")
         samples = _exact(cell["accepted_samples_by_branch"], set(BRANCHES), f"resource pilot {coordinate} samples")
@@ -1365,6 +1429,112 @@ def _validate_backends_v3(
     return normalized
 
 
+def _validate_backends_v4(
+    binding: Mapping[str, Any], *, registry: _Registry,
+    index_record: Mapping[str, Any], index_path: Path,
+    parity_identity: str, parity_acceptance_binding_sha256: str,
+    execution_identity: str,
+    policy_record: Mapping[str, Any], policy_receipt: Mapping[str, Any],
+    policy_outputs: Mapping[str, Any],
+    resource_record: Mapping[str, Any], resource_receipt: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Register an authenticated persisted Q4 graph in full identity."""
+    from backend_runtime_qualification_v4_persistence import (
+        BINDING_INDEX_FILENAME,
+        load_backend_runtime_qualification_v4_binding,
+    )
+
+    _require(
+        index_path.name == BINDING_INDEX_FILENAME,
+        "backend Q4 binding index filename drift",
+    )
+    try:
+        normalized = load_backend_runtime_qualification_v4_binding(
+            project_root=registry.root,
+            binding_index_path=index_path,
+        )
+    except Exception as error:
+        raise IdentityArtifactError(
+            f"persisted backend Q4 binding rejected: {error}"
+        ) from error
+    declared_receipts = _exact(
+        binding["receipts"], set(SYSTEMS), "backend Q4 receipt descriptors",
+    )
+    _require(
+        declared_receipts == normalized["receipts"]
+        and normalized["binding_index"] == dict(index_record),
+        "backend Q4 manifest descriptor binding drift",
+    )
+
+    physical_files = normalized.get("physical_files")
+    _require(
+        type(physical_files) is list and physical_files,
+        "backend Q4 physical file closure is missing",
+    )
+    for position, descriptor in enumerate(physical_files):
+        registered, _ = registry.add_shared(
+            descriptor, f"backend Q4 physical file[{position}]",
+        )
+        _require(
+            registered == descriptor,
+            f"backend Q4 physical file[{position}] descriptor drift",
+        )
+
+    expected_upstream = {
+        "dataset_manifest_sha256": policy_receipt["dataset_manifest_sha256"],
+        "policy_contract_sha256": policy_receipt["policy_contract_sha256"],
+        "policy_qualification_receipt_sha256": policy_record["sha256"],
+        "resource_contract_identity_sha256": resource_receipt[
+            "resource_contract_identity_sha256"
+        ],
+        "resource_qualification_receipt_sha256": resource_record["sha256"],
+        "analytics_execution_config_identity_sha256": execution_identity,
+        "model_parity_manifest_identity_sha256": parity_identity,
+        "model_parity_acceptance_binding_sha256": (
+            parity_acceptance_binding_sha256
+        ),
+    }
+    _require(
+        normalized["upstream_identities"] == expected_upstream,
+        "backend Q4 upstream/full-identity cross-binding drift",
+    )
+    policy_artifacts = _exact(
+        policy_outputs, {"capability_manifest", "calibration_mapping"},
+        "backend Q4 policy authority outputs",
+    )
+    for system in SYSTEMS:
+        system_binding = normalized["systems"][system]
+        for position, authority_record in enumerate(
+            system_binding["runtime_authorities"]
+        ):
+            authority = authority_record["artifact"]
+            _require(
+                authority.get("upstream_identities") == expected_upstream,
+                f"backend Q4 {system} authority[{position}] upstream drift",
+            )
+            policy = authority.get("policy_authority")
+            _require(
+                type(policy) is dict
+                and policy.get("capability", {}).get("descriptor")
+                == policy_artifacts["capability_manifest"]
+                and policy.get("calibration", {}).get("descriptor")
+                == policy_artifacts["calibration_mapping"],
+                f"backend Q4 {system} authority[{position}] policy outputs drift",
+            )
+            dataset = authority.get("dataset")
+            resource = authority.get("resource_contract")
+            _require(
+                type(dataset) is dict
+                and dataset.get("manifest", {}).get("sha256")
+                == expected_upstream["dataset_manifest_sha256"]
+                and type(resource) is dict
+                and resource.get("content_identity_sha256")
+                == expected_upstream["resource_contract_identity_sha256"],
+                f"backend Q4 {system} authority[{position}] semantic cross-binding drift",
+            )
+    return normalized
+
+
 def _validate_backends(binding: Any, *, registry: _Registry, parity_identity: str, parity_acceptance_binding_sha256: str, execution_identity: str, policy_record: Mapping[str, Any], policy_receipt: Mapping[str, Any], policy_outputs: Mapping[str, Any], resource_record: Mapping[str, Any], resource_receipt: Mapping[str, Any]) -> dict[str, Any]:
     item = _exact(binding, {"binding_index", "receipts"}, "backend runtime qualification binding")
     index_record, index_path = registry.add(
@@ -1374,6 +1544,17 @@ def _validate_backends(binding: Any, *, registry: _Registry, parity_identity: st
         registry, index_record, index_path,
         "backend runtime qualification binding index",
     )
+    if index_probe.get("schema_version") == 4:
+        return _validate_backends_v4(
+            item, registry=registry, index_record=index_record,
+            index_path=index_path,
+            parity_identity=parity_identity,
+            parity_acceptance_binding_sha256=parity_acceptance_binding_sha256,
+            execution_identity=execution_identity, policy_record=policy_record,
+            policy_receipt=policy_receipt, policy_outputs=policy_outputs,
+            resource_record=resource_record,
+            resource_receipt=resource_receipt,
+        )
     if index_probe.get("schema_version") == 3:
         return _validate_backends_v3(
             item, registry=registry, index_record=index_record,
@@ -1530,6 +1711,7 @@ __all__ = [
     "BINDING_KIND",
     "DEFAULT_MANIFEST",
     "IdentityArtifactError",
+    "KPP_DATASET_BY_CODEC",
     "MANIFEST_KIND",
     "SCHEMA_VERSION",
     "load_full_publication_identity_artifacts",

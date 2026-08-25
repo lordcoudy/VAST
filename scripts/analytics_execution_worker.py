@@ -62,6 +62,7 @@ class BackendInference:
     accelerator_memory_bytes: int
     cuda_h2d_bytes: int
     cuda_d2h_bytes: int
+    cuda_transfer_intervals: tuple[Mapping[str, Any], ...]
 
 
 class NativeInferenceBackend(Protocol):
@@ -103,6 +104,82 @@ def _visible(value: Any, label: str, maximum: int = 512) -> str:
 def _integer(value: Any, label: str, *, minimum: int = 0) -> int:
     _require(type(value) is int and value >= minimum, f"{label} must be an integer >= {minimum}")
     return int(value)
+
+
+_CUDA_TRANSFER_INTERVAL_FIELDS = {
+    "direction",
+    "host_start_monotonic_ns",
+    "host_end_monotonic_ns",
+    "device_elapsed_ns",
+    "bytes",
+    "device_id",
+    "timing_source",
+}
+
+
+def _validate_cuda_transfer_intervals(
+    value: Any,
+    *,
+    engine: str,
+    input_bytes: int,
+    output_bytes: int,
+    expected_device_id: str | None = None,
+) -> list[dict[str, Any]]:
+    _require(type(value) in {list, tuple}, "CUDA transfer intervals must be a list/tuple")
+    if engine == ENGINE_OPENVINO_CPU:
+        _require(len(value) == 0, "OpenVINO CPU backend cannot report CUDA intervals")
+        return []
+    _require(
+        engine == ENGINE_TENSORRT_CUDA and len(value) == 2,
+        "TensorRT CUDA backend must report exactly H2D and D2H intervals",
+    )
+    normalized: list[dict[str, Any]] = []
+    expected = (("h2d", input_bytes), ("d2h", output_bytes))
+    for index, ((direction, expected_bytes), raw) in enumerate(zip(expected, value, strict=True)):
+        interval = _exact(raw, _CUDA_TRANSFER_INTERVAL_FIELDS, f"CUDA transfer interval {index}")
+        _require(interval["direction"] == direction, "CUDA transfer interval order/direction drifted")
+        start_ns = _integer(
+            interval["host_start_monotonic_ns"],
+            f"CUDA {direction} host start",
+            minimum=1,
+        )
+        end_ns = _integer(
+            interval["host_end_monotonic_ns"],
+            f"CUDA {direction} host end",
+            minimum=1,
+        )
+        elapsed_ns = _integer(
+            interval["device_elapsed_ns"],
+            f"CUDA {direction} device elapsed",
+            minimum=1,
+        )
+        _require(start_ns < end_ns, f"CUDA {direction} host envelope is not positive")
+        _require(
+            elapsed_ns <= end_ns - start_ns,
+            f"CUDA {direction} device duration exceeds its host envelope",
+        )
+        payload_bytes = _integer(interval["bytes"], f"CUDA {direction} bytes", minimum=1)
+        _require(payload_bytes == expected_bytes, f"CUDA {direction} byte count drifted")
+        device_id = str(interval["device_id"])
+        _require(valid_gpu_uuid(device_id), f"CUDA {direction} GPU UUID is invalid")
+        if expected_device_id is not None:
+            _require(device_id == expected_device_id, f"CUDA {direction} GPU UUID binding mismatch")
+        _require(
+            interval["timing_source"] == "cudaEventElapsedTime",
+            f"CUDA {direction} timing source is not native cudaEventElapsedTime",
+        )
+        normalized.append(
+            {
+                "direction": direction,
+                "host_start_monotonic_ns": start_ns,
+                "host_end_monotonic_ns": end_ns,
+                "device_elapsed_ns": elapsed_ns,
+                "bytes": payload_bytes,
+                "device_id": device_id,
+                "timing_source": "cudaEventElapsedTime",
+            }
+        )
+    return normalized
 
 
 def validate_worker_capability(value: Any) -> dict[str, Any]:
@@ -219,7 +296,7 @@ def _validate_backend_result(
     *,
     engine: str,
     input_bytes: int,
-) -> tuple[bytes, list[dict[str, Any]], dict[str, int]]:
+) -> tuple[bytes, list[dict[str, Any]], dict[str, Any]]:
     _require(isinstance(result, BackendInference), "native analytics backend returned an invalid result type")
     output = bytes(result.output)
     _require(0 < len(output) <= MAX_TENSOR_BYTES, "native analytics backend output byte length is invalid")
@@ -253,9 +330,23 @@ def _validate_backend_result(
         "accelerator_memory_bytes": _integer(result.accelerator_memory_bytes, "native analytics accelerator memory"),
         "cuda_h2d_bytes": _integer(result.cuda_h2d_bytes, "native analytics CUDA H2D bytes"),
         "cuda_d2h_bytes": _integer(result.cuda_d2h_bytes, "native analytics CUDA D2H bytes"),
+        "cuda_transfer_intervals": _validate_cuda_transfer_intervals(
+            result.cuda_transfer_intervals,
+            engine=engine,
+            input_bytes=input_bytes,
+            output_bytes=len(output),
+        ),
     }
     if engine == ENGINE_OPENVINO_CPU:
-        _require(resources == {"accelerator_memory_bytes": 0, "cuda_h2d_bytes": 0, "cuda_d2h_bytes": 0}, "OpenVINO CPU backend cannot report CUDA transfer or accelerator allocation")
+        _require(
+            resources == {
+                "accelerator_memory_bytes": 0,
+                "cuda_h2d_bytes": 0,
+                "cuda_d2h_bytes": 0,
+                "cuda_transfer_intervals": [],
+            },
+            "OpenVINO CPU backend cannot report CUDA transfer or accelerator allocation",
+        )
     else:
         _require(resources["accelerator_memory_bytes"] > 0, "TensorRT CUDA backend must report device allocation")
         _require(resources["cuda_h2d_bytes"] == input_bytes, "TensorRT CUDA H2D bytes must equal the real input")
@@ -517,11 +608,28 @@ def validate_inference_response(
     _require(timing["inference_latency_ns"] == finished - started, "analytics execution latency binding mismatch")
     resources = _exact(
         response["resource"],
-        {"process_cpu_time_ns", "rss_before_bytes", "rss_after_bytes", "accelerator_memory_bytes", "cuda_h2d_bytes", "cuda_d2h_bytes"},
+        {
+            "process_cpu_time_ns", "rss_before_bytes", "rss_after_bytes",
+            "accelerator_memory_bytes", "cuda_h2d_bytes", "cuda_d2h_bytes",
+            "cuda_transfer_intervals",
+        },
         "analytics execution resource",
     )
     for field in resources:
+        if field == "cuda_transfer_intervals":
+            continue
         _integer(resources[field], f"analytics execution resource {field}")
+    _validate_cuda_transfer_intervals(
+        resources["cuda_transfer_intervals"],
+        engine=request["engine"],
+        input_bytes=request["tensor"]["byte_length"],
+        output_bytes=output_bytes,
+        expected_device_id=(
+            capability["device_id"]
+            if request["engine"] == ENGINE_TENSORRT_CUDA
+            else None
+        ),
+    )
     if request["engine"] == ENGINE_OPENVINO_CPU:
         _require(all(resources[field] == 0 for field in ("accelerator_memory_bytes", "cuda_h2d_bytes", "cuda_d2h_bytes")), "OpenVINO CPU response cannot claim CUDA resources")
     else:

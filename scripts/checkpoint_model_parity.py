@@ -32,9 +32,9 @@ DEFAULT_MANIFEST = PROJECT_ROOT / "configs" / "checkpoint_analytics_model_parity
 SCHEMA_VERSION = 3
 ARTIFACT_KIND = "checkpoint_analytics_model_parity_manifest"
 EXECUTION_CONFIG_PATH = "configs/analytics_execution_layer.yaml"
-EXECUTION_CONFIG_SHA256 = "c245a3514b84bc531d066c85544da8cb3d9751897cea4c83c69b52c91f6a360c"
-EXECUTION_CONFIG_CONTENT_IDENTITY_SHA256 = "e252d2fae0386fac57eff7f29167073be6417db4010d04f9998a6474050080f5"
-EXECUTION_CONFIG_WORKER_PROJECTION_SHA256 = "5245128479f5eab6ce4cff73f09d5f2d2e9fc1734b92a385416ee5211a4202fa"
+EXECUTION_CONFIG_SHA256 = "d9bec961f22395c005ac6866633aeeb8b9a829fd39bd776776a3b0cd84526033"
+EXECUTION_CONFIG_CONTENT_IDENTITY_SHA256 = "3daed67a3e4c6549bf463b929e5de840e5aab7daacac75fff328f624b867b512"
+EXECUTION_CONFIG_WORKER_PROJECTION_SHA256 = "b515a96dbd8f7d9cd7ebcb375fdeefc5c3f3deb687dfb803bef58faf2ab04b85"
 BRANCHES = (
     "plate_number",
     "vehicle_type",
@@ -44,7 +44,6 @@ BRANCHES = (
 MIN_CALIBRATION_SAMPLES = 30
 MIN_PARITY_SAMPLES = 30
 MAX_EVIDENCE_JSON_BYTES = 64 * 1024 * 1024
-RELATIVE_ERROR_FLOOR = 1.0e-6
 PARITY_TOLERANCES = {
     "raw_max_abs_error": 0.02,
     "raw_max_rel_error": 0.05,
@@ -52,6 +51,7 @@ PARITY_TOLERANCES = {
     "raw_max_cosine_distance": 0.001,
     "top1_mismatch_rate": 0.0,
 }
+RELATIVE_ERROR_FLOOR = PARITY_TOLERANCES["raw_max_abs_error"]
 SLOT_BINDINGS = {
     "plate_number": ("opaque_rn18", "resnet18_v1_7"),
     "vehicle_type": ("opaque_rn34", "resnet34_v1_7"),

@@ -145,6 +145,26 @@ class FakeExecutionClient:
     def infer(self, request: dict[str, object], payload: bytes) -> tuple[dict, bytes]:
         output = hashlib.sha256(payload).digest()
         cpu = request["engine"] == ENGINE_OPENVINO_CPU
+        transfer_intervals = [] if cpu else [
+            {
+                "direction": "h2d",
+                "host_start_monotonic_ns": 1_000_000,
+                "host_end_monotonic_ns": 1_400_000,
+                "device_elapsed_ns": 250_000,
+                "bytes": len(payload),
+                "device_id": self.attestation["device_id"],
+                "timing_source": "cudaEventElapsedTime",
+            },
+            {
+                "direction": "d2h",
+                "host_start_monotonic_ns": 1_500_000,
+                "host_end_monotonic_ns": 1_800_000,
+                "device_elapsed_ns": 200_000,
+                "bytes": len(output),
+                "device_id": self.attestation["device_id"],
+                "timing_source": "cudaEventElapsedTime",
+            },
+        ]
         provenance = {
             "worker_image_id": self.attestation["worker_image_id"],
             "worker_implementation_sha256": self.attestation["worker_implementation_sha256"],
@@ -203,6 +223,7 @@ class FakeExecutionClient:
                 "accelerator_memory_bytes": 0 if cpu else 4_096,
                 "cuda_h2d_bytes": 0 if cpu else len(payload),
                 "cuda_d2h_bytes": 0 if cpu else len(output),
+                "cuda_transfer_intervals": transfer_intervals,
             },
         }, output
 
@@ -235,6 +256,14 @@ class FakePolicyExchange:
             "decision_id": message["decision_id"],
             "accepted": True,
         }
+
+
+class FakeResourceRecorder:
+    def __init__(self) -> None:
+        self.calls: list[dict[str, object]] = []
+
+    def record_analytics_transfers(self, **values: object) -> None:
+        self.calls.append(copy.deepcopy(values))
 
 
 def endpoints(
@@ -287,6 +316,7 @@ class DeepStreamProtocolBridgeContractTests(unittest.TestCase):
         coordinator = DirectRuntimeJoinCoordinator(
             run_id=run_id,
             topology_kind=INDEPENDENT_PROCESSES,
+            topology_contract_version=2,
             branches=ANALYTICS_BRANCHES,
             bindings=bindings,
             coordinator_pid=9_999,
@@ -333,8 +363,30 @@ class DeepStreamProtocolBridgeContractTests(unittest.TestCase):
         self.assertEqual(coordinator.unresolved_frames(), ())
         self.assertEqual(sum(row["event_kind"] == "join_complete" for row in rows), 1)
         self.assertEqual(sum(row["event_kind"] == "source_read" for row in raw_events), 4)
+        canonical_prefix = f"{run_id}:0:0:"
+        self.assertTrue(all(
+            str(row["execution_id"]).startswith(canonical_prefix)
+            for row in raw_events
+            if row["event_kind"] != "source_read"
+        ))
+        self.assertTrue(all(
+            str(row["execution_id"]).startswith(
+                f"{run_id}:0:0:{row['worker_id']}:"
+            )
+            for row in raw_events
+            if row["event_kind"] == "source_read"
+        ))
         terminals = [row for row in raw_events if row["event_kind"] == "branch_complete"]
         self.assertEqual(len(terminals), 4)
+        by_id = {str(row["execution_id"]): row for row in raw_events}
+        for terminal in terminals:
+            branch = str(terminal["branch_id"])
+            postprocess = by_id[str(terminal["parent_execution_ids"][0])]
+            self.assertEqual(postprocess["event_kind"], "stage_complete")
+            self.assertEqual(postprocess["stage"], f"postprocess_{branch}")
+            analytics = by_id[str(postprocess["parent_execution_ids"][0])]
+            self.assertEqual(analytics["event_kind"], "stage_complete")
+            self.assertEqual(analytics["stage"], branch)
         self.assertTrue(all(row["protocol_version"] == 3 for row in terminals))
         self.assertTrue(all(
             row["protocol_version"] == 2
@@ -351,6 +403,7 @@ class DeepStreamProtocolBridgeContractTests(unittest.TestCase):
             for index, branch in enumerate(ANALYTICS_BRANCHES)
         }
         policy = FakePolicyExchange(placements)
+        resource_recorder = FakeResourceRecorder()
         binding = WorkerBinding(
             worker_id="deepstream-shared-0",
             stream_id=0,
@@ -362,6 +415,7 @@ class DeepStreamProtocolBridgeContractTests(unittest.TestCase):
         coordinator = DirectRuntimeJoinCoordinator(
             run_id=run_id,
             topology_kind=SHARED_VIDEO_DAG,
+            topology_contract_version=2,
             branches=ANALYTICS_BRANCHES,
             bindings=[binding],
             coordinator_pid=9_999,
@@ -387,6 +441,7 @@ class DeepStreamProtocolBridgeContractTests(unittest.TestCase):
             event_sink=sink,
             policy_exchange=policy,
             analytics_endpoints=endpoints(tuple(ANALYTICS_BRANCHES)),
+            resource_recorder=resource_recorder,
             clock_ms=StepClock(),
         )
         bridge.admit_access_unit(json.dumps(admitted))
@@ -410,11 +465,34 @@ class DeepStreamProtocolBridgeContractTests(unittest.TestCase):
         kinds = [row["event_kind"] for row in raw_events]
         self.assertEqual(kinds.count("source_read"), 1)
         self.assertEqual(kinds.count("fanout"), 4)
+        self.assertEqual(kinds.count("stage_complete"), 10)
         self.assertEqual(kinds.count("branch_complete"), 4)
+        by_id = {str(row["execution_id"]): row for row in raw_events}
+        for terminal in (
+            row for row in raw_events if row["event_kind"] == "branch_complete"
+        ):
+            branch = str(terminal["branch_id"])
+            postprocess = by_id[str(terminal["parent_execution_ids"][0])]
+            self.assertEqual(postprocess["stage"], f"postprocess_{branch}")
+            analytics = by_id[str(postprocess["parent_execution_ids"][0])]
+            self.assertEqual(analytics["stage"], branch)
+        self.assertTrue(all(
+            str(row["execution_id"]).startswith(f"{run_id}:0:0:")
+            for row in raw_events
+            if row["event_kind"] != "source_read"
+        ))
         terminals = [
             message for message in policy.messages if message["message_type"] == "terminal"
         ]
         self.assertEqual(len(terminals), 4)
+        self.assertEqual(len(resource_recorder.calls), 4)
+        self.assertEqual(
+            {
+                (str(row["branch"]), str(row["selected_resource"]))
+                for row in resource_recorder.calls
+            },
+            set(placements.items()),
+        )
         for message in terminals:
             branch = str(message["branch"])
             expected = capability(branch, placements[branch])

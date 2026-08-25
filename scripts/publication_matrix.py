@@ -12,7 +12,10 @@ from backend_publication_dispatch import (
     BackendPublicationDispatchError,
     BackendPublicationDispatchResolver,
 )
-from backend_runtime_grant import assess_pre_run_backend_runtime_grant
+from backend_runtime_grant import (
+    assess_pre_run_backend_runtime_grant,
+    backend_launcher_output_receipt_protocol_ready,
+)
 from benchmark_contract import ContractError, assess_pre_run_resource_capability_grant
 from publication_policy_contract import (
     POLICIES as PUBLICATION_POLICIES,
@@ -23,8 +26,8 @@ from model_parity_grant import assess_pre_run_model_parity_grant
 
 
 FULL_RESOURCE_PUBLICATION_SCOPE = "primary_architecture_full_resource_raw_evidence_v2"
-FULL_MATRIX_SCHEMA_VERSION = 2
-FULL_MATRIX_IDENTITY_SCHEMA_VERSION = 2
+FULL_MATRIX_SCHEMA_VERSION = 3
+FULL_MATRIX_IDENTITY_SCHEMA_VERSION = 3
 PUBLISHABLE_SYSTEMS = (
     "deepstream",
     "savant",
@@ -36,8 +39,8 @@ CHECKPOINT_SCENARIOS = (
     "checkpoint_video_dag_shared",
 )
 DATASET_BY_CODEC = {
-    "h264": "kpp_real_h264",
-    "h265": "kpp_real_h265",
+    "h264": "kpp_iss_publication_v3_h264",
+    "h265": "kpp_iss_publication_v3_h265",
 }
 EXPECTED_RESOURCE_COMPONENTS = {
     "transfer",
@@ -267,7 +270,12 @@ def validate_full_publication_readiness(
         )
     except BackendPublicationDispatchError:
         pass
-    launcher_output_receipt_protocol_ready = False
+    # This is derived only from a fully validated schema-v3 grant whose four
+    # launcher authorities and parent-owned production transaction/receipt
+    # protocol files are identity-registered.  Schema-v2 grants remain blocked.
+    launcher_output_receipt_protocol_ready = (
+        backend_launcher_output_receipt_protocol_ready(backend_runtime_grant)
+    )
 
     blocked_arms = 0
     blocked_by_system: Counter[str] = Counter()

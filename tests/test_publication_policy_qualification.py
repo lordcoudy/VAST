@@ -87,14 +87,21 @@ def _fixture(root: Path) -> tuple[Path, dict]:
                     "runtime_binding": f"{system}:{branch}:{resource}:worker-v1",
                     "runtime_identity": {
                         "runtime_backend": f"{system}-{resource}-native-backend-v1",
-                        "device_api": "HOST_CPU" if resource == "cpu" else "NVIDIA_CUDA",
+                        "device_api": "CPU" if resource == "cpu" else "NVIDIA_CUDA",
+                        "gpu_id": None if resource == "cpu" else 0,
                         "worker_image_digest": "sha256:" + f"{len(bindings) + 1:064x}",
                         "implementation_version": f"{system}-{branch}-{resource}-v1",
+                        "terminal_detector": f"model-{system}-{branch}-{resource}-v1",
+                        "terminal_backend": (
+                            f"analytics-execution:openvino_cpu;runtime=OpenVINO;native_api=CompiledModel;device=CPU"
+                            if resource == "cpu"
+                            else f"analytics-execution:tensorrt_cuda;runtime=TensorRT;native_api=enqueueV3;device=NVIDIA_CUDA:0"
+                        ),
                     },
                 })
 
     evidence_names = {
-        "checkpoint_acceptance": "checkpoint_publication_acceptance.json",
+        "checkpoint_acceptance": "checkpoint_qualification_pilot_acceptance.json",
         "policy_decisions_jsonl": "publication_policy_decisions.jsonl",
         "resource_intervals": "resource_intervals.csv",
         "ingress_ledger": "ingress_ledger.csv",
@@ -130,6 +137,66 @@ def _fixture(root: Path) -> tuple[Path, dict]:
     return index_path, index
 
 
+def _fragment_bound_fixture(root: Path) -> tuple[Path, dict]:
+    index_path, index = _fixture(root)
+    fragment_bound = []
+    for system in SYSTEMS:
+        source_rows = [row for row in index["bindings"] if row["system"] == system]
+        policy_rows = []
+        for row in source_rows:
+            artifact = row["implementation_artifact"]
+            policy_rows.append({
+                "role": "policy",
+                "branch": row["branch"],
+                "resource": row["resource"],
+                "path": artifact["path"],
+                "size": artifact["size_bytes"],
+                "sha256": artifact["sha256"],
+                "implementation_id": row["implementation_id"],
+                "emitter_id": row["emitter_id"],
+                "runtime_identity": copy.deepcopy(row["runtime_identity"]),
+            })
+        fragment = {
+            "schema_version": 1,
+            "artifact_kind": "vast_publication_qualification_system_fragment_v1",
+            "system": system,
+            "policy_bindings": policy_rows,
+            "resource_bindings": [],
+            "pilots": [],
+        }
+        fragment_path = root / "artifacts" / f"{system}-qualification-fragment.json"
+        fragment_path.write_text(json.dumps(fragment, sort_keys=True) + "\n", encoding="utf-8")
+        fragment_descriptor = _descriptor(root, fragment_path)
+        for row in source_rows:
+            binding_artifact = copy.deepcopy(row["implementation_artifact"])
+            fragment_bound.append({
+                "system": row["system"],
+                "branch": row["branch"],
+                "resource": row["resource"],
+                "implementation_id": row["implementation_id"],
+                "emitter_id": row["emitter_id"],
+                "binding_artifact": binding_artifact,
+                "fragment_artifact": copy.deepcopy(fragment_descriptor),
+                "runtime_binding": (
+                    f"{row['system']}:{row['branch']}:{row['resource']}:"
+                    f"fragment-v1:{binding_artifact['sha256']}"
+                ),
+                "runtime_identity": copy.deepcopy(row["runtime_identity"]),
+            })
+    index["schema_version"] = 2
+    index["bindings"] = fragment_bound
+    index_path.write_text(json.dumps(index, sort_keys=True) + "\n", encoding="utf-8")
+    return index_path, index
+
+
+def _fake_fragment_validator(system: str, fragment_path: Path, project_root: Path) -> dict:
+    del project_root
+    value = json.loads(fragment_path.read_text(encoding="utf-8"))
+    if value.get("system") != system:
+        raise target.QualificationError("fake fragment system drift")
+    return value
+
+
 def _fake_pilot_validator(pilot: dict, context: dict) -> list[dict]:
     del context
     rows = []
@@ -148,6 +215,15 @@ def _fake_pilot_validator(pilot: dict, context: dict) -> list[dict]:
 
 
 class PublicationPolicyQualificationTests(unittest.TestCase):
+    def test_active_publication_dataset_ids_are_kpp_iss_v3(self) -> None:
+        self.assertEqual(
+            target.KPP_DATASET_BY_CODEC,
+            {
+                "h264": "kpp_iss_publication_v3_h264",
+                "h265": "kpp_iss_publication_v3_h265",
+            },
+        )
+
     def _assess(self, root: Path, index_path: Path) -> dict:
         with mock.patch.object(target, "_load_policy_contract", return_value=_PolicyApi):
             return target.assess_policy_qualification(project_root=root, index_path=index_path, pilot_validator=_fake_pilot_validator)
@@ -165,7 +241,81 @@ class PublicationPolicyQualificationTests(unittest.TestCase):
             self.assertEqual(row["samples"], 120)
             self.assertAlmostEqual(row["service_ms"], 1.145)
             self.assertEqual(row["transfer_ms"], 0.5)
+            binding = assessment["capability_manifest"]["systems"]["deepstream"]["branches"]["plate_number"]["gpu"]
+            self.assertEqual(
+                set(binding["runtime_identity"]),
+                {
+                    "runtime_backend",
+                    "device_api",
+                    "gpu_id",
+                    "worker_image_digest",
+                    "implementation_version",
+                    "terminal_detector",
+                    "terminal_backend",
+                },
+            )
+            for field, value in binding["runtime_identity"].items():
+                self.assertEqual(binding[field], value)
             self.assertFalse((root / target.CAPABILITY_MANIFEST_FILENAME).exists())
+
+    def test_runtime_identity_requires_terminal_and_exact_cpu_gpu_coordinates(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            index_path, index = _fixture(root)
+            index["bindings"][0]["runtime_identity"].pop("terminal_backend")
+            index_path.write_text(json.dumps(index, sort_keys=True) + "\n", encoding="utf-8")
+            missing = self._assess(root, index_path)
+            self.assertFalse(missing["passed"])
+            self.assertIn("runtime_identity fields", " ".join(missing["blockers"]))
+
+            index_path, index = _fixture(root)
+            cpu = next(item for item in index["bindings"] if item["resource"] == "cpu")
+            cpu["runtime_identity"]["gpu_id"] = 0
+            index_path.write_text(json.dumps(index, sort_keys=True) + "\n", encoding="utf-8")
+            mismatched = self._assess(root, index_path)
+            self.assertFalse(mismatched["passed"])
+            self.assertIn("CPU runtime identity", " ".join(mismatched["blockers"]))
+
+    def test_schema_v2_derives_bindings_only_from_revalidated_system_fragments(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            index_path, index = _fragment_bound_fixture(root)
+            with mock.patch.object(target, "_load_policy_contract", return_value=_PolicyApi):
+                assessment = target.assess_policy_qualification(
+                    project_root=root,
+                    index_path=index_path,
+                    pilot_validator=_fake_pilot_validator,
+                    fragment_validator=_fake_fragment_validator,
+                )
+            self.assertTrue(assessment["passed"], assessment["blockers"])
+            binding = assessment["capability_manifest"]["systems"]["deepstream"][
+                "branches"
+            ]["plate_number"]["cpu"]
+            source = next(
+                row for row in index["bindings"]
+                if (row["system"], row["branch"], row["resource"])
+                == ("deepstream", "plate_number", "cpu")
+            )
+            self.assertEqual(binding["implementation_sha256"], source["binding_artifact"]["sha256"])
+            self.assertEqual(binding["native_evidence"]["emitter_sha256"], source["binding_artifact"]["sha256"])
+
+            drifted = copy.deepcopy(index)
+            row = next(
+                value for value in drifted["bindings"]
+                if (value["system"], value["branch"], value["resource"])
+                == ("savant", "damage", "gpu")
+            )
+            row["emitter_id"] += "-relabelled"
+            index_path.write_text(json.dumps(drifted, sort_keys=True) + "\n", encoding="utf-8")
+            with mock.patch.object(target, "_load_policy_contract", return_value=_PolicyApi):
+                rejected = target.assess_policy_qualification(
+                    project_root=root,
+                    index_path=index_path,
+                    pilot_validator=_fake_pilot_validator,
+                    fragment_validator=_fake_fragment_validator,
+                )
+            self.assertFalse(rejected["passed"])
+            self.assertIn("fragment policy binding drift", " ".join(rejected["blockers"]))
 
     def test_missing_cell_duplicate_sample_and_hash_drift_fail_closed(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -230,8 +380,15 @@ class PublicationPolicyQualificationTests(unittest.TestCase):
         import inspect
 
         source = inspect.getsource(target._default_pilot_validator)
+        self.assertIn(
+            "validate_checkpoint_qualification_pilot_acceptance_v1", source
+        )
+        self.assertNotIn(
+            "validate_checkpoint_acceptance_metadata_binding_envelope", source
+        )
         self.assertIn("accepted_arm_evidence_files", source)
         self.assertIn("expected_identity[\"policy\"]", source)
+        self.assertIn('"contract_version": 2', source)
         self.assertNotIn("policy_feedback.csv", source)
 
     def test_promotion_writes_receipt_last_and_is_immutable(self) -> None:

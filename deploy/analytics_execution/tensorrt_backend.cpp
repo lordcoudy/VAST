@@ -4,9 +4,11 @@
 
 #include <algorithm>
 #include <array>
+#include <cmath>
 #include <cstdint>
 #include <cstdio>
 #include <cstring>
+#include <ctime>
 #include <fstream>
 #include <limits>
 #include <memory>
@@ -43,6 +45,37 @@ void check_cuda(cudaError_t status, const char* operation) {
   if (status != cudaSuccess) {
     throw std::runtime_error(std::string(operation) + ": " + cudaGetErrorString(status));
   }
+}
+
+std::uint64_t monotonic_ns() {
+  timespec value{};
+  if (clock_gettime(CLOCK_MONOTONIC, &value) != 0 || value.tv_sec < 0 ||
+      value.tv_nsec < 0) {
+    throw std::runtime_error("clock_gettime CLOCK_MONOTONIC failed");
+  }
+  return static_cast<std::uint64_t>(value.tv_sec) * 1'000'000'000ULL +
+      static_cast<std::uint64_t>(value.tv_nsec);
+}
+
+std::uint64_t cuda_event_elapsed_ns(
+    cudaEvent_t start, cudaEvent_t end, const char* operation) {
+  float elapsed_ms = 0.0F;
+  check_cuda(cudaEventElapsedTime(&elapsed_ms, start, end), operation);
+  if (!std::isfinite(elapsed_ms) || elapsed_ms <= 0.0F) {
+    throw std::runtime_error(std::string(operation) +
+        ": CUDA event elapsed time is not positive");
+  }
+  const double elapsed_ns = static_cast<double>(elapsed_ms) * 1'000'000.0;
+  if (elapsed_ns > static_cast<double>(std::numeric_limits<std::uint64_t>::max())) {
+    throw std::runtime_error(std::string(operation) +
+        ": CUDA event elapsed time exceeds uint64");
+  }
+  const auto rounded = static_cast<std::uint64_t>(std::llround(elapsed_ns));
+  if (rounded == 0) {
+    throw std::runtime_error(std::string(operation) +
+        ": CUDA event elapsed time rounded to zero");
+  }
+  return rounded;
 }
 
 std::vector<std::uint8_t> read_file(const char* path) {
@@ -146,6 +179,10 @@ struct Session {
   nvinfer1::ICudaEngine* engine = nullptr;
   nvinfer1::IExecutionContext* context = nullptr;
   cudaStream_t stream = nullptr;
+  cudaEvent_t h2d_start_event = nullptr;
+  cudaEvent_t h2d_end_event = nullptr;
+  cudaEvent_t d2h_start_event = nullptr;
+  cudaEvent_t d2h_end_event = nullptr;
   TensorBinding input;
   std::vector<TensorBinding> outputs;
   std::uint64_t allocation_bytes = 0;
@@ -162,6 +199,18 @@ struct Session {
       if (output.device != nullptr) {
         cudaFree(output.device);
       }
+    }
+    if (h2d_start_event != nullptr) {
+      cudaEventDestroy(h2d_start_event);
+    }
+    if (h2d_end_event != nullptr) {
+      cudaEventDestroy(h2d_end_event);
+    }
+    if (d2h_start_event != nullptr) {
+      cudaEventDestroy(d2h_start_event);
+    }
+    if (d2h_end_event != nullptr) {
+      cudaEventDestroy(d2h_end_event);
     }
     if (stream != nullptr) {
       cudaStreamDestroy(stream);
@@ -226,6 +275,14 @@ std::unique_ptr<Session> create_session(
     throw std::runtime_error("cannot create TensorRT execution context");
   }
   check_cuda(cudaStreamCreateWithFlags(&session->stream, cudaStreamNonBlocking), "cudaStreamCreateWithFlags");
+  check_cuda(cudaEventCreateWithFlags(&session->h2d_start_event, cudaEventDefault),
+             "cudaEventCreateWithFlags H2D start");
+  check_cuda(cudaEventCreateWithFlags(&session->h2d_end_event, cudaEventDefault),
+             "cudaEventCreateWithFlags H2D end");
+  check_cuda(cudaEventCreateWithFlags(&session->d2h_start_event, cudaEventDefault),
+             "cudaEventCreateWithFlags D2H start");
+  check_cuda(cudaEventCreateWithFlags(&session->d2h_end_event, cudaEventDefault),
+             "cudaEventCreateWithFlags D2H end");
   const int count = session->engine->getNbIOTensors();
   if (count < 2 || count > 65) {
     throw std::runtime_error("TensorRT engine I/O tensor count is invalid");
@@ -274,6 +331,15 @@ const char* runtime_version() {
 }  // namespace
 
 extern "C" {
+
+struct VastCudaTransferTiming {
+  std::uint64_t h2d_host_start_monotonic_ns;
+  std::uint64_t h2d_host_end_monotonic_ns;
+  std::uint64_t h2d_device_elapsed_ns;
+  std::uint64_t d2h_host_start_monotonic_ns;
+  std::uint64_t d2h_host_end_monotonic_ns;
+  std::uint64_t d2h_device_elapsed_ns;
+};
 
 const char* vast_trt_runtime_version() noexcept {
   return runtime_version();
@@ -403,13 +469,16 @@ int vast_trt_infer(
     void* output,
     std::uint64_t output_capacity,
     std::uint64_t* output_bytes,
+    VastCudaTransferTiming* transfer_timing,
     char* error,
     std::size_t error_capacity) noexcept {
   try {
     auto* session = static_cast<Session*>(opaque);
-    if (session == nullptr || input == nullptr || output == nullptr || output_bytes == nullptr) {
+    if (session == nullptr || input == nullptr || output == nullptr ||
+        output_bytes == nullptr || transfer_timing == nullptr) {
       throw std::runtime_error("TensorRT inference pointer is null");
     }
+    *transfer_timing = VastCudaTransferTiming{};
     if (input_bytes != session->input.bytes) {
       throw std::runtime_error("TensorRT input byte length differs from the engine binding");
     }
@@ -421,17 +490,51 @@ int vast_trt_infer(
       throw std::runtime_error("TensorRT output buffer is too small");
     }
     check_cuda(cudaSetDevice(session->device_index), "cudaSetDevice");
+    const std::uint64_t h2d_host_start_ns = monotonic_ns();
+    check_cuda(cudaEventRecord(session->h2d_start_event, session->stream),
+               "cudaEventRecord H2D start");
     check_cuda(cudaMemcpyAsync(session->input.device, input, static_cast<std::size_t>(input_bytes), cudaMemcpyHostToDevice, session->stream), "cudaMemcpyAsync H2D");
+    check_cuda(cudaEventRecord(session->h2d_end_event, session->stream),
+               "cudaEventRecord H2D end");
     if (!session->context->enqueueV3(session->stream)) {
       throw std::runtime_error("TensorRT enqueueV3 failed");
     }
+    const std::uint64_t d2h_host_start_ns = monotonic_ns();
+    check_cuda(cudaEventRecord(session->d2h_start_event, session->stream),
+               "cudaEventRecord D2H start");
     std::uint64_t offset = 0;
     auto* output_bytes_pointer = static_cast<std::uint8_t*>(output);
     for (const auto& tensor : session->outputs) {
       check_cuda(cudaMemcpyAsync(output_bytes_pointer + offset, tensor.device, static_cast<std::size_t>(tensor.bytes), cudaMemcpyDeviceToHost, session->stream), "cudaMemcpyAsync D2H");
       offset += tensor.bytes;
     }
+    check_cuda(cudaEventRecord(session->d2h_end_event, session->stream),
+               "cudaEventRecord D2H end");
     check_cuda(cudaStreamSynchronize(session->stream), "cudaStreamSynchronize");
+    const std::uint64_t host_end_ns = monotonic_ns();
+    transfer_timing->h2d_host_start_monotonic_ns = h2d_host_start_ns;
+    transfer_timing->h2d_host_end_monotonic_ns = host_end_ns;
+    transfer_timing->h2d_device_elapsed_ns = cuda_event_elapsed_ns(
+        session->h2d_start_event, session->h2d_end_event,
+        "cudaEventElapsedTime H2D");
+    transfer_timing->d2h_host_start_monotonic_ns = d2h_host_start_ns;
+    transfer_timing->d2h_host_end_monotonic_ns = host_end_ns;
+    transfer_timing->d2h_device_elapsed_ns = cuda_event_elapsed_ns(
+        session->d2h_start_event, session->d2h_end_event,
+        "cudaEventElapsedTime D2H");
+    if (transfer_timing->h2d_host_start_monotonic_ns >=
+            transfer_timing->h2d_host_end_monotonic_ns ||
+        transfer_timing->d2h_host_start_monotonic_ns >=
+            transfer_timing->d2h_host_end_monotonic_ns ||
+        transfer_timing->h2d_device_elapsed_ns >
+            transfer_timing->h2d_host_end_monotonic_ns -
+                transfer_timing->h2d_host_start_monotonic_ns ||
+        transfer_timing->d2h_device_elapsed_ns >
+            transfer_timing->d2h_host_end_monotonic_ns -
+                transfer_timing->d2h_host_start_monotonic_ns) {
+      throw std::runtime_error(
+          "CUDA event duration is outside its CLOCK_MONOTONIC host envelope");
+    }
     *output_bytes = required_output;
     return 0;
   } catch (const std::exception& exception) {

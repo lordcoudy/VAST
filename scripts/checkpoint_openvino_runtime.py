@@ -35,12 +35,12 @@ SCENARIOS = {
 }
 CODEC_CONTRACTS = {
     "h264": {
-        "dataset": "kpp_real_h264",
+        "dataset": "kpp_iss_publication_v3_h264",
         "compressed_caps": "video/x-h264",
         "parser_factory": "h264parse",
     },
     "h265": {
-        "dataset": "kpp_real_h265",
+        "dataset": "kpp_iss_publication_v3_h265",
         "compressed_caps": "video/x-h265",
         "parser_factory": "h265parse",
     },

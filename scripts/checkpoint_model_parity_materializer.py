@@ -54,8 +54,13 @@ from analytics_execution_worker import (
 from benchmark_contract import ContractError
 from checkpoint_gstreamer_analytics_bridge import preprocess_gstreamer_frame
 from checkpoint_gstreamer_analytics_sidecar import (
+    DockerWorkerProcessFactory,
     MaterializedBindingSet,
     SidecarError,
+    WorkerLaunchSpec,
+    _close_owned_socket,
+    _open_owned_listener,
+    _peer_pid,
     load_execution_config,
     load_materialized_binding_set,
 )
@@ -72,6 +77,10 @@ from checkpoint_model_parity_acceptance import (
     load_verified_model_parity_acceptance,
     promote_model_parity_acceptance,
 )
+from kpp_iss_publication_v3_dataset import (
+    KppIssPublicationV3DatasetError,
+    validate_kpp_iss_publication_v3_manifest_entry,
+)
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -81,6 +90,15 @@ RESOURCE_ENGINES = {
     "tensorrt_cuda": ENGINE_TENSORRT_CUDA,
 }
 RESOURCE_LABELS = {"openvino_cpu": "cpu", "tensorrt_cuda": "cuda"}
+KPP_DATASET_BY_CODEC = {
+    "h264": "kpp_iss_publication_v3_h264",
+    "h265": "kpp_iss_publication_v3_h265",
+}
+KPP_PUBLICATION_GENERATION_ID = "kpp_iss_publication_v3"
+KPP_PUBLICATION_SCOPE = "performance_and_topology_benchmark_results_only"
+KPP_PUBLICATION_MANIFEST_SHA256 = (
+    "bbe2cca51cdcc95651492e0f28fc95ed00b9106dce73b5995280259701c91cc2"
+)
 _SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 _IMAGE_ID_RE = re.compile(r"^sha256:[0-9a-f]{64}$")
 _STABLE_ID_RE = re.compile(r"^[A-Za-z0-9._-]{1,160}$")
@@ -115,47 +133,47 @@ class FrozenKppFile:
 
 FROZEN_KPP_FILES = (
     FrozenKppFile(
-        "data/videos/kpp/h264/1.mp4",
-        "5dc0f6a1b0fa0c3e9d015481b3822e9a8d7363b20859c0755348675c0bf9f4b7",
-        "kpp-h264-underbody",
+        "data/videos/kpp/kpp_iss_publication_v3/h264/iss_v2_underbody.mp4",
+        "b7e5165549172266a5617ff7bbca6e5b888775b0a2490e27b7cbe17640e3b102",
+        "kpp-iss-publication-v3-h264-underbody",
         "h264",
         "mp4",
         1700,
         236,
     ),
     FrozenKppFile(
-        "data/videos/kpp/h264/2.mp4",
-        "30ddaa1136dbfc9ab9e01e00c46482a644493ed7614def7c56f278aa02d829c1",
-        "kpp-h264-plate",
+        "data/videos/kpp/kpp_iss_publication_v3/h264/iss_v2_front_gate.mp4",
+        "08991b572d2d990a07536c9a4a7eed7780b27127c0e38abe7b607ba97dd59273",
+        "kpp-iss-publication-v3-h264-front-gate",
         "h264",
         "mp4",
         1920,
         1080,
     ),
     FrozenKppFile(
-        "data/videos/kpp/h265/1.mp4",
-        "1f7b75884945dba4e594dacea3ca9c93a7b293378fcdb3d74e0f39f6a04d4beb",
-        "kpp-h265-underbody",
+        "data/videos/kpp/kpp_iss_publication_v3/h265/iss_v2_underbody.mp4",
+        "5368c94a26659c529106724427fc6c3e60fe6788d56699da14c93bc4222e7839",
+        "kpp-iss-publication-v3-h265-underbody",
         "h265",
         "mp4",
         1700,
         236,
     ),
     FrozenKppFile(
-        "data/videos/kpp/h265/2.mp4",
-        "730be15ef7c22c489f57b6567aec2d02bf86d6c46d90f683328059e4aa1ae965",
-        "kpp-h265-plate",
+        "data/videos/kpp/kpp_iss_publication_v3/h265/iss_v2_front_gate.mp4",
+        "fa400ecc8b84afc8144fac1da522ef3e9e321c7feb89a5086ac1a1e3ccbe7728",
+        "kpp-iss-publication-v3-h265-front-gate",
         "h265",
         "mp4",
         1920,
         1080,
     ),
     FrozenKppFile(
-        "data/videos/kpp/Timestamps.txt",
-        "39f64f2c35a9e37ff2a19c69f3d3e78e964b5d3afe24b2f3329c080183d0dbd6",
-        "kpp-timestamps",
+        "data/videos/kpp/kpp_iss_publication_v3/receipts/iss_v2_underbody_metadata.json",
+        "d23872d4b4706ef7d804f917a72407f82326eb3cdd5d39d347913f20cc65b0d4",
+        "kpp-iss-publication-v3-underbody-metadata",
         None,
-        "text",
+        "json",
     ),
 )
 _FROZEN_BY_PATH = {item.relative_path: item for item in FROZEN_KPP_FILES}
@@ -212,6 +230,161 @@ class ValidatedNativeResponse:
         self.response = dict(response or {})
         self.capability = dict(capability or {})
         self.output = bytes(output or b"")
+
+
+class _ExecutionBundleLedger:
+    """Persist and index one immutable native bundle per sample/resource cell."""
+
+    def __init__(
+        self,
+        *,
+        project_root: Path,
+        staging_root: Path,
+        final_root: Path,
+        expected_coordinates: Iterable[tuple[str, str, str, str, str]],
+    ) -> None:
+        self._project_root = Path(project_root)
+        self._staging_root = Path(staging_root)
+        self._final_root = Path(final_root)
+        try:
+            self._final_root.relative_to(self._project_root)
+        except ValueError as error:
+            raise MaterializerError(
+                "execution bundle final root escaped project_root"
+            ) from error
+        expected = frozenset(expected_coordinates)
+        _require(expected, "execution bundle expected coverage is empty")
+        _require(
+            all(
+                type(value) is str and value
+                for coordinate in expected
+                for value in coordinate
+            ),
+            "execution bundle expected coordinate is invalid",
+        )
+        _require(
+            all(coordinate[4] in RESOURCES for coordinate in expected),
+            "execution bundle expected resource is invalid",
+        )
+        self._expected = expected
+        self._observed: set[tuple[str, str, str, str, str]] = set()
+        self._rows: list[dict[str, Any]] = []
+        self._finalized = False
+
+    def persist(
+        self,
+        *,
+        branch: str,
+        role: str,
+        codec: str,
+        sample_id: str,
+        resource: str,
+        response: ValidatedNativeResponse,
+        input_tensor: bytes,
+    ) -> None:
+        coordinate = (branch, role, codec, sample_id, resource)
+        _require(
+            coordinate in self._expected,
+            "execution bundle coordinate is not in the frozen sample plan",
+        )
+        _require(
+            coordinate not in self._observed,
+            "duplicate execution bundle coordinate",
+        )
+        _require(not self._finalized, "execution bundle ledger is finalized")
+        _require(
+            type(response) is ValidatedNativeResponse,
+            "execution bundle requires a protocol-validated response",
+        )
+        request_id = response.request.get("request_id")
+        _require(
+            type(request_id) is str
+            and _STABLE_ID_RE.fullmatch(request_id) is not None
+            and Path(request_id).name == request_id,
+            "execution bundle request ID is invalid",
+        )
+        bundle_root = self._staging_root / "execution_bundles"
+        try:
+            manifest = persist_execution_bundle(
+                bundle_root,
+                request=response.request,
+                response=response.response,
+                input_tensor=input_tensor,
+                output_tensor=response.output,
+                capability=response.capability,
+            )
+            verified = verify_execution_bundle(
+                bundle_root / request_id,
+                capability=response.capability,
+            )
+        except (EvidenceError, ProtocolError) as error:
+            raise MaterializerError(
+                f"native execution evidence persistence failed: {error}"
+            ) from error
+        _require(verified == manifest, "execution bundle verification drifted")
+        _require(
+            manifest.get("request_id") == request_id,
+            "execution bundle manifest request binding drifted",
+        )
+        files = manifest.get("files")
+        identity = manifest.get("identity")
+        _require(
+            isinstance(files, Mapping)
+            and set(files)
+            == {"request", "response", "input_tensor", "output_tensor"}
+            and isinstance(identity, Mapping)
+            and _SHA256_RE.fullmatch(str(identity.get("sha256", ""))) is not None,
+            "execution bundle manifest inventory is invalid",
+        )
+        for label in ("request", "response", "input_tensor", "output_tensor"):
+            record = files[label]
+            _require(
+                isinstance(record, Mapping)
+                and _SHA256_RE.fullmatch(str(record.get("sha256", ""))) is not None,
+                f"execution bundle {label} identity is invalid",
+            )
+        manifest_payload = _canonical_json(manifest) + b"\n"
+        manifest_path = bundle_root / request_id / "manifest.json"
+        _require(
+            manifest_path.read_bytes() == manifest_payload,
+            "execution bundle manifest bytes drifted after verification",
+        )
+        final_manifest = self._final_root / "execution_bundles" / request_id / "manifest.json"
+        self._rows.append(
+            {
+                "branch": branch,
+                "role": role,
+                "codec": codec,
+                "sample_id": sample_id,
+                "resource": resource,
+                "request_id": request_id,
+                "manifest": {
+                    "path": final_manifest.relative_to(self._project_root).as_posix(),
+                    "sha256": _sha256_bytes(manifest_payload),
+                    "size_bytes": len(manifest_payload),
+                },
+                "manifest_identity_sha256": identity["sha256"],
+                "request_sha256": files["request"]["sha256"],
+                "response_sha256": files["response"]["sha256"],
+                "input_tensor_sha256": files["input_tensor"]["sha256"],
+                "output_tensor_sha256": files["output_tensor"]["sha256"],
+            }
+        )
+        self._observed.add(coordinate)
+
+    def finalize(self) -> tuple[dict[str, Any], ...]:
+        missing = self._expected - self._observed
+        extra = self._observed - self._expected
+        _require(
+            not missing and not extra,
+            "execution bundle physical coverage is incomplete",
+        )
+        _require(
+            len({row["request_id"] for row in self._rows}) == len(self._rows),
+            "execution bundle request ID coverage is not unique",
+        )
+        self._finalized = True
+        return tuple(copy.deepcopy(self._rows))
 
 
 @dataclass(frozen=True)
@@ -469,7 +642,9 @@ def build_deterministic_sample_plan() -> tuple[SamplePlan, ...]:
                             role=role,
                             codec=codec,
                             relative_path=(
-                                f"data/videos/kpp/{codec}/{recording}.mp4"
+                                "data/videos/kpp/kpp_iss_publication_v3/"
+                                f"{codec}/iss_v2_"
+                                + ("underbody.mp4" if recording == 1 else "front_gate.mp4")
                             ),
                             stream_index=0,
                             frame_index=frame_index,
@@ -1058,18 +1233,66 @@ class ProductionFfmpegDecoder:
         return self.contract
 
 
+def _worker_request_bounds(plan: Sequence[SamplePlan]) -> dict[str, int]:
+    bounds = {branch: 0 for branch in BRANCHES}
+    for row in plan:
+        _require(row.branch in bounds, "sample plan contains an unknown worker branch")
+        bounds[row.branch] += 1
+    _require(
+        all(1 <= count <= 1_000_000 for count in bounds.values()),
+        "worker request bounds are empty or exceed the protocol maximum",
+    )
+    return bounds
+
+
 class NativeEndpointRunner:
-    """Concrete exact-eight ExecutionClient inventory; no injected clients."""
+    """Own, attest, and drain the exact eight native Docker workers."""
 
     def __init__(
         self,
         *,
         socket_dir: Path | str,
         materialized_bindings: MaterializedBindingSet,
+        execution_config: Mapping[str, Any],
+        project_root: Path | str,
+        request_bounds: Mapping[str, int],
+        startup_timeout_s: float = 120.0,
+        shutdown_timeout_s: float = 30.0,
     ) -> None:
         self._socket_dir = _physical_directory(
             socket_dir, label="analytics worker socket directory"
         )
+        self._project_root = _physical_directory(
+            project_root, label="analytics worker project root"
+        )
+        _require(
+            type(startup_timeout_s) in {int, float}
+            and 0 < float(startup_timeout_s) <= 3600,
+            "analytics worker startup timeout is invalid",
+        )
+        _require(
+            type(shutdown_timeout_s) in {int, float}
+            and 0 < float(shutdown_timeout_s) <= 300,
+            "analytics worker shutdown timeout is invalid",
+        )
+        self._startup_timeout_s = float(startup_timeout_s)
+        self._shutdown_timeout_s = float(shutdown_timeout_s)
+        _require(
+            type(request_bounds) is dict
+            and set(request_bounds) == set(BRANCHES)
+            and all(
+                type(value) is int and 1 <= value <= 1_000_000
+                for value in request_bounds.values()
+            ),
+            "analytics worker request bounds are invalid",
+        )
+        self._request_bounds = dict(request_bounds)
+        workers = execution_config.get("workers")
+        _require(
+            type(workers) is dict and set(workers) == {"cpu", "gpu"},
+            "analytics execution worker inventory is not exact CPU/GPU",
+        )
+        self._workers = workers
         _require(
             set(materialized_bindings.capabilities)
             == {
@@ -1103,69 +1326,156 @@ class NativeEndpointRunner:
             "materialized worker inventory is mock/synthetic/nonpublication",
         )
         self._materialized = materialized_bindings
+        lifecycle_material = (
+            f"{os.getpid()}:{time.monotonic_ns()}:{self._socket_dir}"
+        ).encode("utf-8")
+        self._lifecycle_id = hashlib.sha256(lifecycle_material).hexdigest()
+        self._process_factory = DockerWorkerProcessFactory(
+            project_root=self._project_root,
+            binding_set_root=materialized_bindings.root,
+            runtime_dir=self._socket_dir,
+        )
+        self._listeners: dict[tuple[str, str], Any] = {}
+        self._handles: dict[tuple[str, str], Any] = {}
         self._sockets: dict[tuple[str, str], socket.socket] = {}
         self._clients: dict[tuple[str, str], ExecutionClient] = {}
         self._capabilities: dict[tuple[str, str], dict[str, Any]] = {}
         self._output_names: dict[tuple[str, str], str] = {}
         try:
-            for branch in BRANCHES:
-                for public_resource, endpoint_resource in (
-                    ("openvino_cpu", "cpu"),
-                    ("tensorrt_cuda", "gpu"),
-                ):
-                    path = self._socket_dir / (
-                        f"worker-{branch}-{endpoint_resource}.sock"
-                    )
-                    _require(
-                        path.parent == self._socket_dir
-                        and path.exists()
-                        and not _is_reparse(path),
-                        f"worker socket is missing or unsafe: {path.name}",
-                    )
-                    metadata = path.lstat()
-                    _require(
-                        stat.S_ISSOCK(metadata.st_mode),
-                        f"worker endpoint is not a socket: {path.name}",
-                    )
-                    connection = socket.socket(socket.AF_UNIX, socket.SOCK_SEQPACKET)
-                    connection.settimeout(120.0)
-                    connection.connect(str(path))
-                    expected = validate_worker_capability(
-                        materialized_bindings.capabilities[
-                            (branch, endpoint_resource)
-                        ]
-                    )
-                    client = ExecutionClient(
-                        connection, expected_capability=expected
-                    )
-                    actual = client.handshake()
-                    _require(
-                        actual == expected,
-                        f"{branch}/{public_resource} endpoint capability drifted",
-                    )
-                    key = (branch, public_resource)
-                    self._sockets[key] = connection
-                    self._clients[key] = client
-                    self._capabilities[key] = actual
-                    binding = materialized_bindings.bindings[
-                        (branch, endpoint_resource)
-                    ]
-                    outputs = binding.get("outputs")
-                    _require(
-                        type(outputs) is list
-                        and len(outputs) == 1
-                        and type(outputs[0]) is dict
-                        and outputs[0].get("dtype") == "float32"
-                        and outputs[0].get("shape") == [1, 1000]
-                        and type(outputs[0].get("name")) is str
-                        and bool(outputs[0]["name"]),
-                        f"{branch}/{public_resource} materialized output contract drifted",
-                    )
-                    self._output_names[key] = outputs[0]["name"]
-            _require(len(self._clients) == 8, "native endpoint handshake coverage is not exact 8")
+            self._launch_and_accept_workers()
         except BaseException:
-            self.close()
+            try:
+                self.close(require_clean=False)
+            except BaseException:
+                pass
             raise
+
+    def _assert_workers_live(self, *, phase: str) -> None:
+        for key, handle in self._handles.items():
+            status = handle.poll()
+            _require(
+                status is None,
+                f"analytics worker {key[0]}/{key[1]} exited during {phase}: {status}",
+            )
+
+    def _launch_and_accept_workers(self) -> None:
+        endpoint_engine = {
+            "cpu": ENGINE_OPENVINO_CPU,
+            "gpu": ENGINE_TENSORRT_CUDA,
+        }
+        endpoint_public = {
+            "cpu": "openvino_cpu",
+            "gpu": "tensorrt_cuda",
+        }
+        for branch in BRANCHES:
+            for endpoint_resource in ("cpu", "gpu"):
+                key = (branch, endpoint_resource)
+                path = self._socket_dir / f"worker-{branch}-{endpoint_resource}.sock"
+                owned = _open_owned_listener(path, backlog=1)
+                self._listeners[key] = owned
+                binding_path = self._materialized.binding_paths[key]
+                spec = WorkerLaunchSpec(
+                    branch=branch,
+                    resource=endpoint_resource,
+                    engine=endpoint_engine[endpoint_resource],
+                    binding_path=binding_path,
+                    socket_path=path,
+                    container_binding_path=f"/run/vast/bindings/{binding_path.name}",
+                    container_socket_path=f"/run/vast/analytics/{path.name}",
+                    worker_config=self._workers[endpoint_resource],
+                    max_requests=self._request_bounds[branch],
+                    lifecycle_id=self._lifecycle_id,
+                )
+                handle = self._process_factory.start(spec)
+                _require(
+                    type(handle.pid) is int and handle.pid > 0,
+                    f"analytics worker {branch}/{endpoint_resource} supervisor PID is invalid",
+                )
+                self._handles[key] = handle
+        expected_keys = {
+            (branch, resource)
+            for branch in BRANCHES
+            for resource in ("cpu", "gpu")
+        }
+        _require(
+            set(self._listeners) == expected_keys
+            and set(self._handles) == expected_keys,
+            "analytics worker lifecycle coverage is not exact 8",
+        )
+
+        deadline = time.monotonic() + self._startup_timeout_s
+        for branch in BRANCHES:
+            for endpoint_resource in ("cpu", "gpu"):
+                endpoint_key = (branch, endpoint_resource)
+                public_resource = endpoint_public[endpoint_resource]
+                public_key = (branch, public_resource)
+                handle = self._handles[endpoint_key]
+                self._assert_workers_live(phase="startup")
+                remaining = deadline - time.monotonic()
+                _require(
+                    remaining > 0,
+                    f"timed out starting analytics worker {branch}/{endpoint_resource}",
+                )
+                expected_peer_pid = handle.expected_peer_pid(remaining)
+                owned = self._listeners[endpoint_key]
+                listener = owned.listener
+                _require(
+                    listener is not None,
+                    f"analytics worker {branch}/{endpoint_resource} listener disappeared",
+                )
+                connection: socket.socket | None = None
+                while connection is None:
+                    self._assert_workers_live(phase="startup")
+                    remaining = deadline - time.monotonic()
+                    _require(
+                        remaining > 0,
+                        f"timed out accepting analytics worker {branch}/{endpoint_resource}",
+                    )
+                    listener.settimeout(min(0.1, remaining))
+                    try:
+                        connection, _address = listener.accept()
+                    except socket.timeout:
+                        continue
+                observed_peer_pid = _peer_pid(connection)
+                if observed_peer_pid != expected_peer_pid:
+                    connection.close()
+                    raise MaterializerError(
+                        f"analytics worker {branch}/{endpoint_resource} peer PID mismatch: "
+                        f"expected {expected_peer_pid}, observed {observed_peer_pid}"
+                    )
+                connection.settimeout(120.0)
+                self._sockets[public_key] = connection
+                _close_owned_socket(owned)
+                del self._listeners[endpoint_key]
+
+                expected = validate_worker_capability(
+                    self._materialized.capabilities[endpoint_key]
+                )
+                client = ExecutionClient(connection, expected_capability=expected)
+                actual = client.handshake()
+                _require(
+                    actual == expected,
+                    f"{branch}/{public_resource} endpoint capability drifted",
+                )
+                self._clients[public_key] = client
+                self._capabilities[public_key] = actual
+                binding = self._materialized.bindings[endpoint_key]
+                outputs = binding.get("outputs")
+                _require(
+                    type(outputs) is list
+                    and len(outputs) == 1
+                    and type(outputs[0]) is dict
+                    and outputs[0].get("dtype") == "float32"
+                    and outputs[0].get("shape") == [1, 1000]
+                    and type(outputs[0].get("name")) is str
+                    and bool(outputs[0]["name"]),
+                    f"{branch}/{public_resource} materialized output contract drifted",
+                )
+                self._output_names[public_key] = outputs[0]["name"]
+        _require(
+            len(self._clients) == 8 and not self._listeners,
+            "native endpoint handshake coverage is not exact 8",
+        )
 
     @property
     def capabilities(self) -> Mapping[tuple[str, str], Mapping[str, Any]]:
@@ -1258,7 +1568,8 @@ class NativeEndpointRunner:
             output=output,
         )
 
-    def close(self) -> None:
+    def close(self, *, require_clean: bool = False) -> None:
+        errors: list[str] = []
         for value in tuple(self._sockets.values()):
             try:
                 value.shutdown(socket.SHUT_RDWR)
@@ -1271,11 +1582,72 @@ class NativeEndpointRunner:
         self._sockets.clear()
         self._clients.clear()
 
+        for key, owned in tuple(reversed(tuple(self._listeners.items()))):
+            try:
+                _close_owned_socket(owned)
+            except BaseException as error:
+                errors.append(f"socket_cleanup:{key[0]}/{key[1]}:{error}")
+            finally:
+                self._listeners.pop(key, None)
+
+        graceful_deadline = time.monotonic() + self._shutdown_timeout_s
+        for key, handle in self._handles.items():
+            if handle.poll() is None:
+                try:
+                    handle.wait(max(0.001, graceful_deadline - time.monotonic()))
+                except (TimeoutError, subprocess.TimeoutExpired):
+                    pass
+                except BaseException as error:
+                    errors.append(f"worker_wait:{key[0]}/{key[1]}:{error}")
+        for key, handle in self._handles.items():
+            if handle.poll() is None:
+                try:
+                    handle.terminate()
+                except BaseException as error:
+                    errors.append(f"worker_terminate:{key[0]}/{key[1]}:{error}")
+        terminate_deadline = time.monotonic() + self._shutdown_timeout_s
+        for key, handle in self._handles.items():
+            if handle.poll() is None:
+                try:
+                    handle.wait(max(0.001, terminate_deadline - time.monotonic()))
+                except (TimeoutError, subprocess.TimeoutExpired):
+                    pass
+                except BaseException as error:
+                    errors.append(
+                        f"worker_terminate_wait:{key[0]}/{key[1]}:{error}"
+                    )
+        for key, handle in self._handles.items():
+            if handle.poll() is None:
+                try:
+                    handle.kill()
+                except BaseException as error:
+                    errors.append(f"worker_kill:{key[0]}/{key[1]}:{error}")
+        kill_deadline = time.monotonic() + self._shutdown_timeout_s
+        for key, handle in self._handles.items():
+            if handle.poll() is None:
+                try:
+                    handle.wait(max(0.001, kill_deadline - time.monotonic()))
+                except (TimeoutError, subprocess.TimeoutExpired) as error:
+                    errors.append(f"worker_survived_kill:{key[0]}/{key[1]}:{error}")
+                except BaseException as error:
+                    errors.append(f"worker_kill_wait:{key[0]}/{key[1]}:{error}")
+        for key, handle in self._handles.items():
+            status = handle.poll()
+            if status is None:
+                errors.append(f"worker_still_live:{key[0]}/{key[1]}")
+            elif require_clean and status != 0:
+                errors.append(f"worker_nonzero:{key[0]}/{key[1]}:{status}")
+        self._handles.clear()
+        if errors:
+            raise MaterializerError(
+                "analytics worker lifecycle cleanup failed: " + "; ".join(errors)
+            )
+
     def __enter__(self) -> "NativeEndpointRunner":
         return self
 
-    def __exit__(self, *_args: object) -> None:
-        self.close()
+    def __exit__(self, *args: object) -> None:
+        self.close(require_clean=not args or args[0] is None)
 
 
 class _UniqueKeyLoader(yaml.SafeLoader):
@@ -1336,28 +1708,64 @@ def _validate_frozen_dataset_config(value: Mapping[str, Any]) -> None:
         }
         for codec in ("h264", "h265")
     }
-    timestamp = _FROZEN_BY_PATH["data/videos/kpp/Timestamps.txt"]
+    annotation_record = _FROZEN_BY_PATH[
+        "data/videos/kpp/kpp_iss_publication_v3/receipts/"
+        "iss_v2_underbody_metadata.json"
+    ]
     for codec in ("h264", "h265"):
-        name = f"kpp_real_{codec}"
+        name = KPP_DATASET_BY_CODEC[codec]
         dataset = datasets.get(name)
         _require(type(dataset) is dict, f"{name} dataset is missing")
+        try:
+            validated = validate_kpp_iss_publication_v3_manifest_entry(
+                name,
+                dataset,
+                project_root=PROJECT_ROOT,
+                require_files=False,
+            )
+        except KppIssPublicationV3DatasetError as error:
+            raise MaterializerError(
+                f"{name} publication-v3 dataset contract drifted: {error}"
+            ) from error
+        _require(validated is True, f"{name} publication-v3 dataset was not recognized")
         _require(
-            dataset.get("kind") == "real_codec_transcode"
+            dataset.get("kind") == "frozen_publication_codec_corpus"
             and dataset.get("publishable") is True
             and dataset.get("codec_variant") == codec,
             f"{name} publication/codec binding drifted",
         )
+        _require(
+            dataset.get("dataset_contract_version") == 3
+            and dataset.get("generation_id") == KPP_PUBLICATION_GENERATION_ID
+            and dataset.get("status") == "frozen_publication_corpus"
+            and dataset.get("publication_scope") == KPP_PUBLICATION_SCOPE
+            and dataset.get("analytics_routing") == "unresolved"
+            and dataset.get("logical_stream_instances") == 6,
+            f"{name} frozen publication-v3 identity drifted",
+        )
+        preparation = dataset.get("preparation")
+        _require(
+            type(preparation) is dict
+            and preparation.get("mode") == "check_only_frozen_publication_v3"
+            and type(preparation.get("publication_manifest")) is dict
+            and preparation["publication_manifest"].get("manifest_sha256")
+            == KPP_PUBLICATION_MANIFEST_SHA256,
+            f"{name} publication manifest binding drifted",
+        )
         annotation = dataset.get("annotations")
         _require(
             type(annotation) is dict
-            and annotation.get("path") == timestamp.relative_path
-            and annotation.get("sha256") == timestamp.sha256
+            and annotation.get("path") == annotation_record.relative_path
+            and annotation.get("sha256") == annotation_record.sha256
             and annotation.get("accuracy_ground_truth") is False,
-            f"{name} frozen timestamp binding drifted",
+            f"{name} frozen annotation binding drifted",
         )
         streams = dataset.get("streams")
-        _require(type(streams) is list and streams, f"{name} streams are invalid")
-        observed: set[str] = set()
+        _require(
+            type(streams) is list and len(streams) == 6,
+            f"{name} streams are invalid",
+        )
+        observed: dict[str, int] = {}
         for stream in streams:
             _require(type(stream) is dict, f"{name} stream is invalid")
             relative = stream.get("path")
@@ -1372,9 +1780,13 @@ def _validate_frozen_dataset_config(value: Mapping[str, Any]) -> None:
                 and stream.get("height") == frozen.height,
                 f"{name} stream physical identity drifted: {relative}",
             )
-            observed.add(str(relative))
+            observed[str(relative)] = observed.get(str(relative), 0) + 1
         _require(
-            observed == set(expected_by_codec[codec]),
+            observed
+            == {
+                relative: (1 if relative.endswith("underbody.mp4") else 5)
+                for relative in expected_by_codec[codec]
+            },
             f"{name} frozen physical coverage is not exact",
         )
 
@@ -1511,7 +1923,11 @@ def build_execution_probe_document(
         "resource": resource,
         "runtime": "openvino" if cpu else "tensorrt",
         "device_api": "OPENVINO_CPU" if cpu else "NVIDIA_CUDA",
-        "device_id": capability["device_id"],
+        # The v3 evidence schema records the canonical OpenVINO selector here.
+        # The physical CPU name remains hash-bound by the runtime probe/binding
+        # set; copying it into this field would falsely fail the exact `CPU`
+        # matrix coordinate.
+        "device_id": "CPU" if cpu else capability["device_id"],
         "success": True,
         "source_sha256": capability["source_model_sha256"],
         "model_sha256": model_sha,
@@ -1720,7 +2136,7 @@ def _dataset_document(preflight: _Preflight) -> tuple[dict[str, Any], str]:
         }
         for index, item in enumerate(videos)
     ]
-    dataset_id = "kpp-real-h264-h265-frozen-v1"
+    dataset_id = "kpp-iss-publication-v3-h264-h265-frozen-v1"
     document = {
         "schema_version": 2,
         "artifact_kind": "checkpoint_model_dataset_manifest",
@@ -1775,6 +2191,7 @@ def _write_transaction_index(
     run_id: str,
     source_inventory: Mapping[str, PhysicalFileRecord],
     output_segments: Sequence[Mapping[str, Any]],
+    execution_bundles: Sequence[Mapping[str, Any]],
 ) -> PhysicalFileRecord:
     files: list[dict[str, Any]] = []
     for path in sorted(staging_root.rglob("*"), key=lambda value: value.as_posix()):
@@ -1806,8 +2223,17 @@ def _write_transaction_index(
         }
         for relative, record in sorted(source_inventory.items())
     ]
+    _require(
+        len(execution_bundles) == len(output_segments),
+        "transaction execution/output coverage cardinality mismatch",
+    )
+    _require(
+        len({str(row.get("request_id")) for row in execution_bundles})
+        == len(execution_bundles),
+        "transaction execution bundle request IDs are not unique",
+    )
     index = {
-        "schema_version": 1,
+        "schema_version": 2,
         "artifact_kind": "checkpoint_model_parity_materialization_transaction",
         "run_id": run_id,
         "final_materialization_path": final_root.relative_to(root).as_posix(),
@@ -1820,9 +2246,15 @@ def _write_transaction_index(
         "output_segments_sha256": _sha256_bytes(
             _canonical_json(list(output_segments))
         ),
+        "execution_bundle_count": len(execution_bundles),
+        "execution_bundles": list(execution_bundles),
+        "execution_bundles_sha256": _sha256_bytes(
+            _canonical_json(list(execution_bundles))
+        ),
         "claimed_aggregates_accepted": False,
         "synthetic_or_mock_evidence_accepted": False,
     }
+    index["transaction_sha256"] = _sha256_bytes(_canonical_json(index))
     return _write_json_file(staging_root / "transaction_index.json", index)
 
 
@@ -2105,9 +2537,22 @@ def _collect_production_evidence(
         response_records: dict[tuple[str, str], list[ValidatedNativeResponse]] = defaultdict(list)
         output_values: dict[tuple[str, str], list[dict[str, Any]]] = defaultdict(list)
         output_segments: list[dict[str, Any]] = []
-        persisted: set[tuple[str, str]] = set()
+        execution_ledger = _ExecutionBundleLedger(
+            project_root=root,
+            staging_root=staging_root,
+            final_root=final_root,
+            expected_coordinates={
+                (row.branch, row.role, row.codec, row.sample_id, resource)
+                for row in plan
+                for resource in RESOURCES
+            },
+        )
         with NativeEndpointRunner(
-            socket_dir=socket_root, materialized_bindings=bindings
+            socket_dir=socket_root,
+            materialized_bindings=bindings,
+            execution_config=execution_config,
+            project_root=root,
+            request_bounds=_worker_request_bounds(plan),
         ) as runner:
             for branch in BRANCHES:
                 for resource in RESOURCES:
@@ -2159,29 +2604,16 @@ def _collect_production_evidence(
                             "values": values,
                         }
                     )
-                    coordinate = (row.branch, resource)
-                    if coordinate not in persisted:
-                        try:
-                            persist_execution_bundle(
-                                staging_root / "execution_bundles",
-                                request=response.request,
-                                response=response.response,
-                                input_tensor=tensor,
-                                output_tensor=response.output,
-                                capability=response.capability,
-                            )
-                            verify_execution_bundle(
-                                staging_root
-                                / "execution_bundles"
-                                / response.request["request_id"],
-                                capability=response.capability,
-                            )
-                        except (EvidenceError, ProtocolError) as error:
-                            raise MaterializerError(
-                                f"native execution evidence persistence failed: {error}"
-                            ) from error
-                        persisted.add(coordinate)
-        _require(len(persisted) == 8, "representative execution bundle coverage is not exact 8")
+                    execution_ledger.persist(
+                        branch=row.branch,
+                        role=row.role,
+                        codec=row.codec,
+                        sample_id=row.sample_id,
+                        resource=resource,
+                        response=response,
+                        input_tensor=tensor,
+                    )
+        execution_bundles = execution_ledger.finalize()
         output_records = {
             key: writer.close() for key, writer in output_writers.items()
         }
@@ -2336,6 +2768,7 @@ def _collect_production_evidence(
                 preflight.base_manifest_record.relative_path: preflight.base_manifest_record,
             },
             output_segments=output_segments,
+            execution_bundles=execution_bundles,
         )
         _fsync_directory(staging_root)
         _require(
@@ -2735,6 +3168,7 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 __all__ = [
     "FROZEN_KPP_FILES",
+    "KPP_DATASET_BY_CODEC",
     "MaterializerError",
     "NonPublicationCollection",
     "ProductionCollection",

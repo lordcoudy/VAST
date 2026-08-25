@@ -18,6 +18,7 @@ from publication_policy_contract import (  # noqa: E402
     policy_contract_identity,
 )
 from publication_matrix import (  # noqa: E402
+    DATASET_BY_CODEC,
     FULL_RESOURCE_PUBLICATION_SCOPE,
     build_full_publication_matrix,
     publication_matrix_identity,
@@ -26,7 +27,7 @@ from publication_matrix import (  # noqa: E402
 from backend_runtime_grant import backend_runtime_grant_from_identity_artifacts  # noqa: E402
 from model_parity_grant import model_parity_grant_from_identity_artifacts  # noqa: E402
 from test_model_parity_grant import identity as parity_identity  # noqa: E402
-from test_backend_runtime_grant import v2_identity  # noqa: E402
+from test_backend_runtime_grant import v2_identity, v3_identity  # noqa: E402
 
 
 def load_config() -> dict:
@@ -67,13 +68,40 @@ def resource_capability_grant() -> dict:
 
 
 class PublicationMatrixTests(unittest.TestCase):
+    def test_authenticated_q4_protocol_grant_unlocks_exact_5600_runtime_arms(self) -> None:
+        grant = backend_runtime_grant_from_identity_artifacts(v3_identity())
+        assessment = validate_full_publication_readiness(
+            load_config(), backend_runtime_grant=grant,
+        )
+        self.assertTrue(
+            assessment["backend_launcher_output_receipt_protocol_ready"]
+        )
+        self.assertEqual(
+            assessment["runtime_cell_assessment"]["ready_arms"], 5600
+        )
+        self.assertEqual(
+            assessment["runtime_cell_assessment"]["blocked_arms"], 0
+        )
+
+        tampered = copy.deepcopy(grant)
+        tampered["production_output_receipt_protocol"]["protocol_files"][
+            "production_output_transaction"
+        ]["sha256"] = "f" * 64
+        result = validate_full_publication_readiness(
+            load_config(), backend_runtime_grant=tampered,
+        )
+        self.assertFalse(
+            result["backend_launcher_output_receipt_protocol_ready"]
+        )
+        self.assertEqual(result["runtime_cell_assessment"]["ready_arms"], 0)
+
     def test_full_matrix_is_deterministic_complete_and_paired(self) -> None:
         config = load_config()
         first = build_full_publication_matrix(config)
         second = build_full_publication_matrix(config)
 
         self.assertEqual(first, second)
-        self.assertEqual(first["schema_version"], 2)
+        self.assertEqual(first["schema_version"], 3)
         self.assertEqual(first["publication_scope"], FULL_RESOURCE_PUBLICATION_SCOPE)
         self.assertEqual(first["policies"], list(POLICIES))
         self.assertEqual(
@@ -87,6 +115,17 @@ class PublicationMatrixTests(unittest.TestCase):
             {"deepstream", "savant", "openvino_gva", "gstreamer_custom"},
         )
         self.assertEqual(set(first["codecs"]), {"h264", "h265"})
+        self.assertEqual(
+            DATASET_BY_CODEC,
+            {
+                "h264": "kpp_iss_publication_v3_h264",
+                "h265": "kpp_iss_publication_v3_h265",
+            },
+        )
+        self.assertEqual(
+            {pair["dataset"] for pair in first["pairs"]},
+            set(DATASET_BY_CODEC.values()),
+        )
         self.assertEqual(len(first["pairs"]), 2800)
         self.assertEqual(len({pair["pair_id"] for pair in first["pairs"]}), 2800)
         self.assertEqual(
@@ -109,7 +148,7 @@ class PublicationMatrixTests(unittest.TestCase):
                 self.assertEqual(arm["streams"], 6)
 
         identity = publication_matrix_identity(first)
-        self.assertEqual(identity["schema_version"], 2)
+        self.assertEqual(identity["schema_version"], 3)
         self.assertRegex(identity["sha256"], r"^[0-9a-f]{64}$")
         self.assertEqual(identity, publication_matrix_identity(second))
 

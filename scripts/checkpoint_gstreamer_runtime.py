@@ -639,10 +639,12 @@ def load_analytics_model_bindings(
     path: Path,
     *,
     required_branches: list[str] | tuple[str, ...],
+    pinned_file_paths_by_sha256: dict[str, str] | None = None,
 ) -> dict[str, dict[str, str]]:
     return load_v2_analytics_model_bindings(
         path,
         required_branches=required_branches,
+        pinned_file_paths_by_sha256=pinned_file_paths_by_sha256,
     )
     """Validate branch model artifacts before constructing a native worker command."""
     resolved_manifest = path.resolve()
@@ -737,16 +739,30 @@ def build_gstreamer_source_specs(
     source_binary: Path,
     project_root: Path,
     run_id: str,
+    pinned_source_paths_by_sha256: dict[str, str] | None = None,
+    inherited_native_fds: tuple[int, ...] = (),
+    gst_plugin_path: str | None = None,
 ) -> list[SourceLaunchSpec]:
     _require(plan.get("claim_status") == CLAIM_STATUS, "checkpoint launch plan must remain planning-only")
     sources: list[SourceLaunchSpec] = []
     for source in plan["source_coordinators"]:
         source_id = str(source["process_id"])
         stream_id = int(source["stream_id"])
+        source_sha256 = str(source["source_sha256"])
+        if pinned_source_paths_by_sha256 is not None:
+            _require(
+                source_sha256 in pinned_source_paths_by_sha256,
+                f"{source_id}: pinned source artifact is absent",
+            )
+            source_path = str(pinned_source_paths_by_sha256[source_sha256])
+        else:
+            source_path = str(
+                _absolute_source(str(source["input_path"]), project_root)
+            )
         command = (
             str(source_binary),
             "--source-path",
-            str(_absolute_source(str(source["input_path"]), project_root)),
+            source_path,
             "--dataset-id",
             str(plan["dataset"]),
             "--source-sha256",
@@ -774,6 +790,7 @@ def build_gstreamer_source_specs(
                 environment={
                     "GST_REGISTRY": _gst_registry_path(run_id, source_id),
                     "GST_REGISTRY_UPDATE": "no",
+                    **({"GST_PLUGIN_PATH": gst_plugin_path} if gst_plugin_path else {}),
                     "VAST_CHECKPOINT_SOURCE_CONTAINER": str(source["source_container"]),
                     "VAST_CHECKPOINT_SOURCE_CODEC": str(source["source_codec"]),
                     "VAST_CHECKPOINT_SOURCE_DURATION_NS": str(source["source_duration_ns"]),
@@ -782,6 +799,7 @@ def build_gstreamer_source_specs(
                     "VAST_CHECKPOINT_ADMISSION_MODE": "native_common_source_coordinator",
                 },
                 native_source=True,
+                inherited_fds=inherited_native_fds,
             )
         )
     _require(
@@ -807,6 +825,8 @@ def build_gstreamer_worker_specs(
     native_policy_deadline_ms: float | None = None,
     analytics_execution_socket: Path | str | None = None,
     analytics_preprocessing_contract_sha256: str | None = None,
+    inherited_native_fds: tuple[int, ...] = (),
+    gst_plugin_path: str | None = None,
 ) -> list[WorkerLaunchSpec]:
     _require(plan.get("claim_status") == CLAIM_STATUS, "checkpoint launch plan must remain planning-only")
     _require(duration_s > 0, "checkpoint engineering duration must be positive")
@@ -832,7 +852,7 @@ def build_gstreamer_worker_specs(
     _require(
         not policy_runtime_enabled
         or (
-            native_policy == "cpu_only"
+            native_policy in POLICIES
             and native_policy_deadline_ms is not None
             and math.isfinite(float(native_policy_deadline_ms))
             and float(native_policy_deadline_ms) > 0
@@ -840,7 +860,7 @@ def build_gstreamer_worker_specs(
             and analytics_execution_socket is not None
             and analytics_preprocessing_contract_sha256 is not None
         ),
-        "gstreamer_custom native policy runtime currently supports only exact cpu_only with a positive deadline, an analytics execution socket, and a preprocessing contract SHA-256",
+        "gstreamer_custom native policy runtime requires one frozen policy, a positive deadline, an analytics execution socket, and a preprocessing contract SHA-256",
     )
     resolved_execution_socket = (
         _analytics_execution_socket_path(analytics_execution_socket)
@@ -969,6 +989,7 @@ def build_gstreamer_worker_specs(
                         environment={
                             "GST_REGISTRY": _gst_registry_path(run_id, worker_id),
                             "GST_REGISTRY_UPDATE": "no",
+                            **({"GST_PLUGIN_PATH": gst_plugin_path} if gst_plugin_path else {}),
                             "VAST_CHECKPOINT_DATASET_ID": str(plan["dataset"]),
                             "VAST_CHECKPOINT_SOURCE_SHA256": str(worker["source_sha256"]),
                             "VAST_CHECKPOINT_SOURCE_CONTAINER": str(worker["source_container"]),
@@ -1007,6 +1028,7 @@ def build_gstreamer_worker_specs(
                             ),
                         },
                         native_event_source=True,
+                        inherited_fds=inherited_native_fds,
                     )
                 )
     else:
@@ -1061,6 +1083,7 @@ def build_gstreamer_worker_specs(
                     environment={
                         "GST_REGISTRY": _gst_registry_path(run_id, worker_id),
                         "GST_REGISTRY_UPDATE": "no",
+                        **({"GST_PLUGIN_PATH": gst_plugin_path} if gst_plugin_path else {}),
                         "VAST_CHECKPOINT_BRANCHES": ",".join(branches),
                         "VAST_CHECKPOINT_DATASET_ID": str(plan["dataset"]),
                         "VAST_CHECKPOINT_SOURCE_SHA256": str(graph["source_sha256"]),
@@ -1100,6 +1123,7 @@ def build_gstreamer_worker_specs(
                         ),
                     },
                     native_event_source=True,
+                    inherited_fds=inherited_native_fds,
                 )
             )
     return specs
@@ -2280,7 +2304,65 @@ def write_runtime_branch_terminals(
     return path, audit
 
 
-def main() -> int:
+def _bind_pinned_model_paths(
+    bindings: dict[str, dict[str, str]],
+    pinned_file_paths_by_sha256: dict[str, str] | None,
+) -> dict[str, dict[str, str]]:
+    if pinned_file_paths_by_sha256 is None:
+        return bindings
+    _require(
+        isinstance(pinned_file_paths_by_sha256, dict)
+        and all(
+            re.fullmatch(r"[0-9a-f]{64}", str(digest)) is not None
+            and isinstance(path, str)
+            and bool(path)
+            for digest, path in pinned_file_paths_by_sha256.items()
+        ),
+        "pinned publication file map is invalid",
+    )
+    result = {branch: dict(value) for branch, value in bindings.items()}
+    for branch, binding in result.items():
+        model_sha = str(binding["model_sha256"])
+        weights_sha = str(binding["weights_sha256"])
+        _require(
+            model_sha in pinned_file_paths_by_sha256,
+            f"{branch}: pinned model artifact is absent",
+        )
+        model_path = Path(pinned_file_paths_by_sha256[model_sha])
+        _require(
+            model_path.is_file() and _sha256_file(model_path) == model_sha,
+            f"{branch}: pinned model artifact identity drifted",
+        )
+        binding["model_path"] = str(model_path)
+        if weights_sha:
+            _require(
+                weights_sha in pinned_file_paths_by_sha256,
+                f"{branch}: pinned weights artifact is absent",
+            )
+            weights_path = Path(pinned_file_paths_by_sha256[weights_sha])
+            _require(
+                weights_path.is_file()
+                and weights_path == model_path.with_suffix(".bin")
+                and _sha256_file(weights_path) == weights_sha,
+                f"{branch}: pinned weights artifact identity drifted",
+            )
+    return result
+
+
+def _native_binary_path(path: Path) -> Path:
+    raw = str(path)
+    if re.fullmatch(r"/proc/self/fd/[0-9]+", raw):
+        return path
+    return path.resolve()
+
+
+def main(
+    argv: list[str] | tuple[str, ...] | None = None,
+    *,
+    inherited_native_fds: tuple[int, ...] = (),
+    pinned_file_paths_by_sha256: dict[str, str] | None = None,
+    publication_system_authority: str | None = None,
+) -> int:
     parser = argparse.ArgumentParser(description="Run or inspect the native GStreamer checkpoint runtime.")
     parser.add_argument("--config", type=Path, default=Path("configs/experiments.yaml"))
     parser.add_argument("--datasets", type=Path, default=Path("configs/datasets.yaml"))
@@ -2314,9 +2396,12 @@ def main() -> int:
         type=Path,
         help="Strict branch model/digest bindings required by vastanalyticsterminal",
     )
+    parser.add_argument("--analytics-execution-manifest", type=Path)
     parser.add_argument("--policy-capability-manifest", type=Path)
     parser.add_argument("--policy-calibration", type=Path)
     parser.add_argument("--static-hybrid-map", type=Path)
+    parser.add_argument("--gst-registry-template", type=Path)
+    parser.add_argument("--gst-plugin-path", type=Path)
     parser.add_argument(
         "--analytics-queue-max-buffers",
         type=int,
@@ -2335,13 +2420,26 @@ def main() -> int:
         action="store_true",
         help="Emit only the candidate/resource evidence; the parent transaction commits acceptance last.",
     )
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
+    _require(
+        type(inherited_native_fds) is tuple
+        and len(inherited_native_fds) == len(set(inherited_native_fds))
+        and all(type(fd) is int and fd > 2 for fd in inherited_native_fds),
+        "publication inherited native descriptor set is invalid",
+    )
 
     project_root = args.config.resolve().parents[1]
     config = _load_yaml(args.config)
     datasets = dict(_load_yaml(args.datasets).get("datasets") or {})
     publication_mode = bool(args.execute_publication_runtime)
     if publication_mode:
+        _require(
+            publication_system_authority in {None, "openvino_gva"},
+            "publication system authority is outside the closed runtime set",
+        )
+        expected_publication_system = (
+            publication_system_authority or "gstreamer_custom"
+        )
         _require(args.codec is not None, "publication runtime requires exact --codec")
         _require(
             args.analytics_execution_socket is not None,
@@ -2352,8 +2450,17 @@ def main() -> int:
             "publication runtime requires exact --analytics-preprocessing-contract-sha256",
         )
         _require(
-            args.system == "gstreamer_custom",
-            "checkpoint publication runtime is topology-specific to gstreamer_custom",
+            args.analytics_execution_manifest is not None,
+            "publication runtime requires exact --analytics-execution-manifest",
+        )
+        _require(
+            args.gst_registry_template is not None
+            and args.gst_plugin_path is not None,
+            "publication runtime requires exact GStreamer registry/plugin inputs",
+        )
+        _require(
+            args.system == expected_publication_system,
+            "checkpoint publication runtime system differs from its code authority",
         )
         pair = build_publication_pair_plans(
             config=config,
@@ -2432,25 +2539,29 @@ def main() -> int:
         analytics_model_bindings = load_analytics_model_bindings(
             args.analytics_model_manifest,
             required_branches=plan["required_branches"],
+            pinned_file_paths_by_sha256=pinned_file_paths_by_sha256,
+        )
+        analytics_model_bindings = _bind_pinned_model_paths(
+            analytics_model_bindings,
+            pinned_file_paths_by_sha256,
         )
     native_policy_runtime: NativePolicyRuntimeCoordinator | None = None
     native_policy_capability_assessment: dict[str, Any] | None = None
     if publication_mode:
         _require(
-            args.analytics_model_manifest is not None and analytics_model_bindings is not None,
-            "publication policy runtime requires an exact analytics execution manifest",
+            args.analytics_model_manifest is not None
+            and args.analytics_execution_manifest is not None
+            and analytics_model_bindings is not None,
+            "publication policy runtime requires exact model and execution manifests",
         )
         native_policy_capability_assessment = assess_gstreamer_native_policy_execution_manifest(
-            _load_yaml(args.analytics_model_manifest)
+            _load_yaml(args.analytics_execution_manifest)
         )
         _require(
-            str(args.policy) in native_policy_capability_assessment["eligible_policies"],
+            native_policy_capability_assessment["passed"] is True
+            and str(args.policy) in native_policy_capability_assessment["eligible_policies"],
             "native gstreamer policy is blocked by execution capabilities: "
             + ",".join(native_policy_capability_assessment["blockers"][:8]),
-        )
-        _require(
-            args.policy == "cpu_only",
-            "native gstreamer GPU/mixed policy paths require frozen TensorRT/CUDA parity bindings",
         )
         _require(
             args.policy_capability_manifest is not None,
@@ -2492,7 +2603,7 @@ def main() -> int:
     )
     specs = build_gstreamer_worker_specs(
         plan=plan,
-        binary=args.binary.resolve(),
+        binary=_native_binary_path(args.binary),
         output_root=runtime_output_dir.resolve(),
         project_root=project_root,
         run_id=args.run_id,
@@ -2515,12 +2626,25 @@ def main() -> int:
             if native_policy_runtime is not None
             else None
         ),
+        inherited_native_fds=inherited_native_fds,
+        gst_plugin_path=(
+            str(args.gst_plugin_path)
+            if args.gst_plugin_path is not None
+            else None
+        ),
     )
     source_specs = build_gstreamer_source_specs(
         plan=plan,
-        source_binary=args.source_binary.resolve(),
+        source_binary=_native_binary_path(args.source_binary),
         project_root=project_root,
         run_id=args.run_id,
+        pinned_source_paths_by_sha256=pinned_file_paths_by_sha256,
+        inherited_native_fds=inherited_native_fds,
+        gst_plugin_path=(
+            str(args.gst_plugin_path)
+            if args.gst_plugin_path is not None
+            else None
+        ),
     )
     preview = {
         "status": (
@@ -2601,7 +2725,12 @@ def main() -> int:
     _require(args.source_binary.is_file(), f"native GStreamer source binary was not found: {args.source_binary}")
     validate_worker_source_provenance(specs)
     validate_source_provenance(source_specs)
-    registry_seed = seed_gstreamer_registry_copies(specs, source_specs)
+    registry_seed = seed_gstreamer_registry_copies(
+        specs,
+        source_specs,
+        template_path=args.gst_registry_template,
+        refresh_hardware_plugins=not publication_mode,
+    )
     telemetry_sink_preexisting_entry_count = (
         sum(1 for _ in runtime_output_dir.iterdir()) if runtime_output_dir.exists() else 0
     )
@@ -2765,7 +2894,17 @@ def main() -> int:
     if publication_mode:
         _require(runtime_reset_audit is not None, "publication runtime reset audit is absent")
         _require(runtime_stage_contract_path is not None, "publication runtime stage contract is absent")
-        _require(str(primary.get("system")) == args.system, "publication runtime system differs from primary cell")
+        if publication_system_authority is None:
+            _require(
+                str(primary.get("system")) == args.system,
+                "publication runtime system differs from primary cell",
+            )
+        else:
+            _require(
+                publication_system_authority == "openvino_gva"
+                and str(plan.get("system")) == args.system,
+                "OpenVINO publication runtime plan differs from code authority",
+            )
         _require(
             str(dataset_identity.get("codec_variant")) == str(args.codec),
             "publication runtime dataset/codec binding drifted",

@@ -952,9 +952,14 @@ class GStreamerAnalyticsSidecarTests(unittest.TestCase):
             )
             self.assertEqual(len(commands), 2)
             probe_command, run_command = commands
+            expected_user = f"{runtime.stat().st_uid}:{runtime.stat().st_gid}"
             self.assertEqual(probe_command[:4], ["docker", "run", "--rm", "--network"])
             self.assertIn("none", probe_command)
             self.assertIn("--gpus", probe_command)
+            self.assertEqual(
+                probe_command[probe_command.index("--user") + 1],
+                expected_user,
+            )
             self.assertEqual(run_command[:2], ["docker", "run"])
             self.assertIn("--network", run_command)
             self.assertEqual(
@@ -964,6 +969,22 @@ class GStreamerAnalyticsSidecarTests(unittest.TestCase):
             self.assertIn("--gpus", run_command)
             self.assertIn("--read-only", run_command)
             self.assertIn("--cap-drop", run_command)
+            self.assertEqual(
+                run_command[run_command.index("--user") + 1],
+                expected_user,
+            )
+            self.assertEqual(
+                run_command[run_command.index("--workdir") + 1],
+                "/workspace",
+            )
+            self.assertIn("--tmpfs", run_command)
+            self.assertIn(
+                "/tmp:rw,nosuid,nodev,size=67108864,mode=1777",
+                run_command,
+            )
+            self.assertIn("HOME=/tmp", run_command)
+            self.assertIn("XDG_CACHE_HOME=/tmp", run_command)
+            self.assertIn("XDG_CONFIG_HOME=/tmp", run_command)
             self.assertIn(self.config["workers"]["gpu"]["image_id"], run_command)
             self.assertNotIn(self.config["workers"]["gpu"]["image"], run_command)
             self.assertIn(self.config["workers"]["gpu"]["image_id"], probe_command)

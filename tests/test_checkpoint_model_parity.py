@@ -34,12 +34,12 @@ from checkpoint_model_parity import (  # noqa: E402
 )
 
 
-CPU_IMAGE_ID = "sha256:1cd1537d05f9d83a82024d8742afb6d8b325f951f62d55ce1aeb904b1e88ec6d"
-GPU_IMAGE_ID = "sha256:277bb99b1b23b5b763332041703905242a1238c3faeb72533aa6045c9d2d7489"
-CPU_WORKER_IMAGE_ID = "sha256:1c484b47ce6cced890f83a653767df5dcd57c81ebb4ef8be3076d48273c26a1e"
-GPU_WORKER_IMAGE_ID = "sha256:29ad51f4057f5aa77eb18e572c5055ed465fac39d49365d8eb5ffafe4fe8001f"
-CPU_WORKER_IMPLEMENTATION_SHA = "11bb76091b0380fae4a374abae8f305c216b17ee96019106902e2e987730f182"
-GPU_WORKER_IMPLEMENTATION_SHA = "7a09892dc72f86c825b3ec9055fdb25859f497caf86e9e32c4d35d79f96c5c46"
+CPU_IMAGE_ID = "sha256:5c43c6c1f95b3fbb4a95957d1d293b1272c1db6a44a7a2063aad3aeba7c951d1"
+GPU_IMAGE_ID = "sha256:16d284eb311f04a95f148746f0dc5637d54d527cc42be9a6cced5fcf0240770c"
+CPU_WORKER_IMAGE_ID = "sha256:e2b01f8f40da08fc59d671e19a7f4eca6dd7d46678de0138ab7af51b09cb9b03"
+GPU_WORKER_IMAGE_ID = "sha256:2ff600e743e6fc089ace1ea40894d73581fcda8007fa758fd0f32eb9b1c72f09"
+CPU_WORKER_IMPLEMENTATION_SHA = "f15ab5fd7d846376ccba55e55b663f4d16e114ef4cf5519794795cde7a416f8b"
+GPU_WORKER_IMPLEMENTATION_SHA = "eb6fce9ec42f26e0d38263053aedbb8d9c247c1872be39d67d7f3c0da4c48ab7"
 
 
 def canonical_sha(value: object) -> str:
@@ -1797,6 +1797,25 @@ class AssessmentV3Tests(unittest.TestCase):
         self.assertIn(f"branch:{branch}:numeric_parity_tolerance_exceeded:raw_max_abs_error", blockers)
         self.assertIn(f"branch:{branch}:numeric_parity_tolerance_exceeded:top1_mismatch_rate", blockers)
         self.assertFalse(result["branches"][branch]["recomputed_parity"]["passed"])
+
+    def test_relative_error_floor_is_tied_to_the_absolute_logit_tolerance(self) -> None:
+        self.assertEqual(
+            checkpoint_model_parity_module.RELATIVE_ERROR_FLOOR,
+            PARITY_TOLERANCES["raw_max_abs_error"],
+        )
+        cpu = [{"sample_id": "near-zero", "values": [0.000030, 1.0]}]
+        cuda = [{"sample_id": "near-zero", "values": [0.000035, 1.000001]}]
+        parity, blockers = (
+            checkpoint_model_parity_module._recompute_classification_parity_v2(
+                "plate_number", cpu, cuda
+            )
+        )
+        self.assertEqual(blockers, [])
+        self.assertTrue(parity["passed"])
+        self.assertLessEqual(
+            parity["aggregates"]["raw_max_rel_error"],
+            PARITY_TOLERANCES["raw_max_rel_error"],
+        )
 
     def test_exact_sample_order_and_hashes_are_required(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

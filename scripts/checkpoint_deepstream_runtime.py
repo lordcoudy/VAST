@@ -50,7 +50,10 @@ SCENARIO_TOPOLOGY = {
     "checkpoint_independent_processes_baseline": "independent_processes",
     "checkpoint_video_dag_shared": "shared_video_dag",
 }
-DATASET_BY_CODEC = {"h264": "kpp_real_h264", "h265": "kpp_real_h265"}
+DATASET_BY_CODEC = {
+    "h264": "kpp_iss_publication_v3_h264",
+    "h265": "kpp_iss_publication_v3_h265",
+}
 PARSER_BY_CODEC = {"h264": "h264parse", "h265": "h265parse"}
 FROZEN_DEADLINES_MS = (16.7, 33.3, 50.0, 100.0, 500.0)
 REQUIRED_ELEMENTS = (
@@ -79,7 +82,7 @@ _IMAGE_ID_RE = re.compile(r"^sha256:[0-9a-f]{64}$")
 
 _PLAN_FIELDS = {
     "schema_version", "artifact_kind", "claim_status", "system", "image",
-    "scenario", "topology_kind", "codec", "parser_factory", "dataset",
+    "scenario", "topology_kind", "topology_contract_version", "codec", "parser_factory", "dataset",
     "policy", "deadline_ms", "stream_count", "required_branches", "warmup_s",
     "measurement_s", "runtime_executable", "runtime_implementation_status",
     "topology_runtime_implemented", "publication_ready", "source_protocol",
@@ -158,7 +161,7 @@ def _frozen_scenario(config: Mapping[str, Any], scenario_name: str) -> tuple[dic
     _require(scenario.get("benchmark_status") == "supported", f"{scenario_name}: benchmark is not supported")
     topology = scenario.get("topology")
     _require(isinstance(topology, Mapping), f"{scenario_name}: topology is missing")
-    _require(topology.get("contract_version") == 1, f"{scenario_name}: topology contract version drifted")
+    _require(topology.get("contract_version") == 2, f"{scenario_name}: topology contract version drifted")
     _require(topology.get("kind") == topology_kind, f"{scenario_name}: topology kind drifted")
     _require(topology.get("routing_mode") == "all_branches_per_stream", f"{scenario_name}: routing mode drifted")
     branches = tuple(str(value) for value in topology.get("required_branches") or ())
@@ -421,6 +424,7 @@ def build_deepstream_runtime_plan(
         "image": DEEPSTREAM_IMAGE,
         "scenario": scenario,
         "topology_kind": topology_kind,
+        "topology_contract_version": 2,
         "codec": codec,
         "parser_factory": PARSER_BY_CODEC[codec],
         "dataset": dataset_name,
@@ -612,6 +616,10 @@ def validate_deepstream_runtime_plan(plan: Mapping[str, Any]) -> None:
     expected_topology = SCENARIO_TOPOLOGY.get(scenario)
     _require(expected_topology is not None, "DeepStream plan scenario drifted")
     _require(plan.get("topology_kind") == expected_topology, "DeepStream plan topology kind drifted")
+    _require(
+        plan.get("topology_contract_version") == 2,
+        "DeepStream plan topology contract version drifted",
+    )
     codec = str(plan.get("codec", ""))
     _require(codec in DATASET_BY_CODEC, "DeepStream plan codec drifted")
     _require(plan.get("parser_factory") == PARSER_BY_CODEC[codec], "DeepStream parser factory drifted")

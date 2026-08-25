@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-"""Fail-closed native scheduling bridge for the checkpoint GStreamer runtime."""
+"""Fail-closed native scheduling bridge for all checkpoint publication runtimes."""
 
 import copy
 import csv
@@ -9,6 +9,7 @@ import io
 import json
 import math
 import os
+import re
 import socket
 import threading
 from dataclasses import dataclass
@@ -25,6 +26,7 @@ from publication_policy_contract import (
     ANALYTICS_BRANCHES,
     POLICIES,
     POLICY_SCOPE,
+    PUBLISHABLE_SYSTEMS,
     RESOURCES,
     PolicyContractError,
     PolicyEngine,
@@ -190,7 +192,12 @@ def require_exact_native_cpu_capability_bindings(
 ) -> None:
     """Match the frozen manifest to identities computed by the loaded CPU worker."""
 
-    resolved_binary = Path(binary).resolve()
+    binary_path = Path(binary)
+    resolved_binary = (
+        binary_path
+        if re.fullmatch(r"/proc/self/fd/[0-9]+", str(binary_path))
+        else binary_path.resolve()
+    )
     if not resolved_binary.is_file():
         raise NativePolicyRuntimeError(f"native policy binary is missing: {resolved_binary}")
     executable_sha256 = hashlib.sha256(resolved_binary.read_bytes()).hexdigest()
@@ -350,9 +357,9 @@ class NativePolicyRuntimeCoordinator:
     ) -> None:
         self.run_id = _text(run_id, "run_id")
         self.arm_id = _text(arm_id, "arm_id")
-        if system != "gstreamer_custom":
+        if system not in PUBLISHABLE_SYSTEMS:
             raise NativePolicyRuntimeError(
-                "native checkpoint policy binding is implemented only for gstreamer_custom"
+                "native checkpoint policy binding is outside the publishable runtime set"
             )
         if scenario not in {
             "checkpoint_independent_processes_baseline",
@@ -626,26 +633,40 @@ class NativePolicyRuntimeCoordinator:
         detector = _text(message.get("detector"), "detector")
         backend = str(message.get("backend", ""))
         binding = self._binding(str(state.record["branch"]), selected)
-        expected_detector = str(binding.get("terminal_detector", ""))
-        expected_backend = str(binding.get("terminal_backend", ""))
+        identity = binding.get("runtime_identity")
+        if not isinstance(identity, Mapping):
+            raise NativePolicyRuntimeError("selected capability has no validated runtime identity")
+        expected_detector = str(identity.get("terminal_detector", ""))
+        expected_backend = str(identity.get("terminal_backend", ""))
+        identity_projection_matches = all(
+            binding.get(field) == identity.get(field)
+            for field in (
+                "runtime_backend",
+                "device_api",
+                "gpu_id",
+                "worker_image_digest",
+                "implementation_version",
+                "terminal_detector",
+                "terminal_backend",
+            )
+        )
         if selected == "cpu":
             capability_matches_resource = (
-                binding.get("runtime_backend") == "openvino_dlstreamer"
-                and binding.get("device_api") == "CPU"
-                and expected_backend.startswith("openvino-dlstreamer:")
-                and expected_backend.endswith(";device=CPU")
+                identity.get("device_api") == "CPU"
+                and identity.get("gpu_id") is None
+                and "device=CPU" in expected_backend
+                and "NVIDIA_CUDA" not in expected_backend
             )
         else:
             capability_matches_resource = (
-                binding.get("runtime_backend") == "cuda_tensorrt"
-                and binding.get("device_api") == "NVIDIA_CUDA"
-                and binding.get("gpu_id") == 0
-                and expected_backend.startswith("cuda-tensorrt:")
-                and expected_backend.endswith(";device=NVIDIA_CUDA:0")
-                and not expected_backend.startswith("openvino")
+                identity.get("device_api") == "NVIDIA_CUDA"
+                and type(identity.get("gpu_id")) is int
+                and identity.get("gpu_id") == 0
+                and "device=NVIDIA_CUDA:0" in expected_backend
             )
         if (
-            not capability_matches_resource
+            not identity_projection_matches
+            or not capability_matches_resource
             or not expected_detector
             or detector != expected_detector
             or backend != expected_backend
@@ -793,7 +814,7 @@ class NativePolicyRuntimeCoordinator:
                 "source_trace_id": str(request["trace_id"]),
                 "observed_timestamp_ms": state.feature_observed_timestamp_ms,
                 "age_ms": decision_ms - state.feature_observed_timestamp_ms,
-                "estimator_version": "native-gstreamer-pad-queue-snapshot-v1",
+                "estimator_version": f"native-{self.system}-queue-snapshot-v1",
             }
         }
         parameters: dict[str, Any] = {
@@ -842,7 +863,7 @@ class NativePolicyRuntimeCoordinator:
             "decision_id": str(record["decision_id"]),
             "decision_seq": int(record["decision_seq"]),
             "decision_timestamp_ms": decision_ms,
-            "graph_version": f"{self.scenario}:native-gstreamer-policy-routing-v1",
+            "graph_version": f"{self.scenario}:native-{self.system}-policy-routing-v1",
             "profile_version": f"calibration-sha256:{profile_digest}",
             "feature_provenance_json": _canonical_json(feature_provenance),
             "terminal_status": str(state.terminal["terminal_status"]),

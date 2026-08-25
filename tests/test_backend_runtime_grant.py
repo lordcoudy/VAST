@@ -15,8 +15,12 @@ from backend_runtime_grant import (  # noqa: E402
     BackendRuntimeGrantError,
     SYSTEMS,
     assess_pre_run_backend_runtime_grant,
+    backend_launcher_output_receipt_protocol_ready,
     backend_runtime_grant_from_identity_artifacts,
     validate_pre_run_backend_runtime_grant,
+)
+from backend_publication_launcher_invocation_v3 import (  # noqa: E402
+    publication_launcher_invocation_v3_contract,
 )
 from backend_publication_dispatch import (  # noqa: E402
     launcher_invocation_contract,
@@ -185,7 +189,269 @@ def v2_identity() -> dict[str, object]:
     return identity
 
 
+def v3_identity() -> dict[str, object]:
+    upstream = v2_identity()["bindings"]["backend_runtime_qualification"][
+        "upstream_identities"
+    ]
+    invocation = publication_launcher_invocation_v3_contract()
+    validator_sha = hashlib.sha256(b"authenticated-q4-validator").hexdigest()
+    index = descriptor(
+        "accepted/checkpoint_backend_runtime_qualification_v4_binding_index.json",
+        "q4-binding-index",
+    )
+    receipts = {
+        system: descriptor(
+            f"accepted/checkpoint_{system}_backend_runtime_qualification_v4_receipt.json",
+            f"q4-receipt:{system}",
+        )
+        for system in SYSTEMS
+    }
+    protocol_paths = {
+        "full_publication_entrypoint": "scripts/full_publication_entrypoint.py",
+        "production_output_transaction": (
+            "scripts/backend_publication_output_transaction_production_v3.py"
+        ),
+        "engineering_output_transaction": (
+            "scripts/backend_publication_output_transaction_v3.py"
+        ),
+        "dispatch_abi": "scripts/backend_publication_dispatch_v3.py",
+        "process_supervisor": (
+            "scripts/backend_publication_process_supervisor_v3.py"
+        ),
+    }
+    protocol_files = {
+        role: descriptor(path, f"protocol:{role}")
+        for role, path in protocol_paths.items()
+    }
+    systems: dict[str, object] = {}
+    files: list[dict[str, object]] = [
+        index, *receipts.values(), *protocol_files.values(),
+    ]
+    for system in SYSTEMS:
+        launcher = descriptor(
+            f"scripts/checkpoint_{system}_publication_launcher_v3.py",
+            f"launcher-v3:{system}",
+        )
+        launcher_authority_descriptor = descriptor(
+            f"accepted/{system}-launcher-authority.json",
+            f"launcher-authority:{system}",
+        )
+        launcher_authority_sha = hashlib.sha256(
+            f"launcher-authority-semantic:{system}".encode()
+        ).hexdigest()
+        authorities: list[dict[str, object]] = []
+        authority_files: list[dict[str, object]] = []
+        authority_shas: dict[tuple[str, str, str], str] = {}
+        for codec in ("h264", "h265"):
+            for topology in ("independent_processes", "shared_video_dag"):
+                for policy in (
+                    "cpu_only", "gpu_only", "static_hybrid", "heft",
+                    "deadline_aware_heft", "queue_aware_edf",
+                    "adaptive_weights",
+                ):
+                    marker = f"{system}:{codec}:{topology}:{policy}"
+                    authority_sha = hashlib.sha256(
+                        f"authority-semantic:{marker}".encode()
+                    ).hexdigest()
+                    authority_descriptor = descriptor(
+                        f"accepted/backend/{system}/authorities/"
+                        f"{codec}-{topology}-{policy}.json",
+                        f"authority-file:{marker}",
+                    )
+                    authorities.append({
+                        "system": system,
+                        "codec": codec,
+                        "topology_kind": topology,
+                        "policy": policy,
+                        "runtime_authority_sha256": authority_sha,
+                        "artifact": {"authority_sha256": authority_sha},
+                        "artifact_descriptor": authority_descriptor,
+                    })
+                    authority_files.append(authority_descriptor)
+                    authority_shas[(codec, topology, policy)] = authority_sha
+        cells: list[dict[str, object]] = []
+        for ordinal in range(140):
+            source = cell(system, ordinal)
+            source["launcher_invocation_sha256"] = invocation[
+                "invocation_sha256"
+            ]
+            source["validator_identity_sha256"] = validator_sha
+            source["runtime_authority_sha256"] = authority_shas[(
+                str(source["codec"]), str(source["topology_kind"]),
+                str(source["policy"]),
+            )]
+            cells.append(source)
+        systems[system] = {
+            "system": system,
+            "runtime_binding_identity_sha256": hashlib.sha256(
+                f"runtime-binding-v4:{system}".encode()
+            ).hexdigest(),
+            "runtime_authority_set_sha256": hashlib.sha256(
+                f"authority-set:{system}".encode()
+            ).hexdigest(),
+            "runtime_authorities": authorities,
+            "launcher_runtime_authority": {
+                "launcher_runtime_authority_sha256": launcher_authority_sha,
+            },
+            "launcher_runtime_authority_descriptor": (
+                launcher_authority_descriptor
+            ),
+            "launcher_runtime_authority_sha256": launcher_authority_sha,
+            "launcher": launcher,
+            "launcher_invocation": invocation,
+            "launcher_kind": "dedicated_publication_runtime_v3",
+            "publication_capable": True,
+            "qualified_cells": cells,
+            "qualified_cells_sha256": canonical_sha(cells),
+            "raw_evidence_set_sha256": canonical_sha([
+                item["raw_evidence"] for item in cells
+            ]),
+        }
+        files.extend([
+            launcher, launcher_authority_descriptor, *authority_files,
+            *(item["raw_evidence"] for item in cells),
+        ])
+    protocol = {
+        "schema_version": 3,
+        "artifact_kind": (
+            "vast_backend_publication_production_output_receipt_protocol_binding_v3"
+        ),
+        "execution_scope": "full_publication_measurement_v3",
+        "receipt_kind": "vast_backend_publication_production_output_receipt_v3",
+        "receipt_authority_kind": (
+            "vast_backend_publication_production_output_receipt_authority_v3"
+        ),
+        "atomicity": "launcher_result_then_output_receipt_last_v3",
+        "parent_owned_transaction_required": True,
+        "semantic_evidence_validation_required": True,
+        "protocol_files": protocol_files,
+        "systems": {
+            system: {
+                "launcher": systems[system]["launcher"],
+                "launcher_runtime_authority_descriptor": systems[system][
+                    "launcher_runtime_authority_descriptor"
+                ],
+                "launcher_runtime_authority_sha256": systems[system][
+                    "launcher_runtime_authority_sha256"
+                ],
+                "launcher_invocation_sha256": invocation["invocation_sha256"],
+            }
+            for system in SYSTEMS
+        },
+    }
+    protocol["protocol_binding_sha256"] = canonical_sha(protocol)
+    backend = {
+        "schema_version": 3,
+        "artifact_kind": (
+            "vast_full_publication_backend_runtime_qualification_binding_v3"
+        ),
+        "source_status": "accepted_persisted_physical_q4_qualification",
+        "source_qualification_scope": (
+            "backend_native_runtime_q4_physical_qualification"
+        ),
+        "authorization_eligible": True,
+        "validation_trust_status": "authenticated_persisted_physical_q4_v4",
+        "semantic_crossbinding_complete": True,
+        "authorization_blockers": [],
+        "observed_validator_identity_sha256": validator_sha,
+        "qualification_index_sha256": hashlib.sha256(b"q4-index").hexdigest(),
+        "catalog_sha256": hashlib.sha256(b"q4-catalog").hexdigest(),
+        "binding_index": index,
+        "receipts": receipts,
+        "upstream_identities": upstream,
+        "systems": systems,
+        "coverage": {
+            "system_count": 4, "runtime_authority_count": 112,
+            "runtime_authorities_per_system": 28, "runtime_cell_count": 560,
+            "cells_per_system": 140, "validation_request_count": 560,
+            "validation_record_count": 560,
+        },
+        "runtime_authority_leaves": [],
+        "runtime_authority_leaf_set_sha256": canonical_sha([]),
+        "physical_files": files,
+        "physical_files_sha256": canonical_sha(files),
+        "production_output_receipt_protocol": protocol,
+        "post_run_per_arm_evidence_required": True,
+        "configuration_evidence_accepted_mutated": False,
+    }
+    backend["identity_binding_sha256"] = canonical_sha(backend)
+    identity = {
+        "schema_version": 2,
+        "artifact_kind": "vast_full_publication_identity_artifact_binding",
+        "manifest": descriptor(
+            "configs/full_publication_identity_artifacts.yaml", "manifest-v3"
+        ),
+        "bindings": {
+            "analytics_model_parity": {
+                "binding_sha256": upstream[
+                    "model_parity_acceptance_binding_sha256"
+                ],
+            },
+            "analytics_execution_layer": {}, "policy_qualification": {},
+            "resource_qualification": {},
+            "backend_runtime_qualification": backend,
+        },
+        "files": files,
+        "files_sha256": canonical_sha(files),
+    }
+    identity["binding_sha256"] = canonical_sha(identity)
+    return identity
+
+
 class BackendRuntimeGrantTests(unittest.TestCase):
+    def test_authenticated_persisted_q4_identity_derives_protocol_bound_v3_grant(self) -> None:
+        identity = v3_identity()
+        grant = backend_runtime_grant_from_identity_artifacts(identity)
+
+        self.assertEqual(grant["schema_version"], 3)
+        self.assertEqual(
+            grant["artifact_kind"],
+            "vast_verified_pre_run_backend_runtime_grant_v3",
+        )
+        self.assertTrue(assess_pre_run_backend_runtime_grant(grant)["passed"])
+        self.assertTrue(backend_launcher_output_receipt_protocol_ready(grant))
+        self.assertEqual(len(grant["systems"]), 4)
+        self.assertEqual(
+            sum(len(item["qualified_cells"]) for item in grant["systems"].values()),
+            560,
+        )
+
+    def test_v3_protocol_file_and_launcher_crossbinding_tamper_fail_closed(self) -> None:
+        for mutation in ("protocol_file", "launcher_authority"):
+            identity = v3_identity()
+            backend = identity["bindings"]["backend_runtime_qualification"]
+            if mutation == "protocol_file":
+                backend["production_output_receipt_protocol"]["protocol_files"][
+                    "production_output_transaction"
+                ]["sha256"] = "f" * 64
+                backend["production_output_receipt_protocol"].pop(
+                    "protocol_binding_sha256"
+                )
+                backend["production_output_receipt_protocol"][
+                    "protocol_binding_sha256"
+                ] = canonical_sha(
+                    backend["production_output_receipt_protocol"]
+                )
+            else:
+                backend["production_output_receipt_protocol"]["systems"][
+                    SYSTEMS[0]
+                ]["launcher_runtime_authority_sha256"] = "f" * 64
+                backend["production_output_receipt_protocol"].pop(
+                    "protocol_binding_sha256"
+                )
+                backend["production_output_receipt_protocol"][
+                    "protocol_binding_sha256"
+                ] = canonical_sha(
+                    backend["production_output_receipt_protocol"]
+                )
+            backend.pop("identity_binding_sha256")
+            backend["identity_binding_sha256"] = canonical_sha(backend)
+            identity.pop("binding_sha256")
+            identity["binding_sha256"] = canonical_sha(identity)
+            with self.subTest(mutation=mutation):
+                with self.assertRaises(BackendRuntimeGrantError):
+                    backend_runtime_grant_from_identity_artifacts(identity)
+
     def test_derives_exact_self_hashed_v2_grant_from_validated_identity(self) -> None:
         identity = v2_identity()
         grant = backend_runtime_grant_from_identity_artifacts(identity)

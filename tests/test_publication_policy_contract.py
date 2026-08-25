@@ -37,11 +37,26 @@ def valid_capability_manifest() -> dict:
             bindings: dict[str, dict] = {}
             for resource_index, resource in enumerate(RESOURCES, start=1):
                 marker = system_index * 100 + branch_index * 10 + resource_index
+                runtime_identity = {
+                    "runtime_backend": f"{system}.{resource}.native.backend.v3",
+                    "device_api": "CPU" if resource == "cpu" else "NVIDIA_CUDA",
+                    "gpu_id": None if resource == "cpu" else 0,
+                    "worker_image_digest": "sha256:" + f"{marker + 2:064x}",
+                    "implementation_version": f"{system}-{branch}-{resource}-implementation-v3",
+                    "terminal_detector": f"opaque-{branch}-detector-v3",
+                    "terminal_backend": (
+                        "analytics-execution:openvino_cpu;runtime=OpenVINO;native_api=CompiledModel;device=CPU"
+                        if resource == "cpu"
+                        else "analytics-execution:tensorrt_cuda;runtime=TensorRT;native_api=enqueueV3;device=NVIDIA_CUDA:0"
+                    ),
+                }
                 bindings[resource] = {
                     "status": "implemented_and_native_evidence_bound",
                     "implementation_id": f"{system}-{branch}-{resource}-runtime-v1",
                     "implementation_sha256": f"{marker:064x}",
                     "runtime_binding": f"{system}:{branch}:{resource}:worker",
+                    "runtime_identity": runtime_identity,
+                    **runtime_identity,
                     "native_evidence": {
                         "status": "accepted_native_runtime_emitter",
                         "telemetry_source": "native",
@@ -185,6 +200,40 @@ class PublicationPolicyContractTests(unittest.TestCase):
         self.assertFalse(assessment["passed"])
         self.assertIn(
             "capability:openvino_gva:foreign_object:gpu:native_evidence_not_bound",
+            assessment["blockers"],
+        )
+
+        missing_identity = copy.deepcopy(manifest)
+        del missing_identity["systems"]["gstreamer_custom"]["branches"]["damage"]["cpu"][
+            "runtime_identity"
+        ]
+        assessment = assess_capability_manifest(missing_identity)
+        self.assertFalse(assessment["passed"])
+        self.assertIn(
+            "capability:gstreamer_custom:damage:cpu:runtime_identity_fields_invalid",
+            assessment["blockers"],
+        )
+
+        projection_drift = copy.deepcopy(manifest)
+        projection_drift["systems"]["deepstream"]["branches"]["plate_number"]["gpu"][
+            "terminal_backend"
+        ] += ":drift"
+        assessment = assess_capability_manifest(projection_drift)
+        self.assertFalse(assessment["passed"])
+        self.assertIn(
+            "capability:deepstream:plate_number:gpu:runtime_identity_projection_mismatch",
+            assessment["blockers"],
+        )
+
+        cpu_on_gpu = copy.deepcopy(manifest)
+        cpu_on_gpu["systems"]["savant"]["branches"]["vehicle_type"]["cpu"][
+            "runtime_identity"
+        ]["gpu_id"] = 0
+        cpu_on_gpu["systems"]["savant"]["branches"]["vehicle_type"]["cpu"]["gpu_id"] = 0
+        assessment = assess_capability_manifest(cpu_on_gpu)
+        self.assertFalse(assessment["passed"])
+        self.assertIn(
+            "capability:savant:vehicle_type:cpu:runtime_identity_resource_mismatch",
             assessment["blockers"],
         )
 

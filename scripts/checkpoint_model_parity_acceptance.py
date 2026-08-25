@@ -13,7 +13,8 @@ from pathlib import Path
 from typing import Any, Mapping
 
 
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
+LEGACY_SCHEMA_VERSION = 1
 ASSESSMENT_KIND = "vast_checkpoint_model_parity_accepted_assessment"
 RECEIPT_KIND = "vast_checkpoint_model_parity_acceptance_receipt"
 RECEIPT_STATUS = "accepted_physical_model_parity_v3"
@@ -30,6 +31,40 @@ EVIDENCE_NAMES = (
     "cuda_raw_output_bundle",
 )
 _SHA_RE = re.compile(r"^[0-9a-f]{64}$")
+_TRANSACTION_BUNDLE_COUNT = 480
+_TRANSACTION_FIELDS = {
+    "schema_version",
+    "artifact_kind",
+    "run_id",
+    "final_materialization_path",
+    "document_count",
+    "files",
+    "files_sha256",
+    "source_inventory",
+    "source_inventory_sha256",
+    "output_segments",
+    "output_segments_sha256",
+    "execution_bundle_count",
+    "execution_bundles",
+    "execution_bundles_sha256",
+    "claimed_aggregates_accepted",
+    "synthetic_or_mock_evidence_accepted",
+    "transaction_sha256",
+}
+_EXECUTION_BUNDLE_FIELDS = {
+    "branch",
+    "role",
+    "codec",
+    "sample_id",
+    "resource",
+    "request_id",
+    "manifest",
+    "manifest_identity_sha256",
+    "request_sha256",
+    "response_sha256",
+    "input_tensor_sha256",
+    "output_tensor_sha256",
+}
 
 
 class ModelParityAcceptanceError(RuntimeError):
@@ -305,6 +340,211 @@ def _manifest_material(
     }
 
 
+def _transaction_index_material(
+    root: Path,
+    material: Mapping[str, Any],
+    *,
+    registry: _FileRegistry,
+) -> dict[str, Any]:
+    evidence_roots: set[str] = set()
+    for evidence in material["evidence"]:
+        relative = _normalized_relative(
+            evidence["path"],
+            f"accepted parity transaction evidence {evidence['branch']}/{evidence['evidence_name']}",
+        )
+        parts = relative.parts
+        _require(
+            len(parts) >= 4
+            and parts[-3] == "documents"
+            and parts[-2] == evidence["branch"]
+            and parts[-1] == f"{evidence['evidence_name']}.json",
+            "accepted parity evidence is outside the materialization transaction layout",
+        )
+        evidence_roots.add(Path(*parts[:-3]).as_posix())
+    _require(
+        len(evidence_roots) == 1,
+        "accepted parity evidence does not share one transaction root",
+    )
+    evidence_root = next(iter(evidence_roots))
+    transaction_relative = f"{evidence_root}/transaction_index.json"
+    transaction_record = registry.add_path(
+        transaction_relative, "model-parity transaction index"
+    )
+    index = _read_json_object(
+        root / transaction_relative, "model-parity transaction index"
+    )
+    _exact(index, _TRANSACTION_FIELDS, "model-parity transaction index")
+    _require(
+        index.get("schema_version") == SCHEMA_VERSION
+        and index.get("artifact_kind")
+        == "checkpoint_model_parity_materialization_transaction"
+        and index.get("run_id") == Path(evidence_root).name
+        and index.get("final_materialization_path") == evidence_root
+        and index.get("document_count") == 32
+        and index.get("claimed_aggregates_accepted") is False
+        and index.get("synthetic_or_mock_evidence_accepted") is False,
+        "model-parity transaction provenance boundary drifted",
+    )
+    transaction_sha = index.get("transaction_sha256")
+    _require(
+        _valid_sha(transaction_sha)
+        and transaction_sha
+        == _canonical_sha(
+            {key: value for key, value in index.items() if key != "transaction_sha256"}
+        ),
+        "model-parity transaction self-hash drifted",
+    )
+    files = index.get("files")
+    source_inventory = index.get("source_inventory")
+    output_segments = index.get("output_segments")
+    execution_bundles = index.get("execution_bundles")
+    _require(type(files) is list and bool(files), "transaction file inventory is missing")
+    _require(type(source_inventory) is list, "transaction source inventory is invalid")
+    _require(
+        type(output_segments) is list
+        and len(output_segments) == _TRANSACTION_BUNDLE_COUNT,
+        "transaction output coverage is not exact 480",
+    )
+    _require(
+        type(execution_bundles) is list
+        and len(execution_bundles) == _TRANSACTION_BUNDLE_COUNT
+        and index.get("execution_bundle_count") == _TRANSACTION_BUNDLE_COUNT,
+        "transaction execution bundle coverage is not exact 480",
+    )
+    _require(
+        index.get("files_sha256") == _canonical_sha(files)
+        and index.get("source_inventory_sha256") == _canonical_sha(source_inventory)
+        and index.get("output_segments_sha256") == _canonical_sha(output_segments)
+        and index.get("execution_bundles_sha256")
+        == _canonical_sha(execution_bundles),
+        "model-parity transaction indexed material hash drifted",
+    )
+
+    transaction_files = _FileRegistry(root)
+    files_by_path: dict[str, dict[str, Any]] = {}
+    for position, raw in enumerate(files):
+        expected = _validate_descriptor(raw, f"transaction file[{position}]")
+        path = str(expected["path"])
+        _require(path not in files_by_path, "transaction file path is duplicated")
+        _require(
+            path.startswith(f"{evidence_root}/")
+            and path != transaction_relative,
+            "transaction file escaped its materialization root",
+        )
+        actual = transaction_files.add_descriptor(
+            expected, f"transaction file[{position}]"
+        )
+        files_by_path[path] = actual
+    for identity, path in transaction_files.identities.items():
+        primary = registry.identities.get(identity)
+        _require(
+            primary is None or primary == path,
+            "transaction file aliases an acceptance artifact",
+        )
+    for evidence in material["evidence"]:
+        expected = {
+            key: evidence[key] for key in ("path", "size_bytes", "sha256")
+        }
+        _require(
+            files_by_path.get(str(evidence["path"])) == expected,
+            "acceptance-bound evidence is absent from transaction files",
+        )
+
+    output_coordinates: set[tuple[str, str, str]] = set()
+    for segment in output_segments:
+        _require(type(segment) is dict, "transaction output segment is invalid")
+        coordinate = (
+            str(segment.get("branch")),
+            str(segment.get("resource")),
+            str(segment.get("sample_id")),
+        )
+        _require(
+            coordinate[0] in BRANCHES
+            and coordinate[1] in {"openvino_cpu", "tensorrt_cuda"}
+            and coordinate[2]
+            and _valid_sha(segment.get("preprocessed_tensor_sha256")),
+            "transaction output coordinate is invalid",
+        )
+        _require(
+            coordinate not in output_coordinates,
+            "transaction output coordinate is duplicated",
+        )
+        output_coordinates.add(coordinate)
+
+    execution_coordinates: set[tuple[str, str, str]] = set()
+    request_ids: set[str] = set()
+    coverage: dict[tuple[str, str, str, str], int] = {}
+    for row in execution_bundles:
+        _exact(row, _EXECUTION_BUNDLE_FIELDS, "transaction execution bundle")
+        branch = row.get("branch")
+        resource = row.get("resource")
+        role = row.get("role")
+        codec = row.get("codec")
+        sample_id = row.get("sample_id")
+        request_id = row.get("request_id")
+        coordinate = (str(branch), str(resource), str(sample_id))
+        _require(
+            branch in BRANCHES
+            and resource in {"openvino_cpu", "tensorrt_cuda"}
+            and role in {"calibration", "evaluation"}
+            and codec in {"h264", "h265"}
+            and type(sample_id) is str
+            and bool(sample_id)
+            and type(request_id) is str
+            and bool(request_id)
+            and request_id not in request_ids,
+            "transaction execution bundle coordinate is invalid",
+        )
+        _require(
+            coordinate not in execution_coordinates,
+            "transaction execution coordinate is duplicated",
+        )
+        manifest = _validate_descriptor(
+            row.get("manifest"), "transaction execution bundle manifest"
+        )
+        _require(
+            manifest["path"]
+            == f"{evidence_root}/execution_bundles/{request_id}/manifest.json"
+            and files_by_path.get(str(manifest["path"])) == manifest,
+            "transaction execution bundle manifest descriptor drifted",
+        )
+        for field in (
+            "manifest_identity_sha256",
+            "request_sha256",
+            "response_sha256",
+            "input_tensor_sha256",
+            "output_tensor_sha256",
+        ):
+            _require(_valid_sha(row.get(field)), f"transaction {field} is invalid")
+        request_ids.add(request_id)
+        execution_coordinates.add(coordinate)
+        key = (str(branch), str(resource), str(role), str(codec))
+        coverage[key] = coverage.get(key, 0) + 1
+    _require(
+        execution_coordinates == output_coordinates,
+        "transaction execution/output coordinate coverage drifted",
+    )
+    _require(
+        coverage
+        == {
+            (branch, resource, role, codec): 15
+            for branch in BRANCHES
+            for resource in ("openvino_cpu", "tensorrt_cuda")
+            for role in ("calibration", "evaluation")
+            for codec in ("h264", "h265")
+        },
+        "transaction balanced execution coverage drifted",
+    )
+    return {
+        **transaction_record,
+        "transaction_sha256": transaction_sha,
+        "files_sha256": index["files_sha256"],
+        "output_segments_sha256": index["output_segments_sha256"],
+        "execution_bundle_count": _TRANSACTION_BUNDLE_COUNT,
+        "execution_bundles_sha256": index["execution_bundles_sha256"],
+    }
+
+
 def _validate_canonical_assessment(
     value: Mapping[str, Any], *, manifest_identity: str
 ) -> dict[str, Any]:
@@ -446,6 +686,9 @@ def promote_model_parity_acceptance(
             f"accepted model-parity manifest loader rejected artifact: {error}"
         ) from error
     material = _manifest_material(root, manifest_record, manifest, registry=registry)
+    transaction = _transaction_index_material(
+        root, material, registry=registry
+    )
     # The production assessor performs only read-only local Docker image inspect.
     try:
         assessor_result = _assess_model_parity(manifest_path, root)
@@ -468,6 +711,13 @@ def promote_model_parity_acceptance(
             post == {key: evidence[key] for key in ("path", "size_bytes", "sha256")},
             f"parity evidence {evidence['branch']}/{evidence['evidence_name']} drifted during assessment",
         )
+    post_transaction = _transaction_index_material(
+        root, material, registry=post_registry
+    )
+    _require(
+        post_transaction == transaction,
+        "model-parity transaction drifted during assessment",
+    )
     accepted_assessment = {
         "schema_version": SCHEMA_VERSION,
         "artifact_kind": ASSESSMENT_KIND,
@@ -483,6 +733,7 @@ def promote_model_parity_acceptance(
         "blockers": [],
         "evidence_count": 32,
         "evidence_sha256": material["evidence_sha256"],
+        "transaction_index": transaction,
         "runtime_images": assessment_binding["runtime_images"],
         "runtime_images_sha256": assessment_binding["runtime_images_sha256"],
         "runtime_registries_sha256": material["runtime_registries_sha256"],
@@ -517,6 +768,7 @@ def promote_model_parity_acceptance(
         "evidence": material["evidence"],
         "evidence_count": 32,
         "evidence_sha256": material["evidence_sha256"],
+        "transaction_index": transaction,
         "toolchain_registry": material["toolchain_registry"],
         "worker_runtime_registry": material["worker_runtime_registry"],
         "runtime_registries_sha256": material["runtime_registries_sha256"],
@@ -563,6 +815,11 @@ def load_verified_model_parity_acceptance(
     registry = _FileRegistry(root)
     receipt_record = registry.add_path(receipt_relative, "model-parity acceptance receipt")
     receipt = _read_json_object(root / receipt_relative, "model-parity acceptance receipt")
+    receipt_version = receipt.get("schema_version")
+    _require(
+        receipt_version in {LEGACY_SCHEMA_VERSION, SCHEMA_VERSION},
+        "model-parity acceptance receipt schema is unsupported",
+    )
     expected_receipt_fields = {
         "schema_version", "artifact_kind", "status", "accepted_manifest",
         "accepted_manifest_content_identity_sha256", "accepted_assessment",
@@ -572,10 +829,11 @@ def load_verified_model_parity_acceptance(
         "runtime_registries_sha256", "runtime_images", "runtime_images_sha256",
         "receipt_sha256",
     }
+    if receipt_version == SCHEMA_VERSION:
+        expected_receipt_fields.add("transaction_index")
     _exact(receipt, expected_receipt_fields, "model-parity acceptance receipt")
     _require(
-        receipt.get("schema_version") == SCHEMA_VERSION
-        and receipt.get("artifact_kind") == RECEIPT_KIND
+        receipt.get("artifact_kind") == RECEIPT_KIND
         and receipt.get("status") == RECEIPT_STATUS
         and receipt.get("publication_ready") is True
         and receipt.get("blockers") == [],
@@ -613,9 +871,11 @@ def load_verified_model_parity_acceptance(
         "runtime_images", "runtime_images_sha256", "runtime_registries_sha256",
         "assessment_sha256",
     }
+    if receipt_version == SCHEMA_VERSION:
+        assessment_fields.add("transaction_index")
     _exact(assessment, assessment_fields, "accepted model-parity assessment")
     _require(
-        assessment.get("schema_version") == SCHEMA_VERSION
+        assessment.get("schema_version") == receipt_version
         and assessment.get("artifact_kind") == ASSESSMENT_KIND
         and assessment.get("status") == RECEIPT_STATUS
         and assessment.get("publication_ready") is True
@@ -638,6 +898,16 @@ def load_verified_model_parity_acceptance(
         and assessment.get("evidence_sha256") == receipt["evidence_sha256"],
         "accepted model-parity evidence set drifted",
     )
+    transaction: dict[str, Any] | None = None
+    if receipt_version == SCHEMA_VERSION:
+        transaction = _transaction_index_material(
+            root, manifest_material, registry=registry
+        )
+        _require(
+            receipt.get("transaction_index") == transaction
+            and assessment.get("transaction_index") == transaction,
+            "accepted model-parity transaction binding drifted",
+        )
     registries = {
         "toolchain_registry": manifest_material["toolchain_registry"],
         "worker_runtime_registry": manifest_material["worker_runtime_registry"],
@@ -667,9 +937,25 @@ def load_verified_model_parity_acceptance(
         == assessment["runtime_images_sha256"],
         "model-parity accepted assessment has drifted",
     )
+    if transaction is not None:
+        post_registry = _FileRegistry(root)
+        post_manifest = post_registry.add_path(
+            manifest_record["path"], "post-reassessment model-parity manifest"
+        )
+        _require(
+            post_manifest == manifest_record,
+            "accepted model-parity manifest drifted during reassessment",
+        )
+        post_transaction = _transaction_index_material(
+            root, manifest_material, registry=post_registry
+        )
+        _require(
+            post_transaction == transaction,
+            "accepted model-parity transaction drifted during reassessment",
+        )
     files = [registry.records[path] for path in sorted(registry.records)]
     binding = {
-        "schema_version": SCHEMA_VERSION,
+        "schema_version": receipt_version,
         "artifact_kind": BINDING_KIND,
         "receipt": receipt_record,
         "accepted_manifest": manifest_record,
@@ -688,6 +974,8 @@ def load_verified_model_parity_acceptance(
         "files": files,
         "files_sha256": _canonical_sha(files),
     }
+    if transaction is not None:
+        binding["transaction_index"] = transaction
     binding["binding_sha256"] = _canonical_sha(binding)
     return _json_copy(binding)
 

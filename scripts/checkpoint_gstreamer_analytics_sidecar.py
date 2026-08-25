@@ -883,6 +883,15 @@ class DockerWorkerProcessFactory:
         self.runtime_dir = _canonical_directory(
             runtime_dir, label="analytics sidecar runtime root"
         )
+        runtime_owner = self.runtime_dir.stat()
+        _require(
+            type(runtime_owner.st_uid) is int
+            and runtime_owner.st_uid >= 0
+            and type(runtime_owner.st_gid) is int
+            and runtime_owner.st_gid >= 0,
+            "analytics sidecar runtime owner is invalid",
+        )
+        self.container_user = f"{runtime_owner.st_uid}:{runtime_owner.st_gid}"
         self._command_runner = command_runner
         self._popen_factory = popen_factory
 
@@ -911,7 +920,30 @@ class DockerWorkerProcessFactory:
         self, resource: str, worker_config: Mapping[str, Any]
     ) -> Mapping[str, Any]:
         worker = self._worker(resource, worker_config)
-        command = ["docker", "run", "--rm", "--network", "none"]
+        command = [
+            "docker",
+            "run",
+            "--rm",
+            "--network",
+            "none",
+            "--user",
+            self.container_user,
+            "--read-only",
+            "--workdir",
+            "/tmp",
+            "--tmpfs",
+            "/tmp:rw,nosuid,nodev,size=67108864,mode=1777",
+            "--env",
+            "HOME=/tmp",
+            "--env",
+            "XDG_CACHE_HOME=/tmp",
+            "--env",
+            "XDG_CONFIG_HOME=/tmp",
+            "--cap-drop",
+            "ALL",
+            "--security-opt",
+            "no-new-privileges",
+        ]
         if resource == "gpu":
             command.extend(["--gpus", "all"])
         command.extend(
@@ -969,7 +1001,19 @@ class DockerWorkerProcessFactory:
             "none",
             "--name",
             container_name,
+            "--user",
+            self.container_user,
             "--read-only",
+            "--workdir",
+            "/workspace",
+            "--tmpfs",
+            "/tmp:rw,nosuid,nodev,size=67108864,mode=1777",
+            "--env",
+            "HOME=/tmp",
+            "--env",
+            "XDG_CACHE_HOME=/tmp",
+            "--env",
+            "XDG_CONFIG_HOME=/tmp",
             "--cap-drop",
             "ALL",
             "--security-opt",

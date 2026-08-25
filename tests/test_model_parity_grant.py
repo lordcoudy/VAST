@@ -27,18 +27,33 @@ def descriptor(path: str) -> dict[str, object]:
     return {"path": path, "size_bytes": 10, "sha256": hashlib.sha256(path.encode()).hexdigest()}
 
 
+def transaction_descriptor() -> dict[str, object]:
+    result = descriptor("evidence/model_parity/v3/transaction_index.json")
+    result.update({
+        "transaction_sha256": "1" * 64,
+        "files_sha256": "2" * 64,
+        "output_segments_sha256": "3" * 64,
+        "execution_bundle_count": 480,
+        "execution_bundles_sha256": "4" * 64,
+    })
+    return result
+
+
 def identity() -> dict[str, object]:
     receipt = descriptor("accepted/parity-receipt.json")
     manifest = descriptor("configs/parity.accepted.yaml")
     assessment = descriptor("accepted/parity-assessment.json")
+    transaction = transaction_descriptor()
+    transaction_file = {key: transaction[key] for key in ("path", "size_bytes", "sha256")}
     evidence = [descriptor(f"evidence/model_parity/v3/{index:02d}.json") for index in range(32)]
-    parity_files = sorted([receipt, manifest, assessment, *evidence], key=lambda item: item["path"])
+    parity_files = sorted([receipt, manifest, assessment, *evidence, transaction_file], key=lambda item: item["path"])
     parity = {
-        "schema_version": 1,
+        "schema_version": 2,
         "artifact_kind": "vast_verified_model_parity_acceptance_binding",
         "receipt": receipt,
         "accepted_manifest": manifest,
         "accepted_assessment": assessment,
+        "transaction_index": transaction,
         "acceptance_identity_sha256": "a" * 64,
         "accepted_manifest_content_identity_sha256": "b" * 64,
         "canonical_assessment_identity_sha256": "c" * 64,
@@ -69,20 +84,37 @@ def identity() -> dict[str, object]:
     return result
 
 
+def legacy_identity() -> dict[str, object]:
+    result = identity()
+    parity = result["bindings"]["analytics_model_parity"]
+    transaction_path = parity.pop("transaction_index")["path"]
+    parity["schema_version"] = 1
+    parity["files"] = [item for item in parity["files"] if item["path"] != transaction_path]
+    parity["files_sha256"] = sha(parity["files"])
+    parity["binding_sha256"] = sha({key: value for key, value in parity.items() if key != "binding_sha256"})
+    result["files"] = [item for item in result["files"] if item["path"] != transaction_path]
+    result["files_sha256"] = sha(result["files"])
+    result["binding_sha256"] = sha({key: value for key, value in result.items() if key != "binding_sha256"})
+    return result
+
+
 class ModelParityGrantTests(unittest.TestCase):
     def test_schema2_physical_acceptance_derives_exact_self_hashed_grant(self) -> None:
         source = identity()
         grant = model_parity_grant_from_identity_artifacts(source)
         self.assertTrue(assess_pre_run_model_parity_grant(grant)["passed"])
         self.assertEqual(validate_pre_run_model_parity_grant(grant), grant)
+        self.assertEqual(grant["schema_version"], 2)
         self.assertEqual(grant["evidence_count"], 32)
         self.assertEqual(grant["identity_artifact_binding_sha256"], source["binding_sha256"])
+        self.assertEqual(
+            grant["transaction_index"],
+            source["bindings"]["analytics_model_parity"]["transaction_index"],
+        )
 
     def test_legacy_identity_and_base_manifest_binding_cannot_authorize(self) -> None:
-        legacy = identity()
-        legacy["schema_version"] = 1
-        legacy["binding_sha256"] = sha({key: value for key, value in legacy.items() if key != "binding_sha256"})
-        with self.assertRaisesRegex(ModelParityGrantError, "schema-2"):
+        legacy = legacy_identity()
+        with self.assertRaisesRegex(ModelParityGrantError, "physical"):
             model_parity_grant_from_identity_artifacts(legacy)
         base = identity()
         base["bindings"]["analytics_model_parity"] = {
@@ -108,9 +140,35 @@ class ModelParityGrantTests(unittest.TestCase):
                 with self.assertRaises(ModelParityGrantError):
                     model_parity_grant_from_identity_artifacts(value)
 
+    def test_transaction_binding_is_exact_physical_and_identity_bound(self) -> None:
+        for mode in ("extra_field", "bundle_count", "unbound"):
+            with self.subTest(mode=mode):
+                value = identity()
+                parity = value["bindings"]["analytics_model_parity"]
+                transaction = parity["transaction_index"]
+                if mode == "extra_field":
+                    transaction["unexpected"] = False
+                elif mode == "bundle_count":
+                    transaction["execution_bundle_count"] = 479
+                else:
+                    transaction["path"] = "evidence/model_parity/v3/unbound-transaction.json"
+                parity["binding_sha256"] = sha(
+                    {key: item for key, item in parity.items() if key != "binding_sha256"}
+                )
+                value["binding_sha256"] = sha(
+                    {key: item for key, item in value.items() if key != "binding_sha256"}
+                )
+                with self.assertRaisesRegex(ModelParityGrantError, "transaction"):
+                    model_parity_grant_from_identity_artifacts(value)
+
     def test_grant_tamper_is_rejected_even_after_rehashing_one_boundary(self) -> None:
         grant = model_parity_grant_from_identity_artifacts(identity())
-        for field, value in (("evidence_count", 31), ("evidence_sha256", "0" * 64), ("status", "fake_ready")):
+        for field, value in (
+            ("evidence_count", 31),
+            ("evidence_sha256", "0" * 64),
+            ("status", "fake_ready"),
+            ("transaction_index", {**grant["transaction_index"], "execution_bundle_count": 479}),
+        ):
             with self.subTest(field=field):
                 drifted = copy.deepcopy(grant)
                 drifted[field] = value

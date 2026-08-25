@@ -4,8 +4,9 @@
 The bridge is deliberately smaller than a checkpoint launcher.  A topology-
 specific GStreamer/DL Streamer adapter supplies one verified post-preprocess
 ``GstBuffer`` tensor and its direct-admission identity.  This module dispatches
-that tensor through the frozen :class:`ExecutionClient` and returns the direct
-protocol-v3 branch terminal consumed by ``DirectRuntimeJoinCoordinator``.
+that tensor through the frozen :class:`ExecutionClient` and returns the exact
+topology-v2 ``analytics -> postprocess_<branch> -> branch_complete`` tail
+consumed by ``DirectRuntimeJoinCoordinator``.
 
 Nothing here writes an accepted benchmark sidecar or claims publication
 readiness.  The engineering 24-worker/6-graph launcher is implemented, but KPP
@@ -85,6 +86,7 @@ _CONTEXT_FIELDS = {
     "branch",
     "selected_resource",
     "parent_execution_id",
+    "postprocess_execution_id",
     "terminal_execution_id",
     "admission_id",
     "payload_sha256",
@@ -312,6 +314,20 @@ def _validated_context(value: Mapping[str, Any]) -> dict[str, Any]:
     resource = str(raw["selected_resource"])
     _require(branch in BRANCHES, "OpenVINO GVA branch is invalid")
     _require(resource in RESOURCES, "OpenVINO GVA selected resource is invalid")
+    parent_execution_id = _visible(
+        raw["parent_execution_id"], "OpenVINO GVA parent execution_id"
+    )
+    postprocess_execution_id = _visible(
+        raw["postprocess_execution_id"],
+        "OpenVINO GVA postprocess execution_id",
+    )
+    terminal_execution_id = _visible(
+        raw["terminal_execution_id"], "OpenVINO GVA terminal execution_id"
+    )
+    _require(
+        len({parent_execution_id, postprocess_execution_id, terminal_execution_id}) == 3,
+        "OpenVINO GVA topology execution IDs must be distinct",
+    )
     return {
         "sdk_binding": GVA_SDK_BINDING,
         "tensor_origin": GVA_TENSOR_ORIGIN,
@@ -339,12 +355,9 @@ def _validated_context(value: Mapping[str, Any]) -> dict[str, Any]:
         ),
         "branch": branch,
         "selected_resource": resource,
-        "parent_execution_id": _visible(
-            raw["parent_execution_id"], "OpenVINO GVA parent execution_id"
-        ),
-        "terminal_execution_id": _visible(
-            raw["terminal_execution_id"], "OpenVINO GVA terminal execution_id"
-        ),
+        "parent_execution_id": parent_execution_id,
+        "postprocess_execution_id": postprocess_execution_id,
+        "terminal_execution_id": terminal_execution_id,
         "admission_id": _visible(raw["admission_id"], "OpenVINO GVA admission_id"),
         "payload_sha256": _sha(
             raw["payload_sha256"], "OpenVINO GVA admitted payload sha256"
@@ -469,6 +482,36 @@ class OpenVINOGVAExecutionBridge:
         _require(self._handshaken, "OpenVINO GVA endpoint handshake is required")
         return self._endpoints[(dispatch["branch"], dispatch["selected_resource"])]
 
+    def _postprocess_event(
+        self,
+        *,
+        dispatch: dict[str, Any],
+    ) -> dict[str, Any]:
+        timestamp_ms = _integer(
+            self._clock_ms(), "OpenVINO GVA postprocess monotonic timestamp"
+        )
+        event = {
+            "protocol_version": 2,
+            "worker_id": dispatch["topology_worker_id"],
+            "sequence": dispatch["event_sequence"],
+            "run_id": dispatch["run_id"],
+            "trace_id": dispatch["topology_worker_trace_id"],
+            "stream_id": dispatch["stream_id"],
+            "frame_id": dispatch["frame_id"],
+            "input_frame_key": dispatch["input_frame_key"],
+            "topology_kind": dispatch["topology_kind"],
+            "event_kind": "stage_complete",
+            "stage": f"postprocess_{dispatch['branch']}",
+            "branch_id": dispatch["branch"],
+            "execution_id": dispatch["postprocess_execution_id"],
+            "parent_execution_ids": [dispatch["parent_execution_id"]],
+            "timestamp_ms": timestamp_ms,
+            "admission_id": dispatch["admission_id"],
+            "payload_sha256": dispatch["payload_sha256"],
+        }
+        RuntimeMessage.parse(json.dumps(event, sort_keys=True, separators=(",", ":")))
+        return event
+
     def _terminal_event(
         self,
         *,
@@ -477,6 +520,8 @@ class OpenVINOGVAExecutionBridge:
         event_kind: str,
         objects: int,
         reason: str,
+        parent_execution_id: str,
+        sequence: int,
     ) -> dict[str, Any]:
         timestamp_ms = _integer(
             self._clock_ms(), "OpenVINO GVA terminal monotonic timestamp"
@@ -484,7 +529,7 @@ class OpenVINOGVAExecutionBridge:
         event = {
             "protocol_version": 3,
             "worker_id": dispatch["topology_worker_id"],
-            "sequence": dispatch["event_sequence"],
+            "sequence": sequence,
             "run_id": dispatch["run_id"],
             "trace_id": dispatch["topology_worker_trace_id"],
             "stream_id": dispatch["stream_id"],
@@ -495,7 +540,7 @@ class OpenVINOGVAExecutionBridge:
             "stage": dispatch["branch"],
             "branch_id": dispatch["branch"],
             "execution_id": dispatch["terminal_execution_id"],
-            "parent_execution_ids": [dispatch["parent_execution_id"]],
+            "parent_execution_ids": [parent_execution_id],
             "timestamp_ms": timestamp_ms,
             "admission_id": dispatch["admission_id"],
             "payload_sha256": dispatch["payload_sha256"],
@@ -509,6 +554,9 @@ class OpenVINOGVAExecutionBridge:
 
     @staticmethod
     def _result_common(dispatch: dict[str, Any], endpoint: _BoundEndpoint) -> dict[str, Any]:
+        capability = endpoint.capability
+        resource = dispatch["selected_resource"]
+        device = "CPU" if resource == "cpu" else "NVIDIA_CUDA:0"
         return {
             "schema_version": 1,
             "artifact_kind": "vast_openvino_gva_execution_bridge_result",
@@ -524,6 +572,26 @@ class OpenVINOGVAExecutionBridge:
             "worker_implementation_sha256": endpoint.capability[
                 "worker_implementation_sha256"
             ],
+            "runtime_identity": {
+                "runtime_backend": (
+                    "openvino_gva_external_openvino_cpu_worker_v3"
+                    if resource == "cpu"
+                    else "openvino_gva_external_tensorrt_cuda_worker_v3"
+                ),
+                "device_api": "CPU" if resource == "cpu" else "NVIDIA_CUDA",
+                "gpu_id": None if resource == "cpu" else 0,
+                "worker_image_digest": capability["worker_image_id"],
+                "implementation_version": (
+                    "sha256:" + capability["worker_implementation_sha256"]
+                ),
+                "terminal_detector": capability["model_id"],
+                "terminal_backend": (
+                    f"analytics-execution:{capability['engine']};"
+                    f"runtime={capability['runtime_name']};"
+                    f"native_api={capability['native_inference_api']};"
+                    f"device={device}"
+                ),
+            },
             "publication_ready": False,
             "accepted_evidence_written": False,
             "publication_blockers": list(BRIDGE_PUBLICATION_BLOCKERS),
@@ -604,6 +672,7 @@ class OpenVINOGVAExecutionBridge:
             "OpenVINO GVA worker output SHA-256 mismatch",
         )
         terminal = checked_response["terminal"]
+        postprocess_event = self._postprocess_event(dispatch=dispatch)
         terminal_event = self._terminal_event(
             dispatch=dispatch,
             endpoint=endpoint,
@@ -612,6 +681,41 @@ class OpenVINOGVAExecutionBridge:
             reason=_visible(
                 terminal["reason"], "OpenVINO GVA worker terminal reason", 256
             ),
+            parent_execution_id=dispatch["postprocess_execution_id"],
+            sequence=dispatch["event_sequence"] + 1,
+        )
+        worker_resource = checked_response["resource"]
+        resource_receipt = {
+            field: (
+                [dict(interval) for interval in worker_resource[field]]
+                if field == "cuda_transfer_intervals"
+                else worker_resource[field]
+            )
+            for field in (
+                "process_cpu_time_ns",
+                "rss_before_bytes",
+                "rss_after_bytes",
+                "accelerator_memory_bytes",
+                "cuda_h2d_bytes",
+                "cuda_d2h_bytes",
+                "cuda_transfer_intervals",
+            )
+        }
+        cuda_interval_bindings = (
+            []
+            if dispatch["selected_resource"] == "cpu"
+            else [
+                {
+                    "direction": "h2d",
+                    "execution_id": dispatch["parent_execution_id"],
+                    "stage": dispatch["branch"],
+                },
+                {
+                    "direction": "d2h",
+                    "execution_id": dispatch["postprocess_execution_id"],
+                    "stage": f"postprocess_{dispatch['branch']}",
+                },
+            ]
         )
         result = self._result_common(dispatch, endpoint)
         result.update(
@@ -621,6 +725,9 @@ class OpenVINOGVAExecutionBridge:
                 "response": checked_response,
                 "output_byte_length": len(output),
                 "output_sha256": hashlib.sha256(output).hexdigest(),
+                "resource": resource_receipt,
+                "cuda_interval_bindings": cuda_interval_bindings,
+                "runtime_events": [postprocess_event, terminal_event],
                 "terminal_event": terminal_event,
             }
         )
@@ -645,6 +752,8 @@ class OpenVINOGVAExecutionBridge:
             event_kind="branch_drop",
             objects=0,
             reason=normalized_reason,
+            parent_execution_id=dispatch["parent_execution_id"],
+            sequence=dispatch["event_sequence"],
         )
         result = self._result_common(dispatch, endpoint)
         result.update(

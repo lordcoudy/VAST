@@ -37,7 +37,7 @@ SAVANT_ADMISSION_TAGS = (
 _SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 _SOURCE_ID_RE = re.compile(r"^kpp_(?:plate|underbody)_avi-stream-(?P<stream>[0-5])$")
 _INPUT_KEY_RE = re.compile(
-    r"^(?P<dataset>kpp_real_h26[45]):(?P<stream>[0-5]):"
+    r"^(?P<dataset>kpp_iss_publication_v3_h26[45]):(?P<stream>[0-5]):"
     r"(?P<source_sha>[0-9a-f]{64}):(?P<cycle>[0-9]+):(?P<pts>[0-9]+)$"
 )
 _LOCAL_SOCKET_RE = re.compile(
@@ -80,7 +80,7 @@ class SavantSourceBinding:
                  "Savant ingress source_id is outside the frozen KPP streams")
         _require(self.codec in {"h264", "h265"}, "Savant ingress codec is invalid")
         _require(
-            self.dataset_id == f"kpp_real_{self.codec}",
+            self.dataset_id == f"kpp_iss_publication_v3_{self.codec}",
             "Savant ingress dataset/codec binding drifted",
         )
         _require(type(self.width) is int and self.width > 0

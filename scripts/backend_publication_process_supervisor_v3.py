@@ -7,6 +7,8 @@ import copy
 import ctypes
 import errno
 import hashlib
+from importlib.machinery import SourceFileLoader
+from importlib.util import module_from_spec, spec_from_loader
 import json
 import math
 import os
@@ -22,6 +24,44 @@ from collections.abc import Sequence
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, BinaryIO
+
+_POSIX_HELD_BROKER_MODE = "--internal-posix-held-process-broker-production-v3"
+_HELD_INVOCATION_MODULE = "backend_publication_launcher_invocation_v3"
+
+
+def _preload_held_invocation_module_production_v3() -> None:
+    arguments = sys.argv
+    if (
+        os.name == "nt"
+        or len(arguments) != 6
+        or arguments[1] != _POSIX_HELD_BROKER_MODE
+    ):
+        return
+    descriptor_text = arguments[5]
+    if (
+        not descriptor_text.isascii()
+        or not descriptor_text.isdigit()
+        or not 0 < len(descriptor_text) <= 10
+    ):
+        raise RuntimeError("production held invocation descriptor is invalid")
+    descriptor = int(descriptor_text)
+    if descriptor < 3:
+        raise RuntimeError("production held invocation descriptor is invalid")
+    module_path = f"/proc/self/fd/{descriptor}"
+    loader = SourceFileLoader(_HELD_INVOCATION_MODULE, module_path)
+    spec = spec_from_loader(_HELD_INVOCATION_MODULE, loader, origin=module_path)
+    if spec is None:
+        raise RuntimeError("production held invocation module cannot be loaded")
+    module = module_from_spec(spec)
+    sys.modules[_HELD_INVOCATION_MODULE] = module
+    try:
+        loader.exec_module(module)
+    except BaseException:
+        sys.modules.pop(_HELD_INVOCATION_MODULE, None)
+        raise
+
+
+_preload_held_invocation_module_production_v3()
 
 from backend_publication_launcher_invocation_v3 import (
     publication_launcher_invocation_v3_contract,
@@ -1635,6 +1675,9 @@ def _run_backend_publication_process_direct_v3(
     canonical_cwd: Path,
     *,
     posix_scope: _LinuxSubreaperScope | None,
+    physical_command: tuple[str, ...] | None = None,
+    physical_cwd: Path | None = None,
+    inherited_descriptors: tuple[int, ...] = (),
 ) -> BackendPublicationProcessRunV3:
     if not (
         type(_PROCESS_TIMEOUT_MS) is int
@@ -1674,16 +1717,19 @@ def _run_backend_publication_process_direct_v3(
             )
             job.assign(process)
         else:
+            spawn_command = command if physical_command is None else physical_command
+            spawn_cwd = canonical_cwd if physical_cwd is None else physical_cwd
             process = subprocess.Popen(
-                list(command),
+                list(spawn_command),
                 stdin=subprocess.DEVNULL,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 shell=False,
-                cwd=str(canonical_cwd),
+                cwd=str(spawn_cwd),
                 env={},
                 bufsize=0,
                 close_fds=True,
+                pass_fds=inherited_descriptors,
                 start_new_session=True,
                 preexec_fn=_linux_backend_preexec_v3,
             )
@@ -1895,12 +1941,22 @@ def _run_backend_publication_process_direct_v3(
 
 
 def _run_backend_with_posix_scope_v3(
-    command: tuple[str, ...], cwd: Path
+    command: tuple[str, ...],
+    cwd: Path,
+    *,
+    physical_command: tuple[str, ...] | None = None,
+    physical_cwd: Path | None = None,
+    inherited_descriptors: tuple[int, ...] = (),
 ) -> BackendPublicationProcessRunV3:
     scope = _LinuxSubreaperScope()
     try:
         result = _run_backend_publication_process_direct_v3(
-            command, cwd, posix_scope=scope
+            command,
+            cwd,
+            posix_scope=scope,
+            physical_command=physical_command,
+            physical_cwd=physical_cwd,
+            inherited_descriptors=inherited_descriptors,
         )
     except Exception as primary:
         try:
@@ -2115,7 +2171,12 @@ def _wait_linux_namespace_init_v3(
 
 
 def _run_linux_namespace_init_broker_v3(
-    command: tuple[str, ...], cwd: Path
+    command: tuple[str, ...],
+    cwd: Path,
+    *,
+    physical_command: tuple[str, ...] | None = None,
+    physical_cwd: Path | None = None,
+    inherited_descriptors: tuple[int, ...] = (),
 ) -> int:
     def cancel(_signo: int, _frame: Any) -> None:
         raise _PosixBrokerCancelled()
@@ -2124,7 +2185,13 @@ def _run_linux_namespace_init_broker_v3(
     signal.signal(signal.SIGINT, cancel)
     try:
         try:
-            result = _run_backend_with_posix_scope_v3(command, cwd)
+            result = _run_backend_with_posix_scope_v3(
+                command,
+                cwd,
+                physical_command=physical_command,
+                physical_cwd=physical_cwd,
+                inherited_descriptors=inherited_descriptors,
+            )
         except BackendPublicationProcessSupervisorV3Error as error:
             frame = _broker_response_frame(
                 outcome="failed",
@@ -2196,6 +2263,104 @@ def _posix_broker_entry_v3() -> int:
             namespace_init_pid, parent_liveness_descriptor
         )
     return _run_linux_namespace_init_broker_v3(command, cwd)
+
+
+def _held_descriptor_identity_v3(info: os.stat_result) -> tuple[int, ...]:
+    return (
+        int(info.st_dev),
+        int(info.st_ino),
+        int(stat.S_IFMT(info.st_mode)),
+        int(info.st_nlink),
+    )
+
+
+def _held_physical_invocation_v3(
+    command: tuple[str, ...],
+    cwd: Path,
+    descriptors: tuple[int, int, int],
+) -> tuple[tuple[str, ...], Path, tuple[int, ...]]:
+    if (
+        len(set(descriptors)) != 3
+        or any(type(value) is not int or value < 3 for value in descriptors)
+    ):
+        raise BackendPublicationProcessSupervisorV3Error(
+            "backend publication production held descriptors are invalid"
+        )
+    python_descriptor, launcher_descriptor, cwd_descriptor = descriptors
+    try:
+        python_info = os.fstat(python_descriptor)
+        launcher_info = os.fstat(launcher_descriptor)
+        cwd_info = os.fstat(cwd_descriptor)
+        python_path_info = Path(command[0]).lstat()
+        launcher_path_info = Path(command[1]).lstat()
+        cwd_path_info = cwd.lstat()
+    except OSError as exc:
+        raise BackendPublicationProcessSupervisorV3Error(
+            "backend publication production held descriptor custody failed"
+        ) from exc
+    if (
+        not stat.S_ISREG(python_info.st_mode)
+        or not stat.S_ISREG(launcher_info.st_mode)
+        or not stat.S_ISDIR(cwd_info.st_mode)
+        or int(python_info.st_nlink) != 1
+        or int(launcher_info.st_nlink) != 1
+        or _held_descriptor_identity_v3(python_info)
+        != _held_descriptor_identity_v3(python_path_info)
+        or _held_descriptor_identity_v3(launcher_info)
+        != _held_descriptor_identity_v3(launcher_path_info)
+        or _held_descriptor_identity_v3(cwd_info)
+        != _held_descriptor_identity_v3(cwd_path_info)
+    ):
+        raise BackendPublicationProcessSupervisorV3Error(
+            "backend publication production held descriptor identity drifted"
+        )
+    proc_paths = tuple(f"/proc/self/fd/{value}" for value in descriptors)
+    if not all(Path(value).exists() for value in proc_paths):
+        raise BackendPublicationProcessSupervisorV3Error(
+            "backend publication production held descriptor procfs view failed"
+        )
+    physical_command = (proc_paths[0], proc_paths[1], *command[2:])
+    return physical_command, Path(proc_paths[2]), descriptors
+
+
+def _posix_held_broker_entry_production_v3(
+    descriptors: tuple[int, int, int],
+) -> int:
+    if os.name == "nt":
+        return 78
+    try:
+        request = _read_broker_request_frame_v3(0)
+        command, cwd = _validate_broker_request(request)
+        physical_command, physical_cwd, inherited_descriptors = (
+            _held_physical_invocation_v3(command, cwd, descriptors)
+        )
+        namespace_init_pid, parent_liveness_descriptor = (
+            _enter_linux_pid_namespace_v3()
+        )
+    except BaseException:
+        try:
+            frame = _broker_response_frame(
+                outcome="failed",
+                message="backend publication POSIX broker setup failed",
+                observation=None,
+                stdout=b"",
+                stderr=b"",
+            )
+            _write_descriptor_all(1, frame)
+        except BaseException:
+            return 74
+        return 0
+    if namespace_init_pid != 0:
+        return _wait_linux_namespace_init_v3(
+            namespace_init_pid, parent_liveness_descriptor
+        )
+    return _run_linux_namespace_init_broker_v3(
+        command,
+        cwd,
+        physical_command=physical_command,
+        physical_cwd=physical_cwd,
+        inherited_descriptors=inherited_descriptors,
+    )
 
 
 class _PosixBrokerIdentity:
@@ -2383,7 +2548,11 @@ def _terminate_posix_broker(
 
 
 def _run_backend_publication_posix_broker_v3(
-    command: tuple[str, ...], cwd: Path
+    command: tuple[str, ...],
+    cwd: Path,
+    *,
+    held_descriptors: tuple[int, int, int] | None = None,
+    broker_source_descriptors: tuple[int, int] | None = None,
 ) -> BackendPublicationProcessRunV3:
     request = _broker_request_bytes(command, cwd)
     supervisor_path = Path(__file__).resolve(strict=True)
@@ -2392,6 +2561,32 @@ def _run_backend_publication_posix_broker_v3(
     readers: list[_BoundedPipeReader] = []
     stdin_closed = False
     broker_termination_attempted = False
+    if held_descriptors is None:
+        if broker_source_descriptors is not None:
+            raise BackendPublicationProcessSupervisorV3Error(
+                "backend publication broker source descriptors are unexpected"
+            )
+        broker_command = [command[0], str(supervisor_path), _POSIX_BROKER_MODE]
+        broker_cwd = str(cwd)
+        broker_pass_fds: tuple[int, ...] = ()
+    else:
+        if broker_source_descriptors is None:
+            raise BackendPublicationProcessSupervisorV3Error(
+                "backend publication broker source descriptors are unavailable"
+            )
+        python_descriptor, launcher_descriptor, cwd_descriptor = held_descriptors
+        supervisor_descriptor, invocation_descriptor = broker_source_descriptors
+        broker_command = [
+            f"/proc/self/fd/{python_descriptor}",
+            f"/proc/self/fd/{supervisor_descriptor}",
+            _POSIX_HELD_BROKER_MODE,
+            str(python_descriptor),
+            str(launcher_descriptor),
+            str(cwd_descriptor),
+            str(invocation_descriptor),
+        ]
+        broker_cwd = f"/proc/self/fd/{cwd_descriptor}"
+        broker_pass_fds = (*held_descriptors, *broker_source_descriptors)
 
     def terminate_broker_once() -> None:
         nonlocal broker_termination_attempted
@@ -2440,15 +2635,16 @@ def _run_backend_publication_posix_broker_v3(
 
     try:
         process = subprocess.Popen(
-            [command[0], str(supervisor_path), _POSIX_BROKER_MODE],
+            broker_command,
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             shell=False,
-            cwd=str(cwd),
+            cwd=broker_cwd,
             env={},
             bufsize=0,
             close_fds=True,
+            pass_fds=broker_pass_fds,
             start_new_session=True,
         )
         if process.stdin is None or process.stdout is None or process.stderr is None:
@@ -2563,6 +2759,44 @@ def run_backend_publication_process_v3(
     return _run_backend_publication_posix_broker_v3(command, canonical_cwd)
 
 
+def _run_backend_publication_process_from_held_fds_production_v3(
+    argv: Sequence[str],
+    *,
+    cwd: Path,
+    python_descriptor: int,
+    launcher_descriptor: int,
+    cwd_descriptor: int,
+    supervisor_descriptor: int,
+    invocation_descriptor: int,
+) -> BackendPublicationProcessRunV3:
+    """Production-only POSIX entrypoint; the public engineering ABI is unchanged."""
+
+    if os.name == "nt":
+        raise BackendPublicationProcessSupervisorV3Error(
+            "backend publication production held-fd execution requires POSIX"
+        )
+    command, canonical_cwd = _validate_invocation(argv, cwd)
+    descriptors = (
+        python_descriptor,
+        launcher_descriptor,
+        cwd_descriptor,
+        supervisor_descriptor,
+        invocation_descriptor,
+    )
+    if len(set(descriptors)) != 5 or any(
+        type(value) is not int or value < 3 for value in descriptors
+    ):
+        raise BackendPublicationProcessSupervisorV3Error(
+            "backend publication production held descriptors are invalid"
+        )
+    return _run_backend_publication_posix_broker_v3(
+        command,
+        canonical_cwd,
+        held_descriptors=descriptors[:3],
+        broker_source_descriptors=descriptors[3:],
+    )
+
+
 __all__ = [
     "BackendPublicationProcessRunV3",
     "BackendPublicationProcessSupervisorV3Error",
@@ -2577,6 +2811,20 @@ __all__ = [
 
 
 if __name__ == "__main__":
-    if sys.argv[1:] != [_POSIX_BROKER_MODE]:
-        raise SystemExit(78)
-    raise SystemExit(_posix_broker_entry_v3())
+    broker_arguments = sys.argv[1:]
+    if broker_arguments == [_POSIX_BROKER_MODE]:
+        raise SystemExit(_posix_broker_entry_v3())
+    if (
+        len(broker_arguments) == 5
+        and broker_arguments[0] == _POSIX_HELD_BROKER_MODE
+        and all(
+            value.isascii() and value.isdigit() and 0 < len(value) <= 10
+            for value in broker_arguments[1:]
+        )
+    ):
+        raise SystemExit(
+            _posix_held_broker_entry_production_v3(
+                tuple(int(value) for value in broker_arguments[1:4])
+            )
+        )
+    raise SystemExit(78)

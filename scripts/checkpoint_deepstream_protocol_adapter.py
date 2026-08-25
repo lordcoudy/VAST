@@ -347,6 +347,7 @@ def create_callbacks(*, context: Mapping[str, Any], event_sink: Any, policy_exch
             event_sink=event_sink,
             policy_exchange=policy_exchange,
             analytics_endpoints=endpoints,
+            resource_recorder=context.get("resource_recorder"),
         )
         deadline_ms = float(os.environ.get("VAST_DEEPSTREAM_DEADLINE_MS", ""))
         return DeepStreamProtocolCallbacks(

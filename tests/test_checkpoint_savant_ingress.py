@@ -63,7 +63,9 @@ def frame(*, keyframe: bool = True, dts: int = MISSING_TIMESTAMP) -> AdmissionTr
         access_unit_dts_ns=dts,
         duration_ns=33_333_333,
         admission_id="run-savant:3:admission:1",
-        input_frame_key="kpp_real_h264:3:" + "a" * 64 + ":2:90000",
+        input_frame_key=(
+            "kpp_iss_publication_v3_h264:3:" + "a" * 64 + ":2:90000"
+        ),
         payload_sha256=hashlib.sha256(payload).hexdigest(),
         payload=payload,
     )
@@ -77,7 +79,7 @@ def binding() -> SavantSourceBinding:
         width=1920,
         height=1080,
         framerate="600/1",
-        dataset_id="kpp_real_h264",
+        dataset_id="kpp_iss_publication_v3_h264",
         source_sha256="a" * 64,
         socket="dealer+connect:ipc:///tmp/vast-savant-run/module-3.ipc",
     )
@@ -129,9 +131,21 @@ class SavantIngressTests(unittest.TestCase):
     def test_wrong_stream_dataset_codec_or_payload_fails_closed(self) -> None:
         value = frame()
         for change in (
-            {"input_frame_key": "kpp_real_h264:4:" + "a" * 64 + ":2:90000"},
+            {
+                "input_frame_key": (
+                    "kpp_iss_publication_v3_h264:4:"
+                    + "a" * 64
+                    + ":2:90000"
+                )
+            },
             {"input_frame_key": "other:3:" + "a" * 64 + ":2:90000"},
-            {"input_frame_key": "kpp_real_h264:3:" + "b" * 64 + ":2:90000"},
+            {
+                "input_frame_key": (
+                    "kpp_iss_publication_v3_h264:3:"
+                    + "b" * 64
+                    + ":2:90000"
+                )
+            },
             {"payload_sha256": "0" * 64},
         ):
             with self.subTest(change=change), self.assertRaises(SavantIngressError):

@@ -50,7 +50,8 @@ class Fixture:
     def __init__(self, root: Path) -> None:
         self.root = root.resolve()
         (self.root / "configs").mkdir(parents=True)
-        (self.root / "evidence/model_parity/v3").mkdir(parents=True)
+        self.evidence_root = self.root / "evidence/model_parity/v3"
+        self.evidence_root.mkdir(parents=True)
         (self.root / "accepted").mkdir(parents=True)
         self.manifest_path = self.root / "configs/checkpoint_analytics_model_parity.accepted.yaml"
         self.assessment_path = self.root / "accepted/model_parity_assessment.json"
@@ -58,12 +59,100 @@ class Fixture:
         self.evidence_paths: dict[tuple[str, str], Path] = {}
         for branch in BRANCHES:
             for name in EVIDENCE_NAMES:
-                path = self.root / f"evidence/model_parity/v3/{branch}/{name}.json"
+                path = self.evidence_root / f"documents/{branch}/{name}.json"
                 path.parent.mkdir(parents=True, exist_ok=True)
                 path.write_text(json.dumps({"branch": branch, "kind": name}, sort_keys=True) + "\n")
                 self.evidence_paths[(branch, name)] = path
+        self.transaction_path = self._write_transaction()
         self.manifest_path.write_text("schema_version: 3\nfixture: accepted\n")
         self.manifest = self.build_manifest()
+
+    def _descriptor(self, path: Path) -> dict[str, object]:
+        payload = path.read_bytes()
+        return {
+            "path": path.relative_to(self.root).as_posix(),
+            "size_bytes": len(payload),
+            "sha256": hashlib.sha256(payload).hexdigest(),
+        }
+
+    def _write_transaction(self) -> Path:
+        files = [self._descriptor(path) for path in self.evidence_paths.values()]
+        segments: list[dict[str, object]] = []
+        bundles: list[dict[str, object]] = []
+        for branch in BRANCHES:
+            for resource in ("openvino_cpu", "tensorrt_cuda"):
+                for index in range(60):
+                    role = "calibration" if index < 30 else "evaluation"
+                    codec = "h264" if index % 30 < 15 else "h265"
+                    sample_id = f"mp.{branch}.{role}.{codec}.{index:02d}"
+                    request_id = f"mp-v2-{branch}-{resource}-{index:02d}"
+                    manifest_path = (
+                        self.evidence_root
+                        / "execution_bundles"
+                        / request_id
+                        / "manifest.json"
+                    )
+                    manifest_path.parent.mkdir(parents=True)
+                    manifest_path.write_text(
+                        json.dumps({"request_id": request_id}, sort_keys=True) + "\n"
+                    )
+                    manifest = self._descriptor(manifest_path)
+                    files.append(manifest)
+                    input_sha = hashlib.sha256(sample_id.encode()).hexdigest()
+                    output_sha = hashlib.sha256(request_id.encode()).hexdigest()
+                    segments.append(
+                        {
+                            "branch": branch,
+                            "resource": resource,
+                            "sample_id": sample_id,
+                            "preprocessed_tensor_sha256": input_sha,
+                        }
+                    )
+                    bundles.append(
+                        {
+                            "branch": branch,
+                            "role": role,
+                            "codec": codec,
+                            "sample_id": sample_id,
+                            "resource": resource,
+                            "request_id": request_id,
+                            "manifest": manifest,
+                            "manifest_identity_sha256": hashlib.sha256(
+                                (request_id + ":manifest").encode()
+                            ).hexdigest(),
+                            "request_sha256": hashlib.sha256(
+                                (request_id + ":request").encode()
+                            ).hexdigest(),
+                            "response_sha256": hashlib.sha256(
+                                (request_id + ":response").encode()
+                            ).hexdigest(),
+                            "input_tensor_sha256": input_sha,
+                            "output_tensor_sha256": output_sha,
+                        }
+                    )
+        files.sort(key=lambda item: str(item["path"]))
+        transaction = {
+            "schema_version": 2,
+            "artifact_kind": "checkpoint_model_parity_materialization_transaction",
+            "run_id": "v3",
+            "final_materialization_path": "evidence/model_parity/v3",
+            "document_count": 32,
+            "files": files,
+            "files_sha256": canonical_sha(files),
+            "source_inventory": [],
+            "source_inventory_sha256": canonical_sha([]),
+            "output_segments": segments,
+            "output_segments_sha256": canonical_sha(segments),
+            "execution_bundle_count": 480,
+            "execution_bundles": bundles,
+            "execution_bundles_sha256": canonical_sha(bundles),
+            "claimed_aggregates_accepted": False,
+            "synthetic_or_mock_evidence_accepted": False,
+        }
+        transaction["transaction_sha256"] = canonical_sha(transaction)
+        path = self.evidence_root / "transaction_index.json"
+        path.write_text(json.dumps(transaction, sort_keys=True, separators=(",", ":")) + "\n")
+        return path
 
     def build_manifest(self) -> dict[str, object]:
         slots = {}
@@ -154,8 +243,12 @@ class ModelParityAcceptanceTests(unittest.TestCase):
         temporary, fixture = self.fixture()
         with temporary:
             result = fixture.promote()
+            self.assertEqual(result["schema_version"], 2)
             self.assertEqual(result["evidence_count"], 32)
-            self.assertEqual(len(result["files"]), 35)
+            self.assertEqual(len(result["files"]), 36)
+            self.assertEqual(
+                result["transaction_index"]["execution_bundle_count"], 480
+            )
             self.assertEqual(
                 len(
                     [
@@ -164,9 +257,84 @@ class ModelParityAcceptanceTests(unittest.TestCase):
                         if item["path"].startswith("evidence/model_parity/v3/")
                     ]
                 ),
-                32,
+                33,
             )
             self.assertEqual(fixture.load()["binding_sha256"], result["binding_sha256"])
+
+    def test_transaction_index_or_bundle_tamper_cannot_authorize(self) -> None:
+        for mode in ("index", "bundle"):
+            with self.subTest(mode=mode):
+                temporary, fixture = self.fixture()
+                with temporary:
+                    if mode == "index":
+                        transaction = json.loads(fixture.transaction_path.read_text())
+                        transaction["execution_bundle_count"] = 479
+                        transaction["transaction_sha256"] = canonical_sha(
+                            {
+                                key: value
+                                for key, value in transaction.items()
+                                if key != "transaction_sha256"
+                            }
+                        )
+                        fixture.transaction_path.write_text(
+                            json.dumps(transaction, sort_keys=True, separators=(",", ":"))
+                            + "\n"
+                        )
+                    else:
+                        bundle = next(
+                            fixture.evidence_root.glob(
+                                "execution_bundles/*/manifest.json"
+                            )
+                        )
+                        bundle.write_bytes(bundle.read_bytes() + b"tamper\n")
+                    with self.assertRaisesRegex(
+                        target.ModelParityAcceptanceError,
+                        "transaction|bundle|coverage|descriptor",
+                    ):
+                        fixture.promote()
+
+    def test_existing_schema_v1_receipt_remains_read_only_loadable(self) -> None:
+        temporary, fixture = self.fixture()
+        with temporary:
+            fixture.promote()
+            assessment = json.loads(fixture.assessment_path.read_text())
+            assessment.pop("transaction_index")
+            assessment["schema_version"] = 1
+            assessment["assessment_sha256"] = canonical_sha(
+                {
+                    key: value
+                    for key, value in assessment.items()
+                    if key != "assessment_sha256"
+                }
+            )
+            fixture.assessment_path.chmod(0o600)
+            fixture.assessment_path.write_text(
+                json.dumps(assessment, sort_keys=True, separators=(",", ":")) + "\n"
+            )
+            receipt = json.loads(fixture.receipt_path.read_text())
+            receipt.pop("transaction_index")
+            receipt["schema_version"] = 1
+            receipt["accepted_assessment"] = fixture._descriptor(
+                fixture.assessment_path
+            )
+            receipt["accepted_assessment_identity_sha256"] = assessment[
+                "assessment_sha256"
+            ]
+            receipt["receipt_sha256"] = canonical_sha(
+                {
+                    key: value
+                    for key, value in receipt.items()
+                    if key != "receipt_sha256"
+                }
+            )
+            fixture.receipt_path.chmod(0o600)
+            fixture.receipt_path.write_text(
+                json.dumps(receipt, sort_keys=True, separators=(",", ":")) + "\n"
+            )
+
+            legacy = fixture.load()
+            self.assertEqual(legacy["schema_version"], 1)
+            self.assertNotIn("transaction_index", legacy)
 
     def test_null_evidence_reference_cannot_authorize(self) -> None:
         temporary, fixture = self.fixture()

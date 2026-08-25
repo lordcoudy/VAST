@@ -232,7 +232,7 @@ class FullPublicationRunnerTests(unittest.TestCase):
         self.assertEqual(plan["expected_arms"], 5600)
         self.assertEqual(
             plan["matrix_identity"]["sha256"],
-            "62cd76bd181b333e4c7a1c6d2bdc11e1d3241526f5190270fbe69f6b9b9fa9cd",
+            "e802a8ec5ca6c560219593c65a46f3d24e6763543e9de135689a20177b604845",
         )
         self.assertEqual(
             [item["sequence"] for item in plan["pairs"]],

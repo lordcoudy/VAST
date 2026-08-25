@@ -73,9 +73,22 @@ class BackendPublicationDispatchResolver:
             tuple[str, str, str, str, int], dict[str, Any]
         ] = {}
         for system, system_binding in self.grant["systems"].items():
-            invocation = validate_launcher_invocation(
-                system_binding.get("launcher_invocation")
-            )
+            if self.grant.get("schema_version") == 3:
+                try:
+                    from backend_publication_launcher_invocation_v3 import (
+                        validate_publication_launcher_invocation_v3,
+                    )
+                    invocation = validate_publication_launcher_invocation_v3(
+                        system_binding.get("launcher_invocation")
+                    )
+                except Exception as error:
+                    raise BackendPublicationDispatchError(
+                        f"backend production-v3 launcher invocation is invalid: {error}"
+                    ) from error
+            else:
+                invocation = validate_launcher_invocation(
+                    system_binding.get("launcher_invocation")
+                )
             self._systems[system] = (system_binding, invocation)
             for cell in system_binding["qualified_cells"]:
                 coordinate = (

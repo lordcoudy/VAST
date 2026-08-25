@@ -10,17 +10,22 @@ import re
 from typing import Any, Mapping
 
 
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
 GRANT_KIND = "vast_verified_pre_run_model_parity_grant"
 GRANT_STATUS = "accepted_physical_model_parity_v3"
 IDENTITY_SCHEMA_VERSION = 2
 PARITY_BINDING_KIND = "vast_verified_model_parity_acceptance_binding"
 _SHA_RE = re.compile(r"^[0-9a-f]{64}$")
 _DESCRIPTOR_FIELDS = {"path", "size_bytes", "sha256"}
+_TRANSACTION_FIELDS = _DESCRIPTOR_FIELDS | {
+    "transaction_sha256", "files_sha256", "output_segments_sha256",
+    "execution_bundle_count", "execution_bundles_sha256",
+}
 _GRANT_FIELDS = {
     "schema_version", "artifact_kind", "status",
     "identity_artifact_binding_sha256", "parity_acceptance_binding_sha256",
     "acceptance_receipt", "accepted_manifest", "accepted_assessment",
+    "transaction_index",
     "acceptance_identity_sha256", "accepted_manifest_content_identity_sha256",
     "canonical_assessment_identity_sha256", "evidence_count", "evidence_sha256",
     "runtime_registries_sha256", "runtime_images_sha256",
@@ -28,7 +33,7 @@ _GRANT_FIELDS = {
 }
 _PARITY_BINDING_FIELDS = {
     "schema_version", "artifact_kind", "receipt", "accepted_manifest",
-    "accepted_assessment", "acceptance_identity_sha256",
+    "accepted_assessment", "transaction_index", "acceptance_identity_sha256",
     "accepted_manifest_content_identity_sha256",
     "canonical_assessment_identity_sha256", "evidence_count", "evidence_sha256",
     "runtime_registries_sha256", "runtime_images_sha256", "files", "files_sha256",
@@ -73,6 +78,30 @@ def _descriptor(value: Any, label: str) -> dict[str, Any]:
     return copy.deepcopy(value)
 
 
+def _transaction_descriptor(value: Any, label: str) -> dict[str, Any]:
+    if type(value) is not dict or set(value) != _TRANSACTION_FIELDS:
+        raise ModelParityGrantError(f"{label} transaction descriptor fields drifted")
+    result = _descriptor(
+        {key: value[key] for key in _DESCRIPTOR_FIELDS},
+        f"{label} transaction index",
+    )
+    if not result["path"].endswith("/transaction_index.json"):
+        raise ModelParityGrantError(f"{label} transaction path is invalid")
+    for field in (
+        "transaction_sha256", "files_sha256", "output_segments_sha256",
+        "execution_bundles_sha256",
+    ):
+        if not _valid_sha(value.get(field)):
+            raise ModelParityGrantError(f"{label} transaction {field} is invalid")
+        result[field] = value[field]
+    if value.get("execution_bundle_count") != 480:
+        raise ModelParityGrantError(
+            f"{label} transaction execution bundle coverage is not exact 480"
+        )
+    result["execution_bundle_count"] = 480
+    return result
+
+
 def _normalized_grant(value: Mapping[str, Any]) -> dict[str, Any]:
     if type(value) is not dict or set(value) != _GRANT_FIELDS:
         raise ModelParityGrantError("model-parity grant fields drifted")
@@ -100,11 +129,15 @@ def _normalized_grant(value: Mapping[str, Any]) -> dict[str, Any]:
     }
     for field in ("acceptance_receipt", "accepted_manifest", "accepted_assessment"):
         material[field] = _descriptor(value.get(field), f"model-parity {field}")
+    material["transaction_index"] = _transaction_descriptor(
+        value.get("transaction_index"), "model-parity grant"
+    )
     authorization = {
         key: material[key]
         for key in (
             "identity_artifact_binding_sha256", "parity_acceptance_binding_sha256",
             "acceptance_receipt", "accepted_manifest", "accepted_assessment",
+            "transaction_index",
             "acceptance_identity_sha256", "accepted_manifest_content_identity_sha256",
             "canonical_assessment_identity_sha256", "evidence_count", "evidence_sha256",
             "runtime_registries_sha256", "runtime_images_sha256",
@@ -180,6 +213,21 @@ def model_parity_grant_from_identity_artifacts(identity: dict[str, Any]) -> dict
         raise ModelParityGrantError("validated physical model-parity acceptance binding is required")
     if parity.get("evidence_count") != 32:
         raise ModelParityGrantError("validated model-parity evidence coverage is not exact 32")
+    parity_files = parity.get("files")
+    if type(parity_files) is not list or len(parity_files) != 36:
+        raise ModelParityGrantError("validated model-parity file coverage is not exact 36")
+    normalized_parity_files = [
+        _descriptor(item, f"parity file[{index}]")
+        for index, item in enumerate(parity_files)
+    ]
+    if (
+        normalized_parity_files
+        != sorted(normalized_parity_files, key=lambda item: item["path"])
+        or len({item["path"] for item in normalized_parity_files}) != 36
+        or parity.get("files_sha256") != _sha(normalized_parity_files)
+        or any(known.get(item["path"]) != item for item in normalized_parity_files)
+    ):
+        raise ModelParityGrantError("validated model-parity file set is unbound")
     descriptors = {
         "acceptance_receipt": _descriptor(parity.get("receipt"), "parity receipt"),
         "accepted_manifest": _descriptor(parity.get("accepted_manifest"), "accepted parity manifest"),
@@ -188,6 +236,14 @@ def model_parity_grant_from_identity_artifacts(identity: dict[str, Any]) -> dict
     for label, descriptor in descriptors.items():
         if known.get(descriptor["path"]) != descriptor:
             raise ModelParityGrantError(f"{label} descriptor is unbound")
+    transaction = _transaction_descriptor(
+        parity.get("transaction_index"), "parity acceptance"
+    )
+    transaction_file = {
+        key: transaction[key] for key in _DESCRIPTOR_FIELDS
+    }
+    if known.get(transaction["path"]) != transaction_file:
+        raise ModelParityGrantError("parity acceptance transaction descriptor is unbound")
     for field in (
         "acceptance_identity_sha256", "accepted_manifest_content_identity_sha256",
         "canonical_assessment_identity_sha256", "evidence_sha256",
@@ -202,6 +258,7 @@ def model_parity_grant_from_identity_artifacts(identity: dict[str, Any]) -> dict
         "identity_artifact_binding_sha256": identity["binding_sha256"],
         "parity_acceptance_binding_sha256": parity["binding_sha256"],
         **descriptors,
+        "transaction_index": transaction,
         "acceptance_identity_sha256": parity["acceptance_identity_sha256"],
         "accepted_manifest_content_identity_sha256": parity["accepted_manifest_content_identity_sha256"],
         "canonical_assessment_identity_sha256": parity["canonical_assessment_identity_sha256"],
@@ -216,6 +273,7 @@ def model_parity_grant_from_identity_artifacts(identity: dict[str, Any]) -> dict
             for key in (
                 "identity_artifact_binding_sha256", "parity_acceptance_binding_sha256",
                 "acceptance_receipt", "accepted_manifest", "accepted_assessment",
+                "transaction_index",
                 "acceptance_identity_sha256", "accepted_manifest_content_identity_sha256",
                 "canonical_assessment_identity_sha256", "evidence_count", "evidence_sha256",
                 "runtime_registries_sha256", "runtime_images_sha256",

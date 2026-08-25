@@ -7,6 +7,7 @@ capability/calibration outputs from native observations.
 """
 from __future__ import annotations
 
+import argparse
 import hashlib
 import json
 import math
@@ -18,19 +19,24 @@ from pathlib import Path
 from statistics import median
 from typing import Any, Callable, Mapping, Sequence
 
-from checkpoint_acceptance_metadata_binding import (
-    AcceptanceMetadataBindingError,
-    validate_checkpoint_acceptance_metadata_binding_envelope,
+from checkpoint_qualification_pilot_acceptance_v1 import (
+    QualificationPilotAcceptanceV1Error,
+    validate_checkpoint_qualification_pilot_acceptance_v1,
 )
 
 
-QUALIFICATION_INDEX_SCHEMA_VERSION = 1
+QUALIFICATION_INDEX_SCHEMA_VERSION = 2
+SUPPORTED_QUALIFICATION_INDEX_SCHEMA_VERSIONS = frozenset({1, 2})
 QUALIFICATION_ASSESSMENT_SCHEMA_VERSION = 1
 QUALIFICATION_RECEIPT_SCHEMA_VERSION = 1
 CAPABILITY_MANIFEST_FILENAME = "checkpoint_policy_capability_manifest.json"
 CALIBRATION_MAPPING_FILENAME = "checkpoint_policy_calibration_mapping.json"
 QUALIFICATION_RECEIPT_FILENAME = "checkpoint_policy_qualification_receipt.json"
 CODECS = ("h264", "h265")
+KPP_DATASET_BY_CODEC = {
+    "h264": "kpp_iss_publication_v3_h264",
+    "h265": "kpp_iss_publication_v3_h265",
+}
 TOPOLOGIES = ("independent_processes", "shared_video_dag")
 PILOT_EVIDENCE_ROLES = (
     "checkpoint_acceptance", "policy_decisions_jsonl", "resource_intervals",
@@ -38,7 +44,8 @@ PILOT_EVIDENCE_ROLES = (
 )
 _SHA256_CHARS = frozenset("0123456789abcdef")
 _RUNTIME_IDENTITY_FIELDS = {
-    "runtime_backend", "device_api", "worker_image_digest", "implementation_version",
+    "runtime_backend", "device_api", "gpu_id", "worker_image_digest",
+    "implementation_version", "terminal_detector", "terminal_backend",
 }
 
 
@@ -47,6 +54,7 @@ class QualificationError(RuntimeError):
 
 
 PilotValidator = Callable[[dict[str, Any], dict[str, Any]], list[dict[str, Any]]]
+FragmentValidator = Callable[[str, Path, Path], dict[str, Any]]
 
 
 def _load_policy_contract() -> Any:
@@ -55,6 +63,42 @@ def _load_policy_contract() -> Any:
     import publication_policy_contract as policy_contract
 
     return policy_contract
+
+
+def _default_fragment_validator(
+    system: str,
+    fragment_path: Path,
+    project_root: Path,
+) -> dict[str, Any]:
+    if system == "deepstream":
+        from checkpoint_deepstream_qualification_fragment_v1 import (
+            validate_deepstream_qualification_fragment,
+        )
+
+        return validate_deepstream_qualification_fragment(
+            project_root=project_root,
+            fragment_path=fragment_path,
+        )
+    modules = {
+        "savant": "checkpoint_savant_qualification_fragment_v3",
+        "openvino_gva": "checkpoint_openvino_gva_qualification_fragment_v3",
+        "gstreamer_custom": "checkpoint_gstreamer_custom_qualification_fragment_v3",
+    }
+    module_name = modules.get(system)
+    if module_name is None:
+        raise QualificationError(f"unsupported qualification fragment system: {system}")
+    module = __import__(module_name, fromlist=["assess_qualification_fragment"])
+    assessment = module.assess_qualification_fragment(
+        project_root=project_root,
+        fragment_path=fragment_path,
+    )
+    if type(assessment) is not dict or assessment.get("passed") is not True:
+        blockers = assessment.get("blockers", []) if isinstance(assessment, dict) else []
+        raise QualificationError(
+            f"{system} qualification fragment rejected: "
+            + ", ".join(str(value) for value in blockers[:8])
+        )
+    return _load_json_object(fragment_path, f"{system} qualification fragment")
 
 
 def _canonical_bytes(value: Any) -> bytes:
@@ -84,6 +128,31 @@ def _valid_sha(value: Any) -> bool:
 def _stable_id(value: Any) -> bool:
     text = str(value)
     return len(text) >= 8 and text == text.strip() and not any(ch in "\r\n\x00" for ch in text)
+
+
+def _validate_runtime_identity(value: Any, *, key: tuple[str, str, str]) -> dict[str, Any]:
+    if type(value) is not dict or set(value) != _RUNTIME_IDENTITY_FIELDS:
+        raise QualificationError(f"binding {key} runtime_identity fields drifted")
+    string_fields = _RUNTIME_IDENTITY_FIELDS - {"device_api", "gpu_id"}
+    if any(type(value[field]) is not str or not _stable_id(value[field]) for field in string_fields):
+        raise QualificationError(f"binding {key} runtime_identity is incomplete")
+    image = value["worker_image_digest"]
+    if not image.startswith("sha256:") or not _valid_sha(image[7:]):
+        raise QualificationError(f"binding {key} worker image digest is invalid")
+
+    resource = key[2]
+    device_api = value["device_api"]
+    gpu_id = value["gpu_id"]
+    terminal_backend = value["terminal_backend"]
+    if resource == "cpu":
+        if device_api != "CPU" or gpu_id is not None or "device=CPU" not in terminal_backend or "NVIDIA_CUDA" in terminal_backend:
+            raise QualificationError(f"binding {key} CPU runtime identity is inconsistent")
+    elif resource == "gpu":
+        if device_api != "NVIDIA_CUDA" or type(gpu_id) is not int or gpu_id != 0 or "device=NVIDIA_CUDA:0" not in terminal_backend:
+            raise QualificationError(f"binding {key} GPU runtime identity is inconsistent")
+    else:  # pragma: no cover - the policy resource domain is checked before this helper
+        raise QualificationError(f"binding {key} runtime resource is unsupported")
+    return dict(value)
 
 
 def _load_json_object(path: Path, label: str) -> dict[str, Any]:
@@ -197,14 +266,7 @@ def _derive_manifest(bindings: Sequence[Any], *, project_root: Path, policy: Any
             raise QualificationError(f"binding {key} implementation/emitter identity is not unique")
         implementation_ids.add(implementation_id)
         emitter_ids.add(emitter_id)
-        runtime_identity = raw["runtime_identity"]
-        if type(runtime_identity) is not dict or set(runtime_identity) != _RUNTIME_IDENTITY_FIELDS:
-            raise QualificationError(f"binding {key} runtime_identity fields drifted")
-        if not all(_stable_id(runtime_identity[field]) for field in _RUNTIME_IDENTITY_FIELDS):
-            raise QualificationError(f"binding {key} runtime_identity is incomplete")
-        image = str(runtime_identity["worker_image_digest"])
-        if not image.startswith("sha256:") or not _valid_sha(image[7:]):
-            raise QualificationError(f"binding {key} worker image digest is invalid")
+        runtime_identity = _validate_runtime_identity(raw["runtime_identity"], key=key)
         artifacts = []
         for role in ("implementation_artifact", "emitter_artifact"):
             verified = _verify_descriptor(project_root, raw[role], f"binding {key} {role}", forbid_hardlinks=True)
@@ -219,7 +281,8 @@ def _derive_manifest(bindings: Sequence[Any], *, project_root: Path, policy: Any
             "implementation_id": implementation_id,
             "implementation_sha256": implementation["sha256"],
             "runtime_binding": runtime_binding,
-            "runtime_identity": dict(runtime_identity),
+            "runtime_identity": runtime_identity,
+            **runtime_identity,
             "native_evidence": {
                 "status": "accepted_native_runtime_emitter",
                 "telemetry_source": "native",
@@ -246,6 +309,218 @@ def _derive_manifest(bindings: Sequence[Any], *, project_root: Path, policy: Any
     assessment = policy.assess_capability_manifest(manifest)
     if not assessment.get("passed"):
         raise QualificationError("derived capability manifest rejected: " + ", ".join(assessment.get("blockers", [])[:8]))
+    return manifest, observed
+
+
+def _derive_fragment_bound_manifest(
+    bindings: Sequence[Any],
+    *,
+    project_root: Path,
+    policy: Any,
+    fragment_validator: FragmentValidator,
+) -> tuple[dict[str, Any], dict[tuple[str, str, str], dict[str, Any]]]:
+    systems = tuple(policy.PUBLISHABLE_SYSTEMS)
+    branches = tuple(policy.ANALYTICS_BRANCHES)
+    resources = tuple(policy.RESOURCES)
+    expected = {
+        (system, branch, resource)
+        for system in systems
+        for branch in branches
+        for resource in resources
+    }
+    if not isinstance(bindings, list) or len(bindings) != len(expected):
+        raise QualificationError("binding set must contain exactly 32 system/branch/resource rows")
+
+    required = {
+        "system",
+        "branch",
+        "resource",
+        "implementation_id",
+        "emitter_id",
+        "binding_artifact",
+        "fragment_artifact",
+        "runtime_binding",
+        "runtime_identity",
+    }
+    raw_by_key: dict[tuple[str, str, str], dict[str, Any]] = {}
+    verified_bindings: dict[tuple[str, str, str], dict[str, Any]] = {}
+    fragments: dict[str, tuple[dict[str, Any], dict[str, Any]]] = {}
+    binding_paths: set[str] = set()
+    binding_inodes: set[tuple[int, int]] = set()
+    fragment_paths: set[str] = set()
+    fragment_inodes: set[tuple[int, int]] = set()
+    implementation_ids: set[str] = set()
+    emitter_ids: set[str] = set()
+
+    for position, raw in enumerate(bindings):
+        if type(raw) is not dict or set(raw) != required:
+            raise QualificationError(f"binding[{position}] fragment-bound fields drifted")
+        key = _binding_key(raw)
+        if key not in expected or key in raw_by_key:
+            raise QualificationError(f"binding coverage duplicate/unknown: {key}")
+        implementation_id = str(raw["implementation_id"])
+        emitter_id = str(raw["emitter_id"])
+        runtime_binding = str(raw["runtime_binding"])
+        if not all(_stable_id(value) for value in (implementation_id, emitter_id, runtime_binding)):
+            raise QualificationError(f"binding {key} contains a placeholder/unstable runtime identity")
+        if implementation_id in implementation_ids or emitter_id in emitter_ids:
+            raise QualificationError(f"binding {key} implementation/emitter identity is not unique")
+        implementation_ids.add(implementation_id)
+        emitter_ids.add(emitter_id)
+        runtime_identity = _validate_runtime_identity(raw["runtime_identity"], key=key)
+        binding_artifact = _verify_descriptor(
+            project_root,
+            raw["binding_artifact"],
+            f"binding {key} physical binding",
+            forbid_hardlinks=True,
+        )
+        if (
+            binding_artifact["path"] in binding_paths
+            or binding_artifact["filesystem_identity"] in binding_inodes
+        ):
+            raise QualificationError(f"binding {key} physical binding alias is prohibited")
+        binding_paths.add(binding_artifact["path"])
+        binding_inodes.add(binding_artifact["filesystem_identity"])
+        expected_runtime_binding = (
+            f"{key[0]}:{key[1]}:{key[2]}:fragment-v1:{binding_artifact['sha256']}"
+        )
+        if runtime_binding != expected_runtime_binding:
+            raise QualificationError(f"binding {key} runtime_binding is not fragment-derived")
+
+        fragment_artifact = _verify_descriptor(
+            project_root,
+            raw["fragment_artifact"],
+            f"binding {key} system fragment",
+            forbid_hardlinks=True,
+        )
+        prior = fragments.get(key[0])
+        fragment_descriptor = {
+            field: fragment_artifact[field]
+            for field in ("path", "size_bytes", "sha256", "filesystem_identity")
+        }
+        if prior is None:
+            if (
+                fragment_artifact["path"] in fragment_paths
+                or fragment_artifact["filesystem_identity"] in fragment_inodes
+            ):
+                raise QualificationError(f"binding {key} system fragment alias is prohibited")
+            fragment_paths.add(fragment_artifact["path"])
+            fragment_inodes.add(fragment_artifact["filesystem_identity"])
+            fragment_path = project_root / fragment_artifact["path"]
+            fragment_value = fragment_validator(key[0], fragment_path, project_root)
+            if type(fragment_value) is not dict:
+                raise QualificationError(f"{key[0]} qualification fragment validator returned invalid data")
+            fragments[key[0]] = (fragment_descriptor, fragment_value)
+        elif prior[0] != fragment_descriptor:
+            raise QualificationError(f"binding {key} system fragment descriptor drifted")
+
+        raw_by_key[key] = raw
+        verified_bindings[key] = {
+            "artifact": binding_artifact,
+            "runtime_identity": runtime_identity,
+            "runtime_binding": runtime_binding,
+            "implementation_id": implementation_id,
+            "emitter_id": emitter_id,
+        }
+
+    if set(raw_by_key) != expected or set(fragments) != set(systems):
+        raise QualificationError("binding_cell_set_mismatch")
+
+    observed: dict[tuple[str, str, str], dict[str, Any]] = {}
+    expected_fragment_fields = {
+        "schema_version",
+        "artifact_kind",
+        "system",
+        "policy_bindings",
+        "resource_bindings",
+        "pilots",
+    }
+    for system in systems:
+        fragment = fragments[system][1]
+        if (
+            set(fragment) != expected_fragment_fields
+            or fragment.get("schema_version") != 1
+            or fragment.get("artifact_kind")
+            != "vast_publication_qualification_system_fragment_v1"
+            or fragment.get("system") != system
+        ):
+            raise QualificationError(f"{system} qualification fragment identity drifted")
+        rows = fragment.get("policy_bindings")
+        if type(rows) is not list or len(rows) != len(branches) * len(resources):
+            raise QualificationError(f"{system} qualification fragment policy coverage drifted")
+        rows_by_coordinate: dict[tuple[str, str], dict[str, Any]] = {}
+        for row in rows:
+            if type(row) is not dict:
+                raise QualificationError(f"{system} qualification fragment policy row invalid")
+            coordinate = (str(row.get("branch", "")), str(row.get("resource", "")))
+            if coordinate in rows_by_coordinate:
+                raise QualificationError(f"{system} qualification fragment policy row duplicate")
+            rows_by_coordinate[coordinate] = row
+        if set(rows_by_coordinate) != {(branch, resource) for branch in branches for resource in resources}:
+            raise QualificationError(f"{system} qualification fragment policy coverage drifted")
+
+        for branch in branches:
+            for resource in resources:
+                key = (system, branch, resource)
+                verified = verified_bindings[key]
+                artifact = verified["artifact"]
+                fragment_row = rows_by_coordinate[(branch, resource)]
+                if not all(
+                    (
+                        fragment_row.get("role") == "policy",
+                        fragment_row.get("branch") == branch,
+                        fragment_row.get("resource") == resource,
+                        fragment_row.get("path") == artifact["path"],
+                        fragment_row.get("size") == artifact["size_bytes"],
+                        fragment_row.get("sha256") == artifact["sha256"],
+                        fragment_row.get("implementation_id") == verified["implementation_id"],
+                        fragment_row.get("emitter_id") == verified["emitter_id"],
+                        fragment_row.get("runtime_identity") == verified["runtime_identity"],
+                    )
+                ):
+                    raise QualificationError(f"binding {key} fragment policy binding drift")
+                identity = verified["runtime_identity"]
+                observed[key] = {
+                    "status": "implemented_and_native_evidence_bound",
+                    "implementation_id": verified["implementation_id"],
+                    "implementation_sha256": artifact["sha256"],
+                    "runtime_binding": verified["runtime_binding"],
+                    "runtime_identity": identity,
+                    **identity,
+                    "native_evidence": {
+                        "status": "accepted_native_runtime_emitter",
+                        "telemetry_source": "native",
+                        "emitter_id": verified["emitter_id"],
+                        "emitter_sha256": artifact["sha256"],
+                        "implementation_id_field": "implementation_id",
+                        "resource_field": "selected_resource",
+                    },
+                }
+
+    manifest = {
+        "schema_version": 1,
+        "artifact_kind": "vast_publication_policy_capability_manifest",
+        "policy_scope": policy.POLICY_SCOPE,
+        "policy_contract_sha256": policy.policy_contract_identity()["sha256"],
+        "systems": {
+            system: {
+                "branches": {
+                    branch: {
+                        resource: observed[(system, branch, resource)]
+                        for resource in resources
+                    }
+                    for branch in branches
+                }
+            }
+            for system in systems
+        },
+    }
+    assessment = policy.assess_capability_manifest(manifest)
+    if not assessment.get("passed"):
+        raise QualificationError(
+            "derived capability manifest rejected: "
+            + ", ".join(assessment.get("blockers", [])[:8])
+        )
     return manifest, observed
 
 
@@ -292,25 +567,21 @@ def _default_pilot_validator(pilot: dict[str, Any], context: dict[str, Any]) -> 
     manifest = context["capability_manifest"]
     policy = context["policy"]
     paths = _validate_evidence_descriptors(project_root, pilot)
-    acceptance = _load_json_object(paths["checkpoint_acceptance"], "checkpoint acceptance")
     expected_identity = {
-        "schema_version": 2,
-        "artifact_kind": "checkpoint_publication_runtime_acceptance",
-        "status": "accepted_native_checkpoint_arm",
-        "system": pilot["system"],
-        "codec": pilot["codec"],
-        "topology_kind": pilot["topology_kind"],
         "policy": "cpu_only" if pilot["resource"] == "cpu" else "gpu_only",
-        "execution_binding_provenance": "native_scheduler_execution_binding_v1",
     }
-    for field, expected in expected_identity.items():
-        if acceptance.get(field) != expected:
-            raise QualificationError(f"checkpoint acceptance identity drift: {field}")
     try:
-        validate_checkpoint_acceptance_metadata_binding_envelope(acceptance)
-    except AcceptanceMetadataBindingError as exc:
+        acceptance = validate_checkpoint_qualification_pilot_acceptance_v1(
+            project_root=project_root,
+            acceptance_path=paths["checkpoint_acceptance"],
+            expected_system=pilot["system"],
+            expected_resource=pilot["resource"],
+            expected_codec=pilot["codec"],
+            expected_topology_kind=pilot["topology_kind"],
+        )
+    except QualificationPilotAcceptanceV1Error as exc:
         raise QualificationError(
-            f"checkpoint acceptance metadata binding is invalid: {exc}"
+            f"checkpoint acceptance is not a qualification pilot: {exc}"
         ) from exc
     run_id = acceptance.get("run_id")
     if not _stable_id(run_id):
@@ -368,10 +639,11 @@ def _default_pilot_validator(pilot: dict[str, Any], context: dict[str, Any]) -> 
         for field in ("evidence_accepted", "publication_bundle_bound", "full_resource_coverage_complete")
     ):
         raise QualificationError("checkpoint acceptance full-resource proof is not accepted")
-    finalization = acceptance.get("acceptance_finalization")
+    finalization = acceptance.get("full_resource_finalization")
     if finalization != {
         "hardware_collector_stopped": True,
         "validation": "full_resource_evidence_v2_passed",
+        "prepared_by": "prepare_checkpoint_publication_acceptance",
     }:
         raise QualificationError("checkpoint acceptance finalization proof drifted")
 
@@ -392,7 +664,7 @@ def _default_pilot_validator(pilot: dict[str, Any], context: dict[str, Any]) -> 
                 "analytics_function_types": len(policy.ANALYTICS_BRANCHES),
             },
             "topology": {
-                "contract_version": 1,
+                "contract_version": 2,
                 "kind": pilot["topology_kind"],
                 "routing_mode": "all_branches_per_stream",
                 "required_branches": list(policy.ANALYTICS_BRANCHES),
@@ -418,7 +690,7 @@ def _default_pilot_validator(pilot: dict[str, Any], context: dict[str, Any]) -> 
         dataset_manifest = project_root / context["dataset_manifest"]["path"]
         dataset = load_dataset(
             dataset_manifest,
-            f"kpp_real_{pilot['codec']}",
+            KPP_DATASET_BY_CODEC[pilot["codec"]],
             mode="benchmark",
             project_root=project_root,
             require_files=True,
@@ -560,6 +832,7 @@ def assess_policy_qualification(
     project_root: Path,
     index_path: Path,
     pilot_validator: PilotValidator | None = None,
+    fragment_validator: FragmentValidator | None = None,
 ) -> dict[str, Any]:
     """Purely assess and derive qualification artifacts; never write output."""
     try:
@@ -583,7 +856,8 @@ def assess_policy_qualification(
         }
         schema_ok = (
             set(index) == expected_fields
-            and index.get("schema_version") == QUALIFICATION_INDEX_SCHEMA_VERSION
+            and index.get("schema_version")
+            in SUPPORTED_QUALIFICATION_INDEX_SCHEMA_VERSIONS
             and index.get("artifact_kind") == "vast_publication_policy_qualification_index"
         )
         if not schema_ok:
@@ -593,7 +867,19 @@ def assess_policy_qualification(
         if index.get("policy_contract_sha256") != contract_sha:
             raise QualificationError("qualification index policy contract SHA-256 drifted")
         dataset = _verify_descriptor(root, index["dataset_manifest"], "dataset manifest", forbid_hardlinks=True)
-        manifest, bindings = _derive_manifest(index["bindings"], project_root=root, policy=policy)
+        if index["schema_version"] == 1:
+            manifest, bindings = _derive_manifest(
+                index["bindings"], project_root=root, policy=policy,
+            )
+        else:
+            manifest, bindings = _derive_fragment_bound_manifest(
+                index["bindings"],
+                project_root=root,
+                policy=policy,
+                fragment_validator=(
+                    fragment_validator or _default_fragment_validator
+                ),
+            )
         expected_pilots = {
             (system, resource, codec, topology)
             for system in policy.PUBLISHABLE_SYSTEMS
@@ -727,10 +1013,14 @@ def promote_policy_qualification(
     index_path: Path,
     output_dir: Path,
     pilot_validator: PilotValidator | None = None,
+    fragment_validator: FragmentValidator | None = None,
 ) -> dict[str, Any]:
     """Emit two derived artifacts and commit an immutable receipt last."""
     assessment = assess_policy_qualification(
-        project_root=project_root, index_path=index_path, pilot_validator=pilot_validator,
+        project_root=project_root,
+        index_path=index_path,
+        pilot_validator=pilot_validator,
+        fragment_validator=fragment_validator,
     )
     if not assessment["passed"]:
         raise QualificationError("policy qualification is blocked: " + ", ".join(assessment["blockers"][:8]))
@@ -770,11 +1060,38 @@ def promote_policy_qualification(
     return {"passed": True, "status": "promoted", "receipt": receipt, "output_dir": str(destination)}
 
 
+def _parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--project-root", type=Path, default=Path(__file__).resolve().parents[1]
+    )
+    parser.add_argument("--index-path", type=Path, required=True)
+    parser.add_argument("--output-dir", type=Path, required=True)
+    return parser.parse_args()
+
+
+def main() -> int:
+    args = _parse_args()
+    result = promote_policy_qualification(
+        project_root=args.project_root,
+        index_path=args.index_path,
+        output_dir=args.output_dir,
+    )
+    print(json.dumps(result, sort_keys=True, separators=(",", ":")))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
+
+
 __all__ = [
     "CAPABILITY_MANIFEST_FILENAME",
     "CALIBRATION_MAPPING_FILENAME",
     "QUALIFICATION_RECEIPT_FILENAME",
+    "KPP_DATASET_BY_CODEC",
     "QualificationError",
     "assess_policy_qualification",
+    "main",
     "promote_policy_qualification",
 ]
