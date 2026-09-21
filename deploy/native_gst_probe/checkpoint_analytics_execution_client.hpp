@@ -2,6 +2,8 @@
 
 #include "checkpoint_native_policy_client.hpp"
 
+#include <glib.h>
+
 #include <array>
 #include <cerrno>
 #include <cstdint>
@@ -104,6 +106,7 @@ class CheckpointAnalyticsExecutionClient {
   static constexpr const char* kSocketEnvironment = "VAST_CHECKPOINT_ANALYTICS_EXECUTION_SOCKET";
   static constexpr std::uint64_t kSchemaVersion = 1;
   static constexpr std::size_t kMaximumMessageBytes = 64U * 1024U;
+  static constexpr std::size_t kMaximumPayloadBytes = 67'108'864U;
   static constexpr const char* kProtocolIdentitySha256 =
       "3bed4ad0e5cd46b01649b054fa520c0f728a1ceeb14502fb9fe1f0f8f5941eff";
 
@@ -194,6 +197,11 @@ class CheckpointAnalyticsExecutionClient {
       const std::uint8_t* payload,
       std::size_t payload_size) {
     validate_request(request, payload, payload_size);
+    const std::vector<std::uint8_t> snapshot(payload, payload + payload_size);
+    const std::string snapshot_sha256 = sha256(snapshot);
+    require(
+        snapshot_sha256 == request.raw_input_sha256,
+        "analytics execution payload SHA-256 differs from raw_input_sha256");
     std::ostringstream json;
     json << "{\"arm_id\":\"" << escape(request.arm_id)
          << "\",\"decision\":{\"decision_id\":\"" << escape(request.decision.decision_id)
@@ -211,15 +219,15 @@ class CheckpointAnalyticsExecutionClient {
          << ",\"transport_pts_ns\":" << request.transport_pts_ns
          << "},\"gstreamer_worker_id\":\"" << escape(request.worker_id)
          << "\",\"message_type\":\"analytics_execute\",\"payload\":{\"byte_length\":"
-         << payload_size << ",\"format\":\"" << request.format
+         << snapshot.size() << ",\"format\":\"" << request.format
          << "\",\"height\":" << request.height
          << ",\"kind\":\"raw_gstreamer_frame\",\"preprocessing_contract_sha256\":\""
          << request.preprocessing_contract_sha256 << "\",\"sha256\":\""
-         << request.raw_input_sha256 << "\",\"stride\":" << request.stride
+         << snapshot_sha256 << "\",\"stride\":" << request.stride
          << ",\"width\":" << request.width << "},\"request_id\":\""
          << escape(request.request_id) << "\",\"run_id\":\"" << escape(request.run_id)
          << "\",\"schema_version\":1}";
-    const int payload_fd = create_sealed_memfd(payload, payload_size);
+    const int payload_fd = create_sealed_memfd(snapshot.data(), snapshot.size());
     FlatObject response;
     try {
       response = exchange(json.str(), payload_fd);
@@ -278,11 +286,27 @@ class CheckpointAnalyticsExecutionClient {
     }
   }
 
+  static std::string sha256(const std::vector<std::uint8_t>& value) {
+    gchar* digest = g_compute_checksum_for_data(
+        G_CHECKSUM_SHA256,
+        reinterpret_cast<const guchar*>(value.data()),
+        static_cast<gsize>(value.size()));
+    if (digest == nullptr) {
+      throw std::runtime_error("failed to compute analytics execution payload SHA-256");
+    }
+    std::string result(digest);
+    g_free(digest);
+    return result;
+  }
+
   static void validate_request(
       const CheckpointAnalyticsExecutionRequest& request,
       const std::uint8_t* payload,
       std::size_t payload_size) {
     require(payload != nullptr && payload_size > 0, "analytics execution payload is empty");
+    require(
+        payload_size <= kMaximumPayloadBytes,
+        "analytics execution payload exceeds bounded maximum");
     for (const auto& field : {
              std::make_pair(&request.request_id, "request_id"),
              std::make_pair(&request.run_id, "run_id"),

@@ -29,6 +29,7 @@ import time
 import uuid
 from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Protocol
 
@@ -210,6 +211,12 @@ class WorkerProcessFactory(Protocol):
 
 
 class BridgeLike(Protocol):
+    def validate_request(self, value: Mapping[str, Any]) -> Mapping[str, Any]: ...
+
+    def validate_worker_protocol_request(
+        self, value: Mapping[str, Any], *, route: tuple[str, str]
+    ) -> Mapping[str, Any]: ...
+
     def worker_protocol_handshake(
         self, value: Mapping[str, Any]
     ) -> tuple[tuple[str, str], Mapping[str, Any]]: ...
@@ -2318,6 +2325,25 @@ class ProductionLifecycleEvidenceSink:
         if self._directory_custody is None:
             _fsync_directory(self.root)
 
+    def persist_protocol_failure(self, value: Mapping[str, Any]) -> dict[str, Any]:
+        # Startup exposes listener threads before readiness is committed. Do
+        # not create a diagnostic claiming an authority that does not exist.
+        if self._directory_custody is not None:
+            _require(self._authority_identity is not None,
+                     "analytics protocol diagnostic precedes owned authority")
+            self._directory_custody.assert_owned(self.authority_path.name, self._authority_identity)
+        else:
+            _require(self.authority_path.is_file() and not _is_reparse(self.authority_path),
+                     "analytics protocol diagnostic precedes owned authority")
+        payload = canonical_json_bytes(dict(value)) + b"\n"
+        _require(len(payload) <= 8192, "analytics protocol diagnostic exceeds 8 KiB")
+        path = self.root / "protocol_failure_diagnostic.v1.json"
+        _atomic_write_json(path, value, directory_custody=self._directory_custody)
+        if self._directory_custody is None:
+            _fsync_directory(self.root)
+        return {"path": path.name, "size_bytes": len(payload),
+                "sha256": hashlib.sha256(payload).hexdigest()}
+
     def close(self) -> None:
         custody = self._directory_custody
         self._directory_custody = None
@@ -4264,6 +4290,8 @@ class GStreamerAnalyticsSidecar:
         self._production_threads_lock = threading.Lock()
         self._production_failure: BaseException | None = None
         self._production_failure_lock = threading.Lock()
+        self._production_failure_diagnostic: dict[str, Any] | None = None
+        self._production_failure_diagnostic_error = False
         self._guardian_stop_requested = threading.Event()
         self._guardian_stop_attestation: dict[str, Any] | None = None
         self._guardian_stop_attestation_lock = threading.Lock()
@@ -4745,15 +4773,95 @@ class GStreamerAnalyticsSidecar:
         self._pending_peer_identities = completed
         self._assert_workers_live(phase="post-hello attestation")
 
-    def _record_production_failure(self, error: BaseException) -> None:
-        _require(
-            self._production,
-            "engineering sidecar cannot record a production service failure",
-        )
+    def _protocol_failure_diagnostic(
+        self, *, protocol_mode: str | None, request: Mapping[str, Any] | None,
+        route: tuple[str, str] | None, descriptors: Sequence[int], stage: str,
+    ) -> dict[str, Any]:
+        # Only validated control fields can supply attribution. Never retain a
+        # request dump, exception text, frame bytes, or an unsafe descriptor read.
+        payload = None if request is None else request[
+            "tensor" if protocol_mode == "worker" else "payload"
+        ]
+        expected = {"byte_length": None, "sha256": None, "seals": None}
+        observed = {"byte_length": None, "sha256": None, "seals": None}
+        if payload is not None:
+            expected.update(byte_length=payload["byte_length"], sha256=payload["sha256"])
+        if os.name == "posix":
+            import fcntl
+            from analytics_execution_protocol import _required_seals
+            expected["seals"] = required = _required_seals()
+            if len(descriptors) == 1:
+                try:
+                    descriptor = descriptors[0]
+                    metadata = os.fstat(descriptor)
+                    if stat.S_ISREG(metadata.st_mode):
+                        observed["byte_length"] = metadata.st_size
+                        seals = int(fcntl.fcntl(descriptor, fcntl.F_GET_SEALS))
+                        observed["seals"] = seals
+                        if seals & required == required:
+                            # Sealing can race the first stat; only the size
+                            # observed after all write/resize seals is stable.
+                            metadata = os.fstat(descriptor)
+                            observed["byte_length"] = metadata.st_size
+                        if 0 < metadata.st_size <= MAX_TENSOR_BYTES and seals & required == required:
+                            digest = hashlib.sha256()
+                            offset = 0
+                            while offset < metadata.st_size:
+                                chunk = os.pread(descriptor, min(1024 * 1024, metadata.st_size - offset), offset)
+                                if not chunk:
+                                    break
+                                digest.update(chunk)
+                                offset += len(chunk)
+                            if offset == metadata.st_size:
+                                observed["sha256"] = digest.hexdigest()
+                except (OSError, ValueError, TypeError):
+                    pass
+        core = {
+            "schema_version": 1,
+            "artifact_kind": "vast_gstreamer_analytics_protocol_failure_diagnostic_v1",
+            "lifecycle_id": self.lifecycle_id,
+            "service_authority_sha256": None if self._production_authority is None else self._production_authority["service_authority_sha256"],
+            "observed_at_utc": datetime.now(timezone.utc).isoformat(),
+            "protocol_mode": protocol_mode,
+            "attribution": "validated" if request is not None else "unavailable",
+            "request_id": None if request is None else request["request_id"],
+            "run_id": None if request is None else request["run_id"],
+            "arm_id": None if request is None else request["arm_id"],
+            "branch": None if route is None else route[0],
+            "resource": None if route is None else route[1],
+            "expected": expected, "observed": observed,
+            "failure_stage": stage,
+        }
+        return {**core, "identity": {"algorithm": "sha256", "sha256": canonical_sha256(core)}}
+
+    def _record_production_failure(
+        self, error: BaseException, *, diagnostic: Mapping[str, Any] | None = None,
+    ) -> None:
+        _require(self._production, "engineering sidecar cannot record a production service failure")
         with self._production_failure_lock:
             if self._production_failure is None:
                 self._production_failure = error
+                # Selection and persistence share the first-failure lock. A
+                # diagnostic error must never replace the original failure.
+                try:
+                    if diagnostic is None:
+                        diagnostic = self._protocol_failure_diagnostic(
+                            protocol_mode=None, request=None, route=None,
+                            descriptors=(), stage="service_lifecycle",
+                        )
+                    self._production_failure_diagnostic = self.evidence.persist_protocol_failure(diagnostic)
+                except Exception:
+                    self._production_failure_diagnostic_error = True
         self._stop.set()
+
+    def _production_failure_message(self, error: BaseException) -> str:
+        message = str(error)[:3500]
+        descriptor = self._production_failure_diagnostic
+        if descriptor is not None:
+            message += f"; protocol_diagnostic={descriptor['path']}; sha256={descriptor['sha256']}"
+        elif self._production_failure_diagnostic_error:
+            message += "; protocol_diagnostic_unavailable"
+        return message[:4096]
 
     def _assert_production_internal_live(self) -> None:
         self._verify_runtime_directory_custody()
@@ -4994,6 +5102,7 @@ class GStreamerAnalyticsSidecar:
         protocol_mode: str | None = None
         worker_route: tuple[str, str] | None = None
         handled_requests = 0
+        failure_diagnostic: dict[str, Any] | None = None
         try:
             while handled_requests < self.max_requests_per_connection:
                 try:
@@ -5006,6 +5115,8 @@ class GStreamerAnalyticsSidecar:
                 request_route: tuple[str, str] | None = None
                 request_reserved = False
                 request_completed = False
+                attributed_request: Mapping[str, Any] | None = None
+                failure_stage = "control_envelope"
                 try:
                     message_type = str(message.get("message_type") or "")
                     _require(
@@ -5069,12 +5180,11 @@ class GStreamerAnalyticsSidecar:
                         payload_record.get("sha256"),
                         "analytics sidecar request payload SHA-256",
                     )
-                    payload = verify_sealed_memfd(
-                        descriptors[0],
-                        expected_bytes=byte_count,
-                        expected_sha256=digest,
-                    )
                     if self._production:
+                        if protocol_mode == "worker":
+                            message = self._bridge.validate_worker_protocol_request(message, route=worker_route)
+                        else:
+                            message = self._bridge.validate_request(message)
                         if protocol_mode == "worker":
                             _require(
                                 worker_route is not None,
@@ -5114,6 +5224,8 @@ class GStreamerAnalyticsSidecar:
                             "analytics production request route drifted",
                         )
                         request_route = (branch, resource)
+                        attributed_request = message
+                        failure_stage = "request_accounting"
                         _require(
                             self._production_counters is not None,
                             "analytics production counters are unavailable",
@@ -5124,6 +5236,13 @@ class GStreamerAnalyticsSidecar:
                             request_id=str(message.get("request_id") or ""),
                         )
                         request_reserved = True
+                    failure_stage = "payload_integrity"
+                    payload = verify_sealed_memfd(
+                        descriptors[0],
+                        expected_bytes=byte_count,
+                        expected_sha256=digest,
+                    )
+                    failure_stage = "inference"
                     try:
                         output: bytes | None = None
                         if protocol_mode == "worker":
@@ -5192,6 +5311,14 @@ class GStreamerAnalyticsSidecar:
                         request_completed = True
                     handled_requests += 1
                 except BaseException:
+                    if self._production:
+                        try:
+                            failure_diagnostic = self._protocol_failure_diagnostic(
+                                protocol_mode=protocol_mode, request=attributed_request,
+                                route=request_route, descriptors=descriptors, stage=failure_stage,
+                            )
+                        except Exception:
+                            failure_diagnostic = None
                     if (
                         self._production
                         and request_reserved
@@ -5214,7 +5341,7 @@ class GStreamerAnalyticsSidecar:
             if self._production:
                 if not self._stop.is_set():
                     failed = True
-                    self._record_production_failure(error)
+                    self._record_production_failure(error, diagnostic=failure_diagnostic)
             else:
                 with errors_lock:
                     errors.append(error)
@@ -6016,7 +6143,7 @@ class GStreamerAnalyticsProductionService(GStreamerAnalyticsSidecar):
                 if failure is None
                 else {
                     "type": type(failure).__name__,
-                    "message": str(failure)[:4096],
+                    "message": self._production_failure_message(failure),
                 }
             ),
             "cleanup_errors": all_cleanup_errors,

@@ -1,14 +1,22 @@
 #include "checkpoint_analytics_execution_client.hpp"
 
+#include <glib.h>
+
+#include <algorithm>
 #include <array>
 #include <cerrno>
+#include <condition_variable>
 #include <cstdlib>
 #include <cstdint>
+#include <cstring>
+#include <dirent.h>
 #include <exception>
 #include <fcntl.h>
 #include <iostream>
+#include <mutex>
 #include <stdexcept>
 #include <string>
+#include <sys/stat.h>
 #include <thread>
 #include <vector>
 
@@ -17,6 +25,8 @@
 #include <unistd.h>
 
 namespace {
+
+constexpr std::size_t kMaximumPayloadBytes = 67'108'864U;
 
 struct Packet {
   std::string json;
@@ -136,10 +146,208 @@ void test_environment_path_connection() {
   ::unlink(path.c_str());
 }
 
+std::string sha256(const std::uint8_t* data, std::size_t size) {
+  gchar* digest = g_compute_checksum_for_data(
+      G_CHECKSUM_SHA256, reinterpret_cast<const guchar*>(data), static_cast<gsize>(size));
+  if (digest == nullptr) throw std::runtime_error("GLib did not compute SHA-256");
+  std::string result(digest);
+  g_free(digest);
+  return result;
+}
+
+vast::CheckpointAnalyticsExecutionRequest make_request(
+    std::size_t size, const std::string& digest) {
+  vast::CheckpointAnalyticsExecutionRequest request;
+  request.request_id = "analytics-boundary-test";
+  request.run_id = "run-boundary-test";
+  request.arm_id = "arm-boundary-test";
+  request.worker_id = "worker-boundary-test";
+  request.input_frame_key = "dataset:0:source:1:90000";
+  request.branch = "damage";
+  request.decision.decision_id = "decision-boundary-test";
+  request.decision.decision_seq = 1;
+  request.decision.selected_resource = "gpu";
+  request.decision.selected_implementation_id = "implementation-boundary-test";
+  request.decision.emitter_id = "emitter-boundary-test";
+  request.decision.emitter_sha256 = std::string(64, '1');
+  request.deadline_monotonic_ns = 9999999999ULL;
+  request.format = "BGR";
+  request.width = 1;
+  request.height = 1;
+  request.stride = size;
+  request.preprocessing_contract_sha256 = std::string(64, '2');
+  request.raw_input_sha256 = digest;
+  return request;
+}
+
+template <typename Invoke>
+void expect_local_rejection(Invoke&& invoke, const std::string& expected_message) {
+  int descriptors[2] = {-1, -1};
+  if (::socketpair(AF_UNIX, SOCK_SEQPACKET | SOCK_CLOEXEC, 0, descriptors) != 0) {
+    throw std::runtime_error("local-rejection socketpair failed");
+  }
+  timeval timeout{};
+  timeout.tv_sec = 2;
+  ::setsockopt(descriptors[0], SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout));
+  try {
+    {
+      vast::CheckpointAnalyticsExecutionClient client(descriptors[0]);
+      bool rejected = false;
+      try {
+        invoke(client);
+      } catch (const std::exception& error) {
+        rejected = contains(error.what(), expected_message);
+      }
+      if (!rejected) throw std::runtime_error("missing local error: " + expected_message);
+      char byte = 0;
+      errno = 0;
+      const ssize_t received = ::recv(descriptors[1], &byte, 1, MSG_DONTWAIT);
+      if (received != -1 || (errno != EAGAIN && errno != EWOULDBLOCK)) {
+        throw std::runtime_error("invalid request sent a datagram or payload FD");
+      }
+    }
+    ::close(descriptors[1]);
+  } catch (...) {
+    ::close(descriptors[1]);
+    throw;
+  }
+}
+
+void test_local_payload_rejections() {
+  const std::array<std::uint8_t, 4> payload{1, 2, 3, 4};
+  const auto wrong_hash = make_request(payload.size(), std::string(64, '0'));
+  expect_local_rejection(
+      [&](vast::CheckpointAnalyticsExecutionClient& client) {
+        (void)client.execute(wrong_hash, payload.data(), payload.size());
+      },
+      "SHA-256 differs");
+  const auto zero = make_request(3, std::string(64, '0'));
+  expect_local_rejection(
+      [&](vast::CheckpointAnalyticsExecutionClient& client) {
+        (void)client.execute(zero, nullptr, 0);
+      },
+      "payload is empty");
+  const std::uint8_t one_byte = 7;
+  const std::size_t oversized = kMaximumPayloadBytes + 1U;
+  const auto too_large = make_request(oversized, std::string(64, '0'));
+  expect_local_rejection(
+      [&](vast::CheckpointAnalyticsExecutionClient& client) {
+        (void)client.execute(too_large, &one_byte, oversized);
+      },
+      "bounded maximum");
+}
+
+std::string sha256_fd(int fd, std::size_t size) {
+  GChecksum* checksum = g_checksum_new(G_CHECKSUM_SHA256);
+  if (checksum == nullptr) throw std::runtime_error("GLib did not allocate a checksum");
+  std::array<std::uint8_t, 64 * 1024> buffer{};
+  std::size_t offset = 0;
+  while (offset < size) {
+    const std::size_t wanted = std::min(buffer.size(), size - offset);
+    const ssize_t count = ::pread(fd, buffer.data(), wanted, static_cast<off_t>(offset));
+    if (count <= 0) {
+      g_checksum_free(checksum);
+      throw std::runtime_error("sealed snapshot is truncated");
+    }
+    g_checksum_update(checksum, buffer.data(), static_cast<gssize>(count));
+    offset += static_cast<std::size_t>(count);
+  }
+  const std::string result(g_checksum_get_string(checksum));
+  g_checksum_free(checksum);
+  return result;
+}
+
+std::size_t open_fd_count() {
+  DIR* directory = ::opendir("/proc/self/fd");
+  if (directory == nullptr) throw std::runtime_error("cannot inspect /proc/self/fd");
+  std::size_t count = 0;
+  while (::readdir(directory) != nullptr) ++count;
+  ::closedir(directory);
+  return count;
+}
+
+void test_maximum_snapshot_reuse_and_cleanup() {
+  const std::size_t before = open_fd_count();
+  const std::size_t size = kMaximumPayloadBytes;
+  std::vector<std::uint8_t> payload(size, 0x5a);
+  const std::string digest = sha256(payload.data(), payload.size());
+  const auto request = make_request(size, digest);
+  int descriptors[2] = {-1, -1};
+  if (::socketpair(AF_UNIX, SOCK_SEQPACKET | SOCK_CLOEXEC, 0, descriptors) != 0) {
+    throw std::runtime_error("maximum-payload socketpair failed");
+  }
+  std::mutex mutex;
+  std::condition_variable condition;
+  bool received = false;
+  bool reused = false;
+  std::exception_ptr server_error;
+  std::exception_ptr client_error;
+  std::thread server([&]() {
+    int payload_fd = -1;
+    try {
+      Packet packet = receive_packet(descriptors[1]);
+      payload_fd = packet.fd;
+      struct stat state{};
+      if (::fstat(payload_fd, &state) != 0 || static_cast<std::size_t>(state.st_size) != size) {
+        throw std::runtime_error("sealed snapshot has wrong size");
+      }
+      const int seals = ::fcntl(payload_fd, F_GET_SEALS);
+      const int required = F_SEAL_SEAL | F_SEAL_SHRINK | F_SEAL_GROW | F_SEAL_WRITE;
+      if (seals < 0 || (seals & required) != required) {
+        throw std::runtime_error("snapshot is not fully sealed");
+      }
+      {
+        std::unique_lock<std::mutex> lock(mutex);
+        received = true;
+        condition.notify_all();
+        condition.wait(lock, [&]() { return reused; });
+      }
+      if (sha256_fd(payload_fd, size) != digest ||
+          !contains(packet.json, "\"sha256\":\"" + digest + "\"") ||
+          !contains(packet.json, "\"byte_length\":" + std::to_string(size))) {
+        throw std::runtime_error("sealed bytes and request metadata describe different snapshots");
+      }
+    } catch (...) {
+      server_error = std::current_exception();
+      std::lock_guard<std::mutex> lock(mutex);
+      received = true;
+      reused = true;
+      condition.notify_all();
+    }
+    if (payload_fd >= 0) ::close(payload_fd);
+    ::close(descriptors[1]);
+  });
+  std::thread caller([&]() {
+    try {
+      vast::CheckpointAnalyticsExecutionClient client(descriptors[0]);
+      (void)client.execute(request, payload.data(), payload.size());
+      throw std::runtime_error("closed test worker unexpectedly returned a response");
+    } catch (const std::exception& error) {
+      if (!contains(error.what(), "response is missing or truncated")) {
+        client_error = std::current_exception();
+      }
+    }
+  });
+  {
+    std::unique_lock<std::mutex> lock(mutex);
+    condition.wait(lock, [&]() { return received; });
+    std::fill(payload.begin(), payload.end(), 0xa5);
+    reused = true;
+    condition.notify_all();
+  }
+  caller.join();
+  server.join();
+  if (server_error) std::rethrow_exception(server_error);
+  if (client_error) std::rethrow_exception(client_error);
+  if (open_fd_count() != before) throw std::runtime_error("exception path leaked a descriptor");
+}
+
 }  // namespace
 
 int main() {
   try {
+    test_local_payload_rejections();
+    test_maximum_snapshot_reuse_and_cleanup();
     test_environment_path_connection();
   } catch (const std::exception& exc) {
     std::cerr << exc.what() << '\n';

@@ -1,3 +1,57 @@
+# VAST: текущий прогресс
+
+Обновлено 21 сентября 2026 после проверки 10:21 UTC. **A269 остановилась после 8/32 qualification cells: guardian exit78 из-за memfd SHA-256 mismatch; pilot, verifier и promotion завершились exit1.** Полный PLAN.md остаётся незавершённым: publication_ready=false.
+
+## Текущее состояние
+Подготовительная процедура для будущего разрешённого этапа находится в [docs/benchmark-preparation-runbook.md](docs/benchmark-preparation-runbook.md). Она не меняет статус A269 и не запускает benchmark.
+
+
+**A265 завершилась exit 1 до первой qualification cell:** executor допускал generated assets только DeepStream/Savant, а проверенный producer A260 создаёт assets всех четырёх систем. Completed cells: **0/32**, checkpoint не создан. Original pilot invocation `5559a39e1b6c49edb5c409dae825f2ad` сохранён вместе со stderr и journal. Verifier не запущен: его launcher отклонил failed pilot; promotion и continuation также не запускались. Guardian штатно остановлен, original exit 0 и `clean_stop_nonpublication` независимо подтверждены. Попытка A265 и связанные helpers retired; повторный запуск исключён. [Причина](artifacts/publication_generated_asset_inventory_fix_20260921_attempt267/failure-analysis.json), [остановка guardian](artifacts/publication_generated_asset_inventory_fix_20260921_attempt267/guardian-stop-verified.json).
+
+**A267 исправляет inventory gate:** допустимый и обязательный набор generated assets теперь равен существующему `SYSTEMS`; проверки дубликатов, descriptors и физических SHA сохранены. RED воспроизвёл отказ четырёх корректных assets; GREEN: два теста и 13 отрицательных subcases прошли. Missing/duplicate/altered assets каждой системы и неизвестная система отклоняются. Изменены только host executor и его тест; все 150 packaged sources и 12 validation pins неизменны. Полный suite A268 теперь независимо проверен. [Результат и SHA](artifacts/publication_generated_asset_inventory_fix_20260921_attempt267/result.json), [regression](artifacts/publication_generated_asset_inventory_fix_20260921_attempt267/green-result.json).
+
+**A268 full suite независимо проверен:** original invocation `e4fdec201e1d4f37b68346a09a4b1df1` завершился exit0; 2 493 tests за 2 164,352 с, exact 87 historical skips. Все 6 source/fixture/mirror manifest groups и 2 145 физических файлов совпали; original successful journal подтверждён. [Independent check](artifacts/plan_execution_20260906/a268-suite-check.json), [original terminal](artifacts/plan_execution_20260906/a268-suite-terminal.json).
+
+**A269 inputs/preprocessing независимо проверены:** original input invocation `8929b91e484a4ae28c13d0ca977cc5a3` завершился exit0; все18descriptors и self/fileSHA проверены. Input receipt FILESHA `e7072a33b5603de1f108228b4055a1d1280366d03bac790d252907a486af427a`; preprocessing receipt FILESHA `2035acb3c959811412180bd08f5ab332fb8692754863473f6bfb6062233c0ae2`, stock validator прошёл. [Inputs](artifacts/plan_execution_20260906/a269-input-independent-check.json), [preprocessing](artifacts/plan_execution_20260906/a269-preprocessing-check.json).
+
+**A269 guardian8/8 был независимо проверен до отказа:** original PID294670/invocation `5e26722d75b44680a3c549e091427d65` сохранён; теперь failed/exit78. Authenticated query проверил всех восьми workers, owner process/start time, socket custody, peer/platform identities и A262 bindings/config. Authority FILESHA `6b08749dad5d3ae2909c6bb3f17d93ed5cbcb081d2fa04596df4db6a79b252fe`. Canonical10tests ранее прошли после безопасного снятия duplicate mount2692; все три canonical identities восстановлены. [Guardian check](artifacts/plan_execution_20260906/a269-guardian-check.json), [canonical checks](artifacts/plan_execution_20260906/a269-canonical-check.json), [mount recovery](artifacts/plan_execution_20260906/a269-covered-mounts-result.json).
+
+**A269 runtime-input materialization завершена и независимо проверена:** original invocation `f0f91d3534124dd1a8f08220b72f363c` завершился exit0; проверены32bundles/4assets, self/fileSHA, координаты и canonical-LF bindings. Receipt FILESHA `e7455a5f814db80bb44c7602558423c3697260d8eedfafd371a65278c72c192f`. [Runtime check](artifacts/plan_execution_20260906/a269-runtime-independent-check.json), [original terminal](artifacts/plan_execution_20260906/a269-runtime-inputs-terminal.json).
+
+**A270 diagnostic завершена и независимо проверена:** original invocation `b2d74ad257d94b43932b1b9e25291243` exit0; один container call, 180с/6streams/11evidencefiles. 1 074 ingress /474completed/600dropped/0censored; late100%, dropped55,865922%. Diagnostic-only, не qualification/publication acceptance. [Independent check](artifacts/plan_execution_20260906/a270-independent-check.json).
+
+**A269 qualification завершилась ошибкой после 8/32 cells:** все восемь DeepStream cells имеют proofs существующего verifier; повторно сверены 176 descriptors / 141 уникальный физический файл. Guardian original invocation 5e26722d75b44680a3c549e091427d65 завершился exit78 в 10:09:01 UTC с ProtocolError: analytics execution memfd SHA-256 differs from the contract. Lifecycle: failed_stop_nonpublication, отсутствует guardian_stop_attestation. Pilot original invocation 82a0029bcd9b4cd0af474fcc675e976f завершился exit1 в 10:09:11 UTC с savant_endpoint_socket_identity_changed. Verifier ccddbc1e8511443da08e55b8e5a5e091 и promotion 8febaf43814749ef822d8f87b531b798 остановились exit1 на failed guardian. Все четыре MainPID=0, Restart=no; docker ps не показал работающих containers. Checkpoint in_progress устарел и не означает живой процесс. Причина memfd mismatch пока не установлена; перезапуска, исправления кода и promotion не выполнялись. Восемь cells сохранены как partial failed-attempt history; qualification не принята, Q4/full matrix не запущены. [Проверенная ошибка и оригинальные evidence](artifacts/publication_qualification_runtime_v1_20260921_attempt269/failed-state-check-20260921/failure-analysis.json).
+
+## Подтверждённые prerequisites
+
+- **A261 images:** четыре deterministic images, packaged manifest проверки 8 valid / 40 rejected, 150 source pins и 12 validation pins. [Independent check](artifacts/plan_execution_20260906/a261-independent-check.json).
+- **A262 model parity:** 480 физических executions / 32 groups, 3 535 descriptors / 2 478 уникальных файлов; все input/output tensor hashes совпали с A244. Receipt привязан к A261. Принятые images/parity не требуют повторения из-за host-only A267. [Independent check](artifacts/plan_execution_20260906/a262-independent-check.json).
+- **A260 manifest contract:** 124 focused tests; producer/coordinator/Q4 сохраняют и проверяют точные branch, worker, policy, resource, preprocessing и model identities. [Результат](artifacts/publication_execution_manifest_fix_20260920_attempt260/result.json).
+- **A264 host identity refresh:** только constants и fixtures; 9 live tests без skips. Full suite прошёл 2 491 tests / exact 87 skips / 2 145 файлов. Это исторический byte gate до A267. [Refresh](artifacts/publication_suite_preparation_20260920_attempt264/host-refresh.json), [suite](artifacts/plan_execution_20260906/a264-suite-check.json).
+- **A265 prerequisites:** inputs/preprocessing, canonical checks 10/10, authenticated guardian 8/8, 32 runtime bundles / 4 assets независимо проверены до failed pilot. Guardian теперь остановлен. [Inputs](artifacts/plan_execution_20260906/a265-input-independent-check.json), [runtime](artifacts/plan_execution_20260906/a265-runtime-independent-check.json).
+- **A266 diagnostic завершена и независимо проверена:** один container call, 180 с / 6 streams / 11 evidence files; 1 074 ingress / 470 completed / 604 dropped / 0 censored; late 100%, dropped 56,238361%. Diagnostic-only, не qualification/publication acceptance. [Independent check](artifacts/plan_execution_20260906/a266-independent-check.json).
+- **Offline plan:** 280 groups × 10 repeats = 2 800 pairs / 5 600 arms, seed 20260323, warmup 30 с, measurement 180 с. Planning-only; execution preflight после Q4 обязателен. WSL UID1000 linger включён; full service ещё не установлен. [Plan](artifacts/plan_execution_20260906/full-matrix-plan-after-a253-v1/independent-check.json), [persistence](artifacts/plan_execution_20260906/wsl-user-service-persistence-20260920/verified.json).
+
+## Оставшийся полный объём
+
+1. Установить причину memfd SHA mismatch по исходным evidence; исправления кода проводить через согласованный OpenSpec процесс. A269 и её workers/verifiers/promotion не перезапускать. Для последующей квалификации по-прежнему обязательны все 32 cells, successful lifecycle и policy/resource promotion; partial failed attempts не агрегировать.
+2. Выполнить весь Q4: **560 phase-A runs + identity/grant boundary + 560 phase-B runs + 280 sizing pairs**.
+3. Получить датированное подтверждение Seafile capacity и связать его с реальным Q4 sizing и upload/readback через штатную attestation. **Вопрос пользователю остаётся без ответа.** Запись 1 500 GB в seafile.txt и прежняя запись 500 GiB не заменяют актуальное подтверждение. Существующие capability URLs сохранить и не выводить.
+4. Завершить preflight и запустить полную матрицу постоянным WSL user service: **5 600 accepted arms / 2 800 verified Seafile pairs**. `--max-unexpected-retries 0`, minimum-free-gib 20; неожиданный failed_permanent останавливает с 78, transport 75 продолжает тот же checkpoint. Порядок: upload -> readback -> receipt/ledger -> удаление локальных raw.
+5. Завершить **verify -> finalize -> export**. Ни suite, ни diagnostic, ни qualification отдельно не завершают задачу.
+
+Матрица: 4 системы × 2 кодека × 2 топологии × 7 политик × 5 дедлайнов × 10 повторов; 6 потоков. Отрицательные результаты сохраняются без изменения.
+
+## История и обслуживание
+
+Текущий файл очищен от повторяющихся и устаревших статусов. Его точная предыдущая версия вместе с PLAN.md и checkpoint сохранена [перед этим обновлением](artifacts/publication_qualification_runtime_v1_20260921_attempt269/progress.md.before-pilots-status); [manifest](artifacts/publication_qualification_runtime_v1_20260921_attempt269/pilots-status-update.json) фиксирует hashes. Первичная полная хронология сохранена без потерь в [архиве](artifacts/progress_cleanup_20260919/progress-history.zip). Исторические A246 (16 cells), A254 (16 cells), их ошибки, отрицательные показатели, receipts и сырые данные не удалены. Ранее освобождены только два проверенных interrupted maintenance файла; новая уборка меняет только status documents.
+
+[PLAN.md](PLAN.md) сохраняет все исходные numbered requirements. [Continuation checkpoint](artifacts/plan_execution_20260906/continuation-checkpoint.md) содержит точный следующий шаг и process identities. Goal приостановлен по просьбе ждать; существующий heartbeat ACTIVE и проверяет состояние каждые два часа. Сообщать только meaningful progress/failure/action, не дублировать polling history.
+
+## Preserved earlier progress history
+
+The entries below are historical and do not override the current status above.
+
 # План доработки диссертации
 
 > Опираясь на [phd_project_progress_report.md](./docs/phd_project_progress_report.md) создай план по доработке и отшлифовке диссертации. Занимайся улучшением итеративно, без пропусков и сокращений. Продолжай анализировать и дорабатывать тему, задачи, цель, теорию и научную ценность. При остановке - продолжай. Занимайся этой работой до 25 июля 2026 года. Создай таймер и раз в час проверяй, что работа движется.

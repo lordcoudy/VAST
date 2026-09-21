@@ -1,5 +1,7 @@
 # VAST Video Analytics Benchmark
 
+Follow the [benchmark preparation runbook](docs/benchmark-preparation-runbook.md) for the approved repair, qualification, Q4, capacity and preflight gates. It stops at a validated, unstarted service package. See [progress.md](progress.md) for current status; preparation does not authorize the full benchmark launch.
+
 This project scaffolds the experimental study for task distribution in multi-stream KPP video analytics on the target platform:
 - GPU: NVIDIA RTX 3060
 - CPU: Intel Core i7-14700K

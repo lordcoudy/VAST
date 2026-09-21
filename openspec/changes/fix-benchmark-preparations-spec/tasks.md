@@ -6,21 +6,21 @@
 
 ## 2. Native payload integrity
 
-- [ ] 2.1 Validate envelope and 1..67,108,864-byte bounds before snapshot allocation, hash one owned snapshot, reject a mismatched supplied digest and seal that snapshot; verify correct payload, wrong digest, zero and oversized input regressions.
-- [ ] 2.2 Verify synchronized caller-buffer reuse after capture preserves transmitted bytes, upper-bound acceptance and exception/FD cleanup; ensure no test introduces an unsynchronized C++ data race.
-- [ ] 2.3 Integrate the standalone C++ client regression into normal Linux test discovery with existing GLib tooling; verify the runner actually executes it and fails on the pre-fix digest defect.
+- [x] 2.1 Validate envelope and 1..67,108,864-byte bounds before snapshot allocation, hash one owned snapshot, reject a mismatched supplied digest and seal that snapshot; verify correct payload, wrong digest, zero and oversized input regressions.
+- [x] 2.2 Verify synchronized caller-buffer reuse after capture preserves transmitted bytes, upper-bound acceptance and exception/FD cleanup; ensure no test introduces an unsynchronized C++ data race.
+- [x] 2.3 Integrate the standalone C++ client regression into normal Linux test discovery with existing GLib tooling; verify the runner actually executes it and fails on the pre-fix digest defect.
 
 ## 3. Guardian attribution and evidence
 
-- [ ] 3.1 Validate the control envelope and route before reserving a request, then verify payload integrity; verify exactly-once failed accounting for attributable wrong-content requests and connection-only accounting before attribution.
-- [ ] 3.2 Add the bounded immutable diagnostic and lifecycle-message/evidence hash binding described in design.md; verify safe expected/observed facts, null unknowns, no raw payload/credentials and the 8-KiB limit.
-- [ ] 3.3 Preserve original failures under concurrency or diagnostic-write failure and close received descriptors; verify no inference, retries or successful lifecycle outcome after terminal rejection.
+- [x] 3.1 Validate the control envelope and route before reserving a request, then verify payload integrity; verify exactly-once failed accounting for attributable wrong-content requests and connection-only accounting before attribution.
+- [x] 3.2 Add the bounded immutable diagnostic and lifecycle-message/evidence hash binding described in design.md; verify safe expected/observed facts, null unknowns, no raw payload/credentials and the 8-KiB limit.
+- [x] 3.3 Preserve original failures under concurrency or diagnostic-write failure and close received descriptors; verify no inference, retries or successful lifecycle outcome after terminal rejection.
 - [ ] 3.4 Verify existing lifecycle v1 fixtures remain valid unchanged and new evidence remains consumable by closure/snapshot validators; add focused compatibility regressions where needed.
 
 ## 4. Retry defaults and retained recovery
 
-- [ ] 4.1 Set all four supervisor/service API/CLI unexpected-retry defaults to zero; verify omission in each interface yields one launch, no retry sleep and failed_permanent (exit 78) for unknown exits/exceptions.
-- [ ] 4.2 Verify transport/low-space transient exit 75 recovery retains the same checkpoint, accepted pairs are not remeasured, and remote integrity failures remain permanent with raw evidence retained; preserve existing reserve and offload-order coverage.
+- [x] 4.1 Set all four supervisor/service API/CLI unexpected-retry defaults to zero; verify omission in each interface yields one launch, no retry sleep and failed_permanent (exit 78) for unknown exits/exceptions.
+- [x] 4.2 Verify transport/low-space transient exit 75 recovery retains the same checkpoint, accepted pairs are not remeasured, and remote integrity failures remain permanent with raw evidence retained; preserve existing reserve and offload-order coverage.
 
 ## 5. Source closure and final validation
 
@@ -54,6 +54,6 @@
 
 ## 9. Handoff and conformance
 
-- [ ] 9.1 Publish the checked preparation runbook and link README/PLAN/progress while preserving historical facts and PLAN obligations; verify Bash syntax, variable allowlist, current flags and the stopping boundary.
+- [x] 9.1 Publish the checked preparation runbook and link README/PLAN/progress while preserving historical facts and PLAN obligations; verify Bash syntax, variable allowlist, current flags and the stopping boundary.
 - [ ] 9.2 Deliver the preparation handoff packet from design.md with accepted evidence for every gate; verify preparation_ready=true, full_run_started=false, publication_ready=false and zero full-run arms, or report an explicit blocker without marking this task complete.
 - [ ] 9.3 Complete requirement/scenario conformance using verification-plan.md and review the final diff; verify each implementation/evidence location, actual test result, remaining CI limitation and latest commit. Follow the separate repository sync/archive/final-review workflow only after all preparation tasks pass; do not claim full-run completion.

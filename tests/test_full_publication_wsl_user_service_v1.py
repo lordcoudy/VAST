@@ -131,6 +131,42 @@ class FullPublicationWslUserServiceTests(unittest.TestCase):
         self.assertNotIn("bcd", unit.lower())
         self.assertNotIn("windows", unit.lower())
 
+    def test_materialize_api_default_disables_unexpected_retries(self) -> None:
+        result = self.fixture.materialize()
+        bundle = service.validate_bundle_v1(Path(str(result["receipt_path"])))
+
+        self.assertEqual(
+            bundle.manifest["supervisor_contract"]["max_unexpected_retries"], 0
+        )
+        command = service.supervisor_command_v1(bundle.manifest)
+        option = command.index("--max-unexpected-retries")
+        self.assertEqual(command[option + 1], "0")
+
+    def test_materialize_cli_default_disables_unexpected_retries(self) -> None:
+        args = service.build_parser().parse_args(
+            [
+                "materialize",
+                "--attempt-id",
+                "publication-20260830-a1",
+                "--run-root",
+                "/tmp/runs/full_publication/publication-20260830-a1",
+                "--output-dir",
+                "/tmp/artifacts/wsl-service-publication-20260830-a1",
+                "--python-executable",
+                "/tmp/python3.12",
+                "--identity-artifacts",
+                "/tmp/identity.json",
+                "--capacity-attestation",
+                "/tmp/capacity.json",
+                "--cloud-links-file",
+                "/tmp/seafile.txt",
+                "--cloud-destination-id",
+                "vast-full-publication-private-v1",
+            ]
+        )
+
+        self.assertEqual(args.max_unexpected_retries, 0)
+
     def test_pinned_source_command_rejects_post_manifest_replacement(self) -> None:
         source = self.fixture.root / "scripts" / "pinned_entrypoint.py"
         marker = self.fixture.root / "pinned-source-marker.txt"

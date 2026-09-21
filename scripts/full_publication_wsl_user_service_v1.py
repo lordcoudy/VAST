@@ -778,7 +778,7 @@ def materialize_bundle_v1(
     cloud_timeout_s: float = 120.0,
     preflight_timeout_s: float = 900.0,
     backoff_s: Sequence[float] = DEFAULT_BACKOFF,
-    max_unexpected_retries: int = 3,
+    max_unexpected_retries: int = 0,
     after_physical_commit_step: PhysicalFaultHook | None = None,
 ) -> dict[str, object]:
     root = _exact_existing_directory(project_root, label="project_root")
@@ -2266,7 +2266,7 @@ def build_parser() -> argparse.ArgumentParser:
     materialize.add_argument("--cloud-timeout-s", type=float, default=120.0)
     materialize.add_argument("--preflight-timeout-s", type=float, default=900.0)
     materialize.add_argument("--backoff-s", type=_parse_backoff, default=DEFAULT_BACKOFF)
-    materialize.add_argument("--max-unexpected-retries", type=int, default=3)
+    materialize.add_argument("--max-unexpected-retries", type=int, default=0)
     for command in ("validate", "install", "start", "status", "stop", "launch"):
         target = subparsers.add_parser(command)
         target.add_argument("--receipt", type=Path, required=True)

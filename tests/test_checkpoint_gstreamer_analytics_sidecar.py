@@ -37,6 +37,7 @@ from analytics_execution_protocol import (  # noqa: E402
     send_packet,
 )
 from analytics_execution_worker import ExecutionClient  # noqa: E402
+from checkpoint_gstreamer_analytics_bridge import AnalyticsExecutionBridge  # noqa: E402
 from checkpoint_gstreamer_analytics_sidecar import (  # noqa: E402
     DockerWorkerProcessFactory,
     GStreamerAnalyticsSidecar,
@@ -360,7 +361,7 @@ class _ProcessFactory:
         )
 
 
-class _Bridge:
+class _Bridge(AnalyticsExecutionBridge):
     def __init__(
         self,
         *,
@@ -382,6 +383,18 @@ class _Bridge:
             key: dict(capability)
             for key, capability in values["worker_capabilities"].items()
         }
+        self._capabilities = self.capabilities
+        self._bindings = dict(values["worker_bindings"])
+        self._policy_manifest = copy.deepcopy(values["policy_capability_manifest"])
+        # The fixture bypasses real bridge construction; give its validator the
+        # same terminal identity bindings a real bridge requires at startup.
+        from analytics_execution_endpoint import terminal_detector_identity
+        from checkpoint_deepstream_protocol_bridge import analytics_backend_identity
+        for (branch, resource), capability in self.capabilities.items():
+            policy = self._policy_manifest["systems"]["gstreamer_custom"]["branches"][branch][resource]
+            policy["terminal_detector"] = terminal_detector_identity(capability)
+            policy["terminal_backend"] = analytics_backend_identity(capability)
+        self._preprocessing_contract = values.get("preprocessing_contract")
         self.fail_execute = fail_execute
 
     def worker_protocol_handshake(
@@ -1400,6 +1413,224 @@ class GStreamerAnalyticsSidecarTests(unittest.TestCase):
             finally:
                 for entry in displaced.iterdir():
                     entry.unlink()
+
+    def test_production_integrity_failure_keeps_request_diagnostic(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            factory = _ProcessFactory(self.config)
+            service = self._production_service(root, factory)
+            authority = service.start()
+            expected = b"abc"
+            observed = b"xyz"
+            client = socket.socket(socket.AF_UNIX, socket.SOCK_SEQPACKET)
+            client.connect(str(service.front_socket))
+            descriptor = create_sealed_memfd("wrong-content", observed)
+            try:
+                with mock.patch.object(service._bridge, "execute") as infer:
+                    send_packet(client, _request(expected), fds=(descriptor,))
+                    self.assertTrue(service._stop.wait(5), "integrity failure stayed live")
+                    lifecycle = service.stop()
+                    infer.assert_not_called()
+            finally:
+                close_fds((descriptor,))
+                client.close()
+            self.assertEqual(lifecycle["status"], "failed_stop_nonpublication")
+            self.assertEqual(lifecycle["counters"]["requests_started"], 1, lifecycle["failure"])
+            self.assertEqual(lifecycle["counters"]["requests_failed"], 1)
+            self.assertEqual(lifecycle["counters"]["requests_completed"], 0)
+            path = root / "production-evidence" / "protocol_failure_diagnostic.v1.json"
+            raw = path.read_bytes()
+            self.assertLessEqual(len(raw), 8192)
+            diagnostic = json.loads(raw)
+            self.assertEqual(diagnostic["request_id"], "sidecar-request-0001")
+            self.assertEqual(diagnostic["service_authority_sha256"], authority["service_authority_sha256"])
+            self.assertEqual(diagnostic["expected"]["sha256"], hashlib.sha256(expected).hexdigest())
+            self.assertEqual(diagnostic["observed"]["sha256"], hashlib.sha256(observed).hexdigest())
+            self.assertEqual(diagnostic["failure_stage"], "payload_integrity")
+            self.assertIn(hashlib.sha256(raw).hexdigest(), lifecycle["failure"]["message"])
+            self.assertEqual(set(lifecycle["failure"]), {"type", "message"})
+
+    def test_production_rejection_diagnostics_keep_untrusted_fields_unattributed(self) -> None:
+        cases = ("invalid_id", "wrong_route", "wrong_binding", "missing_fd", "extra_fd", "unsealed", "wrong_size", "oversized", "secret_field")
+        for case in cases:
+            with self.subTest(case=case), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary)
+                factory = _ProcessFactory(self.config)
+                service = self._production_service(root, factory)
+                service.start()
+                request = _request(b"abc")
+                descriptors = []
+                if case == "invalid_id":
+                    request["request_id"] = "invalid id"
+                elif case == "wrong_route":
+                    request["decision"]["selected_resource"] = "tpu"
+                elif case == "wrong_binding":
+                    request["payload"]["preprocessing_contract_sha256"] = "0" * 64
+                elif case == "oversized":
+                    request["payload"]["byte_length"] = 67_108_865
+                    request["payload"]["stride"] = 67_108_865
+                elif case == "secret_field":
+                    request["credentials"] = "DO_NOT_PERSIST_THIS_SECRET"
+                if case == "unsealed":
+                    fd = os.memfd_create("unsealed", os.MFD_ALLOW_SEALING)
+                    os.write(fd, b"abc")
+                    descriptors.append(fd)
+                elif case != "missing_fd":
+                    descriptors.append(create_sealed_memfd("bad-request", b"abcd" if case == "wrong_size" else b"abc"))
+                if case == "extra_fd":
+                    descriptors.append(create_sealed_memfd("extra", b"abc"))
+                client = socket.socket(socket.AF_UNIX, socket.SOCK_SEQPACKET)
+                client.connect(str(service.front_socket))
+                received_fds = []
+                from checkpoint_gstreamer_analytics_sidecar import receive_packet as real_receive
+                def track_receive(*args: Any, **kwargs: Any) -> Any:
+                    packet, fds = real_receive(*args, **kwargs)
+                    received_fds.extend(fds)
+                    return packet, fds
+                try:
+                    with mock.patch("checkpoint_gstreamer_analytics_sidecar.receive_packet", side_effect=track_receive), mock.patch.object(service._bridge, "execute") as infer:
+                        send_packet(client, request, fds=tuple(descriptors))
+                        self.assertTrue(service._stop.wait(5))
+                        lifecycle = service.stop()
+                        infer.assert_not_called()
+                    for fd in received_fds:
+                        with self.assertRaises(OSError):
+                            os.fstat(fd)
+                finally:
+                    close_fds(descriptors)
+                    client.close()
+                attributed = case in {"unsealed", "wrong_size"}
+                self.assertEqual(lifecycle["counters"]["requests_started"], int(attributed))
+                self.assertEqual(lifecycle["counters"]["requests_failed"], int(attributed))
+                raw = (root / "production-evidence" / "protocol_failure_diagnostic.v1.json").read_bytes()
+                diagnostic = json.loads(raw)
+                self.assertLessEqual(len(raw), 8192)
+                self.assertNotIn(b"DO_NOT_PERSIST_THIS_SECRET", raw)
+                self.assertEqual(diagnostic["request_id"], request["request_id"] if attributed else None)
+                if not attributed:
+                    self.assertIsNone(diagnostic["expected"]["sha256"])
+                if case in {"unsealed", "missing_fd", "extra_fd"}:
+                    self.assertIsNone(diagnostic["observed"]["sha256"])
+                identity = diagnostic.pop("identity")
+                self.assertEqual(identity["sha256"], canonical_sha256(diagnostic))
+
+    def test_worker_protocol_integrity_failure_is_attributed(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            service = self._production_service(root, _ProcessFactory(self.config))
+            service.start()
+            client = socket.socket(socket.AF_UNIX, socket.SOCK_SEQPACKET)
+            client.connect(str(service.front_socket))
+            capability = service._bridge.capabilities[("damage", "cpu")]
+            ExecutionClient(client, expected_capability=capability).handshake()
+            request = _worker_request(capability, b"abcd")
+            fd = create_sealed_memfd("worker-wrong-content", b"wxyz")
+            try:
+                with mock.patch.object(service._bridge, "execute_worker_protocol") as infer:
+                    send_packet(client, request, fds=(fd,))
+                    self.assertTrue(service._stop.wait(5))
+                    lifecycle = service.stop()
+                    infer.assert_not_called()
+            finally:
+                close_fds((fd,))
+                client.close()
+            self.assertEqual(lifecycle["counters"]["requests_started"], 1)
+            self.assertEqual(lifecycle["counters"]["requests_failed"], 1)
+            diagnostic = json.loads((root / "production-evidence" / "protocol_failure_diagnostic.v1.json").read_bytes())
+            self.assertEqual(diagnostic["protocol_mode"], "worker")
+            self.assertEqual(diagnostic["resource"], "cpu")
+            self.assertEqual(diagnostic["observed"]["sha256"], hashlib.sha256(b"wxyz").hexdigest())
+
+    def test_diagnostic_persistence_failure_preserves_original_integrity_error(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            service = self._production_service(root, _ProcessFactory(self.config))
+            service.start()
+            client = socket.socket(socket.AF_UNIX, socket.SOCK_SEQPACKET)
+            client.connect(str(service.front_socket))
+            fd = create_sealed_memfd("wrong-content", b"xyz")
+            try:
+                with mock.patch.object(service.evidence, "persist_protocol_failure", side_effect=OSError("storage failure")):
+                    send_packet(client, _request(b"abc"), fds=(fd,))
+                    self.assertTrue(service._stop.wait(5))
+                    lifecycle = service.stop()
+            finally:
+                close_fds((fd,))
+                client.close()
+            self.assertEqual(lifecycle["failure"]["type"], "ProtocolError")
+            self.assertIn("SHA-256 differs", lifecycle["failure"]["message"])
+            self.assertIn("protocol_diagnostic_unavailable", lifecycle["failure"]["message"])
+            self.assertNotIn("storage failure", lifecycle["failure"]["message"])
+            self.assertEqual(lifecycle["counters"]["requests_failed"], 1)
+
+    def test_pre_authority_failure_cannot_commit_an_orphan_diagnostic(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            service = self._production_service(root, _ProcessFactory(self.config))
+            original_error = RuntimeError("failure before authority commit")
+            service._production_authority = {"service_authority_sha256": SHA}
+            service._record_production_failure(original_error)
+            self.assertIs(service._production_failure, original_error)
+            self.assertTrue(service._stop.is_set())
+            self.assertTrue(service._production_failure_diagnostic_error)
+            self.assertFalse((root / "production-evidence" / "protocol_failure_diagnostic.v1.json").exists())
+            self.assertFalse(service.evidence.authority_path.exists())
+
+    def test_diagnostic_does_not_read_oversized_or_unsafe_descriptors(self) -> None:
+        import fcntl
+        from analytics_execution_protocol import MAX_TENSOR_BYTES, _required_seals
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            service = self._production_service(root, _ProcessFactory(self.config))
+            oversized = os.memfd_create("physically-oversized", os.MFD_ALLOW_SEALING)
+            read_fd, write_fd = os.pipe()
+            try:
+                os.ftruncate(oversized, MAX_TENSOR_BYTES + 1)
+                fcntl.fcntl(oversized, fcntl.F_ADD_SEALS, _required_seals())
+                for fd in (oversized, read_fd):
+                    with self.subTest(fd=fd), mock.patch("os.pread", side_effect=AssertionError("unsafe read")) as read:
+                        diagnostic = service._protocol_failure_diagnostic(
+                            protocol_mode="gstreamer", request=None, route=None,
+                            descriptors=(fd,), stage="control_envelope",
+                        )
+                        read.assert_not_called()
+                        self.assertIsNone(diagnostic["observed"]["sha256"])
+                        self.assertIsNone(diagnostic["request_id"])
+                        self.assertEqual(diagnostic["expected"]["seals"], _required_seals())
+                self.assertEqual(service._protocol_failure_diagnostic(
+                    protocol_mode="gstreamer", request=None, route=None,
+                    descriptors=(oversized,), stage="payload_integrity",
+                )["observed"]["byte_length"], MAX_TENSOR_BYTES + 1)
+            finally:
+                close_fds((oversized, read_fd, write_fd))
+
+    def test_concurrent_terminal_failures_commit_only_first_diagnostic(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            service = self._production_service(root, _ProcessFactory(self.config))
+            service.start()
+            barrier = threading.Barrier(3)
+            def fail(index: int) -> None:
+                barrier.wait(timeout=5)
+                service._record_production_failure(RuntimeError(f"failure-{index}"))
+            with mock.patch.object(service.evidence, "persist_protocol_failure", wraps=service.evidence.persist_protocol_failure) as persist:
+                threads = [threading.Thread(target=fail, args=(index,)) for index in range(2)]
+                for thread in threads:
+                    thread.start()
+                barrier.wait(timeout=5)
+                for thread in threads:
+                    thread.join(timeout=5)
+                    self.assertFalse(thread.is_alive())
+                lifecycle = service.stop()
+                self.assertEqual(persist.call_count, 1)
+            self.assertEqual(lifecycle["status"], "failed_stop_nonpublication")
+            path = root / "production-evidence" / "protocol_failure_diagnostic.v1.json"
+            original = path.read_bytes()
+            with self.assertRaises((OSError, SidecarError)):
+                service.evidence.persist_protocol_failure(json.loads(original))
+            self.assertEqual(path.read_bytes(), original)
+            with self.assertRaisesRegex(SidecarError, "8 KiB"):
+                service.evidence.persist_protocol_failure({"large": "x" * 8192})
 
     def test_production_service_has_stable_authority_clean_eof_and_rolling_lifecycle(
         self,

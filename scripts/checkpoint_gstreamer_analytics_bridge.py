@@ -24,6 +24,7 @@ from analytics_execution_protocol import (
     ENGINE_OPENVINO_CPU,
     ENGINE_TENSORRT_CUDA,
     PROTOCOL_IDENTITY_SHA256,
+    MAX_TENSOR_BYTES,
     ProtocolError,
     canonical_sha256,
     close_fds,
@@ -557,14 +558,10 @@ class AnalyticsExecutionBridge:
             "capability": dict(capability),
         }
 
-    def execute_worker_protocol(
-        self,
-        value: Mapping[str, Any],
-        payload: bytes | bytearray | memoryview,
-        *,
-        route: tuple[str, str],
-    ) -> tuple[dict[str, Any], bytes]:
-        """Proxy one native worker request through its attested persistent client."""
+    def validate_worker_protocol_request(
+        self, value: Mapping[str, Any], *, route: tuple[str, str]
+    ) -> dict[str, Any]:
+        """Validate attribution and binding before a descriptor is consumed."""
         _require(route in self._capabilities, "analytics execution proxy route is invalid")
         request = validate_inference_request(value)
         capability = self._capabilities[route]
@@ -602,6 +599,17 @@ class AnalyticsExecutionBridge:
             == capability["output_contract_sha256"],
             "analytics execution proxy output contract mismatch",
         )
+        return request
+
+    def execute_worker_protocol(
+        self,
+        value: Mapping[str, Any],
+        payload: bytes | bytearray | memoryview,
+        *,
+        route: tuple[str, str],
+    ) -> tuple[dict[str, Any], bytes]:
+        """Proxy one native worker request through its attested persistent client."""
+        request = self.validate_worker_protocol_request(value, route=route)
         tensor = bytes(payload)
         _require(
             len(tensor) == request["tensor"]["byte_length"],
@@ -614,7 +622,7 @@ class AnalyticsExecutionBridge:
         with self._locks[route]:
             return self._clients[route].infer(request, tensor)
 
-    def execute(self, value: Mapping[str, Any], payload: bytes | bytearray | memoryview) -> dict[str, Any]:
+    def _validated_request_context(self, value: Mapping[str, Any]) -> tuple:
         request = _validate_request(value)
         branch = request["frame"]["branch"]
         resource = request["decision"]["selected_resource"]
@@ -631,6 +639,27 @@ class AnalyticsExecutionBridge:
             _require(decision[field] == expected, f"bridge decision {field} mismatch")
 
         binding = self._bindings[key]
+        payload = _mapping(request["payload"], "GStreamer analytics bridge payload")
+        if payload.get("kind") == "preprocessed_tensor":
+            _validate_tensor_payload(payload, binding)
+        elif payload.get("kind") == "raw_gstreamer_frame":
+            _validate_raw_frame_payload(payload, binding)
+            _require(self._preprocessing_contract is not None,
+                     "bridge raw frame requires a frozen preprocessing contract")
+        else:
+            raise ProtocolError("GStreamer analytics bridge payload kind is invalid")
+        _require(payload["byte_length"] <= MAX_TENSOR_BYTES,
+                 "bridge payload exceeds the protocol byte limit")
+        return request, key, policy, binding
+
+    def validate_request(self, value: Mapping[str, Any]) -> dict[str, Any]:
+        """Validate the complete attribution envelope without reading bytes."""
+        return self._validated_request_context(value)[0]
+
+    def execute(self, value: Mapping[str, Any], payload: bytes | bytearray | memoryview) -> dict[str, Any]:
+        request, key, policy, binding = self._validated_request_context(value)
+        branch, resource = key
+        decision = request["decision"]
         raw_payload = bytes(payload)
         raw_sha = hashlib.sha256(raw_payload).hexdigest()
         payload_record = _mapping(request["payload"], "GStreamer analytics bridge payload")

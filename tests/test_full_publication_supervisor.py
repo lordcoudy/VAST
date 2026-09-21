@@ -7,10 +7,12 @@ import tempfile
 import unittest
 from pathlib import Path
 from types import SimpleNamespace
+from unittest import mock
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
+import full_publication_supervisor as supervisor_module  # noqa: E402
 from full_publication_supervisor import (  # noqa: E402
     EXIT_COMPLETE,
     EXIT_PERMANENT,
@@ -171,6 +173,58 @@ class FullPublicationSupervisorTests(unittest.TestCase):
         self.assertEqual(code, EXIT_PERMANENT)
         self.assertEqual(state["unexpected_streak"], 2)
         self.assertEqual(sleeps, [1.0])
+
+    def test_default_budget_stops_exceptions_and_unknown_exits_without_sleep(self) -> None:
+        for failure in (
+            InvocationUnavailable("entrypoint unavailable"),
+            UnexpectedProcessExit("unexpected exit code 17"),
+        ):
+            with self.subTest(failure=type(failure).__name__):
+                launches: list[str] = []
+
+                self.state_path.unlink(missing_ok=True)
+                def invoker(phase: str) -> tuple[int, dict[str, object]]:
+                    launches.append(phase)
+                    raise failure
+
+                sleeps: list[float] = []
+                code, state = self.supervisor(invoker, sleeps).run()
+
+                self.assertEqual(code, EXIT_PERMANENT)
+                self.assertEqual(state["phase"], "failed_permanent")
+                self.assertEqual(launches, ["run"])
+                self.assertEqual(sleeps, [])
+
+    def test_cli_default_budget_stops_unknown_exit_after_one_launch(self) -> None:
+        launches: list[str] = []
+
+        class UnexpectedExitInvoker:
+            def __init__(self, **_: object) -> None:
+                pass
+
+            @property
+            def command_identity(self) -> dict[str, object]:
+                return {"entrypoint_sha256": "a" * 64, "args": []}
+
+            def __call__(self, phase: str) -> tuple[int, dict[str, object]]:
+                launches.append(phase)
+                raise UnexpectedProcessExit("unexpected exit code 17")
+
+        with (
+            mock.patch.object(
+                supervisor_module,
+                "SubprocessEntrypointInvoker",
+                UnexpectedExitInvoker,
+            ),
+            mock.patch.object(FullPublicationSupervisor, "_delay") as delay,
+        ):
+            code = supervisor_module.main(["--state-path", str(self.state_path)])
+
+        self.assertEqual(code, EXIT_PERMANENT)
+        self.assertEqual(launches, ["run"])
+        delay.assert_not_called()
+        state = json.loads(self.state_path.read_text(encoding="utf-8"))
+        self.assertEqual(state["phase"], "failed_permanent")
 
     def test_completed_state_is_idempotent(self) -> None:
         first = SequenceInvoker([EXIT_COMPLETE] * 4)

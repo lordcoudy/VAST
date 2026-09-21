@@ -426,7 +426,7 @@ class FullPublicationSupervisor:
         invoker: Callable[[str], tuple[int, dict[str, Any]]],
         command_identity: Mapping[str, Any],
         backoff_s: Sequence[float] = (30.0, 60.0, 120.0, 300.0, 600.0, 900.0),
-        max_unexpected_retries: int = 3,
+        max_unexpected_retries: int = 0,
         sleep_fn: Callable[[float], None] = time.sleep,
     ) -> None:
         self.state_path = Path(state_path).resolve()
@@ -594,7 +594,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--state-path", type=Path, required=True)
     parser.add_argument("--python-executable", default=sys.executable)
     parser.add_argument("--backoff-s", type=_parse_backoff, default=_parse_backoff("30,60,120,300,600,900"))
-    parser.add_argument("--max-unexpected-retries", type=int, default=3)
+    parser.add_argument("--max-unexpected-retries", type=int, default=0)
     parser.add_argument("entrypoint_args", nargs=argparse.REMAINDER)
     return parser
 
