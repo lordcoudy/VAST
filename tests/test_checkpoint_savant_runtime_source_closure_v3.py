@@ -16,7 +16,7 @@ ENTRYPOINT = PUBLICATION / "vast_savant_checkpoint_runtime"
 BUILD_SCRIPT = ROOT / "scripts" / "build_savant_publication_runtime_v3.sh"
 FROZEN_CPU_MANIFEST = "configs/checkpoint_analytics_models_openvino.yaml"
 FROZEN_CPU_MANIFEST_SHA256 = (
-    "db011831a08136683985ef529b28c11e2e4aa91b73a036945ffc31e768d2eb8b"
+    "48de16da0ea290518053349556671ff08c309fa01b6d502845f233b7e136eeca"
 )
 
 
