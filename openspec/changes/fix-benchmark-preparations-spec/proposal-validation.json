@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "vast_openspec_proposal_validation",
+  "observed_at_utc": "2026-09-21T11:23:36.387349+00:00",
+  "change": "fix-benchmark-preparations-spec",
+  "strict_openspec_validation": "passed",
+  "requirements": 9,
+  "scenarios_mapped": 24,
+  "unchecked_implementation_tasks": 33,
+  "inspected_files_physically_rehashed": 44,
+  "reference_inputs_rehashed": 4,
+  "bash_syntax_checks": [
+    {
+      "snippet": 1,
+      "exit_code": 0
+    },
+    {
+      "snippet": 2,
+      "exit_code": 0
+    }
+  ],
+  "shell_variable_allowlist": [
+    "ATTEMPT_ID",
+    "CAPACITY",
+    "DESTINATION_ID",
+    "ENTRY_ARGS",
+    "IDENTITY",
+    "LINKS_FILE",
+    "MATRIX_SHA",
+    "POLICY_SHA",
+    "PROJECT_ROOT",
+    "PYTHON",
+    "RUN_ROOT",
+    "SERVICE_DIR",
+    "SERVICE_RECEIPT",
+    "STATE_PATH"
+  ],
+  "parser_options": "matched against entrypoint/service source",
+  "q4_option_order": "matched against _CLI_OPTIONS",
+  "implementation_tests_run": false,
+  "workloads_launched": false,
+  "publication_ready": false,
+  "independent_review": "Read-only scope/source review found no concrete correction required; not spec approval.",
+  "limitations": [
+    "No production code changes",
+    "No fresh physical preparation evidence yet",
+    "No Draft PR or commit-specific approval",
+    "No CI run claimed"
+  ]
+}
