@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import sys
 import tempfile
 import unittest
@@ -25,6 +26,7 @@ from analytics_execution_protocol import (  # noqa: E402
     ProtocolError,
     canonical_sha256,
 )
+import analytics_execution_bindings as bindings_module  # noqa: E402
 
 
 def _sha(payload: bytes) -> str:
@@ -151,15 +153,13 @@ class AnalyticsExecutionBindingsTests(unittest.TestCase):
             root = Path(temporary)
             manifest, config = _fixture(root)
             output = root / "bindings"
-            with mock.patch("analytics_execution_bindings.shutil.rmtree") as remove_tree:
-                index = materialize_worker_bindings(
-                    output,
-                    manifest=manifest,
-                    execution_config=config,
-                    project_root=root,
-                    worker_project_root="/workspace",
-                )
-            remove_tree.assert_not_called()
+            index = materialize_worker_bindings(
+                output,
+                manifest=manifest,
+                execution_config=config,
+                project_root=root,
+                worker_project_root="/workspace",
+            )
 
             self.assertEqual(index["artifact_kind"], BINDING_SET_KIND)
             self.assertEqual(len(index["files"]), len(BRANCHES) * 2)
@@ -172,13 +172,17 @@ class AnalyticsExecutionBindingsTests(unittest.TestCase):
             for record in index["files"]:
                 payload = (output / record["path"]).read_bytes()
                 self.assertEqual(hashlib.sha256(payload).hexdigest(), record["sha256"])
-            with self.assertRaisesRegex(ProtocolError, "already exists"):
+            identity = output.stat().st_dev, output.stat().st_ino
+            self.assertEqual(
                 materialize_worker_bindings(
                     output,
                     manifest=manifest,
                     execution_config=config,
                     project_root=root,
-                )
+                ),
+                index,
+            )
+            self.assertEqual((output.stat().st_dev, output.stat().st_ino), identity)
 
     def test_rejects_invalid_worker_implementation_sha256(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -193,13 +197,114 @@ class AnalyticsExecutionBindingsTests(unittest.TestCase):
             root = Path(temporary)
             manifest, config = _fixture(root)
             output = root / "bindings"
+            staging_paths: list[Path] = []
+            real_mkdtemp = tempfile.mkdtemp
+
+            def tracked_mkdtemp(*args, **kwargs) -> str:
+                staging = Path(real_mkdtemp(*args, **kwargs))
+                staging_paths.append(staging)
+                return str(staging)
+
             with (
                 mock.patch(
-                    "analytics_execution_bindings.os.replace",
-                    side_effect=OSError("injected replace failure"),
+                    "analytics_execution_bindings.tempfile.mkdtemp",
+                    side_effect=tracked_mkdtemp,
                 ),
-                mock.patch("analytics_execution_bindings.shutil.rmtree") as remove_tree,
                 self.assertRaisesRegex(OSError, "injected replace failure"),
+            ):
+                materialize_worker_bindings(
+                    output,
+                    manifest=manifest,
+                    execution_config=config,
+                    project_root=root,
+                    after_directory_publish_step=lambda step: (
+                        (_ for _ in ()).throw(OSError("injected replace failure"))
+                        if step == "mid_write"
+                        else None
+                    ),
+                )
+
+            self.assertEqual(len(staging_paths), 1)
+            staging = staging_paths[0]
+            self.assertEqual(staging.parent, root.resolve())
+            self.assertTrue(staging.name.startswith(".bindings."))
+            self.assertNotEqual(staging, root.resolve())
+            self.assertNotEqual(staging, Path.cwd().resolve())
+            self.assertFalse(staging.exists())
+
+    def test_binding_directory_adopts_all_three_crash_windows(self) -> None:
+        for step in (
+            "mid_write",
+            "post_fsync_pre_publish",
+            "post_publish_pre_parent_fsync",
+        ):
+            with self.subTest(step=step), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary)
+                manifest, config = _fixture(root)
+                output = root / "bindings"
+
+                def crash(observed: str) -> None:
+                    if observed == step:
+                        raise OSError("injected directory crash")
+
+                with self.assertRaisesRegex(OSError, "injected directory crash"):
+                    materialize_worker_bindings(
+                        output,
+                        manifest=manifest,
+                        execution_config=config,
+                        project_root=root,
+                        after_directory_publish_step=crash,
+                    )
+                index = materialize_worker_bindings(
+                    output,
+                    manifest=manifest,
+                    execution_config=config,
+                    project_root=root,
+                )
+                identity = output.stat().st_dev, output.stat().st_ino
+                self.assertEqual(
+                    materialize_worker_bindings(
+                        output,
+                        manifest=manifest,
+                        execution_config=config,
+                        project_root=root,
+                    ),
+                    index,
+                )
+                self.assertEqual((output.stat().st_dev, output.stat().st_ino), identity)
+
+    def test_adoption_rebind_before_cleanup_preserves_final_and_foreign_staging(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            manifest, config = _fixture(root)
+            output = root / "bindings"
+            expected = materialize_worker_bindings(
+                output,
+                manifest=manifest,
+                execution_config=config,
+                project_root=root,
+            )
+            final_identity = output.stat().st_dev, output.stat().st_ino
+            real_commit = bindings_module.commit_or_adopt_immutable_directory_v1
+            rebound: list[tuple[Path, Path]] = []
+
+            def adopt_then_rebind(**kwargs):
+                result = real_commit(**kwargs)
+                staging = Path(kwargs["staging"])
+                stolen = staging.with_name(staging.name + ".stolen")
+                os.replace(staging, stolen)
+                staging.mkdir()
+                (staging / "FOREIGN").write_text("foreign\n", encoding="utf-8")
+                rebound.append((staging, stolen))
+                return result
+
+            with (
+                mock.patch.object(
+                    bindings_module,
+                    "commit_or_adopt_immutable_directory_v1",
+                    side_effect=adopt_then_rebind,
+                ),
+                self.assertRaisesRegex(ProtocolError, "mutated|rebound|changed"),
             ):
                 materialize_worker_bindings(
                     output,
@@ -208,12 +313,12 @@ class AnalyticsExecutionBindingsTests(unittest.TestCase):
                     project_root=root,
                 )
 
-            remove_tree.assert_called_once()
-            staging = Path(remove_tree.call_args.args[0])
-            self.assertEqual(staging.parent, root.resolve())
-            self.assertTrue(staging.name.startswith(".bindings."))
-            self.assertNotEqual(staging, root.resolve())
-            self.assertNotEqual(staging, Path.cwd().resolve())
+            self.assertEqual(len(rebound), 1)
+            foreign, stolen = rebound[0]
+            self.assertEqual((output.stat().st_dev, output.stat().st_ino), final_identity)
+            self.assertEqual(json.loads((output / "index.json").read_text()), expected)
+            self.assertEqual((foreign / "FOREIGN").read_text(), "foreign\n")
+            self.assertTrue(stolen.is_dir())
 
 
 if __name__ == "__main__":

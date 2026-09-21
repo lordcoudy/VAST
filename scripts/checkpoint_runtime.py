@@ -47,6 +47,7 @@ RUNTIME_LIFECYCLE_STATES = {
     "CENSORED",
 }
 NATIVE_CLOCK_MAX_READY_AGE_NS = 5_000_000_000
+RUNTIME_PROCESS_STDERR_TAIL_BYTES = 16 * 1024
 RUNTIME_MESSAGE_FIELDS = {
     "protocol_version",
     "worker_id",
@@ -1260,6 +1261,9 @@ def run_worker_processes(
         _require(warmup_s > 0, "decoder placement verification requires a positive warmup")
     processes: dict[str, subprocess.Popen[Any]] = {}
     source_processes: dict[str, subprocess.Popen[Any]] = {}
+    stderr_tails: dict[str, bytearray] = {}
+    stderr_threads: dict[str, threading.Thread] = {}
+    stderr_lock = threading.Lock()
     read_fds: dict[str, int] = {}
     source_read_fds: dict[str, int] = {}
     source_ack_write_fds: dict[str, int] = {}
@@ -1269,6 +1273,62 @@ def run_worker_processes(
     policy_endpoints: dict[str, socket.socket] = {}
     bindings: list[WorkerBinding] = []
     source_bindings: list[SourceBinding] = []
+
+    def capture_stderr(process_id: str, process: subprocess.Popen[Any]) -> None:
+        source = process.stderr
+        _require(source is not None, f"checkpoint process {process_id} stderr pipe is absent")
+
+        def consume_stderr() -> None:
+            try:
+                while chunk := source.read(4096):
+                    with stderr_lock:
+                        tail = stderr_tails[process_id]
+                        tail.extend(chunk)
+                        overflow = len(tail) - RUNTIME_PROCESS_STDERR_TAIL_BYTES
+                        if overflow > 0:
+                            del tail[:overflow]
+            finally:
+                source.close()
+
+        stderr_tails[process_id] = bytearray()
+        thread = threading.Thread(
+            target=consume_stderr,
+            name=f"checkpoint-stderr-{process_id}",
+            daemon=True,
+        )
+        stderr_threads[process_id] = thread
+        thread.start()
+
+    def stderr_failure_context(
+        process_ids: Iterable[str],
+        *,
+        label: str = "stderr_tails",
+    ) -> str:
+        selected_ids = tuple(sorted(set(process_ids)))
+        for process_id in selected_ids:
+            process = processes.get(process_id) or source_processes.get(process_id)
+            thread = stderr_threads.get(process_id)
+            if process is not None and process.poll() is not None and thread is not None:
+                thread.join(timeout=0.2)
+        with stderr_lock:
+            decoded = {
+                process_id: bytes(stderr_tails[process_id]).decode("utf-8", errors="replace").rstrip()
+                for process_id in selected_ids
+                if stderr_tails.get(process_id)
+            }
+        if not decoded:
+            return ""
+        return f"; {label}=" + json.dumps(
+            decoded,
+            sort_keys=True,
+            separators=(",", ":"),
+        )
+
+    def join_stderr_threads(timeout_s: float) -> None:
+        join_deadline = time.monotonic() + max(0.0, timeout_s)
+        for thread in stderr_threads.values():
+            thread.join(timeout=max(0.0, join_deadline - time.monotonic()))
+
     try:
         if source_spec_values:
             admission_delivery_fds = {spec.worker_id: os.pipe() for spec in spec_values}
@@ -1321,6 +1381,7 @@ def run_worker_processes(
                     spec.command,
                     env=environment,
                     pass_fds=_combined_inherited_fds(spec, tuple(inherited_fds)),
+                    stderr=subprocess.PIPE,
                 )
             finally:
                 os.close(write_fd)
@@ -1333,6 +1394,7 @@ def run_worker_processes(
                     os.close(admission_delivery_fds[spec.worker_id][0])
                     admission_delivery_fds[spec.worker_id] = (-1, admission_delivery_fds[spec.worker_id][1])
             processes[spec.worker_id] = process
+            capture_stderr(spec.worker_id, process)
             domain = f"{socket.gethostname()}:pid-{process.pid}:worker-{spec.worker_id}"
             bindings.append(
                 WorkerBinding(
@@ -1391,6 +1453,7 @@ def run_worker_processes(
                     spec.command,
                     env=environment,
                     pass_fds=_combined_inherited_fds(spec, tuple(inherited_fds)),
+                    stderr=subprocess.PIPE,
                 )
             finally:
                 os.close(event_write_fd)
@@ -1403,6 +1466,7 @@ def run_worker_processes(
                         os.close(write_fd)
                         admission_delivery_fds[worker_id] = (-1, -1)
             source_processes[spec.source_process_id] = process
+            capture_stderr(spec.source_process_id, process)
             source_bindings.append(
                 SourceBinding(
                     source_process_id=spec.source_process_id,
@@ -1432,6 +1496,7 @@ def run_worker_processes(
                     os.close(fd)
         _terminate_processes(processes)
         _terminate_processes(source_processes)
+        join_stderr_threads(2.0)
         raise
 
     admission_coordinator = (
@@ -1606,9 +1671,21 @@ def run_worker_processes(
                     current_errors = tuple(errors)
                 if current_errors:
                     raise current_errors[0]
+                exited_before_start = [
+                    (process_id, returncode)
+                    for process_id, process in sorted(all_processes.items())
+                    if (returncode := process.poll()) is not None
+                ]
                 _require(
-                    not any(process.poll() is not None for process in all_processes.values()),
-                    "checkpoint worker exited before the common start barrier",
+                    not exited_before_start,
+                    "checkpoint worker exited before the common start barrier: "
+                    + ",".join(
+                        f"{process_id}={returncode}"
+                        for process_id, returncode in exited_before_start
+                    )
+                    + stderr_failure_context(
+                        process_id for process_id, _ in exited_before_start
+                    ),
                 )
                 if ready == set(all_processes):
                     break
@@ -1675,9 +1752,27 @@ def run_worker_processes(
                         current_errors = tuple(errors)
                     if current_errors:
                         raise current_errors[0]
+                    exited_workers = {
+                        worker_id: int(return_code)
+                        for worker_id, process in processes.items()
+                        if (return_code := process.poll()) is not None
+                    }
+                    exited_lifecycle_states = {
+                        worker_id: [value.state for value in lifecycle_statuses[worker_id]]
+                        for worker_id in sorted(exited_workers)
+                    }
                     _require(
-                        not any(process.poll() is not None for process in processes.values()),
-                        "checkpoint worker exited before decoder placement verification",
+                        not exited_workers,
+                        "checkpoint worker exited before decoder placement verification: "
+                        + json.dumps(
+                            {
+                                "return_codes": exited_workers,
+                                "lifecycle_states": exited_lifecycle_states,
+                            },
+                            sort_keys=True,
+                            separators=(",", ":"),
+                        )
+                        + stderr_failure_context(exited_workers),
                     )
                     now_timestamp_ms = int(time.time() * 1000)
                     _require(
@@ -1704,6 +1799,7 @@ def run_worker_processes(
                     os.close(fd)
                     del control_write_fds[worker_id]
                 stop_sent = True
+            newly_failed: dict[str, int] = {}
             for process_id, process in all_processes.items():
                 if process_id in exit_ns:
                     continue
@@ -1711,7 +1807,35 @@ def run_worker_processes(
                 if return_code is None:
                     continue
                 exit_ns[process_id] = time.monotonic_ns()
-                _require(return_code == 0, f"checkpoint process failed: {process_id} rc={return_code}")
+                if return_code != 0:
+                    newly_failed[process_id] = int(return_code)
+            if newly_failed:
+                # A single native failure can close shared admission or policy
+                # channels and make peers fail milliseconds later. Let those
+                # already-propagating exits flush their primary diagnostics
+                # before fail-closed cleanup terminates the remaining workers.
+                failure_grace_deadline = time.monotonic() + 0.5
+                while time.monotonic() < failure_grace_deadline:
+                    time.sleep(0.01)
+                related_exit_codes = {
+                    process_id: int(return_code)
+                    for process_id, process in sorted(all_processes.items())
+                    if (return_code := process.poll()) is not None
+                    and return_code != 0
+                }
+                first_process_id = next(iter(newly_failed))
+                _require(
+                    False,
+                    "checkpoint process failed: "
+                    f"{first_process_id} rc={newly_failed[first_process_id]}"
+                    + "; related_exit_codes="
+                    + json.dumps(
+                        related_exit_codes,
+                        sort_keys=True,
+                        separators=(",", ":"),
+                    )
+                    + stderr_failure_context(related_exit_codes),
+                )
             with output_lock:
                 current_errors = tuple(errors)
             if current_errors:
@@ -1722,6 +1846,11 @@ def run_worker_processes(
 
         for process_id, process in all_processes.items():
             process.wait()
+        join_stderr_threads(max(0.0, deadline - time.monotonic()))
+        _require(
+            not any(thread.is_alive() for thread in stderr_threads.values()),
+            "checkpoint stderr pipe did not close",
+        )
         for thread in threads:
             thread.join(timeout=max(0.0, deadline - time.monotonic()))
         _require(not any(thread.is_alive() for thread in threads), "checkpoint event pipe did not close")
@@ -1756,7 +1885,7 @@ def run_worker_processes(
                     len(states) == len(expected_prefix) + 1 and states[-1] in {"DRAINED", "CENSORED"},
                     f"{worker_id}: lifecycle must end with DRAINED or CENSORED",
                 )
-    except Exception:
+    except Exception as error:
         for endpoint in policy_endpoints.values():
             endpoint.close()
         for fd in control_write_fds.values():
@@ -1764,8 +1893,15 @@ def run_worker_processes(
         control_write_fds.clear()
         _terminate_processes(processes)
         _terminate_processes(source_processes)
+        join_stderr_threads(2.0)
+        final_stderr_context = stderr_failure_context(
+            all_processes,
+            label="final_stderr_tails",
+        )
         for thread in (*threads, *admission_threads, *status_threads, *policy_threads):
             thread.join(timeout=2)
+        if isinstance(error, ContractError) and final_stderr_context:
+            raise ContractError(f"{error}{final_stderr_context}") from error
         raise
 
     lifecycle_state_values = {

@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import csv
+from concurrent.futures import ThreadPoolExecutor
 import copy
 import hashlib
 import json
+import os
 import sys
 import tempfile
 import unittest
@@ -19,6 +21,16 @@ from full_publication_results import export_finalized_results  # noqa: E402
 
 MATRIX_SHA = "a" * 64
 RUN_SHA = "b" * 64
+RESULT_NAMES = (
+    "full_pairs.jsonl",
+    "full_arms.jsonl",
+    "full_arms.csv",
+    "result_bundle_manifest.json",
+)
+
+
+class SyntheticResultCrash(BaseException):
+    pass
 
 
 def canonical(value: object) -> bytes:
@@ -151,7 +163,167 @@ class FullPublicationResultsTests(unittest.TestCase):
                 {row["result_throughput_fps"] for row in rows},
                 {"10.0", "20.0"},
             )
+            identities = {
+                name: (
+                    (root / "results" / name).stat().st_dev,
+                    (root / "results" / name).stat().st_ino,
+                )
+                for name in RESULT_NAMES
+            }
             self.assertEqual(export_finalized_results(runner), bundle)
+            self.assertEqual(
+                {
+                    name: (
+                        (root / "results" / name).stat().st_dev,
+                        (root / "results" / name).stat().st_ino,
+                    )
+                    for name in RESULT_NAMES
+                },
+                identities,
+            )
+            if os.name == "posix":
+                self.assertTrue(
+                    all(
+                        ((root / "results" / name).stat().st_mode & 0o777)
+                        == 0o444
+                        for name in RESULT_NAMES
+                    )
+                )
+            intents = list(
+                (root / ".full-publication-results-intents-v1").glob("*.json")
+            )
+            self.assertEqual(len(intents), 1)
+            intent = json.loads(intents[0].read_text(encoding="utf-8"))
+            self.assertEqual(intent["destination_relative_path"], "results")
+            self.assertEqual(intent["receipt_last"], "result_bundle_manifest.json")
+            self.assertEqual(set(intent["files"]), set(RESULT_NAMES))
+
+    def test_concurrent_exact_exporters_serialize_and_adopt_one_bundle(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "run"
+            runner, _ = fixture(root)
+            with ThreadPoolExecutor(max_workers=2) as executor:
+                futures = [
+                    executor.submit(export_finalized_results, runner)
+                    for _index in range(2)
+                ]
+                bundles = [future.result(timeout=30) for future in futures]
+            self.assertEqual(bundles[0], bundles[1])
+            self.assertEqual(
+                set(path.name for path in (root / "results").iterdir()),
+                set(RESULT_NAMES),
+            )
+
+    def test_three_physical_crash_windows_resume_exact_path_receipt_last(self) -> None:
+        for step in (
+            "mid_write",
+            "post_fsync_pre_publish",
+            "post_publish_pre_parent_fsync",
+        ):
+            with self.subTest(step=step), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp) / "run"
+                runner, _ = fixture(root)
+                observed: list[Path] = []
+
+                def crash(observed_step: str, path: Path) -> None:
+                    if (
+                        observed_step == step
+                        and path.name == "result_bundle_manifest.json"
+                        and not observed
+                    ):
+                        observed.append(path)
+                        raise SyntheticResultCrash()
+
+                with self.assertRaises(SyntheticResultCrash):
+                    export_finalized_results(
+                        runner,
+                        after_physical_commit_step=crash,
+                    )
+                self.assertEqual(len(observed), 1)
+                output = root / "results"
+                self.assertTrue(output.is_dir())
+                if step != "post_publish_pre_parent_fsync":
+                    self.assertFalse(
+                        (output / "result_bundle_manifest.json").exists()
+                    )
+                published_before_retry = {
+                    name: (
+                        (output / name).stat().st_dev,
+                        (output / name).stat().st_ino,
+                    )
+                    for name in RESULT_NAMES
+                    if (output / name).exists()
+                }
+                bundle = export_finalized_results(runner)
+                self.assertEqual(
+                    set(path.name for path in output.iterdir()),
+                    set(RESULT_NAMES),
+                )
+                self.assertEqual(
+                    json.loads(
+                        (output / "result_bundle_manifest.json").read_text(
+                            encoding="utf-8"
+                        )
+                    ),
+                    bundle,
+                )
+                for name, identity in published_before_retry.items():
+                    current = (output / name).stat()
+                    self.assertEqual((current.st_dev, current.st_ino), identity)
+
+    def test_racing_foreign_final_is_preserved_and_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "run"
+            runner, _ = fixture(root)
+            raced: list[tuple[Path, tuple[int, int]]] = []
+
+            def inject_foreign(observed_step: str, path: Path) -> None:
+                if (
+                    observed_step == "post_fsync_pre_publish"
+                    and path.name == "full_arms.jsonl"
+                    and not raced
+                ):
+                    path.write_bytes(b"foreign-racer\n")
+                    if os.name == "posix":
+                        path.chmod(0o444)
+                    info = path.stat()
+                    raced.append((path, (info.st_dev, info.st_ino)))
+
+            with self.assertRaisesRegex(
+                ContractError,
+                "physical namespace rejected|exact staged/final identity drifted",
+            ):
+                export_finalized_results(
+                    runner,
+                    after_physical_commit_step=inject_foreign,
+                )
+            self.assertEqual(len(raced), 1)
+            path, identity = raced[0]
+            self.assertEqual(path.read_bytes(), b"foreign-racer\n")
+            info = path.stat()
+            self.assertEqual((info.st_dev, info.st_ino), identity)
+            with self.assertRaisesRegex(ContractError, "physical namespace rejected"):
+                export_finalized_results(runner)
+            self.assertEqual(path.read_bytes(), b"foreign-racer\n")
+            info = path.stat()
+            self.assertEqual((info.st_dev, info.st_ino), identity)
+
+    def test_preexisting_output_without_intent_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "run"
+            runner, _ = fixture(root)
+            output = root / "results"
+            output.mkdir(mode=0o700)
+            canary = output / "canary.txt"
+            canary.write_bytes(b"foreign\n")
+            identity = (canary.stat().st_dev, canary.stat().st_ino)
+            with self.assertRaisesRegex(ContractError, "without its exact.*intent"):
+                export_finalized_results(runner)
+            self.assertEqual(canary.read_bytes(), b"foreign\n")
+            self.assertEqual(
+                (canary.stat().st_dev, canary.stat().st_ino),
+                identity,
+            )
 
     def test_rejects_compact_acceptance_hash_drift(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

@@ -164,6 +164,44 @@ class TensorRTExecutionWorkerTests(unittest.TestCase):
         ):
             self.assertIn(marker, source)
 
+        h2d_record = source.index('"cudaEventRecord H2D end"')
+        h2d_sync = source.index('"cudaEventSynchronize H2D end"')
+        h2d_host_end = source.index(
+            "const std::uint64_t h2d_host_end_ns = monotonic_ns();"
+        )
+        enqueue = source.index("session->context->enqueueV3(session->stream)")
+        d2h_host_start = source.index(
+            "const std::uint64_t d2h_host_start_ns = monotonic_ns();"
+        )
+        stream_sync = source.index(
+            'cudaStreamSynchronize(session->stream), "cudaStreamSynchronize"'
+        )
+        d2h_host_end = source.index(
+            "const std::uint64_t d2h_host_end_ns = monotonic_ns();"
+        )
+        self.assertLess(
+            h2d_record,
+            h2d_sync,
+            "H2D completion must be synchronized before closing its host envelope",
+        )
+        self.assertLess(h2d_sync, h2d_host_end)
+        self.assertLess(h2d_host_end, enqueue)
+        self.assertLess(enqueue, d2h_host_start)
+        self.assertLess(d2h_host_start, stream_sync)
+        self.assertLess(stream_sync, d2h_host_end)
+        self.assertIn(
+            "transfer_timing->h2d_host_end_monotonic_ns = h2d_host_end_ns;",
+            source,
+        )
+        self.assertIn(
+            "transfer_timing->d2h_host_end_monotonic_ns = d2h_host_end_ns;",
+            source,
+        )
+        self.assertNotIn(
+            "transfer_timing->h2d_host_end_monotonic_ns = host_end_ns;",
+            source,
+        )
+
     def test_backend_rejects_native_session_on_different_gpu_uuid(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             binding = self.module.load_binding(self.binding(Path(tmp)))

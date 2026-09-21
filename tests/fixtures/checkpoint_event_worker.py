@@ -5,6 +5,7 @@ import argparse
 import json
 import os
 import socket
+import sys
 import time
 
 
@@ -71,6 +72,12 @@ def main() -> int:
             time.sleep(0.001)
         timestamp_ms = int(time.time() * 1000)
         status.write(f"1 STARTED {worker_id} {timestamp_ms}\n")
+        exit_after_started = os.environ.get("VAST_TEST_EXIT_AFTER_STARTED")
+        if exit_after_started is not None:
+            marker = os.environ.get("VAST_TEST_STDERR_BEFORE_EXIT")
+            if marker is not None:
+                print(marker, file=sys.stderr, flush=True)
+            return int(exit_after_started)
         if os.environ.get("VAST_TEST_DECODER_PLACEMENT_STATUS") == "verified":
             status.write(f"1 DECODER_PLACEMENT_VERIFIED {worker_id} {int(time.time() * 1000)}\n")
 

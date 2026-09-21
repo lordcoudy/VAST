@@ -1241,8 +1241,24 @@ def _validated_publication_run_artifacts(
     config: dict[str, Any],
     *,
     validate_metadata: bool = True,
+    run_dir_override: Path | None = None,
 ) -> dict[str, Any]:
-    run_dir = run_dir_for_row(run_root, row)
+    run_dir = (
+        Path(run_dir_override).resolve()
+        if run_dir_override is not None
+        else run_dir_for_row(run_root, row)
+    )
+    if run_dir_override is not None:
+        try:
+            run_dir.relative_to(Path(run_root).resolve())
+        except ValueError:
+            raise ContractError(
+                "publication run_dir_override must be inside run_root"
+            ) from None
+        if run_dir.is_symlink() or not run_dir.is_dir():
+            raise ContractError(
+                "publication run_dir_override must be a regular directory"
+            )
     metadata: dict[str, Any] | None = None
     if validate_metadata:
         metadata = validate_run_metadata_identity(
@@ -1391,8 +1407,18 @@ def _primary_run_metric(
     row: pd.Series,
     primary: dict[str, Any],
     config: dict[str, Any],
+    *,
+    run_dir_override: Path | None = None,
+    validate_metadata: bool = True,
+    primary_pair_metadata_override: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    evidence = _validated_publication_run_artifacts(run_root, row, config)
+    evidence = _validated_publication_run_artifacts(
+        run_root,
+        row,
+        config,
+        validate_metadata=validate_metadata,
+        run_dir_override=run_dir_override,
+    )
     run_dir = evidence["run_dir"]
     frames = evidence["frames"]
     events = evidence["events"]
@@ -1479,7 +1505,11 @@ def _primary_run_metric(
     }
     blockers = sorted(name for name, passed in row_gates.items() if not passed)
     blockers.extend(f"summary_raw_mismatch:{field}" for field in summary_raw_mismatches)
-    pair_metadata = metadata.get("primary_architecture_pair")
+    pair_metadata = (
+        primary_pair_metadata_override
+        if primary_pair_metadata_override is not None
+        else metadata.get("primary_architecture_pair")
+    )
     if not isinstance(pair_metadata, dict):
         pair_metadata = {}
     return {

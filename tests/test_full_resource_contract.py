@@ -75,7 +75,7 @@ def fanout_row(**overrides: object) -> dict:
 
 
 class FullResourceContractTests(unittest.TestCase):
-    def test_combined_gate_binds_window_and_exact_shared_fanout_keys(self) -> None:
+    def test_combined_gate_binds_window_and_filters_shared_fanout_to_cohort(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             (root / "resource_intervals.csv").write_text("mocked\n", encoding="utf-8")
@@ -90,10 +90,27 @@ class FullResourceContractTests(unittest.TestCase):
                 [fanout_row()],
             )
             ingress = pd.DataFrame(
-                [{"window_start_timestamp_ms": 0.0, "window_end_timestamp_ms": 3000.0}]
+                [
+                    {
+                        "run_id": "run-1",
+                        "trace_id": "run-1:0:1",
+                        "stream_id": 0,
+                        "frame_id": 1,
+                        "window_start_timestamp_ms": 0.0,
+                        "window_end_timestamp_ms": 3000.0,
+                    }
+                ]
             )
             topology = pd.DataFrame(
                 [
+                    {
+                        "event_kind": "fanout",
+                        "trace_id": "run-1:0:0",
+                        "stream_id": 0,
+                        "frame_id": 0,
+                        "branch_id": "damage",
+                        "execution_id": "warmup-fanout-0",
+                    },
                     {
                         "event_kind": "fanout",
                         "trace_id": "run-1:0:1",

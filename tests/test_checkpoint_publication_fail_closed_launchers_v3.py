@@ -94,10 +94,7 @@ class FailClosedPublicationLauncherV3Tests(unittest.TestCase):
                     launcher, self._argv(root, output, contract, digest)
                 )
                 self.assertEqual(status, 78)
-                self.assertEqual(
-                    launcher.PUBLICATION_READY,
-                    system == "gstreamer_custom",
-                )
+                self.assertTrue(launcher.PUBLICATION_READY)
                 self.assertEqual(assessment["system"], system)
                 self.assertTrue(assessment["contract_bytes_externally_pinned"])
                 self.assertTrue(assessment["canonical_contract_bytes_validated"])

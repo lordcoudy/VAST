@@ -28,9 +28,14 @@ BRANCHES = ["plate_number", "damage"]
 
 def measurement_passport_fields(*, ingress_count: int = 1) -> dict[str, object]:
     payload = {
-        "contract_version": 4,
-        "resource_attribution": "native_per_trace_bounded_stage_interval_ingress_cohort_v3",
+        "contract_version": 5,
+        "resource_attribution": "native_per_trace_bounded_stage_interval_ingress_cohort_v4",
         "resource_time_components": ["cpu_time_ms", "gpu_time_ms"],
+        "resource_time_component_mapping": {
+            "cpu": "cpu_time_ms",
+            "gpu": "gpu_time_ms",
+            "nvdec": "cpu_time_ms_host_stage_elapsed_not_nvdec_busy_time",
+        },
         "resource_time_aggregation": (
             "unweighted_sum_of_attributed_device_milliseconds_v1"
         ),

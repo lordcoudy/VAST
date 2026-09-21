@@ -225,14 +225,8 @@ class DeepStreamPublicationRuntimeV3Tests(unittest.TestCase):
         self.temporary.cleanup()
 
     def test_launcher_binds_both_topologies_to_real_container_runner(self) -> None:
-        self.assertFalse(launcher.PUBLICATION_READY)
-        self.assertEqual(
-            launcher.MISSING_RUNTIME_PINS,
-            (
-                "deepstream_publication_runtime_v3_image_grant_not_materialized",
-                "deepstream_publication_runtime_v3_endpoint_bound_24_6_full_kpp_arm_pilot_not_complete",
-            ),
-        )
+        self.assertTrue(launcher.PUBLICATION_READY)
+        self.assertFalse(hasattr(launcher, "MISSING_RUNTIME_PINS"))
         self.assertIs(
             launcher.NATIVE_TOPOLOGY_RUNNERS["independent_processes"],
             run_checkpoint_deepstream_publication_runtime_v3,
@@ -263,6 +257,10 @@ class DeepStreamPublicationRuntimeV3Tests(unittest.TestCase):
             observed["argv"] = argv
             observed["timeout_s"] = timeout_s
             self.assertEqual(argv[0], "run")
+            user_index = argv.index("--user")
+            self.assertEqual(
+                argv[user_index + 1], f"{os.getuid()}:{os.getgid()}"
+            )
             self.assertIn("--gpus", argv)
             self.assertIn("all", argv)
             self.assertIn("--read-only", argv)
@@ -324,6 +322,13 @@ class DeepStreamPublicationRuntimeV3Tests(unittest.TestCase):
         )
         self.assertEqual(observed["timeout_s"], 900.0)
         argv = observed["argv"]
+        for binding in (
+            "OPENBLAS_NUM_THREADS=1",
+            "OMP_NUM_THREADS=1",
+            "MKL_NUM_THREADS=1",
+            "NUMEXPR_NUM_THREADS=1",
+        ):
+            self.assertEqual(argv[argv.index(binding) - 1], "--env")
         self.assertIn("--model-binding", argv)
         self.assertIn(
             self.runtime_contract["model_files"][0]["sha256"]
@@ -367,6 +372,37 @@ class DeepStreamPublicationRuntimeV3Tests(unittest.TestCase):
         ):
             run_checkpoint_deepstream_publication_runtime_v3(self.request)
         self.assertEqual(invoked, 1)
+        self.assertFalse((self.output / EVIDENCE_NAME).exists())
+
+    def test_container_failure_precedes_endpoint_socket_postcondition(self) -> None:
+        def invoke(
+            _engine: object,
+            _engine_socket: object,
+            argv: tuple[str, ...],
+            _timeout: float,
+        ) -> object:
+            if argv[:2] == ("image", "inspect"):
+                return mock.Mock(
+                    returncode=0,
+                    stdout=(json.dumps([self.inspect_payload]) + "\n").encode("utf-8"),
+                    stderr=b"",
+                )
+            self.endpoint.close()
+            self.endpoint_path.unlink()
+            return mock.Mock(
+                returncode=2,
+                stdout=b"",
+                stderr=b"primary container failure\n",
+            )
+
+        with mock.patch(
+            "checkpoint_deepstream_publication_runtime_v3._invoke_engine",
+            side_effect=invoke,
+        ), self.assertRaisesRegex(
+            DeepStreamPublicationRuntimeV3Error,
+            "deepstream_native_runtime_failed.*primary container failure",
+        ):
+            run_checkpoint_deepstream_publication_runtime_v3(self.request)
         self.assertFalse((self.output / EVIDENCE_NAME).exists())
 
     def test_transient_input_path_replacement_is_rejected_before_container_run(self) -> None:

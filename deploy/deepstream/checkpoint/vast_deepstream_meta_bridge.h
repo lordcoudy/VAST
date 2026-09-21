@@ -18,6 +18,13 @@ typedef struct VastDeepStreamFrameObservation {
   uint8_t identity_sha256[32];
 } VastDeepStreamFrameObservation;
 
+int vast_deepstream_observe_frame(
+    void* gst_buffer,
+    uint32_t expected_source_id,
+    VastDeepStreamFrameObservation* observation,
+    char* error,
+    size_t error_size);
+
 int vast_deepstream_bind_admission(
     void* gst_buffer,
     uint32_t expected_source_id,

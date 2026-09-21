@@ -8,7 +8,9 @@ import hashlib
 import json
 import math
 import os
+import re
 import subprocess
+import stat
 import sys
 import time
 from contextlib import contextmanager
@@ -16,12 +18,21 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Callable, Iterator, Mapping, Sequence
 
+from seafile_artifact_store import ArtifactStoreError, SeafileShareLinks
+
 
 EXIT_COMPLETE = 0
 EXIT_TRANSIENT = 75
 EXIT_PERMANENT = 78
 PHASES = ("run", "verify", "finalize", "export")
 STATE_SCHEMA_VERSION = 1
+FROZEN_FULL_PUBLICATION_MATRIX_SCHEMA_VERSION = 4
+FROZEN_FULL_PUBLICATION_MATRIX_SHA256 = (
+    "a1115ea9fa5f496f45d75636b8376366a48413cdc4c9787cb7ca4baac04b230e"
+)
+FROZEN_PUBLICATION_POLICY_CONTRACT_SHA256 = (
+    "4168818527ced4b3611c9aeabff6b04a7962314f4d80beb3da9dc814ba369016"
+)
 STATE_FIELDS = {
     "schema_version",
     "artifact_kind",
@@ -36,6 +47,31 @@ STATE_FIELDS = {
     "updated_at",
     "completed_at",
 }
+_SHA_RE = re.compile(r"[0-9a-f]{64}")
+_PINNED_PYTHON_SOURCE_BOOTSTRAP_BODY_V1 = (
+    "import hashlib,os,stat,sys\n"
+    "p=sys.argv[1];n=int(sys.argv[2]);h=sys.argv[3]\n"
+    "d=os.path.dirname(p);b=os.path.basename(p)\n"
+    "df=os.open(d,os.O_RDONLY|getattr(os,'O_DIRECTORY',0)|getattr(os,'O_NOFOLLOW',0))\n"
+    "f=os.open(b,os.O_RDONLY|getattr(os,'O_NONBLOCK',0)|getattr(os,'O_NOFOLLOW',0),dir_fd=df)\n"
+    "s=os.fstat(f);q=b''\n"
+    "while True:\n"
+    " c=os.read(f,1048576)\n"
+    " if not c: break\n"
+    " q+=c\n"
+    "a=os.fstat(f);z=os.stat(b,dir_fd=df,follow_symlinks=False)\n"
+    "assert stat.S_ISREG(s.st_mode) and s.st_nlink==1 and s.st_size==n and "
+    "(s.st_dev,s.st_ino,s.st_mode,s.st_nlink,s.st_size,s.st_mtime_ns,s.st_ctime_ns)=="
+    "(a.st_dev,a.st_ino,a.st_mode,a.st_nlink,a.st_size,a.st_mtime_ns,a.st_ctime_ns)=="
+    "(z.st_dev,z.st_ino,z.st_mode,z.st_nlink,z.st_size,z.st_mtime_ns,z.st_ctime_ns) "
+    "and len(q)==n and hashlib.sha256(q).hexdigest()==h\n"
+    "os.close(f);os.close(df);sys.path.insert(0,d);sys.argv=[p,*sys.argv[4:]]\n"
+    "g={'__name__':'__main__','__file__':p,'__package__':None,'__cached__':None}\n"
+    "exec(compile(q,p,'exec'),g,g)\n"
+)
+_PINNED_PYTHON_SOURCE_BOOTSTRAP_V1 = (
+    f"exec({_PINNED_PYTHON_SOURCE_BOOTSTRAP_BODY_V1!r})"
+)
 
 
 class SupervisorError(RuntimeError):
@@ -48,6 +84,80 @@ class InvocationUnavailable(SupervisorError):
 
 class UnexpectedProcessExit(SupervisorError):
     pass
+
+
+def _stable_source_descriptor(path: Path | str) -> tuple[Path, int, str]:
+    lexical = Path(os.path.abspath(os.fspath(path)))
+    try:
+        if lexical.resolve(strict=True) != lexical:
+            raise SupervisorError("entrypoint path is a symlink or alias")
+        parent_fd = os.open(
+            lexical.parent,
+            os.O_RDONLY
+            | int(getattr(os, "O_DIRECTORY", 0))
+            | int(getattr(os, "O_NOFOLLOW", 0)),
+        )
+        try:
+            descriptor = os.open(
+                lexical.name,
+                os.O_RDONLY
+                | int(getattr(os, "O_NONBLOCK", 0))
+                | int(getattr(os, "O_NOFOLLOW", 0)),
+                dir_fd=parent_fd,
+            )
+            try:
+                before = os.fstat(descriptor)
+                payload = b""
+                while chunk := os.read(descriptor, 1024 * 1024):
+                    payload += chunk
+                after = os.fstat(descriptor)
+                named = os.stat(
+                    lexical.name, dir_fd=parent_fd, follow_symlinks=False
+                )
+            finally:
+                os.close(descriptor)
+        finally:
+            os.close(parent_fd)
+    except OSError as error:
+        raise SupervisorError("full publication entrypoint is unavailable") from error
+    stable = lambda value: (
+        int(value.st_dev),
+        int(value.st_ino),
+        int(value.st_mode),
+        int(value.st_nlink),
+        int(value.st_size),
+        int(value.st_mtime_ns),
+        int(value.st_ctime_ns),
+    )
+    if not (
+        stat.S_ISREG(before.st_mode)
+        and int(before.st_nlink) == 1
+        and stable(before) == stable(after) == stable(named)
+        and len(payload) == int(after.st_size)
+    ):
+        raise SupervisorError("full publication entrypoint identity drifted")
+    return lexical, len(payload), hashlib.sha256(payload).hexdigest()
+
+
+def _pinned_python_source_command(
+    *,
+    python_executable: str,
+    path: Path,
+    size_bytes: int,
+    sha256: str,
+    arguments: Sequence[str],
+) -> list[str]:
+    return [
+        str(python_executable),
+        "-I",
+        "-B",
+        "-c",
+        _PINNED_PYTHON_SOURCE_BOOTSTRAP_V1,
+        str(path),
+        str(size_bytes),
+        sha256,
+        *[str(value) for value in arguments],
+    ]
 
 
 def _canonical_json(value: Any) -> bytes:
@@ -154,39 +264,129 @@ class SubprocessEntrypointInvoker:
         *,
         entrypoint: Path,
         entrypoint_args: Sequence[str],
+        entrypoint_size_bytes: int | None = None,
+        entrypoint_sha256: str | None = None,
         python_executable: str = sys.executable,
         run_process: Callable[..., Any] = subprocess.run,
         environment: Mapping[str, str] | None = None,
     ) -> None:
-        self.entrypoint = Path(entrypoint).resolve()
+        observed_path, observed_size, observed_sha256 = _stable_source_descriptor(
+            entrypoint
+        )
+        if entrypoint_size_bytes is not None and (
+            type(entrypoint_size_bytes) is not int
+            or entrypoint_size_bytes != observed_size
+        ):
+            raise SupervisorError("full publication entrypoint size identity drifted")
+        if entrypoint_sha256 is not None and (
+            type(entrypoint_sha256) is not str
+            or _SHA_RE.fullmatch(entrypoint_sha256) is None
+            or entrypoint_sha256 != observed_sha256
+        ):
+            raise SupervisorError("full publication entrypoint SHA-256 drifted")
+        self.entrypoint = observed_path
+        self.entrypoint_size_bytes = observed_size
+        self.entrypoint_sha256 = observed_sha256
         self.entrypoint_args = tuple(str(value) for value in entrypoint_args)
         self.python_executable = str(python_executable)
         self.run_process = run_process
         self.environment = dict(os.environ if environment is None else environment)
-        if not self.entrypoint.is_file():
-            raise SupervisorError(f"full publication entrypoint is missing: {self.entrypoint}")
         if any(value in PHASES for value in self.entrypoint_args):
             raise SupervisorError("entrypoint arguments must not contain a command phase")
+        self.frozen_publication_contract = self._require_frozen_contract_args()
+        self.secret_values = {
+            value
+            for name, value in self.environment.items()
+            if name in {"VAST_SEAFILE_UPLOAD_LINK", "VAST_SEAFILE_READ_LINK"}
+            and value
+        }
+        self.secret_values.update(
+            value.rstrip("/").rsplit("/", 1)[-1]
+            for value in tuple(self.secret_values)
+            if len(value.rstrip("/").rsplit("/", 1)[-1]) >= 8
+        )
+        links_file = self._single_option_value("--cloud-links-file")
+        if links_file is not None:
+            project_root_value = self._single_option_value("--project-root")
+            project_root = (
+                Path(project_root_value)
+                if project_root_value is not None
+                else self.entrypoint.parents[1]
+            ).resolve()
+            candidate = Path(links_file)
+            if not candidate.is_absolute():
+                candidate = project_root / candidate
+            try:
+                links = SeafileShareLinks.from_file(candidate)
+            except ArtifactStoreError:
+                raise SupervisorError(
+                    "full publication Seafile link file is invalid"
+                ) from None
+            self.secret_values.update(
+                {
+                    links.upload_token,
+                    links.read_token,
+                    f"{links.base_url}/u/d/{links.upload_token}",
+                    f"{links.base_url}/d/{links.read_token}",
+                }
+            )
+
+    def _single_option_value(self, option: str) -> str | None:
+        values: list[str] = []
+        prefix = option + "="
+        for position, argument in enumerate(self.entrypoint_args):
+            if argument == option:
+                if position + 1 >= len(self.entrypoint_args):
+                    raise SupervisorError(f"entrypoint argument {option} lacks a value")
+                values.append(self.entrypoint_args[position + 1])
+            elif argument.startswith(prefix):
+                values.append(argument[len(prefix):])
+        if len(values) > 1 or any(not value for value in values):
+            raise SupervisorError(f"entrypoint argument {option} is ambiguous")
+        return values[0] if values else None
+
+    def _require_frozen_contract_args(self) -> dict[str, str]:
+        matrix = self._single_option_value("--expected-matrix-sha256")
+        policy = self._single_option_value(
+            "--expected-policy-contract-sha256"
+        )
+        if matrix != FROZEN_FULL_PUBLICATION_MATRIX_SHA256:
+            raise SupervisorError(
+                "supervisor requires the exact frozen full publication matrix SHA-256"
+            )
+        if policy != FROZEN_PUBLICATION_POLICY_CONTRACT_SHA256:
+            raise SupervisorError(
+                "supervisor requires the exact frozen publication policy contract SHA-256"
+            )
+        return {
+            "matrix_schema_version": FROZEN_FULL_PUBLICATION_MATRIX_SCHEMA_VERSION,
+            "matrix_sha256": matrix,
+            "policy_contract_sha256": policy,
+        }
 
     @property
     def command_identity(self) -> dict[str, Any]:
         return {
-            "schema_version": 1,
+            "schema_version": 2,
             "entrypoint": str(self.entrypoint),
-            "entrypoint_sha256": hashlib.sha256(self.entrypoint.read_bytes()).hexdigest(),
+            "entrypoint_sha256": self.entrypoint_sha256,
             "python_executable": str(Path(self.python_executable).resolve()),
             "entrypoint_args": list(self.entrypoint_args),
+            "frozen_publication_contract": dict(
+                self.frozen_publication_contract
+            ),
         }
 
     def __call__(self, phase: str) -> tuple[int, dict[str, Any]]:
         if phase not in PHASES:
             raise SupervisorError(f"unsupported supervisor phase: {phase}")
-        command = [
-            self.python_executable,
-            str(self.entrypoint),
-            *self.entrypoint_args,
-            phase,
-        ]
+        command = _pinned_python_source_command(
+            python_executable=self.python_executable,
+            path=self.entrypoint,
+            size_bytes=self.entrypoint_size_bytes,
+            sha256=self.entrypoint_sha256,
+            arguments=(*self.entrypoint_args, phase),
+        )
         try:
             completed = self.run_process(
                 command,
@@ -203,18 +403,10 @@ class SubprocessEntrypointInvoker:
                 f"entrypoint terminated with unexpected exit code {return_code}"
             )
         stdout = str(completed.stdout).strip()
-        secret_values = {
-            value
-            for name, value in self.environment.items()
-            if name in {"VAST_SEAFILE_UPLOAD_LINK", "VAST_SEAFILE_READ_LINK"}
-            and value
-        }
-        secret_values.update(
-            value.rstrip("/").rsplit("/", 1)[-1]
-            for value in tuple(secret_values)
-            if len(value.rstrip("/").rsplit("/", 1)[-1]) >= 8
-        )
-        if any(secret in stdout or secret in str(completed.stderr) for secret in secret_values):
+        if any(
+            secret in stdout or secret in str(completed.stderr)
+            for secret in self.secret_values
+        ):
             raise SupervisorError("entrypoint output exposed a configured capability secret")
         try:
             payload = json.loads(stdout)
@@ -396,6 +588,9 @@ def build_parser() -> argparse.ArgumentParser:
         type=Path,
         default=Path(__file__).with_name("full_publication_entrypoint.py"),
     )
+    parser.add_argument("--entrypoint-size-bytes", type=int)
+    parser.add_argument("--entrypoint-sha256")
+    parser.add_argument("--supervisor-sha256")
     parser.add_argument("--state-path", type=Path, required=True)
     parser.add_argument("--python-executable", default=sys.executable)
     parser.add_argument("--backoff-s", type=_parse_backoff, default=_parse_backoff("30,60,120,300,600,900"))
@@ -413,12 +608,21 @@ def main(argv: Sequence[str] | None = None) -> int:
         invoker = SubprocessEntrypointInvoker(
             entrypoint=args.entrypoint,
             entrypoint_args=entrypoint_args,
+            entrypoint_size_bytes=args.entrypoint_size_bytes,
+            entrypoint_sha256=args.entrypoint_sha256,
             python_executable=args.python_executable,
         )
         command_identity = dict(invoker.command_identity)
-        command_identity["supervisor_sha256"] = hashlib.sha256(
-            Path(__file__).read_bytes()
-        ).hexdigest()
+        if args.supervisor_sha256 is None:
+            _path, _size, supervisor_sha256 = _stable_source_descriptor(__file__)
+        elif (
+            type(args.supervisor_sha256) is not str
+            or _SHA_RE.fullmatch(args.supervisor_sha256) is None
+        ):
+            raise SupervisorError("supervisor SHA-256 is invalid")
+        else:
+            supervisor_sha256 = args.supervisor_sha256
+        command_identity["supervisor_sha256"] = supervisor_sha256
         supervisor = FullPublicationSupervisor(
             state_path=args.state_path,
             invoker=invoker,
@@ -447,6 +651,9 @@ __all__ = [
     "EXIT_COMPLETE",
     "EXIT_PERMANENT",
     "EXIT_TRANSIENT",
+    "FROZEN_FULL_PUBLICATION_MATRIX_SCHEMA_VERSION",
+    "FROZEN_FULL_PUBLICATION_MATRIX_SHA256",
+    "FROZEN_PUBLICATION_POLICY_CONTRACT_SHA256",
     "FullPublicationSupervisor",
     "InvocationUnavailable",
     "SubprocessEntrypointInvoker",

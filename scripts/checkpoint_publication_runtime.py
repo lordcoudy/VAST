@@ -82,6 +82,8 @@ _CANDIDATE_FIELDS = {
 _CHECKPOINT_AGGREGATE_BACKENDS = {
     "gstreamer_custom": "openvino_dlstreamer_branch_aggregate_v1",
     "deepstream": "deepstream_native_branch_aggregate_v1",
+    "savant": "savant_native_branch_aggregate_v1",
+    "openvino_gva": "openvino_gva_native_branch_aggregate_v1",
 }
 
 
@@ -159,6 +161,18 @@ def _write_immutable_json(path: Path, value: dict[str, Any]) -> None:
                     os.close(directory_descriptor)
     finally:
         temporary.unlink(missing_ok=True)
+
+
+def _json_finite_or_null(value: Any) -> Any:
+    """Preserve summary structure while encoding unavailable floats as JSON null."""
+
+    if type(value) is float:
+        return value if math.isfinite(value) else None
+    if type(value) is dict:
+        return {key: _json_finite_or_null(item) for key, item in value.items()}
+    if type(value) in {list, tuple}:
+        return [_json_finite_or_null(item) for item in value]
+    return value
 
 
 def prepare_checkpoint_publication_acceptance(
@@ -648,7 +662,7 @@ def _accepted_frame_event_rows(
         row: dict[str, Any],
         *,
         key: tuple[str, str, int, int],
-    ) -> tuple[str, str]:
+    ) -> tuple[str, str, int | None, float | None]:
         required = {
             "execution_resource",
             "scheduler_policy",
@@ -682,7 +696,31 @@ def _accepted_frame_event_rows(
         _require(resource in CHECKPOINT_EXECUTION_RESOURCES, f"stage execution resource is invalid: {key}")
         action = str(row["policy_action"]).strip()
         _require(action.startswith(f"{policy}:"), f"stage policy action is not bound to requested policy: {key}")
-        return resource, action
+        fixed_action = f"{policy}:fixed_outside_analytics_scope:"
+        if action.startswith(fixed_action):
+            return resource, action, None, None
+        policy_fields = {
+            "scheduler_queue_depth",
+            "scheduler_estimated_cost_ms",
+        }
+        missing_policy_fields = sorted(
+            field for field in policy_fields if row.get(field) in {None, ""}
+        )
+        _require(
+            not missing_policy_fields,
+            (
+                "native policy execution binding is missing fields "
+                f"{','.join(missing_policy_fields)}: {key}"
+            ),
+        )
+        queue_depth = int(row["scheduler_queue_depth"])
+        estimated_cost_ms = float(row["scheduler_estimated_cost_ms"])
+        _require(queue_depth >= 0, f"native policy queue depth is invalid: {key}")
+        _require(
+            math.isfinite(estimated_cost_ms) and estimated_cost_ms >= 0,
+            f"native policy estimated cost is invalid: {key}",
+        )
+        return resource, action, queue_depth, estimated_cost_ms
 
     ledger_by_key = {_linkage_key(row): row for row in ledger_rows}
     runtime_by_key: dict[tuple[str, str, int, int], list[dict[str, Any]]] = {}
@@ -706,7 +744,12 @@ def _accepted_frame_event_rows(
             end = int(row["timestamp_ms"])
             _require(start <= end, f"native stage interval is negative: {key}")
             stage = str(row["stage"])
-            resource, policy_action = native_execution_binding(row, key=key)
+            (
+                resource,
+                policy_action,
+                scheduler_queue_depth,
+                scheduler_estimated_cost_ms,
+            ) = native_execution_binding(row, key=key)
             if stage.split("_", 1)[0] == "decode":
                 _require(resource == "nvdec", f"decode stage lacks native NVDEC execution binding: {key}")
             accepted.append(
@@ -723,8 +766,16 @@ def _accepted_frame_event_rows(
                     "queue_enter_timestamp_ms": start,
                     "stage_start_timestamp_ms": start,
                     "stage_end_timestamp_ms": end,
-                    "queue_depth": 0,
-                    "estimated_cost_ms": end - start,
+                    "queue_depth": (
+                        scheduler_queue_depth
+                        if scheduler_queue_depth is not None
+                        else 0
+                    ),
+                    "estimated_cost_ms": (
+                        scheduler_estimated_cost_ms
+                        if scheduler_estimated_cost_ms is not None
+                        else end - start
+                    ),
                     "policy_action": policy_action,
                 }
             )
@@ -744,7 +795,12 @@ def _accepted_frame_event_rows(
             aggregate_end = int(joins[0]["timestamp_ms"])
             _require(aggregate_start <= aggregate_end, f"aggregate interval is negative: {key}")
             host = str(joins[0]["execution_domain"])
-            join_resource, join_policy_action = native_execution_binding(joins[0], key=key)
+            (
+                join_resource,
+                join_policy_action,
+                join_queue_depth,
+                join_estimated_cost_ms,
+            ) = native_execution_binding(joins[0], key=key)
             for stage, start, end in (
                 ("aggregate", aggregate_start, aggregate_end),
                 ("record", aggregate_end, aggregate_end),
@@ -763,8 +819,14 @@ def _accepted_frame_event_rows(
                         "queue_enter_timestamp_ms": start,
                         "stage_start_timestamp_ms": start,
                         "stage_end_timestamp_ms": end,
-                        "queue_depth": 0,
-                        "estimated_cost_ms": end - start,
+                        "queue_depth": (
+                            join_queue_depth if join_queue_depth is not None else 0
+                        ),
+                        "estimated_cost_ms": (
+                            join_estimated_cost_ms
+                            if join_estimated_cost_ms is not None
+                            else end - start
+                        ),
                         "policy_action": join_policy_action,
                     }
                 )
@@ -1040,6 +1102,8 @@ def publish_checkpoint_runtime(
         and all(value > 0 for value in completed_by_stream.values()),
         "publication arm lacks a positive completed cohort on every logical stream",
     )
+    summary = _json_finite_or_null(summary)
+    _require(type(summary) is dict, "accepted checkpoint summary is invalid")
 
     acceptance = {
         "schema_version": PUBLICATION_ACCEPTANCE_SCHEMA_VERSION,

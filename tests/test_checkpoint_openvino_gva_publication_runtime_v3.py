@@ -21,6 +21,7 @@ import checkpoint_openvino_gva_publication_launcher_v3 as launcher  # noqa: E402
 import checkpoint_openvino_gva_publication_runtime_v3 as runtime  # noqa: E402
 from checkpoint_openvino_gva_publication_runtime_v3 import (  # noqa: E402
     EXPECTED_IMAGE_ID,
+    EXPECTED_IMAGE_REFERENCE,
     EXPECTED_REPOSITORY_DIGEST,
     OpenVINOGVAPublicationRuntimeV3Error,
     run_checkpoint_openvino_gva_publication_runtime_v3,
@@ -387,14 +388,8 @@ class OpenVINOGVAPublicationRuntimeV3Tests(unittest.TestCase):
         )
 
     def test_launcher_binds_both_topologies_to_real_container_runner(self) -> None:
-        self.assertFalse(launcher.PUBLICATION_READY)
-        self.assertEqual(
-            launcher.MISSING_RUNTIME_PINS,
-            (
-                "openvino_gva_publication_v3_forced_policy_qualification_not_complete",
-                "openvino_gva_endpoint_bound_h264_h265_24_6_gpu_pilots_not_complete",
-            ),
-        )
+        self.assertTrue(launcher.PUBLICATION_READY)
+        self.assertFalse(hasattr(launcher, "MISSING_RUNTIME_PINS"))
         for topology in ("independent_processes", "shared_video_dag"):
             self.assertIs(
                 launcher.NATIVE_TOPOLOGY_RUNNERS[topology],
@@ -448,6 +443,39 @@ class OpenVINOGVAPublicationRuntimeV3Tests(unittest.TestCase):
         finally:
             pins.close()
 
+    def test_versioned_analytics_execution_manifest_pins_open(self) -> None:
+        contract = json.loads(json.dumps(self.runtime_contract))
+        relative = "configs/analytics_execution_layer.refreshed.v4.a215.json"
+        contract["files"]["analytics_execution_manifest"] = self._descriptor(
+            relative,
+            b'{"artifact_kind":"vast_analytics_execution_layer_config"}\n',
+            container_path="/workspace/project/" + relative,
+        )
+        request = self._request(contract)
+        validated = runtime._validate_contract(request)
+        pins = runtime._open_pins(request, validated)
+        try:
+            pin = pins.roles["analytics_execution_manifest"]
+            self.assertEqual(pin.container_path, "/workspace/project/" + relative)
+            self.assertEqual(pin.path.resolve().relative_to(self.root).as_posix(), relative)
+        finally:
+            pins.close()
+
+    def test_packaged_runtime_script_container_path_cannot_drift(self) -> None:
+        contract = json.loads(json.dumps(self.runtime_contract))
+        drifted = dict(contract["files"]["checkpoint_runtime"])
+        drifted["container_path"] = (
+            "/workspace/project/scripts/checkpoint_gstreamer_runtime.other.py"
+        )
+        contract["files"]["checkpoint_runtime"] = drifted
+        request = self._request(contract)
+        validated = runtime._validate_contract(request)
+        with self.assertRaisesRegex(
+            OpenVINOGVAPublicationRuntimeV3Error,
+            "openvino_gva_runtime_file_role_container_path_drifted",
+        ):
+            runtime._open_pins(request, validated)
+
     def test_stream_five_cannot_be_rebound_to_front_gate_media(self) -> None:
         runtime_inputs = json.loads(json.dumps(self.request.runtime_inputs))
         streams = runtime_inputs["dataset"]["streams"]
@@ -476,6 +504,9 @@ class OpenVINOGVAPublicationRuntimeV3Tests(unittest.TestCase):
             self.assertEqual(engine_socket["path"], self.engine_socket["path"])
             calls.append(argv)
             if argv[:2] == ("image", "inspect"):
+                self.assertEqual(
+                    argv, ("image", "inspect", EXPECTED_IMAGE_REFERENCE),
+                )
                 return mock.Mock(
                     returncode=0,
                     stdout=(json.dumps([self.inspect_projection]) + "\n").encode(),
@@ -507,6 +538,10 @@ class OpenVINOGVAPublicationRuntimeV3Tests(unittest.TestCase):
 
             self.assertEqual(timeout_s, 900.0)
             self.assertEqual(argv[0], "run")
+            user_index = argv.index("--user")
+            self.assertEqual(
+                argv[user_index + 1], f"{os.getuid()}:{os.getgid()}"
+            )
             for token in (
                 "--rm",
                 "--network",
@@ -524,6 +559,13 @@ class OpenVINOGVAPublicationRuntimeV3Tests(unittest.TestCase):
             self.assertNotIn("vast/openvino-native-probe:dlstreamer-2026.1", argv)
             self.assertIn("HOME=/tmp", argv)
             self.assertIn("XDG_CACHE_HOME=/tmp", argv)
+            for binding in (
+                "OPENBLAS_NUM_THREADS=1",
+                "OMP_NUM_THREADS=1",
+                "MKL_NUM_THREADS=1",
+                "NUMEXPR_NUM_THREADS=1",
+            ):
+                self.assertEqual(argv[argv.index(binding) - 1], "--env")
             mounts = [
                 argv[index + 1]
                 for index, value in enumerate(argv[:-1])
@@ -641,6 +683,58 @@ class OpenVINOGVAPublicationRuntimeV3Tests(unittest.TestCase):
                     run_checkpoint_openvino_gva_publication_runtime_v3(self.request)
                 self.assertFalse(measurement_invoked)
                 self.assertFalse((self.output / EVIDENCE_NAME).exists())
+
+    def test_device_probe_identity_mismatch_retains_observed_probe_and_stays_fail_closed(self) -> None:
+        observed = json.loads(json.dumps(self.device_probe))
+        observed["available_devices"] = []
+        observed_bytes = canonical(observed)
+        pinned = str(
+            self.runtime_contract["device_binding"]["openvino_device_probe_sha256"]
+        )
+        measurement_invoked = False
+
+        def invoke(
+            _engine: object,
+            _engine_socket: object,
+            argv: tuple[str, ...],
+            _timeout_s: float,
+        ) -> object:
+            nonlocal measurement_invoked
+            if argv[:2] == ("image", "inspect"):
+                return mock.Mock(
+                    returncode=0,
+                    stdout=(json.dumps([self.inspect_projection]) + "\n").encode(),
+                    stderr=b"",
+                )
+            if "/usr/bin/sha256sum" in argv:
+                return mock.Mock(
+                    returncode=0,
+                    stdout=("".join(
+                        f"{digest}  {path}\n"
+                        for path, digest in self.runtime_contract[
+                            "embedded_artifacts"
+                        ].items()
+                    )).encode(),
+                    stderr=b"",
+                )
+            if str(self.files["device_probe"]["container_path"]) in argv:
+                return mock.Mock(
+                    returncode=0, stdout=observed_bytes, stderr=b""
+                )
+            measurement_invoked = True
+            raise AssertionError("measurement must not execute")
+
+        with mock.patch.object(runtime, "_invoke_engine", side_effect=invoke), self.assertRaisesRegex(
+            OpenVINOGVAPublicationRuntimeV3Error,
+            "openvino_gva_device_probe_identity_changed",
+        ):
+            run_checkpoint_openvino_gva_publication_runtime_v3(self.request)
+        retained = self.output / "openvino_device_probe.observed.json"
+        self.assertEqual(retained.read_bytes(), observed_bytes)
+        self.assertEqual(SHA(retained.read_bytes()), SHA(observed_bytes))
+        self.assertNotEqual(SHA(observed_bytes), pinned)
+        self.assertFalse(measurement_invoked)
+        self.assertFalse((self.output / EVIDENCE_NAME).exists())
 
     def test_transient_config_replacement_is_rejected_after_preflight(self) -> None:
         target = self.root / str(self.files["datasets_config"]["path"])

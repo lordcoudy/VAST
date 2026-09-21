@@ -24,7 +24,7 @@ import time
 from collections.abc import Mapping
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
-from typing import Any
+from typing import Any, Callable
 
 sys.dont_write_bytecode = True
 
@@ -33,79 +33,45 @@ from checkpoint_publication_launcher_adapter_v3 import (
     NativePublicationPermanentErrorV3,
     NativePublicationRequestV3,
     NativePublicationTransientErrorV3,
+    deterministic_numeric_thread_environment_argv_v1,
+)
+from publication_child_evidence_materializer_v1 import (
+    PublicationChildEvidenceMaterializerV1Error,
+    materialize_publication_child_evidence_group_v1,
 )
 
 
 RUNTIME_INPUT_KEY = "openvino_gva_publication_runtime_v3"
 RUNTIME_INPUT_KIND = "vast_openvino_gva_publication_runtime_inputs_v3"
-EXPECTED_IMAGE_ID = (
-    "sha256:6ded3d8dbe94782c8c8132bfde1edb3670167165324b40dc8f6da63909fc485c"
+EXPECTED_IMAGE_REFERENCE = 'vast/openvino-gva-publication-runtime-v3:attempt261-20260920'
+EXPECTED_IMAGE_ID = 'sha256:cf06b8605b0e118723863315edfab2f897f6921fdbb2a77c42cd534356643cc3'
+EXPECTED_REPOSITORY_DIGEST = 'vast/openvino-gva-publication-runtime-v3@sha256:cf06b8605b0e118723863315edfab2f897f6921fdbb2a77c42cd534356643cc3'
+EXPECTED_IMAGE_INSPECT_PROJECTION_SHA256 = '1beb4b1ac9f84b1a0515bae5591028e5383ebb8c66822176548687657b4c8588'
+EXPECTED_BASE_IMAGE_ID = (
+    "sha256:72ce8749b7b341a3e9b9591c231289c3bc96418187df04a4915ae6bcdbf5e93d"
 )
-EXPECTED_REPOSITORY_DIGEST = (
-    "vast/openvino-gva-publication-runtime-v3@"
-    "sha256:6ded3d8dbe94782c8c8132bfde1edb3670167165324b40dc8f6da63909fc485c"
-)
-EXPECTED_IMAGE_INSPECT_PROJECTION_SHA256 = (
-    "b364a3a900f9ebd52106630e5bcab7cead102778323973d3db9d167d06a463fc"
-)
-EXPECTED_IMAGE_LABELS = {
-    "org.vast.base-image-id": (
-        "sha256:5c43c6c1f95b3fbb4a95957d1d293b1272c1db6a44a7a2063aad3aeba7c951d1"
-    ),
-    "org.vast.component": "openvino-gva-checkpoint-publication-runtime",
-    "org.vast.native_probe.kind": "openvino-dlstreamer-publication-v3",
-    "org.vast.native_probe.source_sha": (
-        "676c1d301a5a0913efec17b60a444a35b588036737d68fa113fef4f6c28922d7"
-    ),
-    "org.vast.publication-ready": "false",
-    "org.vast.publication-runtime-abi": "3",
-    "org.vast.runtime-dependency-set-sha256": (
-        "0f338b3aeca6756d31dccdbbc8caeb6239e8e07fec0541c1df3fea91dfc1963e"
-    ),
-    "org.vast.runtime-source-allowlist-sha256": (
-        "4c5449aa2e43cf63268dc77c4eb7c7fc288a88828d228199c672c37c280ed5a9"
-    ),
-    "org.vast.runtime-source-sha256": (
-        "4b7d6fcb2cdd29eff66dc7c166367bb731c451d81b1bf2ed1a64de0d9b1e0e4e"
-    ),
-}
+EXPECTED_IMAGE_LABELS = {'org.vast.base-image-id': 'sha256:72ce8749b7b341a3e9b9591c231289c3bc96418187df04a4915ae6bcdbf5e93d',
+ 'org.vast.component': 'openvino-gva-checkpoint-publication-runtime',
+ 'org.vast.native_probe.kind': 'openvino-dlstreamer-publication-v3',
+ 'org.vast.native_probe.source_sha': '758ccd1f912c7dc86779891c95e26921cd88a3e9504fbbd306ac77594e820067',
+ 'org.vast.publication-ready': 'false',
+ 'org.vast.publication-runtime-abi': '3',
+ 'org.vast.runtime-dependency-set-sha256': '0f338b3aeca6756d31dccdbbc8caeb6239e8e07fec0541c1df3fea91dfc1963e',
+ 'org.vast.runtime-source-allowlist-sha256': 'c6ac2d9b54b2a9f9ba883ba814a35c39f319fba9c923497a4fe46432fce7cff9',
+ 'org.vast.runtime-source-sha256': '737710c1cfbdf7a72ee3530b7b0de7e969891dbb4f3eeb81f509a35285e313c9'}
 EXPECTED_IMAGE_ENTRYPOINT = "/usr/local/bin/vast_openvino_gva_publication_runtime_v3"
 EXPECTED_IMAGE_USER = "dlstreamer"
-EXPECTED_EMBEDDED_ARTIFACTS = {
-    "/usr/local/bin/vast_openvino_gva_publication_runtime_v3": (
-        "3871aeb3037d041deb1722bfb6523125416a8939d204c21f2b9e8c906e9815ae"
-    ),
-    "/usr/local/bin/vast_native_gst_probe": (
-        "7df65e53a8f80721c6d432fab1fc405e99894d08f163fb802749dd7e1e3db6f1"
-    ),
-    "/usr/local/bin/vast_checkpoint_source": (
-        "e0570213d7287825dd7703659460242997ff5365921786e173ab8b43df723df7"
-    ),
-    "/opt/vast/share/gstreamer-registry.bin": (
-        "cd0e455e28112001956304b9c46e7e56cc33075476a09efd6cfb0ee9250ef43b"
-    ),
-    "/opt/vast/lib/gstreamer-1.0/libgstadaptivescheduler.so": (
-        "8a22b9dfb1d48337503530f47badaf6ee1bb9fcc2eeb76c80856026b98edb550"
-    ),
-    "/opt/vast/lib/gstreamer-1.0/libgstvastanalyticsterminal.so": (
-        "eb53eed6fcb49586cad6dd9266052f519db2f30c00fcf1476a2579cf760b0d55"
-    ),
-    "/opt/vast/lib/gstreamer-1.0/libgstvastanalyticsqueue.so": (
-        "16cc7d633b952c5496d8f1ed81c73be2afefaf64d68fc917c257f4188483ced4"
-    ),
-    "/opt/vast/lib/gstreamer-1.0/libgstvastcheckpointprefixqueue.so": (
-        "371676a5737d5f1f7912cfdd20da247242c77a7031a6abb2773fe530cac2b0ec"
-    ),
-    "/opt/vast/checkpoint/checkpoint_gstreamer_runtime.py": (
-        "f3ee866b847b8fdcf052275b620b5e583d7fa00427ac9f4498920cc919996a2a"
-    ),
-    "/opt/vast/checkpoint/checkpoint_openvino_gva_container_coordinator_v3.py": (
-        "33a94d90919880c8f04b9e49a9841cda21ceceee1bb36ef1489e9103d2b4b583"
-    ),
-    "/opt/vast/runtime-source-allowlist.txt": (
-        "4c5449aa2e43cf63268dc77c4eb7c7fc288a88828d228199c672c37c280ed5a9"
-    ),
-}
+EXPECTED_EMBEDDED_ARTIFACTS = {'/opt/vast/checkpoint/checkpoint_gstreamer_runtime.py': '40d3c7ec7693344de6595b50fa1bad5deadbd5a36a15977feadfd41faeae6efa',
+ '/opt/vast/checkpoint/checkpoint_openvino_gva_container_coordinator_v3.py': '33a94d90919880c8f04b9e49a9841cda21ceceee1bb36ef1489e9103d2b4b583',
+ '/opt/vast/lib/gstreamer-1.0/libgstadaptivescheduler.so': 'd36642c99d55fac7d834c75b500c7ffd086f022e671cb2b38aecaf38b8d0ad9f',
+ '/opt/vast/lib/gstreamer-1.0/libgstvastanalyticsqueue.so': '9909f2b19adc3f7e82dcf8923a3e719f8546cd4e5126663deafdce04121d2258',
+ '/opt/vast/lib/gstreamer-1.0/libgstvastanalyticsterminal.so': '04962e14523cc570ce1b24735e76334820ed730b5aee72beac0685a4704f9e45',
+ '/opt/vast/lib/gstreamer-1.0/libgstvastcheckpointprefixqueue.so': '797a9311f06cc60ce3768dfc2b3a191525a8577dd8ce2a4eca057aa4fcefdabf',
+ '/opt/vast/runtime-source-allowlist.txt': 'c6ac2d9b54b2a9f9ba883ba814a35c39f319fba9c923497a4fe46432fce7cff9',
+ '/opt/vast/share/gstreamer-registry.bin': '18b3fb289de3a7c101b12854beaabb38a8edb72c1ecaf6fc5deea39d307508bc',
+ '/usr/local/bin/vast_checkpoint_source': '7501479ccb90dc1e322386126c372a7650f40e5c7b76bfb29f4495470bd185df',
+ '/usr/local/bin/vast_native_gst_probe': 'cdbed23e0513391453659be23b240ded91a1d0502ea1f545d129f4dd9e77f36d',
+ '/usr/local/bin/vast_openvino_gva_publication_runtime_v3': '3871aeb3037d041deb1722bfb6523125416a8939d204c21f2b9e8c906e9815ae'}
 DATASET_BY_CODEC = {
     "h264": "kpp_iss_publication_v3_h264",
     "h265": "kpp_iss_publication_v3_h265",
@@ -163,9 +129,6 @@ ROLE_CONTAINER_PATHS = {
     "analytics_model_manifest": (
         "/workspace/project/configs/checkpoint_analytics_models_openvino.yaml"
     ),
-    "analytics_execution_manifest": (
-        "/workspace/project/configs/analytics_execution_layer.yaml"
-    ),
 }
 ROLE_PROJECT_PATHS = {
     role: str(PurePosixPath(target).relative_to(CONTAINER_PROJECT_ROOT))
@@ -186,6 +149,7 @@ ANALYTICS_RESOURCE_FIELDS = {"runtime", "device", "capability_sha256"}
 SHA_RE = re.compile(r"^[0-9a-f]{64}$")
 GPU_UUID_RE = re.compile(r"^GPU-[0-9a-fA-F-]{36}$")
 DRIVER_RE = re.compile(r"^[0-9]+(?:\.[0-9]+){1,3}$")
+OBSERVED_DEVICE_PROBE_FILENAME = "openvino_device_probe.observed.json"
 CONTAINER_OUTPUT_ROOT = "/opt/vast/output"
 ANALYTICS_SOCKET_TARGET = "/run/vast/analytics-execution.sock"
 MAX_FILES = 192
@@ -220,6 +184,18 @@ def _canonical(value: object) -> bytes:
         ).encode("ascii")
     except (TypeError, ValueError, UnicodeError):
         _fail("openvino_gva_canonical_json_invalid")
+
+
+def image_projection_sha256(value: Mapping[str, Any]) -> str:
+    """Hash the exact refreeze-v1 projection encoding (without JSONL LF)."""
+    try:
+        canonical = json.dumps(
+            value, sort_keys=True, separators=(",", ":"),
+            ensure_ascii=True, allow_nan=False,
+        ).encode("ascii")
+    except (TypeError, ValueError, UnicodeError):
+        _fail("openvino_gva_container_image_projection_invalid")
+    return hashlib.sha256(canonical).hexdigest()
 
 
 def _snapshot(info: os.stat_result) -> tuple[int, ...]:
@@ -935,7 +911,7 @@ def _image_projection(value: Mapping[str, Any]) -> dict[str, Any]:
 def _inspect_image(pins: _Pins, contract: _Contract) -> dict[str, Any]:
     completed = _invoke_engine(
         pins.roles["container_engine"], contract.engine_socket,
-        ("image", "inspect", EXPECTED_IMAGE_ID), 60.0,
+        ("image", "inspect", EXPECTED_IMAGE_REFERENCE), 60.0,
     )
     if completed.returncode != 0 or completed.stderr:
         _fail("openvino_gva_container_image_inspect_failed")
@@ -954,7 +930,7 @@ def _inspect_image(pins: _Pins, contract: _Contract) -> dict[str, Any]:
         or projection["Config"]["Entrypoint"] != [EXPECTED_IMAGE_ENTRYPOINT]
         or projection["Config"]["User"] != EXPECTED_IMAGE_USER
         or projection["Config"]["Labels"] != EXPECTED_IMAGE_LABELS
-        or hashlib.sha256(_canonical(projection)).hexdigest()
+        or image_projection_sha256(projection)
         != EXPECTED_IMAGE_INSPECT_PROJECTION_SHA256
     ):
         _fail("openvino_gva_container_image_identity_changed")
@@ -1168,8 +1144,30 @@ def _probe_embedded_artifacts(pins: _Pins, contract: _Contract) -> None:
         _fail("openvino_gva_embedded_artifact_identity_changed")
 
 
+def _retain_observed_device_probe(output_dir: Path, probe: Mapping[str, Any]) -> None:
+    destination = output_dir / OBSERVED_DEVICE_PROBE_FILENAME
+    try:
+        payload = _canonical(probe)
+        if destination.exists() or os.path.lexists(destination):
+            return
+        partial = destination.with_name(destination.name + ".partial")
+        if partial.exists() or os.path.lexists(partial):
+            return
+        with partial.open("xb") as handle:
+            handle.write(payload)
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(partial, destination)
+    except OSError:
+        return
+
+
 def _probe_openvino_devices(
-    pins: _Pins, contract: _Contract, materialized: _MaterializedInputs,
+    pins: _Pins,
+    contract: _Contract,
+    materialized: _MaterializedInputs,
+    *,
+    output_dir: Path,
 ) -> None:
     probe_path = str(pins.roles["device_probe"].container_path)
     arguments = [
@@ -1196,6 +1194,8 @@ def _probe_openvino_devices(
         or hashlib.sha256(_canonical(probe)).hexdigest()
         != contract.device["openvino_device_probe_sha256"]
     ):
+        if type(probe) is dict:
+            _retain_observed_device_probe(output_dir, probe)
         _fail("openvino_gva_device_probe_identity_changed")
     devices, elements = probe.get("available_devices"), probe.get("gstreamer_elements")
     if type(devices) is not list or type(elements) is not dict:
@@ -1257,13 +1257,16 @@ def _container_argv(
 ) -> tuple[str, ...]:
     runtime, files = request.runtime_inputs, pins.roles
     arguments = [
-        *_security_argv(contract), *_input_mounts(materialized),
+        *_security_argv(contract),
+        "--user", f"{os.getuid()}:{os.getgid()}",
+        *_input_mounts(materialized),
         *_mount(runtime_output.as_posix(), CONTAINER_OUTPUT_ROOT, readonly=False),
         *_mount(
             str(contract.analytics_socket["path"]), ANALYTICS_SOCKET_TARGET,
             readonly=True,
         ),
         "--workdir", str(CONTAINER_PROJECT_ROOT),
+        *deterministic_numeric_thread_environment_argv_v1(),
         "--env", "PYTHONDONTWRITEBYTECODE=1",
         "--env", (
             "VAST_NATIVE_PYTHONPATH="
@@ -1361,121 +1364,31 @@ def _validate_status(
         _fail("openvino_gva_native_runtime_terminal_status_invalid")
 
 
-def _copy_one_evidence(source: Path, temporary: Path) -> tuple[int, int]:
-    source_fd = target_fd = -1
-    try:
-        before = source.lstat()
-        if (
-            not stat.S_ISREG(before.st_mode) or _is_link(before)
-            or int(before.st_nlink) != 1
-            or not 0 < int(before.st_size) <= MAX_EVIDENCE_BYTES
-        ):
-            raise OSError("invalid")
-        source_fd = os.open(
-            source, os.O_RDONLY | getattr(os, "O_CLOEXEC", 0)
-            | getattr(os, "O_NOFOLLOW", 0),
-        )
-        opened = os.fstat(source_fd)
-        if _snapshot(before) != _snapshot(opened):
-            raise OSError("changed")
-        target_fd = os.open(
-            temporary, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600,
-        )
-        observed = 0
-        while True:
-            chunk = os.read(source_fd, 1024 * 1024)
-            if not chunk:
-                break
-            observed += len(chunk)
-            offset = 0
-            while offset < len(chunk):
-                written = os.write(target_fd, chunk[offset:])
-                if written <= 0:
-                    raise OSError("short write")
-                offset += written
-        os.fsync(target_fd)
-        after, opened_after = source.lstat(), os.fstat(source_fd)
-        target_info = os.fstat(target_fd)
-        if (
-            _snapshot(before) != _snapshot(after)
-            or _snapshot(after) != _snapshot(opened_after)
-            or observed != int(after.st_size)
-            or observed != int(target_info.st_size)
-            or not stat.S_ISREG(target_info.st_mode)
-            or int(target_info.st_nlink) != 1
-        ):
-            raise OSError("changed")
-        return int(target_info.st_dev), int(target_info.st_ino)
-    except OSError:
-        try:
-            temporary.unlink(missing_ok=True)
-        except OSError:
-            pass
-        _fail("openvino_gva_child_evidence_materialization_failed")
-    finally:
-        for descriptor in (source_fd, target_fd):
-            if descriptor >= 0:
-                os.close(descriptor)
-
-
 def _copy_evidence(
     runtime_output: Path,
     request: NativePublicationRequestV3,
     mapping: Mapping[str, str],
+    *,
+    _fault_hook: Callable[[str], None] | None = None,
 ) -> None:
-    staged: list[tuple[Path, Path, tuple[int, int]]] = []
-    committed: list[tuple[Path, tuple[int, int]]] = []
-    failed = False
     try:
-        for target_name in request.launcher_evidence_files:
-            source = runtime_output / mapping[target_name]
-            target = request.output_dir / target_name
-            temporary = target.with_name(
-                f".{target.name}.openvino-gva-v3.{os.getpid()}.tmp"
-            )
-            if target.exists() or temporary.exists():
-                raise OSError("collision")
-            identity = _copy_one_evidence(source, temporary)
-            staged.append((temporary, target, identity))
-        if any(target.exists() for _, target, _ in staged):
-            raise OSError("collision")
-        for temporary, target, identity in staged:
-            os.link(temporary, target, follow_symlinks=False)
-            committed.append((target, identity))
-            info = target.lstat()
-            if (
-                (int(info.st_dev), int(info.st_ino)) != identity
-                or not stat.S_ISREG(info.st_mode) or _is_link(info)
-                or int(info.st_nlink) != 2
-            ):
-                raise OSError("commit changed")
-        for temporary, _, _ in staged:
-            temporary.unlink()
-        for target, identity in committed:
-            info = target.lstat()
-            if (
-                (int(info.st_dev), int(info.st_ino)) != identity
-                or not stat.S_ISREG(info.st_mode) or _is_link(info)
-                or int(info.st_nlink) != 1
-            ):
-                raise OSError("committed changed")
-    except (OSError, OpenVINOGVAPublicationRuntimeV3Error):
-        failed = True
-    finally:
-        if failed:
-            for target, identity in reversed(committed):
-                try:
-                    info = target.lstat()
-                    if (int(info.st_dev), int(info.st_ino)) == identity:
-                        target.unlink()
-                except (FileNotFoundError, OSError):
-                    pass
-        for temporary, _, _ in staged:
-            try:
-                temporary.unlink(missing_ok=True)
-            except OSError:
-                pass
-    if failed:
+        materialize_publication_child_evidence_group_v1(
+            project_root=request.project_root,
+            source_dir=runtime_output,
+            output_dir=request.output_dir,
+            target_names=request.launcher_evidence_files,
+            evidence_mapping=dict(mapping),
+            allowed_preexisting_names=(
+                (Path(os.path.abspath(request.arm_contract_path)).name,)
+                if Path(os.path.abspath(request.arm_contract_path)).parent
+                == Path(os.path.abspath(request.output_dir))
+                else ()
+            ),
+            maximum_bytes=MAX_EVIDENCE_BYTES,
+            label="OpenVINO GVA child evidence",
+            after_physical_commit_step=_fault_hook,
+        )
+    except PublicationChildEvidenceMaterializerV1Error:
         _fail("openvino_gva_child_evidence_materialization_failed")
 
 
@@ -1507,7 +1420,9 @@ def run_checkpoint_openvino_gva_publication_runtime_v3(
                 _require_materialized_unchanged(materialized)
                 _require_pins_unchanged(pins)
                 _require_sockets_unchanged(contract)
-                _probe_openvino_devices(pins, contract, materialized)
+                _probe_openvino_devices(
+                    pins, contract, materialized, output_dir=request.output_dir
+                )
                 _require_materialized_unchanged(materialized)
                 _require_pins_unchanged(pins)
                 _require_sockets_unchanged(contract)
@@ -1547,8 +1462,9 @@ def run_checkpoint_openvino_gva_publication_runtime_v3(
 
 
 __all__ = [
-    "EXPECTED_IMAGE_ID",
+    "EXPECTED_BASE_IMAGE_ID", "EXPECTED_IMAGE_ID", "EXPECTED_IMAGE_REFERENCE",
     "EXPECTED_REPOSITORY_DIGEST",
+    "image_projection_sha256",
     "OpenVINOGVAPublicationRuntimeV3Error",
     "RUNTIME_INPUT_KEY",
     "RUNTIME_INPUT_KIND",

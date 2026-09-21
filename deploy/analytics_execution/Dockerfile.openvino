@@ -1,7 +1,8 @@
 ARG BASE_IMAGE=vast/openvino-native-probe:dlstreamer-2026.1
+ARG BUILD_IMAGE=vast/openvino-native-probe:dlstreamer-2026.1
 ARG SOURCE_DATE_EPOCH=0
 
-FROM ${BASE_IMAGE} AS worker_builder
+FROM ${BUILD_IMAGE} AS worker_builder
 
 ARG SOURCE_DATE_EPOCH
 USER root
@@ -21,8 +22,19 @@ RUN chmod 0555 /opt/vast/worker-root/opt/vast/analytics/openvino_worker.py \
 FROM ${BASE_IMAGE}
 
 ARG EXPECTED_BASE_IMAGE_ID=sha256:5c43c6c1f95b3fbb4a95957d1d293b1272c1db6a44a7a2063aad3aeba7c951d1
+ARG VAST_SOURCE_SET_SHA256
+ARG VAST_DEPENDENCY_SET_SHA256
+ARG VAST_BUILD_CONTEXT_SHA256
+ARG VAST_BASE_IMAGE_ID
+ARG VAST_BUILD_IMAGE_ID
+LABEL org.vast.component="analytics-openvino-worker-publication-v3"
 LABEL org.vast.analytics_worker.base_image_id="${EXPECTED_BASE_IMAGE_ID}"
 LABEL org.vast.analytics_worker.engine="openvino_cpu"
+LABEL org.vast.publication-image.source-set-sha256="${VAST_SOURCE_SET_SHA256}"
+LABEL org.vast.publication-image.dependency-set-sha256="${VAST_DEPENDENCY_SET_SHA256}"
+LABEL org.vast.publication-image.build-context-sha256="${VAST_BUILD_CONTEXT_SHA256}"
+LABEL org.vast.publication-image.base-image-id="${VAST_BASE_IMAGE_ID}"
+LABEL org.vast.publication-image.build-image-id="${VAST_BUILD_IMAGE_ID}"
 
 USER root
 

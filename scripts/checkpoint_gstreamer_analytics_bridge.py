@@ -23,15 +23,19 @@ from analytics_execution_protocol import (
     BRANCHES,
     ENGINE_OPENVINO_CPU,
     ENGINE_TENSORRT_CUDA,
+    PROTOCOL_IDENTITY_SHA256,
     ProtocolError,
     canonical_sha256,
     close_fds,
     receive_packet,
     send_packet,
     validate_frame_identity,
+    validate_inference_request,
     verify_sealed_memfd,
 )
 from analytics_execution_worker import ExecutionClient, validate_worker_capability
+from analytics_execution_endpoint import terminal_detector_identity
+from checkpoint_deepstream_protocol_bridge import analytics_backend_identity
 
 
 BRIDGE_SCHEMA_VERSION = 1
@@ -129,7 +133,12 @@ def open_bridge_listener(path: os.PathLike[str] | str, *, backlog: int = 1) -> s
         raise
 
 
-def _policy_binding(manifest: Mapping[str, Any], branch: str, resource: str) -> dict[str, Any]:
+def _policy_binding(
+    manifest: Mapping[str, Any],
+    branch: str,
+    resource: str,
+    capability: Mapping[str, Any],
+) -> dict[str, Any]:
     try:
         value = manifest["systems"]["gstreamer_custom"]["branches"][branch][resource]
     except (KeyError, TypeError) as error:
@@ -145,17 +154,11 @@ def _policy_binding(manifest: Mapping[str, Any], branch: str, resource: str) -> 
         "terminal_detector": _visible(binding.get("terminal_detector"), "policy terminal_detector"),
         "terminal_backend": _visible(binding.get("terminal_backend"), "policy terminal_backend"),
     }
-    if resource == "cpu":
-        _require(
-            result["terminal_backend"].endswith(";device=CPU"),
-            "CPU policy terminal backend is not CPU",
-        )
-    else:
-        _require(
-            result["terminal_backend"].endswith(";device=NVIDIA_CUDA:0")
-            and not result["terminal_backend"].startswith("openvino"),
-            "GPU policy terminal backend is not NVIDIA CUDA",
-        )
+    _require(
+        result["terminal_detector"] == terminal_detector_identity(capability)
+        and result["terminal_backend"] == analytics_backend_identity(capability),
+        "policy terminal identity differs from worker capability",
+    )
     return result
 
 
@@ -473,7 +476,9 @@ class AnalyticsExecutionBridge:
                         capability["engine"] == RESOURCE_ENGINE[resource],
                         "bridge worker capability resource/engine mismatch",
                     )
-                    _policy_binding(self._policy_manifest, branch, resource)
+                    _policy_binding(
+                        self._policy_manifest, branch, resource, capability
+                    )
                     binding = _validate_worker_binding(
                         worker_bindings[key], capability, branch=branch, resource=resource
                     )
@@ -501,12 +506,122 @@ class AnalyticsExecutionBridge:
                 pass
         sockets.clear()
 
+    def worker_protocol_handshake(
+        self, value: Mapping[str, Any]
+    ) -> tuple[tuple[str, str], dict[str, Any]]:
+        """Bind one front connection to exactly one frozen worker capability."""
+        hello = _exact(
+            value,
+            {
+                "schema_version",
+                "message_type",
+                "protocol_identity_sha256",
+                "nonce",
+                "expected_capability_sha256",
+            },
+            "analytics execution proxy hello",
+        )
+        _require(
+            hello["schema_version"] == 1
+            and hello["message_type"] == "hello",
+            "analytics execution proxy hello is invalid",
+        )
+        _require(
+            hello["protocol_identity_sha256"] == PROTOCOL_IDENTITY_SHA256,
+            "analytics execution proxy hello protocol mismatch",
+        )
+        nonce = str(hello["nonce"] or "")
+        _require(
+            _SHA256_RE.fullmatch(nonce) is not None,
+            "analytics execution proxy hello nonce is invalid",
+        )
+        expected_sha256 = _sha(
+            hello["expected_capability_sha256"],
+            "analytics execution proxy expected capability",
+        )
+        matches = [
+            (key, capability)
+            for key, capability in self._capabilities.items()
+            if canonical_sha256(capability) == expected_sha256
+        ]
+        _require(
+            len(matches) == 1,
+            "analytics execution proxy capability is absent or ambiguous",
+        )
+        key, capability = matches[0]
+        return key, {
+            "schema_version": 1,
+            "message_type": "hello_ack",
+            "protocol_identity_sha256": PROTOCOL_IDENTITY_SHA256,
+            "nonce": nonce,
+            "capability": dict(capability),
+        }
+
+    def execute_worker_protocol(
+        self,
+        value: Mapping[str, Any],
+        payload: bytes | bytearray | memoryview,
+        *,
+        route: tuple[str, str],
+    ) -> tuple[dict[str, Any], bytes]:
+        """Proxy one native worker request through its attested persistent client."""
+        _require(route in self._capabilities, "analytics execution proxy route is invalid")
+        request = validate_inference_request(value)
+        capability = self._capabilities[route]
+        branch, resource = route
+        _require(
+            request["frame"]["branch"] == branch,
+            "analytics execution proxy request branch changed route",
+        )
+        _require(
+            request["engine"] == RESOURCE_ENGINE[resource],
+            "analytics execution proxy request engine changed route",
+        )
+        _require(
+            request["worker_id"] == capability["worker_id"],
+            "analytics execution proxy request worker_id mismatch",
+        )
+        model = request["model"]
+        for request_field, capability_field in (
+            ("model_id", "model_id"),
+            ("source_sha256", "source_model_sha256"),
+            ("runtime_artifact_sha256", "model_artifact_sha256"),
+            ("runtime_weights_sha256", "runtime_weights_sha256"),
+        ):
+            _require(
+                model[request_field] == capability[capability_field],
+                f"analytics execution proxy model {request_field} mismatch",
+            )
+        _require(
+            request["tensor"]["preprocessing_contract_sha256"]
+            == capability["preprocessing_contract_sha256"],
+            "analytics execution proxy preprocessing contract mismatch",
+        )
+        _require(
+            request["expected_output_contract_sha256"]
+            == capability["output_contract_sha256"],
+            "analytics execution proxy output contract mismatch",
+        )
+        tensor = bytes(payload)
+        _require(
+            len(tensor) == request["tensor"]["byte_length"],
+            "analytics execution proxy tensor byte length mismatch",
+        )
+        _require(
+            hashlib.sha256(tensor).hexdigest() == request["tensor"]["sha256"],
+            "analytics execution proxy tensor SHA-256 mismatch",
+        )
+        with self._locks[route]:
+            return self._clients[route].infer(request, tensor)
+
     def execute(self, value: Mapping[str, Any], payload: bytes | bytearray | memoryview) -> dict[str, Any]:
         request = _validate_request(value)
         branch = request["frame"]["branch"]
         resource = request["decision"]["selected_resource"]
         key = _worker_key(branch, resource)
-        policy = _policy_binding(self._policy_manifest, branch, resource)
+        policy = _policy_binding(
+            self._policy_manifest, branch, resource, self._capabilities[key]
+        )
         decision = request["decision"]
         for field, expected in (
             ("selected_implementation_id", policy["implementation_id"]),

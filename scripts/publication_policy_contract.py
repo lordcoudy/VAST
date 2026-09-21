@@ -74,6 +74,16 @@ _RUNTIME_IDENTITY_FIELDS = frozenset(
         "terminal_backend",
     }
 )
+_TERMINAL_BACKEND_PATTERNS = {
+    "cpu": re.compile(
+        r"^analytics-execution:openvino_cpu;runtime=[^;\r\n]+;"
+        r"native_api=[^;\r\n]+;device=CPU:[^;\r\n]+$"
+    ),
+    "gpu": re.compile(
+        r"^analytics-execution:tensorrt_cuda;runtime=[^;\r\n]+;"
+        r"native_api=[^;\r\n]+;device=NVIDIA_CUDA:[^;\r\n]+$"
+    ),
+}
 
 
 class PolicyContractError(ContractError):
@@ -150,8 +160,8 @@ def _assess_runtime_identity(
             device_api == "CPU"
             and gpu_id is None
             and type(terminal_backend) is str
-            and "device=CPU" in terminal_backend
-            and "NVIDIA_CUDA" not in terminal_backend
+            and _TERMINAL_BACKEND_PATTERNS[resource].fullmatch(terminal_backend)
+            is not None
         )
     else:
         matches_resource = (
@@ -159,7 +169,8 @@ def _assess_runtime_identity(
             and type(gpu_id) is int
             and gpu_id == 0
             and type(terminal_backend) is str
-            and "device=NVIDIA_CUDA:0" in terminal_backend
+            and _TERMINAL_BACKEND_PATTERNS[resource].fullmatch(terminal_backend)
+            is not None
         )
     if not matches_resource:
         blockers.append(f"{prefix}:runtime_identity_resource_mismatch")

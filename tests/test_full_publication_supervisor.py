@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import sys
 import tempfile
 import unittest
@@ -14,10 +15,22 @@ from full_publication_supervisor import (  # noqa: E402
     EXIT_COMPLETE,
     EXIT_PERMANENT,
     EXIT_TRANSIENT,
+    FROZEN_FULL_PUBLICATION_MATRIX_SCHEMA_VERSION,
+    FROZEN_FULL_PUBLICATION_MATRIX_SHA256,
+    FROZEN_PUBLICATION_POLICY_CONTRACT_SHA256,
     FullPublicationSupervisor,
     InvocationUnavailable,
     SubprocessEntrypointInvoker,
     SupervisorError,
+    UnexpectedProcessExit,
+)
+
+
+FROZEN_ENTRYPOINT_ARGS = (
+    "--expected-matrix-sha256",
+    FROZEN_FULL_PUBLICATION_MATRIX_SHA256,
+    "--expected-policy-contract-sha256",
+    FROZEN_PUBLICATION_POLICY_CONTRACT_SHA256,
 )
 
 
@@ -183,7 +196,7 @@ class FullPublicationSupervisorTests(unittest.TestCase):
 
         invoker = SubprocessEntrypointInvoker(
             entrypoint=entrypoint,
-            entrypoint_args=("--run-root", "runs/full"),
+            entrypoint_args=(*FROZEN_ENTRYPOINT_ARGS, "--run-root", "runs/full"),
             python_executable=sys.executable,
             run_process=fake_process,
             environment={
@@ -193,6 +206,115 @@ class FullPublicationSupervisorTests(unittest.TestCase):
         )
         with self.assertRaisesRegex(SupervisorError, "capability secret"):
             invoker("run")
+
+    def test_subprocess_invoker_redacts_capabilities_loaded_from_link_file(self) -> None:
+        root = Path(self.temp.name)
+        entrypoint = root / "entrypoint.py"
+        entrypoint.write_text("# fixture\n", encoding="utf-8")
+        token = "FileReadCapabilityToken99"
+        (root / "seafile.txt").write_text(
+            "download link - https://seafile.example/d/" + token + "\n"
+            "upload link - https://seafile.example/u/d/FileUploadCapabilityToken99\n",
+            encoding="utf-8",
+        )
+
+        def fake_process(*_: object, **__: object) -> SimpleNamespace:
+            return SimpleNamespace(
+                returncode=EXIT_PERMANENT,
+                stdout=json.dumps({"message": token}),
+                stderr="",
+            )
+
+        invoker = SubprocessEntrypointInvoker(
+            entrypoint=entrypoint,
+            entrypoint_args=(
+                *FROZEN_ENTRYPOINT_ARGS,
+                "--project-root", str(root),
+                "--cloud-links-file", "seafile.txt",
+                "--run-root", "runs/full",
+            ),
+            python_executable=sys.executable,
+            run_process=fake_process,
+            environment={},
+        )
+        with self.assertRaisesRegex(SupervisorError, "capability secret"):
+            invoker("run")
+
+    def test_subprocess_invoker_requires_exact_frozen_contract_arguments(self) -> None:
+        entrypoint = Path(self.temp.name) / "entrypoint.py"
+        entrypoint.write_text("# fixture\n", encoding="utf-8")
+        for arguments in (
+            (),
+            (
+                "--expected-matrix-sha256",
+                "0" * 64,
+                "--expected-policy-contract-sha256",
+                FROZEN_PUBLICATION_POLICY_CONTRACT_SHA256,
+            ),
+            (
+                "--expected-matrix-sha256",
+                FROZEN_FULL_PUBLICATION_MATRIX_SHA256,
+                "--expected-policy-contract-sha256",
+                "0" * 64,
+            ),
+        ):
+            with self.subTest(arguments=arguments), self.assertRaisesRegex(
+                SupervisorError, "exact frozen"
+            ):
+                SubprocessEntrypointInvoker(
+                    entrypoint=entrypoint,
+                    entrypoint_args=arguments,
+                    python_executable=sys.executable,
+                    environment={},
+                )
+
+    def test_command_identity_explicitly_binds_frozen_contract(self) -> None:
+        entrypoint = Path(self.temp.name) / "entrypoint.py"
+        entrypoint.write_text("# fixture\n", encoding="utf-8")
+        invoker = SubprocessEntrypointInvoker(
+            entrypoint=entrypoint,
+            entrypoint_args=FROZEN_ENTRYPOINT_ARGS,
+            python_executable=sys.executable,
+            environment={},
+        )
+        self.assertEqual(
+            invoker.command_identity["frozen_publication_contract"],
+            {
+                "matrix_schema_version": (
+                    FROZEN_FULL_PUBLICATION_MATRIX_SCHEMA_VERSION
+                ),
+                "matrix_sha256": FROZEN_FULL_PUBLICATION_MATRIX_SHA256,
+                "policy_contract_sha256": (
+                    FROZEN_PUBLICATION_POLICY_CONTRACT_SHA256
+                ),
+            },
+        )
+
+    def test_subprocess_invoker_rejects_post_construction_source_replacement(self) -> None:
+        root = Path(self.temp.name)
+        entrypoint = root / "entrypoint.py"
+        marker = root / "entrypoint-marker.txt"
+        original = (
+            "from pathlib import Path\n"
+            f"Path({str(marker)!r}).write_text('original', encoding='utf-8')\n"
+        )
+        replacement = original.replace("original", "replaced")
+        self.assertEqual(len(original.encode()), len(replacement.encode()))
+        entrypoint.write_text(original, encoding="utf-8")
+        invoker = SubprocessEntrypointInvoker(
+            entrypoint=entrypoint,
+            entrypoint_args=FROZEN_ENTRYPOINT_ARGS,
+            python_executable=sys.executable,
+            environment={},
+        )
+        candidate = entrypoint.with_suffix(".replacement")
+        candidate.write_text(replacement, encoding="utf-8")
+        os.replace(candidate, entrypoint)
+        with self.assertRaisesRegex(
+            UnexpectedProcessExit, "unexpected exit code"
+        ):
+            invoker("run")
+        self.assertFalse(marker.exists())
 
 
 if __name__ == "__main__":

@@ -1,0 +1,271 @@
+{
+  "artifact_kind": "vast_publication_qualification_image_refreeze_registry_v1",
+  "build_registry": "configs/publication_image_build_v1.json",
+  "schema_version": 1,
+  "systems": [
+    {
+      "base": {
+        "evidence_producer": "native_probe_deepstream",
+        "kind": "remote_digest",
+        "reference": "nvcr.io/nvidia/deepstream@sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759"
+      },
+      "created": "2024-08-01T00:00:00Z",
+      "dependency_allowlist": "deploy/deepstream/checkpoint/runtime-dependency-allowlist.txt",
+      "deterministic_references": [
+        "vast/deepstream-publication-runtime-v3:materialized-determinism-a",
+        "vast/deepstream-publication-runtime-v3:materialized-determinism-b"
+      ],
+      "dockerfile": "deploy/deepstream/checkpoint/Dockerfile.runtime",
+      "embedded_aliases": {
+        "checkpoint_source": "/usr/local/bin/vast_checkpoint_source",
+        "deepstream_meta_bridge": "/opt/vast/checkpoint/libvast_deepstream_meta_bridge.so",
+        "runtime_entrypoint": "/usr/local/bin/vast_deepstream_publication_runtime_v3"
+      },
+      "embedded_paths": [
+        "/usr/local/bin/vast_deepstream_publication_runtime_v3",
+        "/usr/local/bin/vast_deepstream_checkpoint_runtime",
+        "/usr/local/bin/vast_checkpoint_source",
+        "/opt/vast/checkpoint/libvast_deepstream_meta_bridge.so",
+        "/opt/vast/runtime-source-allowlist.txt",
+        "/opt/vast/runtime-dependency-allowlist.txt"
+      ],
+      "entrypoint": [
+        "/usr/local/bin/vast_deepstream_publication_runtime_v3"
+      ],
+      "final_reference": "vast/deepstream-publication-runtime-v3:materialized",
+      "native_builder": null,
+      "native_source_prefix": null,
+      "projection_kind": "deepstream_v1",
+      "projection_label_keys": [
+        "org.vast.base-image-digest",
+        "org.vast.component",
+        "org.vast.publication-ready",
+        "org.vast.publication-runtime-abi",
+        "org.vast.runtime-dependency-set-sha256",
+        "org.vast.runtime-source-sha256"
+      ],
+      "repository": "vast/deepstream-publication-runtime-v3",
+      "required_labels": {
+        "org.vast.base-image-digest": "$base_reference",
+        "org.vast.claim-status": "native-sdk-runtime-awaiting-exact-kpp-v3-hardware-pilot",
+        "org.vast.component": "deepstream-checkpoint-native-sdk-runtime",
+        "org.vast.publication-ready": "false",
+        "org.vast.publication-runtime-abi": "3",
+        "org.vast.runtime-dependency-set-sha256": "$dependency_set_sha256",
+        "org.vast.runtime-source-sha256": "$runtime_source_sha256"
+      },
+      "smoke_args": [
+        "--help"
+      ],
+      "source_allowlist": "deploy/deepstream/checkpoint/runtime-source-allowlist.txt",
+      "system": "deepstream",
+      "user": "root"
+    },
+    {
+      "base": {
+        "evidence_producer": "native_probe_savant",
+        "kind": "remote_digest",
+        "reference": "ghcr.io/insight-platform/savant-deepstream@sha256:3c0ef6f4bb57e385644da526789626f0c943dcb90ff32b72a7883e05798ce9e6"
+      },
+      "created": "2024-08-01T00:00:00Z",
+      "dependency_allowlist": "deploy/deepstream/checkpoint/runtime-dependency-allowlist.txt",
+      "deterministic_references": [
+        "vast/savant-publication-runtime-v3:materialized-determinism-a",
+        "vast/savant-publication-runtime-v3:materialized-determinism-b"
+      ],
+      "dockerfile": "deploy/savant/publication/Dockerfile",
+      "embedded_aliases": {
+        "checkpoint_source": "/usr/local/bin/vast_checkpoint_source",
+        "runtime_entrypoint": "/usr/local/bin/vast_savant_checkpoint_runtime",
+        "sdk_worker": "/opt/vast/checkpoint/checkpoint_savant_sdk_runtime_v3.py"
+      },
+      "embedded_paths": [
+        "/usr/local/bin/vast_savant_checkpoint_runtime",
+        "/usr/local/bin/vast_checkpoint_source",
+        "/opt/vast/checkpoint/checkpoint_savant_sdk_runtime_v3.py",
+        "/opt/vast/checkpoint/checkpoint_savant_container_runtime_v3.py",
+        "/opt/vast/runtime-source-allowlist.txt",
+        "/opt/vast/runtime-dependency-allowlist.txt"
+      ],
+      "entrypoint": [
+        "/usr/local/bin/vast_savant_checkpoint_runtime"
+      ],
+      "final_reference": "vast/savant-publication-runtime-v3:materialized",
+      "native_builder": {
+        "kind": "produced_image",
+        "producer": "native_probe_savant",
+        "reference": "vast/savant-native-probe:0.5.17-7.0"
+      },
+      "native_source_prefix": null,
+      "projection_kind": "savant_v3",
+      "projection_label_keys": [
+        "org.vast.base-image-id",
+        "org.vast.deepstream.version",
+        "org.vast.native-builder-image-id",
+        "org.vast.native-builder-source-sha256",
+        "org.vast.publication-ready",
+        "org.vast.savant.runtime-bundle-sha256",
+        "org.vast.savant.runtime-source-sha256",
+        "org.vast.savant.version"
+      ],
+      "repository": "vast/savant-publication-runtime-v3",
+      "required_labels": {
+        "org.vast.base-image-id": "$base_image_id",
+        "org.vast.claim-status": "native-sdk-runtime-awaiting-endpoint-bound-full-arm",
+        "org.vast.component": "savant-checkpoint-publication-runtime",
+        "org.vast.deepstream.version": "7.0",
+        "org.vast.native-builder-image-id": "$native_builder_image_id",
+        "org.vast.native-builder-source-sha256": "$native_builder_source_sha256",
+        "org.vast.publication-ready": "false",
+        "org.vast.publication-runtime-abi": "3",
+        "org.vast.savant.publication-runtime": "v3",
+        "org.vast.savant.runtime-bundle-sha256": "$dependency_set_sha256",
+        "org.vast.savant.runtime-source-sha256": "$runtime_source_sha256",
+        "org.vast.savant.version": "0.5.17"
+      },
+      "smoke_args": [
+        "arm",
+        "--help"
+      ],
+      "source_allowlist": "deploy/savant/publication/runtime-source-allowlist.txt",
+      "system": "savant",
+      "user": "root"
+    },
+    {
+      "base": {
+        "kind": "produced_image",
+        "producer": "native_probe_openvino",
+        "reference": "vast/openvino-native-probe:dlstreamer-2026.1"
+      },
+      "created": "1970-01-01T00:00:00Z",
+      "dependency_allowlist": "deploy/gstreamer_custom/publication/runtime-dependency-allowlist.txt",
+      "deterministic_references": [
+        "vast/openvino-gva-publication-runtime-v3:materialized-determinism-a",
+        "vast/openvino-gva-publication-runtime-v3:materialized-determinism-b"
+      ],
+      "dockerfile": "deploy/openvino_gva/publication/Dockerfile",
+      "embedded_aliases": {
+        "analytics_terminal": "/opt/vast/lib/gstreamer-1.0/libgstvastanalyticsterminal.so",
+        "native_probe": "/usr/local/bin/vast_native_gst_probe",
+        "runtime_entrypoint": "/usr/local/bin/vast_openvino_gva_publication_runtime_v3"
+      },
+      "embedded_paths": [
+        "/usr/local/bin/vast_openvino_gva_publication_runtime_v3",
+        "/usr/local/bin/vast_native_gst_probe",
+        "/usr/local/bin/vast_checkpoint_source",
+        "/opt/vast/share/gstreamer-registry.bin",
+        "/opt/vast/lib/gstreamer-1.0/libgstadaptivescheduler.so",
+        "/opt/vast/lib/gstreamer-1.0/libgstvastanalyticsterminal.so",
+        "/opt/vast/lib/gstreamer-1.0/libgstvastanalyticsqueue.so",
+        "/opt/vast/lib/gstreamer-1.0/libgstvastcheckpointprefixqueue.so",
+        "/opt/vast/checkpoint/checkpoint_gstreamer_runtime.py",
+        "/opt/vast/checkpoint/checkpoint_openvino_gva_container_coordinator_v3.py",
+        "/opt/vast/runtime-source-allowlist.txt"
+      ],
+      "entrypoint": [
+        "/usr/local/bin/vast_openvino_gva_publication_runtime_v3"
+      ],
+      "final_reference": "vast/openvino-gva-publication-runtime-v3:materialized",
+      "native_builder": null,
+      "native_source_prefix": "deploy/native_gst_probe/",
+      "projection_kind": "openvino_v3",
+      "projection_label_keys": [
+        "org.vast.base-image-id",
+        "org.vast.component",
+        "org.vast.native_probe.kind",
+        "org.vast.native_probe.source_sha",
+        "org.vast.publication-ready",
+        "org.vast.publication-runtime-abi",
+        "org.vast.runtime-dependency-set-sha256",
+        "org.vast.runtime-source-allowlist-sha256",
+        "org.vast.runtime-source-sha256"
+      ],
+      "repository": "vast/openvino-gva-publication-runtime-v3",
+      "required_labels": {
+        "org.vast.base-image-id": "$base_image_id",
+        "org.vast.component": "openvino-gva-checkpoint-publication-runtime",
+        "org.vast.native_probe.kind": "openvino-dlstreamer-publication-v3",
+        "org.vast.native_probe.source_sha": "$native_source_sha256",
+        "org.vast.publication-ready": "false",
+        "org.vast.publication-runtime-abi": "3",
+        "org.vast.runtime-dependency-set-sha256": "$dependency_set_sha256",
+        "org.vast.runtime-source-allowlist-sha256": "$source_allowlist_sha256",
+        "org.vast.runtime-source-sha256": "$runtime_source_sha256"
+      },
+      "smoke_args": [
+        "--help"
+      ],
+      "source_allowlist": "deploy/openvino_gva/publication/runtime-source-allowlist.txt",
+      "system": "openvino_gva",
+      "user": "dlstreamer"
+    },
+    {
+      "base": {
+        "kind": "produced_image",
+        "producer": "native_probe_openvino",
+        "reference": "vast/openvino-native-probe:dlstreamer-2026.1"
+      },
+      "created": "1970-01-01T00:00:00Z",
+      "dependency_allowlist": "deploy/gstreamer_custom/publication/runtime-dependency-allowlist.txt",
+      "deterministic_references": [
+        "vast/gstreamer-custom-publication-runtime-v3:materialized-determinism-a",
+        "vast/gstreamer-custom-publication-runtime-v3:materialized-determinism-b"
+      ],
+      "dockerfile": "deploy/gstreamer_custom/publication/Dockerfile",
+      "embedded_aliases": {
+        "analytics_terminal": "/opt/vast/lib/gstreamer-1.0/libgstvastanalyticsterminal.so",
+        "native_probe": "/usr/local/bin/vast_native_gst_probe",
+        "runtime_entrypoint": "/usr/local/bin/vast_gstreamer_custom_publication_runtime_v3"
+      },
+      "embedded_paths": [
+        "/usr/local/bin/vast_gstreamer_custom_publication_runtime_v3",
+        "/usr/local/bin/vast_native_gst_probe",
+        "/usr/local/bin/vast_checkpoint_source",
+        "/opt/vast/share/gstreamer-registry.bin",
+        "/opt/vast/lib/gstreamer-1.0/libgstadaptivescheduler.so",
+        "/opt/vast/lib/gstreamer-1.0/libgstvastanalyticsterminal.so",
+        "/opt/vast/lib/gstreamer-1.0/libgstvastanalyticsqueue.so",
+        "/opt/vast/lib/gstreamer-1.0/libgstvastcheckpointprefixqueue.so",
+        "/opt/vast/checkpoint/checkpoint_gstreamer_runtime.py",
+        "/opt/vast/checkpoint/checkpoint_gstreamer_custom_container_coordinator_v3.py",
+        "/opt/vast/runtime-source-allowlist.txt"
+      ],
+      "entrypoint": [
+        "/usr/local/bin/vast_gstreamer_custom_publication_runtime_v3"
+      ],
+      "final_reference": "vast/gstreamer-custom-publication-runtime-v3:materialized",
+      "native_builder": null,
+      "native_source_prefix": "deploy/native_gst_probe/",
+      "projection_kind": "gstreamer_v3",
+      "projection_label_keys": [
+        "org.opencontainers.image.version",
+        "org.vast.base-image-id",
+        "org.vast.claim-status",
+        "org.vast.component",
+        "org.vast.native_probe.kind",
+        "org.vast.native_probe.source_sha",
+        "org.vast.publication-runtime-abi",
+        "org.vast.runtime-dependency-set-sha256",
+        "org.vast.runtime-source-sha256"
+      ],
+      "repository": "vast/gstreamer-custom-publication-runtime-v3",
+      "required_labels": {
+        "org.opencontainers.image.version": "24.04",
+        "org.vast.base-image-id": "$base_image_id",
+        "org.vast.claim-status": "deterministic-image-awaiting-exact-kpp-v3-gpu-pilots",
+        "org.vast.component": "gstreamer-custom-checkpoint-publication-runtime",
+        "org.vast.native_probe.kind": "openvino-dlstreamer",
+        "org.vast.native_probe.source_sha": "$native_source_sha256",
+        "org.vast.publication-runtime-abi": "3",
+        "org.vast.runtime-dependency-set-sha256": "$dependency_set_sha256",
+        "org.vast.runtime-source-sha256": "$runtime_source_sha256"
+      },
+      "smoke_args": [
+        "--help"
+      ],
+      "source_allowlist": "deploy/gstreamer_custom/publication/runtime-source-allowlist.txt",
+      "system": "gstreamer_custom",
+      "user": "dlstreamer"
+    }
+  ]
+}

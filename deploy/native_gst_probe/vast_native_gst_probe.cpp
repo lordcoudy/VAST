@@ -1389,7 +1389,7 @@ class NativeProbeRuntime {
     return trace_id(trace) + ":" + branch + ":" + suffix;
   }
 
-  void emit_checkpoint_event(
+  std::uint64_t emit_checkpoint_event(
       const Trace& trace,
       std::uint64_t pts,
       const std::string& event_kind,
@@ -1405,7 +1405,7 @@ class NativeProbeRuntime {
     if (trace.admission_id.empty() || !valid_sha256(trace.payload_sha256)) {
       throw std::runtime_error("checkpoint trace lacks verified direct-admission linkage");
     }
-    checkpoint_emitter_->emit_with_admission(
+    return checkpoint_emitter_->emit_with_admission(
         trace_id(trace),
         trace.frame_id,
         checkpoint_input_frame_key(trace),
@@ -2556,21 +2556,25 @@ class NativeProbeRuntime {
             });
         const vast::CheckpointNativeExecutionBinding binding =
             self->checkpoint_policy_binding(ctx->branch, decision.selected_resource);
+        // The coordinator may serialize a concurrent decision after this
+        // worker captured request.decision_time_ms.  Bind path entry to a
+        // fresh post-response realtime timestamp so it cannot precede the
+        // authoritative serialized decision.
+        const std::uint64_t path_entry_timestamp_ns = now_ns();
         const std::string event_id = sha256_text(
             "native_policy_path_entry_v1\n" + self->args_.run_id + "\n" +
             self->trace_id(trace) + "\n" + self->checkpoint_input_frame_key(trace) +
             "\n" + ctx->branch + "\n" + std::to_string(pts) + "\n" +
             binding.implementation_id + "\n" +
-            std::to_string(event_timestamp_ns));
+            std::to_string(path_entry_timestamp_ns));
         vast::checkpoint_external_call(lock, [&]() {
           self->checkpoint_policy_client_->enter_path(
               request,
               decision,
               binding,
               event_id,
-              request.decision_time_ms);
+              static_cast<double>(path_entry_timestamp_ns) / 1'000'000.0);
         });
-        const std::uint64_t path_entry_timestamp_ns = now_ns();
 
         lock.lock();
         auto branch_executions_it =
@@ -2880,7 +2884,7 @@ class NativeProbeRuntime {
       }
       const std::string preprocess_id = self->checkpoint_execution_id(trace, "shared", "preprocess");
       const std::string execution_id = self->checkpoint_execution_id(trace, ctx->branch, "fanout");
-      self->emit_checkpoint_event(
+      const std::uint64_t serialized_fanout_timestamp_ms = self->emit_checkpoint_event(
           trace,
           pts,
           "fanout",
@@ -2890,6 +2894,12 @@ class NativeProbeRuntime {
           {preprocess_id},
           end);
       try {
+        const std::uint64_t fanout_interval_end_timestamp_ns =
+            vast::CheckpointResourceIntervalEmitter::canonical_interval_end_ns(
+                interval_start.host_start_timestamp_ns,
+                event_timestamp_ns,
+                end,
+                serialized_fanout_timestamp_ms);
         std::uint64_t fanout_thread_cpu_end_ns = 0;
         if (!thread_cpu_now_ns(&fanout_thread_cpu_end_ns) ||
             fanout_thread_cpu_end_ns <= fanout_thread_cpu_start_ns) {
@@ -2902,7 +2912,7 @@ class NativeProbeRuntime {
             "\n" + std::to_string(trace.stream_id) + "\n" +
             std::to_string(trace.frame_id) + "\n" + ctx->branch + "\n" + execution_id +
             "\n" + std::to_string(interval_start.host_start_timestamp_ns) + "\n" +
-            std::to_string(event_timestamp_ns) + "\n" +
+            std::to_string(fanout_interval_end_timestamp_ns) + "\n" +
             std::to_string(interval_start.bytes));
         self->checkpoint_resource_interval_emitter_->emit_fanout(
             self->args_.run_id,
@@ -2913,7 +2923,7 @@ class NativeProbeRuntime {
             ctx->branch,
             execution_id,
             interval_start.host_start_timestamp_ns,
-            event_timestamp_ns,
+            fanout_interval_end_timestamp_ns,
             interval_start.bytes,
             native_event_id);
         self->checkpoint_fanout_work_emitter_->emit(
@@ -3757,6 +3767,12 @@ static Args parse_args(int argc, char** argv) {
 
 int main(int argc, char** argv) {
   try {
+    if (argc == 2 && std::string(argv[1]) == "--help") {
+      std::cout
+          << "Usage: vast_native_gst_probe [--system NAME] [--role NAME] "
+             "[--stages CSV] [--run-id ID] [runtime options]\n";
+      return 0;
+    }
     const std::string executable_path = resolve_executable_path(argv[0]);
     gst_init(&argc, &argv);
     Args args = parse_args(argc, argv);

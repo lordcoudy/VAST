@@ -44,7 +44,7 @@ GRANT_V3_KIND = "vast_verified_pre_run_backend_runtime_grant_v3"
 GRANT_V3_STATUS = "accepted_persisted_physical_q4_qualification"
 PUBLICATION_SCOPE_V3 = "backend_native_runtime_authenticated_q4_v3"
 PRODUCTION_RECEIPT_PROTOCOL_KIND = (
-    "vast_backend_publication_production_output_receipt_protocol_binding_v3"
+    "vast_backend_publication_production_output_receipt_protocol_binding_v4"
 )
 
 UPSTREAM_IDENTITY_FIELDS = frozenset(
@@ -484,15 +484,15 @@ def _validate_production_receipt_protocol_v3(
     }
     if (
         type(value) is not dict or set(value) != fields
-        or value.get("schema_version") != 3
+        or value.get("schema_version") != 4
         or value.get("artifact_kind") != PRODUCTION_RECEIPT_PROTOCOL_KIND
         or value.get("execution_scope") != "full_publication_measurement_v3"
         or value.get("receipt_kind")
-        != "vast_backend_publication_production_output_receipt_v3"
+        != "vast_backend_publication_production_output_receipt_v4"
         or value.get("receipt_authority_kind")
-        != "vast_backend_publication_production_output_receipt_authority_v3"
+        != "vast_backend_publication_production_output_receipt_authority_v4"
         or value.get("atomicity")
-        != "launcher_result_then_output_receipt_last_v3"
+        != "durable_journal_then_launcher_result_then_output_receipt_last_v4"
         or value.get("parent_owned_transaction_required") is not True
         or value.get("semantic_evidence_validation_required") is not True
     ):
@@ -569,14 +569,14 @@ def _validate_production_receipt_protocol_v3(
             "launcher_invocation_sha256": item["launcher_invocation_sha256"],
         }
     normalized: dict[str, Any] = {
-        "schema_version": 3,
+        "schema_version": 4,
         "artifact_kind": PRODUCTION_RECEIPT_PROTOCOL_KIND,
         "execution_scope": "full_publication_measurement_v3",
-        "receipt_kind": "vast_backend_publication_production_output_receipt_v3",
+        "receipt_kind": "vast_backend_publication_production_output_receipt_v4",
         "receipt_authority_kind": (
-            "vast_backend_publication_production_output_receipt_authority_v3"
+            "vast_backend_publication_production_output_receipt_authority_v4"
         ),
-        "atomicity": "launcher_result_then_output_receipt_last_v3",
+        "atomicity": "durable_journal_then_launcher_result_then_output_receipt_last_v4",
         "parent_owned_transaction_required": True,
         "semantic_evidence_validation_required": True,
         "protocol_files": files,

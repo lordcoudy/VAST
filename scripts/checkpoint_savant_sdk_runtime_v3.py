@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import argparse
+import contextlib
+import ctypes
 import hashlib
 import json
 import os
@@ -10,6 +12,7 @@ import re
 import selectors
 import socket
 import stat
+import tempfile
 import threading
 import time
 import warnings
@@ -43,6 +46,7 @@ from checkpoint_deepstream_sdk_runtime import (
     ADMISSION_DATA_FD_ENV, CONTROL_FD_ENV, EVENT_FD_ENV, POLICY_FD_ENV,
     RUN_ID_ENV, STATUS_FD_ENV, STREAM_ID_ENV, TOPOLOGY_KIND_ENV, WORKER_ID_ENV,
     CanonicalEventFdSink, LifecycleChannel, SeqpacketPolicyExchange,
+    _sleep_until_monotonic_ns,
     build_deepstream_stage_contract_rows, read_admission_transport_frame,
     write_deepstream_stage_contracts,
 )
@@ -80,6 +84,33 @@ def _require(condition: bool, message: str) -> None:
 
 def _now_ms() -> int:
     return time.time_ns() // 1_000_000
+
+
+def _await_coordinated_stop_after_admission_eof(
+    *,
+    stop_event: threading.Event,
+    stop_thread: threading.Thread,
+    stop_timestamp: Sequence[int],
+    timeout_s: float = 1.0,
+) -> None:
+    """Allow separate data/control channels to finish without treating EOF as STOP."""
+
+    _require(timeout_s >= 0, "Savant coordinated STOP grace is negative")
+    stop_thread.join(timeout=timeout_s)
+    _require(
+        stop_event.is_set() and bool(stop_timestamp),
+        "Savant admission FD closed before STOP",
+    )
+
+
+def _ceil_epoch_ns_to_ms(value_ns: int) -> int:
+    """Convert an exact epoch nanosecond observation without float rounding."""
+
+    _require(
+        type(value_ns) is int and value_ns >= 0,
+        "Savant epoch timestamp must be a non-negative integer",
+    )
+    return (value_ns + 999_999) // 1_000_000
 
 
 def _text_environment(name: str) -> str:
@@ -208,6 +239,16 @@ def _caps_output(caps: Any, label: str) -> tuple[dict[str, Any], str]:
     }, text
 
 
+def _source_relative_caps(caps: Any) -> str:
+    """Describe verified identity geometry, retaining every other caps field."""
+    semantic_caps = caps.copy()
+    semantic_caps.set_value("width", "source_width")
+    semantic_caps.set_value("height", "source_height")
+    text = str(semantic_caps.to_string()).strip()
+    _require(bool(text), "Savant source-relative caps serialization is empty")
+    return text
+
+
 class SavantSdkCallbackRuntime:
     """Bridge official Savant callbacks to exact CPU/TensorRT endpoints."""
     publication_ready = False
@@ -234,6 +275,8 @@ class SavantSdkCallbackRuntime:
         self._decode_caps = ""
         self._preprocess_output: dict[str, Any] | None = None
         self._preprocess_caps = ""
+        self._decode_semantic_caps = ""
+        self._preprocess_semantic_caps = ""
 
     def bind_decoder(self, factory: str, gpu_id: int) -> None:
         with self._lock:
@@ -288,12 +331,14 @@ class SavantSdkCallbackRuntime:
         parser = "h264parse" if self.binding.codec == "h264" else "h265parse"
         required = {
             parser, "nvv4l2decoder", "nvstreammux",
-            "nvvideoconvert", "capsfilter",
+            "nvvideoconvert", "capsfilter", "vastcheckpointbranchqueue",
         }
         _require(required <= set(factories),
                  "Savant loaded graph lacks required native factories")
         _require(len(factories["nvv4l2decoder"]) == 1,
                  "Savant loaded graph has more than one NVDEC decoder")
+        _require(len(factories["vastcheckpointbranchqueue"]) == len(self.binding.branches),
+                 "Savant loaded graph has the wrong native branch queue count")
         if self.binding.topology_kind == "shared_video_dag":
             _require("tee" in factories,
                      "Savant shared graph lacks a physical tee")
@@ -307,9 +352,12 @@ class SavantSdkCallbackRuntime:
 
     def capture_decode_caps(self, caps: Any) -> None:
         output, text = _caps_output(caps, "decode output")
+        _require(output["shape"][:2] == [self.binding.height, self.binding.width],
+                 "Savant decode output does not preserve source geometry")
         with self._lock:
             if self._decode_output is None:
                 self._decode_output, self._decode_caps = output, text
+                self._decode_semantic_caps = _source_relative_caps(caps)
             else:
                 _require(self._decode_output == output
                          and self._decode_caps == text,
@@ -317,12 +365,15 @@ class SavantSdkCallbackRuntime:
 
     def capture_preprocess_caps(self, caps: Any) -> None:
         output, text = _caps_output(caps, "preprocess output")
+        _require(output["shape"][:2] == [self.binding.height, self.binding.width],
+                 "Savant preprocess output does not preserve source geometry")
         _require(output["media_type"] == "video/x-raw"
                  and output["format"] == "rgb24",
                  "Savant post-demux terminal is not system-memory RGB")
         with self._lock:
             if self._preprocess_output is None:
                 self._preprocess_output, self._preprocess_caps = output, text
+                self._preprocess_semantic_caps = _source_relative_caps(caps)
             else:
                 _require(self._preprocess_output == output
                          and self._preprocess_caps == text,
@@ -347,8 +398,13 @@ class SavantSdkCallbackRuntime:
         _require(pts >= 0 and frame_id >= 0 and bool(input_frame_key)
                  and payload_bytes > 0,
                  "Savant admission transport identity is incomplete")
+        # The common-source coordinator floors the admission edge to integer
+        # milliseconds.  This is a later completion observation in another
+        # process, so use an exact ceiling to preserve causal order across the
+        # WSL2/Docker clock-quantization boundary.
         self.callbacks.admit_transport_frame(
-            frame, observed_timestamp_ms=_now_ms()
+            frame,
+            observed_timestamp_ms=_ceil_epoch_ns_to_ms(time.time_ns()),
         )
         decode_submit_start_ns = time.time_ns()
         with self._lock:
@@ -361,7 +417,7 @@ class SavantSdkCallbackRuntime:
                 "decode_submit_start_ns": decode_submit_start_ns,
             }
 
-    def observe_prefix(self, _buffer: Any, frame_meta: Any,
+    def observe_prefix(self, buffer: Any, frame_meta: Any,
                        binding: SavantNativeModuleBinding) -> None:
         _require(binding == self.binding, "Savant prefix binding drifted")
         _require(self._decoder == ("nvv4l2decoder", 0),
@@ -369,6 +425,7 @@ class SavantSdkCallbackRuntime:
         identity = build_native_frame_identity(
             binding=binding, frame_meta=frame_meta,
             decoder_factory="nvv4l2decoder", decoder_gpu_id=0,
+            mux_gst_buffer_pts_ns=getattr(buffer, "pts", None),
         )
         pts = int(identity["transport_pts_ns"])
         completed_ns = time.time_ns()
@@ -390,7 +447,8 @@ class SavantSdkCallbackRuntime:
             int(admission["decode_submit_start_ns"]) + 1,
         )
         self.callbacks.observe_decoded_frame(
-            identity, observed_timestamp_ms=completed_ns / 1_000_000.0
+            identity,
+            observed_timestamp_ms=_ceil_epoch_ns_to_ms(completed_ns),
         )
         self.resource_recorder.record_nvdec(
             frame_id=admission["frame_id"],
@@ -400,23 +458,39 @@ class SavantSdkCallbackRuntime:
             end_timestamp_ns=completed_ns,
         )
 
-    def _preprocess_and_fanout(
-        self, *, pts: int, branch: str, identity: Mapping[str, Any],
-    ) -> None:
+    def _observe_preprocess_once(self, *, pts: int, identity: Mapping[str, Any]) -> None:
         with self._lock:
             if pts not in self._preprocessed:
                 self.callbacks.observe_preprocessed_frame(
                     identity, observed_timestamp_ms=_now_ms()
                 )
                 self._preprocessed.add(pts)
+
+    def _preprocess_and_fanout(
+        self, *, pts: int, branch: str, identity: Mapping[str, Any],
+    ) -> tuple[int | None, int | None]:
+        with self._lock:
+            self._observe_preprocess_once(pts=pts, identity=identity)
             if self.binding.topology_kind == "shared_video_dag":
                 marker = (pts, branch)
                 _require(marker not in self._fanout,
                          "Savant physical fanout was duplicated")
-                self.callbacks.observe_fanout(
-                    identity, branch=branch, observed_timestamp_ms=_now_ms()
+                fanout_completed_ns = time.time_ns()
+                serialized_fanout_timestamp_ms = self.callbacks.observe_fanout(
+                    identity,
+                    branch=branch,
+                    observed_timestamp_ms=_ceil_epoch_ns_to_ms(
+                        fanout_completed_ns
+                    ),
+                )
+                _require(
+                    type(serialized_fanout_timestamp_ms) is int
+                    and serialized_fanout_timestamp_ms > 0,
+                    "Savant fanout callback did not return its serialized topology timestamp",
                 )
                 self._fanout.add(marker)
+                return serialized_fanout_timestamp_ms, fanout_completed_ns
+            return None, None
 
     def _mark_terminal(self, pts: int, branch: str) -> None:
         with self._lock:
@@ -432,6 +506,59 @@ class SavantSdkCallbackRuntime:
                     marker for marker in self._fanout if marker[0] != pts
                 }
 
+    def observe_queue_buffer(
+        self, buffer: Any, binding: SavantNativeModuleBinding, branch: str,
+        *, caps: Any,
+    ) -> None:
+        """Measure the real tee output before its native queue can discard it."""
+        _require(binding == self.binding and branch in binding.branches
+                 and binding.topology_kind == "shared_video_dag",
+                 "Savant shared queue-entry binding drifted")
+        self.capture_preprocess_caps(caps)
+        pts = int(getattr(buffer, "pts", -1))
+        try:
+            payload_bytes = int(buffer.get_size())
+        except (AttributeError, TypeError, ValueError) as exc:
+            raise SavantSdkRuntimeV3Error(
+                "Savant queue-entry buffer size is unavailable"
+            ) from exc
+        _require(payload_bytes > 0, "Savant queue-entry buffer size is invalid")
+        with self._lock:
+            identity = self._identity_by_pts.get(pts)
+            pending = self._pending_by_branch[branch]
+            _require(identity is not None and pts in pending,
+                     "Savant queue-entry PTS has no decoded admission")
+            _require((pts, branch) not in self._fanout,
+                     "Savant physical fanout was duplicated")
+            # Serialize the preprocessing parent before measuring its child.
+            # The first branch may spend multiple milliseconds observing that
+            # parent; including that work would put fanout before its parent.
+            self._observe_preprocess_once(pts=pts, identity=identity)
+            fanout_started_ns = time.time_ns()
+            fanout_started_thread_ns = time.thread_time_ns()
+            serialized_fanout_timestamp_ms, fanout_completed_ns = self._preprocess_and_fanout(
+                pts=pts, branch=branch, identity=identity
+            )
+            fanout_completed_thread_ns = time.thread_time_ns()
+            _require(
+                serialized_fanout_timestamp_ms is not None
+                and fanout_completed_ns is not None,
+                "Savant shared fanout timing was not captured",
+            )
+            self.resource_recorder.record_fanout(
+                frame_id=int(identity["frame_id"]),
+                input_frame_key=str(identity["input_frame_key"]),
+                branch=branch,
+                payload_bytes=payload_bytes,
+                start_timestamp_ns=fanout_started_ns,
+                end_timestamp_ns=max(fanout_completed_ns,
+                                     fanout_started_ns + 1),
+                serialized_topology_timestamp_ms=serialized_fanout_timestamp_ms,
+                thread_cpu_time_ns=max(
+                    1, fanout_completed_thread_ns - fanout_started_thread_ns,
+                ),
+            )
+
     def observe_route_buffer(
         self, buffer: Any, binding: SavantNativeModuleBinding, branch: str,
         *, sample: Any, caps: Any,
@@ -444,58 +571,42 @@ class SavantSdkCallbackRuntime:
             identity = self._identity_by_pts.get(pts)
             pending = self._pending_by_branch[branch]
             _require(identity is not None and bool(pending)
-                     and pending.pop(0) == pts,
+                     and pending[0] == pts,
                      "Savant route PTS/order has no decoded admission")
-        fanout_started_ns = time.time_ns()
-        fanout_started_thread_ns = time.thread_time_ns()
-        self._preprocess_and_fanout(
-            pts=pts, branch=branch, identity=identity
-        )
-        fanout_completed_ns = time.time_ns()
-        fanout_completed_thread_ns = time.thread_time_ns()
-        if self.binding.topology_kind == "shared_video_dag":
-            try:
-                payload_bytes = int(buffer.get_size())
-            except (AttributeError, TypeError, ValueError) as exc:
-                raise SavantSdkRuntimeV3Error(
-                    "Savant routed buffer size is unavailable"
-                ) from exc
-            self.resource_recorder.record_fanout(
-                frame_id=int(identity["frame_id"]),
-                input_frame_key=str(identity["input_frame_key"]),
-                branch=branch,
-                payload_bytes=payload_bytes,
-                start_timestamp_ns=fanout_started_ns,
-                end_timestamp_ns=max(fanout_completed_ns,
-                                     fanout_started_ns + 1),
-                thread_cpu_time_ns=max(
-                    1, fanout_completed_thread_ns - fanout_started_thread_ns,
-                ),
-            )
+            if binding.topology_kind == "shared_video_dag":
+                _require((pts, branch) in self._fanout,
+                         "Savant shared route has no measured queue-entry fanout")
+            pending.pop(0)
+        if binding.topology_kind != "shared_video_dag":
+            self._preprocess_and_fanout(pts=pts, branch=branch, identity=identity)
         self.callbacks.execute_branch_sample(
             identity, branch=branch, sample=sample
         )
         self._mark_terminal(pts, branch)
 
-    def queue_overrun(
+    def queue_dropped(
         self, *, branch: str, queue_name: str,
-        current_level_buffers: int, binding: SavantNativeModuleBinding,
+        transport_pts_ns: int, binding: SavantNativeModuleBinding,
     ) -> None:
+        """Account for the exact buffer discarded by the native queue decision."""
         _require(binding == self.binding and branch in binding.branches
-                 and queue_name.endswith(branch)
-                 and current_level_buffers >= 1,
-                 "Savant queue overrun observation drifted")
+                 and queue_name == f"vast_savant_route_queue_{branch}"
+                 and type(transport_pts_ns) is int and transport_pts_ns >= 0,
+                 "Savant native queue drop observation drifted")
+        pts = transport_pts_ns
         with self._lock:
             pending = self._pending_by_branch[branch]
-            _require(bool(pending),
-                     "Savant queue overrun has no incoming admission")
-            pts = pending.pop()
             identity = self._identity_by_pts.get(pts)
-            _require(identity is not None,
-                     "Savant dropped PTS has no decoded identity")
-        self._preprocess_and_fanout(
-            pts=pts, branch=branch, identity=identity
-        )
+            _require(identity is not None and pts in pending,
+                     "Savant dropped PTS has no pending decoded admission")
+            if binding.topology_kind == "shared_video_dag":
+                _require((pts, branch) in self._fanout,
+                         "Savant shared drop has no measured queue-entry fanout")
+            # Decode may be several buffers ahead of the post-demux queue.
+            # Only the native queue's irrevocable discard identifies this item.
+            pending.remove(pts)
+        if binding.topology_kind != "shared_video_dag":
+            self._preprocess_and_fanout(pts=pts, branch=branch, identity=identity)
         self.callbacks.drop_branch(
             str(identity["input_frame_key"]), branch, reason=DROP_REASON,
             observed_timestamp_ms=_now_ms(),
@@ -525,6 +636,20 @@ class SavantSdkCallbackRuntime:
             "logical_name": factory, "sha256": sha256,
         }, f"{factory}-{value['version']}"
 
+    def stage_contract_observations(self) -> dict[str, Any]:
+        """Keep concrete native geometry separate from its semantic relation."""
+        with self._lock:
+            _require(self._decode_output is not None
+                     and self._preprocess_output is not None,
+                     "Savant runtime stage observations are incomplete")
+            return {
+                "source_shape": [self.binding.height, self.binding.width],
+                "decode_output": dict(self._decode_output),
+                "preprocess_output": dict(self._preprocess_output),
+                "decode_caps": self._decode_caps,
+                "preprocess_caps": self._preprocess_caps,
+            }
+
     def stage_contract_rows(
         self, *, run_id: str, worker_id: str,
     ) -> list[dict[str, Any]]:
@@ -532,12 +657,14 @@ class SavantSdkCallbackRuntime:
             _require(self._decoder == ("nvv4l2decoder", 0)
                      and self._loaded_factories
                      and self._decode_output is not None
-                     and self._preprocess_output is not None,
+                     and self._preprocess_output is not None
+                     and self._decode_semantic_caps
+                     and self._preprocess_semantic_caps,
                      "Savant runtime stage observations are incomplete")
             decode_output = dict(self._decode_output)
             preprocess_output = dict(self._preprocess_output)
-            decode_caps = self._decode_caps
-            preprocess_caps = self._preprocess_caps
+            decode_caps = self._decode_semantic_caps
+            preprocess_caps = self._preprocess_semantic_caps
         parser = "h264parse" if self.binding.codec == "h264" else "h265parse"
         decode_artifacts: list[dict[str, str]] = []
         preprocess_artifacts: list[dict[str, str]] = []
@@ -552,6 +679,7 @@ class SavantSdkCallbackRuntime:
         for factory, role in (
             ("nvvideoconvert", "format_converter"),
             ("capsfilter", "caps_filter"),
+            ("vastcheckpointbranchqueue", "pre_detector_queue"),
         ):
             artifact, version = self._plugin_artifact(factory, role)
             preprocess_artifacts.append(artifact)
@@ -617,6 +745,18 @@ class SavantSdkCallbackRuntime:
             row["implementation_name"] = (
                 f"vast-savant-checkpoint-{row['base_stage']}"
             )
+            # The Savant module binds its frame dimensions to the source and
+            # only converts RGBA to RGB after demux. Unlike the DeepStream
+            # fixed-size graph, both stages preserve the verified source size.
+            output = decode_output if row["base_stage"] == "decode" else preprocess_output
+            row["output_shape_json"] = json.dumps(
+                ["source_height", "source_width", output["shape"][2]],
+                separators=(",", ":"),
+            )
+            row["transform_json"] = _canonical({
+                "normalization": {"mode": "identity"},
+                "resize": {"mode": "identity"},
+            }).decode("utf-8")
         return rows
 
 
@@ -689,6 +829,7 @@ def run_fd_worker(args: argparse.Namespace) -> dict[str, Any]:
         stream_id=stream_id,
         topology_kind=topology,
         branches=branches,
+        decoder_gpu_index=0,
     )
     try:
         callbacks = create_savant_callbacks(
@@ -756,12 +897,14 @@ def run_fd_worker(args: argparse.Namespace) -> dict[str, Any]:
                 height=binding.height, framerate=binding.framerate,
                 dataset_id=binding.dataset_id,
                 source_sha256=binding.source_sha256,
+                source_duration_ns=binding.source_duration_ns,
                 socket=binding.source_socket,
             )
             ingress = SavantNativeIngress(
                 binding=source_binding,
                 runner=source_factory(binding.source_socket),
                 frame_builder=frame_builder,
+                shutdown_auth=f"vast-savant-{binding.descriptor_sha256}",
             )
             lifecycle.started()
             selector.register(admission_fd, selectors.EVENT_READ)
@@ -774,8 +917,13 @@ def run_fd_worker(args: argparse.Namespace) -> dict[str, Any]:
                 if not ready:
                     continue
                 frame = read_admission_transport_frame(admission_fd)
-                _require(frame is not None,
-                         "Savant admission FD closed before STOP")
+                if frame is None:
+                    _await_coordinated_stop_after_admission_eof(
+                        stop_event=stop_event,
+                        stop_thread=stop_thread,
+                        stop_timestamp=stop_timestamp,
+                    )
+                    break
                 runtime.admit_transport_frame(frame)
                 ingress.send_frame(frame)
             _require(bool(stop_timestamp),
@@ -806,11 +954,7 @@ def run_fd_worker(args: argparse.Namespace) -> dict[str, Any]:
     try:
         lifecycle.ready()
         window = lifecycle.await_start()
-        while time.monotonic_ns() < window.common_start_monotonic_ns:
-            time.sleep(min(
-                0.001,
-                (window.common_start_monotonic_ns - time.monotonic_ns()) / 1e9,
-            ))
+        _sleep_until_monotonic_ns(window.common_start_monotonic_ns)
         stop_thread = threading.Thread(
             target=receive_stop, name=f"savant-stop-{worker_id}", daemon=True,
         )
@@ -839,6 +983,10 @@ def run_fd_worker(args: argparse.Namespace) -> dict[str, Any]:
                 + (str(errors[0]) if errors else ""),
             )
         runtime.assert_drained()
+        _write_exclusive(
+            output_dir / "stage_contract_observations.runtime.json",
+            _canonical(runtime.stage_contract_observations()) + b"\n",
+        )
         stage_path = write_deepstream_stage_contracts(
             output_dir,
             runtime.stage_contract_rows(run_id=run_id, worker_id=worker_id),
@@ -913,14 +1061,53 @@ def _parser() -> argparse.ArgumentParser:
     return parser
 
 
+@contextlib.contextmanager
+def _capture_worker_native_stdout():
+    """Forward one worker's native notices without cross-process fragments."""
+    # The enclosing coordinator owns the shared stdout descriptor. C++ mux
+    # notices use several writes per line, so capture them in this process
+    # before forwarding a single Linux PIPE_BUF-sized (or smaller) write.
+    flush_c = ctypes.CDLL(None).fflush
+    flush_c.argtypes = [ctypes.c_void_p]
+    flush_c.restype = ctypes.c_int
+
+    def flush():
+        os.sys.stdout.flush()
+        _require(flush_c(None) == 0, "Savant native stdout flush failed")
+
+    flush()
+    saved_stdout = os.dup(1)
+    try:
+        with tempfile.TemporaryFile(mode="w+b") as captured:
+            os.dup2(captured.fileno(), 1)
+            try:
+                yield
+            finally:
+                try:
+                    flush()
+                finally:
+                    os.dup2(saved_stdout, 1)
+                captured.seek(0)
+                payload = captured.read(4097)
+                _require(len(payload) <= 4096,
+                         "Savant native stdout exceeds atomic capture bound")
+                if payload:
+                    _require(os.write(saved_stdout, payload) == len(payload),
+                             "Savant native stdout forwarding was incomplete")
+    finally:
+        os.close(saved_stdout)
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     args = _parser().parse_args(argv)
     try:
         _require(args.module_ready_timeout_s > 0
                  and args.drain_timeout_s > 0,
                  "Savant worker timeout is invalid")
-        result = run_fd_worker(args)
-        print(json.dumps(result, sort_keys=True, separators=(",", ":")))
+        # run_fd_worker persists worker.runtime.json. Native stdout is reserved
+        # for the exact mux notices audited by the enclosing coordinator.
+        with _capture_worker_native_stdout():
+            run_fd_worker(args)
         return 0
     except (
         KeyError,

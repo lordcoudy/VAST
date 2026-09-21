@@ -306,8 +306,29 @@ def _main(arguments: list[str]) -> int:
     mode = dataset.get("synthetic_process_fixture_mode", "success")
     if type(mode) is not str:
         return 93
-    if mode in {"success", "nonzero"}:
-        if mode == "success":
+    counter_value = dataset.get("synthetic_spawn_counter_path")
+    if counter_value is not None:
+        counter = Path(str(counter_value))
+        if (
+            type(counter_value) is not str
+            or not counter.is_absolute()
+            or not counter.parent.is_dir()
+        ):
+            return 94
+        descriptor = os.open(
+            counter,
+            os.O_WRONLY | os.O_CREAT | os.O_APPEND | getattr(os, "O_CLOEXEC", 0),
+            0o600,
+        )
+        try:
+            _write_all(descriptor, b"spawn\n")
+            os.fsync(descriptor)
+        finally:
+            os.close(descriptor)
+    if mode in {"success", "delayed_success", "nonzero"}:
+        if mode == "delayed_success":
+            time.sleep(float(dataset.get("synthetic_delay_seconds", 2.0)))
+        if mode in {"success", "delayed_success"}:
             _create_evidence(output_dir, evidence_names)
         _write_all(
             1,
@@ -321,7 +342,7 @@ def _main(arguments: list[str]) -> int:
                 str(dataset.get("synthetic_stderr_hex", _DEFAULT_STDERR.hex()))
             ),
         )
-        return 0 if mode == "success" else int(
+        return 0 if mode in {"success", "delayed_success"} else int(
             dataset.get("synthetic_exit_code", 7)
         )
     if mode in {"dual", "stdout_overflow", "stderr_overflow", "capture_overflow"}:

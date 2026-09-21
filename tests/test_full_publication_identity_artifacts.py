@@ -8,6 +8,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -16,6 +17,7 @@ if str(SCRIPTS) not in sys.path:
     sys.path.insert(0, str(SCRIPTS))
 
 import full_publication_identity_artifacts as target  # noqa: E402
+import publication_physical_io_v1 as physical_io  # noqa: E402
 
 
 SYSTEMS = target.SYSTEMS
@@ -441,6 +443,149 @@ class FullPublicationIdentityArtifactTests(unittest.TestCase):
             root = Path(tmp)
             with self.assertRaisesRegex(target.IdentityArtifactError, "manifest is missing"):
                 target.load_full_publication_identity_artifacts(project_root=root)
+
+    @unittest.skipUnless(os.name == "posix", "dirfd cold-load race requires POSIX")
+    def test_cold_load_parent_swap_never_accepts_attacker_receipt(self) -> None:
+        trusted = self.fixture.output
+        displaced = self.root / "accepted-displaced"
+        attacker = self.root / "attacker"
+        attacker.mkdir()
+        leaf = "checkpoint_policy_qualification_receipt.json"
+        canary = attacker / leaf
+        canary_payload = b'{"owner":"attacker"}\n'
+        canary.write_bytes(canary_payload)
+        original_read = physical_io.PhysicalRootCustodyV1._read_descriptor_posix
+        swapped = False
+        receipt_reads = 0
+
+        def race_read(
+            custody: physical_io.PhysicalRootCustodyV1,
+            relative: str,
+            *,
+            label: str,
+            maximum: int,
+            capture: bool,
+        ) -> tuple[dict[str, object], bytes | None, tuple[int, int]]:
+            nonlocal receipt_reads, swapped
+            if Path(relative).name == leaf:
+                receipt_reads += 1
+                if receipt_reads == 2:
+                    swapped = True
+                    trusted.rename(displaced)
+                    attacker.rename(trusted)
+            return original_read(
+                custody,
+                relative,
+                label=label,
+                maximum=maximum,
+                capture=capture,
+            )
+
+        with (
+            mock.patch.object(
+                physical_io.PhysicalRootCustodyV1,
+                "_read_descriptor_posix",
+                new=race_read,
+            ),
+            self.assertRaisesRegex(
+                target.IdentityArtifactError,
+                "parent|directory|changed|custody",
+            ),
+        ):
+            self.fixture.load()
+        self.assertTrue(swapped)
+        self.assertGreaterEqual(receipt_reads, 2)
+        self.assertEqual((trusted / leaf).read_bytes(), canary_payload)
+
+    @unittest.skipUnless(os.name == "posix", "dirfd cold-load race requires POSIX")
+    def test_cold_load_parent_swap_restored_with_exact_copy_fails_closed(self) -> None:
+        trusted = self.fixture.output
+        displaced = self.root / "accepted-displaced"
+        attacker = self.root / "attacker"
+        attacker.mkdir()
+        leaf = "checkpoint_policy_qualification_receipt.json"
+        trusted_payload = (trusted / leaf).read_bytes()
+        (attacker / leaf).write_bytes(trusted_payload)
+        original_read = physical_io.PhysicalRootCustodyV1._read_descriptor_posix
+        receipt_reads = 0
+        raced = False
+
+        def race_read(
+            custody: physical_io.PhysicalRootCustodyV1,
+            relative: str,
+            *,
+            label: str,
+            maximum: int,
+            capture: bool,
+        ) -> tuple[dict[str, object], bytes | None, tuple[int, int]]:
+            nonlocal raced, receipt_reads
+            if Path(relative).name != leaf:
+                return original_read(
+                    custody,
+                    relative,
+                    label=label,
+                    maximum=maximum,
+                    capture=capture,
+                )
+            receipt_reads += 1
+            if receipt_reads != 2:
+                return original_read(
+                    custody,
+                    relative,
+                    label=label,
+                    maximum=maximum,
+                    capture=capture,
+                )
+            original_open = physical_io.os.open
+
+            def transient_open(
+                path: object,
+                flags: int,
+                mode: int = 0o777,
+                *,
+                dir_fd: int | None = None,
+            ) -> int:
+                nonlocal raced
+                if not raced and path == leaf and dir_fd is not None:
+                    raced = True
+                    trusted.rename(displaced)
+                    attacker.rename(trusted)
+                    try:
+                        return original_open(path, flags, mode, dir_fd=dir_fd)
+                    finally:
+                        trusted.rename(attacker)
+                        displaced.rename(trusted)
+                if dir_fd is None:
+                    return original_open(path, flags, mode)
+                return original_open(path, flags, mode, dir_fd=dir_fd)
+
+            with mock.patch.object(
+                physical_io.os, "open", side_effect=transient_open,
+            ):
+                return original_read(
+                    custody,
+                    relative,
+                    label=label,
+                    maximum=maximum,
+                    capture=capture,
+                )
+
+        with (
+            mock.patch.object(
+                physical_io.PhysicalRootCustodyV1,
+                "_read_descriptor_posix",
+                new=race_read,
+            ),
+            self.assertRaisesRegex(
+                target.IdentityArtifactError,
+                "parent|directory|changed|mutated|custody",
+            ),
+        ):
+            self.fixture.load()
+        self.assertTrue(raced)
+        self.assertGreaterEqual(receipt_reads, 2)
+        self.assertEqual((trusted / leaf).read_bytes(), trusted_payload)
+        self.assertEqual((attacker / leaf).read_bytes(), trusted_payload)
 
 
 if __name__ == "__main__":

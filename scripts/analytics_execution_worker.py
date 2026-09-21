@@ -20,6 +20,7 @@ from analytics_execution_protocol import (
     ENGINE_OPENVINO_CPU,
     ENGINE_TENSORRT_CUDA,
     MAX_TENSOR_BYTES,
+    PeerClosed,
     PROTOCOL_IDENTITY_SHA256,
     ProtocolError,
     TRANSPORT_KIND,
@@ -38,6 +39,7 @@ from analytics_execution_protocol import (
 
 WORKER_CAPABILITY_KIND = "vast_analytics_execution_worker_capability"
 WORKER_RUNTIME_PROBE_KIND = "vast_analytics_execution_worker_runtime_probe"
+MAX_WORKER_REQUESTS = 2**63 - 1
 _SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 _STABLE_ID_RE = re.compile(r"^[A-Za-z0-9._-]{1,160}$")
 _HEX_64_RE = re.compile(r"^[0-9a-f]{64}$")
@@ -414,7 +416,11 @@ class WorkerHarness:
     """Serve one attested backend serially over an already-connected socket."""
 
     def __init__(self, sock: socket.socket, backend: NativeInferenceBackend, *, max_requests: int) -> None:
-        _require(type(max_requests) is int and 0 <= max_requests <= 1_000_000, "analytics worker max_requests is invalid")
+        _require(
+            type(max_requests) is int
+            and 0 <= max_requests <= MAX_WORKER_REQUESTS,
+            "analytics worker max_requests is invalid",
+        )
         self._socket = sock
         self._backend = backend
         self._max_requests = max_requests
@@ -529,7 +535,10 @@ class WorkerHarness:
         if not self._handshake():
             return
         for _ in range(self._max_requests):
-            self._handle_one()
+            try:
+                self._handle_one()
+            except PeerClosed:
+                return
 
 
 def validate_inference_response(
@@ -705,7 +714,7 @@ class ExecutionClient:
 
 __all__ = [
     "BackendInference", "ExecutionClient", "NativeInferenceBackend",
-    "WORKER_CAPABILITY_KIND", "WORKER_RUNTIME_PROBE_KIND", "WorkerHarness",
+    "MAX_WORKER_REQUESTS", "WORKER_CAPABILITY_KIND", "WORKER_RUNTIME_PROBE_KIND", "WorkerHarness",
     "WorkerRejected", "validate_inference_response", "validate_runtime_probe",
     "validate_worker_capability",
 ]

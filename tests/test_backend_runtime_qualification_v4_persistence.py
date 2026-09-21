@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import os
+import stat
 import sys
 import tempfile
 import unittest
@@ -20,6 +21,10 @@ from backend_runtime_qualification_v4_persistence import (  # noqa: E402
     promote_backend_runtime_qualification_v4,
 )
 import backend_runtime_qualification_v4_persistence as target  # noqa: E402
+
+
+class InjectedCrash(BaseException):
+    pass
 
 
 class BackendRuntimeQualificationV4PersistenceContractTests(unittest.TestCase):
@@ -96,20 +101,76 @@ class BackendRuntimeQualificationV4PersistenceContractTests(unittest.TestCase):
 
     def test_atomic_output_is_idempotent_but_never_overwritten(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
-            output = Path(temporary) / "receipt.json"
+            root = Path(temporary).resolve()
+            output = root / "receipt.json"
             value = {"schema_version": 4, "value": "accepted"}
-            target._atomic_immutable(output, value)
+            target._atomic_immutable(root, output, value)
             expected = output.read_bytes()
-            target._atomic_immutable(output, value)
+            target._atomic_immutable(root, output, value)
             self.assertEqual(output.read_bytes(), expected)
             self.assertEqual(output.stat().st_nlink, 1)
             with self.assertRaisesRegex(
                 BackendRuntimeQualificationV4PersistenceError, "collision",
             ):
                 target._atomic_immutable(
-                    output, {"schema_version": 4, "value": "drifted"},
+                    root,
+                    output,
+                    {"schema_version": 4, "value": "drifted"},
                 )
             self.assertEqual(output.read_bytes(), expected)
+
+    @unittest.skipUnless(os.name == "posix", "symlink containment is POSIX-only")
+    def test_output_directory_rejects_intermediate_symlink_before_write(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary).resolve()
+            attacker = root / "attacker"
+            attacker.mkdir()
+            redirect = root / "redirect"
+            redirect.symlink_to(attacker, target_is_directory=True)
+            with self.assertRaisesRegex(
+                BackendRuntimeQualificationV4PersistenceError,
+                "outside project_root|link",
+            ):
+                target._output_directory(root, redirect / "created-outside")
+            self.assertFalse((attacker / "created-outside").exists())
+
+    @unittest.skipUnless(os.name == "posix", "atomic crash recovery is POSIX-only")
+    def test_atomic_output_recovers_every_physical_publish_window(self) -> None:
+        steps = (
+            "mid_write",
+            "post_fsync_pre_publish",
+            "post_publish_pre_parent_fsync",
+        )
+        for position, step in enumerate(steps):
+            with self.subTest(step=step), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary).resolve()
+                output = root / "accepted" / "receipt.json"
+                value = {"schema_version": 4, "position": position}
+
+                def crash(observed: str) -> None:
+                    if observed == step:
+                        raise InjectedCrash(observed)
+
+                with self.assertRaises(InjectedCrash):
+                    target._atomic_immutable(
+                        root, output, value, after_publish_step=crash,
+                    )
+                published_identity = (
+                    (output.stat().st_dev, output.stat().st_ino)
+                    if output.exists()
+                    else None
+                )
+                target._atomic_immutable(root, output, value)
+                self.assertEqual(
+                    output.read_bytes(), target._canonical_bytes(value) + b"\n",
+                )
+                self.assertEqual(stat.S_IMODE(output.stat().st_mode), 0o444)
+                self.assertEqual(output.stat().st_nlink, 1)
+                if published_identity is not None:
+                    self.assertEqual(
+                        (output.stat().st_dev, output.stat().st_ino),
+                        published_identity,
+                    )
 
 
 if __name__ == "__main__":

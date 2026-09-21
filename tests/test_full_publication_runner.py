@@ -129,6 +129,7 @@ class CallbackHarness:
         self.events: list[tuple] = []
         self.arm_attempts: dict[str, int] = {}
         self.fail_arm_once: str | None = None
+        self.crash_arm_once: str | None = None
         self.cloud_transient_once: str | None = None
         self.cloud_crash_once: str | None = None
         self.verify_cloud_unverified: str | None = None
@@ -149,6 +150,9 @@ class CallbackHarness:
         self.arm_attempts[arm_id] = self.arm_attempts.get(arm_id, 0) + 1
         if self.fail_arm_once == arm_id and self.arm_attempts[arm_id] == 1:
             raise TransientRunError("temporary arm failure")
+        if self.crash_arm_once == arm_id:
+            self.crash_arm_once = None
+            raise SimulatedProcessCrash("crash inside arm transaction")
         return {"arm_id": arm_id, "accepted_input": True}
 
     def accept_pair(self, context, arm_results):
@@ -206,6 +210,7 @@ class FullPublicationRunnerTests(unittest.TestCase):
         *,
         identity_inputs: dict | None = None,
         callbacks: RunnerCallbacks | None = None,
+        immutable_artifact_physical_fault=None,
     ) -> FullPublicationRunner:
         selected_callbacks = callbacks
         if selected_callbacks is None and harness is not None:
@@ -216,6 +221,9 @@ class FullPublicationRunnerTests(unittest.TestCase):
             identity_inputs=identity_inputs or {"source_sha256": "source-a"},
             callbacks=selected_callbacks,
             matrix_builder=small_matrix_factory,
+            immutable_artifact_physical_fault=(
+                immutable_artifact_physical_fault
+            ),
         )
 
     def test_plan_uses_the_frozen_2800_pair_publication_matrix(self) -> None:
@@ -232,7 +240,7 @@ class FullPublicationRunnerTests(unittest.TestCase):
         self.assertEqual(plan["expected_arms"], 5600)
         self.assertEqual(
             plan["matrix_identity"]["sha256"],
-            "e802a8ec5ca6c560219593c65a46f3d24e6763543e9de135689a20177b604845",
+            "a1115ea9fa5f496f45d75636b8376366a48413cdc4c9787cb7ca4baac04b230e",
         )
         self.assertEqual(
             [item["sequence"] for item in plan["pairs"]],
@@ -283,7 +291,138 @@ class FullPublicationRunnerTests(unittest.TestCase):
             [0, 1, 2],
         )
 
-    def test_transient_failure_after_first_arm_reruns_both_arms_on_resume(self) -> None:
+    def test_run_manifest_recovers_each_physical_crash_window(self) -> None:
+        for crash_step in (
+            "mid_write",
+            "post_fsync_pre_publish",
+            "post_publish_pre_parent_fsync",
+        ):
+            with self.subTest(crash_step=crash_step), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                harness = CallbackHarness()
+                faulted = False
+
+                def fault(step: str, path: Path) -> None:
+                    nonlocal faulted
+                    if path.name == "run_manifest.json" and step == crash_step:
+                        faulted = True
+                        raise SimulatedProcessCrash(step)
+
+                with self.assertRaises(SimulatedProcessCrash):
+                    self.make_runner(
+                        root,
+                        harness,
+                        immutable_artifact_physical_fault=fault,
+                    ).run()
+                manifest = root / "run_manifest.json"
+                published_inode = manifest.stat().st_ino if manifest.exists() else None
+                resumed = self.make_runner(root, harness).run()
+                self.assertTrue(faulted)
+                self.assertEqual(resumed.exit_code, ExitCode.COMPLETE)
+                if published_inode is not None:
+                    self.assertEqual(manifest.stat().st_ino, published_inode)
+
+    def test_finalization_recovers_each_physical_crash_window(self) -> None:
+        for crash_step in (
+            "mid_write",
+            "post_fsync_pre_publish",
+            "post_publish_pre_parent_fsync",
+        ):
+            with self.subTest(crash_step=crash_step), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                harness = CallbackHarness()
+                self.assertEqual(
+                    self.make_runner(root, harness).run().exit_code,
+                    ExitCode.COMPLETE,
+                )
+                faulted = False
+
+                def fault(step: str, path: Path) -> None:
+                    nonlocal faulted
+                    if path.name == "finalization.json" and step == crash_step:
+                        faulted = True
+                        raise SimulatedProcessCrash(step)
+
+                with self.assertRaises(SimulatedProcessCrash):
+                    self.make_runner(
+                        root,
+                        harness,
+                        immutable_artifact_physical_fault=fault,
+                    ).finalize()
+                finalization = root / "finalization.json"
+                published_inode = (
+                    finalization.stat().st_ino if finalization.exists() else None
+                )
+                resumed = self.make_runner(root, harness).finalize()
+                self.assertTrue(faulted)
+                self.assertTrue(resumed["verified"])
+                if published_inode is not None:
+                    self.assertEqual(finalization.stat().st_ino, published_inode)
+
+    def test_run_manifest_rejects_racing_foreign_and_rebound_final(self) -> None:
+        for attack_step in (
+            "post_fsync_pre_publish",
+            "post_publish_pre_parent_fsync",
+        ):
+            with self.subTest(attack_step=attack_step), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                manifest = root / "run_manifest.json"
+
+                def attack(step: str, path: Path) -> None:
+                    if path.name != manifest.name or step != attack_step:
+                        return
+                    if path.exists():
+                        path.unlink()
+                    path.write_bytes(b"foreign-run-manifest\n")
+                    path.chmod(0o600)
+
+                result = self.make_runner(
+                    root,
+                    CallbackHarness(),
+                    immutable_artifact_physical_fault=attack,
+                ).run()
+                self.assertEqual(result.exit_code, ExitCode.PERMANENT)
+                foreign_inode = manifest.stat().st_ino
+                foreign_payload = manifest.read_bytes()
+                retry = self.make_runner(root, CallbackHarness()).run()
+                self.assertEqual(retry.exit_code, ExitCode.PERMANENT)
+                self.assertEqual(manifest.stat().st_ino, foreign_inode)
+                self.assertEqual(manifest.read_bytes(), foreign_payload)
+
+    def test_finalization_rejects_racing_foreign_and_rebound_final(self) -> None:
+        for attack_step in (
+            "post_fsync_pre_publish",
+            "post_publish_pre_parent_fsync",
+        ):
+            with self.subTest(attack_step=attack_step), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                harness = CallbackHarness()
+                runner = self.make_runner(root, harness)
+                self.assertEqual(runner.run().exit_code, ExitCode.COMPLETE)
+                finalization = root / "finalization.json"
+
+                def attack(step: str, path: Path) -> None:
+                    if path.name != finalization.name or step != attack_step:
+                        return
+                    if path.exists():
+                        path.unlink()
+                    path.write_bytes(b"foreign-finalization\n")
+                    path.chmod(0o600)
+
+                with self.assertRaises(ContractError):
+                    self.make_runner(
+                        root,
+                        harness,
+                        immutable_artifact_physical_fault=attack,
+                    ).finalize()
+                foreign_inode = finalization.stat().st_ino
+                foreign_payload = finalization.read_bytes()
+                with self.assertRaises(ContractError):
+                    self.make_runner(root, harness).finalize()
+                self.assertEqual(finalization.stat().st_ino, foreign_inode)
+                self.assertEqual(finalization.read_bytes(), foreign_payload)
+
+    def test_transient_failure_resumes_same_attempt_without_rerunning_committed_arm(self) -> None:
         harness = CallbackHarness()
         harness.fail_arm_once = "pair-1-shared"
         with tempfile.TemporaryDirectory() as tmp:
@@ -299,9 +438,20 @@ class FullPublicationRunnerTests(unittest.TestCase):
         self.assertEqual(first_checkpoint["verified_prefix_length"], 1)
         self.assertEqual(first_checkpoint["inflight"]["phase"], "executing")
         self.assertEqual(first_checkpoint["inflight"]["sequence"], 1)
+        self.assertEqual(first_checkpoint["inflight"]["attempt"], 1)
+        self.assertEqual(
+            [item["state"] for item in first_checkpoint["inflight"]["arm_states"]],
+            ["committed", "executing"],
+        )
         self.assertEqual(second.exit_code, ExitCode.COMPLETE)
-        self.assertEqual(harness.arm_attempts["pair-1-baseline"], 2)
+        self.assertEqual(harness.arm_attempts["pair-1-baseline"], 1)
         self.assertEqual(harness.arm_attempts["pair-1-shared"], 2)
+        shared_attempts = [
+            event[3]
+            for event in harness.events
+            if event[:3] == ("arm", 1, "pair-1-shared")
+        ]
+        self.assertEqual(shared_attempts, [1, 1])
 
     def test_cloud_failure_resumes_from_durable_acceptance_without_rerunning_arms(self) -> None:
         harness = CallbackHarness()
@@ -329,6 +479,36 @@ class FullPublicationRunnerTests(unittest.TestCase):
         self.assertEqual(
             [event[1] for event in harness.events if event[0] == "cloud"].count(1),
             2,
+        )
+
+    def test_process_crash_inside_arm_resumes_same_attempt_and_skips_committed_prefix(self) -> None:
+        harness = CallbackHarness()
+        harness.crash_arm_once = "pair-1-shared"
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            with self.assertRaisesRegex(SimulatedProcessCrash, "arm transaction"):
+                self.make_runner(root, harness).run()
+            checkpoint = json.loads(
+                (root / "checkpoint.json").read_text(encoding="utf-8")
+            )
+            resumed = self.make_runner(root, harness).run()
+
+        self.assertEqual(checkpoint["schema_version"], 2)
+        self.assertEqual(checkpoint["inflight"]["attempt"], 1)
+        self.assertEqual(
+            [item["state"] for item in checkpoint["inflight"]["arm_states"]],
+            ["committed", "executing"],
+        )
+        self.assertEqual(resumed.exit_code, ExitCode.COMPLETE)
+        self.assertEqual(harness.arm_attempts["pair-1-baseline"], 1)
+        self.assertEqual(harness.arm_attempts["pair-1-shared"], 2)
+        self.assertEqual(
+            [
+                event[3]
+                for event in harness.events
+                if event[:3] == ("arm", 1, "pair-1-shared")
+            ],
+            [1, 1],
         )
 
     def test_process_crash_inside_cloud_transaction_resumes_from_acceptance(self) -> None:
@@ -675,6 +855,24 @@ class FullPublicationRunnerTests(unittest.TestCase):
 
         self.assertEqual(resumed.exit_code, ExitCode.PERMANENT)
 
+    def test_tampered_durable_arm_result_fails_closed_before_callback(self) -> None:
+        harness = CallbackHarness()
+        harness.fail_arm_once = "pair-1-shared"
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            first = self.make_runner(root, harness).run()
+            self.assertEqual(first.exit_code, ExitCode.TRANSIENT)
+            checkpoint_path = root / "checkpoint.json"
+            checkpoint = json.loads(checkpoint_path.read_text(encoding="utf-8"))
+            checkpoint["inflight"]["arm_states"][0]["result"]["arm_id"] = "tampered"
+            checkpoint_path.write_text(json.dumps(checkpoint), encoding="utf-8")
+            fresh_harness = CallbackHarness()
+            resumed = self.make_runner(root, fresh_harness).run()
+
+        self.assertEqual(resumed.exit_code, ExitCode.PERMANENT)
+        self.assertIn("arm result drift", resumed.message)
+        self.assertEqual(fresh_harness.events, [])
+
     def test_run_root_lock_rejects_concurrent_run_and_status(self) -> None:
         entered_arm = threading.Event()
         release_arm = threading.Event()
@@ -737,6 +935,79 @@ class FullPublicationRunnerTests(unittest.TestCase):
         self.assertEqual(
             [event[1] for event in harness.events if event[0] == "verify_cloud"],
             [0, 1, 0, 1, 2],
+        )
+
+    def test_finalize_crash_after_file_reverifies_remote_before_checkpoint_commit(
+        self,
+    ) -> None:
+        harness = CallbackHarness()
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            runner = self.make_runner(root, harness)
+            self.assertEqual(runner.run().exit_code, ExitCode.COMPLETE)
+            real_write_checkpoint = runner._write_checkpoint  # noqa: SLF001
+
+            def crash_before_finalized_checkpoint(checkpoint: dict) -> None:
+                if checkpoint.get("state") == "finalized":
+                    raise SimulatedProcessCrash(
+                        "crash after finalization file before checkpoint"
+                    )
+                real_write_checkpoint(checkpoint)
+
+            with mock.patch.object(
+                runner,
+                "_write_checkpoint",
+                side_effect=crash_before_finalized_checkpoint,
+            ):
+                with self.assertRaises(SimulatedProcessCrash):
+                    runner.finalize()
+
+            self.assertTrue((root / "finalization.json").is_file())
+            checkpoint = json.loads(
+                (root / "checkpoint.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual(checkpoint["state"], "complete")
+
+            recovered = self.make_runner(root, harness).finalize()
+            checkpoint = json.loads(
+                (root / "checkpoint.json").read_text(encoding="utf-8")
+            )
+
+        self.assertTrue(recovered["verified"])
+        self.assertEqual(checkpoint["state"], "finalized")
+        self.assertEqual(
+            [event[1] for event in harness.events if event[0] == "verify_cloud"],
+            [0, 1, 2, 0, 1, 2],
+        )
+
+    def test_preexisting_finalization_cannot_bypass_live_remote_verification(
+        self,
+    ) -> None:
+        harness = CallbackHarness()
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            runner = self.make_runner(root, harness)
+            self.assertEqual(runner.run().exit_code, ExitCode.COMPLETE)
+            runner.finalize()
+
+            checkpoint_path = root / "checkpoint.json"
+            checkpoint = json.loads(checkpoint_path.read_text(encoding="utf-8"))
+            checkpoint["state"] = "complete"
+            checkpoint_path.write_text(
+                json.dumps(checkpoint, sort_keys=True) + "\n", encoding="utf-8"
+            )
+            harness.events.clear()
+            harness.verify_cloud_unverified = "pair-0"
+
+            with self.assertRaises(TransientRunError):
+                self.make_runner(root, harness).finalize()
+
+            unchanged = json.loads(checkpoint_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(unchanged["state"], "complete")
+        self.assertEqual(
+            [event[1] for event in harness.events if event[0] == "verify_cloud"],
+            [0],
         )
 
     def test_status_rejects_unknown_finalization_fields(self) -> None:

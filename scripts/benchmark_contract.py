@@ -63,7 +63,7 @@ DATASET_MANIFEST_IDENTITY_VERSION = 1
 SCENARIO_CONTRACT_IDENTITY_VERSION = 1
 PUBLICATION_RUN_CONTRACT_IDENTITY_VERSION = 1
 PUBLICATION_EVIDENCE_BUNDLE_IDENTITY_VERSION = 1
-BRANCH_ANALYTICS_CONTRACT_VERSION = 1
+BRANCH_ANALYTICS_CONTRACT_VERSION = 2
 FRAME_COLUMNS = [
     "schema_version",
     "run_id",
@@ -2139,9 +2139,20 @@ _BRANCH_TERMINAL_PROVENANCE = {
     "drop": "native_drop_event",
 }
 _VERIFIED_ANALYTICS_BACKENDS = {
+    "deepstream:native_pre_detector_queue",
     "openvino-dlstreamer:gvadetect",
     "openvino-dlstreamer:object_detect",
 }
+_VERIFIED_ANALYTICS_BACKEND_PATTERNS = (
+    re.compile(
+        r"^analytics-execution:openvino_cpu;runtime=[^;\r\n]+;"
+        r"native_api=[^;\r\n]+;device=CPU:[^;\r\n]+$"
+    ),
+    re.compile(
+        r"^analytics-execution:tensorrt_cuda;runtime=[^;\r\n]+;"
+        r"native_api=[^;\r\n]+;device=NVIDIA_CUDA:[^;\r\n]+$"
+    ),
+)
 _STAGE_CONTRACT_PROVENANCE = {"runtime_loaded_configuration"}
 _STAGE_ARTIFACT_PROVENANCE = {"runtime_loaded_artifacts_v1"}
 _STAGE_ARTIFACT_KINDS = {
@@ -3746,7 +3757,15 @@ def _validate_policy_causal_trace_fields(
                 row_number=row_number,
                 field=f"feature_provenance_json.{feature_name}.age_ms",
             )
-            if observed_timestamp <= 0 or observed_timestamp > decision_timestamp:
+            # pandas parses the scalar CSV column and the nested JSON number
+            # through different float paths.  At Unix-epoch millisecond
+            # magnitudes, an identical decimal can differ by one binary64 ULP
+            # (~0.000244 ms) after round-trip.  Keep the causal gate strict
+            # beyond the same 1 microsecond tolerance used by the age check.
+            if (
+                observed_timestamp <= 0
+                or observed_timestamp - decision_timestamp > 1e-3
+            ):
                 raise ContractError(
                     f"{path}:{row_number}: feature {feature_name} must be observed no later than the decision"
                 )
@@ -5867,9 +5886,15 @@ def _branch_analytics_contract_entries(
             raise ContractError(
                 f"{source}:{row_number}: detector weights identity is invalid"
             )
-        if backend not in _VERIFIED_ANALYTICS_BACKENDS:
+        if (
+            backend not in _VERIFIED_ANALYTICS_BACKENDS
+            and not any(
+                pattern.fullmatch(backend)
+                for pattern in _VERIFIED_ANALYTICS_BACKEND_PATTERNS
+            )
+        ):
             raise ContractError(
-                f"{source}:{row_number}: backend is not a verified OpenVINO/DL Streamer detector factory"
+                f"{source}:{row_number}: backend is not a verified native analytics execution identity"
             )
 
         entry = {
@@ -5879,12 +5904,11 @@ def _branch_analytics_contract_entries(
             "weights_sha256": (
                 detector_parts[2].split("=", 1)[1] if len(detector_parts) == 3 else ""
             ),
-            "backend": backend,
         }
         previous = identities.get(branch_id)
         if previous is not None and previous != entry:
             raise ContractError(
-                f"{source}:{row_number}: analytics identity changed within branch {branch_id}"
+                f"{source}:{row_number}: analytics model identity changed within branch {branch_id}"
             )
         identities[branch_id] = entry
     if not identities:
@@ -6034,7 +6058,7 @@ def _canonical_json_sha256(value: Any) -> str:
 
 
 def branch_analytics_contract_sha256(branch_terminals: pd.DataFrame) -> str:
-    """Hash the stable per-branch detector artifact and backend identities."""
+    """Hash stable per-branch model identities after validating every backend row."""
     payload = {
         "contract_version": BRANCH_ANALYTICS_CONTRACT_VERSION,
         "branches": _branch_analytics_contract_entries(
@@ -6828,13 +6852,14 @@ def _provenance_supports(
     return bool(values) and values.issubset(accepted) and (require_observed is None or require_observed in values)
 
 
-MEASUREMENT_PASSPORT_CONTRACT_VERSION = 4
-RESOURCE_ATTRIBUTION_RULE = "native_per_trace_bounded_stage_interval_ingress_cohort_v3"
+MEASUREMENT_PASSPORT_CONTRACT_VERSION = 5
+RESOURCE_ATTRIBUTION_RULE = "native_per_trace_bounded_stage_interval_ingress_cohort_v4"
 MEASUREMENT_STAGE_REDUCTION_RULE = "decode_preprocess_suffix_reduction_v1"
 MEASUREMENT_RESOURCE_TIME_PROVENANCE = {
     "native_hardware_counter",
     "derived_from_native_stage_timestamps",
 }
+MEASUREMENT_CPU_COMPONENT_RESOURCES = {"cpu", "nvdec"}
 
 
 def build_measurement_signature_payload(time_provenance: list[str]) -> dict[str, Any]:
@@ -6843,6 +6868,11 @@ def build_measurement_signature_payload(time_provenance: list[str]) -> dict[str,
         "contract_version": MEASUREMENT_PASSPORT_CONTRACT_VERSION,
         "resource_attribution": RESOURCE_ATTRIBUTION_RULE,
         "resource_time_components": ["cpu_time_ms", "gpu_time_ms"],
+        "resource_time_component_mapping": {
+            "cpu": "cpu_time_ms",
+            "gpu": "gpu_time_ms",
+            "nvdec": "cpu_time_ms_host_stage_elapsed_not_nvdec_busy_time",
+        },
         "resource_time_aggregation": (
             "unweighted_sum_of_attributed_device_milliseconds_v1"
         ),
@@ -7104,7 +7134,7 @@ def summarize_measurement_passport(
             ):
                 interval_time_consistent = False
                 break
-            if resource_name == "cpu":
+            if resource_name in MEASUREMENT_CPU_COMPONENT_RESOURCES:
                 resource_component_consistent = math.isclose(
                     gpu_value,
                     0.0,

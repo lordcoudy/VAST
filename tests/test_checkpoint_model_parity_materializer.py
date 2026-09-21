@@ -166,8 +166,54 @@ class ModelParityMaterializerTests(unittest.TestCase):
         self.assertIn("DockerWorkerProcessFactory", runner_source)
         self.assertIn("_open_owned_listener", runner_source)
         self.assertIn("expected_peer_pid", runner_source)
-        self.assertIn("_peer_pid", runner_source)
+        self.assertIn("_attest_worker_peer_identity", runner_source)
+        self.assertIn("_complete_peer_identity_after_handshake", runner_source)
+        self.assertIn("DirectoryFdCustodyV1", runner_source)
+        self.assertIn("mkdir_child_exclusive", runner_source)
+        self.assertIn("self._retire_listener(owned)", runner_source)
+        self.assertIn("_validate_retired_socket_record_v1", runner_source)
+        self.assertIn("peer_identities", runner_source)
+        self.assertNotIn("observed_peer_pid = _peer_pid", runner_source)
         self.assertNotIn("connection.connect(", runner_source)
+        self.assertIn("worker_peer_identity_attestation.json", source)
+
+    @unittest.skipUnless(os.name == "posix", "dirfd retirement is POSIX-only")
+    def test_native_endpoint_listener_retirement_uses_physical_custody(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            runtime_dir = Path(temporary) / "vast-runtime"
+            runtime_dir.mkdir(mode=0o700)
+            runner = object.__new__(materializer.NativeEndpointRunner)
+            runner._socket_dir = runtime_dir
+            runner._lifecycle_id = "a" * 32
+            runner._socket_retirement_directory = runtime_dir.parent / (
+                f".vast-model-parity-retired-{runner._lifecycle_id}"
+            )
+            runner._runtime_directory_custody = None
+            runner._socket_retirement_directory_custody = None
+            runner._opened_socket_names = set()
+            runner._retired_socket_nodes = []
+            runner._establish_socket_retirement_custody()
+            owned = materializer._open_owned_listener(
+                runtime_dir / "worker-plate_number-cpu.sock",
+                backlog=1,
+            )
+            runner._opened_socket_names.add(owned.path.name)
+            try:
+                runner._retire_listener(owned)
+                runner._verify_socket_retirement_namespace(require_all=True)
+                self.assertEqual(list(runtime_dir.iterdir()), [])
+                self.assertEqual(len(runner._retired_socket_nodes), 1)
+                record = runner._retired_socket_nodes[0]
+                self.assertEqual(
+                    record["active_name"],
+                    "worker-plate_number-cpu.sock",
+                )
+                self.assertEqual(
+                    {item.name for item in runner._socket_retirement_directory.iterdir()},
+                    {record["retired_name"]},
+                )
+            finally:
+                runner._close_socket_retirement_custody()
 
     def test_verify_physical_file_rejects_links_and_hash_drift(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -203,6 +249,23 @@ class ModelParityMaterializerTests(unittest.TestCase):
                     expected_sha256=sha(payload),
                     label="fixture",
                 )
+
+    def test_project_relative_inputs_are_resolved_against_project_root(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary).resolve()
+            target = root / "artifacts" / "runtime" / "cpu.json"
+            target.parent.mkdir(parents=True)
+            target.write_text("{}\n", encoding="utf-8")
+
+            self.assertNotEqual(Path.cwd().resolve(), root)
+            self.assertEqual(
+                materializer._project_relative(
+                    root,
+                    Path("artifacts/runtime/cpu.json"),
+                    label="cpu runtime probe",
+                ),
+                Path("artifacts/runtime/cpu.json"),
+            )
 
     def test_nonpublication_injection_is_structurally_unpromotable(self) -> None:
         signature = inspect.signature(collect_nonpublication_test_evidence)
@@ -655,6 +718,71 @@ class ModelParityMaterializerTests(unittest.TestCase):
             self.assertTrue(accepted.is_file())
             self.assertEqual(result.accepted_manifest.sha256, sha(accepted.read_bytes()))
             self.assertEqual(list(accepted.parent.glob(".*candidate*")), [])
+
+    def test_candidate_rebind_before_cleanup_preserves_final_and_foreign_candidate(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary).resolve()
+            (root / "configs").mkdir()
+            materialization = root / "evidence" / "model_parity" / "materializations" / "run"
+            materialization.mkdir(parents=True)
+            base_path = root / "configs" / "base.yaml"
+            base_path.write_bytes(b"base\n")
+            base_record = materializer.verify_physical_file(
+                root,
+                "configs/base.yaml",
+                expected_sha256=sha(b"base\n"),
+                label="base",
+            )
+            promoted = {"schema_version": 3, "artifact_kind": "fixture"}
+            collection = ProductionCollection(
+                materializer._PRODUCTION_TOKEN,
+                project_root=root,
+                materialization_dir=materialization,
+                base_manifest_record=base_record,
+                base_manifest={},
+                evidence_refs={},
+                promoted_manifest=promoted,
+            )
+            accepted = root / "configs" / "accepted.yaml"
+            candidate = accepted.parent / f".{accepted.name}.candidate.{os.getpid()}"
+            stolen = candidate.with_name(candidate.name + ".stolen")
+
+            def rebind_candidate(step: str) -> None:
+                if step != "post_publish_pre_parent_fsync":
+                    return
+                os.replace(candidate, stolen)
+                candidate.write_bytes(b"foreign\n")
+
+            with (
+                mock.patch.object(materializer, "_verify_collection_final_paths"),
+                mock.patch.object(
+                    materializer,
+                    "load_parity_manifest",
+                    return_value={**promoted, "identity": {"sha256": "0" * 64}},
+                ),
+                mock.patch.object(
+                    materializer,
+                    "assess_model_parity",
+                    return_value={"publication_ready": True, "blockers": []},
+                ),
+                self.assertRaisesRegex(MaterializerError, "mutated|rebound|changed"),
+            ):
+                promote_model_parity_evidence(
+                    collection,
+                    accepted_manifest_path=accepted,
+                    after_manifest_publish_step=rebind_candidate,
+                )
+
+            self.assertTrue(accepted.is_file())
+            final_identity = accepted.stat().st_dev, accepted.stat().st_ino
+            self.assertEqual(candidate.read_bytes(), b"foreign\n")
+            self.assertTrue(stolen.is_file())
+            self.assertNotEqual(
+                (candidate.stat().st_dev, candidate.stat().st_ino), final_identity
+            )
+            self.assertNotEqual(
+                (stolen.stat().st_dev, stolen.stat().st_ino), final_identity
+            )
 
     def test_accepted_manifest_collision_is_immutable_and_unassessed(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

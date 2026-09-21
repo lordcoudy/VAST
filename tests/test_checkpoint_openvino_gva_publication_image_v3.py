@@ -15,22 +15,46 @@ DEPENDENCY_ALLOWLIST = (
     / "runtime-dependency-allowlist.txt"
 )
 BUILD_CONTEXT_ALLOWLIST = DEPLOY / "runtime-build-context-allowlist.txt"
-BASE_ID = "sha256:5c43c6c1f95b3fbb4a95957d1d293b1272c1db6a44a7a2063aad3aeba7c951d1"
+BASE_ID = "sha256:fc26a96b600484da32fc304461a0484225b931e0e1ddfc9a1f112414d737b16a"
+FROZEN_NATIVE_ARTIFACTS = (
+    "/usr/local/bin/vast_native_gst_probe",
+    "/usr/local/bin/vast_checkpoint_source",
+    "/opt/vast/lib/gstreamer-1.0/libgstadaptivescheduler.so",
+    "/opt/vast/lib/gstreamer-1.0/libgstvastanalyticsterminal.so",
+    "/opt/vast/lib/gstreamer-1.0/libgstvastanalyticsqueue.so",
+    "/opt/vast/lib/gstreamer-1.0/libgstvastcheckpointprefixqueue.so",
+    "/opt/vast/share/gstreamer-registry.bin",
+)
 
 
 class OpenVINOGVAPublicationImageV3Tests(unittest.TestCase):
     def test_image_is_offline_normalized_and_contains_exact_native_runtime(self) -> None:
         source = DOCKERFILE.read_text(encoding="utf-8")
-        self.assertEqual(source.count("FROM ${BASE_IMAGE}"), 2)
+        self.assertEqual(source.count("FROM ${BASE_IMAGE}"), 3)
         self.assertIn("ARG BASE_IMAGE=vast/openvino-native-probe@" + BASE_ID, source)
         self.assertIn("ARG SOURCE_DATE_EPOCH=0", source)
+        self.assertIn("FROM ${BASE_IMAGE} AS native-provider", source)
+        self.assertIn("FROM ${BASE_IMAGE} AS runtime_builder", source)
         self.assertIn("# BEGIN VAST_RUNTIME_SOURCE_ALLOWLIST", source)
         self.assertIn("checkpoint_analytics_execution_client.hpp", source)
         self.assertIn("checkpoint_resource_interval_emitter.hpp", source)
         self.assertIn("vast_native_gst_probe.cpp", source)
         self.assertNotIn("COPY scripts/*.py", source)
         self.assertNotIn("COPY deploy/native_gst_probe/ /opt/vast/native-src/", source)
-        self.assertIn("-ffile-prefix-map=/opt/vast/native-src=.", source)
+        for forbidden in (
+            "/usr/bin/c++",
+            "/usr/bin/pkg-config",
+            "/usr/bin/strip",
+            "-ffile-prefix-map=/opt/vast/native-src=.",
+            "-fdebug-prefix-map=/opt/vast/native-src=.",
+        ):
+            self.assertNotIn(forbidden, source)
+        for artifact in FROZEN_NATIVE_ARTIFACTS:
+            self.assertIn(
+                f"COPY --from=native-provider {artifact} "
+                f"/opt/vast/runtime-root{artifact}",
+                source,
+            )
         self.assertIn('touch -h -d "@${SOURCE_DATE_EPOCH}"', source)
         final = source.rsplit("FROM ${BASE_IMAGE}", maxsplit=1)[1]
         self.assertNotIn("\nRUN ", final)

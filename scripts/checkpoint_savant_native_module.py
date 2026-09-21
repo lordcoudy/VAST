@@ -10,7 +10,7 @@ import hashlib
 import json
 import re
 import threading
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from typing import TYPE_CHECKING, Any, Mapping, Sequence
 
 from checkpoint_savant_ingress import SAVANT_ADMISSION_TAGS, SavantSourceBinding
@@ -79,6 +79,7 @@ class SavantNativeModuleBinding:
     codec: str
     dataset_id: str
     source_sha256: str
+    source_duration_ns: int
     width: int
     height: int
     framerate: str
@@ -109,6 +110,7 @@ class SavantNativeModuleBinding:
             stream_id=self.stream_id, source_id=self.source_id, codec=self.codec,
             width=self.width, height=self.height, framerate=self.framerate,
             dataset_id=self.dataset_id, source_sha256=self.source_sha256,
+            source_duration_ns=self.source_duration_ns,
             socket=self.source_socket,
         ).validate()
         _require(self.module_socket == self.source_socket.replace(
@@ -170,6 +172,7 @@ def _build_binding(descriptor: Mapping[str, Any], source: Mapping[str, Any]) -> 
         branches=tuple(str(x) for x in descriptor.get("branches") or ()),
         source_id=str(source.get("source_id", "")), codec=codec,
         dataset_id=str(descriptor.get("dataset", "")), source_sha256=source_sha,
+        source_duration_ns=int(source.get("source_duration_ns", 0)),
         width=int(source.get("width", 0)), height=int(source.get("height", 0)),
         framerate="600/1", source_socket=source_socket,
         module_socket=source_socket.replace("dealer+connect:", "router+bind:", 1),
@@ -211,7 +214,7 @@ def build_native_module_artifact(descriptor: Mapping[str, Any], source: Mapping[
     }
     prefix = {
         "element": "pyfunc", "name": "vast_savant_native_prefix",
-        "module": "checkpoint_savant_native_module",
+        "module": "checkpoint_savant_pyfunc_v3",
         "class_name": "SavantNativePrefixPlugin",
         "kwargs": {"binding_json": binding_json},
     }
@@ -219,8 +222,16 @@ def build_native_module_artifact(descriptor: Mapping[str, Any], source: Mapping[
     config = {
         "name": binding.module_id,
         "parameters": {
-            "frame": {"width": binding.width, "height": binding.height},
+            # Keep exact KPP geometry; Savant's default alignment is eight.
+            "frame": {"width": binding.width, "height": binding.height,
+                      "geometry_base": 1},
             "batch_size": 1, "max_parallel_streams": 6,
+            # All 24 baseline modules share one container network namespace.
+            # Pin distinct ports instead of inheriting Savant's global 8080.
+            "webserver_port": 18080 + binding.stream_id * 5 + (
+                4 if binding.topology_kind == SHARED_TOPOLOGY
+                else BRANCHES.index(binding.branches[0])
+            ),
             "min_fps": "600/1", "max_fps": "600/1", "max_fps_control": False,
             "queue_maxsize": 1, "egress_queue_length": 1,
             "egress_queue_byte_size": 0, "output_frame": None,
@@ -241,7 +252,7 @@ def build_native_module_artifact(descriptor: Mapping[str, Any], source: Mapping[
                     "low-latency-decoding": False,
                 },
                 "ingress_frame_filter": {
-                    "module": "checkpoint_savant_native_module",
+                    "module": "checkpoint_savant_pyfunc_v3",
                     "class_name": "SavantAdmissionIngressFilter",
                     "kwargs": {"binding_json": binding_json},
                 },
@@ -405,7 +416,11 @@ class SavantAdmissionIngressFilter(_FrameFilterBase):
 
 def build_native_frame_identity(*, binding: SavantNativeModuleBinding,
                                 frame_meta: Any, decoder_factory: str,
-                                decoder_gpu_id: int) -> dict[str, Any]:
+                                decoder_gpu_id: int,
+                                mux_gst_buffer_pts_ns: int) -> dict[str, Any]:
+    _require(type(mux_gst_buffer_pts_ns) is int
+             and 0 <= mux_gst_buffer_pts_ns < (1 << 64) - 1,
+             "Savant native mux GstBuffer PTS is missing or invalid")
     tags = _validate_frame(frame_meta.video_frame, binding)
     native = getattr(frame_meta, "frame_meta", None)
     _require(native is not None, "Savant native NvDsFrameMeta is missing")
@@ -431,6 +446,7 @@ def build_native_frame_identity(*, binding: SavantNativeModuleBinding,
         "payload_sha256": str(tags["vast.payload_sha256"]),
         "nvds_source_id": source_id, "nvds_frame_num": frame_num,
         "nvds_buf_pts_ns": buf_pts, "decoder_factory": decoder_factory,
+        "mux_gst_buffer_pts_ns": mux_gst_buffer_pts_ns,
         "decoder_gpu_id": decoder_gpu_id,
     }
 
@@ -466,15 +482,17 @@ class SavantProtocolNativeRuntime:
     def admit_video_frame(self, frame: Any, binding: SavantNativeModuleBinding) -> None:
         _validate_frame(frame, binding)
 
-    def _identity(self, binding: SavantNativeModuleBinding, frame_meta: Any) -> dict[str, Any]:
+    def _identity(self, binding: SavantNativeModuleBinding, frame_meta: Any,
+                  buffer: Any) -> dict[str, Any]:
         _require(self._decoder is not None, "Savant decoder was not physically observed")
         return build_native_frame_identity(
             binding=binding, frame_meta=frame_meta,
+            mux_gst_buffer_pts_ns=getattr(buffer, "pts", None),
             decoder_factory=self._decoder[0], decoder_gpu_id=self._decoder[1])
 
     def observe_prefix(self, buffer: Any, frame_meta: Any,
                        binding: SavantNativeModuleBinding) -> None:
-        identity = self._identity(binding, frame_meta)
+        identity = self._identity(binding, frame_meta, buffer)
         self.bridge.observe_decoded_frame(identity)
         self.bridge.observe_preprocessed_frame(identity)
         with self._route_condition:
@@ -485,7 +503,7 @@ class SavantProtocolNativeRuntime:
 
     def observe_route(self, buffer: Any, frame_meta: Any,
                       binding: SavantNativeModuleBinding, branch: str) -> None:
-        identity = self._identity(binding, frame_meta)
+        identity = self._identity(binding, frame_meta, buffer)
         with self._route_condition:
             pending = self._pending_routes[branch]
             _require(bool(pending) and pending.pop(0) == identity["input_frame_key"],
@@ -515,8 +533,8 @@ class SavantProtocolNativeRuntime:
             del self._route_terminals[input_frame_key]
 
     def drop_route(self, frame_meta: Any, binding: SavantNativeModuleBinding,
-                   branch: str) -> None:
-        identity = self._identity(binding, frame_meta)
+                   branch: str, *, buffer: Any) -> None:
+        identity = self._identity(binding, frame_meta, buffer)
         self.bridge.drop_branch(identity["input_frame_key"], branch, reason=DROP_REASON)
 
     def queue_overrun(self, *, branch: str, queue_name: str,
@@ -561,15 +579,17 @@ class SavantEngineeringCanaryRuntime:
         _require(key not in self._admitted, "Savant canary admission duplicated")
         self._admitted.add(key)
 
-    def _identity(self, binding: SavantNativeModuleBinding, frame_meta: Any) -> dict[str, Any]:
+    def _identity(self, binding: SavantNativeModuleBinding, frame_meta: Any,
+                  buffer: Any) -> dict[str, Any]:
         _require(self._decoder is not None, "Savant canary decoder was not observed")
         return build_native_frame_identity(
             binding=binding, frame_meta=frame_meta,
+            mux_gst_buffer_pts_ns=getattr(buffer, "pts", None),
             decoder_factory=self._decoder[0], decoder_gpu_id=self._decoder[1])
 
-    def observe_prefix(self, _buffer: Any, frame_meta: Any,
+    def observe_prefix(self, buffer: Any, frame_meta: Any,
                        binding: SavantNativeModuleBinding) -> None:
-        identity = self._identity(binding, frame_meta)
+        identity = self._identity(binding, frame_meta, buffer)
         key = str(identity["input_frame_key"])
         _require(key in self._admitted and key not in self._decoded,
                  "Savant canary decode identity drifted")
@@ -577,9 +597,9 @@ class SavantEngineeringCanaryRuntime:
         for branch in binding.branches:
             self._pending[branch].append(key)
 
-    def observe_route(self, _buffer: Any, frame_meta: Any,
+    def observe_route(self, buffer: Any, frame_meta: Any,
                       binding: SavantNativeModuleBinding, branch: str) -> None:
-        identity = self._identity(binding, frame_meta)
+        identity = self._identity(binding, frame_meta, buffer)
         key = str(identity["input_frame_key"])
         terminal = (key, branch)
         _require(bool(self._pending[branch]) and self._pending[branch].pop(0) == key,
@@ -708,7 +728,7 @@ class SavantNativeRoutePlugin(_PyFuncBase):
         runtime.observe_route(buffer, frame_meta, self.binding, self.branch)
         if (self.binding.topology_kind == SHARED_TOPOLOGY and
                 self.branch == self.binding.branches[-1]):
-            identity = runtime._identity(self.binding, frame_meta)
+            identity = runtime._identity(self.binding, frame_meta, buffer)
             _require(callable(getattr(runtime, "await_route_join", None)),
                      "Savant runtime lacks physical route join")
             runtime.await_route_join(identity["input_frame_key"], self.binding)
@@ -747,19 +767,47 @@ class SavantNativeRouteBufferPlugin(_BasePyFuncPlugin):
 
 try:
     from savant.config.schema import PipelineElement, PyFuncElement
+    from savant.deepstream.element_factory import NvDsElementFactory as _NvDsElementFactory
     from savant.deepstream.pipeline import NvDsPipeline as _NvDsPipeline
     from savant.gstreamer import Gst
+    from savant.gstreamer.utils import (
+        gst_post_stream_failed_error as _gst_post_stream_failed_error,
+    )
 except (ImportError, OSError):
     PipelineElement = PyFuncElement = None  # type: ignore[assignment]
     Gst = None  # type: ignore[assignment]
+    _gst_post_stream_failed_error = None
 
     class _NvDsPipeline:  # type: ignore[no-redef]
         def __init__(self, *_: Any, **__: Any) -> None:
             raise SavantNativeModuleError("Savant 0.5.17 NvDsPipeline API is unavailable")
 
 
+    class _NvDsElementFactory:  # type: ignore[no-redef]
+        @staticmethod
+        def create_nvvideoconvert(element: Any) -> Any:
+            raise SavantNativeModuleError("Savant 0.5.17 element factory is unavailable")
+
+
+class _CheckpointNvDsElementFactory(_NvDsElementFactory):
+    @staticmethod
+    def create_nvvideoconvert(element: Any) -> Any:
+        # Savant 0.5.17 defaults to CUDA unified memory on x86. Its managed
+        # allocations cause severe conversion overhead under WSL. This graph
+        # reads pixels only after the explicit RGB host conversion, so both
+        # the stock source converter and our output converter can use device
+        # allocations. Keep the upstream factory unchanged for other graphs.
+        configured = replace(
+            element,
+            properties={**element.properties, "nvbuf-memory-type": 2},
+        )
+        return _NvDsElementFactory.create_nvvideoconvert(configured)
+
+
 class SavantCheckpointNvDsPipeline(_NvDsPipeline):
     """NvDsPipeline with exact stream-index binding and physical shared tee."""
+
+    _element_factory = _CheckpointNvDsElementFactory()
 
     def __init__(self, name: str, pipeline_cfg: Any, **kwargs: Any) -> None:
         binding_json = kwargs.get("checkpoint_binding_json")
@@ -821,19 +869,26 @@ class SavantCheckpointNvDsPipeline(_NvDsPipeline):
         for index, route in enumerate(routes):
             branch = str(route["branch"])
             queue = self.add_element(PipelineElement(
-                "queue", name=str(route["queue_name"]), properties={
-                    "max-size-buffers": 1, "max-size-bytes": 0,
-                    "max-size-time": 0, "leaky": "upstream"}), link=False)
-            queue.connect("overrun", self._on_queue_overrun, branch)
-            plugin = self.add_element(PyFuncElement(
-                module="checkpoint_savant_native_module",
-                class_name="SavantNativeRouteBufferPlugin",
-                kwargs={"binding_json": self.checkpoint_binding.to_json(),
-                        "branch": branch},
-                name=str(route["terminal_name"])), link=False)
-            plugin.set_property("pipeline", self._video_pipeline)
-            plugin.set_property("gst-pipeline", self)
-            plugin.set_property("stream-pool-size", self._batch_size)
+                "vastcheckpointbranchqueue", name=str(route["queue_name"]),
+                properties={"max-size-buffers": 1}), link=False)
+            queue.connect("buffer-dropped", self._on_queue_buffer_dropped, branch)
+            if tee is not None:
+                queue_sink = queue.get_static_pad("sink")
+                _require(queue_sink is not None,
+                         "Savant shared route queue sink is unavailable")
+                probe_id = queue_sink.add_probe(
+                    Gst.PadProbeType.BUFFER, self._on_queue_buffer_probe, (queue, branch))
+                _require(probe_id > 0, "Savant shared queue-entry probe was not installed")
+            # Official pyfunc pads accept NVMM/RGBA, not this RGB CPU prefix.
+            # Identity hands the real negotiated buffer to the same callback.
+            plugin = self.add_element(PipelineElement(
+                "identity", name=str(route["terminal_name"]),
+                properties={"signal-handoffs": True, "silent": True}),
+                link=False)
+            terminal = SavantNativeRouteBufferPlugin(
+                binding_json=self.checkpoint_binding.to_json(), branch=branch)
+            terminal.gst_element = plugin
+            plugin.connect("handoff", self._on_rgb_route_handoff, terminal)
             _require(queue.link(plugin), "Savant native route queue link failed")
             if tee is None:
                 _require(rgb_caps.link(queue),
@@ -861,17 +916,64 @@ class SavantCheckpointNvDsPipeline(_NvDsPipeline):
                 source_info.after_demuxer.append(sink)
         return output_sink
 
-    def _on_queue_overrun(self, queue: Any, branch: str) -> None:
-        runtime = _runtime(self.checkpoint_binding)
-        callback = getattr(runtime, "queue_overrun", None)
-        _require(callable(callback),
-                 "Savant native queue overrun lacks causal drop callback")
-        callback(
-            branch=branch,
-            queue_name=queue.get_name(),
-            current_level_buffers=int(queue.get_property("current-level-buffers")),
-            binding=self.checkpoint_binding,
-        )
+    def _on_rgb_route_handoff(self, element: Any, buffer: Any,
+                              terminal: SavantNativeRouteBufferPlugin) -> None:
+        try:
+            terminal.process_buffer(buffer)
+        except Exception as error:
+            # PyGObject otherwise prints signal exceptions and continues flow.
+            # Report a native bus error so Savant stops the failed pipeline.
+            _require(callable(_gst_post_stream_failed_error),
+                     "Savant RGB route cannot report a native stream failure")
+            _gst_post_stream_failed_error(
+                gst_element=element, frame=None, file_path=__file__,
+                text="Savant RGB route callback failed",
+                debug=f"{type(error).__name__}: {error}"[:4096],
+            )
+
+    def _on_queue_buffer_probe(self, pad: Any, info: Any,
+                               route: tuple[Any, str]) -> Any:
+        queue, branch = route
+        try:
+            buffer = info.get_buffer()
+            _require(buffer is not None, "Savant queue-entry probe has no buffer")
+            runtime = _runtime(self.checkpoint_binding)
+            callback = getattr(runtime, "observe_queue_buffer", None)
+            _require(callable(callback),
+                     "Savant shared queue lacks native fanout observation")
+            callback(buffer, self.checkpoint_binding, branch, caps=pad.get_current_caps())
+            return Gst.PadProbeReturn.OK
+        except Exception as error:
+            _require(callable(_gst_post_stream_failed_error),
+                     "Savant queue-entry probe cannot report a stream failure")
+            _gst_post_stream_failed_error(
+                gst_element=queue, frame=None, file_path=__file__,
+                text="Savant native queue-entry callback failed",
+                debug=f"{type(error).__name__}: {error}"[:4096],
+            )
+            return Gst.PadProbeReturn.DROP
+
+    def _on_queue_buffer_dropped(self, queue: Any, transport_pts_ns: int,
+                                 branch: str) -> bool:
+        try:
+            runtime = _runtime(self.checkpoint_binding)
+            callback = getattr(runtime, "queue_dropped", None)
+            _require(callable(callback),
+                     "Savant native queue lacks causal drop callback")
+            callback(
+                branch=branch, queue_name=queue.get_name(),
+                transport_pts_ns=transport_pts_ns, binding=self.checkpoint_binding,
+            )
+            return True
+        except Exception as error:
+            _require(callable(_gst_post_stream_failed_error),
+                     "Savant native queue cannot report a stream failure")
+            _gst_post_stream_failed_error(
+                gst_element=queue, frame=None, file_path=__file__,
+                text="Savant native queue drop callback failed",
+                debug=f"{type(error).__name__}: {error}"[:4096],
+            )
+            return False
 
 
 __all__ = [

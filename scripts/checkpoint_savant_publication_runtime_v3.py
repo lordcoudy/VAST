@@ -24,7 +24,7 @@ import time
 from collections.abc import Mapping
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
-from typing import Any
+from typing import Any, Callable
 
 sys.dont_write_bytecode = True
 
@@ -33,6 +33,11 @@ from checkpoint_publication_launcher_adapter_v3 import (
     NativePublicationPermanentErrorV3,
     NativePublicationRequestV3,
     NativePublicationTransientErrorV3,
+    deterministic_numeric_thread_environment_argv_v1,
+)
+from publication_child_evidence_materializer_v1 import (
+    PublicationChildEvidenceMaterializerV1Error,
+    materialize_publication_child_evidence_group_v1,
 )
 RUNTIME_INPUT_KEY = "savant_publication_runtime_v3"
 RUNTIME_INPUT_KIND = "vast_savant_publication_runtime_inputs_v3"
@@ -85,6 +90,11 @@ MAX_FILES = 128
 MAX_ENDPOINT_SOCKETS = 32
 MAX_EVIDENCE_BYTES = 64 * 1024 * 1024
 MAX_CAPTURE_BYTES = 8 * 1024 * 1024
+# Baseline has 24 official Savant processes, each with native/HTTP threads.
+# A125 exhausted 2048 tasks once all 24 modules reached decoder startup on the
+# 28-thread target. Keep a finite ceiling with native decoder/HTTP headroom;
+# this does not change CPU allocation or the enclosing WSL memory limit.
+MAX_CONTAINER_PIDS = 4096
 PARENT_FILES = {
     "backend_publication_arm_contract.json",
     "backend_publication_launch_fence.json",
@@ -101,6 +111,22 @@ class SavantPublicationRuntimeV3Error(NativePublicationPermanentErrorV3):
 
 def _fail(blocker: str) -> None:
     raise SavantPublicationRuntimeV3Error(blocker)
+
+
+def _fail_native_run(completed: _Completed) -> None:
+    """Retain bounded failure context without changing the permanent blocker."""
+    error = SavantPublicationRuntimeV3Error("savant_native_runtime_failed")
+    diagnostic: dict[str, Any] = {"returncode": completed.returncode}
+    for name in ("stdout", "stderr"):
+        payload = getattr(completed, name)
+        diagnostic[name + "_size_bytes"] = len(payload)
+        diagnostic[name + "_sha256"] = hashlib.sha256(payload).hexdigest()
+        diagnostic[name + "_tail"] = payload[-4096:].decode("utf-8", errors="replace")
+    error.native_diagnostic = diagnostic
+    add_note = getattr(error, "add_note", None)
+    if callable(add_note):
+        add_note(json.dumps(diagnostic, sort_keys=True, ensure_ascii=True))
+    raise error
 
 
 def _canonical(value: object) -> bytes:
@@ -787,9 +813,11 @@ def _container_argv(
     runtime = request.runtime_inputs
     files = pins.roles
     arguments: list[str] = [
-        "run", "--rm", "--gpus", "all", "--network", "none",
+        "run", "--rm", "--user", f"{os.getuid()}:{os.getgid()}",
+        "--gpus", "all", "--network", "none",
         "--read-only", "--cap-drop", "ALL", "--security-opt",
-        "no-new-privileges:true", "--pids-limit", "512",
+        "no-new-privileges:true", "--pids-limit", str(MAX_CONTAINER_PIDS),
+        *deterministic_numeric_thread_environment_argv_v1(),
         *_mount(str(input_root), str(CONTAINER_INPUT_ROOT), readonly=True),
         *_mount(str(runtime_output), CONTAINER_OUTPUT_ROOT, readonly=False),
     ]
@@ -910,67 +938,28 @@ def _copy_evidence(
     runtime_output: Path,
     request: NativePublicationRequestV3,
     mapping: Mapping[str, str],
+    *,
+    _fault_hook: Callable[[str], None] | None = None,
 ) -> None:
-    for target_name in request.launcher_evidence_files:
-        source = runtime_output / mapping[target_name]
-        target = request.output_dir / target_name
-        temporary = target.with_name(f".{target.name}.savant-v3.{os.getpid()}.tmp")
-        source_fd = target_fd = -1
-        try:
-            before = source.lstat()
-            if (
-                not stat.S_ISREG(before.st_mode) or _is_link(before)
-                or int(before.st_nlink) != 1
-                or not 0 < int(before.st_size) <= MAX_EVIDENCE_BYTES
-                or target.exists() or temporary.exists()
-            ):
-                raise OSError("invalid")
-            source_fd = os.open(
-                source, os.O_RDONLY | getattr(os, "O_CLOEXEC", 0)
-                | getattr(os, "O_NOFOLLOW", 0),
-            )
-            opened = os.fstat(source_fd)
-            target_fd = os.open(
-                temporary, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600,
-            )
-            observed = 0
-            digest = hashlib.sha256()
-            while True:
-                chunk = os.read(source_fd, 1024 * 1024)
-                if not chunk:
-                    break
-                observed += len(chunk)
-                digest.update(chunk)
-                offset = 0
-                while offset < len(chunk):
-                    written = os.write(target_fd, chunk[offset:])
-                    if written <= 0:
-                        raise OSError("short write")
-                    offset += written
-            os.fsync(target_fd)
-            after = source.lstat()
-            if (
-                _snapshot(before) != _snapshot(opened)
-                or _snapshot(opened) != _snapshot(after)
-                or observed != int(after.st_size)
-            ):
-                raise OSError("changed")
-            os.close(source_fd)
-            os.close(target_fd)
-            source_fd = target_fd = -1
-            if target.exists():
-                raise OSError("collision")
-            os.replace(temporary, target)
-        except OSError:
-            _fail("savant_child_evidence_materialization_failed")
-        finally:
-            for fd in (source_fd, target_fd):
-                if fd >= 0:
-                    os.close(fd)
-            try:
-                temporary.unlink(missing_ok=True)
-            except OSError:
-                pass
+    try:
+        materialize_publication_child_evidence_group_v1(
+            project_root=request.project_root,
+            source_dir=runtime_output,
+            output_dir=request.output_dir,
+            target_names=request.launcher_evidence_files,
+            evidence_mapping=dict(mapping),
+            allowed_preexisting_names=(
+                (Path(os.path.abspath(request.arm_contract_path)).name,)
+                if Path(os.path.abspath(request.arm_contract_path)).parent
+                == Path(os.path.abspath(request.output_dir))
+                else ()
+            ),
+            maximum_bytes=MAX_EVIDENCE_BYTES,
+            label="Savant child evidence",
+            after_physical_commit_step=_fault_hook,
+        )
+    except PublicationChildEvidenceMaterializerV1Error:
+        _fail("savant_child_evidence_materialization_failed")
 
 
 def run_checkpoint_savant_publication_runtime_v3(
@@ -1014,7 +1003,7 @@ def run_checkpoint_savant_publication_runtime_v3(
                     "savant_native_runtime_incomplete_terminal_outcome"
                 )
             if completed.returncode != 0 or completed.stderr:
-                _fail("savant_native_runtime_failed")
+                _fail_native_run(completed)
             _validate_status(completed.stdout, request, contract)
             _copy_evidence(runtime_output, request, contract.evidence_mapping)
         _require_pins_unchanged(pins)

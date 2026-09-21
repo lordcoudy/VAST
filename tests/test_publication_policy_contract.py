@@ -45,9 +45,9 @@ def valid_capability_manifest() -> dict:
                     "implementation_version": f"{system}-{branch}-{resource}-implementation-v3",
                     "terminal_detector": f"opaque-{branch}-detector-v3",
                     "terminal_backend": (
-                        "analytics-execution:openvino_cpu;runtime=OpenVINO;native_api=CompiledModel;device=CPU"
+                        "analytics-execution:openvino_cpu;runtime=OpenVINO;native_api=CompiledModel;device=CPU:fixture-cpu"
                         if resource == "cpu"
-                        else "analytics-execution:tensorrt_cuda;runtime=TensorRT;native_api=enqueueV3;device=NVIDIA_CUDA:0"
+                        else "analytics-execution:tensorrt_cuda;runtime=TensorRT;native_api=enqueueV3;device=NVIDIA_CUDA:GPU-fixture"
                     ),
                 }
                 bindings[resource] = {
@@ -234,6 +234,22 @@ class PublicationPolicyContractTests(unittest.TestCase):
         self.assertFalse(assessment["passed"])
         self.assertIn(
             "capability:savant:vehicle_type:cpu:runtime_identity_resource_mismatch",
+            assessment["blockers"],
+        )
+
+        abbreviated = copy.deepcopy(manifest)
+        abbreviated_binding = abbreviated["systems"]["deepstream"]["branches"][
+            "plate_number"
+        ]["gpu"]
+        abbreviated_backend = (
+            "analytics-execution:tensorrt_cuda;device=NVIDIA_CUDA:0"
+        )
+        abbreviated_binding["runtime_identity"]["terminal_backend"] = abbreviated_backend
+        abbreviated_binding["terminal_backend"] = abbreviated_backend
+        assessment = assess_capability_manifest(abbreviated)
+        self.assertFalse(assessment["passed"])
+        self.assertIn(
+            "capability:deepstream:plate_number:gpu:runtime_identity_resource_mismatch",
             assessment["blockers"],
         )
 

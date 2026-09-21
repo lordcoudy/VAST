@@ -70,6 +70,10 @@ class ProtocolError(RuntimeError):
     """The peer, message, or file descriptor violated the frozen contract."""
 
 
+class PeerClosed(ProtocolError):
+    """The peer performed a clean record-boundary EOF on a SEQPACKET socket."""
+
+
 def _require(condition: bool, message: str) -> None:
     if not condition:
         raise ProtocolError(message)
@@ -187,7 +191,8 @@ def receive_packet(
         raise ProtocolError(f"failed to receive analytics execution datagram: {error}") from error
     received_fds: list[int] = []
     try:
-        _require(payload != b"", "analytics execution peer closed the socket")
+        if payload == b"":
+            raise PeerClosed("analytics execution peer closed the socket")
         _require(not (flags & socket.MSG_TRUNC), "analytics execution control datagram was truncated")
         _require(not (flags & socket.MSG_CTRUNC), "analytics execution ancillary data was truncated")
         for level, kind, data in ancillary:
@@ -456,6 +461,7 @@ __all__ = [
     "MAX_TENSOR_BYTES",
     "PROTOCOL_CONTRACT",
     "PROTOCOL_IDENTITY_SHA256",
+    "PeerClosed",
     "ProtocolError",
     "SCHEMA_VERSION",
     "TRANSPORT_KIND",

@@ -12,8 +12,9 @@ import hashlib
 import json
 import math
 import os
+import re
 import stat
-import tempfile
+import time
 from collections import defaultdict
 from pathlib import Path
 from statistics import median
@@ -23,15 +24,25 @@ from checkpoint_qualification_pilot_acceptance_v1 import (
     QualificationPilotAcceptanceV1Error,
     validate_checkpoint_qualification_pilot_acceptance_v1,
 )
+from publication_physical_io_v1 import (
+    PhysicalRootCustodyV1,
+    PublicationPhysicalIoV1Error,
+)
 
 
 QUALIFICATION_INDEX_SCHEMA_VERSION = 2
-SUPPORTED_QUALIFICATION_INDEX_SCHEMA_VERSIONS = frozenset({1, 2})
+SUPPORTED_QUALIFICATION_INDEX_SCHEMA_VERSIONS = frozenset({2})
 QUALIFICATION_ASSESSMENT_SCHEMA_VERSION = 1
 QUALIFICATION_RECEIPT_SCHEMA_VERSION = 1
 CAPABILITY_MANIFEST_FILENAME = "checkpoint_policy_capability_manifest.json"
 CALIBRATION_MAPPING_FILENAME = "checkpoint_policy_calibration_mapping.json"
 QUALIFICATION_RECEIPT_FILENAME = "checkpoint_policy_qualification_receipt.json"
+_PROMOTION_FILE_SEQUENCE = (
+    CAPABILITY_MANIFEST_FILENAME,
+    CALIBRATION_MAPPING_FILENAME,
+    QUALIFICATION_RECEIPT_FILENAME,
+)
+_IMMUTABLE_CONCURRENT_WAIT_SECONDS = 5.0
 CODECS = ("h264", "h265")
 KPP_DATASET_BY_CODEC = {
     "h264": "kpp_iss_publication_v3_h264",
@@ -47,6 +58,16 @@ _RUNTIME_IDENTITY_FIELDS = {
     "runtime_backend", "device_api", "gpu_id", "worker_image_digest",
     "implementation_version", "terminal_detector", "terminal_backend",
 }
+_TERMINAL_BACKEND_PATTERNS = {
+    "cpu": re.compile(
+        r"^analytics-execution:openvino_cpu;runtime=[^;\r\n]+;"
+        r"native_api=[^;\r\n]+;device=CPU:[^;\r\n]+$"
+    ),
+    "gpu": re.compile(
+        r"^analytics-execution:tensorrt_cuda;runtime=[^;\r\n]+;"
+        r"native_api=[^;\r\n]+;device=NVIDIA_CUDA:[^;\r\n]+$"
+    ),
+}
 
 
 class QualificationError(RuntimeError):
@@ -55,6 +76,57 @@ class QualificationError(RuntimeError):
 
 PilotValidator = Callable[[dict[str, Any], dict[str, Any]], list[dict[str, Any]]]
 FragmentValidator = Callable[[str, Path, Path], dict[str, Any]]
+
+
+def _load_execution_closure(**kwargs: Any) -> dict[str, Any]:
+    from publication_policy_qualification_execution_closure_v1 import (
+        load_publication_policy_qualification_execution_closure_v1,
+    )
+
+    return load_publication_policy_qualification_execution_closure_v1(**kwargs)
+
+
+def _verify_execution_closure(root: Path, raw: Any) -> dict[str, Any]:
+    verified = _verify_descriptor(
+        root,
+        raw,
+        "qualification execution closure receipt",
+        forbid_hardlinks=True,
+    )
+    descriptor = {
+        key: verified[key] for key in ("path", "size_bytes", "sha256")
+    }
+    try:
+        loaded = _load_execution_closure(
+            project_root=root,
+            receipt_path=root / descriptor["path"],
+        )
+    except QualificationError:
+        raise
+    except Exception as exc:
+        raise QualificationError(
+            f"qualification execution closure validation failed: {exc}"
+        ) from exc
+    receipt = loaded.get("receipt") if type(loaded) is dict else None
+    pilot_execution = receipt.get("pilot_execution") if type(receipt) is dict else None
+    if not (
+        type(loaded) is dict
+        and loaded.get("receipt_descriptor") == descriptor
+        and type(receipt) is dict
+        and receipt.get("schema_version") == 1
+        and receipt.get("artifact_kind")
+        == "vast_publication_policy_qualification_execution_closure_v1"
+        and receipt.get("status") == "qualification_execution_closed_nonpublication"
+        and receipt.get("qualification_execution_complete") is True
+        and receipt.get("accepted_for_full_publication") is False
+        and receipt.get("publication_ready") is False
+        and receipt.get("authorization_eligible") is False
+        and type(pilot_execution) is dict
+        and type(pilot_execution.get("cells")) is list
+        and len(pilot_execution["cells"]) == 32
+    ):
+        raise QualificationError("qualification execution closure identity drifted")
+    return descriptor
 
 
 def _load_policy_contract() -> Any:
@@ -145,10 +217,19 @@ def _validate_runtime_identity(value: Any, *, key: tuple[str, str, str]) -> dict
     gpu_id = value["gpu_id"]
     terminal_backend = value["terminal_backend"]
     if resource == "cpu":
-        if device_api != "CPU" or gpu_id is not None or "device=CPU" not in terminal_backend or "NVIDIA_CUDA" in terminal_backend:
+        if (
+            device_api != "CPU"
+            or gpu_id is not None
+            or _TERMINAL_BACKEND_PATTERNS[resource].fullmatch(terminal_backend) is None
+        ):
             raise QualificationError(f"binding {key} CPU runtime identity is inconsistent")
     elif resource == "gpu":
-        if device_api != "NVIDIA_CUDA" or type(gpu_id) is not int or gpu_id != 0 or "device=NVIDIA_CUDA:0" not in terminal_backend:
+        if (
+            device_api != "NVIDIA_CUDA"
+            or type(gpu_id) is not int
+            or gpu_id != 0
+            or _TERMINAL_BACKEND_PATTERNS[resource].fullmatch(terminal_backend) is None
+        ):
             raise QualificationError(f"binding {key} GPU runtime identity is inconsistent")
     else:  # pragma: no cover - the policy resource domain is checked before this helper
         raise QualificationError(f"binding {key} runtime resource is unsupported")
@@ -850,10 +931,19 @@ def assess_policy_qualification(
         index_file = _resolve_relative_regular_file(root, relative_index, "qualification index")
         index_sha = _sha256_file(index_file)
         index = _load_json_object(index_file, "qualification index")
-        expected_fields = {
+        base_fields = {
             "schema_version", "artifact_kind", "policy_contract_sha256",
             "dataset_manifest", "bindings", "pilots",
         }
+        pilots_value = index.get("pilots")
+        requires_execution_closure = (
+            isinstance(pilots_value, list) and bool(pilots_value)
+        )
+        expected_fields = (
+            base_fields | {"qualification_execution_closure"}
+            if requires_execution_closure
+            else base_fields
+        )
         schema_ok = (
             set(index) == expected_fields
             and index.get("schema_version")
@@ -866,6 +956,13 @@ def assess_policy_qualification(
         contract_sha = policy.policy_contract_identity()["sha256"]
         if index.get("policy_contract_sha256") != contract_sha:
             raise QualificationError("qualification index policy contract SHA-256 drifted")
+        execution_closure = (
+            _verify_execution_closure(
+                root, index["qualification_execution_closure"]
+            )
+            if requires_execution_closure
+            else None
+        )
         dataset = _verify_descriptor(root, index["dataset_manifest"], "dataset manifest", forbid_hardlinks=True)
         if index["schema_version"] == 1:
             manifest, bindings = _derive_manifest(
@@ -962,6 +1059,7 @@ def assess_policy_qualification(
             "blockers": [],
             "index_sha256": index_sha,
             "dataset_manifest_sha256": dataset["sha256"],
+            "qualification_execution_closure": execution_closure,
             "coverage": {
                 "binding_count": len(bindings),
                 "pilot_cell_count": len(by_key),
@@ -977,34 +1075,210 @@ def assess_policy_qualification(
         return _assessment_failure([f"qualification validation failed closed: {exc}"], index_sha=locals().get("index_sha"))
 
 
-def _write_immutable_json(path: Path, value: dict[str, Any]) -> dict[str, Any]:
+def _write_immutable_json(
+    path: Path,
+    value: dict[str, Any],
+    *,
+    custody: PhysicalRootCustodyV1 | None = None,
+    after_physical_commit_step: Callable[[str, Path], None] | None = None,
+) -> dict[str, Any]:
+    """Durably publish or adopt one exact immutable JSON leaf."""
+
     payload = _canonical_bytes(value) + b"\n"
-    if path.exists():
-        if _is_reparse_or_link(path) or not path.is_file() or path.read_bytes() != payload:
-            raise QualificationError(f"immutable qualification output collision: {path.name}")
-        return {"path": path.name, "size_bytes": len(payload), "sha256": hashlib.sha256(payload).hexdigest()}
-    path.parent.mkdir(parents=True, exist_ok=True)
-    descriptor, temporary_name = tempfile.mkstemp(prefix=f".{path.name}.", suffix=".tmp", dir=path.parent)
-    temporary = Path(temporary_name)
+    owned_custody: PhysicalRootCustodyV1 | None = None
     try:
-        with os.fdopen(descriptor, "wb") as output:
-            output.write(payload)
-            output.flush()
-            os.fsync(output.fileno())
-        os.replace(temporary, path)
-        if os.name != "nt":
-            directory_descriptor = None
-            try:
-                directory_descriptor = os.open(path.parent, os.O_RDONLY | getattr(os, "O_DIRECTORY", 0))
-                os.fsync(directory_descriptor)
-            except OSError:
-                pass
-            finally:
-                if directory_descriptor is not None:
-                    os.close(directory_descriptor)
+        holder = custody
+        if holder is None:
+            owned_custody = PhysicalRootCustodyV1.open(
+                path.parent, label="qualification output parent"
+            )
+            holder = owned_custody
+        relative = path.relative_to(holder.root).as_posix()
+        expected = {
+            "path": relative,
+            "size_bytes": len(payload),
+            "sha256": hashlib.sha256(payload).hexdigest(),
+        }
+
+        def physical_step(step: str) -> None:
+            if after_physical_commit_step is not None:
+                after_physical_commit_step(step, path)
+
+        observed, identity, disposition = holder.commit_or_adopt_exact_identity(
+            relative,
+            payload,
+            label=f"immutable qualification output {path.name}",
+            mode=0o444,
+            create_parents=False,
+            after_publish_step=physical_step,
+        )
+        cold, observed_payload, observed_identity = holder.read_descriptor_identity(
+            relative,
+            label=f"immutable qualification output {path.name}",
+            maximum=len(payload),
+            capture=True,
+        )
+        observed_mode, stat_identity = holder.stat_regular_identity(
+            relative, label=f"immutable qualification output {path.name}"
+        )
+        if (
+            disposition not in {"published", "adopted"}
+            or observed != expected
+            or cold != expected
+            or observed_payload != payload
+            or observed_identity != identity
+            or stat_identity != identity
+            or observed_mode != 0o444
+        ):
+            raise QualificationError(
+                f"immutable qualification output collision: {path.name}"
+            )
+        return {
+            "path": path.name,
+            "size_bytes": len(payload),
+            "sha256": hashlib.sha256(payload).hexdigest(),
+        }
+    except QualificationError:
+        raise
+    except (PublicationPhysicalIoV1Error, OSError) as error:
+        raise QualificationError(
+            f"immutable qualification output collision: {path.name}"
+        ) from error
     finally:
-        temporary.unlink(missing_ok=True)
-    return {"path": path.name, "size_bytes": len(payload), "sha256": hashlib.sha256(payload).hexdigest()}
+        if owned_custody is not None:
+            owned_custody.close()
+
+
+def _require_promotion_namespace(
+    custody: PhysicalRootCustodyV1,
+    destination: Path,
+    *,
+    complete: bool,
+) -> None:
+    try:
+        names = set(
+            custody.list_directory_names(
+                destination, label="policy qualification output namespace"
+            )
+        )
+    except PublicationPhysicalIoV1Error as error:
+        raise QualificationError(
+            "policy qualification output namespace is unsafe"
+        ) from error
+    allowed_prefixes = {
+        frozenset(_PROMOTION_FILE_SEQUENCE[:length])
+        for length in range(len(_PROMOTION_FILE_SEQUENCE) + 1)
+    }
+    if complete:
+        valid = names == set(_PROMOTION_FILE_SEQUENCE)
+    else:
+        valid = frozenset(names) in allowed_prefixes
+    if not valid:
+        raise QualificationError(
+            "policy qualification output namespace contains unexpected entries"
+        )
+
+
+def _cold_read_promoted_json(
+    custody: PhysicalRootCustodyV1,
+    path: Path,
+    *,
+    label: str,
+) -> tuple[dict[str, Any], dict[str, Any]]:
+    try:
+        descriptor, payload, identity = custody.read_descriptor_identity(
+            path,
+            label=label,
+            maximum=64 * 1024 * 1024,
+            capture=True,
+        )
+        mode, stat_identity = custody.stat_regular_identity(path, label=label)
+    except PublicationPhysicalIoV1Error as error:
+        raise QualificationError(f"{label} cold validation failed") from error
+    if payload is None or identity != stat_identity or mode != 0o444:
+        raise QualificationError(f"{label} is not one readonly immutable file")
+
+    def unique_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+        result: dict[str, Any] = {}
+        for key, item in pairs:
+            if key in result:
+                raise ValueError(f"duplicate key: {key}")
+            result[key] = item
+        return result
+
+    try:
+        value = json.loads(
+            payload,
+            object_pairs_hook=unique_object,
+            parse_constant=lambda token: (_ for _ in ()).throw(
+                ValueError(f"non-finite JSON constant: {token}")
+            ),
+        )
+    except (UnicodeDecodeError, json.JSONDecodeError, ValueError) as error:
+        raise QualificationError(f"{label} is not canonical JSON") from error
+    if type(value) is not dict or payload != _canonical_bytes(value) + b"\n":
+        raise QualificationError(f"{label} is not canonical JSON")
+    return value, {
+        "path": path.name,
+        "size_bytes": descriptor["size_bytes"],
+        "sha256": descriptor["sha256"],
+    }
+
+
+def _cold_validate_promoted_policy_bundle(
+    *,
+    project_root: Path,
+    destination: Path,
+    expected_capability: Mapping[str, Any],
+    expected_calibration: Mapping[str, Any],
+    expected_receipt: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Reopen a completed promotion with no producer descriptors alive."""
+
+    try:
+        with PhysicalRootCustodyV1.open(
+            project_root, label="cold policy qualification project_root"
+        ) as custody:
+            _require_promotion_namespace(custody, destination, complete=True)
+            capability, capability_descriptor = _cold_read_promoted_json(
+                custody,
+                destination / CAPABILITY_MANIFEST_FILENAME,
+                label="promoted policy capability manifest",
+            )
+            calibration, calibration_descriptor = _cold_read_promoted_json(
+                custody,
+                destination / CALIBRATION_MAPPING_FILENAME,
+                label="promoted policy calibration mapping",
+            )
+            receipt, _receipt_descriptor = _cold_read_promoted_json(
+                custody,
+                destination / QUALIFICATION_RECEIPT_FILENAME,
+                label="promoted policy qualification receipt",
+            )
+            custody.verify()
+    except QualificationError:
+        raise
+    except (PublicationPhysicalIoV1Error, OSError) as error:
+        raise QualificationError(
+            "promoted policy qualification cold validation failed"
+        ) from error
+    unsigned = dict(receipt)
+    claimed = unsigned.pop("sha256", None)
+    if not (
+        capability == dict(expected_capability)
+        and calibration == dict(expected_calibration)
+        and receipt == dict(expected_receipt)
+        and claimed == _canonical_sha(unsigned)
+        and receipt.get("outputs")
+        == {
+            "capability_manifest": capability_descriptor,
+            "calibration_mapping": calibration_descriptor,
+        }
+    ):
+        raise QualificationError(
+            "promoted policy qualification bundle identity drifted"
+        )
+    return receipt
 
 
 def promote_policy_qualification(
@@ -1014,6 +1288,7 @@ def promote_policy_qualification(
     output_dir: Path,
     pilot_validator: PilotValidator | None = None,
     fragment_validator: FragmentValidator | None = None,
+    after_physical_commit_step: Callable[[str, Path], None] | None = None,
 ) -> dict[str, Any]:
     """Emit two derived artifacts and commit an immutable receipt last."""
     assessment = assess_policy_qualification(
@@ -1025,38 +1300,74 @@ def promote_policy_qualification(
     if not assessment["passed"]:
         raise QualificationError("policy qualification is blocked: " + ", ".join(assessment["blockers"][:8]))
     root = Path(project_root).resolve(strict=True)
-    destination = Path(output_dir)
-    if not destination.is_absolute():
-        destination = root / destination
-    resolved_parent = destination.parent.resolve(strict=True)
+    supplied_destination = Path(output_dir)
+    if not supplied_destination.is_absolute():
+        if any(part in ("", ".", "..") for part in supplied_destination.parts):
+            raise QualificationError("qualification output_dir must be normalized")
+        supplied_destination = root / supplied_destination
+    destination = Path(os.path.abspath(os.fspath(supplied_destination)))
     try:
-        resolved_parent.relative_to(root)
+        relative_destination = destination.relative_to(root)
     except ValueError as exc:
         raise QualificationError("qualification output_dir must remain under project_root") from exc
-    if destination.exists() and (_is_reparse_or_link(destination) or not destination.is_dir()):
-        raise QualificationError("qualification output_dir must be a physical directory")
-    destination.mkdir(parents=True, exist_ok=True)
-    capability_descriptor = _write_immutable_json(
-        destination / CAPABILITY_MANIFEST_FILENAME, assessment["capability_manifest"],
+    if not relative_destination.parts:
+        raise QualificationError("qualification output_dir must be a dedicated directory")
+    try:
+        with PhysicalRootCustodyV1.open(
+            root, label="policy qualification project_root"
+        ) as custody:
+            destination = custody.ensure_directory(
+                relative_destination.as_posix(),
+                label="policy qualification output_dir",
+            )
+            _require_promotion_namespace(custody, destination, complete=False)
+            capability_descriptor = _write_immutable_json(
+                destination / CAPABILITY_MANIFEST_FILENAME,
+                assessment["capability_manifest"],
+                custody=custody,
+                after_physical_commit_step=after_physical_commit_step,
+            )
+            calibration_descriptor = _write_immutable_json(
+                destination / CALIBRATION_MAPPING_FILENAME,
+                assessment["calibration_mapping"],
+                custody=custody,
+                after_physical_commit_step=after_physical_commit_step,
+            )
+            receipt = {
+                "schema_version": QUALIFICATION_RECEIPT_SCHEMA_VERSION,
+                "artifact_kind": "vast_publication_policy_qualification_receipt",
+                "status": "accepted_evidence_driven_policy_qualification",
+                "policy_contract_sha256": assessment["capability_manifest"]["policy_contract_sha256"],
+                "qualification_index_sha256": assessment["index_sha256"],
+                "dataset_manifest_sha256": assessment["dataset_manifest_sha256"],
+                "coverage": assessment["coverage"],
+                "outputs": {
+                    "capability_manifest": capability_descriptor,
+                    "calibration_mapping": calibration_descriptor,
+                },
+            }
+            receipt["sha256"] = _canonical_sha(receipt)
+            _write_immutable_json(
+                destination / QUALIFICATION_RECEIPT_FILENAME,
+                receipt,
+                custody=custody,
+                after_physical_commit_step=after_physical_commit_step,
+            )
+            _require_promotion_namespace(custody, destination, complete=True)
+            custody.verify()
+    except QualificationError:
+        raise
+    except (PublicationPhysicalIoV1Error, OSError) as error:
+        raise QualificationError(
+            "qualification output_dir physical custody failed"
+        ) from error
+    receipt = _cold_validate_promoted_policy_bundle(
+        project_root=root,
+        destination=destination,
+        expected_capability=assessment["capability_manifest"],
+        expected_calibration=assessment["calibration_mapping"],
+        expected_receipt=receipt,
     )
-    calibration_descriptor = _write_immutable_json(
-        destination / CALIBRATION_MAPPING_FILENAME, assessment["calibration_mapping"],
-    )
-    receipt = {
-        "schema_version": QUALIFICATION_RECEIPT_SCHEMA_VERSION,
-        "artifact_kind": "vast_publication_policy_qualification_receipt",
-        "status": "accepted_evidence_driven_policy_qualification",
-        "policy_contract_sha256": assessment["capability_manifest"]["policy_contract_sha256"],
-        "qualification_index_sha256": assessment["index_sha256"],
-        "dataset_manifest_sha256": assessment["dataset_manifest_sha256"],
-        "coverage": assessment["coverage"],
-        "outputs": {
-            "capability_manifest": capability_descriptor,
-            "calibration_mapping": calibration_descriptor,
-        },
-    }
-    receipt["sha256"] = _canonical_sha(receipt)
-    _write_immutable_json(destination / QUALIFICATION_RECEIPT_FILENAME, receipt)
     return {"passed": True, "status": "promoted", "receipt": receipt, "output_dir": str(destination)}
 
 

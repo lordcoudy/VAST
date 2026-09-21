@@ -21,6 +21,7 @@ from analytics_execution_protocol import (  # noqa: E402
 from analytics_execution_worker import (  # noqa: E402
     BackendInference,
     ExecutionClient,
+    MAX_WORKER_REQUESTS,
     WorkerHarness,
     WorkerRejected,
     validate_worker_capability,
@@ -139,6 +140,38 @@ class FakeBackend:
     "Linux SOCK_SEQPACKET is required",
 )
 class AnalyticsExecutionWorkerTests(unittest.TestCase):
+    def test_worker_allows_clean_eof_below_int64_request_upper_bound(self) -> None:
+        server, client_socket = socket.socketpair(
+            socket.AF_UNIX, socket.SOCK_SEQPACKET
+        )
+        backend = FakeBackend()
+        worker = WorkerHarness(
+            server,
+            backend,
+            max_requests=29_168_640_000,
+        )
+        thread = threading.Thread(target=worker.serve, daemon=True)
+        thread.start()
+        client = ExecutionClient(client_socket, expected_capability=capability())
+        self.assertEqual(client.handshake(), capability())
+        client_socket.close()
+        thread.join(timeout=5)
+        server.close()
+
+        self.assertFalse(thread.is_alive())
+        self.assertEqual(backend.seen, [])
+        self.assertEqual(MAX_WORKER_REQUESTS, 2**63 - 1)
+        invalid_socket = socket.socket(socket.AF_UNIX, socket.SOCK_SEQPACKET)
+        try:
+            with self.assertRaisesRegex(ProtocolError, "max_requests"):
+                WorkerHarness(
+                    invalid_socket,
+                    FakeBackend(),
+                    max_requests=MAX_WORKER_REQUESTS + 1,
+                )
+        finally:
+            invalid_socket.close()
+
     def test_fake_backend_roundtrip_binds_frame_model_input_output_and_provenance(self) -> None:
         server, client_socket = socket.socketpair(socket.AF_UNIX, socket.SOCK_SEQPACKET)
         backend = FakeBackend()

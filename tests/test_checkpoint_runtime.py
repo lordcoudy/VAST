@@ -757,6 +757,15 @@ class CheckpointRuntimeTests(unittest.TestCase):
         self.assertIn("CheckpointFanoutWorkCounterEmitter", body)
         self.assertIn("checkpoint_fanout_work_emitter_->emit(", body)
         self.assertIn("CLOCK_THREAD_CPUTIME_ID", body)
+        self.assertIn(
+            "const std::uint64_t serialized_fanout_timestamp_ms = self->emit_checkpoint_event(",
+            body,
+        )
+        self.assertIn(
+            "CheckpointResourceIntervalEmitter::canonical_interval_end_ns(",
+            body,
+        )
+        self.assertIn("fanout_interval_end_timestamp_ns", body)
         self.assertIn('"branch_complete"', body)
         self.assertIn('std::numeric_limits<std::uint8_t>::max()', body)
         self.assertIn('state.traces.erase(', body)
@@ -767,6 +776,18 @@ class CheckpointRuntimeTests(unittest.TestCase):
         self.assertIn('native_terminal_socket_v1', body)
         self.assertIn('"VAST_CHECKPOINT_ANALYTICS_" + field + "_" + branch', body)
         self.assertIn('checkpoint_analytics_binding(branch, "MODEL_PATH")', body)
+        self.assertIn(
+            "const std::uint64_t path_entry_timestamp_ns = now_ns();",
+            body,
+        )
+        self.assertIn(
+            "static_cast<double>(path_entry_timestamp_ns) / 1'000'000.0",
+            body,
+        )
+        self.assertNotIn(
+            "event_id,\n              request.decision_time_ms",
+            body,
+        )
         self.assertIn('replace_all(value, "{model_sha256}"', body)
         self.assertIn('replace_all(value, "{max_buffers}"', body)
         self.assertIn('replace_all(value, "{input_format}"', body)
@@ -1038,8 +1059,26 @@ class CheckpointRuntimeTests(unittest.TestCase):
             self.assertEqual(merged_work, root / "fanout_work_counters.runtime.csv")
             self.assertFalse((root / "fanout_work_counters.csv").exists())
 
-            row["host_start_timestamp_ns"] = "999999999"
-            row["duration_ns"] = str(int(row["host_end_timestamp_ns"]) - 999_999_999)
+            # The parent is rounded upward to milliseconds; retain exact
+            # native nanoseconds through rounding and the 10 ms backward-clock allowance.
+            for start_ns in (989_000_000, 989_000_001, 998_999_999, 999_000_000, 999_999_999):
+                with self.subTest(tolerated_start_ns=start_ns):
+                    row["host_start_timestamp_ns"] = str(start_ns)
+                    row["duration_ns"] = str(int(row["host_end_timestamp_ns"]) - start_ns)
+                    with fragment.open("w", newline="", encoding="utf-8") as output:
+                        writer = csv.DictWriter(output, fieldnames=RESOURCE_INTERVAL_COLUMNS)
+                        writer.writeheader()
+                        writer.writerow(row)
+                    merge_runtime_fanout_intervals(
+                        specs=[spec], output_root=root, run_id=run_id,
+                        topology_events=topology,
+                    )
+                    with merged.open(newline="", encoding="utf-8") as source:
+                        observed = list(csv.DictReader(source))
+                    self.assertEqual(observed[0]["host_start_timestamp_ns"], str(start_ns))
+            # One nanosecond beyond the combined 11 ms allowance must fail closed.
+            row["host_start_timestamp_ns"] = "988999999"
+            row["duration_ns"] = str(int(row["host_end_timestamp_ns"]) - 988_999_999)
             with fragment.open("w", newline="", encoding="utf-8") as output:
                 writer = csv.DictWriter(output, fieldnames=RESOURCE_INTERVAL_COLUMNS)
                 writer.writeheader()
@@ -1748,6 +1787,56 @@ class CheckpointRuntimeTests(unittest.TestCase):
                 start_lead_s=0.02,
             )
 
+    def test_early_exit_before_ready_lists_process_and_returncode(self) -> None:
+        primary_failure_marker = "primary-native-failure-marker"
+        specs = [
+            WorkerLaunchSpec(
+                worker_id=f"stream-0-branch-{branch}",
+                stream_id=0,
+                branch_id=branch,
+                command=(
+                    (
+                        sys.executable,
+                        "-c",
+                        "import sys; "
+                        f"print('{primary_failure_marker}', file=sys.stderr); "
+                        "raise SystemExit(17)",
+                    )
+                    if branch == "plate_number"
+                    else (
+                        sys.executable,
+                        str(FIXTURE),
+                        "--mode",
+                        "baseline",
+                        "--branches",
+                        ",".join(BRANCHES),
+                    )
+                ),
+            )
+            for branch in BRANCHES
+        ]
+        with self.assertRaises(ContractError) as raised:
+            run_worker_processes(
+                run_id="run-early-exit",
+                topology_kind=INDEPENDENT_PROCESSES,
+                branches=BRANCHES,
+                specs=specs,
+                timeout_s=1.0,
+                ready_timeout_s=0.5,
+                synchronized_lifecycle=True,
+                warmup_s=0.0,
+                measurement_s=0.1,
+                drain_timeout_s=0.1,
+                start_lead_s=0.02,
+            )
+        message = str(raised.exception)
+        self.assertIn(
+            "checkpoint worker exited before the common start barrier: "
+            "stream-0-branch-plate_number=17",
+            message,
+        )
+        self.assertIn(primary_failure_marker, message)
+
     def test_decoder_placement_status_is_required_before_measurement(self) -> None:
         specs = [
             WorkerLaunchSpec(
@@ -1779,6 +1868,94 @@ class CheckpointRuntimeTests(unittest.TestCase):
                 start_lead_s=0.02,
                 require_decoder_placement_verification=True,
             )
+
+    def test_decoder_placement_worker_exit_reports_identity_code_and_states(self) -> None:
+        specs = [
+            WorkerLaunchSpec(
+                worker_id=f"stream-0-branch-{branch}",
+                stream_id=0,
+                branch_id=branch,
+                command=(
+                    sys.executable,
+                    str(FIXTURE),
+                    "--mode",
+                    "baseline",
+                    "--branches",
+                    ",".join(BRANCHES),
+                ),
+                environment=(
+                    {"VAST_TEST_EXIT_AFTER_STARTED": "23"}
+                    if branch == "plate_number"
+                    else {"VAST_TEST_DECODER_PLACEMENT_STATUS": "verified"}
+                ),
+            )
+            for branch in BRANCHES
+        ]
+        with self.assertRaisesRegex(
+            ContractError,
+            r'"lifecycle_states":\{"stream-0-branch-plate_number":\["READY","STARTED"\]\},'
+            r'"return_codes":\{"stream-0-branch-plate_number":23\}',
+        ):
+            run_worker_processes(
+                run_id="run-decoder-placement-worker-exit",
+                topology_kind=INDEPENDENT_PROCESSES,
+                branches=BRANCHES,
+                specs=specs,
+                timeout_s=3.0,
+                synchronized_lifecycle=True,
+                warmup_s=0.2,
+                measurement_s=0.05,
+                drain_timeout_s=0.5,
+                start_lead_s=0.02,
+                require_decoder_placement_verification=True,
+            )
+
+    def test_post_start_failure_preserves_primary_process_stderr(self) -> None:
+        primary_failure_marker = "post-start-primary-failure-marker"
+        specs = [
+            WorkerLaunchSpec(
+                worker_id=f"stream-0-branch-{branch}",
+                stream_id=0,
+                branch_id=branch,
+                command=(
+                    sys.executable,
+                    str(FIXTURE),
+                    "--mode",
+                    "baseline",
+                    "--branches",
+                    ",".join(BRANCHES),
+                ),
+                environment=(
+                    {
+                        "VAST_TEST_EXIT_AFTER_STARTED": "29",
+                        "VAST_TEST_STDERR_BEFORE_EXIT": primary_failure_marker,
+                    }
+                    if branch == "plate_number"
+                    else {}
+                ),
+            )
+            for branch in BRANCHES
+        ]
+        with self.assertRaises(ContractError) as raised:
+            run_worker_processes(
+                run_id="run-post-start-failure",
+                topology_kind=INDEPENDENT_PROCESSES,
+                branches=BRANCHES,
+                specs=specs,
+                timeout_s=3.0,
+                synchronized_lifecycle=True,
+                warmup_s=0.0,
+                measurement_s=0.1,
+                drain_timeout_s=0.5,
+                start_lead_s=0.02,
+            )
+        message = str(raised.exception)
+        self.assertIn(
+            "checkpoint process failed: stream-0-branch-plate_number rc=29",
+            message,
+        )
+        self.assertIn(primary_failure_marker, message)
+        self.assertIn("final_stderr_tails", message)
 
     def test_common_start_selects_clock_matching_native_ready_epoch(self) -> None:
         name, now_ns = select_native_monotonic_clock(

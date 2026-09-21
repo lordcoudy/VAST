@@ -66,20 +66,11 @@ def create_savant_callbacks(
         DeepStreamProtocolBridge,
     )
     from checkpoint_gstreamer_analytics_bridge import preprocess_gstreamer_frame
-    from checkpoint_model_parity import load_parity_manifest
     from checkpoint_savant_protocol_bridge import SavantProtocolBridge
 
     manifest_path = _absolute_path(
         config["preprocessing_manifest_path"], "Savant preprocessing manifest"
     )
-    manifest = load_parity_manifest(manifest_path)
-    _require(
-        manifest.get("schema_version") == 3
-        and manifest.get("artifact_kind")
-        == "checkpoint_analytics_model_parity_manifest",
-        "Savant preprocessing manifest contract drifted",
-    )
-    preprocessing = dict(manifest["preprocessing_contract"])
     sockets: list[socket.socket] = []
     endpoints: dict[str, dict[str, Any]] = {}
     input_bindings: dict[str, dict[str, Any]] = {}
@@ -135,12 +126,28 @@ def create_savant_callbacks(
                 else:
                     input_bindings[branch] = contract
 
+        preprocessing_hashes = {
+            str(value["preprocessing_contract_sha256"])
+            for value in input_bindings.values()
+        }
+        _require(
+            len(preprocessing_hashes) == 1,
+            "Savant branches do not share one preprocessing contract",
+        )
+        from checkpoint_model_parity import load_parity_preprocessing_contract
+
+        preprocessing = load_parity_preprocessing_contract(
+            manifest_path,
+            expected_sha256=next(iter(preprocessing_hashes)),
+        )
+
         delegate = DeepStreamProtocolBridge(
             run_id=str(context["run_id"]),
             arm_id=str(context["arm_id"]),
             worker_id=str(context["worker_id"]),
             topology_kind=str(context["topology_kind"]),
             stream_id=int(context["stream_id"]),
+            nvds_source_id=int(context["stream_id"]),
             branch_id=branches[0] if len(branches) == 1 else None,
             event_sink=event_sink,
             policy_exchange=policy_exchange,
@@ -165,6 +172,7 @@ def create_savant_callbacks(
             preprocess=preprocess_gstreamer_frame,
             deadline_ms=deadline_ms,
             sockets=tuple(sockets),
+            rgb_sample_pts_field="nvds_buf_pts_ns",
         )
     except BaseException:
         for endpoint in sockets:

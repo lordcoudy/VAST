@@ -22,7 +22,7 @@ import time
 from collections.abc import Mapping
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
-from typing import Any
+from typing import Any, Callable
 
 sys.dont_write_bytecode = True
 
@@ -31,79 +31,47 @@ from checkpoint_publication_launcher_adapter_v3 import (
     NativePublicationPermanentErrorV3,
     NativePublicationRequestV3,
     NativePublicationTransientErrorV3,
+    deterministic_numeric_thread_environment_argv_v1,
+)
+from publication_child_evidence_materializer_v1 import (
+    PublicationChildEvidenceMaterializerV1Error,
+    materialize_publication_child_evidence_group_v1,
 )
 from publication_policy_contract import POLICIES as FROZEN_POLICIES
 
 RUNTIME_INPUT_KEY = "gstreamer_custom_publication_runtime_v3"
 RUNTIME_INPUT_KIND = "vast_gstreamer_custom_publication_runtime_inputs_v3"
-EXPECTED_IMAGE_ID = (
-    "sha256:3c63c15ed7a8022c45f5fb3038ab6d1ff5cc152f430681bbc97c1f332091ebf7"
-)
-EXPECTED_REPOSITORY_DIGEST = (
-    "vast/gstreamer-custom-publication-runtime-v3@"
-    "sha256:3c63c15ed7a8022c45f5fb3038ab6d1ff5cc152f430681bbc97c1f332091ebf7"
-)
-EXPECTED_IMAGE_INSPECT_PROJECTION_SHA256 = (
-    "f5fda9d722635f5ae24797031b3a89d479ab86efccc5a11a9915eb2414890e42"
-)
+EXPECTED_IMAGE_REFERENCE = 'vast/gstreamer-custom-publication-runtime-v3:attempt261-20260920'
+EXPECTED_IMAGE_ID = 'sha256:94f75c897d3abf330055d92198b22306b1f97cc7aeb8f192e87641c40939ec57'
+EXPECTED_REPOSITORY_DIGEST = 'vast/gstreamer-custom-publication-runtime-v3@sha256:94f75c897d3abf330055d92198b22306b1f97cc7aeb8f192e87641c40939ec57'
+EXPECTED_IMAGE_INSPECT_PROJECTION_SHA256 = 'b1ca91d668f8dc21dadb9759616041f2a40783f6dbc4e9b79cbf1f17f0aeaebd'
 EXPECTED_BASE_IMAGE_ID = (
-    "sha256:5c43c6c1f95b3fbb4a95957d1d293b1272c1db6a44a7a2063aad3aeba7c951d1"
+    "sha256:72ce8749b7b341a3e9b9591c231289c3bc96418187df04a4915ae6bcdbf5e93d"
 )
 EXPECTED_IMAGE_ENTRYPOINT = (
     "/usr/local/bin/vast_gstreamer_custom_publication_runtime_v3"
 )
 EXPECTED_IMAGE_USER = "dlstreamer"
-EXPECTED_IMAGE_LABELS = {
-    "org.opencontainers.image.version": "24.04",
-    "org.vast.base-image-id": EXPECTED_BASE_IMAGE_ID,
-    "org.vast.claim-status": (
-        "deterministic-image-awaiting-exact-kpp-v3-gpu-pilots"
-    ),
-    "org.vast.component": "gstreamer-custom-checkpoint-publication-runtime",
-    "org.vast.native_probe.kind": "openvino-dlstreamer",
-    "org.vast.native_probe.source_sha": (
-        "676c1d301a5a0913efec17b60a444a35b588036737d68fa113fef4f6c28922d7"
-    ),
-    "org.vast.publication-runtime-abi": "3",
-    "org.vast.runtime-dependency-set-sha256": (
-        "0f338b3aeca6756d31dccdbbc8caeb6239e8e07fec0541c1df3fea91dfc1963e"
-    ),
-    "org.vast.runtime-source-sha256": (
-        "304b5d4af5cd9efc23b13a5dec4e2d28161feb047e5639028d323dc61042f7f3"
-    ),
-}
-EXPECTED_EMBEDDED_ARTIFACTS = {
-    "/usr/local/bin/vast_native_gst_probe": (
-        "7df65e53a8f80721c6d432fab1fc405e99894d08f163fb802749dd7e1e3db6f1"
-    ),
-    "/usr/local/bin/vast_checkpoint_source": (
-        "e0570213d7287825dd7703659460242997ff5365921786e173ab8b43df723df7"
-    ),
-    "/opt/vast/share/gstreamer-registry.bin": (
-        "cd0e455e28112001956304b9c46e7e56cc33075476a09efd6cfb0ee9250ef43b"
-    ),
-    "/opt/vast/lib/gstreamer-1.0/libgstadaptivescheduler.so": (
-        "8a22b9dfb1d48337503530f47badaf6ee1bb9fcc2eeb76c80856026b98edb550"
-    ),
-    "/opt/vast/lib/gstreamer-1.0/libgstvastanalyticsterminal.so": (
-        "eb53eed6fcb49586cad6dd9266052f519db2f30c00fcf1476a2579cf760b0d55"
-    ),
-    "/opt/vast/lib/gstreamer-1.0/libgstvastanalyticsqueue.so": (
-        "16cc7d633b952c5496d8f1ed81c73be2afefaf64d68fc917c257f4188483ced4"
-    ),
-    "/opt/vast/lib/gstreamer-1.0/libgstvastcheckpointprefixqueue.so": (
-        "371676a5737d5f1f7912cfdd20da247242c77a7031a6abb2773fe530cac2b0ec"
-    ),
-    "/opt/vast/checkpoint/checkpoint_gstreamer_runtime.py": (
-        "f3ee866b847b8fdcf052275b620b5e583d7fa00427ac9f4498920cc919996a2a"
-    ),
-    "/opt/vast/checkpoint/checkpoint_gstreamer_custom_container_coordinator_v3.py": (
-        "7f70138de1e87ab43dfab1e37674979c551dd24ee02fba205cd9905790b060c5"
-    ),
-    "/opt/vast/runtime-source-allowlist.txt": (
-        "424e44bd99d04a1b24f5926f42f7d5bfbd406390b9428b16cd256589444f8c2a"
-    ),
-}
+EXPECTED_IMAGE_LABELS = {'org.opencontainers.image.version': '24.04',
+ 'org.vast.base-image-id': 'sha256:72ce8749b7b341a3e9b9591c231289c3bc96418187df04a4915ae6bcdbf5e93d',
+ 'org.vast.claim-status': 'deterministic-image-awaiting-exact-kpp-v3-gpu-pilots',
+ 'org.vast.component': 'gstreamer-custom-checkpoint-publication-runtime',
+ 'org.vast.native_probe.kind': 'openvino-dlstreamer',
+ 'org.vast.native_probe.source_sha': '758ccd1f912c7dc86779891c95e26921cd88a3e9504fbbd306ac77594e820067',
+ 'org.vast.publication-runtime-abi': '3',
+ 'org.vast.runtime-dependency-set-sha256': '0f338b3aeca6756d31dccdbbc8caeb6239e8e07fec0541c1df3fea91dfc1963e',
+ 'org.vast.runtime-source-sha256': 'a182644465c570f88c607a6d4cdd9cbea4cdabf180a74a3420ea3b358ab5c3ea'}
+EXPECTED_EMBEDDED_ARTIFACTS = {'/opt/vast/checkpoint/checkpoint_gstreamer_custom_container_coordinator_v3.py': '7f70138de1e87ab43dfab1e37674979c551dd24ee02fba205cd9905790b060c5',
+ '/opt/vast/checkpoint/checkpoint_gstreamer_runtime.py': '40d3c7ec7693344de6595b50fa1bad5deadbd5a36a15977feadfd41faeae6efa',
+ '/opt/vast/lib/gstreamer-1.0/libgstadaptivescheduler.so': 'd36642c99d55fac7d834c75b500c7ffd086f022e671cb2b38aecaf38b8d0ad9f',
+ '/opt/vast/lib/gstreamer-1.0/libgstvastanalyticsqueue.so': '9909f2b19adc3f7e82dcf8923a3e719f8546cd4e5126663deafdce04121d2258',
+ '/opt/vast/lib/gstreamer-1.0/libgstvastanalyticsterminal.so': '04962e14523cc570ce1b24735e76334820ed730b5aee72beac0685a4704f9e45',
+ '/opt/vast/lib/gstreamer-1.0/libgstvastcheckpointprefixqueue.so': '797a9311f06cc60ce3768dfc2b3a191525a8577dd8ce2a4eca057aa4fcefdabf',
+ '/opt/vast/runtime-source-allowlist.txt': 'dea819344804486529aeb32c0076690b42acfd8f5f861c2651d02b01c54608dc',
+ '/opt/vast/share/gstreamer-registry.bin': '18b3fb289de3a7c101b12854beaabb38a8edb72c1ecaf6fc5deea39d307508bc',
+ '/usr/local/bin/vast_checkpoint_source': '7501479ccb90dc1e322386126c372a7650f40e5c7b76bfb29f4495470bd185df',
+ '/usr/local/bin/vast_gstreamer_custom_publication_runtime_v3': '2f241d0fbf8e250d09f3dc8c6c97999910991c8649c44e56ee69d4f1cb38b8e7',
+ '/usr/local/bin/vast_native_gst_probe': 'cdbed23e0513391453659be23b240ded91a1d0502ea1f545d129f4dd9e77f36d'}
 DATASET_BY_CODEC = {
     "h264": "kpp_iss_publication_v3_h264",
     "h265": "kpp_iss_publication_v3_h265",
@@ -188,6 +156,18 @@ def _canonical(value: object) -> bytes:
         ).encode("ascii")
     except (TypeError, ValueError, UnicodeError):
         _fail("gstreamer_canonical_json_invalid")
+
+
+def image_projection_sha256(value: Mapping[str, Any]) -> str:
+    """Hash the exact refreeze-v1 projection encoding (without JSONL LF)."""
+    try:
+        canonical = json.dumps(
+            value, sort_keys=True, separators=(",", ":"),
+            ensure_ascii=True, allow_nan=False,
+        ).encode("ascii")
+    except (TypeError, ValueError, UnicodeError):
+        _fail("gstreamer_container_image_projection_invalid")
+    return hashlib.sha256(canonical).hexdigest()
 
 
 def _snapshot(info: os.stat_result) -> tuple[int, ...]:
@@ -897,7 +877,7 @@ def _image_projection(value: Mapping[str, Any]) -> dict[str, Any]:
 def _inspect_image(pins: _Pins, contract: _Contract) -> None:
     completed = _invoke_engine(
         pins.roles["container_engine"], contract.engine_socket,
-        ("image", "inspect", EXPECTED_IMAGE_ID), 60.0,
+        ("image", "inspect", EXPECTED_IMAGE_REFERENCE), 60.0,
     )
     if completed.returncode != 0 or completed.stderr:
         _fail("gstreamer_container_image_inspect_failed")
@@ -917,7 +897,7 @@ def _inspect_image(pins: _Pins, contract: _Contract) -> None:
         or projection["Config"]["Entrypoint"] != [EXPECTED_IMAGE_ENTRYPOINT]
         or projection["Config"]["User"] != EXPECTED_IMAGE_USER
         or projection["Config"]["Labels"] != EXPECTED_IMAGE_LABELS
-        or hashlib.sha256(_canonical(projection)).hexdigest()
+        or image_projection_sha256(projection)
         != EXPECTED_IMAGE_INSPECT_PROJECTION_SHA256
     ):
         _fail("gstreamer_container_image_identity_changed")
@@ -1210,13 +1190,16 @@ def _container_argv(
 ) -> tuple[str, ...]:
     runtime, files = request.runtime_inputs, pins.roles
     arguments = [
-        *_security_argv(contract), *_input_mounts(materialized),
+        *_security_argv(contract),
+        "--user", f"{os.getuid()}:{os.getgid()}",
+        *_input_mounts(materialized),
         *_mount(runtime_output.as_posix(), CONTAINER_OUTPUT_ROOT, readonly=False),
         *_mount(
             str(contract.analytics_socket["path"]), ANALYTICS_SOCKET_TARGET,
             readonly=True,
         ),
         "--workdir", str(CONTAINER_PROJECT_ROOT),
+        *deterministic_numeric_thread_environment_argv_v1(),
         "--env", "PYTHONDONTWRITEBYTECODE=1",
         "--env", "HOME=/tmp", "--env", "XDG_CACHE_HOME=/tmp",
         "--env", "GST_REGISTRY=/opt/vast/share/gstreamer-registry.bin",
@@ -1307,139 +1290,27 @@ def _copy_evidence(
     runtime_output: Path,
     request: NativePublicationRequestV3,
     mapping: Mapping[str, str],
+    *,
+    _fault_hook: Callable[[str], None] | None = None,
 ) -> None:
-    def present(path: Path) -> bool:
-        try:
-            path.lstat()
-            return True
-        except FileNotFoundError:
-            return False
-
-    staged: list[tuple[Path, Path, tuple[int, int]]] = []
-    committed: list[tuple[Path, tuple[int, int]]] = []
-    failed = False
     try:
-        entries = []
-        for target_name in request.launcher_evidence_files:
-            source = runtime_output / mapping[target_name]
-            target = request.output_dir / target_name
-            temporary = target.with_name(
-                f".{target.name}.gstreamer-v3.{os.getpid()}.tmp"
-            )
-            if present(target) or present(temporary):
-                raise OSError("collision")
-            entries.append((source, target, temporary))
-
-        for source, target, temporary in entries:
-            source_fd = target_fd = -1
-            created_identity: tuple[int, int] | None = None
-            staged_ok = False
-            try:
-                before = source.lstat()
-                if (
-                    not stat.S_ISREG(before.st_mode) or _is_link(before)
-                    or int(before.st_nlink) != 1
-                    or not 0 < int(before.st_size) <= MAX_EVIDENCE_BYTES
-                ):
-                    raise OSError("invalid")
-                source_fd = os.open(
-                    source,
-                    os.O_RDONLY | getattr(os, "O_CLOEXEC", 0)
-                    | getattr(os, "O_NOFOLLOW", 0),
-                )
-                opened = os.fstat(source_fd)
-                if _snapshot(before) != _snapshot(opened):
-                    raise OSError("changed before open")
-                target_fd = os.open(
-                    temporary, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600
-                )
-                created = os.fstat(target_fd)
-                created_identity = (int(created.st_dev), int(created.st_ino))
-                observed = 0
-                while True:
-                    chunk = os.read(source_fd, 1024 * 1024)
-                    if not chunk:
-                        break
-                    observed += len(chunk)
-                    offset = 0
-                    while offset < len(chunk):
-                        written = os.write(target_fd, chunk[offset:])
-                        if written <= 0:
-                            raise OSError("short write")
-                        offset += written
-                os.fsync(target_fd)
-                opened_after = os.fstat(source_fd)
-                after = source.lstat()
-                materialized_info = os.fstat(target_fd)
-                if (
-                    _snapshot(before) != _snapshot(opened_after)
-                    or _snapshot(opened_after) != _snapshot(after)
-                    or observed != int(after.st_size)
-                    or observed != int(materialized_info.st_size)
-                    or not stat.S_ISREG(materialized_info.st_mode)
-                    or int(materialized_info.st_nlink) != 1
-                ):
-                    raise OSError("changed")
-                identity = (
-                    int(materialized_info.st_dev), int(materialized_info.st_ino)
-                )
-                staged.append((temporary, target, identity))
-                staged_ok = True
-            finally:
-                for fd in (source_fd, target_fd):
-                    if fd >= 0:
-                        os.close(fd)
-                if not staged_ok and created_identity is not None:
-                    try:
-                        info = temporary.lstat()
-                        if (int(info.st_dev), int(info.st_ino)) == created_identity:
-                            temporary.unlink()
-                    except FileNotFoundError:
-                        pass
-                    except OSError:
-                        pass
-
-        if any(present(target) for _, target, _ in staged):
-            raise OSError("collision")
-        for temporary, target, identity in staged:
-            os.link(temporary, target, follow_symlinks=False)
-            committed.append((target, identity))
-            linked = target.lstat()
-            if (
-                (int(linked.st_dev), int(linked.st_ino)) != identity
-                or not stat.S_ISREG(linked.st_mode) or _is_link(linked)
-                or int(linked.st_nlink) != 2
-            ):
-                raise OSError("commit identity changed")
-        for temporary, _, _ in staged:
-            temporary.unlink()
-        for target, identity in committed:
-            linked = target.lstat()
-            if (
-                (int(linked.st_dev), int(linked.st_ino)) != identity
-                or not stat.S_ISREG(linked.st_mode) or _is_link(linked)
-                or int(linked.st_nlink) != 1
-            ):
-                raise OSError("committed identity changed")
-    except OSError:
-        failed = True
-    finally:
-        if failed:
-            for target, identity in reversed(committed):
-                try:
-                    info = target.lstat()
-                    if (int(info.st_dev), int(info.st_ino)) == identity:
-                        target.unlink()
-                except FileNotFoundError:
-                    pass
-                except OSError:
-                    pass
-        for temporary, _, _ in staged:
-            try:
-                temporary.unlink(missing_ok=True)
-            except OSError:
-                pass
-    if failed:
+        materialize_publication_child_evidence_group_v1(
+            project_root=request.project_root,
+            source_dir=runtime_output,
+            output_dir=request.output_dir,
+            target_names=request.launcher_evidence_files,
+            evidence_mapping=dict(mapping),
+            allowed_preexisting_names=(
+                (Path(os.path.abspath(request.arm_contract_path)).name,)
+                if Path(os.path.abspath(request.arm_contract_path)).parent
+                == Path(os.path.abspath(request.output_dir))
+                else ()
+            ),
+            maximum_bytes=MAX_EVIDENCE_BYTES,
+            label="GStreamer child evidence",
+            after_physical_commit_step=_fault_hook,
+        )
+    except PublicationChildEvidenceMaterializerV1Error:
         _fail("gstreamer_child_evidence_materialization_failed")
 
 
@@ -1512,10 +1383,11 @@ def run_checkpoint_gstreamer_publication_runtime_v3(
 
 
 __all__ = [
-    "EXPECTED_IMAGE_ID",
+    "EXPECTED_IMAGE_ID", "EXPECTED_IMAGE_REFERENCE",
     "EXPECTED_IMAGE_INSPECT_PROJECTION_SHA256",
     "EXPECTED_REPOSITORY_DIGEST",
     "GstreamerPublicationRuntimeV3Error",
+    "image_projection_sha256",
     "RUNTIME_INPUT_KEY",
     "RUNTIME_INPUT_KIND",
     "run_checkpoint_gstreamer_publication_runtime_v3",

@@ -27,6 +27,10 @@ EVIDENCE_NAMES = (
 )
 
 
+class InjectedCrash(RuntimeError):
+    pass
+
+
 def canonical_sha(value: object) -> str:
     return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=True, allow_nan=False).encode()).hexdigest()
 
@@ -419,6 +423,39 @@ class ModelParityAcceptanceTests(unittest.TestCase):
             path.write_bytes(path.read_bytes() + b"post-load-drift")
             with self.assertRaises(target.ModelParityAcceptanceError):
                 fixture.load()
+
+
+    def test_immutable_json_commit_adopts_all_three_crash_windows(self) -> None:
+        document = {"schema_version": 1, "value": "durable"}
+        for step in (
+            "mid_write",
+            "post_fsync_pre_publish",
+            "post_publish_pre_parent_fsync",
+        ):
+            with self.subTest(step=step), tempfile.TemporaryDirectory() as temporary:
+                path = Path(temporary).resolve() / "accepted.json"
+
+                def crash(observed: str) -> None:
+                    if observed == step:
+                        raise InjectedCrash(step)
+
+                with self.assertRaises(InjectedCrash):
+                    target._write_new_json(
+                        path, document, "atomic acceptance test", _fault_hook=crash
+                    )
+                expected = target._write_new_json(
+                    path, document, "atomic acceptance test"
+                )
+                identity = (path.stat().st_dev, path.stat().st_ino)
+                self.assertEqual(
+                    target._write_new_json(path, document, "atomic acceptance test"),
+                    expected,
+                )
+                self.assertEqual((path.stat().st_dev, path.stat().st_ino), identity)
+                path.chmod(0o600)
+                path.write_bytes(b"foreign\n")
+                with self.assertRaisesRegex(Exception, "atomic commit/adoption"):
+                    target._write_new_json(path, document, "atomic acceptance test")
 
 
 if __name__ == "__main__":

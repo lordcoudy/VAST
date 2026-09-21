@@ -1,9 +1,12 @@
 from __future__ import annotations
 
+import copy
 import hashlib
+import io
 import json
 import os
 import socket
+import stat
 import subprocess
 import sys
 import tempfile
@@ -13,6 +16,7 @@ import unittest
 from pathlib import Path
 from typing import Any
 from unittest import mock
+from contextlib import redirect_stderr, redirect_stdout
 
 import yaml
 
@@ -32,13 +36,26 @@ from analytics_execution_protocol import (  # noqa: E402
     receive_packet,
     send_packet,
 )
+from analytics_execution_worker import ExecutionClient  # noqa: E402
 from checkpoint_gstreamer_analytics_sidecar import (  # noqa: E402
     DockerWorkerProcessFactory,
     GStreamerAnalyticsSidecar,
+    GStreamerAnalyticsProductionService,
+    ProductionLifecycleEvidenceSink,
+    PRODUCTION_MAX_CONNECTIONS_MINIMUM,
+    PRODUCTION_MAX_REQUESTS_PER_CONNECTION_MINIMUM,
+    PRODUCTION_MAX_TOTAL_REQUESTS_MINIMUM,
+    PRODUCTION_RETIRED_SOCKET_NODE_COUNT,
     SidecarError,
     WorkerLaunchSpec,
+    assert_publication_sidecar_service_authority_identity_v1,
+    assert_publication_sidecar_service_authority_v1,
     build_parser,
     load_materialized_binding_set,
+    main,
+    request_publication_sidecar_guardian_stop_v1,
+    validate_publication_sidecar_service_authority_v1,
+    validate_publication_sidecar_service_lifecycle_v1,
 )
 
 
@@ -48,7 +65,56 @@ ENGINE_BY_RESOURCE = {
     "gpu": ENGINE_TENSORRT_CUDA,
 }
 GPU_UUID = "GPU-00000000-0000-0000-0000-000000000001"
-SHA = hashlib.sha256(b"sidecar-fixture").hexdigest()
+PREPROCESSING_CONTRACT = {"fixture": True}
+SHA = canonical_sha256(PREPROCESSING_CONTRACT)
+
+
+def _preprocessing_authority(
+    contract: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    content_sha = canonical_sha256(contract or PREPROCESSING_CONTRACT)
+    return {
+        "schema_version": 1,
+        "artifact_kind": "vast_guardian_preprocessing_contract_authority_v1",
+        "preprocessing_contract_content_sha256": content_sha,
+        "preprocessing_contract_file_sha256": SHA,
+        "materialization_receipt_identity_sha256": SHA,
+        "materialization_receipt_file_sha256": SHA,
+        "qualification_transaction_receipt_sha256": SHA,
+        "candidate_manifest_file_sha256": hashlib.sha256(
+            canonical_json_bytes(_policy_manifest()) + b"\n"
+        ).hexdigest(),
+        "candidate_receipt_identity_sha256": SHA,
+        "model_parity_acceptance_binding_sha256": SHA,
+        "policy_contract_sha256": SHA,
+        "accepted_model_parity_manifest_file_sha256": SHA,
+        "accepted_model_parity_assessment_file_sha256": SHA,
+        "accepted_model_parity_receipt_file_sha256": SHA,
+        "model_parity_acceptance_binding_file_sha256": SHA,
+        "model_parity_acceptance_files_sha256": SHA,
+        "model_parity_refresh_authority_sha256": SHA,
+        "model_parity_transaction_index_file_sha256": SHA,
+        "model_parity_transaction_sha256": SHA,
+    }
+
+
+def _external_runtime_expectations(
+    config: dict[str, Any], binding_set: Path
+) -> dict[str, Any]:
+    index = json.loads((binding_set / "index.json").read_text(encoding="ascii"))
+    return {
+        "execution_config_identity_sha256": config["identity"]["sha256"],
+        "binding_set_identity_sha256": index["identity"]["sha256"],
+        "bindings_identity_sha256": index["bindings_identity_sha256"],
+        "worker_image_ids": {
+            resource: config["workers"][resource]["image_id"]
+            for resource in RESOURCES
+        },
+        "policy_contract_sha256": _preprocessing_authority()[
+            "policy_contract_sha256"
+        ],
+        "preprocessing_contract_content_sha256": SHA,
+    }
 
 
 def _load_execution_config() -> dict[str, Any]:
@@ -312,7 +378,123 @@ class _Bridge:
         if any(handle.poll() is not None for handle in process_factory.handles.values()):
             raise AssertionError("bridge constructed before every worker was live")
         self.connections = dict(values["worker_connections"])
+        self.capabilities = {
+            key: dict(capability)
+            for key, capability in values["worker_capabilities"].items()
+        }
         self.fail_execute = fail_execute
+
+    def worker_protocol_handshake(
+        self, value: dict[str, Any]
+    ) -> tuple[tuple[str, str], dict[str, Any]]:
+        expected = value["expected_capability_sha256"]
+        matches = [
+            (key, capability)
+            for key, capability in self.capabilities.items()
+            if canonical_sha256(capability) == expected
+        ]
+        if len(matches) != 1:
+            raise RuntimeError("fixture capability is absent or ambiguous")
+        key, capability = matches[0]
+        return key, {
+            "schema_version": 1,
+            "message_type": "hello_ack",
+            "protocol_identity_sha256": PROTOCOL_IDENTITY_SHA256,
+            "nonce": value["nonce"],
+            "capability": capability,
+        }
+
+    def execute_worker_protocol(
+        self,
+        request: dict[str, Any],
+        payload: bytes,
+        *,
+        route: tuple[str, str],
+    ) -> tuple[dict[str, Any], bytes]:
+        if self.fail_execute:
+            raise RuntimeError("injected bridge failure")
+        capability = self.capabilities[route]
+        output = b"\x00\x00\x00\x00"
+        received = time.monotonic_ns()
+        started = received + 1
+        finished = started + 1
+        completed = finished + 1
+        return {
+            "schema_version": 1,
+            "message_type": "infer_response",
+            "request_id": request["request_id"],
+            "run_id": request["run_id"],
+            "arm_id": request["arm_id"],
+            "worker_id": request["worker_id"],
+            "frame": request["frame"],
+            "engine": request["engine"],
+            "terminal": {
+                "status": "completed",
+                "objects": 0,
+                "reason": "fixture_completed",
+            },
+            "output": {
+                "byte_length": len(output),
+                "sha256": hashlib.sha256(output).hexdigest(),
+                "contract_sha256": request[
+                    "expected_output_contract_sha256"
+                ],
+                "tensor_count": 1,
+                "tensors": [
+                    {
+                        "name": "fixture_output",
+                        "dtype": "float32",
+                        "shape": [1],
+                        "offset": 0,
+                        "byte_length": len(output),
+                    }
+                ],
+            },
+            "provenance": {
+                "worker_image_id": capability["worker_image_id"],
+                "worker_implementation_sha256": capability[
+                    "worker_implementation_sha256"
+                ],
+                "runtime_name": capability["runtime_name"],
+                "runtime_version": capability["runtime_version"],
+                "device_api": capability["device_api"],
+                "device_id": capability["device_id"],
+                "native_inference_api": capability["native_inference_api"],
+                "execution_path": capability["execution_path"],
+                "model_id": capability["model_id"],
+                "source_model_sha256": capability["source_model_sha256"],
+                "model_artifact_sha256": capability[
+                    "model_artifact_sha256"
+                ],
+                "runtime_weights_sha256": capability[
+                    "runtime_weights_sha256"
+                ],
+                "preprocessing_contract_sha256": capability[
+                    "preprocessing_contract_sha256"
+                ],
+                "output_contract_sha256": capability[
+                    "output_contract_sha256"
+                ],
+                "input_sha256": request["tensor"]["sha256"],
+                "output_sha256": hashlib.sha256(output).hexdigest(),
+            },
+            "timing": {
+                "worker_received_monotonic_ns": received,
+                "inference_started_monotonic_ns": started,
+                "inference_finished_monotonic_ns": finished,
+                "worker_completed_monotonic_ns": completed,
+                "inference_latency_ns": finished - started,
+            },
+            "resource": {
+                "process_cpu_time_ns": 1,
+                "rss_before_bytes": 1,
+                "rss_after_bytes": 1,
+                "accelerator_memory_bytes": 0,
+                "cuda_h2d_bytes": 0,
+                "cuda_d2h_bytes": 0,
+                "cuda_transfer_intervals": [],
+            },
+        }, output
 
     def execute(self, request: dict[str, Any], payload: bytes) -> dict[str, Any]:
         if self.fail_execute:
@@ -377,6 +559,52 @@ def _request(payload: bytes, *, request_id: str = "sidecar-request-0001") -> dic
     }
 
 
+def _worker_request(
+    capability: dict[str, Any], payload: bytes
+) -> dict[str, Any]:
+    return {
+        "schema_version": 1,
+        "message_type": "infer_request",
+        "request_id": "worker-proxy-request-0001",
+        "run_id": "worker-proxy-run-0001",
+        "arm_id": "worker-proxy-arm-0001",
+        "worker_id": capability["worker_id"],
+        "frame": {
+            "input_frame_key": "dataset:0:source:2:180000",
+            "stream_id": 0,
+            "frame_id": 2,
+            "transport_pts_ns": 180000,
+            "branch": capability["branch"],
+        },
+        "engine": capability["engine"],
+        "deadline_monotonic_ns": time.monotonic_ns() + 60_000_000_000,
+        "model": {
+            "model_id": capability["model_id"],
+            "source_sha256": capability["source_model_sha256"],
+            "runtime_artifact_sha256": capability[
+                "model_artifact_sha256"
+            ],
+            "runtime_weights_sha256": capability[
+                "runtime_weights_sha256"
+            ],
+        },
+        "tensor": {
+            "name": "data",
+            "dtype": "float32",
+            "layout": "NCHW",
+            "shape": [1],
+            "byte_length": len(payload),
+            "sha256": hashlib.sha256(payload).hexdigest(),
+            "preprocessing_contract_sha256": capability[
+                "preprocessing_contract_sha256"
+            ],
+        },
+        "expected_output_contract_sha256": capability[
+            "output_contract_sha256"
+        ],
+    }
+
+
 @unittest.skipUnless(
     os.name == "posix"
     and hasattr(socket, "SOCK_SEQPACKET")
@@ -404,7 +632,7 @@ class GStreamerAnalyticsSidecarTests(unittest.TestCase):
             execution_config=self.config,
             binding_set_dir=bindings,
             policy_capability_manifest=_policy_manifest(),
-            preprocessing_contract={"fixture": True},
+            preprocessing_contract=PREPROCESSING_CONTRACT,
             runtime_dir=runtime,
             front_socket=runtime / "analytics-front.sock",
             evidence_root=evidence,
@@ -416,6 +644,70 @@ class GStreamerAnalyticsSidecarTests(unittest.TestCase):
             ),
             max_connections=1,
             max_requests_per_connection=1,
+            startup_timeout_s=3.0,
+            shutdown_timeout_s=1.0,
+            monitor_interval_s=0.01,
+        )
+
+    def _production_service(
+        self,
+        root: Path,
+        factory: _ProcessFactory,
+        *,
+        fail_execute: bool = False,
+        max_connections: int = PRODUCTION_MAX_CONNECTIONS_MINIMUM,
+        max_requests_per_connection: int = (
+            PRODUCTION_MAX_REQUESTS_PER_CONNECTION_MINIMUM
+        ),
+        max_total_requests: int = PRODUCTION_MAX_TOTAL_REQUESTS_MINIMUM,
+        preprocessing_contract: dict[str, Any] | None = None,
+        preprocessing_authority: dict[str, Any] | None = None,
+        production_runtime_expectations: dict[str, Any] | None = None,
+    ) -> GStreamerAnalyticsProductionService:
+        runtime = root / "runtime"
+        runtime.mkdir(exist_ok=True)
+        binding_set = _write_binding_set(root / "bindings", self.config)
+        selected_contract = (
+            PREPROCESSING_CONTRACT
+            if preprocessing_contract is None
+            else preprocessing_contract
+        )
+        selected_authority = (
+            _preprocessing_authority(selected_contract)
+            if preprocessing_authority is None
+            else preprocessing_authority
+        )
+        selected_expectations = (
+            _external_runtime_expectations(self.config, binding_set)
+            if production_runtime_expectations is None
+            else production_runtime_expectations
+        )
+        if production_runtime_expectations is None:
+            selected_expectations["preprocessing_contract_content_sha256"] = (
+                canonical_sha256(selected_contract)
+            )
+            selected_expectations["policy_contract_sha256"] = selected_authority[
+                "policy_contract_sha256"
+            ]
+        return GStreamerAnalyticsProductionService(
+            execution_config=self.config,
+            binding_set_dir=binding_set,
+            policy_capability_manifest=_policy_manifest(),
+            preprocessing_contract=selected_contract,
+            preprocessing_authority=selected_authority,
+            production_runtime_expectations=selected_expectations,
+            runtime_dir=runtime,
+            front_socket=runtime / "analytics-front.sock",
+            evidence_root=root / "production-evidence",
+            process_factory=factory,
+            bridge_factory=lambda **values: _Bridge(
+                process_factory=factory,
+                fail_execute=fail_execute,
+                **values,
+            ),
+            max_connections=max_connections,
+            max_requests_per_connection=max_requests_per_connection,
+            max_total_requests=max_total_requests,
             startup_timeout_s=3.0,
             shutdown_timeout_s=1.0,
             monitor_interval_s=0.01,
@@ -436,6 +728,99 @@ class GStreamerAnalyticsSidecarTests(unittest.TestCase):
             callable_value()
         except BaseException as error:
             errors.append(error)
+
+    def test_production_readiness_parent_swap_never_redirects_write(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary).resolve()
+            namespace = root / "namespace"
+            evidence = namespace / "evidence"
+            displaced = namespace / "evidence-displaced"
+            attacker = root / "attacker"
+            namespace.mkdir()
+            attacker.mkdir()
+            sink = ProductionLifecycleEvidenceSink(evidence)
+            custody = sink._directory_custody
+            original_open = os.open
+            swapped = False
+
+            def race_open(
+                path: object,
+                flags: int,
+                mode: int = 0o777,
+                *,
+                dir_fd: int | None = None,
+            ) -> int:
+                nonlocal swapped
+                if (
+                    not swapped
+                    and dir_fd == custody.directory_fd
+                    and path == "service_authority.v1.json"
+                    and bool(flags & os.O_WRONLY)
+                ):
+                    swapped = True
+                    evidence.rename(displaced)
+                    evidence.symlink_to(attacker, target_is_directory=True)
+                return original_open(path, flags, mode, dir_fd=dir_fd)
+
+            try:
+                with (
+                    mock.patch.object(os, "open", side_effect=race_open),
+                    self.assertRaisesRegex(SidecarError, "custody|directory chain|changed"),
+                ):
+                    sink.persist_authority({"ready": True})
+                self.assertTrue(swapped)
+                self.assertFalse((attacker / "service_authority.v1.json").exists())
+                self.assertFalse((displaced / "service_authority.v1.json").exists())
+            finally:
+                sink.close()
+
+    def test_production_lifecycle_parent_swap_preserves_attacker_canary(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary).resolve()
+            namespace = root / "namespace"
+            evidence = namespace / "evidence"
+            displaced = namespace / "evidence-displaced"
+            attacker = root / "attacker"
+            namespace.mkdir()
+            attacker.mkdir()
+            canary = attacker / "service_lifecycle.v1.json"
+            canary.write_bytes(b"attacker-canary\n")
+            sink = ProductionLifecycleEvidenceSink(evidence)
+            sink.persist_authority({"ready": True})
+            custody = sink._directory_custody
+            original_open = os.open
+            swapped = False
+
+            def race_open(
+                path: object,
+                flags: int,
+                mode: int = 0o777,
+                *,
+                dir_fd: int | None = None,
+            ) -> int:
+                nonlocal swapped
+                if (
+                    not swapped
+                    and dir_fd == custody.directory_fd
+                    and path == "service_lifecycle.v1.json"
+                    and bool(flags & os.O_WRONLY)
+                ):
+                    swapped = True
+                    evidence.rename(displaced)
+                    evidence.symlink_to(attacker, target_is_directory=True)
+                return original_open(path, flags, mode, dir_fd=dir_fd)
+
+            try:
+                with (
+                    mock.patch.object(os, "open", side_effect=race_open),
+                    self.assertRaisesRegex(SidecarError, "custody|directory chain|changed"),
+                ):
+                    sink.persist_lifecycle({"stopped": True})
+                self.assertTrue(swapped)
+                self.assertEqual(canary.read_bytes(), b"attacker-canary\n")
+                self.assertFalse((displaced / "service_lifecycle.v1.json").exists())
+            finally:
+                sink.close()
 
     def test_full_lifecycle_attests_exact_eight_and_persists_raw_call(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -490,6 +875,20 @@ class GStreamerAnalyticsSidecarTests(unittest.TestCase):
                 {(spec.branch, spec.resource) for spec in factory.specs},
                 {(branch, resource) for branch in BRANCHES for resource in RESOURCES},
             )
+            for worker in result["workers"]:
+                peer = worker["peer_identity"]
+                self.assertEqual(
+                    worker["peer_identity_sha256"], peer["identity_sha256"]
+                )
+                self.assertEqual(peer["peer_identity_mode"], "native-visible")
+                self.assertTrue(peer["peer_pid_visible_in_controller_namespace"])
+                self.assertTrue(peer["peer_identity_by_pid_attested"])
+                self.assertTrue(
+                    peer["protocol_nonce_capability_handshake_performed"]
+                )
+                self.assertTrue(
+                    peer["global_eight_worker_handshake_barrier_attested"]
+                )
             self.assertEqual(response["request_id"], "sidecar-request-0001")
             self.assertTrue(factory.all_stopped())
             self.assertFalse(owner.front_socket.exists())
@@ -717,60 +1116,214 @@ class GStreamerAnalyticsSidecarTests(unittest.TestCase):
             self.assertEqual(collision.read_text(encoding="utf-8"), "CANARY\n")
             self.assertEqual(list(root.iterdir()), [collision])
 
-    def test_atomic_front_publish_link_race_preserves_attacker_node(self) -> None:
+    def test_atomic_front_publish_uses_direct_bind_without_link_cleanup(self) -> None:
         import checkpoint_gstreamer_analytics_sidecar as sidecar_module
 
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             target = root / "front.sock"
-            original_link = sidecar_module.os.link
-
-            def race_link(source: Any, destination: Any, **kwargs: Any) -> None:
-                Path(destination).write_text("ATTACKER\n", encoding="utf-8")
-                original_link(source, destination, **kwargs)
-
-            with (
-                mock.patch.object(sidecar_module.os, "link", side_effect=race_link),
-                self.assertRaisesRegex(SidecarError, "already exists"),
+            with mock.patch.object(
+                sidecar_module.os,
+                "link",
+                side_effect=AssertionError("link cleanup is forbidden"),
             ):
-                sidecar_module._open_owned_listener(
+                owned = sidecar_module._open_owned_listener(
                     target,
                     backlog=1,
                     atomic_publish=True,
                 )
-            self.assertEqual(target.read_text(encoding="utf-8"), "ATTACKER\n")
-            self.assertEqual(list(root.iterdir()), [target])
+            try:
+                self.assertTrue(stat.S_ISSOCK(target.lstat().st_mode))
+                self.assertEqual(owned.identity, sidecar_module._stat_identity(target))
+            finally:
+                if owned.listener is not None:
+                    owned.listener.close()
+                target.unlink()
 
-    def test_atomic_front_publish_post_link_failure_removes_owned_node(self) -> None:
+    def test_atomic_front_publish_post_bind_failure_never_unlinks_node(self) -> None:
         import checkpoint_gstreamer_analytics_sidecar as sidecar_module
 
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             target = root / "front.sock"
             original_identity = sidecar_module._stat_identity
-            identity_calls = 0
-
-            def fail_after_link(path: Path) -> Any:
-                nonlocal identity_calls
-                identity_calls += 1
-                if identity_calls == 2:
-                    raise SidecarError("injected post-link failure")
-                return original_identity(path)
+            def fail_after_bind(path: Path) -> Any:
+                self.assertEqual(path, target)
+                raise SidecarError("injected post-bind failure")
 
             with (
                 mock.patch.object(
                     sidecar_module,
                     "_stat_identity",
-                    side_effect=fail_after_link,
+                    side_effect=fail_after_bind,
                 ),
-                self.assertRaisesRegex(SidecarError, "post-link failure"),
+                self.assertRaisesRegex(SidecarError, "post-bind failure"),
             ):
                 sidecar_module._open_owned_listener(
                     target,
                     backlog=1,
                     atomic_publish=True,
                 )
-            self.assertEqual(list(root.iterdir()), [])
+            self.assertTrue(stat.S_ISSOCK(target.lstat().st_mode))
+            self.assertEqual(original_identity(target)[2], stat.S_IFSOCK)
+            target.unlink()
+
+    def test_owned_socket_retirement_never_deletes_raced_node(self) -> None:
+        import checkpoint_gstreamer_analytics_sidecar as sidecar_module
+
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            target = root / "front.sock"
+            displaced = root / "owned-displaced.sock"
+            owned = sidecar_module._open_owned_listener(
+                target,
+                backlog=1,
+                atomic_publish=True,
+            )
+            custody = sidecar_module.DirectoryFdCustodyV1.open_existing(
+                root,
+                label="socket race fixture",
+            )
+            retirement = sidecar_module.DirectoryFdCustodyV1.open_existing(
+                root,
+                label="socket retirement race parent",
+            )
+            retirement.mkdir_child_exclusive(
+                ".retired-socket-race",
+                mode=0o700,
+            )
+            attacker = socket.socket(socket.AF_UNIX, socket.SOCK_SEQPACKET)
+            original_rename = sidecar_module._renameat2_noreplace_socket_node
+            raced = False
+
+            def race_before_quarantine(
+                source_directory_fd: int,
+                source_name: str,
+                target_directory_fd: int,
+                target_name: str,
+            ) -> None:
+                nonlocal raced
+                if not raced and source_name == target.name:
+                    raced = True
+                    target.rename(displaced)
+                    attacker.bind(str(target))
+                return original_rename(
+                    source_directory_fd,
+                    source_name,
+                    target_directory_fd,
+                    target_name,
+                )
+
+            try:
+                with (
+                    mock.patch.object(
+                        sidecar_module,
+                        "_renameat2_noreplace_socket_node",
+                        side_effect=race_before_quarantine,
+                    ),
+                    self.assertRaisesRegex(SidecarError, "identity changed"),
+                ):
+                    sidecar_module._close_owned_socket(
+                        owned,
+                        directory_custody=custody,
+                        retirement_custody=retirement,
+                        lifecycle_id="a" * 32,
+                    )
+                self.assertTrue(raced)
+                self.assertFalse(target.exists())
+                self.assertTrue(displaced.exists())
+                self.assertTrue(stat.S_ISSOCK(displaced.lstat().st_mode))
+                retired_nodes = list(retirement.path.iterdir())
+                self.assertEqual(len(retired_nodes), 1)
+                self.assertTrue(stat.S_ISSOCK(retired_nodes[0].lstat().st_mode))
+            finally:
+                custody.close()
+                retirement.close()
+                attacker.close()
+                for path in (target, displaced):
+                    if os.path.lexists(path):
+                        path.unlink()
+
+    def test_retired_socket_post_stat_swap_is_nondestructive_and_fails_cold(
+        self,
+    ) -> None:
+        import checkpoint_gstreamer_analytics_sidecar as sidecar_module
+
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            runtime = root / "runtime"
+            runtime.mkdir()
+            target = runtime / "front.sock"
+            owned = sidecar_module._open_owned_listener(
+                target,
+                backlog=1,
+                atomic_publish=True,
+            )
+            runtime_custody = sidecar_module.DirectoryFdCustodyV1.open_existing(
+                runtime,
+                label="post-stat runtime fixture",
+            )
+            retirement = sidecar_module.DirectoryFdCustodyV1.open_existing(
+                root,
+                label="post-stat retirement parent fixture",
+            )
+            lifecycle_id = "b" * 32
+            retirement.mkdir_child_exclusive(
+                f".vast-gst-analytics-retired-{lifecycle_id}",
+                mode=0o700,
+            )
+            attacker = socket.socket(socket.AF_UNIX, socket.SOCK_SEQPACKET)
+            displaced = retirement.path / "owned-displaced.sock"
+            original_stat = sidecar_module.os.stat
+            swapped = False
+
+            def swap_after_retired_stat(path: Any, *args: Any, **kwargs: Any) -> Any:
+                nonlocal swapped
+                metadata = original_stat(path, *args, **kwargs)
+                if (
+                    not swapped
+                    and kwargs.get("dir_fd") == retirement.directory_fd
+                    and str(path).endswith(".sock")
+                ):
+                    swapped = True
+                    retired_path = retirement.path / str(path)
+                    retired_path.rename(displaced)
+                    attacker_source = root / "attacker.sock"
+                    attacker.bind(str(attacker_source))
+                    attacker_source.rename(retired_path)
+                return metadata
+
+            try:
+                with mock.patch.object(
+                    sidecar_module.os,
+                    "stat",
+                    side_effect=swap_after_retired_stat,
+                ):
+                    record = sidecar_module._close_owned_socket(
+                        owned,
+                        directory_custody=runtime_custody,
+                        retirement_custody=retirement,
+                        lifecycle_id=lifecycle_id,
+                    )
+                self.assertTrue(swapped)
+                self.assertIsNotNone(record)
+                with self.assertRaisesRegex(
+                    SidecarError,
+                    "retirement directory|physical identity",
+                ):
+                    sidecar_module._validate_retired_socket_records_v1(
+                        [record],
+                        expected_lifecycle_id=lifecycle_id,
+                        expected_active_names={target.name},
+                        verify_physical=True,
+                    )
+                self.assertTrue(stat.S_ISSOCK(displaced.lstat().st_mode))
+                current = retirement.path / str(record["retired_name"])
+                self.assertTrue(stat.S_ISSOCK(current.lstat().st_mode))
+            finally:
+                runtime_custody.close()
+                retirement.close()
+                attacker.close()
 
     def test_runtime_symlink_is_rejected_without_touching_canary(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -802,6 +1355,1148 @@ class GStreamerAnalyticsSidecarTests(unittest.TestCase):
             self.assertEqual(canary.read_text(encoding="utf-8"), "keep\n")
             self.assertEqual(factory.specs, [])
 
+    def test_running_guardian_fails_closed_if_runtime_directory_is_rebound(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            factory = _ProcessFactory(self.config)
+            service = self._production_service(root, factory)
+            authority = service.start()
+            runtime = service.runtime_dir
+            displaced = root / "runtime-displaced"
+            runtime.rename(displaced)
+            runtime.mkdir()
+            try:
+                with self.assertRaisesRegex(
+                    SidecarError, "runtime.*(custody|directory)|directory.*changed"
+                ):
+                    service.assert_live(authority)
+                lifecycle = service.stop()
+                self.assertEqual(
+                    lifecycle["status"], "failed_stop_nonpublication"
+                )
+                self.assertTrue(
+                    any(
+                        "runtime_directory" in item
+                        for item in lifecycle["cleanup_errors"]
+                    )
+                )
+                self.assertIsNone(service._runtime_directory_custody)
+                retained = {item.name for item in displaced.iterdir()}
+                self.assertEqual(
+                    retained,
+                    {
+                        "analytics-front.sock",
+                        "production-guardian-control.sock",
+                    },
+                )
+                self.assertTrue(
+                    all(
+                        stat.S_ISSOCK(item.lstat().st_mode)
+                        for item in displaced.iterdir()
+                    )
+                )
+            finally:
+                for entry in displaced.iterdir():
+                    entry.unlink()
+
+    def test_production_service_has_stable_authority_clean_eof_and_rolling_lifecycle(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            factory = _ProcessFactory(self.config)
+            service = self._production_service(root, factory)
+
+            authority = service.start()
+            checked = validate_publication_sidecar_service_authority_v1(authority)
+            self.assertEqual(checked, authority)
+            self.assertEqual(
+                authority["preprocessing_contract_authority"],
+                _preprocessing_authority(),
+            )
+            self.assertEqual(
+                authority["capacity"]["max_total_requests"],
+                PRODUCTION_MAX_TOTAL_REQUESTS_MINIMUM,
+            )
+            self.assertEqual(
+                authority["capacity"]["worker_request_upper_bound"],
+                PRODUCTION_MAX_TOTAL_REQUESTS_MINIMUM,
+            )
+            self.assertEqual(
+                {spec.max_requests for spec in factory.specs},
+                {PRODUCTION_MAX_TOTAL_REQUESTS_MINIMUM},
+            )
+            self.assertEqual(len(authority["peer_identities"]), 8)
+            self.assertTrue(
+                all(
+                    row["peer_identity"][
+                        "protocol_nonce_capability_handshake_performed"
+                    ]
+                    is True
+                    and row["peer_identity"][
+                        "global_eight_worker_handshake_barrier_attested"
+                    ]
+                    is True
+                    for row in authority["peer_identities"]
+                )
+            )
+            readiness = root / "production-evidence" / "service_authority.v1.json"
+            self.assertEqual(
+                json.loads(readiness.read_text(encoding="ascii")),
+                authority,
+            )
+            self.assertFalse((root / "production-evidence" / "calls").exists())
+
+            pin = dict(authority["front_socket"])
+            self.assertEqual(pin["device"], service.front_socket.lstat().st_dev)
+            self.assertEqual(pin["inode"], service.front_socket.lstat().st_ino)
+            expected_images = {
+                resource: self.config["workers"][resource]["image_id"]
+                for resource in RESOURCES
+            }
+            self.assertEqual(
+                assert_publication_sidecar_service_authority_v1(
+                    authority,
+                    expected_front_socket=service.front_socket,
+                    expected_execution_config_identity_sha256=(
+                        self.config["identity"]["sha256"]
+                    ),
+                    expected_binding_set_identity_sha256=authority[
+                        "binding_set_identity_sha256"
+                    ],
+                    expected_worker_image_ids=expected_images,
+                    expected_preprocessing_contract_authority=authority[
+                        "preprocessing_contract_authority"
+                    ],
+                    expected_service_identity_sha256=authority[
+                        "service_identity_sha256"
+                    ],
+                    expected_policy_contract_sha256=authority[
+                        "preprocessing_contract_authority"
+                    ]["policy_contract_sha256"],
+                ),
+                authority,
+            )
+
+            # A topology probe may connect and close before sending a request.
+            empty_client = socket.socket(socket.AF_UNIX, socket.SOCK_SEQPACKET)
+            empty_client.connect(str(service.front_socket))
+            empty_client.close()
+
+            payload = b"\x01\x02\x03"
+            client = socket.socket(socket.AF_UNIX, socket.SOCK_SEQPACKET)
+            client.connect(str(service.front_socket))
+            descriptor = create_sealed_memfd("production-sidecar-input", payload)
+            try:
+                send_packet(client, _request(payload), fds=(descriptor,))
+            finally:
+                close_fds((descriptor,))
+            response, descriptors = receive_packet(client, expected_fds=0)
+            close_fds(descriptors)
+            self.assertEqual(response["request_id"], "sidecar-request-0001")
+            client.close()
+
+            # Publication adapters speak the native worker protocol on the same
+            # stable guardian front socket.  The hello has zero FDs; inference
+            # carries one sealed input memfd and receives one sealed output.
+            self.assertIsInstance(service._bridge, _Bridge)
+            capability = service._bridge.capabilities[("damage", "cpu")]
+            worker_client_socket = socket.socket(
+                socket.AF_UNIX, socket.SOCK_SEQPACKET
+            )
+            worker_client_socket.connect(str(service.front_socket))
+            worker_client = ExecutionClient(
+                worker_client_socket,
+                expected_capability=capability,
+            )
+            self.assertEqual(worker_client.handshake(), capability)
+            worker_payload = b"\x00\x00\x00\x00"
+            worker_response, worker_output = worker_client.infer(
+                _worker_request(capability, worker_payload), worker_payload
+            )
+            self.assertEqual(
+                worker_response["request_id"], "worker-proxy-request-0001"
+            )
+            self.assertEqual(worker_output, b"\x00\x00\x00\x00")
+            worker_client_socket.close()
+
+            live = service.assert_live(authority)
+            self.assertEqual(live["front_socket"], pin)
+            self.assertEqual(service.front_socket.lstat().st_ino, pin["inode"])
+            request_publication_sidecar_guardian_stop_v1(authority)
+            lifecycle = service.stop()
+
+            self.assertFalse(service.front_socket.exists())
+            self.assertEqual(lifecycle["status"], "clean_stop_nonpublication")
+            self.assertEqual(
+                len(lifecycle["retired_socket_nodes"]),
+                PRODUCTION_RETIRED_SOCKET_NODE_COUNT,
+            )
+            self.assertEqual(
+                {
+                    item["active_name"]
+                    for item in lifecycle["retired_socket_nodes"]
+                },
+                {
+                    *{
+                        f"worker-{branch}-{resource}.sock"
+                        for branch in BRANCHES
+                        for resource in RESOURCES
+                    },
+                    Path(authority["front_socket"]["path"]).name,
+                    Path(authority["control_socket"]["path"]).name,
+                },
+            )
+            self.assertEqual(lifecycle["service_authority_sha256"], authority[
+                "service_authority_sha256"
+            ])
+            self.assertEqual(lifecycle["counters"]["requests_completed"], 2)
+            self.assertEqual(lifecycle["counters"]["requests_failed"], 0)
+            self.assertGreaterEqual(
+                lifecycle["counters"]["connections_clean_eof"], 1
+            )
+            self.assertEqual(service._call_manifests, [])
+            lifecycle_path = (
+                root / "production-evidence" / "service_lifecycle.v1.json"
+            )
+            self.assertEqual(
+                json.loads(lifecycle_path.read_text(encoding="ascii")),
+                lifecycle,
+            )
+            self.assertEqual(
+                assert_publication_sidecar_service_authority_identity_v1(
+                    authority,
+                    expected_front_socket=service.front_socket,
+                    expected_execution_config_identity_sha256=(
+                        self.config["identity"]["sha256"]
+                    ),
+                    expected_binding_set_identity_sha256=authority[
+                        "binding_set_identity_sha256"
+                    ],
+                    expected_worker_image_ids=expected_images,
+                    expected_preprocessing_contract_authority=authority[
+                        "preprocessing_contract_authority"
+                    ],
+                    expected_service_identity_sha256=authority[
+                        "service_identity_sha256"
+                    ],
+                    expected_policy_contract_sha256=authority[
+                        "preprocessing_contract_authority"
+                    ]["policy_contract_sha256"],
+                ),
+                authority,
+            )
+
+    def test_retired_socket_validator_binds_exact_count_and_sibling_path(
+        self,
+    ) -> None:
+        import checkpoint_gstreamer_analytics_sidecar as sidecar_module
+
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            factory = _ProcessFactory(self.config)
+            service = self._production_service(root, factory)
+            authority = service.start()
+            request_publication_sidecar_guardian_stop_v1(authority)
+            lifecycle = service.stop()
+            records = lifecycle["retired_socket_nodes"]
+            self.assertEqual(
+                len(records), PRODUCTION_RETIRED_SOCKET_NODE_COUNT
+            )
+
+            reduced = copy.deepcopy(records[:-1])
+            with self.assertRaisesRegex(SidecarError, "cardinality"):
+                sidecar_module._validate_retired_socket_records_v1(
+                    reduced,
+                    expected_lifecycle_id=authority["lifecycle_id"],
+                    expected_active_names={
+                        item["active_name"] for item in reduced
+                    },
+                    expected_record_count=(
+                        PRODUCTION_RETIRED_SOCKET_NODE_COUNT
+                    ),
+                    expected_retirement_directory=(
+                        service._socket_retirement_directory
+                    ),
+                    verify_physical=False,
+                )
+
+            original_retirement = service._socket_retirement_directory
+            relocated_retirement = root / ".relocated-retired-sockets"
+            original_retirement.rename(relocated_retirement)
+            tampered = copy.deepcopy(lifecycle)
+            for record in tampered["retired_socket_nodes"]:
+                record["retirement_directory"]["path"] = str(
+                    relocated_retirement
+                )
+                record_core = {
+                    key: value
+                    for key, value in record.items()
+                    if key != "identity"
+                }
+                record["identity"] = {
+                    "algorithm": "sha256",
+                    "sha256": canonical_sha256(record_core),
+                }
+            lifecycle_core = {
+                key: value
+                for key, value in tampered.items()
+                if key != "identity"
+            }
+            tampered["identity"] = {
+                "algorithm": "sha256",
+                "sha256": canonical_sha256(lifecycle_core),
+            }
+            with self.assertRaisesRegex(SidecarError, "path binding"):
+                validate_publication_sidecar_service_lifecycle_v1(
+                    tampered,
+                    expected_authority=authority,
+                )
+
+    def test_cached_stop_cold_revalidates_retired_socket_ledger(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            factory = _ProcessFactory(self.config)
+            service = self._production_service(root, factory)
+            authority = service.start()
+            request_publication_sidecar_guardian_stop_v1(authority)
+            lifecycle = service.stop()
+            record = lifecycle["retired_socket_nodes"][0]
+            retired_path = (
+                Path(record["retirement_directory"]["path"])
+                / record["retired_name"]
+            )
+            displaced = root / "displaced-retired-socket.sock"
+            retired_path.rename(displaced)
+
+            with self.assertRaisesRegex(
+                SidecarError,
+                "retirement directory|physical identity|cold reopen",
+            ):
+                service.stop()
+
+    def test_strict_authority_assert_rejects_distinct_valid_expected_identities(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            factory = _ProcessFactory(self.config)
+            service = self._production_service(root, factory)
+            authority = service.start()
+            expected_images = {
+                resource: self.config["workers"][resource]["image_id"]
+                for resource in RESOURCES
+            }
+            base = {
+                "expected_front_socket": service.front_socket,
+                "expected_execution_config_identity_sha256": self.config[
+                    "identity"
+                ]["sha256"],
+                "expected_binding_set_identity_sha256": authority[
+                    "binding_set_identity_sha256"
+                ],
+                "expected_worker_image_ids": expected_images,
+                "expected_preprocessing_contract_authority": authority[
+                    "preprocessing_contract_authority"
+                ],
+                "expected_service_identity_sha256": authority[
+                    "service_identity_sha256"
+                ],
+                "expected_policy_contract_sha256": authority[
+                    "preprocessing_contract_authority"
+                ]["policy_contract_sha256"],
+            }
+            try:
+                distinct_preprocessing = copy.deepcopy(
+                    authority["preprocessing_contract_authority"]
+                )
+                distinct_preprocessing[
+                    "materialization_receipt_identity_sha256"
+                ] = "f" * 64
+                cases = (
+                    {
+                        **base,
+                        "expected_preprocessing_contract_authority": (
+                            distinct_preprocessing
+                        ),
+                    },
+                    {
+                        **base,
+                        "expected_service_identity_sha256": "e" * 64,
+                    },
+                    {
+                        **base,
+                        "expected_policy_contract_sha256": "d" * 64,
+                    },
+                )
+                for expected in cases:
+                    with self.subTest(expected=expected), self.assertRaises(
+                        SidecarError
+                    ):
+                        assert_publication_sidecar_service_authority_v1(
+                            authority,
+                            **expected,
+                        )
+            finally:
+                service.stop()
+
+    def test_production_preprocessing_contract_checks_all_bindings_before_worker_start(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            factory = _ProcessFactory(self.config)
+            drifted_contract = {"fixture": False}
+            service = self._production_service(
+                root,
+                factory,
+                preprocessing_contract=drifted_contract,
+                preprocessing_authority=_preprocessing_authority(drifted_contract),
+            )
+            with self.assertRaisesRegex(
+                SidecarError,
+                "preprocessing.*(binding|capability|eight|8)",
+            ):
+                service.start()
+            self.assertEqual(factory.specs, [])
+            self.assertEqual(list((root / "runtime").iterdir()), [])
+
+    def test_production_rejects_external_runtime_expectation_drift_before_worker_start(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            for field in (
+                "execution_config_identity_sha256",
+                "binding_set_identity_sha256",
+                "bindings_identity_sha256",
+                "worker_image_ids",
+                "policy_contract_sha256",
+            ):
+                case_root = root / field
+                case_root.mkdir()
+                factory = _ProcessFactory(self.config)
+                binding_set = _write_binding_set(
+                    case_root / "expected-bindings", self.config
+                )
+                expectations = _external_runtime_expectations(
+                    self.config, binding_set
+                )
+                if field == "worker_image_ids":
+                    expectations[field]["gpu"] = "sha256:" + "f" * 64
+                else:
+                    expectations[field] = "f" * 64
+                with self.subTest(field=field), self.assertRaisesRegex(
+                    SidecarError,
+                    "external|expected|runtime|policy|binding|worker",
+                ):
+                    service = self._production_service(
+                        case_root,
+                        factory,
+                        production_runtime_expectations=expectations,
+                    )
+                    service.start()
+                self.assertEqual(factory.specs, [])
+
+    def test_production_preprocessing_receipt_binds_runtime_candidate_manifest(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            factory = _ProcessFactory(self.config)
+            drifted_authority = _preprocessing_authority()
+            drifted_authority["candidate_manifest_file_sha256"] = "0" * 64
+            with self.assertRaisesRegex(
+                SidecarError,
+                "preprocessing.*candidate manifest",
+            ):
+                self._production_service(
+                    root,
+                    factory,
+                    preprocessing_authority=drifted_authority,
+                )
+            self.assertEqual(factory.specs, [])
+
+    def test_production_capacity_is_contract_derived_and_not_one_million(self) -> None:
+        self.assertEqual(PRODUCTION_MAX_REQUESTS_PER_CONNECTION_MINIMUM, 4_320_000)
+        self.assertEqual(PRODUCTION_MAX_CONNECTIONS_MINIMUM, 202_560)
+        self.assertEqual(PRODUCTION_MAX_TOTAL_REQUESTS_MINIMUM, 29_168_640_000)
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            factory = _ProcessFactory(self.config)
+            for field, values in (
+                (
+                    "connections",
+                    {
+                        "max_connections": PRODUCTION_MAX_CONNECTIONS_MINIMUM - 1,
+                    },
+                ),
+                (
+                    "per_connection",
+                    {
+                        "max_requests_per_connection": (
+                            PRODUCTION_MAX_REQUESTS_PER_CONNECTION_MINIMUM - 1
+                        ),
+                    },
+                ),
+                (
+                    "total",
+                    {
+                        "max_total_requests": (
+                            PRODUCTION_MAX_TOTAL_REQUESTS_MINIMUM - 1
+                        ),
+                    },
+                ),
+            ):
+                case_root = root / field
+                case_root.mkdir()
+                with self.subTest(field=field), self.assertRaises(SidecarError):
+                    self._production_service(case_root, factory, **values)
+
+    def test_production_per_connection_bound_exhaustion_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            factory = _ProcessFactory(self.config)
+            service = self._production_service(root, factory)
+            authority = service.start()
+            # Exercise the terminal branch without issuing 4.32 million fixture calls.
+            service.max_requests_per_connection = 1
+            payload = b"\x01\x02\x03"
+            client = socket.socket(socket.AF_UNIX, socket.SOCK_SEQPACKET)
+            client.connect(str(service.front_socket))
+            descriptor = create_sealed_memfd("production-bound-input", payload)
+            try:
+                send_packet(client, _request(payload), fds=(descriptor,))
+            finally:
+                close_fds((descriptor,))
+            response, response_fds = receive_packet(client, expected_fds=0)
+            close_fds(response_fds)
+            self.assertEqual(response["request_id"], "sidecar-request-0001")
+            client.close()
+
+            deadline = time.monotonic() + 3
+            while time.monotonic() < deadline:
+                try:
+                    service.assert_live(authority)
+                except SidecarError:
+                    break
+                time.sleep(0.01)
+            else:
+                self.fail("production request bound exhaustion stayed live")
+            lifecycle = service.stop()
+            self.assertEqual(lifecycle["status"], "failed_stop_nonpublication")
+            self.assertEqual(lifecycle["counters"]["requests_completed"], 1)
+            self.assertEqual(lifecycle["counters"]["connections_failed"], 1)
+
+    def test_production_authority_rejects_hash_inode_and_owner_drift(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            factory = _ProcessFactory(self.config)
+            service = self._production_service(root, factory)
+            authority = service.start()
+            try:
+                for path, replacement in (
+                    (("front_socket", "inode"), authority["front_socket"]["inode"] + 1),
+                    (("owner_process", "pid"), os.getpid() + 100_000),
+                    (("service_authority_sha256",), "0" * 64),
+                ):
+                    tampered = copy.deepcopy(authority)
+                    target = tampered
+                    for key in path[:-1]:
+                        target = target[key]
+                    target[path[-1]] = replacement
+                    with self.subTest(path=path), self.assertRaises(SidecarError):
+                        service.assert_live(tampered)
+            finally:
+                service.stop()
+
+    def test_production_start_is_one_shot_and_does_not_replace_front_inode(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            factory = _ProcessFactory(self.config)
+            service = self._production_service(root, factory)
+            authority = service.start()
+            inode = authority["front_socket"]["inode"]
+            try:
+                with self.assertRaises(SidecarError):
+                    service.start()
+                self.assertEqual(service.front_socket.lstat().st_ino, inode)
+            finally:
+                service.stop()
+
+    def test_guardian_authenticated_stop_unblocks_foreground_wait(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            factory = _ProcessFactory(self.config)
+            service = self._production_service(root, factory)
+            authority = service.start()
+            waiter_errors: list[BaseException] = []
+            waiter = threading.Thread(
+                target=lambda: self._capture_error(
+                    service.wait_for_guardian_stop,
+                    waiter_errors,
+                )
+            )
+            waiter.start()
+
+            acknowledgement = request_publication_sidecar_guardian_stop_v1(
+                authority
+            )
+            waiter.join(timeout=5)
+            self.assertFalse(waiter.is_alive())
+            self.assertEqual(waiter_errors, [])
+            self.assertEqual(
+                acknowledgement["service_authority_sha256"],
+                authority["service_authority_sha256"],
+            )
+            lifecycle = service.stop()
+            attestation = lifecycle["guardian_stop_attestation"]
+            self.assertEqual(
+                attestation["artifact_kind"],
+                "vast_gstreamer_analytics_guardian_stop_attestation_v1",
+            )
+            self.assertEqual(
+                attestation["lifecycle_id"], authority["lifecycle_id"]
+            )
+            self.assertEqual(
+                attestation["service_authority_sha256"],
+                authority["service_authority_sha256"],
+            )
+            self.assertEqual(attestation["nonce"], acknowledgement["nonce"])
+            self.assertEqual(
+                attestation["canonical_command_sha256"],
+                acknowledgement["canonical_command_sha256"],
+            )
+            self.assertEqual(
+                attestation["canonical_command_sha256"],
+                canonical_sha256(
+                    {
+                        "schema_version": 1,
+                        "message_type": "production_guardian_stop",
+                        "lifecycle_id": authority["lifecycle_id"],
+                        "service_authority_sha256": authority[
+                            "service_authority_sha256"
+                        ],
+                        "nonce": acknowledgement["nonce"],
+                    }
+                ),
+            )
+            self.assertEqual(attestation["peer_process"]["pid"], os.getpid())
+            self.assertEqual(attestation["peer_process"]["uid"], os.getuid())
+            self.assertEqual(attestation["peer_process"]["gid"], os.getgid())
+            self.assertGreater(
+                attestation["peer_process"]["proc_stat_starttime_ticks"], 0
+            )
+            self.assertGreaterEqual(
+                attestation["accepted_monotonic_ns"],
+                authority["started_monotonic_ns"],
+            )
+            self.assertLessEqual(
+                attestation["accepted_monotonic_ns"],
+                lifecycle["finished_monotonic_ns"],
+            )
+            attestation_core = {
+                key: value
+                for key, value in attestation.items()
+                if key != "identity"
+            }
+            self.assertEqual(
+                attestation["identity"],
+                {
+                    "algorithm": "sha256",
+                    "sha256": canonical_sha256(attestation_core),
+                },
+            )
+            self.assertEqual(
+                validate_publication_sidecar_service_lifecycle_v1(
+                    lifecycle,
+                    expected_authority=authority,
+                ),
+                lifecycle,
+            )
+
+    def test_guardian_stores_stop_attestation_before_acknowledgement(self) -> None:
+        import checkpoint_gstreamer_analytics_sidecar as sidecar_module
+
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            factory = _ProcessFactory(self.config)
+            service = self._production_service(root, factory)
+            authority = service.start()
+            original_send = sidecar_module.send_packet
+            attestation_present_at_ack: list[bool] = []
+
+            def observe_send(*args: Any, **kwargs: Any) -> Any:
+                message = args[1] if len(args) > 1 else kwargs.get("message")
+                if (
+                    isinstance(message, dict)
+                    and message.get("message_type")
+                    == "production_guardian_stop_accepted"
+                ):
+                    with service._guardian_stop_attestation_lock:
+                        attestation_present_at_ack.append(
+                            service._guardian_stop_attestation is not None
+                        )
+                return original_send(*args, **kwargs)
+
+            with mock.patch.object(
+                sidecar_module,
+                "send_packet",
+                side_effect=observe_send,
+            ):
+                request_publication_sidecar_guardian_stop_v1(authority)
+            lifecycle = service.stop()
+            self.assertEqual(attestation_present_at_ack, [True])
+            self.assertEqual(lifecycle["status"], "clean_stop_nonpublication")
+
+    def test_guardian_stop_attestation_tamper_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            factory = _ProcessFactory(self.config)
+            service = self._production_service(root, factory)
+            authority = service.start()
+            request_publication_sidecar_guardian_stop_v1(authority)
+            lifecycle = service.stop()
+
+            def rehash_attestation(document: dict[str, Any]) -> None:
+                attestation = document["guardian_stop_attestation"]
+                attestation_core = {
+                    key: value
+                    for key, value in attestation.items()
+                    if key != "identity"
+                }
+                attestation["identity"] = {
+                    "algorithm": "sha256",
+                    "sha256": canonical_sha256(attestation_core),
+                }
+
+            def rehash_lifecycle(document: dict[str, Any]) -> None:
+                core = {
+                    key: value
+                    for key, value in document.items()
+                    if key != "identity"
+                }
+                document["identity"] = {
+                    "algorithm": "sha256",
+                    "sha256": canonical_sha256(core),
+                }
+
+            cases: tuple[tuple[str, Any], ...] = (
+                (
+                    "stale_self_hash",
+                    lambda document: document["guardian_stop_attestation"].__setitem__(
+                        "nonce", "f" * 64
+                    ),
+                ),
+                (
+                    "canonical_command",
+                    lambda document: (
+                        document["guardian_stop_attestation"].__setitem__(
+                            "canonical_command_sha256", "0" * 64
+                        ),
+                        rehash_attestation(document),
+                    ),
+                ),
+                (
+                    "authority_binding",
+                    lambda document: (
+                        document["guardian_stop_attestation"].__setitem__(
+                            "service_authority_sha256", "0" * 64
+                        ),
+                        rehash_attestation(document),
+                    ),
+                ),
+                (
+                    "peer_identity",
+                    lambda document: (
+                        document["guardian_stop_attestation"][
+                            "peer_process"
+                        ].__setitem__("uid", authority["owner_process"]["uid"] + 1),
+                        rehash_attestation(document),
+                    ),
+                ),
+                (
+                    "accepted_time",
+                    lambda document: (
+                        document["guardian_stop_attestation"].__setitem__(
+                            "accepted_monotonic_ns",
+                            document["finished_monotonic_ns"] + 1,
+                        ),
+                        rehash_attestation(document),
+                    ),
+                ),
+            )
+            for label, mutate in cases:
+                tampered = copy.deepcopy(lifecycle)
+                mutate(tampered)
+                rehash_lifecycle(tampered)
+                with self.subTest(label=label), self.assertRaises(SidecarError):
+                    validate_publication_sidecar_service_lifecycle_v1(
+                        tampered,
+                        expected_authority=authority,
+                    )
+
+    def test_signal_or_direct_stop_is_failed_and_non_authorizing(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            for mode, directory_name in (
+                ("direct", "d"),
+                ("signal_event", "s"),
+            ):
+                case_root = root / directory_name
+                case_root.mkdir()
+                factory = _ProcessFactory(self.config)
+                service = self._production_service(case_root, factory)
+                authority = service.start()
+                if mode == "signal_event":
+                    service._guardian_stop_requested.set()
+                    service.wait_for_guardian_stop()
+                lifecycle = service.stop()
+                self.assertEqual(
+                    lifecycle["status"], "failed_stop_nonpublication"
+                )
+                self.assertIsNone(lifecycle["guardian_stop_attestation"])
+                self.assertIn(
+                    "guardian_stop_attestation_missing",
+                    lifecycle["cleanup_errors"],
+                )
+                self.assertEqual(
+                    lifecycle["evidence_role"],
+                    "operational_non_authorizing_lifecycle",
+                )
+                self.assertEqual(
+                    validate_publication_sidecar_service_lifecycle_v1(
+                        lifecycle,
+                        expected_authority=authority,
+                    ),
+                    lifecycle,
+                )
+
+    def test_guardian_status_fails_closed_after_any_worker_dies(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            factory = _ProcessFactory(self.config)
+            service = self._production_service(root, factory)
+            authority = service.start()
+            handle = factory.handles[("damage", "cpu")]
+            handle.terminate()
+            handle.wait(3.0)
+            try:
+                with self.assertRaises(SidecarError):
+                    service.assert_live(authority)
+            finally:
+                lifecycle = service.stop()
+            self.assertEqual(
+                lifecycle["status"],
+                "failed_stop_nonpublication",
+            )
+            self.assertIsNotNone(lifecycle["failure"])
+
+    def test_guardian_status_and_bounded_stop_cli_use_readiness_authority(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            factory = _ProcessFactory(self.config)
+            service = self._production_service(root, factory)
+            authority = service.start()
+            authority_path = Path(authority["readiness_artifact_path"])
+
+            status_output = io.StringIO()
+            with redirect_stdout(status_output):
+                status_code = main(
+                    [
+                        "--production-status-authority",
+                        str(authority_path),
+                        "--control-timeout-seconds",
+                        "3",
+                    ]
+                )
+            self.assertEqual(status_code, 0)
+            self.assertEqual(json.loads(status_output.getvalue()), authority)
+
+            closer_errors: list[BaseException] = []
+
+            def close_guardian() -> None:
+                try:
+                    service.wait_for_guardian_stop()
+                    service.stop()
+                except BaseException as error:
+                    closer_errors.append(error)
+
+            closer = threading.Thread(target=close_guardian)
+            closer.start()
+            stop_output = io.StringIO()
+            with redirect_stdout(stop_output):
+                stop_code = main(
+                    [
+                        "--production-stop-authority",
+                        str(authority_path),
+                        "--control-timeout-seconds",
+                        "3",
+                    ]
+                )
+            closer.join(timeout=5)
+            self.assertFalse(closer.is_alive())
+            self.assertEqual(closer_errors, [])
+            self.assertEqual(stop_code, 0)
+            self.assertEqual(
+                json.loads(stop_output.getvalue())["status"],
+                "clean_stop_nonpublication",
+            )
+
+    def test_guardian_stop_cli_rejects_acknowledgement_binding_drift(self) -> None:
+        import checkpoint_gstreamer_analytics_sidecar as sidecar_module
+
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            replacements = {
+                "nonce": "f" * 64,
+                "lifecycle_id": "b" * 32,
+                "service_authority_sha256": "e" * 64,
+                "canonical_command_sha256": "d" * 64,
+            }
+            original_request = (
+                sidecar_module.request_publication_sidecar_guardian_stop_v1
+            )
+            for index, (field, replacement) in enumerate(
+                replacements.items()
+            ):
+                case_root = root / str(index)
+                case_root.mkdir()
+                factory = _ProcessFactory(self.config)
+                service = self._production_service(case_root, factory)
+                authority = service.start()
+                authority_path = Path(authority["readiness_artifact_path"])
+                closer_errors: list[BaseException] = []
+
+                def close_guardian() -> None:
+                    try:
+                        service.wait_for_guardian_stop()
+                        service.stop()
+                    except BaseException as error:
+                        closer_errors.append(error)
+
+                def drifted_request(*args: Any, **kwargs: Any) -> dict[str, Any]:
+                    acknowledgement = original_request(*args, **kwargs)
+                    acknowledgement[field] = replacement
+                    return acknowledgement
+
+                closer = threading.Thread(target=close_guardian)
+                closer.start()
+                output = io.StringIO()
+                error = io.StringIO()
+                with (
+                    self.subTest(field=field),
+                    mock.patch.object(
+                        sidecar_module,
+                        "request_publication_sidecar_guardian_stop_v1",
+                        side_effect=drifted_request,
+                    ),
+                    redirect_stdout(output),
+                    redirect_stderr(error),
+                ):
+                    stop_code = main(
+                        [
+                            "--production-stop-authority",
+                            str(authority_path),
+                            "--control-timeout-seconds",
+                            "3",
+                        ]
+                    )
+                closer.join(timeout=5)
+                self.assertFalse(closer.is_alive())
+                self.assertEqual(closer_errors, [])
+                self.assertEqual(stop_code, 78)
+                self.assertEqual(output.getvalue(), "")
+                self.assertRegex(
+                    error.getvalue(),
+                    "acknowledgement|attestation|binding",
+                )
+
+    def test_foreground_guardian_cli_commits_readiness_then_waits_for_stop(self) -> None:
+        import checkpoint_gstreamer_analytics_sidecar as sidecar_module
+
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            runtime = root / "runtime"
+            evidence = root / "production-evidence"
+            bindings = _write_binding_set(root / "bindings", self.config)
+            policy_path = root / "policy.json"
+            policy_path.write_text(
+                json.dumps(_policy_manifest()),
+                encoding="utf-8",
+            )
+            preprocessing_path = root / "preprocessing.json"
+            preprocessing_receipt_path = root / "preprocessing.receipt.json"
+            preprocessing_path.write_text("{}\n", encoding="ascii")
+            preprocessing_receipt_path.write_text("{}\n", encoding="ascii")
+            factory = _ProcessFactory(self.config)
+            controller_errors: list[BaseException] = []
+
+            def controller() -> None:
+                try:
+                    readiness = evidence / "service_authority.v1.json"
+                    self._wait_for(readiness)
+                    request_publication_sidecar_guardian_stop_v1(
+                        json.loads(readiness.read_text(encoding="ascii"))
+                    )
+                except BaseException as error:
+                    controller_errors.append(error)
+
+            controller_thread = threading.Thread(target=controller)
+            controller_thread.start()
+            output = io.StringIO()
+            with (
+                mock.patch.object(
+                    sidecar_module,
+                    "DockerWorkerProcessFactory",
+                    return_value=factory,
+                ),
+                mock.patch.object(
+                    sidecar_module,
+                    "load_execution_config",
+                    return_value=self.config,
+                ),
+                mock.patch.object(
+                    sidecar_module,
+                    "load_guardian_preprocessing_contract_v1",
+                    return_value={
+                        "preprocessing_contract": PREPROCESSING_CONTRACT,
+                        "receipt": {},
+                        "authority": _preprocessing_authority(),
+                    },
+                ),
+                mock.patch.object(
+                    sidecar_module,
+                    "runtime_expectations_from_preprocessing_receipt_v1",
+                    return_value=_external_runtime_expectations(
+                        self.config, bindings
+                    ),
+                ),
+                mock.patch.object(
+                    sidecar_module,
+                    "_default_bridge_factory",
+                    side_effect=lambda **values: _Bridge(
+                        process_factory=factory,
+                        **values,
+                    ),
+                ),
+                redirect_stdout(output),
+            ):
+                exit_code = main(
+                    [
+                        "--production-guardian",
+                        "--binding-set",
+                        str(bindings),
+                        "--policy-capability-manifest",
+                        str(policy_path),
+                        "--preprocessing-contract",
+                        str(preprocessing_path),
+                        "--preprocessing-contract-receipt",
+                        str(preprocessing_receipt_path),
+                        "--runtime-dir",
+                        str(runtime),
+                        "--evidence-root",
+                        str(evidence),
+                        "--max-connections",
+                        str(PRODUCTION_MAX_CONNECTIONS_MINIMUM),
+                        "--max-requests-per-connection",
+                        str(PRODUCTION_MAX_REQUESTS_PER_CONNECTION_MINIMUM),
+                        "--max-total-requests",
+                        str(PRODUCTION_MAX_TOTAL_REQUESTS_MINIMUM),
+                        "--startup-timeout-seconds",
+                        "3",
+                        "--shutdown-timeout-seconds",
+                        "1",
+                    ]
+                )
+            controller_thread.join(timeout=5)
+            self.assertFalse(controller_thread.is_alive())
+            self.assertEqual(controller_errors, [])
+            self.assertEqual(exit_code, 0)
+            documents = [json.loads(line) for line in output.getvalue().splitlines()]
+            self.assertEqual(len(documents), 2)
+            self.assertEqual(
+                documents[0]["artifact_kind"],
+                "vast_gstreamer_analytics_production_service_authority_v1",
+            )
+            self.assertEqual(documents[1]["status"], "clean_stop_nonpublication")
+            self.assertFalse((runtime / "analytics-execution.sock").exists())
+
+    def test_foreground_guardian_cli_requires_preprocessing_receipt(self) -> None:
+        import checkpoint_gstreamer_analytics_sidecar as sidecar_module
+
+        error = io.StringIO()
+        with (
+            mock.patch.object(
+                sidecar_module,
+                "load_execution_config",
+                return_value=self.config,
+            ),
+            redirect_stderr(error),
+        ):
+            code = main(
+                [
+                    "--production-guardian",
+                    "--binding-set",
+                    "/run/vast/bindings",
+                    "--policy-capability-manifest",
+                    "/run/vast/policy.json",
+                    "--preprocessing-contract",
+                    "/run/vast/preprocessing.json",
+                    "--runtime-dir",
+                    "/run/vast/runtime",
+                    "--evidence-root",
+                    "/run/vast/evidence",
+                    "--max-connections",
+                    str(PRODUCTION_MAX_CONNECTIONS_MINIMUM),
+                    "--max-requests-per-connection",
+                    str(PRODUCTION_MAX_REQUESTS_PER_CONNECTION_MINIMUM),
+                    "--max-total-requests",
+                    str(PRODUCTION_MAX_TOTAL_REQUESTS_MINIMUM),
+                ]
+            )
+        self.assertEqual(code, 78)
+        self.assertRegex(error.getvalue(), "preprocessing.*receipt")
+
+    def test_authority_loader_rejects_named_file_swap_during_fd_read(self) -> None:
+        import checkpoint_gstreamer_analytics_sidecar as sidecar_module
+
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            source = root / "authority.json"
+            replacement = root / "replacement.json"
+            displaced = root / "displaced.json"
+            source.write_bytes(canonical_json_bytes({"source": True}) + b"\n")
+            replacement.write_bytes(
+                canonical_json_bytes({"source": False}) + b"\n"
+            )
+            original_read = sidecar_module.os.read
+            swapped = False
+
+            def race_read(descriptor: int, byte_count: int) -> bytes:
+                nonlocal swapped
+                if not swapped:
+                    swapped = True
+                    source.rename(displaced)
+                    replacement.rename(source)
+                return original_read(descriptor, byte_count)
+
+            with (
+                mock.patch.object(
+                    sidecar_module.os, "read", side_effect=race_read
+                ),
+                self.assertRaisesRegex(
+                    SidecarError,
+                    "changed|replaced|identity|custody",
+                ),
+            ):
+                sidecar_module._load_canonical_json_mapping(
+                    source,
+                    label="race authority",
+                )
+
     def test_cli_contract_is_explicit_and_requires_bounded_counts(self) -> None:
         parser = build_parser()
         args = parser.parse_args(
@@ -824,6 +2519,45 @@ class GStreamerAnalyticsSidecarTests(unittest.TestCase):
         self.assertEqual(args.max_connections, 6)
         self.assertEqual(args.max_requests_per_connection, 100)
         self.assertTrue(args.plan_only)
+
+    def test_cli_modes_reject_incompatible_arguments_before_input_reads(self) -> None:
+        cases = (
+            (
+                [
+                    "--production-status-authority",
+                    "/run/vast/authority.json",
+                    "--binding-set",
+                    "/run/vast/bindings",
+                ],
+                "status.*incompatible|incompatible.*binding",
+            ),
+            (
+                [
+                    "--plan-only",
+                    "--binding-set",
+                    "/run/vast/bindings",
+                    "--policy-capability-manifest",
+                    "/run/vast/policy.json",
+                    "--preprocessing-contract",
+                    "/run/vast/preprocessing.json",
+                    "--runtime-dir",
+                    "/run/vast/runtime",
+                    "--evidence-root",
+                    "/run/vast/evidence",
+                    "--max-connections",
+                    "1",
+                    "--max-requests-per-connection",
+                    "1",
+                ],
+                "plan.*incompatible|incompatible.*preprocessing",
+            ),
+        )
+        for argv, pattern in cases:
+            error = io.StringIO()
+            with self.subTest(argv=argv), redirect_stderr(error):
+                code = main(argv)
+            self.assertEqual(code, 78)
+            self.assertRegex(error.getvalue(), pattern)
 
     def test_front_socket_is_requested_as_atomic_publish_only_after_bridge(self) -> None:
         import checkpoint_gstreamer_analytics_sidecar as sidecar_module
