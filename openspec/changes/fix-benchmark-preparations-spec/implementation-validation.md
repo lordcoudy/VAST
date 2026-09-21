@@ -20,6 +20,7 @@ Executed on 2026-09-21 using the existing frozen CPython 3.12 environment, witho
 - WSL service materialization: 25 passed.
 - Storage recovery: 10 passed.
 - Qualification execution closure: 13 passed.
+- Failed-guardian evidence snapshot: 8 passed, including a diagnostic emitted by the real sidecar failure path. Existing lifecycle v1 fixtures and the successful-only qualification closure remain unchanged. A read-only check against actual A269 authority/lifecycle files returned explicit historical diagnostic absence, created no snapshot and preserved both source hashes.
 
 The combined verification captured unchanged before/after source hashes. Initial harness invocations were retained as failures: `-S` hid the environment's required NumPy/YAML packages, and `-I` prevented a storage-test import of the repository's `tests` namespace. Corrected invocations passed; no source or dependency change was needed to resolve those harness errors.
 
@@ -34,6 +35,7 @@ Reproduce each module from the repository root with the verified frozen interpre
 "$PYTHON" -B -X utf8 -m unittest discover -s tests -p test_full_publication_wsl_user_service_v1.py -v
 "$PYTHON" -B -X utf8 -m unittest discover -s tests -p test_publication_storage_recovery.py -v
 "$PYTHON" -B -X utf8 -m unittest discover -s tests -p test_publication_policy_qualification_execution_closure_v1.py -v
+"$PYTHON" -B -X utf8 -m unittest discover -s tests -p test_benchmark_preparation_evidence_v1.py -v
 ```
 
 ## Image and operational gates

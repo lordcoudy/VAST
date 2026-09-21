@@ -15,7 +15,7 @@
 - [x] 3.1 Validate the control envelope and route before reserving a request, then verify payload integrity; verify exactly-once failed accounting for attributable wrong-content requests and connection-only accounting before attribution.
 - [x] 3.2 Add the bounded immutable diagnostic and lifecycle-message/evidence hash binding described in design.md; verify safe expected/observed facts, null unknowns, no raw payload/credentials and the 8-KiB limit.
 - [x] 3.3 Preserve original failures under concurrency or diagnostic-write failure and close received descriptors; verify no inference, retries or successful lifecycle outcome after terminal rejection.
-- [ ] 3.4 Verify existing lifecycle v1 fixtures remain valid unchanged and new evidence remains consumable by closure/snapshot validators; add focused compatibility regressions where needed.
+- [x] 3.4 Verify existing lifecycle v1 fixtures remain valid unchanged and new evidence remains consumable by closure/snapshot validators; add focused compatibility regressions where needed.
 
 ## 4. Retry defaults and retained recovery
 
