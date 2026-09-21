@@ -9363,6 +9363,17 @@ time.sleep(600)
         identities: dict[str, executor.FileIdentity] = {}
         for branch in pilot.BRANCHES:
             document, mounts, image_labels = self._v2_mount_fixture(branch)
+            captured_prefix = "/mnt/e/STUDY/VAST/"
+            replacement = ROOT.resolve().as_posix() + "/"
+            document = copy.deepcopy(document)
+            for collection in (
+                document["HostConfig"]["Mounts"],
+                document.get("Mounts") or [],
+            ):
+                for item in collection:
+                    source = item.get("Source")
+                    if isinstance(source, str) and source.startswith(captured_prefix):
+                        item["Source"] = replacement + source[len(captured_prefix):]
             documents[branch] = document
             if expected_image_labels is None:
                 expected_image_labels = image_labels
