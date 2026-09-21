@@ -1,4 +1,7 @@
 *.sh text eol=lf
+*.json text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
 # These files are bound to preregistered SHA-256 identities. Their working-tree
 # bytes must be stable even when core.autocrlf is enabled on Windows.
 policies/ql_heft_frozen.policy text eol=lf

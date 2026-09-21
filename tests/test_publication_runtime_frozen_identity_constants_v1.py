@@ -304,14 +304,15 @@ class PublicationRuntimeFrozenIdentityConstantsV1Tests(unittest.TestCase):
         )
 
     @unittest.skipUnless(
-        os.name == "posix"
+        os.environ.get("VAST_LIVE_PREFLIGHT") == "1"
+        and os.name == "posix"
         and Path("/usr/bin/docker").exists()
         and Path("/run/docker.sock").exists()
         and (
             ROOT
             / "models/openvino/public/intel/vehicle-license-plate-detection-barrier-0106/FP16/vehicle-license-plate-detection-barrier-0106.xml"
         ).is_file(),
-        "requires live WSL Docker and OMZ proxy models",
+        "requires VAST_LIVE_PREFLIGHT=1, live WSL Docker and OMZ proxy models",
     )
     def test_live_fix_benchmark_preflight_matches_runtime_materializer(self) -> None:
         inputs = fragment_authority._materialization_inputs(

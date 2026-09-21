@@ -50,7 +50,9 @@ Host identity fixtures were then renewed in the four host-only files so OpenVINO
 
 The environment baseline records the frozen interpreter/packages, OS/kernel/WSL/Docker, CPU/GPU/driver and power/resource settings, current data/model/image/parity descriptors, 24-GB WSL configuration and process ownership. A269 remains retired; no workers or containers remained after parity. These observations do not replace final live preflight.
 
-The final ext4 suite, fresh qualification, Q4, dated capacity, live preflight and the unstarted service package remain pending.
+The first final ext4 suite ran 2506 tests in 1978.988s and ended FAILED (failures=4, errors=20, skipped=88). After-manifest comparison then stopped on `fixtures.source` because `launch.stdout.log` was written into the snapshotted orchestration directory. The failed tree is preserved as `artifacts/full_suite_ext4_fix_benchmark_preparations_20260921_final.failed-20260921-1732`. Follow-up repairs: LF gitattributes for json/yaml, OMZ files restored under `models/openvino`, recursive data/model mounts, orchestration directory removed from fixtures, and `build_native_probe_images.sh` now delegates to the publication v1 wrapper. Live preflight stays skipped unless `VAST_LIVE_PREFLIGHT=1`. Qualification fragment identity pins and a leftover peercred filesystem-magic assertion remain to be checked on the next suite.
+
+The next final ext4 suite, fresh qualification, Q4, dated capacity, live preflight and the unstarted service package remain pending.
 
 The new preparation runbook passed syntax-only Bash parsing, its explicit variable allowlist and parser-only CLI checks. README, PLAN and progress link it while retaining historical A269 status and numbered PLAN obligations.
 
