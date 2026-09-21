@@ -1,0 +1,263 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "vast_benchmark_preparation_review_context",
+  "observed_at_utc": "2026-09-21T11:23:36.387349+00:00",
+  "change": "fix-benchmark-preparations-spec",
+  "root": "E:/STUDY/VAST",
+  "git_parent_commit": "168bde19ecde1d084ed339df38bd3b5befabef82",
+  "prior_planning_commit": "50dc59c48d800f7d5bfd0d17a10f7784f18ad23e",
+  "scope": "Inspected files only; not a complete executable closure. Dirty runtime is not included in the planning commit.",
+  "checked_prior_files": 44,
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "size_bytes": 4334,
+      "sha256": "43e640ec4c6b0b39b7b33265f186e41b8c21503190b35eca3b3a5d48588fe956"
+    },
+    {
+      "path": "PLAN.md",
+      "size_bytes": 12027,
+      "sha256": "3e5449bfd43b9455a38cceaa4c7f2f639bd1e2c472bde5c5bf722311f394e5bf"
+    },
+    {
+      "path": "progress.md",
+      "size_bytes": 13298,
+      "sha256": "b7aa9278d83557a45f871f0088ef4bfd2a8319b8ed90f364b3cf6507ed03888b"
+    },
+    {
+      "path": "README.md",
+      "size_bytes": 71369,
+      "sha256": "21bf7cee7575199e65f3c8e32c55d56dc91611cb7d55b185f0cc7373ca04fc8e"
+    },
+    {
+      "path": "INSTRUCTIONS.md",
+      "size_bytes": 82272,
+      "sha256": "f84dd81c5b2c9eda69f00c116115348dbfea267705ac7d54a0a5a49c24bb3f9a"
+    },
+    {
+      "path": "requirements.txt",
+      "size_bytes": 126,
+      "sha256": "432acf6ad1c8a0c05677d44c599e1554de06460e8dc3804e48ca94261a5d1577"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "size_bytes": 16661,
+      "sha256": "26a63a9a8115c8da1e48fbe36002d2e9aee1fc8a85122b480a55e8052ebe1758"
+    },
+    {
+      "path": "openspec/config.yaml",
+      "size_bytes": 1127,
+      "sha256": "20cfc682ff1ae5b955082e9ccd2af80b772848cbfcdba3f7184936d551059f8d"
+    },
+    {
+      "path": "configs/experiments.yaml",
+      "size_bytes": 23617,
+      "sha256": "e3922a46986db473d6d67cffd67132d403395b116d09970520b480d60e699b7d"
+    },
+    {
+      "path": "deploy/native_gst_probe/checkpoint_analytics_execution_client.hpp",
+      "size_bytes": 37687,
+      "sha256": "6fd0f0ec3eb6aaf91470235a1d20ecca6d42155080cccb3691b3cc8195d51c98"
+    },
+    {
+      "path": "deploy/native_gst_probe/vast_native_gst_probe.cpp",
+      "size_bytes": 157467,
+      "sha256": "6852e27b0e44f84068bf56d6797d4c951ba6fe91be1deb03c1a19b1dbd796a44"
+    },
+    {
+      "path": "deploy/native_gst_probe/Dockerfile.savant",
+      "size_bytes": 4679,
+      "sha256": "f40e637c2054e125faaedc8baba4bd2fa0e95ca641a22fec9750c353ddd08787"
+    },
+    {
+      "path": "deploy/deepstream/checkpoint/runtime-source-allowlist.txt",
+      "size_bytes": 3126,
+      "sha256": "a939481caca88bcfd6f298ddadc4f2f427d13c51acdc962685e3fe4bf5d00bf2"
+    },
+    {
+      "path": "deploy/savant/publication/runtime-source-allowlist.txt",
+      "size_bytes": 3187,
+      "sha256": "3790ccae8f82709d70a11c8762c7c4f6ce2bec8a1edfbeb3c256465f0cfa2201"
+    },
+    {
+      "path": "deploy/openvino_gva/publication/runtime-source-allowlist.txt",
+      "size_bytes": 2803,
+      "sha256": "c6ac2d9b54b2a9f9ba883ba814a35c39f319fba9c923497a4fe46432fce7cff9"
+    },
+    {
+      "path": "deploy/gstreamer_custom/publication/runtime-source-allowlist.txt",
+      "size_bytes": 2884,
+      "sha256": "dea819344804486529aeb32c0076690b42acfd8f5f861c2651d02b01c54608dc"
+    },
+    {
+      "path": "scripts/analytics_execution_protocol.py",
+      "size_bytes": 18555,
+      "sha256": "283fa34b91e4fbf5953f78509f7da3a38f92731c696878774104f193576831d9"
+    },
+    {
+      "path": "scripts/analytics_execution_worker.py",
+      "size_bytes": 38433,
+      "sha256": "04b59f3c5a1fa94d764f3b0e71fcb2cd0d7b0e2ad915573529019e2d2f32f00d"
+    },
+    {
+      "path": "scripts/checkpoint_gstreamer_analytics_sidecar.py",
+      "size_bytes": 258705,
+      "sha256": "c3144ecc007960135bffeb6be4371950f4a76e9c7af0f8ba02d2c500a0de9821"
+    },
+    {
+      "path": "scripts/full_publication_supervisor.py",
+      "size_bytes": 26190,
+      "sha256": "1217d4a84d7d66832301c39fa4e5f750b3772d5620e26fa68b5d97e855ad987a"
+    },
+    {
+      "path": "scripts/full_publication_wsl_user_service_v1.py",
+      "size_bytes": 92640,
+      "sha256": "e7a010503cb7cd9b37276b1b00ad40cb0514a16a30bef82d5cff684a26d7e0b4"
+    },
+    {
+      "path": "scripts/publication_matrix.py",
+      "size_bytes": 17407,
+      "sha256": "704ca2153ffeefbe6a0edd68c68a7b83162e3d0439ed9fc1fd5595b4878db25e"
+    },
+    {
+      "path": "scripts/publication_policy_contract.py",
+      "size_bytes": 49564,
+      "sha256": "3bfb5b16e3caf754156082732bf53df716a3dc273fcef405e6953d66ce013286"
+    },
+    {
+      "path": "scripts/full_publication_entrypoint.py",
+      "size_bytes": 151859,
+      "sha256": "c81536e91ed3290949eedd60c343fea69e99ed75822f5ff42fad5ca8d8c559cf"
+    },
+    {
+      "path": "scripts/full_publication_runner.py",
+      "size_bytes": 69380,
+      "sha256": "f8cde9e4e285b9a554d07f56e8f4dc140ec5113e9795eee41d1971b4ff026c3c"
+    },
+    {
+      "path": "scripts/full_publication_runtime.py",
+      "size_bytes": 45821,
+      "sha256": "45e0f713776ee7e8aa76f80d995579f80179cf07c414f6ddfc33db7b36e52f91"
+    },
+    {
+      "path": "scripts/full_publication_results.py",
+      "size_bytes": 23051,
+      "sha256": "dde01c5bb9e88e036e0dc9de11f233efd6504b46c99dae4df53a3fa9ef98c8ca"
+    },
+    {
+      "path": "scripts/publication_article_statistics_v1.py",
+      "size_bytes": 94240,
+      "sha256": "b7efaeffaed34f14fe920a359090ae86c8c6afdb37cb4475fa7819c0c1a746c6"
+    },
+    {
+      "path": "scripts/backend_q4_two_phase_executor_v1.py",
+      "size_bytes": 256141,
+      "sha256": "a950c9634ab36bf0e819940c01e7ea905c7482c8c7fd96521bba45ae723d15ee"
+    },
+    {
+      "path": "scripts/backend_pair_archive_sizing_receipts_v1.py",
+      "size_bytes": 82690,
+      "sha256": "52168497e207d8b510dfcd51fa3160f328dcc8a1a4ffcb2efb4e6dd4fe7f866c"
+    },
+    {
+      "path": "scripts/seafile_artifact_store.py",
+      "size_bytes": 68085,
+      "sha256": "889290040ff2398b4984462a0c283b819ed8862a30e9bdf623be3d047b4ee693"
+    },
+    {
+      "path": "scripts/seafile_operator_capacity_attestation_v2.py",
+      "size_bytes": 25493,
+      "sha256": "fe0d4f3731038f2c7b7f2c09b3487a6e7999c89f33defc5770db194a7d4037cd"
+    },
+    {
+      "path": "tests/cpp/checkpoint_analytics_execution_client_test.cpp",
+      "size_bytes": 12524,
+      "sha256": "5e10c2cdfe76a48114c81e088a59eddab42980588aee578f55d68db90ecc4813"
+    },
+    {
+      "path": "tests/test_checkpoint_gstreamer_analytics_sidecar.py",
+      "size_bytes": 111619,
+      "sha256": "b7e07221469833ae416489a73e2fc1f6ca6d91d628dc66dafa24f824671dff34"
+    },
+    {
+      "path": "tests/test_analytics_execution_protocol.py",
+      "size_bytes": 5110,
+      "sha256": "6d7b479521c9548f7ead99879d91713f18d99430f7919359a57517b3d812bbf8"
+    },
+    {
+      "path": "tests/test_full_publication_supervisor.py",
+      "size_bytes": 12163,
+      "sha256": "e54b90b62e052de53509135d3539dd3333a5e5e616dc8a58263570e20a83b5d1"
+    },
+    {
+      "path": "tests/test_full_publication_wsl_user_service_v1.py",
+      "size_bytes": 35928,
+      "sha256": "ac7e614b36a2369959d1e3ff3dcc27a46c614abab1fc68776c387178afcca3ed"
+    },
+    {
+      "path": "tests/test_backend_q4_two_phase_executor_v1.py",
+      "size_bytes": 115894,
+      "sha256": "8a78670653a8f71e57803a72e7ceb495ec239571bf425de48a34b7c0d32ab8b1"
+    },
+    {
+      "path": "tests/test_full_publication_runner.py",
+      "size_bytes": 45697,
+      "sha256": "ce52c794a71d86f789603338ad66ec150b23fd8209558f462ba2e81015f66732"
+    },
+    {
+      "path": "artifacts/publication_qualification_runtime_v1_20260921_attempt269/failed-state-check-20260921/failure-analysis.json",
+      "size_bytes": 8797,
+      "sha256": "fa4de598c8a03b50677d3cd59da40d6d8bd1a15beb47268620887bebebd90dc9"
+    },
+    {
+      "path": "artifacts/plan_execution_20260906/full-matrix-plan-after-a253-v1/independent-check.json",
+      "size_bytes": 920,
+      "sha256": "65ffd5888abd60eb90adeb277090c5d26a5371a2239414e30b2bf48f19867fe0"
+    },
+    {
+      "path": "artifacts/plan_execution_20260906/a268-suite-check.json",
+      "size_bytes": 746,
+      "sha256": "4ee916f6cdb2e5d2b6379c1cfd6685d5ddebfec5a960dc6b51e91a5230e7dc0f"
+    },
+    {
+      "path": "artifacts/plan_execution_20260906/q4-continuation-entrypoints.md",
+      "size_bytes": 3940,
+      "sha256": "a6cbaea2a45b7773cc6205e2108bdb88f60cce6d3bd63440b8e0301f8f7c18b9"
+    },
+    {
+      "path": "scripts/checkpoint_gstreamer_analytics_bridge.py",
+      "size_bytes": 35413,
+      "sha256": "26e37bedc15cec271256e030f24b8d63716dc71e60ac7c727da1ff315df4d91c"
+    }
+  ],
+  "reference_inputs": [
+    {
+      "path": "openspec/changes/prepare-repeatable-full-benchmark/benchmark-plan.md",
+      "size_bytes": 13080,
+      "sha256": "111ca02122aa939f24db9a17f5ffd84d345adcb13ec69c49ba2416f5e7331482"
+    },
+    {
+      "path": "openspec/changes/prepare-repeatable-full-benchmark/fix-guide.md",
+      "size_bytes": 5253,
+      "sha256": "b93733edc1ce5487ba1e069c4a3fdac4838ccf5bb3f91f719a0560768cb51453"
+    },
+    {
+      "path": "openspec/changes/prepare-repeatable-full-benchmark/review-findings.md",
+      "size_bytes": 6362,
+      "sha256": "c6276de6cb8f8d07b02a4ccbeb629b0f16ea31846a12cf7d0edbcbbb1d857a8f"
+    },
+    {
+      "path": "openspec/changes/prepare-repeatable-full-benchmark/review-baseline.json",
+      "size_bytes": 8723,
+      "sha256": "ecc9bbf3bf07d0e83d37d4152f3315134a57772d4a339989222e3b082799ff5c"
+    }
+  ],
+  "accepted_endpoint": "Repairs, tests, fresh qualification, Q4, capacity and preflight; validated unstarted package; zero full-matrix arms.",
+  "limitations": [
+    "A269 triggering request unconfirmed",
+    "Old benchmark command examples contain character-substitution corruption",
+    "Current capacity confirmation absent",
+    "No benchmark acceptance demonstrated by proposal",
+    "Public push authorization unresolved"
+  ]
+}
