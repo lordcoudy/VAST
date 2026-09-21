@@ -18,6 +18,29 @@ if str(SCRIPTS) not in sys.path:
     sys.path.insert(0, str(SCRIPTS))
 
 import checkpoint_gstreamer_custom_qualification_fragment_v3 as target  # noqa: E402
+from analytics_execution_endpoint import (  # noqa: E402
+    expected_capability_from_binding_and_probe,
+    terminal_detector_identity,
+)
+
+
+def expected_terminal_detector(artifact: dict[str, object], resource: str) -> str:
+    binding_descriptor = artifact["analytics_execution_worker_binding"]
+    probe_descriptor = artifact["analytics_runtime_probe"]
+    assert isinstance(binding_descriptor, dict)
+    assert isinstance(probe_descriptor, dict)
+    binding = json.loads(
+        (ROOT / str(binding_descriptor["path"])).read_text(encoding="utf-8")
+    )
+    probe = json.loads(
+        (ROOT / str(probe_descriptor["path"])).read_text(encoding="utf-8")
+    )
+    capability = expected_capability_from_binding_and_probe(
+        binding=binding,
+        runtime_probe=probe,
+        resource=resource,
+    )
+    return terminal_detector_identity(capability)
 
 
 def sha256_file(path: Path) -> str:
@@ -167,10 +190,10 @@ class GstreamerCustomQualificationFragmentV3Tests(unittest.TestCase):
                 self.assertEqual(
                     artifact["accepted_model_parity_manifest"],
                     {
-                        "path": "configs/checkpoint_analytics_model_parity.accepted.yaml",
-                        "size_bytes": 25229,
-                        "sha256": "a570b8cc4bcc66119930f01239ed0fb2de7accd449b769d5a4b0511d70fb72b6",
-                        "content_identity_sha256": "05059ee44a21a82728f2608dc13804f55cc7df9eeedb245ad2d63a7c1ca46ee8",
+                        "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.a59.accepted.yaml",
+                        "size_bytes": 29684,
+                        "sha256": "766cc161ec0ab46d0dfc4e8d232a952fd0ffd118c5ce19acc694730be0f38643",
+                        "content_identity_sha256": "6d5b87b63baaba29dc76b9b32d822e61b44b175326fa23182ea2a1207aa743d4",
                     },
                 )
                 self.assertEqual(
@@ -212,9 +235,7 @@ class GstreamerCustomQualificationFragmentV3Tests(unittest.TestCase):
                 )
                 self.assertEqual(
                     artifact["runtime_identity"]["terminal_detector"],
-                    artifact["analytics_execution_worker_binding_identity"][
-                        "model_id"
-                    ],
+                    expected_terminal_detector(artifact, row["resource"]),
                 )
                 self.assertIn(
                     "analytics-execution:",

@@ -252,7 +252,7 @@ class FullResourcePublicationTests(unittest.TestCase):
             ).encode("utf-8")
         ).hexdigest()
         with self.assertRaisesRegex(
-            ContractError, "different parity acceptances"
+            ContractError, "cross-binding drifted"
         ):
             resolve_publication_run_contract(
                 config,

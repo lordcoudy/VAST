@@ -337,6 +337,7 @@ class RunExperimentsResumeTests(unittest.TestCase):
             "r", encoding="utf-8"
         ) as handle:
             config = yaml.safe_load(handle)
+        dataset_name = config["benchmark"]["primary_architecture_contrast"]["dataset"]
         scenario = resolve_scenario_contract(
             "checkpoint_video_dag_shared",
             config["scenarios"]["checkpoint_video_dag_shared"],
@@ -344,7 +345,7 @@ class RunExperimentsResumeTests(unittest.TestCase):
         scenario_identity = scenario_contract_identity(scenario)
         dataset = load_dataset(
             ROOT / "configs" / "datasets.yaml",
-            "kpp_real_h264",
+            dataset_name,
             mode="benchmark",
             project_root=ROOT,
             require_files=False,
@@ -361,7 +362,7 @@ class RunExperimentsResumeTests(unittest.TestCase):
                 "streams": 6,
                 "duration_s": 180,
                 "policy": "static_hybrid",
-                "dataset": "kpp_real_h264",
+                "dataset": dataset_name,
                 "deadline_ms": 100.0,
                 "seed": 20260323,
                 "run_seed": 1001,
@@ -404,7 +405,7 @@ class RunExperimentsResumeTests(unittest.TestCase):
                 streams=6,
                 duration_s=180,
                 policy=policy_name,
-                dataset_name="kpp_real_h264",
+                dataset_name=dataset_name,
                 mode="benchmark",
                 deadline_ms=100.0,
                 scenario_contract=scenario,

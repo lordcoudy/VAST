@@ -14,6 +14,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 
 from checkpoint_deepstream_container_runtime_v3 import (  # noqa: E402
     DeepStreamContainerRuntimeV3Error,
+    _verify_binding_artifacts,
     parse_sha_path_bindings,
     seed_deepstream_gstreamer_registries,
     terminal_status,
@@ -129,6 +130,57 @@ class DeepStreamContainerRuntimeV3Tests(unittest.TestCase):
                     [f"{digest}={source}", f"{digest}={source}"],
                     label="source",
                     root=root,
+                )
+
+    def test_frozen_model_paths_are_exactly_translated_to_materialized_bindings(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary).resolve()
+            input_root = root / "input"
+            frozen_root = root / "workspace"
+            relative_paths = {
+                "source_path": Path("models/parity/source.onnx"),
+                "model_path": Path("models/parity/runtime.xml"),
+                "weights_path": Path("models/parity/runtime.bin"),
+            }
+            digest_fields = {
+                "source_path": "source_model_sha256",
+                "model_path": "model_artifact_sha256",
+                "weights_path": "runtime_weights_sha256",
+            }
+            binding = {}
+            model_bindings = {}
+            expected_paths = set()
+            for index, (field, relative) in enumerate(relative_paths.items()):
+                materialized = input_root / "models" / relative
+                materialized.parent.mkdir(parents=True, exist_ok=True)
+                materialized.write_bytes(f"model-{index}".encode("ascii"))
+                digest = hashlib.sha256(materialized.read_bytes()).hexdigest()
+                binding[field] = str(frozen_root / relative)
+                binding[digest_fields[field]] = digest
+                model_bindings[digest] = materialized
+                expected_paths.add(materialized)
+
+            self.assertEqual(
+                _verify_binding_artifacts(
+                    binding,
+                    resource="cpu",
+                    model_bindings=model_bindings,
+                    input_root=input_root,
+                    frozen_project_root=frozen_root,
+                ),
+                expected_paths,
+            )
+            binding["source_path"] = str(input_root / relative_paths["source_path"])
+            with self.assertRaisesRegex(
+                DeepStreamContainerRuntimeV3Error,
+                "frozen project namespace",
+            ):
+                _verify_binding_artifacts(
+                    binding,
+                    resource="cpu",
+                    model_bindings=model_bindings,
+                    input_root=input_root,
+                    frozen_project_root=frozen_root,
                 )
 
     def test_terminal_status_is_exact_success_only_abi_v3(self) -> None:
