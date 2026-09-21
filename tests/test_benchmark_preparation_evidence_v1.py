@@ -265,6 +265,44 @@ class BenchmarkPreparationEvidenceV1Tests(unittest.TestCase):
                     target.snapshot_failed_guardian_evidence(guardian, root / "snapshot")
             self.assertEqual(paths["diagnostic"].read_bytes(), original)
             self.assertFalse((root / "snapshot").exists())
+    def test_late_persistence_failure_retains_partial_evidence_and_allows_fresh_path(self) -> None:
+        for fail_on in (2, 3):
+            with self.subTest(fail_on=fail_on), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary)
+                guardian = root / "guardian"
+                paths = self._documents(guardian)
+                original = {key: path.read_bytes() for key, path in paths.items()}
+                snapshot = root / "snapshot"
+                original_write = target.PhysicalRootCustodyV1.write_exclusive
+                writes = 0
+
+                def fail_late_write(custody: object, *args: object, **kwargs: object) -> object:
+                    nonlocal writes
+                    writes += 1
+                    if writes == fail_on:
+                        raise target.PublicationPhysicalIoV1Error("injected late persistence failure")
+                    return original_write(custody, *args, **kwargs)
+
+                with mock.patch.object(
+                    target.PhysicalRootCustodyV1,
+                    "write_exclusive",
+                    new=fail_late_write,
+                ):
+                    with self.assertRaisesRegex(
+                        target.BenchmarkPreparationEvidenceV1Error, "physical custody"
+                    ):
+                        target.snapshot_failed_guardian_evidence(guardian, snapshot)
+
+                self.assertEqual({key: path.read_bytes() for key, path in paths.items()}, original)
+                retained = sorted(path.name for path in snapshot.iterdir())
+                self.assertEqual(retained, [
+                    target.AUTHORITY_FILENAME,
+                    target.LIFECYCLE_FILENAME,
+                ][: fail_on - 1])
+                with self.assertRaisesRegex(target.BenchmarkPreparationEvidenceV1Error, "already exists"):
+                    target.snapshot_failed_guardian_evidence(guardian, snapshot)
+                result = target.snapshot_failed_guardian_evidence(guardian, root / "fresh-snapshot")
+                self.assertEqual(result["status"], "failed_guardian_diagnostic_snapshotted")
     def test_rejects_unsafe_lifecycle_and_output_inputs(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

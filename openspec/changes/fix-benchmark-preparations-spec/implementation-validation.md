@@ -20,7 +20,7 @@ Executed on 2026-09-21 using the existing frozen CPython 3.12 environment, witho
 - WSL service materialization: 25 passed.
 - Storage recovery: 10 passed.
 - Qualification execution closure: 13 passed.
-- Failed-guardian evidence snapshot: 8 passed, including a diagnostic emitted by the real sidecar failure path. Existing lifecycle v1 fixtures and the successful-only qualification closure remain unchanged. A read-only check against actual A269 authority/lifecycle files returned explicit historical diagnostic absence, created no snapshot and preserved both source hashes.
+- Failed-guardian evidence snapshot: 9 passed, including a diagnostic emitted by the real sidecar failure path. Existing lifecycle v1 fixtures and the successful-only qualification closure remain unchanged. A read-only check against actual A269 authority/lifecycle files returned explicit historical diagnostic absence, created no snapshot and preserved both source hashes. Second/third-write failures also preserve sources and partial output, report no success, reject reuse of that partial path and permit a fresh snapshot path. The collector does not claim atomic directory publication.
 
 The combined verification captured unchanged before/after source hashes. Initial harness invocations were retained as failures: `-S` hid the environment's required NumPy/YAML packages, and `-I` prevented a storage-test import of the repository's `tests` namespace. Corrected invocations passed; no source or dependency change was needed to resolve those harness errors.
 
@@ -44,7 +44,13 @@ The three native foundations passed deterministic A/B rebuilds with identical im
 
 Current packaged protocol/bridge/sidecar suites pass in all four runtimes; both worker protocol suites pass. Existing packaged policy, clock/backend and external-manifest checks also pass on the current images. Fifteen image/source-closure tests passed. An affected CUDA-transfer test initially failed to compile because its command lacked GLib flags; its corrected compiler invocation passed both tests. No extra runtime dependency was installed.
 
-Physical parity renewal, final ext4 suite, fresh qualification, Q4, dated capacity, live preflight and the unstarted service package remain pending.
+The fresh physical parity materializer completed its original invocation with exit 0: 480 executions in 32 groups, 15 per group. The stock acceptance loader returned successfully and the physical descriptor traversal passed. A later independent-comparison wrapper then failed because it looked for the historical reference in the isolated checkout; that failure was retained. A separate comparison against the original read-only reference passed, with all 480 input/output tensor hashes matching.
+
+Host identity fixtures were then renewed in the four host-only files so OpenVINO GVA and GStreamer Custom constants match the rebuilt `:materialized` images (`sha256:261ef8a6…` and `sha256:4e1cbec0…`). Thirteen focused identity tests passed in 0.194s. The stock v4 acceptance loader then reloaded the current receipts (`acceptance_identity_sha256=7d6fd530…`). Live preflight was not executed: the accepted assessment identity is bound to the worktree `models/` inventory without OMZ proxy files, and `_omz_bindings` requires those files at `models/openvino`. The live preflight test now skips unless both Docker and those OMZ files are present.
+
+The environment baseline records the frozen interpreter/packages, OS/kernel/WSL/Docker, CPU/GPU/driver and power/resource settings, current data/model/image/parity descriptors, 24-GB WSL configuration and process ownership. A269 remains retired; no workers or containers remained after parity. These observations do not replace final live preflight.
+
+The final ext4 suite, fresh qualification, Q4, dated capacity, live preflight and the unstarted service package remain pending.
 
 The new preparation runbook passed syntax-only Bash parsing, its explicit variable allowlist and parser-only CLI checks. README, PLAN and progress link it while retaining historical A269 status and numbered PLAN obligations.
 
