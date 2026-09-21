@@ -38,7 +38,11 @@ Reproduce each module from the repository root with the verified frozen interpre
 
 ## Image and operational gates
 
-The three native foundations passed deterministic A/B rebuilds with identical image IDs within each pair, stock source/context checks and smoke execution. Their identities changed as expected. The two dependent analytics worker images also rebuilt successfully against the new native receipt. Runtime image rebuilds, packaged regressions, physical parity renewal, final ext4 suite, fresh qualification, Q4, dated capacity, live preflight and the unstarted service package remain pending.
+The three native foundations passed deterministic A/B rebuilds with identical image IDs within each pair, stock source/context checks and smoke execution. Their identities changed as expected. The two dependent analytics worker images also rebuilt successfully against the new native receipt. All four runtime images then rebuilt and passed stock capture/patch verification. Packaged tests found that OpenVINO GVA and GStreamer Custom omitted a module required by the bridge/guardian. Both Dockerfiles now copy that module into the final runtime and exercise real guardian imports during the build. Those two images were rebuilt again and replacement receipts/patch verified; their earlier receipts are retained as superseded evidence.
+
+Current packaged protocol/bridge/sidecar suites pass in all four runtimes; both worker protocol suites pass. Existing packaged policy, clock/backend and external-manifest checks also pass on the current images. Fifteen image/source-closure tests passed. An affected CUDA-transfer test initially failed to compile because its command lacked GLib flags; its corrected compiler invocation passed both tests. No extra runtime dependency was installed.
+
+Physical parity renewal, final ext4 suite, fresh qualification, Q4, dated capacity, live preflight and the unstarted service package remain pending.
 
 The new preparation runbook passed syntax-only Bash parsing, its explicit variable allowlist and parser-only CLI checks. README, PLAN and progress link it while retaining historical A269 status and numbered PLAN obligations.
 

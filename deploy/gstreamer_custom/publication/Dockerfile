@@ -26,7 +26,6 @@ RUN /usr/bin/python3 -m pip install \
       --requirement=/opt/vast/requirements.lock
 
 # BEGIN VAST_RUNTIME_SOURCE_ALLOWLIST
-COPY scripts/checkpoint_deepstream_protocol_bridge.py /workspace/scripts/
 COPY \
   scripts/analytics_execution_endpoint.py \
   scripts/analytics_execution_protocol.py \
@@ -41,6 +40,7 @@ COPY \
   scripts/benchmark_contract.py \
   scripts/checkpoint_acceptance_metadata_binding.py \
   scripts/checkpoint_admission.py \
+  scripts/checkpoint_deepstream_protocol_bridge.py \
   scripts/checkpoint_deepstream_qualification_fragment_v1.py \
   scripts/checkpoint_gstreamer_analytics_bridge.py \
   scripts/checkpoint_gstreamer_analytics_sidecar.py \
@@ -114,7 +114,7 @@ RUN chmod 0555 \
   && find /opt/vast/runtime-root -exec touch -h -d "@${SOURCE_DATE_EPOCH}" {} + \
   && PYTHONDONTWRITEBYTECODE=1 \
      PYTHONPATH=/opt/vast/runtime-root/opt/vast/checkpoint:/opt/vast/runtime-root/opt/vast/python \
-     /usr/bin/python3 -B -c 'import checkpoint_gstreamer_custom_container_coordinator_v3'
+     /usr/bin/python3 -B -c 'import checkpoint_gstreamer_custom_container_coordinator_v3; import checkpoint_gstreamer_analytics_bridge; import checkpoint_gstreamer_analytics_sidecar'
 
 FROM ${BASE_IMAGE}
 

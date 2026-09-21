@@ -24,8 +24,8 @@
 
 ## 5. Source closure and final validation
 
-- [ ] 5.1 Map changed files through native foundations and publication/worker image allowlists; verify an explicit invalidation list covers every affected image, parity and downstream receipt.
-- [ ] 5.2 Rebuild affected images deterministically and execute packaged regressions; verify source/image receipt hashes and preserved unaffected identities.
+- [x] 5.1 Map changed files through native foundations and publication/worker image allowlists; verify an explicit invalidation list covers every affected image, parity and downstream receipt.
+- [x] 5.2 Rebuild affected images deterministically and execute packaged regressions; verify source/image receipt hashes and preserved unaffected identities.
 - [ ] 5.3 Renew required physical parity and identity fixtures, including all 480 executions/32 groups when that closure is affected; verify original successful invocations and complete accepted receipts.
 - [ ] 5.4 Run affected native builds/tests and one final full ext4 suite on the final source/fixture/mirror bytes; verify before/after manifests, original exit status and reviewed skip-identity differences against the historical 87 skips.
 

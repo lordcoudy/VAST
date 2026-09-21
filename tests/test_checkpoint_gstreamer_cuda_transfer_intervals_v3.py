@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import csv
 import hashlib
+import shlex
 import shutil
 import subprocess
 import tempfile
@@ -36,8 +37,16 @@ class CheckpointGstreamerCudaTransferIntervalsV3Tests(unittest.TestCase):
 
     def test_native_client_and_emitter_are_exact_and_fail_closed(self) -> None:
         compiler = shutil.which("c++") or shutil.which("g++") or shutil.which("clang++")
+        pkg_config = shutil.which("pkg-config")
         if compiler is None:
             self.skipTest("C++ compiler is not available")
+        self.assertIsNotNone(pkg_config, "pkg-config is required")
+        glib = subprocess.run(
+            [pkg_config, "--cflags", "--libs", "glib-2.0"],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             binary = root / "checkpoint-gstreamer-cuda-transfer-v3-test"
@@ -50,6 +59,7 @@ class CheckpointGstreamerCudaTransferIntervalsV3Tests(unittest.TestCase):
                     "-I",
                     str(ROOT / "deploy" / "native_gst_probe"),
                     str(ROOT / "tests" / "cpp" / "checkpoint_gstreamer_cuda_transfer_v3_test.cpp"),
+                    *shlex.split(glib.stdout),
                     "-o",
                     str(binary),
                 ],
