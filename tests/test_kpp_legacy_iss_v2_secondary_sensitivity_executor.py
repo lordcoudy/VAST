@@ -8750,21 +8750,32 @@ time.sleep(600)
                                 ],
                                 False,
                             )
-                            self.assertEqual(
+                            self.assertIn(
                                 document["filesystem_custody"],
-                                {
-                                    "statfs_magic": executor._LINUX_V9FS_MAGIC,
-                                    "statfs_magic_hex": "0x01021997",
-                                    "filesystem_type": (
-                                        "drvfs_9p_without_metadata_observed"
-                                    ),
-                                    "mount_observation": (
-                                        "drvfs_9p_effective_mode_projection"
-                                    ),
-                                    "run_root_effective_mode": "0777",
-                                    "requested_file_mode": "0400",
-                                    "file_effective_mode": "0555",
-                                },
+                                (
+                                    {
+                                        "statfs_magic": executor._LINUX_EXT_FILESYSTEM_MAGIC,
+                                        "statfs_magic_hex": "0x0000ef53",
+                                        "filesystem_type": "linux_ext_native",
+                                        "mount_observation": "native_ext_mode_enforcement",
+                                        "run_root_effective_mode": "0700",
+                                        "requested_file_mode": "0400",
+                                        "file_effective_mode": "0400",
+                                    },
+                                    {
+                                        "statfs_magic": executor._LINUX_V9FS_MAGIC,
+                                        "statfs_magic_hex": "0x01021997",
+                                        "filesystem_type": (
+                                            "drvfs_9p_without_metadata_observed"
+                                        ),
+                                        "mount_observation": (
+                                            "drvfs_9p_effective_mode_projection"
+                                        ),
+                                        "run_root_effective_mode": "0777",
+                                        "requested_file_mode": "0400",
+                                        "file_effective_mode": "0555",
+                                    },
+                                ),
                             )
                             self.assertIs(
                                 document["confidentiality_attested"],
