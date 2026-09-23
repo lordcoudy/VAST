@@ -53,7 +53,7 @@ Source: `scripts/publication_matrix.py::build_full_publication_matrix` fixes dim
 Existing coverage, current execution pending: `tests/test_publication_policy_qualification_pilot_executor_v2.py`, `tests/test_publication_policy_qualification_execution_closure_v1.py`, `tests/test_publication_q4_authority_plan_pipeline_v1.py`, `tests/test_backend_q4_two_phase_source_registry_v1.py`, and `tests/test_backend_q4_two_phase_executor_v1.py` exercise validators, receipts, fail-closed behavior, qualification construction, Q4 phase chains, and 560/280 fixture cardinalities. The executed closure suite does not establish a fresh qualification or Q4 result.
 
 - **A269 has eight historical cells — unverified current physical audit.** Historical cells remain excluded; no new accepted 32-cell attempt exists.
-- **Fresh qualification and Q4 succeed — unverified.** No fresh 32-cell qualification, 560 phase-A records, boundary, 560 phase-B records, or derived 280 sizing records has been accepted.
+- **Fresh qualification and Q4 succeed — in progress.** The fresh input/preprocessing chain, eight-worker guardian, 32 runtime bundles/four assets, and bounded Savant diagnostic passed their original checks. One fresh 32-cell pilot is active under InvocationID `920b5cfea7474bcdbebb44434459bd3d`; no completed checkpoint or Q4 evidence has been accepted.
 - **A prerequisite is missing or fails — existing coverage, current execution pending.** The named closure and Q4 modules contain rejection cases for missing, stale, partial, tampered, and cross-bound inputs; the retained partial pilot and supported resume record real prerequisite failure, but no accepted completion.
 
 ## 7. Cloud admission uses an actual dated guarantee — unverified
