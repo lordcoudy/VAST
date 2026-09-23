@@ -1,8 +1,8 @@
 ## 1. Approved baseline and evidence ownership
 
 - [x] 1.1 Verify approval of this change's exact planning commit in its Draft PR and a separate apply request; record both in the implementation evidence record before code changes.
-- [x] 1.2 Reconcile the reviewed dirty runtime into the same implementation branch without unrelated changes; verify the inspected-file manifest and record a complete source/fixture/configuration baseline and reviewed diff.
-- [x] 1.3 Capture environment, resource settings, image/data/model identities and current process ownership; verify A269 remains retired and no duplicate worker, verifier or active stage is created.
+- [ ] 1.2 Reconcile the reviewed dirty runtime into the same implementation branch without unrelated changes; verify the inspected-file manifest and record a complete source/fixture/configuration baseline and reviewed diff.
+- [ ] 1.3 Capture environment, resource settings, image/data/model identities and current process ownership; verify A269 remains retired and no duplicate worker, verifier or active stage is created.
 
 ## 2. Native payload integrity
 
@@ -27,12 +27,12 @@
 - [x] 5.1 Map changed files through native foundations and publication/worker image allowlists; verify an explicit invalidation list covers every affected image, parity and downstream receipt.
 - [x] 5.2 Rebuild affected images deterministically and execute packaged regressions; verify source/image receipt hashes and preserved unaffected identities.
 - [x] 5.3 Renew required physical parity and identity fixtures, including all 480 executions/32 groups when that closure is affected; verify original successful invocations and complete accepted receipts.
-- [x] 5.4 Run affected native builds/tests and one final full ext4 suite on the final source/fixture/mirror bytes; verify before/after manifests, original exit status and reviewed skip-identity differences against the historical 87 skips.
+- [ ] 5.4 Run affected native builds/tests and one final full ext4 suite on the final source/fixture/mirror bytes; verify before/after manifests, original exit status and reviewed skip-identity differences against the historical 87 skips.
 
 ## 6. Fresh qualification
 
-- [x] 6.1 Produce fresh input/preprocessing receipts and canonical mount/identity checks; start one new guardian with eight authenticated workers and materialize 32 bundles/four assets, verifying their current receipt bindings.
-- [x] 6.2 Run the gated 180-second Savant video diagnostic for the new chain; verify its original successful terminal and physical evidence before qualification.
+- [ ] 6.1 Produce fresh input/preprocessing receipts and canonical mount/identity checks; start one new guardian with eight authenticated workers and materialize 32 bundles/four assets, verifying their current receipt bindings.
+- [ ] 6.2 Run the gated 180-second Savant video diagnostic for the new chain; verify its original successful terminal and physical evidence before qualification.
 - [ ] 6.3 Launch the single fresh 32-cell qualification under its supported owner and record invocation identity/checkpoint; verify no A269 cells or helpers are reused.
 - [ ] 6.4 Collect all 32 successful cells, authenticated stop/lifecycle/closure and policy/resource promotion; verify every physical descriptor and accepted validator result before Q4.
 

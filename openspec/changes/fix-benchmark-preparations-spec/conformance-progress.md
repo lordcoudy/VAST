@@ -1,6 +1,6 @@
 # Conformance progress — implementation in progress
 
-This public record maps every requirement and scenario in the active change to source and evidence as of 2026-09-21. It is not a readiness receipt, CI result, qualification result, Q4 result, capacity confirmation, or authorization to start the full benchmark. No full-matrix arm has been launched by this change.
+This public record maps every requirement and scenario in the active change to source and evidence as of 2026-09-23. It is not a readiness receipt, CI result, qualification result, Q4 result, capacity confirmation, or authorization to start the full benchmark. No full-matrix arm has been launched by this change.
 
 **Evidence terms:** **current local result** is an executed test or package check recorded for this change. **Existing coverage, current execution pending** names an applicable test that has not been executed in this change. **Physical evidence pending** requires a real accepted operation or its current receipts. The executed repair evidence is limited to the recorded focused suites, collector suite, source-closure checks, native CUDA checks, and package checks. The collector’s durable nine-test record is a local non-authorizing result; its paths are deliberately not published here.
 
@@ -19,7 +19,7 @@ Source: `deploy/native_gst_probe/checkpoint_analytics_execution_client.hpp::Chec
 - **Incorrect digest — current local result.** The same runner executed `test_local_payload_rejections`, including valid-format wrong-digest rejection before exchange.
 - **Payload bounds — current local result.** The native regression covers zero, maximum, and one-byte-over-maximum input before copy/allocation.
 
-Affected native images have been rebuilt. Physical parity evidence is under independent review; no new parity workload is being reported here.
+The native images were rebuilt twice after the OpenVINO native-policy repair, with matching A/B receipts and image IDs. The previous accepted 480-execution parity predates this repair and must be renewed before qualification.
 
 ## 3. Guardian preserves rejection and diagnostic evidence — current local result for repair regressions; physical evidence pending
 
@@ -45,7 +45,7 @@ Source: `scripts/full_publication_supervisor.py` and `scripts/full_publication_w
 Source: `scripts/publication_matrix.py::build_full_publication_matrix` fixes dimensions, paired order, seed, warmup, and measurement duration. Local reviewed baseline and source-reconciliation evidence are retained privately; this public record does not reference unpublished inventory artifacts.
 
 - **Existing working tree differs from clean checkout — current local result.** Selected source reconciliation is commit `067fa429ab05d0ede56807af0c65e383ca9f5088`. `review-context.json` (44 files) still matches the original dirty runtime. `implementation-baseline.json` records 544 selected paths. The reviewed diff is `reviewed-runtime-reconciliation.json` plus the LF-normalized check; unrelated dirty-tree files were not staged. Later repair commits changed some reconciled bytes by design; the accepted ext4 suite locked the final source/fixture/mirror hashes.
-- **Packaged source changes — current local result for package checks; physical evidence review in progress.** Executed package checks and source-closure checks cover the rebuilt images. The original 480-execution/32-group parity success is under independent evidence comparison; this document neither starts nor claims a new parity run.
+- **Packaged source changes — current local result and accepted physical parity.** All three native probes rebuilt with matching A/B receipts; two dependent workers and all four runtimes rebuilt and passed stock receipt/patch capture. Twelve packaged historical/native checks and ten protocol/bridge/sidecar/worker checks passed. The renewed parity service exited 0 on 480 physical executions in 32 groups of 15. The stock acceptance loader, 3,535 descriptor references and all 480 input/output tensor hashes passed independent verification against A244. Its acceptance identity is `f089b711…`. The final ext4 suite is running on these current source and fixture bytes, so qualification remains gated.
 - **Deterministic planning replay — existing coverage, current execution pending.** Relevant coverage is `tests/test_publication_matrix.py::PublicationMatrixTests.test_full_matrix_is_deterministic_complete_and_paired`, `tests/test_full_publication_entrypoint.py::OfflinePublicationPlanTests.test_real_plan_factory_is_offline_read_only_and_needs_no_run_root`, and `tests/test_publication_article_statistics_v1.py::PublicationArticleStatisticsV1Tests.test_twenty_sealed_arms_reproduce_exact_preregistered_paired_inference`. No replay from current accepted preparation identities has run.
 
 ## 6. Qualification and Q4 are complete before launch readiness — unverified physical stages
@@ -54,13 +54,13 @@ Existing coverage, current execution pending: `tests/test_publication_policy_qua
 
 - **A269 has eight historical cells — unverified current physical audit.** Historical cells remain excluded; no new accepted 32-cell attempt exists.
 - **Fresh qualification and Q4 succeed — unverified.** No fresh 32-cell qualification, 560 phase-A records, boundary, 560 phase-B records, or derived 280 sizing records has been accepted.
-- **A prerequisite is missing or fails — existing coverage, current execution pending.** The named closure and Q4 modules contain rejection cases for missing, stale, partial, tampered, and cross-bound inputs; no live prerequisite failure/resume observation is recorded.
+- **A prerequisite is missing or fails — existing coverage, current execution pending.** The named closure and Q4 modules contain rejection cases for missing, stale, partial, tampered, and cross-bound inputs; the retained partial pilot and supported resume record real prerequisite failure, but no accepted completion.
 
 ## 7. Cloud admission uses an actual dated guarantee — unverified
 
 Existing coverage, current execution pending: `tests/test_full_publication_seafile_capacity_binding.py::FullPublicationSeafileCapacityBindingTests` covers lower-bound attestation, destination binding, rotation/tamper rejection, and legacy-capacity rejection.
 
-- **Confirmation missing — existing coverage, current execution pending; operationally unverified.** No current dated operator confirmation has been supplied.
+- **Confirmation missing — existing coverage, current execution pending; operationally unverified.** The operator supplied a 600-GiB current guaranteed-free-capacity statement for the existing Seafile destination on 2026-09-23. The Q4 sizing-based attestation and live destination check remain pending.
 - **Sizing or readback exceeds the guarantee — existing coverage, current execution pending; operationally unverified.** There are no accepted Q4 sizing records or successful live upload/readback evidence.
 
 ## 8. Launch handoff preserves the full experiment — implemented; handoff unverified

@@ -864,7 +864,8 @@ class NativeProbeRuntime {
   static bool valid_checkpoint_name(const std::string& value) {
     return !value.empty() && std::all_of(value.begin(), value.end(), [](unsigned char character) {
       return (character >= 'a' && character <= 'z') ||
-             (character >= '0' && character <= '9') || character == '_';
+             (character >= '0' && character <= '9') || character == '_' ||
+             character == '-';
     });
   }
 
@@ -1218,8 +1219,9 @@ class NativeProbeRuntime {
     if (!native_checkpoint_analytics_enabled()) {
       throw std::runtime_error("native policy runtime requires native analytics terminal mode");
     }
-    if (args_.system != "gstreamer_custom") {
-      throw std::runtime_error("checkpoint native policy client is topology-specific to gstreamer_custom");
+    if (args_.system != "gstreamer_custom" && args_.system != "openvino_gva") {
+      throw std::runtime_error(
+          "checkpoint native policy client is topology-specific to gstreamer_custom and openvino_gva");
     }
     if (!std::isfinite(args_.deadline_ms) || args_.deadline_ms <= 0.0) {
       throw std::runtime_error("checkpoint native policy runtime requires a positive deadline");
