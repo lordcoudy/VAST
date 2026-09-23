@@ -1,8 +1,8 @@
 ## 1. Approved baseline and evidence ownership
 
 - [x] 1.1 Verify approval of this change's exact planning commit in its Draft PR and a separate apply request; record both in the implementation evidence record before code changes.
-- [ ] 1.2 Reconcile the reviewed dirty runtime into the same implementation branch without unrelated changes; verify the inspected-file manifest and record a complete source/fixture/configuration baseline and reviewed diff.
-- [ ] 1.3 Capture environment, resource settings, image/data/model identities and current process ownership; verify A269 remains retired and no duplicate worker, verifier or active stage is created.
+- [x] 1.2 Reconcile the reviewed dirty runtime into the same implementation branch without unrelated changes; verify the inspected-file manifest and record a complete source/fixture/configuration baseline and reviewed diff.
+- [x] 1.3 Capture environment, resource settings, image/data/model identities and current process ownership; verify A269 remains retired and no duplicate worker, verifier or active stage is created.
 
 ## 2. Native payload integrity
 
@@ -27,7 +27,7 @@
 - [x] 5.1 Map changed files through native foundations and publication/worker image allowlists; verify an explicit invalidation list covers every affected image, parity and downstream receipt.
 - [x] 5.2 Rebuild affected images deterministically and execute packaged regressions; verify source/image receipt hashes and preserved unaffected identities.
 - [x] 5.3 Renew required physical parity and identity fixtures, including all 480 executions/32 groups when that closure is affected; verify original successful invocations and complete accepted receipts.
-- [ ] 5.4 Run affected native builds/tests and one final full ext4 suite on the final source/fixture/mirror bytes; verify before/after manifests, original exit status and reviewed skip-identity differences against the historical 87 skips.
+- [x] 5.4 Run affected native builds/tests and one final full ext4 suite on the final source/fixture/mirror bytes; verify before/after manifests, original exit status and reviewed skip-identity differences against the historical 87 skips.
 
 ## 6. Fresh qualification
 

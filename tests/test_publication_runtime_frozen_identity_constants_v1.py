@@ -80,6 +80,95 @@ class PublicationRuntimeFrozenIdentityConstantsV1Tests(unittest.TestCase):
         self.assertIn("runtime_images", patch["receipts"]["runtime_images"]["openvino_gva"]["path"])
         self.assertIn("runtime_images", patch["receipts"]["runtime_images"]["gstreamer_custom"]["path"])
 
+    def test_current_qualification_fragments_match_physical_receipts(self) -> None:
+        base = ROOT / "artifacts/fix_benchmark_preparations_20260923"
+        patch = json.loads((base / "qualification_image_identity_patch.json").read_bytes())
+        parity = json.loads(
+            (
+                ROOT
+                / "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260923.accepted.acceptance_receipt.json"
+            ).read_bytes()
+        )
+        accepted = parity["accepted_manifest"]
+        self.assertEqual(
+            gstreamer_fragment.ACCEPTED_PARITY,
+            (accepted["path"], accepted["size_bytes"], accepted["sha256"]),
+        )
+        self.assertEqual(
+            gstreamer_fragment.ACCEPTED_PARITY_CONTENT_SHA256,
+            parity["accepted_manifest_content_identity_sha256"],
+        )
+        authority = parity["refresh_authority"]
+        binding_set = authority["binding_set"]
+        index = binding_set["index"]
+        self.assertEqual(
+            gstreamer_fragment.ANALYTICS_INDEX,
+            (index["path"], index["size_bytes"], index["sha256"]),
+        )
+        self.assertEqual(
+            gstreamer_fragment.ANALYTICS_INDEX_IDENTITY,
+            binding_set["identity_sha256"],
+        )
+        self.assertEqual(
+            gstreamer_fragment.ANALYTICS_BINDINGS_IDENTITY,
+            binding_set["bindings_identity_sha256"],
+        )
+        self.assertEqual(
+            gstreamer_fragment.EXECUTION_CONFIG_IDENTITY,
+            authority["execution_config"]["content_identity_sha256"],
+        )
+        for resource in ("cpu", "gpu"):
+            worker = authority["workers"][resource]
+            probe = authority["runtime_probes"][resource]
+            expected_image = worker["image_id"]
+            expected_implementation = worker["worker_implementation_sha256"]
+            self.assertEqual(
+                gstreamer_fragment.RUNTIME_PROBES[resource],
+                (probe["path"], probe["size_bytes"], probe["sha256"]),
+            )
+            for fragment in (gstreamer_fragment, openvino_fragment):
+                self.assertEqual(
+                    getattr(fragment, resource.upper() + "_WORKER_IMAGE_ID"),
+                    expected_image,
+                )
+                self.assertEqual(
+                    fragment.WORKER_IMPLEMENTATIONS[resource],
+                    expected_implementation,
+                )
+        for system, fragment, prefix in (
+            ("gstreamer_custom", gstreamer_fragment, "GSTREAMER"),
+            ("openvino_gva", openvino_fragment, "OPENVINO_GVA"),
+        ):
+            physical = patch["systems"][system]["fragment_identity"]
+            self.assertEqual(getattr(fragment, prefix + "_IMAGE_ID"), physical["image_id"])
+            self.assertEqual(
+                getattr(fragment, prefix + "_REPOSITORY_DIGEST"),
+                physical["repository_digest"],
+            )
+            self.assertEqual(
+                getattr(fragment, prefix + "_IMAGE_PROJECTION_SHA256"),
+                physical["inspect_projection_sha256"],
+            )
+            self.assertEqual(
+                getattr(fragment, prefix + "_BASE_IMAGE_ID"),
+                physical["base_image_id"],
+            )
+            self.assertEqual(
+                getattr(fragment, prefix + "_RUNTIME_SOURCE_SHA256"),
+                physical["runtime_source_sha256"],
+            )
+        self.assertEqual(
+            gstreamer_fragment.GSTREAMER_NATIVE_SOURCE_SHA256,
+            patch["systems"]["gstreamer_custom"]["fragment_identity"]["native_probe_source_sha256"],
+        )
+        self.assertEqual(
+            gstreamer_fragment.NATIVE_PROBE_SHA256,
+            patch["systems"]["gstreamer_custom"]["fragment_identity"]["embedded_native_probe_sha256"],
+        )
+        self.assertEqual(
+            openvino_fragment.OPENVINO_GVA_NATIVE_SOURCE_SHA256,
+            patch["systems"]["openvino_gva"]["fragment_identity"]["native_source_sha256"],
+        )
     def test_runtime_input_materializer_inspects_the_candidate_reference_not_only_id(self) -> None:
         path = SCRIPTS / "publication_policy_qualification_runtime_inputs_v2.py"
         tree = ast.parse(path.read_text(encoding="utf-8"))
