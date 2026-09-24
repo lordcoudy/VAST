@@ -2955,7 +2955,7 @@ def main(
         specs,
         source_specs,
         template_path=args.gst_registry_template,
-        refresh_hardware_plugins=not publication_mode,
+        refresh_hardware_plugins=True,
     )
     telemetry_sink_preexisting_entry_count = (
         sum(1 for _ in runtime_output_dir.iterdir()) if runtime_output_dir.exists() else 0

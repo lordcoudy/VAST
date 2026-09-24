@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import ast
 import csv
 import hashlib
 import json
@@ -229,6 +230,27 @@ class CheckpointRuntimeTests(unittest.TestCase):
                 manifest["base_template_sha256"],
             )
             self.assertFalse(manifest["hardware_refresh"]["performed"])
+
+    def test_publication_runtime_requires_gpu_aware_registry_refresh(self) -> None:
+        source = (ROOT / "scripts" / "checkpoint_gstreamer_runtime.py").read_text(encoding="utf-8")
+        module = ast.parse(source)
+        main = next(
+            node for node in module.body
+            if isinstance(node, ast.FunctionDef) and node.name == "main"
+        )
+        seed_calls = [
+            node for node in ast.walk(main)
+            if isinstance(node, ast.Call)
+            and isinstance(node.func, ast.Name)
+            and node.func.id == "seed_gstreamer_registry_copies"
+        ]
+        self.assertEqual(len(seed_calls), 1)
+        refresh = next(
+            keyword.value for keyword in seed_calls[0].keywords
+            if keyword.arg == "refresh_hardware_plugins"
+        )
+        self.assertIsInstance(refresh, ast.Constant)
+        self.assertIs(refresh.value, True)
 
     def test_gstreamer_engineering_specs_bind_every_blueprint_process_without_unblocking(self) -> None:
         config = load_config(ROOT / "configs" / "experiments.yaml")

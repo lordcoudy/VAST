@@ -48,11 +48,11 @@ class GstreamerPublicationContainerBoundaryV3Tests(unittest.TestCase):
         )
         self.assertEqual(
             runtime.EXPECTED_IMAGE_ID,
-            "sha256:5862581319dd5050e2a16e83cba10d47c4895dfd81842d70b26e70f02de9467b",
+            "sha256:f1a57c5bffdc3e6f892fa7900ffac72cf54ae8a44cb6b7394915bc7bff7a7ac6",
         )
         self.assertEqual(
             runtime.EXPECTED_IMAGE_INSPECT_PROJECTION_SHA256,
-            "9d75062c2e331c1d46bb1f4caaeac4a2fb5fd505804cba309be8debaa27331bc",
+            "d31ae4f8fd259c6fbd9ed6dbd1d49da01da2bc3ef172600368d1d9072a071c1c",
         )
         self.assertTrue({
             "container_image", "embedded_artifacts", "container_engine_socket",

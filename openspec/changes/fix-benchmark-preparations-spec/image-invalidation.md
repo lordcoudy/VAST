@@ -31,3 +31,9 @@ A261/A262/A268 remain historical evidence. Their images/parity/test receipts can
 On 2026-09-21 the nine deterministic rebuilds completed successfully, as did capture of the four runtime receipts and stock patch assembly/verification. Packaged regression and downstream evidence renewal are still in progress. This map is not a grant or a readiness claim.
 
 The first packaged sweep exposed a missing final-image Python dependency in OpenVINO GVA and GStreamer Custom. Correcting their Dockerfiles invalidated only those two runtime receipts and the aggregate patch. Both were renewed, preserving the other seven image identities; packaged regressions now pass on the replacements.
+
+## 2026-09-24 runtime-registry renewal
+
+The publication registry fix changes only `scripts/checkpoint_gstreamer_runtime.py` in the packaged source closure. Rebuild/refreeze the four publication runtimes and their patch; preserve the three native-probe and two analytics-worker image receipts only after verifying their exact source sets and image IDs are unchanged. Renew OpenVINO/GStreamer embedded source and image constants from physical receipts. The v4 parity manifest and execution config bind the patch hash, so rerun physical parity 480/32, then final ext4 suite and a wholly new qualification chain. The Sep23 pilot failed at 16/32 and its guardian stopped cleanly; those receipts remain historical.
+
+The four Sep24 runtime A/B builds, physical receipts, patch capture, packaged historical/analytics checks and GPU registry smoke passed. The new patch identity is `8237c580…`; unchanged native/worker receipts were physically compared with Sep23. Physical parity and downstream gates remain invalidated.
