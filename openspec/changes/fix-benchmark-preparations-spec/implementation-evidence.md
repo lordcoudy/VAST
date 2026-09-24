@@ -1,6 +1,6 @@
 # Implementation evidence
 
-Status: implementation in progress; preparation_ready=false, full_run_started=false, publication_ready=false. No physical qualification/Q4/full-run workload has started.
+Status: implementation in progress; preparation_ready=false, full_run_started=false, publication_ready=false. A fresh 32-cell qualification pilot is running under its Sep24 checkpoint; Q4 and full-run arms have not started. See implementation-validation.md for the current physical evidence.
 
 ## Approval and workflow recovery
 

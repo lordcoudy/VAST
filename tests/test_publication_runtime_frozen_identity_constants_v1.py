@@ -86,7 +86,7 @@ class PublicationRuntimeFrozenIdentityConstantsV1Tests(unittest.TestCase):
         parity = json.loads(
             (
                 ROOT
-                / "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260923.accepted.acceptance_receipt.json"
+                / "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260924.accepted.acceptance_receipt.json"
             ).read_bytes()
         )
         accepted = parity["accepted_manifest"]
@@ -412,15 +412,15 @@ class PublicationRuntimeFrozenIdentityConstantsV1Tests(unittest.TestCase):
             ),
             accepted_model_parity_manifest_path=(
                 ROOT
-                / "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260923.accepted.yaml"
+                / "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260924.accepted.yaml"
             ),
             accepted_model_parity_assessment_path=(
                 ROOT
-                / "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260923.accepted.assessment.json"
+                / "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260924.accepted.assessment.json"
             ),
             accepted_model_parity_receipt_path=(
                 ROOT
-                / "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260923.accepted.acceptance_receipt.json"
+                / "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260924.accepted.acceptance_receipt.json"
             ),
             docker="/usr/bin/docker",
             dependencies=fragment_authority.DEFAULT_DEPENDENCIES,

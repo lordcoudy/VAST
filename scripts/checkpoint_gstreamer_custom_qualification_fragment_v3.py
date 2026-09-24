@@ -40,41 +40,41 @@ RESOURCE_RUNTIME_FIELDS = {
 }
 
 ACCEPTED_PARITY = (
-    "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260923.accepted.yaml", 30015,
-    "d8a58918bd00d3ba7dffb4f9fac80be206ee07d6b2ab29d01875faab9381f86f",
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260924.accepted.yaml", 30015,
+    "483f0e93dc2721f39f82941509fb1bf5708f44ce8c9f10203e782ee3950c8ac3",
 )
 ACCEPTED_PARITY_CONTENT_SHA256 = (
-    "89116b1a17f04bc445e426c63d007dfddcaac592518e850c81fa0358da84903e"
+    "bee46501dc756fb13e5fa72412afaa052a5ecd2452068d7df01a11d2d94445cb"
 )
 PREPROCESSING_CONTRACT_SHA256 = (
     "0307abfe6c5f652cc06f3f3df8ecf5050e5ed29b9ed5f40cb6fe728f47627090"
 )
 ANALYTICS_INDEX = (
-    "artifacts/fix_benchmark_preparations_20260923/model_parity_v4/bindings/index.json", 1877,
-    "f01c984ac6c3c7506a71ac12af8c06d936354b5af75fe4d83bf72242d2e1b1cb",
+    "artifacts/fix_benchmark_preparations_20260924/model_parity_v4/bindings/index.json", 1877,
+    "c020491fa77ba5e612e50b1bcb3d99b87a7224f58632b86b5766fa81c15cf3e8",
 )
 ANALYTICS_INDEX_IDENTITY = (
-    "4268add1b17eb205ebb6359065fff601382f1d83751c7c85a80af616fafa18cb"
+    "e8373d4e14b394b277ba7d8224a3002b6630a176180d722c6d3703df9c015e2d"
 )
 ANALYTICS_BINDINGS_IDENTITY = (
     "f7a8e7569cca9b13f03d312a07659fa3ad1f2457647798478e67d36f1657b93b"
 )
 EXECUTION_CONFIG_IDENTITY = (
-    "60673eed271d6ed4e9f01ceb20ce6a0f0e97aa2e82fc2725154858a5a47735cb"
+    "64f0eba6342c017a88cad878beed7da2eef143c978c26deeab118f74cd16ee7e"
 )
 MODEL_PARITY_MANIFEST_IDENTITY = (
-    "7acc64cbea4667b88657dc9e07f2e331090c0f361fdac042e9732a2a2d3abc80"
+    "ca03a5d75c24aa297ddb09ac2b8ae806a2fc6e7b8b6eb5cb6560a49dd58419e0"
 )
 PROTOCOL_IDENTITY = (
     "3bed4ad0e5cd46b01649b054fa520c0f728a1ceeb14502fb9fe1f0f8f5941eff"
 )
 RUNTIME_PROBES = {
     "cpu": (
-        "artifacts/fix_benchmark_preparations_20260923/model_parity_v4/runtime_probes/cpu_runtime_probe.json",
+        "artifacts/fix_benchmark_preparations_20260924/model_parity_v4/runtime_probes/cpu_runtime_probe.json",
         659, "0b496134ac3fec04449072218ddb6e2767d21b782127ab0d57c81c3b0daac874",
     ),
     "gpu": (
-        "artifacts/fix_benchmark_preparations_20260923/model_parity_v4/runtime_probes/gpu_runtime_probe.json",
+        "artifacts/fix_benchmark_preparations_20260924/model_parity_v4/runtime_probes/gpu_runtime_probe.json",
         654, "b627a3790622cfb0e2334e7d3b31e6acf0b0fc5396f921d4552850056ba9b962",
     ),
 }
