@@ -35,3 +35,7 @@ The new sealed wrong-content regression failed against the original implementati
 ## 2026-09-25 scope decision
 
 The Sep24 qualification failure exposed a native defect outside the repairs named in design.md: the checkpoint reset check read GstAppSrc's `guint64` `current-level-buffers` property into a `guint`. On 2026-09-25 the operator was offered either revising and re-reviewing the planning commit, or treating the repair as within the approved preparation scope. The operator chose the latter, as with the Sep23 native-probe predicates and Sep24 registry refresh. This record is that decision, not reviewer approval of new requirements. The repair is limited to a type-matched read and its regression. It does not change the benchmark matrix, estimands, thresholds or acceptance rules.
+
+## 2026-09-25 second scope decision
+
+After the Sep25 pilot failed at cell 17 on a 512-task container ceiling and a decode-stage artifact label resolved as a GStreamer factory, the operator again chose to treat the repairs as within the approved preparation scope, with nonpromoting OpenVINO GVA and GStreamer Custom pre-check replays before the next 32-cell attempt. The ceiling change is a container safety limit (4096, as already used by Savant), not a change to CPU, memory, the matrix, estimands or acceptance rules.

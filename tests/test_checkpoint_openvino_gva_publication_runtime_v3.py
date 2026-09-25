@@ -51,6 +51,12 @@ def canonical(value: object) -> bytes:
 
 @unittest.skipUnless(os.name == "posix", "OpenVINO container custody is Linux-only")
 class OpenVINOGVAPublicationRuntimeV3Tests(unittest.TestCase):
+    def test_container_pid_ceiling_admits_all_native_workers(self) -> None:
+        contract = mock.Mock(device={"docker_gpus_request": "device=GPU-test"})
+        argv = runtime._security_argv(contract)
+        self.assertEqual(argv[argv.index("--pids-limit") + 1], "4096")
+        self.assertEqual(runtime.MAX_CONTAINER_PIDS, 4096)
+
     def setUp(self) -> None:
         self.temporary = tempfile.TemporaryDirectory()
         self.root = Path(self.temporary.name).resolve()

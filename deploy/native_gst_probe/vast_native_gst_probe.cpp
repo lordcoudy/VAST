@@ -155,6 +155,17 @@ bool read_current_level_buffers(GstElement* element, std::uint64_t& level) {
   return true;
 }
 
+// Loaded plugin factories that identify the checkpoint decode stage. Its
+// "explicit_hardware_decoder" autoplugger is a configuration label recorded in
+// the stage config, not a GStreamer factory, so it is never resolved here.
+std::vector<std::pair<std::string, std::string>> checkpoint_decode_artifact_factories(
+    const std::string& decoder_factory) {
+  return {
+      {"decoder", decoder_factory},
+      {"format_converter", "videoconvert"},
+  };
+}
+
 // Returns the number of observable queues after proving every one is empty.
 std::size_t verify_pipeline_queues_empty(GstElement* pipeline) {
   GstIterator* iterator = gst_bin_iterate_recurse(GST_BIN(pipeline));
@@ -804,12 +815,7 @@ class NativeProbeRuntime {
         stage,
         "decode",
         decode_config,
-        checkpoint_artifact_manifest(
-            {
-                {"autoplugger", "explicit_hardware_decoder"},
-                {"decoder", decoder_factory},
-                {"format_converter", "videoconvert"},
-            }),
+        checkpoint_artifact_manifest(checkpoint_decode_artifact_factories(decoder_factory)),
         identity_transform,
         "[\"source_height\",\"source_width\",3]");
     if (!checkpoint_allowed_decoder_factories_.empty() &&

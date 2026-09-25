@@ -117,6 +117,10 @@ NVIDIA_FIELDS = {"uuid", "name", "driver_version"}
 ANALYTICS_RESOURCE_FIELDS = {"runtime", "device", "capability_sha256"}
 POLICIES = frozenset(FROZEN_POLICIES)
 CONTAINER_PROJECT_ROOT = PurePosixPath("/workspace/project")
+# Six streams x four branches run 24 native workers plus their decoder and
+# OpenVINO inference threads; the Sep25 CPU/H.264 cell peaked at 579 tasks.
+# Match the Savant ceiling; this does not change CPU or memory allocation.
+MAX_CONTAINER_PIDS = 4096
 CONTAINER_OUTPUT_ROOT = "/opt/vast/output"
 ANALYTICS_SOCKET_TARGET = "/run/vast/analytics-execution.sock"
 MAX_FILES = 192
@@ -1074,7 +1078,7 @@ def _security_argv(contract: _Contract) -> list[str]:
     return [
         "run", "--rm", "--network", "none", "--read-only",
         "--cap-drop", "ALL", "--security-opt", "no-new-privileges",
-        "--pids-limit", "512", "--ipc", "none", "--gpus",
+        "--pids-limit", str(MAX_CONTAINER_PIDS), "--ipc", "none", "--gpus",
         str(contract.device["docker_gpus_request"]),
         "--tmpfs", "/tmp:rw,nosuid,nodev,noexec,size=1073741824",
         "--tmpfs", "/run/vast:rw,nosuid,nodev,noexec,size=16777216",
