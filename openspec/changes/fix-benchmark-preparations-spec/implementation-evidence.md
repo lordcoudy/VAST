@@ -1,6 +1,6 @@
 # Implementation evidence
 
-Status: implementation in progress; preparation_ready=false, full_run_started=false, publication_ready=false. A fresh 32-cell qualification pilot is running under its Sep24 checkpoint; Q4 and full-run arms have not started. See implementation-validation.md for the current physical evidence.
+Status: implementation in progress; preparation_ready=false, full_run_started=false, publication_ready=false. The Sep24 32-cell pilot failed at cell 17 on a native reset-check defect; after its repair, the image chain and a fresh qualification must be renewed; Q4 and full-run arms have not started. See implementation-validation.md for the current physical evidence.
 
 ## Approval and workflow recovery
 
@@ -31,3 +31,7 @@ Frozen Python: /home/s-a-balashov/.local/state/vast/publication/runtime/full-pub
 ## Guardian regression
 
 The new sealed wrong-content regression failed against the original implementation: requests_started was 0, expected 1. After extracting bridge metadata/binding validation and retaining bounded first-failure diagnostics, the 48-test guardian suite passed under WSL (5.418 seconds). Cases cover both protocol modes, malformed IDs/routes/bindings, missing/extra/unsealed/wrong-size descriptors, bounded diagnostics, descriptor cleanup, first-failure concurrency and diagnostic-write failure. Existing successful lifecycle/stop and custody regressions also passed. Further independent review, combined regressions, exact-byte final suite and physical image/qualification evidence remain outstanding.
+
+## 2026-09-25 scope decision
+
+The Sep24 qualification failure exposed a native defect outside the repairs named in design.md: the checkpoint reset check read GstAppSrc's `guint64` `current-level-buffers` property into a `guint`. On 2026-09-25 the operator was offered either revising and re-reviewing the planning commit, or treating the repair as within the approved preparation scope. The operator chose the latter, as with the Sep23 native-probe predicates and Sep24 registry refresh. This record is that decision, not reviewer approval of new requirements. The repair is limited to a type-matched read and its regression. It does not change the benchmark matrix, estimands, thresholds or acceptance rules.

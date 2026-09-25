@@ -130,6 +130,75 @@ struct StreamState {
   std::uint64_t checkpoint_source_cycle = 0;
 };
 
+// Elements disagree on the width of current-level-buffers: GstAppSrc exposes
+// guint64 while queue elements expose guint. Read through a GValue of the
+// declared type so a wider property can never overwrite adjacent storage.
+bool read_current_level_buffers(GstElement* element, std::uint64_t& level) {
+  GParamSpec* property =
+      g_object_class_find_property(G_OBJECT_GET_CLASS(element), "current-level-buffers");
+  if (property == nullptr) {
+    return false;
+  }
+  if ((property->flags & G_PARAM_READABLE) == 0) {
+    throw std::runtime_error("checkpoint queue level property is not readable");
+  }
+  const GType type = G_PARAM_SPEC_VALUE_TYPE(property);
+  if (type != G_TYPE_UINT && type != G_TYPE_UINT64) {
+    throw std::runtime_error("checkpoint queue level property has an unsupported type");
+  }
+  GValue level_value = G_VALUE_INIT;
+  g_value_init(&level_value, type);
+  g_object_get_property(G_OBJECT(element), "current-level-buffers", &level_value);
+  level = type == G_TYPE_UINT64 ? g_value_get_uint64(&level_value)
+                                : g_value_get_uint(&level_value);
+  g_value_unset(&level_value);
+  return true;
+}
+
+// Returns the number of observable queues after proving every one is empty.
+std::size_t verify_pipeline_queues_empty(GstElement* pipeline) {
+  GstIterator* iterator = gst_bin_iterate_recurse(GST_BIN(pipeline));
+  if (iterator == nullptr) {
+    throw std::runtime_error("checkpoint reset verification cannot inspect pipeline elements");
+  }
+  GValue value = G_VALUE_INIT;
+  bool done = false;
+  std::size_t bounded_queue_count = 0;
+  try {
+    while (!done) {
+      switch (gst_iterator_next(iterator, &value)) {
+        case GST_ITERATOR_OK: {
+          GstElement* element = GST_ELEMENT(g_value_get_object(&value));
+          std::uint64_t level = 0;
+          if (read_current_level_buffers(element, level)) {
+            if (level != 0) {
+              throw std::runtime_error("checkpoint queue is not empty before READY");
+            }
+            ++bounded_queue_count;
+          }
+          g_value_reset(&value);
+          break;
+        }
+        case GST_ITERATOR_RESYNC:
+          gst_iterator_resync(iterator);
+          break;
+        case GST_ITERATOR_DONE:
+          done = true;
+          break;
+        case GST_ITERATOR_ERROR:
+          throw std::runtime_error("checkpoint reset verification failed while inspecting queues");
+      }
+    }
+  } catch (...) {
+    g_value_unset(&value);
+    gst_iterator_free(iterator);
+    throw;
+  }
+  g_value_unset(&value);
+  gst_iterator_free(iterator);
+  return bounded_queue_count;
+}
+
 class NativeProbeRuntime {
  public:
   explicit NativeProbeRuntime(Args args) : args_(std::move(args)), streams_(std::max(1, args_.streams)) {
@@ -1044,47 +1113,7 @@ class NativeProbeRuntime {
       throw std::runtime_error("checkpoint process state is not empty before READY");
     }
 
-    GstIterator* iterator = gst_bin_iterate_recurse(GST_BIN(pipelines_.front()));
-    if (iterator == nullptr) {
-      throw std::runtime_error("checkpoint reset verification cannot inspect pipeline elements");
-    }
-    GValue value = G_VALUE_INIT;
-    bool done = false;
-    std::size_t bounded_queue_count = 0;
-    while (!done) {
-      switch (gst_iterator_next(iterator, &value)) {
-        case GST_ITERATOR_OK: {
-          GstElement* element = GST_ELEMENT(g_value_get_object(&value));
-          const GParamSpec* level_property = g_object_class_find_property(
-              G_OBJECT_GET_CLASS(element), "current-level-buffers");
-          if (level_property != nullptr) {
-            guint level = 0;
-            g_object_get(G_OBJECT(element), "current-level-buffers", &level, nullptr);
-            if (level != 0) {
-              g_value_unset(&value);
-              gst_iterator_free(iterator);
-              throw std::runtime_error("checkpoint queue is not empty before READY");
-            }
-            ++bounded_queue_count;
-          }
-          g_value_reset(&value);
-          break;
-        }
-        case GST_ITERATOR_RESYNC:
-          gst_iterator_resync(iterator);
-          break;
-        case GST_ITERATOR_DONE:
-          done = true;
-          break;
-        case GST_ITERATOR_ERROR:
-          g_value_unset(&value);
-          gst_iterator_free(iterator);
-          throw std::runtime_error("checkpoint reset verification failed while inspecting queues");
-      }
-    }
-    g_value_unset(&value);
-    gst_iterator_free(iterator);
-    if (bounded_queue_count == 0) {
+    if (verify_pipeline_queues_empty(pipelines_.front()) == 0) {
       throw std::runtime_error("checkpoint reset verification found no observable queues");
     }
   }

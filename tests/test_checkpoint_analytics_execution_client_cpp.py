@@ -69,6 +69,12 @@ class CheckpointAnalyticsExecutionClientCppTest(unittest.TestCase):
             ("gstreamer-1.0", "gstreamer-app-1.0", "gstreamer-rtp-1.0", "gstreamer-video-1.0"),
         )
 
+    def test_native_reset_queue_level_regression(self) -> None:
+        self._compile_and_run(
+            "checkpoint_native_reset_queue_level_test.cpp",
+            ("gstreamer-1.0", "gstreamer-app-1.0", "gstreamer-rtp-1.0", "gstreamer-video-1.0"),
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
