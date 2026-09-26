@@ -203,16 +203,18 @@ class CheckpointAnalyticsExecutionClient {
         snapshot_sha256 == request.raw_input_sha256,
         "analytics execution payload SHA-256 differs from raw_input_sha256");
     std::ostringstream json;
+    // Keys must stay in canonical (sorted) order: the guardian re-serializes
+    // with sort_keys and rejects any other byte sequence.
     json << "{\"arm_id\":\"" << escape(request.arm_id)
-         << "\",\"decision\":{\"decision_id\":\"" << escape(request.decision.decision_id)
+         << "\",\"deadline_monotonic_ns\":" << request.deadline_monotonic_ns
+         << ",\"decision\":{\"decision_id\":\"" << escape(request.decision.decision_id)
          << "\",\"decision_seq\":" << request.decision.decision_seq
          << ",\"emitter_id\":\"" << escape(request.decision.emitter_id)
          << "\",\"emitter_sha256\":\"" << request.decision.emitter_sha256
          << "\",\"selected_implementation_id\":\""
          << escape(request.decision.selected_implementation_id)
          << "\",\"selected_resource\":\"" << request.decision.selected_resource
-         << "\"},\"deadline_monotonic_ns\":" << request.deadline_monotonic_ns
-         << ",\"frame\":{\"branch\":\"" << escape(request.branch)
+         << "\"},\"frame\":{\"branch\":\"" << escape(request.branch)
          << "\",\"frame_id\":" << request.frame_id
          << ",\"input_frame_key\":\"" << escape(request.input_frame_key)
          << "\",\"stream_id\":" << request.stream_id

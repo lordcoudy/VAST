@@ -75,6 +75,34 @@ class CheckpointAnalyticsExecutionClientCppTest(unittest.TestCase):
             ("gstreamer-1.0", "gstreamer-app-1.0", "gstreamer-rtp-1.0", "gstreamer-video-1.0"),
         )
 
+    def test_native_execution_request_is_guardian_canonical_json(self) -> None:
+        sys.path.insert(0, str(ROOT / "scripts"))
+        from analytics_execution_protocol import parse_canonical_json
+
+        compiler = shutil.which("c++") or shutil.which("g++")
+        pkg_config = shutil.which("pkg-config")
+        self.assertIsNotNone(compiler, "a C++17 compiler is required")
+        self.assertIsNotNone(pkg_config, "pkg-config is required")
+        flags = subprocess.run(
+            [pkg_config, "--cflags", "--libs", "glib-2.0"],
+            check=True, capture_output=True, text=True,
+        )
+        source = ROOT / "tests" / "cpp" / "checkpoint_analytics_execution_client_canonical_probe.cpp"
+        with tempfile.TemporaryDirectory(prefix="vast-native-canonical-") as build_dir:
+            binary = Path(build_dir) / source.stem
+            compiled = subprocess.run(
+                [compiler, "-std=c++17", "-O2", "-pthread",
+                 "-I", str(ROOT / "deploy" / "native_gst_probe"), str(source),
+                 *shlex.split(flags.stdout), "-o", str(binary)],
+                capture_output=True, text=True, timeout=120,
+            )
+            self.assertEqual(compiled.returncode, 0, compiled.stdout + compiled.stderr)
+            run = subprocess.run([str(binary)], capture_output=True, timeout=120)
+            self.assertEqual(run.returncode, 0, run.stderr.decode(errors="replace"))
+        request = parse_canonical_json(run.stdout)
+        self.assertEqual(request["message_type"], "analytics_execute")
+        self.assertEqual(request["frame"]["branch"], "damage")
+
     def test_native_policy_client_regression(self) -> None:
         self._compile_and_run("checkpoint_native_policy_client_test.cpp", ("glib-2.0",))
 
