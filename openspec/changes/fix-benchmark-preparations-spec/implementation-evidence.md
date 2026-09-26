@@ -39,3 +39,7 @@ The Sep24 qualification failure exposed a native defect outside the repairs name
 ## 2026-09-25 second scope decision
 
 After the Sep25 pilot failed at cell 17 on a 512-task container ceiling and a decode-stage artifact label resolved as a GStreamer factory, the operator again chose to treat the repairs as within the approved preparation scope, with nonpromoting OpenVINO GVA and GStreamer Custom pre-check replays before the next 32-cell attempt. The ceiling change is a container safety limit (4096, as already used by Savant), not a change to CPU, memory, the matrix, estimands or acceptance rules.
+
+## 2026-09-25 spec revision required
+
+Nonpromoting pre-checks found three further OpenVINO GVA / GStreamer Custom qualification integration defects (identifier minimum length, CPU policy identity scheme, GStreamer Custom container-engine pin). Because the identity scheme needs a design decision, the operator chose to revise and re-review the planning artifacts with `openspec-update-change` before any further production-code change. Implementation is paused until that revision is approved.
