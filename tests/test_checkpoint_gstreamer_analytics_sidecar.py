@@ -37,7 +37,10 @@ from analytics_execution_protocol import (  # noqa: E402
     send_packet,
 )
 from analytics_execution_worker import ExecutionClient  # noqa: E402
-from checkpoint_gstreamer_analytics_bridge import AnalyticsExecutionBridge  # noqa: E402
+from checkpoint_gstreamer_analytics_bridge import (  # noqa: E402
+    AnalyticsExecutionBridge,
+    native_probe_policy_systems,
+)
 from checkpoint_gstreamer_analytics_sidecar import (  # noqa: E402
     DockerWorkerProcessFactory,
     GStreamerAnalyticsSidecar,
@@ -386,6 +389,7 @@ class _Bridge(AnalyticsExecutionBridge):
         self._capabilities = self.capabilities
         self._bindings = dict(values["worker_bindings"])
         self._policy_manifest = copy.deepcopy(values["policy_capability_manifest"])
+        self._policy_systems = native_probe_policy_systems(self._policy_manifest)
         # The fixture bypasses real bridge construction; give its validator the
         # same terminal identity bindings a real bridge requires at startup.
         from analytics_execution_endpoint import terminal_detector_identity

@@ -132,6 +132,15 @@ def _binding(capability: dict[str, object]) -> dict[str, object]:
 
 
 def _policy_manifest() -> dict[str, object]:
+    return {
+        "systems": {
+            system: {"branches": _system_policy_bindings(prefix)}
+            for system, prefix in (("gstreamer_custom", "gstreamer"), ("openvino_gva", "openvino-gva"))
+        }
+    }
+
+
+def _system_policy_bindings(prefix: str) -> dict[str, object]:
     branch_bindings: dict[str, object] = {}
     for branch in BRANCHES:
         resources: dict[str, object] = {}
@@ -141,19 +150,19 @@ def _policy_manifest() -> dict[str, object]:
                 ENGINE_OPENVINO_CPU if resource == "cpu" else ENGINE_TENSORRT_CUDA,
             )
             resources[resource] = {
-                "implementation_id": f"gstreamer-{branch}-{resource}-implementation-v1",
+                "implementation_id": f"{prefix}-{branch}-{resource}-implementation-v1",
                 "terminal_detector": (
                     f"{capability['model_id']};"
                     f"model_sha256={capability['source_model_sha256']}"
                 ),
                 "terminal_backend": analytics_backend_identity(capability),
                 "native_evidence": {
-                    "emitter_id": f"gstreamer-{branch}-{resource}-emitter-v1",
-                    "emitter_sha256": _sha(f"emitter-{branch}-{resource}"),
+                    "emitter_id": f"{prefix}-{branch}-{resource}-emitter-v1",
+                    "emitter_sha256": _sha(f"{prefix}-emitter-{branch}-{resource}"),
                 },
             }
         branch_bindings[branch] = resources
-    return {"systems": {"gstreamer_custom": {"branches": branch_bindings}}}
+    return branch_bindings
 
 
 class _FixedBackend:
@@ -212,8 +221,11 @@ class _FixedBackend:
         )
 
 
-def _request(branch: str, resource: str, payload: bytes, *, sequence: int) -> dict[str, object]:
-    policy = _policy_manifest()["systems"]["gstreamer_custom"]["branches"][branch][resource]
+def _request(
+    branch: str, resource: str, payload: bytes, *, sequence: int,
+    system: str = "gstreamer_custom",
+) -> dict[str, object]:
+    policy = _policy_manifest()["systems"][system]["branches"][branch][resource]
     return {
         "schema_version": 1,
         "message_type": BRIDGE_MESSAGE_TYPE,
@@ -495,6 +507,23 @@ class GStreamerAnalyticsBridgeTests(unittest.TestCase):
         relabelled["decision"]["selected_implementation_id"] = "forged-gpu-implementation"
         with self.assertRaisesRegex(ProtocolError, "implementation"):
             self.bridge.execute(relabelled, payload)
+
+    def test_decision_binds_to_the_native_probe_system_it_names(self) -> None:
+        payload = b""
+        openvino = _request("damage", "cpu", payload, sequence=11, system="openvino_gva")
+        response = self.bridge.execute(openvino, payload)
+        self.assertEqual(response["message_type"], "analytics_execute_response")
+        self.assertEqual(response["decision_id"], "decision-0011")
+
+        mixed = _request("damage", "gpu", payload, sequence=12, system="openvino_gva")
+        gstreamer = _policy_manifest()["systems"]["gstreamer_custom"]["branches"]["damage"]["gpu"]
+        mixed["decision"]["emitter_id"] = gstreamer["native_evidence"]["emitter_id"]
+        with self.assertRaisesRegex(ProtocolError, "bridge decision emitter_id mismatch"):
+            self.bridge.execute(mixed, payload)
+        forged = _request("damage", "gpu", payload, sequence=13, system="openvino_gva")
+        forged["decision"]["selected_implementation_id"] = "savant-damage-gpu-implementation-v1"
+        with self.assertRaisesRegex(ProtocolError, "selected_implementation_id mismatch"):
+            self.bridge.execute(forged, payload)
 
     def test_absolute_unix_socket_listener_accepts_a_real_path_client(self) -> None:
         import tempfile

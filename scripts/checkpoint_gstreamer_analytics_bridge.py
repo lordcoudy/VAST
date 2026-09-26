@@ -134,14 +134,34 @@ def open_bridge_listener(path: os.PathLike[str] | str, *, backlog: int = 1) -> s
         raise
 
 
+# One guardian serves both native-probe systems; each system's frozen policy
+# identities embed its own prefix and coordinate hash.
+NATIVE_PROBE_POLICY_SYSTEMS = ("gstreamer_custom", "openvino_gva")
+
+
+def native_probe_policy_systems(manifest: Mapping[str, Any]) -> tuple[str, ...]:
+    """Native-probe systems whose frozen policy bindings this bridge serves."""
+    systems = _mapping(
+        _mapping(manifest, "GStreamer analytics bridge policy manifest").get("systems"),
+        "GStreamer analytics bridge policy systems",
+    )
+    present = tuple(system for system in NATIVE_PROBE_POLICY_SYSTEMS if system in systems)
+    _require(
+        "gstreamer_custom" in present,
+        "GStreamer analytics bridge policy binding is missing: gstreamer_custom",
+    )
+    return present
+
+
 def _policy_binding(
     manifest: Mapping[str, Any],
     branch: str,
     resource: str,
     capability: Mapping[str, Any],
+    system: str = "gstreamer_custom",
 ) -> dict[str, Any]:
     try:
-        value = manifest["systems"]["gstreamer_custom"]["branches"][branch][resource]
+        value = manifest["systems"][system]["branches"][branch][resource]
     except (KeyError, TypeError) as error:
         raise ProtocolError(
             f"GStreamer analytics bridge policy binding is missing: {branch}/{resource}"
@@ -457,6 +477,7 @@ class AnalyticsExecutionBridge:
         _require(set(worker_capabilities) == expected_keys, "bridge worker capabilities must cover exact 8 bindings")
         _require(set(worker_bindings) == expected_keys, "bridge worker bindings must cover exact 8 bindings")
         self._policy_manifest = policy_capability_manifest
+        self._policy_systems = native_probe_policy_systems(policy_capability_manifest)
         self._sockets: dict[tuple[str, str], socket.socket] = {}
         self._clients: dict[tuple[str, str], ExecutionClient] = {}
         self._capabilities: dict[tuple[str, str], dict[str, Any]] = {}
@@ -477,9 +498,10 @@ class AnalyticsExecutionBridge:
                         capability["engine"] == RESOURCE_ENGINE[resource],
                         "bridge worker capability resource/engine mismatch",
                     )
-                    _policy_binding(
-                        self._policy_manifest, branch, resource, capability
-                    )
+                    for system in self._policy_systems:
+                        _policy_binding(
+                            self._policy_manifest, branch, resource, capability, system
+                        )
                     binding = _validate_worker_binding(
                         worker_bindings[key], capability, branch=branch, resource=resource
                     )
@@ -627,10 +649,19 @@ class AnalyticsExecutionBridge:
         branch = request["frame"]["branch"]
         resource = request["decision"]["selected_resource"]
         key = _worker_key(branch, resource)
-        policy = _policy_binding(
-            self._policy_manifest, branch, resource, self._capabilities[key]
-        )
         decision = request["decision"]
+        candidates = [
+            _policy_binding(
+                self._policy_manifest, branch, resource, self._capabilities[key], system
+            )
+            for system in self._policy_systems
+        ]
+        matching = [
+            candidate for candidate in candidates
+            if candidate["implementation_id"] == decision["selected_implementation_id"]
+        ]
+        _require(len(matching) == 1, "bridge decision selected_implementation_id mismatch")
+        policy = matching[0]
         for field, expected in (
             ("selected_implementation_id", policy["implementation_id"]),
             ("emitter_id", policy["emitter_id"]),
@@ -853,6 +884,8 @@ class AnalyticsExecutionBridge:
 
 
 __all__ = [
+    "NATIVE_PROBE_POLICY_SYSTEMS",
+    "native_probe_policy_systems",
     "AnalyticsExecutionBridge",
     "BRIDGE_MESSAGE_TYPE",
     "BRIDGE_RESPONSE_TYPE",
