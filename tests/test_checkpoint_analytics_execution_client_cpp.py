@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 import shlex
 import shutil
 import subprocess
@@ -102,6 +103,34 @@ class CheckpointAnalyticsExecutionClientCppTest(unittest.TestCase):
         request = parse_canonical_json(run.stdout)
         self.assertEqual(request["message_type"], "analytics_execute")
         self.assertEqual(request["frame"]["branch"], "damage")
+
+    def test_native_execution_device_id_regression(self) -> None:
+        self._compile_and_run("checkpoint_analytics_execution_device_id_test.cpp", ("glib-2.0",))
+
+    def test_native_execution_deadline_is_the_deepstream_transport_bound(self) -> None:
+        sys.path.insert(0, str(ROOT / "scripts"))
+        from checkpoint_deepstream_protocol_adapter import (
+            ANALYTICS_EXECUTION_TRANSPORT_TIMEOUT_NS,
+        )
+
+        source = (ROOT / "deploy" / "native_gst_probe" / "vast_native_gst_probe.cpp").read_text(
+            encoding="utf-8"
+        )
+        match = re.search(
+            r"constexpr std::uint64_t kCheckpointAnalyticsExecutionTransportTimeoutNs = "
+            r"([0-9']+)ULL;",
+            source,
+        )
+        self.assertIsNotNone(match)
+        self.assertEqual(
+            int(match.group(1).replace("'", "")), ANALYTICS_EXECUTION_TRANSPORT_TIMEOUT_NS
+        )
+        # The policy deadline must not become the worker's execution deadline.
+        self.assertIn(
+            "const std::uint64_t deadline_ns = kCheckpointAnalyticsExecutionTransportTimeoutNs;",
+            source,
+        )
+        self.assertNotIn("self->args_.deadline_ms * 1'000'000.0", source)
 
     def test_native_policy_client_regression(self) -> None:
         self._compile_and_run("checkpoint_native_policy_client_test.cpp", ("glib-2.0",))

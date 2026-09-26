@@ -47,3 +47,7 @@ Nonpromoting pre-checks found three further OpenVINO GVA / GStreamer Custom qual
 ## 2026-09-26 revision approval
 
 The revised planning commit `16b5fefe793590eec2dcc8c601fe2d909e3440c3` (requirement "Native-probe qualification path is integrated before qualification", design decision 8, tasks 10.1-10.7) was approved on PR #2 at https://github.com/lordcoudy/VAST/pull/2#issuecomment-5844363496 (2026-09-26T07:45:54Z), after which implementation was requested with `/opsx:apply`. The approval does not select the design alternative, so decision 8's recommended option (manifest-injected CPU/GPU identities) is implemented.
+
+## 2026-09-26 execution-deadline decision
+
+The native probe used the policy deadline as the analytics worker execution deadline, so a single late frame aborted a qualification cell through the fail-closed guardian. The operator chose to align OpenVINO GVA and GStreamer Custom with the DeepStream adapter: worker requests carry the same 300-second transport bound, and policy-deadline misses remain measured outcomes. This does not change the deadlines, policies, estimands or acceptance rules.

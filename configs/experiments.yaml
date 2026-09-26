@@ -41,7 +41,7 @@ benchmark:
     fanout_emitter: deploy/native_gst_probe/checkpoint_resource_interval_emitter.hpp
     fanout_emitter_sha256: 6eb7c3b5f6cd31820727b6cd0808707873b9b01a45547a5549b8dde9b7b728b6
     fanout_binding: deploy/native_gst_probe/vast_native_gst_probe.cpp
-    fanout_binding_sha256: 485b1197c8d815bb297e1498defbc9ffe96848a2ea083057a86413d3bfe51eda
+    fanout_binding_sha256: 33a4b098d740208a351374e35ec872faa9fa56f8c63dce40abc140d9784666ab
     fanout_runtime_sidecar: resource_intervals.runtime.csv
     fanout_runtime_status: source_implemented_not_target_executed_not_accepted
     sidecar: resource_intervals.csv

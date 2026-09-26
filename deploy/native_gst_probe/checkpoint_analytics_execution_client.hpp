@@ -4,6 +4,7 @@
 
 #include <glib.h>
 
+#include <algorithm>
 #include <array>
 #include <cerrno>
 #include <cstdint>
@@ -25,6 +26,16 @@
 #include <unistd.h>
 
 namespace vast {
+
+// Worker device identifiers are printable text such as a CUDA UUID or the
+// processor model; the exact value is bound by the attested terminal backend.
+inline bool checkpoint_analytics_stable_device_id(const std::string& value) {
+  return !value.empty() && value.size() <= 256 &&
+         value.front() != ' ' && value.back() != ' ' &&
+         std::all_of(value.begin(), value.end(), [](unsigned char character) {
+           return character >= 0x20 && character < 0x7f;
+         });
+}
 
 struct CheckpointAnalyticsExecutionRequest {
   std::string request_id;
@@ -657,7 +668,9 @@ class CheckpointAnalyticsExecutionClient {
          result.engine == "openvino_cpu" &&
          result.runtime_name == "OpenVINO" &&
          result.device_api == "CPU" &&
-         result.device_id == "CPU" &&
+         // The worker reports the processor model; the exact device is bound
+         // through the terminal backend the policy coordinator verifies.
+         checkpoint_analytics_stable_device_id(result.device_id) &&
          result.native_inference_api == "openvino.CompiledModel.__call__" &&
          result.execution_path == "openvino_cpu_native") ||
             (!cpu &&

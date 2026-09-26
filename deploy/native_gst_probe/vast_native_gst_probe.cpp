@@ -156,6 +156,10 @@ bool read_current_level_buffers(GstElement* element, std::uint64_t& level) {
   return true;
 }
 
+// Transport bound for one analytics execution request; must equal the
+// DeepStream adapter's ANALYTICS_EXECUTION_TRANSPORT_TIMEOUT_NS.
+constexpr std::uint64_t kCheckpointAnalyticsExecutionTransportTimeoutNs = 300'000'000'000ULL;
+
 // Loaded plugin factories that identify the checkpoint decode stage. Its
 // "explicit_hardware_decoder" autoplugger is a configuration label recorded in
 // the stage config, not a GStreamer factory, so it is never resolved here.
@@ -2699,8 +2703,9 @@ class NativeProbeRuntime {
         execution_request.transport_pts_ns = pts;
         execution_request.branch = ctx->branch;
         execution_request.decision = decision;
-        const std::uint64_t deadline_ns = static_cast<std::uint64_t>(
-            self->args_.deadline_ms * 1'000'000.0);
+        // The worker deadline is a transport bound, as in the DeepStream
+        // adapter; the policy deadline stays a measured outcome.
+        const std::uint64_t deadline_ns = kCheckpointAnalyticsExecutionTransportTimeoutNs;
         const std::uint64_t execution_started_monotonic_ns = steady_now_ns();
         if (deadline_ns == 0 || execution_started_monotonic_ns > UINT64_MAX - deadline_ns) {
           throw std::runtime_error("analytics execution deadline overflows uint64");
