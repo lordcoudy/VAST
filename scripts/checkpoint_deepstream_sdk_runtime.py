@@ -43,6 +43,7 @@ TOPOLOGY_KIND_ENV = "VAST_CHECKPOINT_TOPOLOGY_KIND"
 STREAM_ID_ENV = "VAST_CHECKPOINT_STREAM_ID"
 BRANCH_ID_ENV = "VAST_CHECKPOINT_BRANCH_ID"
 BRANCHES_ENV = "VAST_DEEPSTREAM_BRANCHES"
+SOURCE_DURATION_NS_ENV = "VAST_DEEPSTREAM_SOURCE_DURATION_NS"
 
 ADMISSION_MAGIC = b"VASTAU01"
 ADMISSION_PROTOCOL_VERSION = 1
@@ -64,6 +65,7 @@ ANALYTICS_BRANCHES = (
     "damage",
     "foreign_object",
 )
+SINGLE_STREAM_MUX_SOURCE_ID = 0
 _SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 _PROTOCOL_TEXT_RE = re.compile(r"^[^\x00-\x20\x7f]+$")
 STAGE_CONTRACT_COLUMNS = (
@@ -106,6 +108,21 @@ class AdmissionTransportError(DeepStreamSdkRuntimeError):
 def _require(condition: bool, message: str) -> None:
     if not condition:
         raise DeepStreamSdkRuntimeError(message)
+
+
+def _sleep_until_monotonic_ns(
+    target_ns: int,
+    *,
+    monotonic_ns: Callable[[], int] = time.monotonic_ns,
+    sleep: Callable[[float], None] = time.sleep,
+) -> None:
+    """Wait for a monotonic deadline without a negative-sleep clock race."""
+
+    while True:
+        remaining_ns = target_ns - monotonic_ns()
+        if remaining_ns <= 0:
+            return
+        sleep(min(0.001, remaining_ns / 1e9))
 
 
 def _canonical_json_text(value: Any, label: str) -> str:
@@ -385,18 +402,25 @@ def admission_identity_sha256(frame: AdmissionTransportFrame) -> bytes:
 def deepstream_buffer_timestamps(
     frame: AdmissionTransportFrame,
     *,
+    source_duration_ns: int,
     clock_time_none: int = MISSING_TIMESTAMP,
 ) -> tuple[int, int, int]:
     """Map one scaled VASTAU01 timeline to GstBuffer PTS/DTS/duration."""
 
+    _require(
+        type(source_duration_ns) is int and source_duration_ns > 0,
+        "DeepStream source duration is invalid",
+    )
     _require(
         frame.transport_pts_ns >= frame.access_unit_pts_ns,
         "DeepStream transport PTS precedes access-unit PTS",
     )
     dts = clock_time_none
     if frame.access_unit_dts_ns != MISSING_TIMESTAMP:
-        delta = int(frame.access_unit_dts_ns) - int(frame.access_unit_pts_ns)
-        dts = int(frame.transport_pts_ns) + delta
+        dts = (
+            int(frame.source_cycle) * source_duration_ns
+            + int(frame.access_unit_dts_ns)
+        )
         _require(dts >= 0, "DeepStream scaled DTS is negative")
     duration = int(frame.duration_ns) if frame.duration_ns > 0 else clock_time_none
     return int(frame.transport_pts_ns), dts, duration
@@ -611,6 +635,7 @@ class DeepStreamGraphSpec:
     native_queue_drop_policy: str = "drop_newest"
     process_graph_count: int = 1
     decoder_count: int = 1
+    decoder_gpu_id: int = 0
 
     @classmethod
     def build(
@@ -696,6 +721,15 @@ class NvDsMetaBridge:
                 ctypes.c_size_t,
             )
             function.restype = ctypes.c_int
+        observe = self._library.vast_deepstream_observe_frame
+        observe.argtypes = (
+            pointer,
+            ctypes.c_uint32,
+            observation,
+            error,
+            ctypes.c_size_t,
+        )
+        observe.restype = ctypes.c_int
 
     @staticmethod
     def _convert(value: _NativeObservation) -> NvDsFrameObservation:
@@ -714,7 +748,7 @@ class NvDsMetaBridge:
         name: str,
         *,
         buffer_pointer: int,
-        stream_id: int,
+        source_id: int,
         transport_pts_ns: int,
         identity_sha256: bytes,
     ) -> NvDsFrameObservation:
@@ -725,7 +759,7 @@ class NvDsMetaBridge:
         error = ctypes.create_string_buffer(512)
         result = getattr(self._library, name)(
             ctypes.c_void_p(buffer_pointer),
-            stream_id,
+            source_id,
             transport_pts_ns,
             digest,
             ctypes.byref(observed),
@@ -743,12 +777,35 @@ class NvDsMetaBridge:
     def verify(self, **values: Any) -> NvDsFrameObservation:
         return self._call("vast_deepstream_verify_admission", **values)
 
+    def observe(
+        self,
+        *,
+        buffer_pointer: int,
+        source_id: int,
+    ) -> NvDsFrameObservation:
+        _require(buffer_pointer > 0, "DeepStream GstBuffer pointer is invalid")
+        observed = _NativeObservation()
+        error = ctypes.create_string_buffer(512)
+        result = self._library.vast_deepstream_observe_frame(
+            ctypes.c_void_p(buffer_pointer),
+            source_id,
+            ctypes.byref(observed),
+            error,
+            len(error),
+        )
+        if result != 0:
+            message = error.value.decode("utf-8", errors="replace") or f"native error {result}"
+            raise DeepStreamSdkRuntimeError(
+                f"DeepStream NvDs metadata observation failed: {message}"
+            )
+        return self._convert(observed)
+
 
 class DeepStreamCallbacks(Protocol):
     def admit_transport_frame(self, frame: AdmissionTransportFrame, *, observed_timestamp_ms: int) -> None: ...
     def observe_decoded_frame(self, identity: Mapping[str, Any], *, observed_timestamp_ms: int) -> None: ...
     def observe_preprocessed_frame(self, identity: Mapping[str, Any], *, observed_timestamp_ms: int) -> None: ...
-    def observe_fanout(self, identity: Mapping[str, Any], *, branch: str, observed_timestamp_ms: int) -> None: ...
+    def observe_fanout(self, identity: Mapping[str, Any], *, branch: str, observed_timestamp_ms: int) -> int: ...
     def execute_branch_sample(self, identity: Mapping[str, Any], *, branch: str, sample: Any) -> None: ...
     def drop_branch(self, input_frame_key: str, branch: str, *, reason: str, observed_timestamp_ms: int) -> None: ...
 
@@ -786,12 +843,12 @@ class EngineeringCallbackRecorder:
             _require(key in self._decoded, "pilot preprocess precedes decode")
             self._preprocessed.add(key)
 
-    def observe_fanout(self, identity: Mapping[str, Any], *, branch: str, observed_timestamp_ms: int) -> None:
-        del observed_timestamp_ms
+    def observe_fanout(self, identity: Mapping[str, Any], *, branch: str, observed_timestamp_ms: int) -> int:
         key = str(identity["input_frame_key"])
         with self._lock:
             _require(key in self._preprocessed, "pilot fanout precedes preprocess")
             self._fanouts.add((key, branch))
+        return int(math.ceil(float(observed_timestamp_ms)))
 
     def execute_branch_sample(self, identity: Mapping[str, Any], *, branch: str, sample: Any) -> None:
         del sample
@@ -864,6 +921,36 @@ def _now_ms() -> int:
     return time.time_ns() // 1_000_000
 
 
+def _ceil_epoch_ns_to_ms(value_ns: int) -> int:
+    """Convert an exact epoch nanosecond observation without float rounding."""
+
+    _require(
+        type(value_ns) is int and value_ns >= 0,
+        "DeepStream epoch timestamp must be a non-negative integer",
+    )
+    return (value_ns + 999_999) // 1_000_000
+
+
+_COORDINATED_STOP_AFTER_ADMISSION_EOF_GRACE_S = 1.0
+
+
+def _await_coordinated_stop_after_admission_eof(
+    *,
+    stop_event: threading.Event,
+    stop_thread: threading.Thread,
+    stop_timestamp: Sequence[int],
+    timeout_s: float = _COORDINATED_STOP_AFTER_ADMISSION_EOF_GRACE_S,
+) -> None:
+    """Resolve the source-close/worker-STOP scheduling race without accepting raw EOF."""
+
+    _require(timeout_s >= 0, "DeepStream coordinated STOP grace is negative")
+    stop_thread.join(timeout=timeout_s)
+    _require(
+        stop_event.is_set() and bool(stop_timestamp),
+        "DeepStream admission FD closed before STOP",
+    )
+
+
 def _gst_buffer_pointer(buffer: Any) -> int:
     """Return the underlying GstBuffer pointer used by official pyds examples."""
 
@@ -881,13 +968,19 @@ class DeepStreamSdkPipeline:
         graph: DeepStreamGraphSpec,
         callbacks: DeepStreamCallbacks,
         meta_bridge: NvDsMetaBridge,
+        source_duration_ns: int,
         decoder_gpu_id: int = 0,
         resource_recorder: Any | None = None,
     ) -> None:
         _require(decoder_gpu_id == 0, "checkpoint DeepStream decoder GPU must remain zero")
+        _require(
+            type(source_duration_ns) is int and source_duration_ns > 0,
+            "DeepStream source duration is invalid",
+        )
         self.graph = graph
         self.callbacks = callbacks
         self.meta_bridge = meta_bridge
+        self.source_duration_ns = source_duration_ns
         self.decoder_gpu_id = decoder_gpu_id
         self.resource_recorder = resource_recorder
         self._pending: dict[int, _PendingFrame] = {}
@@ -1065,20 +1158,45 @@ class DeepStreamSdkPipeline:
         if error is not None:
             raise DeepStreamSdkRuntimeError(f"DeepStream callback failed: {error}") from error
 
-    def _pending_for_buffer(self, buffer: Any) -> _PendingFrame:
-        pts = int(buffer.pts)
+    def _pending_for_buffer(self, buffer: Any, *, stage: str) -> _PendingFrame:
+        observed = self.meta_bridge.observe(
+            buffer_pointer=_gst_buffer_pointer(buffer),
+            source_id=SINGLE_STREAM_MUX_SOURCE_ID,
+        )
+        pts = observed.buf_pts_ns
         with self._pending_lock:
             pending = self._pending.get(pts)
-        _require(pending is not None, "DeepStream callback buffer PTS has no admitted frame")
+            if pending is None:
+                pending_pts = tuple(self._pending)
+                diagnostic = (
+                    f"stage={stage} nvds_buf_pts_ns={pts} "
+                    f"gst_buffer_pts_ns={int(buffer.pts)} "
+                    f"pending_count={len(pending_pts)} "
+                    f"pending_min_pts_ns={min(pending_pts) if pending_pts else 'none'} "
+                    f"pending_max_pts_ns={max(pending_pts) if pending_pts else 'none'}"
+                )
+            else:
+                diagnostic = ""
+        _require(
+            pending is not None,
+            "DeepStream callback NvDsFrameMeta buf_pts has no admitted frame: "
+            + diagnostic,
+        )
         return pending
 
     def _native_identity(
         self,
         pending: _PendingFrame,
         observed: NvDsFrameObservation,
+        *,
+        mux_gst_buffer_pts_ns: int,
     ) -> dict[str, Any]:
         frame = pending.frame
         _require(observed.identity_sha256 == pending.identity_sha256, "NvDs admission identity digest drifted")
+        _require(
+            0 <= mux_gst_buffer_pts_ns < int(self.Gst.CLOCK_TIME_NONE),
+            "DeepStream mux GstBuffer PTS is invalid",
+        )
         return {
             "schema_version": 1,
             "artifact_kind": "deepstream_nvds_frame_identity",
@@ -1091,6 +1209,7 @@ class DeepStreamSdkPipeline:
             "nvds_source_id": observed.source_id,
             "nvds_frame_num": observed.frame_num,
             "nvds_buf_pts_ns": observed.buf_pts_ns,
+            "mux_gst_buffer_pts_ns": mux_gst_buffer_pts_ns,
             "decoder_factory": "nvv4l2decoder",
             "decoder_gpu_id": self.decoder_gpu_id,
         }
@@ -1098,7 +1217,7 @@ class DeepStreamSdkPipeline:
     def _metadata_values(self, pending: _PendingFrame, buffer: Any) -> dict[str, Any]:
         return {
             "buffer_pointer": _gst_buffer_pointer(buffer),
-            "stream_id": self.graph.stream_id,
+            "source_id": SINGLE_STREAM_MUX_SOURCE_ID,
             "transport_pts_ns": pending.frame.transport_pts_ns,
             "identity_sha256": pending.identity_sha256,
         }
@@ -1107,16 +1226,20 @@ class DeepStreamSdkPipeline:
         try:
             buffer = info.get_buffer()
             _require(buffer is not None, "DeepStream mux callback has no GstBuffer")
-            pending = self._pending_for_buffer(buffer)
+            pending = self._pending_for_buffer(buffer, stage="mux")
             observed = self.meta_bridge.bind(**self._metadata_values(pending, buffer))
-            identity = self._native_identity(pending, observed)
+            identity = self._native_identity(
+                pending,
+                observed,
+                mux_gst_buffer_pts_ns=int(buffer.pts),
+            )
             completed_ns = time.time_ns()
             with self._pending_lock:
                 _require(pending.identity is None, "DeepStream decode callback was duplicated")
                 pending.identity = identity
             self.callbacks.observe_decoded_frame(
                 identity,
-                observed_timestamp_ms=completed_ns / 1_000_000.0,
+                observed_timestamp_ms=_ceil_epoch_ns_to_ms(completed_ns),
             )
             if self.resource_recorder is not None:
                 _require(
@@ -1140,9 +1263,13 @@ class DeepStreamSdkPipeline:
         try:
             buffer = info.get_buffer()
             _require(buffer is not None, "DeepStream preprocess callback has no GstBuffer")
-            pending = self._pending_for_buffer(buffer)
+            pending = self._pending_for_buffer(buffer, stage="preprocess")
             _require(pending.identity is not None, "DeepStream preprocess callback precedes decode")
             self.meta_bridge.verify(**self._metadata_values(pending, buffer))
+            _require(
+                int(buffer.pts) == int(pending.identity["mux_gst_buffer_pts_ns"]),
+                "DeepStream preprocess GstBuffer PTS drifted from mux output",
+            )
             with self._pending_lock:
                 _require(not pending.preprocessed, "DeepStream preprocess callback was duplicated")
                 pending.preprocessed = True
@@ -1162,7 +1289,7 @@ class DeepStreamSdkPipeline:
             _require(sample is not None, f"DeepStream appsink returned no sample: {branch}")
             buffer = sample.get_buffer()
             _require(buffer is not None, f"DeepStream appsink sample has no buffer: {branch}")
-            pending = self._pending_for_buffer(buffer)
+            pending = self._pending_for_buffer(buffer, stage="terminal")
             _require(pending.identity is not None and pending.preprocessed, "DeepStream route precedes preprocessing")
             fanout_started_ns = time.time_ns()
             fanout_started_thread_ns = time.thread_time_ns()
@@ -1173,10 +1300,17 @@ class DeepStreamSdkPipeline:
                     _require(branch not in pending.fanout_branches, "DeepStream fanout callback was duplicated")
                     pending.fanout_branches.add(branch)
                 fanout_completed_ns = time.time_ns()
-                self.callbacks.observe_fanout(
+                serialized_fanout_timestamp_ms = self.callbacks.observe_fanout(
                     pending.identity,
                     branch=branch,
-                    observed_timestamp_ms=fanout_completed_ns / 1_000_000.0,
+                    observed_timestamp_ms=_ceil_epoch_ns_to_ms(
+                        fanout_completed_ns
+                    ),
+                )
+                _require(
+                    type(serialized_fanout_timestamp_ms) is int
+                    and serialized_fanout_timestamp_ms > 0,
+                    "DeepStream fanout callback did not return its serialized topology timestamp",
                 )
                 fanout_completed_thread_ns = time.thread_time_ns()
                 if self.resource_recorder is not None:
@@ -1187,6 +1321,7 @@ class DeepStreamSdkPipeline:
                         payload_bytes=int(buffer.get_size()),
                         start_timestamp_ns=fanout_started_ns,
                         end_timestamp_ns=fanout_completed_ns,
+                        serialized_topology_timestamp_ms=serialized_fanout_timestamp_ms,
                         thread_cpu_time_ns=(
                             fanout_completed_thread_ns - fanout_started_thread_ns
                         ),
@@ -1286,7 +1421,15 @@ class DeepStreamSdkPipeline:
 
     def push(self, frame: AdmissionTransportFrame) -> None:
         self.raise_callback_error()
-        self.callbacks.admit_transport_frame(frame, observed_timestamp_ms=_now_ms())
+        # A source admission is recorded as a floored millisecond timestamp by
+        # the native coordinator.  Source-read is a later completion edge, so
+        # round its exact epoch observation upward.  Flooring both independent
+        # process observations can invert their order when the clocks differ by
+        # less than one quantization bucket on the WSL2/Docker boundary.
+        self.callbacks.admit_transport_frame(
+            frame,
+            observed_timestamp_ms=_ceil_epoch_ns_to_ms(time.time_ns()),
+        )
         with self._pending_lock:
             _require(
                 frame.transport_pts_ns not in self._seen_transport_pts,
@@ -1303,6 +1446,7 @@ class DeepStreamSdkPipeline:
         _require(buffer.fill(0, frame.payload) == len(frame.payload), "DeepStream GstBuffer fill was truncated")
         buffer.pts, buffer.dts, buffer.duration = deepstream_buffer_timestamps(
             frame,
+            source_duration_ns=self.source_duration_ns,
             clock_time_none=self.Gst.CLOCK_TIME_NONE,
         )
         if frame.keyframe:
@@ -1541,6 +1685,8 @@ def run_fd_worker(args: argparse.Namespace) -> dict[str, Any]:
     run_id = _text_environment(RUN_ID_ENV)
     topology_kind = _text_environment(TOPOLOGY_KIND_ENV)
     stream_id = _integer_environment(STREAM_ID_ENV)
+    source_duration_ns = _integer_environment(SOURCE_DURATION_NS_ENV)
+    _require(source_duration_ns > 0, "DeepStream source duration is zero")
     _require(args.topology_kind == topology_kind, "DeepStream topology differs between argv and coordinator")
     _require(args.stream_id == stream_id, "DeepStream stream differs between argv and coordinator")
     output_dir = Path(args.output_dir)
@@ -1569,6 +1715,7 @@ def run_fd_worker(args: argparse.Namespace) -> dict[str, Any]:
         "stream_id": stream_id,
         "branches": list(branches),
         "codec": args.codec,
+        "source_duration_ns": source_duration_ns,
         "claim_status": "native_sdk_runtime_requires_external_acceptance",
     }
     from checkpoint_deepstream_resource_runtime_v3 import (
@@ -1582,6 +1729,7 @@ def run_fd_worker(args: argparse.Namespace) -> dict[str, Any]:
         stream_id=stream_id,
         topology_kind=topology_kind,
         branches=branches,
+        decoder_gpu_index=graph.decoder_gpu_id,
     )
     context["resource_recorder"] = resource_recorder
     callbacks = None
@@ -1596,7 +1744,9 @@ def run_fd_worker(args: argparse.Namespace) -> dict[str, Any]:
             graph=graph,
             callbacks=callbacks,
             meta_bridge=NvDsMetaBridge(args.nvds_meta_library),
+            source_duration_ns=source_duration_ns,
             resource_recorder=resource_recorder,
+            decoder_gpu_id=graph.decoder_gpu_id,
         )
     except BaseException:
         resource_recorder.close()
@@ -1607,10 +1757,12 @@ def run_fd_worker(args: argparse.Namespace) -> dict[str, Any]:
         raise
     stop_event = threading.Event()
     stop_timestamp: list[int] = []
+    stop_drain_deadline: list[float] = []
 
     def receive_stop() -> None:
         try:
             stop_timestamp.append(lifecycle.await_stop())
+            stop_drain_deadline.append(time.monotonic() + args.drain_timeout_s)
         except BaseException as exc:
             pipeline._record_error(exc)
         finally:
@@ -1618,8 +1770,7 @@ def run_fd_worker(args: argparse.Namespace) -> dict[str, Any]:
 
     lifecycle.ready()
     window = lifecycle.await_start()
-    while time.monotonic_ns() < window.common_start_monotonic_ns:
-        time.sleep(min(0.001, (window.common_start_monotonic_ns - time.monotonic_ns()) / 1e9))
+    _sleep_until_monotonic_ns(window.common_start_monotonic_ns)
     pipeline.start()
     lifecycle.started()
     stop_thread = threading.Thread(target=receive_stop, name=f"deepstream-stop-{worker_id}", daemon=True)
@@ -1630,8 +1781,17 @@ def run_fd_worker(args: argparse.Namespace) -> dict[str, Any]:
     frame_count = 0
     resource_paths: dict[str, Path] = {}
     try:
-        while not stop_event.is_set():
+        # STOP closes source admission, but already admitted access units can
+        # still be buffered in the independent consumer pipes. Every worker
+        # must consume through source EOF before declaring its graph drained.
+        while True:
             pipeline.raise_callback_error()
+            if stop_event.is_set():
+                _require(stop_timestamp and stop_drain_deadline, "DeepStream STOP timestamp was not received")
+                _require(
+                    time.monotonic() < stop_drain_deadline[0],
+                    "DeepStream admission pipe drain timed out",
+                )
             if pipeline.decoded_seen.is_set() and not decoder_status_sent:
                 lifecycle.decoder_placement_verified()
                 decoder_status_sent = True
@@ -1639,13 +1799,21 @@ def run_fd_worker(args: argparse.Namespace) -> dict[str, Any]:
             if not ready:
                 continue
             frame = read_admission_transport_frame(admission_fd)
-            _require(frame is not None, "DeepStream admission FD closed before STOP")
+            if frame is None:
+                _await_coordinated_stop_after_admission_eof(
+                    stop_event=stop_event,
+                    stop_thread=stop_thread,
+                    stop_timestamp=stop_timestamp,
+                )
+                break
             pipeline.push(frame)
             frame_count += 1
         pipeline.raise_callback_error()
         _require(stop_timestamp, "DeepStream STOP timestamp was not received")
         lifecycle.admission_stopped(stop_timestamp[0])
-        pipeline.finish(timeout_s=args.drain_timeout_s)
+        remaining_drain_s = stop_drain_deadline[0] - time.monotonic()
+        _require(remaining_drain_s > 0, "DeepStream admission pipe drain timed out")
+        pipeline.finish(timeout_s=remaining_drain_s)
         if pipeline.decoded_seen.is_set() and not decoder_status_sent:
             lifecycle.decoder_placement_verified()
             decoder_status_sent = True
@@ -1720,6 +1888,7 @@ def run_engineering_pilot(args: argparse.Namespace) -> dict[str, Any]:
         graph=graph,
         callbacks=callbacks,
         meta_bridge=NvDsMetaBridge(args.nvds_meta_library),
+        source_duration_ns=frame.duration_ns,
     )
     try:
         pipeline.start()
@@ -1785,8 +1954,13 @@ def main(argv: Sequence[str] | None = None) -> int:
     pilot_parser.add_argument("--timeout-s", type=float, default=20.0)
     args = parser.parse_args(argv)
     try:
-        result = run_fd_worker(args) if args.command == "run" else run_engineering_pilot(args)
-        _print_json(result)
+        if args.command == "run":
+            # The coordinator owns worker receipts through lifecycle/evidence
+            # channels.  fd 1 is reserved for the exact native nvstreammux EOS
+            # audit captured by the enclosing publication runtime.
+            run_fd_worker(args)
+        else:
+            _print_json(run_engineering_pilot(args))
         return 0
     except DeepStreamSdkRuntimeError as exc:
         print(f"deepstream sdk runtime blocked: {exc}", file=sys.stderr)

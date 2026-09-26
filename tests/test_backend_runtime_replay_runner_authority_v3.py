@@ -222,6 +222,24 @@ class ReplayRunnerAuthorityV3Tests(unittest.TestCase):
             self.assertIs(value[field], False, field)
             self.assertIs(assessment[field], False, field)
 
+    @unittest.skipUnless(os.name == "posix", "POSIX atime regression")
+    def test_posix_closure_reads_ignore_read_driven_atime_changes(self) -> None:
+        for relative in (
+            self.fixture.image_path,
+            self.fixture.entrypoint_path,
+            self.fixture.bundle_path,
+            self.fixture.q4_implementation_path,
+            self.fixture.q4_path,
+            self.fixture.protocol_path,
+        ):
+            path = self.root / relative
+            observed = path.stat()
+            os.utime(
+                path,
+                ns=(946684800 * 1_000_000_000, int(observed.st_mtime_ns)),
+            )
+        self.assertEqual(self.fixture.build(), self.fixture.authority)
+
     def test_closure_hash_is_domain_separated_and_role_bound(self) -> None:
         plain = {
             "schema_version": 3, "artifact_kind": target.CLOSURE_SET_KIND,

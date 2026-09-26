@@ -394,6 +394,25 @@ def validate_full_resource_evidence(
     }
     if not required_topology_columns.issubset(topology_events.columns):
         raise FullResourceContractError("topology events lack fanout linkage columns")
+    required_ingress_identity_columns = {
+        "run_id",
+        "trace_id",
+        "stream_id",
+        "frame_id",
+    }
+    if not required_ingress_identity_columns.issubset(ingress_ledger.columns):
+        raise FullResourceContractError("ingress ledger lacks accepted frame identities")
+    accepted_frame_keys = {
+        (
+            str(row["run_id"]),
+            str(row["trace_id"]),
+            int(row["stream_id"]),
+            int(row["frame_id"]),
+        )
+        for row in ingress_ledger.to_dict(orient="records")
+    }
+    if {key[0] for key in accepted_frame_keys} != {expected_run_id}:
+        raise FullResourceContractError("ingress ledger run identity drifted")
     expected_fanout_keys = {
         (
             str(row["trace_id"]),
@@ -404,6 +423,13 @@ def validate_full_resource_evidence(
         )
         for row in topology_events.to_dict(orient="records")
         if str(row["event_kind"]) == "fanout"
+        and (
+            str(row.get("run_id", expected_run_id)),
+            str(row["trace_id"]),
+            int(row["stream_id"]),
+            int(row["frame_id"]),
+        )
+        in accepted_frame_keys
     }
     require_fanout_rows = topology_kind == "shared_video_dag"
     if require_fanout_rows != bool(expected_fanout_keys):

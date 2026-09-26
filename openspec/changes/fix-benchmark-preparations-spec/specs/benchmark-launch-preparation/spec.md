@@ -81,6 +81,33 @@ Preparation SHALL bind exact source/fixture/configuration bytes, runtime/package
 - **WHEN** the same accepted inputs and environment generate the full-run plan again
 - **THEN** its matrix/policy identities, pair/arm order, seeds, durations and analysis settings SHALL match exactly.
 
+### Requirement: Native-probe qualification path is integrated before qualification
+OpenVINO GVA and GStreamer Custom qualification cells SHALL execute through the native probe with queue-level reads matching each property's declared width, a container task ceiling that admits all 24 workers (4096), decode-stage artifacts that are loaded GStreamer factories only, and identifier validation that accepts every frozen branch name. CPU and GPU native policy implementation, emitter and emitter-hash identities SHALL be bound to the frozen qualification-v2 capability manifest, and the executing analytics path SHALL match the manifest's selected backend. The GStreamer Custom runtime SHALL accept the qualification bundle's copied, hash-verified container-engine client. Before any 32-cell attempt, one nonpromoting pre-check replay per native-probe system SHALL reach its original successful terminal.
+
+#### Scenario: Mixed-width queue properties
+- **WHEN** pipeline elements expose `current-level-buffers` as `guint` and `guint64`
+- **THEN** the reset check SHALL read each at its declared width, reject any nonzero level and fail explicitly on unreadable or unsupported types.
+
+#### Scenario: Branch identifier shorter than eight bytes
+- **WHEN** a native policy request names the frozen branch `damage`
+- **THEN** identifier validation SHALL accept it, while rejecting empty, oversized, control-containing or non-frozen branch names.
+
+#### Scenario: Policy decision names a manifest identity
+- **WHEN** a decision selects the manifest's implementation and emitter identities for the loaded branch and resource
+- **THEN** the local binding SHALL match them exactly and path entry and terminal messages SHALL proceed without a relabel failure.
+
+#### Scenario: Loaded path differs from manifest backend
+- **WHEN** the loaded analytics path or its identities differ from the manifest's selected backend
+- **THEN** the worker SHALL fail closed before the measurement window, without promotion.
+
+#### Scenario: Qualification bundle supplies a copied engine client
+- **WHEN** the container-engine pin is a project-relative copied client with matching size and SHA-256
+- **THEN** the runtime SHALL accept it; a path escaping the project root or with mismatched bytes SHALL be rejected.
+
+#### Scenario: Pre-check fails
+- **WHEN** a native-probe pre-check replay does not reach a successful terminal
+- **THEN** no 32-cell attempt SHALL start, and its evidence SHALL be preserved as nonpromoting.
+
 ### Requirement: Qualification and Q4 are complete before launch readiness
 Preparation SHALL require all 32 qualification cells in one fresh valid attempt, authenticated guardian stop, successful lifecycle/closure and policy/resource promotion. It SHALL then require Q4 phase A with 560 runs, its identity/grant boundary, phase B with 560 runs and 280 sizing pairs derived from phase B, all bound to current authorities. Failed attempts and partial cells SHALL never be combined.
 

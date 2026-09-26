@@ -9,17 +9,26 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
+_TOPOLOGY_MODULES = (
+    "checkpoint_runtime",
+    "checkpoint_openvino_execution_bridge",
+)
+TOPOLOGY_IMPORTS_BEFORE_ENDPOINT_IMPORT = {
+    name: name in sys.modules for name in _TOPOLOGY_MODULES
+}
+
 from analytics_execution_endpoint import (  # noqa: E402
     expected_capability_from_binding_and_probe,
+    terminal_detector_identity,
 )
 from analytics_execution_protocol import (  # noqa: E402
     ENGINE_OPENVINO_CPU,
     PROTOCOL_IDENTITY_SHA256,
 )
 
-TOPOLOGY_IMPORTS_AFTER_ENDPOINT_IMPORT = {
-    name: name in sys.modules
-    for name in ("checkpoint_runtime", "checkpoint_openvino_execution_bridge")
+TOPOLOGY_IMPORTS_INTRODUCED_BY_ENDPOINT_IMPORT = {
+    name: name in sys.modules and not TOPOLOGY_IMPORTS_BEFORE_ENDPOINT_IMPORT[name]
+    for name in _TOPOLOGY_MODULES
 }
 
 
@@ -73,7 +82,11 @@ class AnalyticsExecutionEndpointTests(unittest.TestCase):
         self.assertEqual(capability["branch"], "plate_number")
         self.assertEqual(capability["engine"], ENGINE_OPENVINO_CPU)
         self.assertEqual(
-            TOPOLOGY_IMPORTS_AFTER_ENDPOINT_IMPORT,
+            terminal_detector_identity(capability),
+            f"plate-number-v1;model_sha256={_sha('source')}",
+        )
+        self.assertEqual(
+            TOPOLOGY_IMPORTS_INTRODUCED_BY_ENDPOINT_IMPORT,
             {
                 "checkpoint_runtime": False,
                 "checkpoint_openvino_execution_bridge": False,

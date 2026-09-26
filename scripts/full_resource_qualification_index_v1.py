@@ -12,13 +12,16 @@ import hashlib
 import json
 import os
 import stat
-import tempfile
 from pathlib import Path
 from typing import Any, Callable, Mapping
 
 import full_resource_qualification as qualification
 import publication_policy_qualification as policy_qualification
 import publication_policy_qualification_index_v2 as policy_index
+from publication_physical_io_v1 import (
+    PhysicalRootCustodyV1,
+    PublicationPhysicalIoV1Error,
+)
 
 
 DEFAULT_FRAGMENT_PATHS = {
@@ -74,10 +77,19 @@ _EMITTER_SOURCE_BY_ROLE = {
 }
 
 FragmentValidator = Callable[[str, Path, Path], dict[str, Any]]
+ExecutionClosureLoader = Callable[..., dict[str, Any]]
 
 
 class FullResourceQualificationIndexV1Error(RuntimeError):
     """An index input or immutable commit is incomplete or unsafe."""
+
+
+def _default_execution_closure_loader(**kwargs: Any) -> dict[str, Any]:
+    from publication_policy_qualification_execution_closure_v1 import (
+        load_publication_policy_qualification_execution_closure_v1,
+    )
+
+    return load_publication_policy_qualification_execution_closure_v1(**kwargs)
 
 
 def _canonical_bytes(value: Any) -> bytes:
@@ -142,7 +154,6 @@ def _read_binding(
     system: str,
     resource: str,
     row: Mapping[str, Any],
-    fragment_artifact: Mapping[str, Any],
     resource_contract: Mapping[str, Any],
 ) -> dict[str, Any]:
     coordinate = f"{system}/{resource}"
@@ -266,7 +277,7 @@ def _build_bindings(
     fragment_paths: Mapping[str, Path],
     fragment_validator: FragmentValidator,
     resource_contract: Mapping[str, Any],
-) -> list[dict[str, Any]]:
+) -> tuple[list[dict[str, Any]], dict[str, dict[str, Any]]]:
     systems = tuple(qualification.SYSTEMS)
     resources = tuple(qualification.RESOURCES)
     if set(fragment_paths) != set(systems):
@@ -275,6 +286,7 @@ def _build_bindings(
         )
 
     bindings: list[dict[str, Any]] = []
+    fragment_descriptors: dict[str, dict[str, Any]] = {}
     for system in systems:
         try:
             _, fragment_artifact, fragment = policy_index._read_fragment(
@@ -287,6 +299,7 @@ def _build_bindings(
             raise FullResourceQualificationIndexV1Error(
                 f"{system} fragment validation failed: {exc}"
             ) from exc
+        fragment_descriptors[system] = dict(fragment_artifact)
         rows = fragment.get("resource_bindings")
         if type(rows) is not list or len(rows) != len(resources):
             raise FullResourceQualificationIndexV1Error(
@@ -315,7 +328,6 @@ def _build_bindings(
                     system=system,
                     resource=resource,
                     row=by_resource[resource],
-                    fragment_artifact=fragment_artifact,
                     resource_contract=resource_contract,
                 )
             )
@@ -323,7 +335,7 @@ def _build_bindings(
         raise FullResourceQualificationIndexV1Error(
             "binding set must contain exactly 8 system/resource rows"
         )
-    return bindings
+    return bindings, fragment_descriptors
 
 
 def _build_pilots(*, root: Path, pilot_root: Path) -> list[dict[str, Any]]:
@@ -384,64 +396,181 @@ def _build_pilots(*, root: Path, pilot_root: Path) -> list[dict[str, Any]]:
     return pilots
 
 
-def _destination(root: Path, output_path: Path) -> Path:
-    candidate = Path(output_path)
-    if not candidate.is_absolute():
-        candidate = root / candidate
-    if candidate.exists():
-        raise FullResourceQualificationIndexV1Error(
-            "immutable full-resource qualification index already exists"
+def _validated_execution_closure_descriptor(
+    *,
+    root: Path,
+    pilot_root: Path,
+    receipt_path: Path,
+    loader: ExecutionClosureLoader,
+    expected_fragment_descriptors: Mapping[str, Mapping[str, Any]],
+) -> dict[str, Any]:
+    try:
+        descriptor = policy_index._descriptor(
+            root, receipt_path, "qualification execution closure receipt"
         )
-    try:
-        parent = candidate.parent.resolve(strict=True)
-        parent.relative_to(root)
-    except (OSError, ValueError) as exc:
-        raise FullResourceQualificationIndexV1Error(
-            "output parent must be a physical directory under project_root"
-        ) from exc
-    try:
-        policy_index._physical_directory(root, parent, "output parent")
-    except policy_index.PolicyQualificationIndexV2Error as exc:
-        raise FullResourceQualificationIndexV1Error(str(exc)) from exc
-    return parent / candidate.name
-
-
-def _atomic_write(destination: Path, payload: bytes) -> None:
-    descriptor, temporary_name = tempfile.mkstemp(
-        prefix=".full-resource-index-v1.", suffix=".tmp", dir=destination.parent
-    )
-    temporary = Path(temporary_name)
-    try:
-        with os.fdopen(descriptor, "wb") as output:
-            output.write(payload)
-            output.flush()
-            os.fsync(output.fileno())
-        os.replace(temporary, destination)
-        directory_descriptor: int | None = None
-        try:
-            directory_descriptor = os.open(
-                destination.parent, os.O_RDONLY | getattr(os, "O_DIRECTORY", 0)
-            )
-            os.fsync(directory_descriptor)
-        except OSError:
-            pass
-        finally:
-            if directory_descriptor is not None:
-                os.close(directory_descriptor)
+        pilot_directory = policy_index._physical_directory(
+            root, pilot_root, "pilot_root"
+        )
+        loaded = loader(project_root=root, receipt_path=root / descriptor["path"])
+    except FullResourceQualificationIndexV1Error:
+        raise
     except Exception as exc:
         raise FullResourceQualificationIndexV1Error(
-            f"atomic index commit failed: {exc}"
+            f"qualification execution closure validation failed: {exc}"
         ) from exc
-    finally:
-        try:
-            if temporary.exists():
-                info = temporary.lstat()
-                if stat.S_ISREG(info.st_mode) and temporary.parent == destination.parent:
-                    temporary.unlink()
-        except OSError as exc:
-            raise FullResourceQualificationIndexV1Error(
-                f"private temporary cleanup failed: {exc}"
-            ) from exc
+    if type(loaded) is not dict or loaded.get("receipt_descriptor") != descriptor:
+        raise FullResourceQualificationIndexV1Error(
+            "qualification execution closure descriptor drifted"
+        )
+    receipt = loaded.get("receipt")
+    pilot_execution = receipt.get("pilot_execution") if type(receipt) is dict else None
+    pilot_identity = (
+        pilot_execution.get("pilot_root")
+        if type(pilot_execution) is dict
+        else None
+    )
+    cells = pilot_execution.get("cells") if type(pilot_execution) is dict else None
+    transaction = (
+        receipt.get("qualification_input_transaction")
+        if type(receipt) is dict
+        else None
+    )
+    transaction_fragments = (
+        transaction.get("fragments") if type(transaction) is dict else None
+    )
+    if not (
+        type(receipt) is dict
+        and receipt.get("schema_version") == 1
+        and receipt.get("artifact_kind")
+        == "vast_publication_policy_qualification_execution_closure_v1"
+        and receipt.get("status") == "qualification_execution_closed_nonpublication"
+        and receipt.get("qualification_execution_complete") is True
+        and receipt.get("accepted_for_full_publication") is False
+        and receipt.get("publication_ready") is False
+        and receipt.get("authorization_eligible") is False
+        and type(pilot_identity) is dict
+        and pilot_identity.get("path")
+        == pilot_directory.relative_to(root).as_posix()
+        and pilot_identity.get("cell_count") == 32
+        and type(cells) is list
+        and len(cells) == 32
+        and type(transaction_fragments) is dict
+        and set(transaction_fragments) == set(expected_fragment_descriptors)
+        and transaction_fragments
+        == {
+            system: dict(expected_fragment_descriptors[system])
+            for system in expected_fragment_descriptors
+        }
+    ):
+        raise FullResourceQualificationIndexV1Error(
+            "qualification execution closure identity/pilot/transaction fragment binding drifted"
+        )
+    return descriptor
+
+
+def _destination(root: Path, output_path: Path) -> Path:
+    raw = Path(output_path)
+    if not raw.is_absolute() and any(part in {"", ".", ".."} for part in raw.parts):
+        raise FullResourceQualificationIndexV1Error(
+            "output path is not normalized"
+        )
+    candidate = Path(
+        os.path.abspath(os.fspath(raw if raw.is_absolute() else root / raw))
+    )
+    try:
+        relative = candidate.relative_to(root)
+    except ValueError as exc:
+        raise FullResourceQualificationIndexV1Error(
+            "output must remain under project_root"
+        ) from exc
+    if not relative.parts:
+        raise FullResourceQualificationIndexV1Error(
+            "output must be one dedicated file"
+        )
+    return candidate
+
+
+def _commit_index(
+    root: Path,
+    destination: Path,
+    payload: bytes,
+    *,
+    after_physical_commit_step: Callable[[str, Path], None] | None = None,
+) -> None:
+    expected = {
+        "path": destination.relative_to(root).as_posix(),
+        "size_bytes": len(payload),
+        "sha256": hashlib.sha256(payload).hexdigest(),
+    }
+
+    def physical_step(step: str) -> None:
+        if after_physical_commit_step is not None:
+            after_physical_commit_step(step, destination)
+
+    try:
+        with PhysicalRootCustodyV1.open(
+            root, label="full-resource index project_root"
+        ) as custody:
+            try:
+                observed, identity, disposition = custody.commit_or_adopt_exact_identity(
+                    expected["path"],
+                    payload,
+                    label="full-resource qualification index",
+                    mode=0o444,
+                    create_parents=True,
+                    after_publish_step=physical_step,
+                )
+                cold, cold_payload, cold_identity = custody.read_descriptor_identity(
+                    expected["path"],
+                    label="committed full-resource qualification index",
+                    maximum=len(payload),
+                    capture=True,
+                )
+                mode, stat_identity = custody.stat_regular_identity(
+                    expected["path"],
+                    label="committed full-resource qualification index mode",
+                )
+            except PublicationPhysicalIoV1Error as exc:
+                raise FullResourceQualificationIndexV1Error(
+                    "immutable full-resource qualification index collision"
+                ) from exc
+            if (
+                disposition not in {"published", "adopted"}
+                or observed != expected
+                or cold != expected
+                or cold_payload != payload
+                or cold_identity != identity
+                or stat_identity != identity
+                or mode != 0o444
+            ):
+                raise FullResourceQualificationIndexV1Error(
+                    "full-resource qualification index identity drifted"
+                )
+            custody.verify()
+
+        with PhysicalRootCustodyV1.open(
+            root, label="cold full-resource index project_root"
+        ) as custody:
+            _descriptor, cold_payload = custody.read_descriptor(
+                destination,
+                label="cold full-resource qualification index",
+                maximum=len(payload),
+                capture=True,
+            )
+            mode, _identity = custody.stat_regular_identity(
+                destination, label="cold full-resource qualification index"
+            )
+            if cold_payload != payload or mode != 0o444:
+                raise FullResourceQualificationIndexV1Error(
+                    "cold full-resource qualification index drifted"
+                )
+            custody.verify()
+    except FullResourceQualificationIndexV1Error:
+        raise
+    except (PublicationPhysicalIoV1Error, OSError) as exc:
+        raise FullResourceQualificationIndexV1Error(
+            f"immutable full-resource index commit failed: {exc}"
+        ) from exc
 
 
 def build_full_resource_qualification_index_v1(
@@ -451,6 +580,9 @@ def build_full_resource_qualification_index_v1(
     pilot_root: Path,
     output_path: Path,
     fragment_validator: FragmentValidator | None = None,
+    execution_closure_receipt_path: Path | None = None,
+    execution_closure_loader: ExecutionClosureLoader | None = None,
+    after_physical_commit_step: Callable[[str, Path], None] | None = None,
 ) -> Path:
     """Validate all physical inputs and atomically commit one immutable index."""
     try:
@@ -458,16 +590,27 @@ def build_full_resource_qualification_index_v1(
     except policy_index.PolicyQualificationIndexV2Error as exc:
         raise FullResourceQualificationIndexV1Error(str(exc)) from exc
     destination = _destination(root, output_path)
+    if execution_closure_receipt_path is None:
+        raise FullResourceQualificationIndexV1Error(
+            "full-resource qualification index requires an execution closure receipt"
+        )
     validator = fragment_validator or policy_qualification._default_fragment_validator
     try:
         resource_contract = _build_resource_contract(root)
-        bindings = _build_bindings(
+        bindings, fragment_descriptors = _build_bindings(
             root=root,
             fragment_paths=fragment_paths,
             fragment_validator=validator,
             resource_contract=resource_contract,
         )
         pilots = _build_pilots(root=root, pilot_root=pilot_root)
+        execution_closure = _validated_execution_closure_descriptor(
+            root=root,
+            pilot_root=pilot_root,
+            receipt_path=execution_closure_receipt_path,
+            loader=(execution_closure_loader or _default_execution_closure_loader),
+            expected_fragment_descriptors=fragment_descriptors,
+        )
         dataset = policy_index._descriptor(
             root, root / "configs" / "datasets.yaml", "dataset manifest"
         )
@@ -481,14 +624,22 @@ def build_full_resource_qualification_index_v1(
         ) from exc
 
     index = {
-        "schema_version": qualification.QUALIFICATION_INDEX_SCHEMA_VERSION,
+        "schema_version": (
+            qualification.QUALIFICATION_INDEX_SCHEMA_VERSION_WITH_EXECUTION_CLOSURE
+        ),
         "artifact_kind": "vast_pre_run_full_resource_qualification_index",
         "resource_contract": resource_contract,
         "dataset_manifest": dataset,
         "bindings": bindings,
         "pilots": pilots,
+        "qualification_execution_closure": execution_closure,
     }
-    _atomic_write(destination, _canonical_bytes(index))
+    _commit_index(
+        root,
+        destination,
+        _canonical_bytes(index),
+        after_physical_commit_step=after_physical_commit_step,
+    )
     return destination
 
 
@@ -499,6 +650,7 @@ def _parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--pilot-root", type=Path, required=True)
     parser.add_argument("--output-path", type=Path, required=True)
+    parser.add_argument("--execution-closure-receipt", type=Path, required=True)
     for system, default in DEFAULT_FRAGMENT_PATHS.items():
         parser.add_argument(
             f"--{system.replace('_', '-')}-fragment",
@@ -520,6 +672,7 @@ def main() -> int:
         fragment_paths=fragments,
         pilot_root=args.pilot_root,
         output_path=args.output_path,
+        execution_closure_receipt_path=args.execution_closure_receipt,
     )
     print(output)
     return 0

@@ -17,6 +17,10 @@ from backend_runtime_grant import (
     backend_launcher_output_receipt_protocol_ready,
 )
 from benchmark_contract import ContractError, assess_pre_run_resource_capability_grant
+from benchmark_contract import (
+    primary_architecture_pair_metadata,
+    validate_primary_architecture_contrast,
+)
 from publication_policy_contract import (
     POLICIES as PUBLICATION_POLICIES,
     assess_capability_manifest,
@@ -26,8 +30,8 @@ from model_parity_grant import assess_pre_run_model_parity_grant
 
 
 FULL_RESOURCE_PUBLICATION_SCOPE = "primary_architecture_full_resource_raw_evidence_v2"
-FULL_MATRIX_SCHEMA_VERSION = 3
-FULL_MATRIX_IDENTITY_SCHEMA_VERSION = 3
+FULL_MATRIX_SCHEMA_VERSION = 4
+FULL_MATRIX_IDENTITY_SCHEMA_VERSION = 4
 PUBLISHABLE_SYSTEMS = (
     "deepstream",
     "savant",
@@ -120,7 +124,31 @@ def build_full_publication_matrix(config: dict[str, Any]) -> dict[str, Any]:
     if seed <= 0:
         raise ContractError("full publication matrix requires a positive frozen seed")
 
+    primary = validate_primary_architecture_contrast(config)
+    primary_coordinates = {
+        "system": str(primary["system"]),
+        "codec": str(primary["codec"]),
+        "dataset": str(primary["dataset"]),
+        "policy": str(primary["policy"]),
+        "deadline_ms": float(primary["deadline_ms"]),
+        "streams": int(primary["streams"]),
+        "repeats": int(primary["repeats"]),
+    }
+    if (
+        primary_coordinates["system"] not in PUBLISHABLE_SYSTEMS
+        or DATASET_BY_CODEC.get(primary_coordinates["codec"])
+        != primary_coordinates["dataset"]
+        or primary_coordinates["policy"] not in policies
+        or primary_coordinates["deadline_ms"] not in deadlines
+        or primary_coordinates["streams"] != 6
+        or primary_coordinates["repeats"] != repeats
+    ):
+        raise ContractError(
+            "primary architecture contrast is not an exact subset of the full matrix"
+        )
+
     pairs: list[dict[str, Any]] = []
+    primary_pair_count = 0
     for system in PUBLISHABLE_SYSTEMS:
         for codec, dataset in DATASET_BY_CODEC.items():
             for policy in policies:
@@ -133,28 +161,55 @@ def build_full_publication_matrix(config: dict[str, Any]) -> dict[str, Any]:
                             deadline_ms=deadline_ms,
                             repeat=repeat,
                         )
+                        is_primary_pair = (
+                            system == primary_coordinates["system"]
+                            and codec == primary_coordinates["codec"]
+                            and dataset == primary_coordinates["dataset"]
+                            and policy == primary_coordinates["policy"]
+                            and deadline_ms == primary_coordinates["deadline_ms"]
+                        )
+                        if is_primary_pair:
+                            first_scenario = str(
+                                primary["arm_order"]["first_arm_by_pair"][repeat - 1]
+                            )
+                            second_scenario = (
+                                str(primary["shared_scenario"])
+                                if first_scenario == str(primary["baseline_scenario"])
+                                else str(primary["baseline_scenario"])
+                            )
+                            ordered_scenarios = (first_scenario, second_scenario)
+                            primary_pair_count += 1
+                        else:
+                            ordered_scenarios = _ordered_scenarios(pair_id)
                         arms = []
                         for position, scenario in enumerate(
-                            _ordered_scenarios(pair_id),
+                            ordered_scenarios,
                             start=1,
                         ):
-                            arms.append(
-                                {
-                                    "arm_id": f"{pair_id}--a{position}",
-                                    "arm_position": position,
-                                    "scenario": scenario,
-                                    "system": system,
-                                    "codec": codec,
-                                    "dataset": dataset,
-                                    "policy": policy,
-                                    "deadline_ms": deadline_ms,
-                                    "repeat": repeat,
-                                    "seed": seed,
-                                    "streams": 6,
-                                    "warmup_s": warmup_s,
-                                    "measurement_s": measurement_s,
-                                }
-                            )
+                            arm = {
+                                "arm_id": f"{pair_id}--a{position}",
+                                "arm_position": position,
+                                "scenario": scenario,
+                                "system": system,
+                                "codec": codec,
+                                "dataset": dataset,
+                                "policy": policy,
+                                "deadline_ms": deadline_ms,
+                                "repeat": repeat,
+                                "seed": seed,
+                                "streams": 6,
+                                "warmup_s": warmup_s,
+                                "measurement_s": measurement_s,
+                            }
+                            if is_primary_pair:
+                                arm["primary_architecture_pair"] = (
+                                    primary_architecture_pair_metadata(
+                                        config,
+                                        repeat=repeat,
+                                        scenario=scenario,
+                                    )
+                                )
+                            arms.append(arm)
                         pairs.append(
                             {
                                 "pair_id": pair_id,
@@ -178,13 +233,34 @@ def build_full_publication_matrix(config: dict[str, Any]) -> dict[str, Any]:
     )
     if len(pairs) != expected_pairs:
         raise ContractError("full publication matrix cardinality drifted")
+    if primary_pair_count != repeats:
+        raise ContractError(
+            "full publication matrix must contain exactly ten primary architecture pairs"
+        )
+
+    primary_preregistration_sha256 = hashlib.sha256(
+        _canonical_json(primary)
+    ).hexdigest()
 
     return {
         "schema_version": FULL_MATRIX_SCHEMA_VERSION,
         "artifact_kind": "vast_full_publication_matrix",
         "publication_scope": FULL_RESOURCE_PUBLICATION_SCOPE,
         "selection_basis": "frozen_config_before_full_matrix_results",
-        "order_strategy": "deterministic_seeded_pair_shuffle_hash_balanced_arm_order_v1",
+        "order_strategy": (
+            "deterministic_seeded_pair_shuffle_"
+            "preregistered_primary_counterbalance_else_hash_balanced_v2"
+        ),
+        "primary_architecture_pair_contract": {
+            "preregistration_version": int(primary["preregistration_version"]),
+            "preregistration_sha256": primary_preregistration_sha256,
+            "selection_basis": str(primary["selection_basis"]),
+            "coordinates": primary_coordinates,
+            "strategy": str(primary["arm_order"]["strategy"]),
+            "pair_metadata_contract_version": 1,
+            "pair_count": primary_pair_count,
+            "arm_count": primary_pair_count * 2,
+        },
         "policy_contract_identity": policy_contract_identity(),
         "seed": seed,
         "systems": list(PUBLISHABLE_SYSTEMS),

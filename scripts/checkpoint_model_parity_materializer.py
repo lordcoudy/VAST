@@ -17,7 +17,6 @@ import json
 import math
 import os
 import re
-import shutil
 import socket
 import stat
 import struct
@@ -58,9 +57,11 @@ from checkpoint_gstreamer_analytics_sidecar import (
     MaterializedBindingSet,
     SidecarError,
     WorkerLaunchSpec,
+    _attest_worker_peer_identity,
     _close_owned_socket,
+    _complete_peer_identity_after_handshake,
     _open_owned_listener,
-    _peer_pid,
+    _validate_retired_socket_record_v1,
     load_execution_config,
     load_materialized_binding_set,
 )
@@ -76,6 +77,20 @@ from checkpoint_model_parity_acceptance import (
     ModelParityAcceptanceError,
     load_verified_model_parity_acceptance,
     promote_model_parity_acceptance,
+)
+from publication_guardian_preprocessing_contract_v1 import DirectoryFdCustodyV1
+from publication_immutable_directory_v1 import (
+    JOURNAL_ROOT,
+    commit_or_adopt_immutable_directory_v1,
+)
+from publication_owned_staging_cleanup_v1 import (
+    OwnedStagingCleanupV1Error,
+    OwnedStagingDirectoryV1,
+    OwnedStagingFileV1,
+)
+from publication_physical_io_v1 import (
+    PhysicalRootCustodyV1,
+    PublicationPhysicalIoV1Error,
 )
 from kpp_iss_publication_v3_dataset import (
     KppIssPublicationV3DatasetError,
@@ -102,6 +117,7 @@ KPP_PUBLICATION_MANIFEST_SHA256 = (
 _SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 _IMAGE_ID_RE = re.compile(r"^sha256:[0-9a-f]{64}$")
 _STABLE_ID_RE = re.compile(r"^[A-Za-z0-9._-]{1,160}$")
+_EXTERNAL_WORKER_SOCKET_ROOT = Path("/var/tmp")
 _FORBIDDEN_PRODUCTION_TOKENS = (
     "mock",
     "synthetic",
@@ -312,6 +328,7 @@ class _ExecutionBundleLedger:
                 input_tensor=input_tensor,
                 output_tensor=response.output,
                 capability=response.capability,
+                project_root=self._project_root,
             )
             verified = verify_execution_bundle(
                 bundle_root / request_id,
@@ -784,8 +801,182 @@ def _physical_directory(path: Path | str, *, label: str) -> Path:
     return candidate
 
 
+def _external_worker_socket_identity(
+    path: Path,
+    *,
+    phase: str,
+    expected_identity: tuple[int, int] | None = None,
+) -> tuple[int, int]:
+    _require(
+        os.name == "posix"
+        and hasattr(os, "getuid")
+        and hasattr(os, "getgid")
+        and hasattr(os, "O_DIRECTORY")
+        and hasattr(os, "O_NOFOLLOW"),
+        "external worker socket namespace requires physical POSIX semantics",
+    )
+    flags = (
+        os.O_RDONLY
+        | int(getattr(os, "O_CLOEXEC", 0))
+        | int(os.O_DIRECTORY)
+        | int(os.O_NOFOLLOW)
+    )
+    try:
+        descriptor = os.open(path, flags)
+    except OSError as error:
+        raise MaterializerError(
+            f"external worker socket namespace is not a safe directory during {phase}: {error}"
+        ) from error
+    try:
+        metadata = os.fstat(descriptor)
+        identity = (int(metadata.st_dev), int(metadata.st_ino))
+        _require(
+            stat.S_ISDIR(metadata.st_mode),
+            f"external worker socket namespace is not a directory during {phase}",
+        )
+        _require(
+            (int(metadata.st_uid), int(metadata.st_gid))
+            == (int(os.getuid()), int(os.getgid())),
+            "external worker socket namespace must be owned by current uid/gid",
+        )
+        _require(
+            stat.S_IMODE(metadata.st_mode) == 0o700,
+            "external worker socket namespace mode must be 0700",
+        )
+        if expected_identity is not None:
+            _require(
+                identity == expected_identity,
+                "external worker socket namespace inode identity changed",
+            )
+        try:
+            entries = os.listdir(descriptor)
+        except OSError as error:
+            raise MaterializerError(
+                f"external worker socket namespace cannot be listed during {phase}: {error}"
+            ) from error
+        _require(
+            not entries,
+            f"external worker socket namespace must be empty {phase}",
+        )
+        after = os.fstat(descriptor)
+        _require(
+            (
+                int(after.st_dev),
+                int(after.st_ino),
+                int(after.st_uid),
+                int(after.st_gid),
+                stat.S_IMODE(after.st_mode),
+            )
+            == (
+                identity[0],
+                identity[1],
+                int(metadata.st_uid),
+                int(metadata.st_gid),
+                stat.S_IMODE(metadata.st_mode),
+            ),
+            "external worker socket namespace metadata changed during validation",
+        )
+        try:
+            path_metadata = path.lstat()
+        except OSError as error:
+            raise MaterializerError(
+                f"external worker socket namespace path disappeared during {phase}: {error}"
+            ) from error
+        _require(
+            not stat.S_ISLNK(path_metadata.st_mode)
+            and stat.S_ISDIR(path_metadata.st_mode),
+            f"external worker socket namespace became a symlink during {phase}",
+        )
+        _require(
+            (int(path_metadata.st_dev), int(path_metadata.st_ino)) == identity,
+            "external worker socket namespace inode identity changed",
+        )
+        _require(
+            path.resolve(strict=True) == path,
+            f"external worker socket namespace became an alias during {phase}",
+        )
+        return identity
+    finally:
+        os.close(descriptor)
+
+
+@dataclass(frozen=True)
+class _WorkerSocketNamespaceContract:
+    path: Path
+    external: bool
+    _identity: tuple[int, int] | None
+
+    def lifecycle(self) -> "_WorkerSocketNamespaceLifecycle":
+        return _WorkerSocketNamespaceLifecycle(self)
+
+    def _validate(self, *, phase: str) -> None:
+        if self.external:
+            _external_worker_socket_identity(
+                self.path,
+                phase=phase,
+                expected_identity=self._identity,
+            )
+
+
+class _WorkerSocketNamespaceLifecycle:
+    def __init__(self, contract: _WorkerSocketNamespaceContract) -> None:
+        self._contract = contract
+
+    def __enter__(self) -> Path:
+        self._contract._validate(phase="before worker lifecycle")
+        return self._contract.path
+
+    def __exit__(self, *_args: object) -> None:
+        self._contract._validate(phase="after worker lifecycle")
+
+
+def _worker_socket_namespace_contract(
+    project_root: Path | str,
+    socket_dir: Path | str,
+) -> _WorkerSocketNamespaceContract:
+    root = _physical_directory(project_root, label="analytics worker project root")
+    candidate = _physical_directory(
+        socket_dir, label="analytics worker socket directory"
+    )
+    _require(candidate != root, "worker socket directory cannot equal project_root")
+    if root in candidate.parents:
+        return _WorkerSocketNamespaceContract(
+            path=candidate,
+            external=False,
+            _identity=None,
+        )
+
+    _require(
+        os.name == "posix",
+        "external worker socket namespace requires physical POSIX semantics",
+    )
+    external_root = _physical_directory(
+        _EXTERNAL_WORKER_SOCKET_ROOT,
+        label="external worker socket namespace root",
+    )
+    _require(
+        candidate.parent == external_root
+        and candidate.name.startswith("vast-")
+        and len(candidate.name) > len("vast-")
+        and _STABLE_ID_RE.fullmatch(candidate.name) is not None,
+        "external worker socket directory must be an exact /var/tmp/vast-* namespace",
+    )
+    identity = _external_worker_socket_identity(
+        candidate,
+        phase="before lifecycle",
+    )
+    return _WorkerSocketNamespaceContract(
+        path=candidate,
+        external=True,
+        _identity=identity,
+    )
+
+
 def _project_relative(root: Path, path: Path | str, *, label: str) -> Path:
-    candidate = Path(os.path.abspath(os.fspath(path)))
+    raw = Path(path)
+    candidate = Path(
+        os.path.abspath(os.fspath(raw if raw.is_absolute() else root / raw))
+    )
     _assert_chain(root, candidate, label=label)
     _require(candidate != root, f"{label} cannot equal project_root")
     return candidate.relative_to(root)
@@ -1329,7 +1520,16 @@ class NativeEndpointRunner:
         lifecycle_material = (
             f"{os.getpid()}:{time.monotonic_ns()}:{self._socket_dir}"
         ).encode("utf-8")
-        self._lifecycle_id = hashlib.sha256(lifecycle_material).hexdigest()
+        self._lifecycle_id = hashlib.sha256(lifecycle_material).hexdigest()[:32]
+        self._runtime_directory_custody: DirectoryFdCustodyV1 | None = None
+        self._socket_retirement_directory = self._socket_dir.parent / (
+            f".vast-model-parity-retired-{self._lifecycle_id}"
+        )
+        self._socket_retirement_directory_custody: (
+            DirectoryFdCustodyV1 | None
+        ) = None
+        self._opened_socket_names: set[str] = set()
+        self._retired_socket_nodes: list[dict[str, Any]] = []
         self._process_factory = DockerWorkerProcessFactory(
             project_root=self._project_root,
             binding_set_root=materialized_bindings.root,
@@ -1341,7 +1541,12 @@ class NativeEndpointRunner:
         self._clients: dict[tuple[str, str], ExecutionClient] = {}
         self._capabilities: dict[tuple[str, str], dict[str, Any]] = {}
         self._output_names: dict[tuple[str, str], str] = {}
+        self._pending_peer_identities: dict[
+            tuple[str, str], dict[str, Any]
+        ] = {}
+        self._peer_identities: dict[tuple[str, str], dict[str, Any]] = {}
         try:
+            self._establish_socket_retirement_custody()
             self._launch_and_accept_workers()
         except BaseException:
             try:
@@ -1349,6 +1554,160 @@ class NativeEndpointRunner:
             except BaseException:
                 pass
             raise
+
+    def _establish_socket_retirement_custody(self) -> None:
+        _require(
+            os.name == "posix",
+            "model-parity socket retirement requires POSIX dirfd custody",
+        )
+        retirement_custody: DirectoryFdCustodyV1 | None = None
+        try:
+            self._runtime_directory_custody = DirectoryFdCustodyV1.open_existing(
+                self._socket_dir,
+                label="model-parity analytics socket directory",
+            )
+            retirement_custody = DirectoryFdCustodyV1.open_existing(
+                self._socket_dir.parent,
+                label="model-parity socket retirement parent",
+            )
+            retirement_custody.mkdir_child_exclusive(
+                self._socket_retirement_directory.name,
+                mode=0o700,
+            )
+            runtime_metadata = os.fstat(
+                self._runtime_directory_custody.directory_fd
+            )
+            retirement_metadata = os.fstat(retirement_custody.directory_fd)
+            _require(
+                stat.S_ISDIR(runtime_metadata.st_mode)
+                and stat.S_ISDIR(retirement_metadata.st_mode)
+                and int(runtime_metadata.st_dev)
+                == int(retirement_metadata.st_dev)
+                and not os.listdir(self._runtime_directory_custody.directory_fd)
+                and not os.listdir(retirement_custody.directory_fd),
+                "model-parity socket retirement namespace is invalid",
+            )
+            self._socket_retirement_directory_custody = retirement_custody
+            retirement_custody = None
+        except BaseException:
+            if retirement_custody is not None:
+                retirement_custody.close()
+            if self._runtime_directory_custody is not None:
+                self._runtime_directory_custody.close()
+                self._runtime_directory_custody = None
+            raise
+
+    def _verify_socket_retirement_namespace(self, *, require_all: bool) -> None:
+        runtime_custody = self._runtime_directory_custody
+        retirement_custody = self._socket_retirement_directory_custody
+        _require(
+            runtime_custody is not None and retirement_custody is not None,
+            "model-parity socket retirement custody is unavailable",
+        )
+        runtime_custody.verify()
+        retirement_custody.verify()
+        retirement_metadata = os.fstat(retirement_custody.directory_fd)
+        records_by_retired_name: dict[str, dict[str, Any]] = {}
+        retired_active_names: set[str] = set()
+        for raw_record in self._retired_socket_nodes:
+            record = _validate_retired_socket_record_v1(
+                raw_record,
+                expected_lifecycle_id=self._lifecycle_id,
+            )
+            active_name = record["active_name"]
+            retired_name = record["retired_name"]
+            _require(
+                active_name in self._opened_socket_names
+                and active_name not in retired_active_names
+                and retired_name not in records_by_retired_name,
+                "model-parity socket retirement ledger is duplicated or foreign",
+            )
+            directory = record["retirement_directory"]
+            _require(
+                directory
+                == {
+                    "path": str(retirement_custody.path),
+                    "st_dev": int(retirement_metadata.st_dev),
+                    "st_ino": int(retirement_metadata.st_ino),
+                },
+                "model-parity socket retirement directory identity drifted",
+            )
+            metadata = os.stat(
+                retired_name,
+                dir_fd=retirement_custody.directory_fd,
+                follow_symlinks=False,
+            )
+            socket_identity = record["socket_identity"]
+            _require(
+                stat.S_ISSOCK(metadata.st_mode)
+                and int(metadata.st_nlink) == 1
+                and (
+                    int(metadata.st_dev),
+                    int(metadata.st_ino),
+                    int(stat.S_IFMT(metadata.st_mode)),
+                    int(metadata.st_nlink),
+                )
+                == (
+                    socket_identity["st_dev"],
+                    socket_identity["st_ino"],
+                    socket_identity["st_mode_type"],
+                    socket_identity["st_nlink"],
+                ),
+                "model-parity retired socket identity drifted",
+            )
+            retired_active_names.add(active_name)
+            records_by_retired_name[retired_name] = record
+        active_entries = set(os.listdir(runtime_custody.directory_fd))
+        retirement_entries = set(os.listdir(retirement_custody.directory_fd))
+        _require(
+            active_entries == self._opened_socket_names - retired_active_names
+            and retirement_entries == set(records_by_retired_name),
+            "model-parity socket namespace coverage drifted",
+        )
+        if require_all:
+            _require(
+                not active_entries
+                and retired_active_names == self._opened_socket_names,
+                "model-parity socket retirement is incomplete",
+            )
+        runtime_custody.verify()
+        retirement_custody.verify()
+
+    def _retire_listener(self, owned: Any) -> None:
+        record = _close_owned_socket(
+            owned,
+            directory_custody=self._runtime_directory_custody,
+            retirement_custody=self._socket_retirement_directory_custody,
+            lifecycle_id=self._lifecycle_id,
+        )
+        _require(
+            record is not None,
+            "model-parity POSIX listener retirement record is unavailable",
+        )
+        checked = _validate_retired_socket_record_v1(
+            record,
+            expected_lifecycle_id=self._lifecycle_id,
+        )
+        _require(
+            checked["active_name"] in self._opened_socket_names
+            and all(
+                item["retired_name"] != checked["retired_name"]
+                for item in self._retired_socket_nodes
+            ),
+            "model-parity listener retirement record drifted",
+        )
+        self._retired_socket_nodes.append(checked)
+        self._verify_socket_retirement_namespace(require_all=False)
+
+    def _close_socket_retirement_custody(self) -> None:
+        runtime_custody = self._runtime_directory_custody
+        retirement_custody = self._socket_retirement_directory_custody
+        self._runtime_directory_custody = None
+        self._socket_retirement_directory_custody = None
+        if runtime_custody is not None:
+            runtime_custody.close()
+        if retirement_custody is not None:
+            retirement_custody.close()
 
     def _assert_workers_live(self, *, phase: str) -> None:
         for key, handle in self._handles.items():
@@ -1373,6 +1732,11 @@ class NativeEndpointRunner:
                 path = self._socket_dir / f"worker-{branch}-{endpoint_resource}.sock"
                 owned = _open_owned_listener(path, backlog=1)
                 self._listeners[key] = owned
+                _require(
+                    path.name not in self._opened_socket_names,
+                    "model-parity listener name was reused",
+                )
+                self._opened_socket_names.add(path.name)
                 binding_path = self._materialized.binding_paths[key]
                 spec = WorkerLaunchSpec(
                     branch=branch,
@@ -1436,16 +1800,21 @@ class NativeEndpointRunner:
                         connection, _address = listener.accept()
                     except socket.timeout:
                         continue
-                observed_peer_pid = _peer_pid(connection)
-                if observed_peer_pid != expected_peer_pid:
-                    connection.close()
-                    raise MaterializerError(
-                        f"analytics worker {branch}/{endpoint_resource} peer PID mismatch: "
-                        f"expected {expected_peer_pid}, observed {observed_peer_pid}"
+                try:
+                    peer_identity = _attest_worker_peer_identity(
+                        connection,
+                        docker_state_pid=expected_peer_pid,
+                        worker_handle=handle,
+                        socket_dir=self._socket_dir,
+                        socket_path=owned.path,
                     )
+                except BaseException:
+                    connection.close()
+                    raise
                 connection.settimeout(120.0)
                 self._sockets[public_key] = connection
-                _close_owned_socket(owned)
+                self._pending_peer_identities[public_key] = peer_identity
+                self._retire_listener(owned)
                 del self._listeners[endpoint_key]
 
                 expected = validate_worker_capability(
@@ -1476,10 +1845,23 @@ class NativeEndpointRunner:
             len(self._clients) == 8 and not self._listeners,
             "native endpoint handshake coverage is not exact 8",
         )
+        _require(
+            set(self._pending_peer_identities) == set(self._clients),
+            "native endpoint pending peer identity coverage is not exact 8",
+        )
+        self._verify_socket_retirement_namespace(require_all=True)
+        self._peer_identities = {
+            key: _complete_peer_identity_after_handshake(peer)
+            for key, peer in self._pending_peer_identities.items()
+        }
 
     @property
     def capabilities(self) -> Mapping[tuple[str, str], Mapping[str, Any]]:
         return self._capabilities
+
+    @property
+    def peer_identities(self) -> Mapping[tuple[str, str], Mapping[str, Any]]:
+        return self._peer_identities
 
     def infer(
         self,
@@ -1584,7 +1966,7 @@ class NativeEndpointRunner:
 
         for key, owned in tuple(reversed(tuple(self._listeners.items()))):
             try:
-                _close_owned_socket(owned)
+                self._retire_listener(owned)
             except BaseException as error:
                 errors.append(f"socket_cleanup:{key[0]}/{key[1]}:{error}")
             finally:
@@ -1638,6 +2020,13 @@ class NativeEndpointRunner:
             elif require_clean and status != 0:
                 errors.append(f"worker_nonzero:{key[0]}/{key[1]}:{status}")
         self._handles.clear()
+        try:
+            if self._runtime_directory_custody is not None:
+                self._verify_socket_retirement_namespace(require_all=True)
+        except BaseException as error:
+            errors.append(f"socket_retirement_custody:{error}")
+        finally:
+            self._close_socket_retirement_custody()
         if errors:
             raise MaterializerError(
                 "analytics worker lifecycle cleanup failed: " + "; ".join(errors)
@@ -2267,10 +2656,11 @@ def _collect_production_evidence(
     binding_set_dir: Path | str,
     runtime_probe_paths: Mapping[str, Path | str],
     socket_dir: Path | str,
+    after_directory_publish_step: Callable[[str], None] | None = None,
 ) -> ProductionCollection:
     root = preflight.root
     final_root = _safe_output_path(
-        root, materialization_dir, label="materialization directory", must_not_exist=True
+        root, materialization_dir, label="materialization directory", must_not_exist=False
     )
     run_id = final_root.name
     _require(
@@ -2288,17 +2678,23 @@ def _collect_production_evidence(
             runtime_probe_paths=runtime_probe_paths,
         )
     )
-    socket_root = _physical_directory(socket_dir, label="analytics worker socket directory")
-    _require(root in socket_root.parents, "worker socket directory escaped project_root")
+    socket_namespace = _worker_socket_namespace_contract(root, socket_dir)
+    socket_root = socket_namespace.path
 
     _create_physical_directory_chain(root, final_root.parent)
-    staging_root = final_root.parent / f".{run_id}.staging.{os.getpid()}"
-    _require(
-        not staging_root.exists() and not os.path.lexists(staging_root),
-        "materialization staging collision",
+    staging_root = Path(
+        tempfile.mkdtemp(prefix=f".{run_id}.staging.", dir=final_root.parent)
     )
-    staging_root.mkdir()
     _require(not _is_reparse(staging_root), "materialization staging is a reparse point")
+    try:
+        cleanup_anchor = OwnedStagingDirectoryV1.capture(
+            staging_root,
+            expected_parent=final_root.parent,
+            expected_prefix=f".{run_id}.staging.",
+            label="model-parity materialization staging",
+        )
+    except OwnedStagingCleanupV1Error as error:
+        raise MaterializerError(str(error)) from error
 
     writers: list[_BundleWriter] = []
     committed = False
@@ -2547,7 +2943,7 @@ def _collect_production_evidence(
                 for resource in RESOURCES
             },
         )
-        with NativeEndpointRunner(
+        with socket_namespace.lifecycle(), NativeEndpointRunner(
             socket_dir=socket_root,
             materialized_bindings=bindings,
             execution_config=execution_config,
@@ -2613,6 +3009,59 @@ def _collect_production_evidence(
                         response=response,
                         input_tensor=tensor,
                     )
+        peer_identity_rows = [
+            {
+                "branch": branch,
+                "resource": resource,
+                "peer_identity": dict(runner.peer_identities[(branch, resource)]),
+                "peer_identity_sha256": runner.peer_identities[
+                    (branch, resource)
+                ]["identity_sha256"],
+            }
+            for branch in BRANCHES
+            for resource in RESOURCES
+        ]
+        _require(
+            len(peer_identity_rows) == 8
+            and all(
+                row["peer_identity"][
+                    "protocol_nonce_capability_handshake_performed"
+                ]
+                is True
+                and row["peer_identity"][
+                    "global_eight_worker_handshake_barrier_attested"
+                ]
+                is True
+                for row in peer_identity_rows
+            ),
+            "native endpoint completed peer identity coverage is not exact 8",
+        )
+        _write_json_file(
+            staging_root / "support" / "worker_peer_identity_attestation.json",
+            {
+                "schema_version": 1,
+                "artifact_kind": (
+                    "checkpoint_model_parity_worker_peer_identity_attestation"
+                ),
+                "worker_count": len(peer_identity_rows),
+                "workers": peer_identity_rows,
+                "workers_sha256": canonical_sha256(peer_identity_rows),
+                "pid_visible_worker_count": sum(
+                    row["peer_identity"][
+                        "peer_pid_visible_in_controller_namespace"
+                    ]
+                    is True
+                    for row in peer_identity_rows
+                ),
+                "namespace_hidden_worker_count": sum(
+                    row["peer_identity"][
+                        "peer_pid_visible_in_controller_namespace"
+                    ]
+                    is False
+                    for row in peer_identity_rows
+                ),
+            },
+        )
         execution_bundles = execution_ledger.finalize()
         output_records = {
             key: writer.close() for key, writer in output_writers.items()
@@ -2771,12 +3220,20 @@ def _collect_production_evidence(
             execution_bundles=execution_bundles,
         )
         _fsync_directory(staging_root)
-        _require(
-            not final_root.exists() and not os.path.lexists(final_root),
-            "materialization target collided before commit",
+        try:
+            cleanup_anchor.seal_tree()
+        except OwnedStagingCleanupV1Error as error:
+            raise MaterializerError(str(error)) from error
+        publication = commit_or_adopt_immutable_directory_v1(
+            project_root=root,
+            staging=staging_root,
+            target=final_root,
+            after_publish_step=after_directory_publish_step,
         )
-        os.replace(staging_root, final_root)
-        _fsync_directory(final_root.parent)
+        try:
+            cleanup_anchor.cleanup_after_publication(final_target=final_root)
+        except OwnedStagingCleanupV1Error as error:
+            raise MaterializerError(str(error)) from error
         committed = True
         transaction_final = verify_physical_file(
             root,
@@ -2798,15 +3255,20 @@ def _collect_production_evidence(
     finally:
         for writer in writers:
             writer.abort()
-        if not committed and staging_root.exists():
-            # This directory is transaction-owned and exact; failed evidence is never published.
-            _require(
-                staging_root.parent == final_root.parent
-                and staging_root.name == f".{run_id}.staging.{os.getpid()}"
-                and not _is_reparse(staging_root),
-                "refusing unsafe staging cleanup",
-            )
-            shutil.rmtree(staging_root)
+        intent_key = hashlib.sha256(
+            final_root.relative_to(root).as_posix().encode("utf-8")
+        ).hexdigest()
+        intent_exists = os.path.lexists(root / JOURNAL_ROOT / f"{intent_key}.json")
+        try:
+            if not committed and not intent_exists:
+                try:
+                    if not cleanup_anchor.sealed:
+                        cleanup_anchor.seal_tree()
+                    cleanup_anchor.cleanup_after_publication(final_target=final_root)
+                except OwnedStagingCleanupV1Error as error:
+                    raise MaterializerError(str(error)) from error
+        finally:
+            cleanup_anchor.close()
 
 
 def _yaml_bytes(value: Mapping[str, Any]) -> bytes:
@@ -2869,6 +3331,7 @@ def promote_model_parity_evidence(
     collection: ProductionCollection,
     *,
     accepted_manifest_path: Path | str,
+    after_manifest_publish_step: Callable[[str], None] | None = None,
 ) -> PromotionResult:
     """Assess final-path evidence and write the accepted manifest last, or nothing."""
 
@@ -2929,8 +3392,15 @@ def promote_model_parity_evidence(
         "promotion candidate collision",
     )
     candidate_record: PhysicalFileRecord | None = None
+    candidate_anchor: OwnedStagingFileV1 | None = None
     try:
         candidate_record = _write_new_file(candidate, payload)
+        try:
+            candidate_anchor = OwnedStagingFileV1.capture(
+                candidate, label="accepted model-parity candidate"
+            )
+        except OwnedStagingCleanupV1Error as error:
+            raise MaterializerError(str(error)) from error
         try:
             loaded = load_parity_manifest(candidate)
         except ContractError as error:
@@ -2954,14 +3424,27 @@ def promote_model_parity_evidence(
                 + ", ".join(str(item) for item in assessment["blockers"])
             )
         _verify_collection_final_paths(collection)
-        _require(
-            not accepted.exists() and not os.path.lexists(accepted),
-            "accepted manifest collided before final commit",
-        )
-        os.replace(candidate, accepted)
-        candidate_record = None
-        accepted.chmod(0o444)
-        _fsync_directory(accepted.parent)
+        custody: PhysicalRootCustodyV1 | None = None
+        try:
+            custody = PhysicalRootCustodyV1.open(
+                root, label="accepted model-parity project root"
+            )
+            custody.commit_or_adopt_exact_identity(
+                accepted.relative_to(root).as_posix(),
+                payload,
+                label="accepted model-parity manifest",
+                mode=0o444,
+                create_parents=False,
+                after_publish_step=after_manifest_publish_step,
+            )
+            custody.verify()
+        except PublicationPhysicalIoV1Error as error:
+            raise MaterializerError(
+                "accepted model-parity manifest atomic commit/adoption failed"
+            ) from error
+        finally:
+            if custody is not None:
+                custody.close()
         result = verify_physical_file(
             root,
             accepted.relative_to(root),
@@ -2971,21 +3454,15 @@ def promote_model_parity_evidence(
         )
         return PromotionResult(result, assessment)
     finally:
-        if candidate_record is not None and candidate.exists():
-            _require(
-                candidate.parent == accepted.parent
-                and candidate.name == f".{accepted.name}.candidate.{os.getpid()}"
-                and not _is_reparse(candidate),
-                "refusing unsafe candidate cleanup",
-            )
-            current = candidate.lstat()
-            _require(
-                _stat_identity(current) == candidate_record.identity,
-                "promotion candidate changed before cleanup",
-            )
-            candidate.chmod(0o600)
-            candidate.unlink()
-            _fsync_directory(candidate.parent)
+        try:
+            if candidate_record is not None and candidate_anchor is not None:
+                try:
+                    candidate_anchor.unlink_owned(final_target=accepted)
+                except OwnedStagingCleanupV1Error as error:
+                    raise MaterializerError(str(error)) from error
+        finally:
+            if candidate_anchor is not None:
+                candidate_anchor.close()
 
 
 def materialize_and_promote_model_parity(

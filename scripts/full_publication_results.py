@@ -4,14 +4,30 @@
 from __future__ import annotations
 
 import csv
+from contextlib import contextmanager
 import hashlib
 import json
 import os
+import stat
 import tempfile
 from pathlib import Path
-from typing import Any, Mapping
+from typing import Any, Callable, Iterator, Mapping
+
+try:  # pragma: no cover - selected by the host platform
+    import fcntl
+except ImportError:  # pragma: no cover - Windows fallback
+    fcntl = None
+
+try:  # pragma: no cover - selected by the host platform
+    import msvcrt
+except ImportError:  # pragma: no cover - POSIX fallback
+    msvcrt = None
 
 from benchmark_contract import ContractError
+from publication_physical_io_v1 import (
+    PhysicalRootCustodyV1,
+    PublicationPhysicalIoV1Error,
+)
 
 
 _QUALIFICATION_AUTHORITY_FIELDS = frozenset({
@@ -21,6 +37,17 @@ _QUALIFICATION_AUTHORITY_FIELDS = frozenset({
     "model_parity_grant_sha256",
     "model_parity_acceptance_binding_sha256",
 })
+_RESULT_NAMES = (
+    "full_pairs.jsonl",
+    "full_arms.jsonl",
+    "full_arms.csv",
+    "result_bundle_manifest.json",
+)
+_RESULT_MANIFEST_NAME = _RESULT_NAMES[-1]
+_INTENT_ROOT = ".full-publication-results-intents-v1"
+_LOCK_PAYLOAD = b"vast-full-publication-results-bundle-lock-v1\n"
+
+ResultPhysicalFault = Callable[[str, Path], None]
 
 
 def _qualification_authorities(value: Any) -> dict[str, str]:
@@ -65,26 +92,6 @@ def _sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
-def _immutable_write(path: Path, payload: bytes) -> None:
-    if path.exists():
-        if path.is_symlink() or not path.is_file() or path.read_bytes() != payload:
-            raise ContractError(f"compact result collision: {path.name}")
-        return
-    path.parent.mkdir(parents=True, exist_ok=True)
-    descriptor, temporary_name = tempfile.mkstemp(
-        prefix=f".{path.name}.", suffix=".tmp", dir=path.parent
-    )
-    temporary = Path(temporary_name)
-    try:
-        with os.fdopen(descriptor, "wb") as output:
-            output.write(payload)
-            output.flush()
-            os.fsync(output.fileno())
-        os.replace(temporary, path)
-    finally:
-        temporary.unlink(missing_ok=True)
-
-
 def _inside(root: Path, path: Path, *, label: str) -> Path:
     resolved = path.resolve()
     try:
@@ -94,6 +101,134 @@ def _inside(root: Path, path: Path, *, label: str) -> Path:
     if not relative.parts:
         raise ContractError(f"{label} must not equal the finalized run root")
     return resolved
+
+
+def _lexical_descendant(root: Path, path: Path, *, label: str) -> tuple[Path, str]:
+    absolute = Path(os.path.abspath(os.fspath(path)))
+    try:
+        relative = absolute.relative_to(root).as_posix()
+    except ValueError:
+        raise ContractError(f"{label} escaped the finalized run root") from None
+    if not relative or relative == ".":
+        raise ContractError(f"{label} must not equal the finalized run root")
+    return absolute, relative
+
+
+def _file_identity(info: os.stat_result) -> tuple[int, int]:
+    return int(info.st_dev), int(info.st_ino)
+
+
+@contextmanager
+def _exclusive_bundle_lock(
+    path: Path,
+    *,
+    expected_identity: tuple[int, int],
+) -> Iterator[None]:
+    """Hold one persistent non-causal coordination leaf for the bundle."""
+
+    flags = os.O_RDWR | int(getattr(os, "O_CLOEXEC", 0))
+    flags |= int(getattr(os, "O_NOFOLLOW", 0))
+    if os.name == "nt":  # pragma: no cover - WSL is the production host
+        flags |= int(getattr(os, "O_BINARY", 0))
+    descriptor = -1
+    locked = False
+    try:
+        descriptor = os.open(path, flags)
+        opened = os.fstat(descriptor)
+        named = path.lstat()
+        if (
+            not stat.S_ISREG(opened.st_mode)
+            or not stat.S_ISREG(named.st_mode)
+            or stat.S_ISLNK(named.st_mode)
+            or int(opened.st_nlink) != 1
+            or int(named.st_nlink) != 1
+            or _file_identity(opened) != expected_identity
+            or _file_identity(named) != expected_identity
+            or int(opened.st_size) != len(_LOCK_PAYLOAD)
+        ):
+            raise ContractError("compact result bundle lock identity drifted")
+        if fcntl is not None:
+            fcntl.flock(descriptor, fcntl.LOCK_EX)
+        elif msvcrt is not None:  # pragma: no cover - Windows fallback
+            os.lseek(descriptor, 0, os.SEEK_SET)
+            msvcrt.locking(descriptor, msvcrt.LK_LOCK, 1)
+        else:  # pragma: no cover - unsupported host
+            raise ContractError("compact result bundle lock is unavailable")
+        locked = True
+        reopened = path.lstat()
+        if (
+            not stat.S_ISREG(reopened.st_mode)
+            or stat.S_ISLNK(reopened.st_mode)
+            or int(reopened.st_nlink) != 1
+            or _file_identity(reopened) != expected_identity
+            or _file_identity(os.fstat(descriptor)) != expected_identity
+        ):
+            raise ContractError("compact result bundle lock was rebound")
+        yield
+    except ContractError:
+        raise
+    except OSError as error:
+        raise ContractError("compact result bundle lock failed") from error
+    finally:
+        if descriptor >= 0:
+            if locked:
+                try:
+                    if fcntl is not None:
+                        fcntl.flock(descriptor, fcntl.LOCK_UN)
+                    elif msvcrt is not None:  # pragma: no cover - Windows fallback
+                        os.lseek(descriptor, 0, os.SEEK_SET)
+                        msvcrt.locking(descriptor, msvcrt.LK_UNLCK, 1)
+                except OSError:
+                    pass
+            try:
+                os.close(descriptor)
+            except OSError:
+                pass
+
+
+def _commit_result_leaf(
+    custody: PhysicalRootCustodyV1,
+    relative: str,
+    path: Path,
+    payload: bytes,
+    *,
+    label: str,
+    after_physical_commit_step: ResultPhysicalFault | None,
+) -> tuple[dict[str, Any], tuple[int, int]]:
+    def physical_step(step: str) -> None:
+        if after_physical_commit_step is not None:
+            after_physical_commit_step(step, path)
+
+    descriptor, identity, _disposition = custody.commit_or_adopt_exact_identity(
+        relative,
+        payload,
+        label=label,
+        mode=0o444,
+        create_parents=False,
+        after_publish_step=physical_step,
+    )
+    cold_descriptor, cold_payload, cold_identity = custody.read_descriptor_identity(
+        relative,
+        label=f"cold {label}",
+        maximum=len(payload),
+        capture=True,
+    )
+    cold_mode, cold_stat_identity = custody.stat_regular_identity(
+        relative,
+        label=f"cold {label}",
+    )
+    if (
+        cold_descriptor != descriptor
+        or cold_payload != payload
+        or cold_identity != identity
+        or cold_stat_identity != identity
+        or (
+            custody.permission_modes_enforced
+            and cold_mode != 0o444
+        )
+    ):
+        raise ContractError(f"{label} changed across physical cold reload")
+    return descriptor, identity
 
 
 def _read_object(path: Path, *, label: str) -> dict[str, Any]:
@@ -123,6 +258,7 @@ def export_finalized_results(
     runner: Any,
     *,
     output_root: Path | str | None = None,
+    after_physical_commit_step: ResultPhysicalFault | None = None,
 ) -> dict[str, Any]:
     """Export compact long-form artifacts without downloading pruned raw evidence."""
 
@@ -262,12 +398,6 @@ def export_finalized_results(
             _flatten("resource_", resource_summary, row)
             csv_rows.append(row)
 
-    destination = Path(output_root) if output_root is not None else run_root / "results"
-    destination = _inside(run_root, destination, label="compact result output")
-    if destination.exists() and (destination.is_symlink() or not destination.is_dir()):
-        raise ContractError("compact result output is not a regular directory")
-    destination.mkdir(parents=True, exist_ok=True)
-
     pair_payload = b"".join(pair_lines)
     arm_payload = b"".join(arm_lines)
     fields = sorted({field for row in csv_rows for field in row})
@@ -280,13 +410,11 @@ def export_finalized_results(
         temporary.seek(0)
         csv_payload = temporary.read().encode("utf-8")
 
-    payloads = {
+    data_payloads = {
         "full_pairs.jsonl": pair_payload,
         "full_arms.jsonl": arm_payload,
         "full_arms.csv": csv_payload,
     }
-    for name, payload in payloads.items():
-        _immutable_write(destination / name, payload)
     bundle = {
         "schema_version": 1,
         "artifact_kind": "vast_full_publication_compact_result_bundle",
@@ -302,14 +430,171 @@ def export_finalized_results(
                 "sha256": _sha256_bytes(payload),
                 "size_bytes": len(payload),
             }
+            for name, payload in sorted(data_payloads.items())
+        },
+    }
+    manifest_payload = _canonical_json(bundle) + b"\n"
+    payloads = {
+        **data_payloads,
+        _RESULT_MANIFEST_NAME: manifest_payload,
+    }
+    destination_value = (
+        Path(output_root) if output_root is not None else run_root / "results"
+    )
+    destination, destination_relative = _lexical_descendant(
+        run_root,
+        destination_value,
+        label="compact result output",
+    )
+    intent_key = hashlib.sha256(destination_relative.encode("utf-8")).hexdigest()
+    intent_relative = f"{_INTENT_ROOT}/{intent_key}.json"
+    intent_path = run_root / Path(intent_relative)
+    lock_relative = f"{_INTENT_ROOT}/.bundle.lock"
+    lock_path = run_root / Path(lock_relative)
+    intent = {
+        "schema_version": 1,
+        "artifact_kind": "vast_full_publication_compact_result_materialization_intent",
+        "destination_relative_path": destination_relative,
+        "matrix_identity": snapshot["matrix_identity"],
+        "run_identity": snapshot["run_identity"],
+        "source_finalization_sha256": bundle["source_finalization_sha256"],
+        "receipt_last": _RESULT_MANIFEST_NAME,
+        "files": {
+            name: {
+                "sha256": _sha256_bytes(payload),
+                "size_bytes": len(payload),
+            }
             for name, payload in sorted(payloads.items())
         },
     }
-    _immutable_write(
-        destination / "result_bundle_manifest.json",
-        _canonical_json(bundle) + b"\n",
-    )
+    intent_payload = _canonical_json(intent) + b"\n"
+
+    try:
+        with PhysicalRootCustodyV1.open(
+            run_root, label="compact result finalized run root"
+        ) as custody:
+            custody.ensure_directory_owned(
+                _INTENT_ROOT,
+                label="compact result intent root",
+            )
+            _lock_descriptor, lock_identity, _lock_disposition = (
+                custody.commit_or_adopt_exact_identity(
+                    lock_relative,
+                    _LOCK_PAYLOAD,
+                    label="compact result bundle lock",
+                    mode=0o600,
+                    create_parents=False,
+                )
+            )
+            with _exclusive_bundle_lock(
+                lock_path,
+                expected_identity=lock_identity,
+            ):
+                destination_preexisted = os.path.lexists(destination)
+                intent_preexisted = os.path.lexists(intent_path)
+                if destination_preexisted and not intent_preexisted:
+                    raise ContractError(
+                        "compact result output exists without its exact materialization intent"
+                    )
+
+                def intent_step(step: str) -> None:
+                    if after_physical_commit_step is not None:
+                        after_physical_commit_step(step, intent_path)
+
+                _intent_descriptor, intent_identity, intent_disposition = (
+                    custody.commit_or_adopt_exact_identity(
+                        intent_relative,
+                        intent_payload,
+                        label="compact result materialization intent",
+                        mode=0o444,
+                        create_parents=False,
+                        after_publish_step=intent_step,
+                    )
+                )
+                _destination_path, created_directories = (
+                    custody.ensure_directory_owned(
+                        destination_relative,
+                        label="compact result output",
+                    )
+                )
+                destination_created = any(
+                    path == destination_relative
+                    for path, _identity in created_directories
+                )
+                if (
+                    not destination_preexisted
+                    and intent_disposition == "published"
+                    and not destination_created
+                ):
+                    custody.unlink_owned_identity(
+                        intent_relative,
+                        intent_identity,
+                        label="raced compact result materialization intent",
+                    )
+                    raise ContractError(
+                        "compact result output was created by a foreign racer"
+                    )
+                destination_mode, _destination_identity = (
+                    custody.stat_directory_identity(
+                        destination_relative,
+                        label="compact result output",
+                    )
+                )
+                if destination_mode != 0o700:
+                    raise ContractError("compact result output mode drifted")
+                existing = set(
+                    custody.list_directory_names(
+                        destination_relative,
+                        label="compact result output",
+                    )
+                )
+                expected_names = set(_RESULT_NAMES)
+                if not existing <= expected_names:
+                    raise ContractError("compact result output contains foreign entries")
+                if _RESULT_MANIFEST_NAME in existing and existing != expected_names:
+                    raise ContractError(
+                        "compact result manifest exists before its complete payload set"
+                    )
+
+                committed: dict[str, tuple[dict[str, Any], tuple[int, int]]] = {}
+                for name in _RESULT_NAMES:
+                    payload = payloads[name]
+                    committed[name] = _commit_result_leaf(
+                        custody,
+                        f"{destination_relative}/{name}",
+                        destination / name,
+                        payload,
+                        label=f"compact result {name}",
+                        after_physical_commit_step=after_physical_commit_step,
+                    )
+                final_names = set(
+                    custody.list_directory_names(
+                        destination_relative,
+                        label="completed compact result output",
+                    )
+                )
+                if final_names != expected_names:
+                    raise ContractError("compact result output did not close exactly")
+                for name, (descriptor, identity) in committed.items():
+                    cold_descriptor, cold_payload, cold_identity = (
+                        custody.read_descriptor_identity(
+                            f"{destination_relative}/{name}",
+                            label=f"closed compact result {name}",
+                            maximum=len(payloads[name]),
+                            capture=True,
+                        )
+                    )
+                    if (
+                        cold_descriptor != descriptor
+                        or cold_payload != payloads[name]
+                        or cold_identity != identity
+                    ):
+                        raise ContractError(
+                            f"compact result {name} changed before bundle close"
+                        )
+    except PublicationPhysicalIoV1Error as error:
+        raise ContractError(f"compact result physical namespace rejected: {error}") from error
     return bundle
 
 
-__all__ = ["export_finalized_results"]
+__all__ = ["ResultPhysicalFault", "export_finalized_results"]

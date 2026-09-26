@@ -1396,7 +1396,7 @@ class BenchmarkContractTests(unittest.TestCase):
         self.assertTrue(passport["resource_attribution_complete"])
         self.assertEqual(
             passport["resource_attribution"],
-            "native_per_trace_bounded_stage_interval_ingress_cohort_v3",
+            "native_per_trace_bounded_stage_interval_ingress_cohort_v4",
         )
         self.assertRegex(passport["input_schedule_sha256"], r"^[0-9a-f]{64}$")
         self.assertRegex(passport["input_frame_key_sequence_sha256"], r"^[0-9a-f]{64}$")
@@ -1420,7 +1420,11 @@ class BenchmarkContractTests(unittest.TestCase):
                 ensure_ascii=True,
             ),
         )
-        self.assertEqual(signature_payload["contract_version"], 4)
+        self.assertEqual(signature_payload["contract_version"], 5)
+        self.assertEqual(
+            signature_payload["resource_time_component_mapping"]["nvdec"],
+            "cpu_time_ms_host_stage_elapsed_not_nvdec_busy_time",
+        )
         self.assertEqual(
             signature_payload["resource_time_aggregation"],
             "unweighted_sum_of_attributed_device_milliseconds_v1",
@@ -1437,6 +1441,55 @@ class BenchmarkContractTests(unittest.TestCase):
         self.assertEqual(
             passport["input_frame_key_sequence_sha256"],
             drifted_passport["input_frame_key_sequence_sha256"],
+        )
+
+    def test_measurement_passport_accepts_nvdec_stage_elapsed_as_cpu_component(self) -> None:
+        ingress = pd.DataFrame([ingress_ledger_row()], columns=INGRESS_LEDGER_COLUMNS)
+        events = pd.DataFrame(
+            [
+                native_event_row(
+                    resource="nvdec",
+                    queue_enter_timestamp_ms=100.0,
+                    stage_start_timestamp_ms=102.0,
+                    stage_end_timestamp_ms=112.0,
+                ),
+                native_event_row(
+                    stage="preprocess",
+                    resource="cpu",
+                    queue_enter_timestamp_ms=110.0,
+                    stage_start_timestamp_ms=112.0,
+                    stage_end_timestamp_ms=120.0,
+                ),
+            ],
+            columns=FRAME_EVENT_COLUMNS,
+        )
+        resources = pd.DataFrame(
+            [
+                resource_event_row(resource="nvdec"),
+                resource_event_row(
+                    stage="preprocess",
+                    resource="cpu",
+                    timestamp_ms=120.0,
+                    cpu_time_ms=8.0,
+                ),
+            ],
+            columns=RESOURCE_EVENT_COLUMNS,
+        )
+
+        passport = summarize_measurement_passport(resources, ingress, events)
+
+        self.assertTrue(passport["resource_attribution_complete"])
+        self.assertEqual(passport["c_obs_cpu_total_ms"], 18.0)
+        self.assertEqual(passport["c_obs_gpu_total_ms"], 0.0)
+        self.assertTrue(json.loads(passport["measurement_signature_payload_json"])["nvdec_busy_time_included"] is False)
+
+        wrong_component = resources.copy()
+        wrong_component.loc[0, "cpu_time_ms"] = 0.0
+        wrong_component.loc[0, "gpu_time_ms"] = 10.0
+        self.assertFalse(
+            summarize_measurement_passport(wrong_component, ingress, events)[
+                "resource_attribution_complete"
+            ]
         )
 
     def test_measurement_passport_rejects_unattributed_or_incomplete_resource_work(self) -> None:
@@ -1881,6 +1934,77 @@ class BenchmarkContractTests(unittest.TestCase):
             branch_analytics_contract_sha256(terminals.iloc[::-1].reset_index(drop=True)),
         )
 
+        attested_backends = (
+            "analytics-execution:openvino_cpu;runtime=OpenVINO;"
+            "native_api=openvino.CompiledModel.__call__;device=CPU:fixture-cpu",
+            "analytics-execution:tensorrt_cuda;runtime=TensorRT;"
+            "native_api=nvinfer1::IExecutionContext::enqueueV3;"
+            "device=NVIDIA_CUDA:GPU-fixture",
+        )
+        for backend in attested_backends:
+            attested = [dict(row, backend=backend) for row in rows]
+            with tempfile.TemporaryDirectory() as tmp:
+                path = Path(tmp) / "branch_terminals.csv"
+                pd.DataFrame(attested, columns=BRANCH_TERMINAL_COLUMNS).to_csv(
+                    path, index=False
+                )
+                result = validate_branch_terminals(
+                    path,
+                    ingress_ledger=ledger,
+                    frames=frames,
+                    required_branches=branches,
+                )
+            self.assertTrue(bool(result["branch_terminal_claim_eligible"].all()))
+
+        dynamic_backends = [
+            dict(
+                row,
+                backend=(
+                    "deepstream:native_pre_detector_queue"
+                    if row["terminal_status"] == "drop"
+                    else attested_backends[index % len(attested_backends)]
+                ),
+            )
+            for index, row in enumerate(rows)
+        ]
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "branch_terminals.csv"
+            pd.DataFrame(dynamic_backends, columns=BRANCH_TERMINAL_COLUMNS).to_csv(
+                path, index=False
+            )
+            dynamic_result = validate_branch_terminals(
+                path,
+                ingress_ledger=ledger,
+                frames=frames,
+                required_branches=branches,
+            )
+        self.assertTrue(bool(dynamic_result["branch_terminal_claim_eligible"].all()))
+        self.assertEqual(
+            identity_hash,
+            branch_analytics_contract_sha256(dynamic_result),
+        )
+
+        invalid_backend = [dict(row) for row in rows]
+        invalid_backend[0]["backend"] = (
+            "analytics-execution:openvino_cpu;runtime=OpenVINO;"
+            "native_api=openvino.CompiledModel.__call__;"
+            "device=NVIDIA_CUDA:GPU-fixture"
+        )
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "branch_terminals.csv"
+            pd.DataFrame(invalid_backend, columns=BRANCH_TERMINAL_COLUMNS).to_csv(
+                path, index=False
+            )
+            with self.assertRaisesRegex(
+                ContractError, "verified native analytics execution identity"
+            ):
+                validate_branch_terminals(
+                    path,
+                    ingress_ledger=ledger,
+                    frames=frames,
+                    required_branches=branches,
+                )
+
         malformed = [dict(row) for row in rows]
         malformed[0]["detector"] = "native-damage-v1"
         with tempfile.TemporaryDirectory() as tmp:
@@ -1902,7 +2026,9 @@ class BenchmarkContractTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "branch_terminals.csv"
             pd.DataFrame(drifted, columns=BRANCH_TERMINAL_COLUMNS).to_csv(path, index=False)
-            with self.assertRaisesRegex(ContractError, "analytics identity changed within branch damage"):
+            with self.assertRaisesRegex(
+                ContractError, "analytics model identity changed within branch damage"
+            ):
                 validate_branch_terminals(
                     path,
                     ingress_ledger=ledger,
@@ -2267,6 +2393,35 @@ class BenchmarkContractTests(unittest.TestCase):
 
             with self.assertRaisesRegex(ContractError, "must be observed no later than the decision"):
                 validate_policy_decisions(path, require_causal_trace=True)
+
+    def test_causal_policy_trace_accepts_identical_epoch_timestamp_csv_json_ulp(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "policy_decisions.csv"
+            timestamp = 1_787_916_516_901.2573
+            row = causal_policy_decision_row(
+                decision_timestamp_ms=timestamp,
+                terminal_timestamp_ms=timestamp + 20.0,
+                feature_provenance_json=json.dumps(
+                    {
+                        "native_queue_depths": {
+                            "source": "native_worker_socket:fixture",
+                            "source_trace_id": "r:0:1",
+                            "observed_timestamp_ms": timestamp,
+                            "age_ms": 0.0,
+                            "estimator_version": "native-fixture-queue-snapshot-v1",
+                        }
+                    },
+                    separators=(",", ":"),
+                ),
+            )
+            pd.DataFrame([row], columns=POLICY_DECISION_COLUMNS).to_csv(
+                path, index=False
+            )
+
+            validated = validate_policy_decisions(
+                path, require_causal_trace=True
+            )
+            self.assertEqual(len(validated), 1)
 
     def test_causal_policy_trace_rejects_censored_feedback_update(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -3835,7 +3990,7 @@ class BenchmarkContractTests(unittest.TestCase):
                 "input_frame_key_sequence_sha256": f"{repeat + 100:064x}",
                 "measurement_window_duration_ms": 180000.0,
                 "drain_rule": "drain_to_empty",
-                "resource_attribution": "native_per_trace_bounded_stage_interval_ingress_cohort_v3",
+                "resource_attribution": "native_per_trace_bounded_stage_interval_ingress_cohort_v4",
                 "measurement_signature": "a" * 64,
                 "semantic_prefix_contract_sha256": "b" * 64,
                 "decoder_factory": "nvh264dec",

@@ -1,23 +1,38 @@
 from __future__ import annotations
 
 import json
+import os
 import sys
 import tempfile
 import unittest
 from pathlib import Path
 from types import SimpleNamespace
+from unittest import mock
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
+import full_publication_supervisor as supervisor_module  # noqa: E402
 from full_publication_supervisor import (  # noqa: E402
     EXIT_COMPLETE,
     EXIT_PERMANENT,
     EXIT_TRANSIENT,
+    FROZEN_FULL_PUBLICATION_MATRIX_SCHEMA_VERSION,
+    FROZEN_FULL_PUBLICATION_MATRIX_SHA256,
+    FROZEN_PUBLICATION_POLICY_CONTRACT_SHA256,
     FullPublicationSupervisor,
     InvocationUnavailable,
     SubprocessEntrypointInvoker,
     SupervisorError,
+    UnexpectedProcessExit,
+)
+
+
+FROZEN_ENTRYPOINT_ARGS = (
+    "--expected-matrix-sha256",
+    FROZEN_FULL_PUBLICATION_MATRIX_SHA256,
+    "--expected-policy-contract-sha256",
+    FROZEN_PUBLICATION_POLICY_CONTRACT_SHA256,
 )
 
 
@@ -159,6 +174,58 @@ class FullPublicationSupervisorTests(unittest.TestCase):
         self.assertEqual(state["unexpected_streak"], 2)
         self.assertEqual(sleeps, [1.0])
 
+    def test_default_budget_stops_exceptions_and_unknown_exits_without_sleep(self) -> None:
+        for failure in (
+            InvocationUnavailable("entrypoint unavailable"),
+            UnexpectedProcessExit("unexpected exit code 17"),
+        ):
+            with self.subTest(failure=type(failure).__name__):
+                launches: list[str] = []
+
+                self.state_path.unlink(missing_ok=True)
+                def invoker(phase: str) -> tuple[int, dict[str, object]]:
+                    launches.append(phase)
+                    raise failure
+
+                sleeps: list[float] = []
+                code, state = self.supervisor(invoker, sleeps).run()
+
+                self.assertEqual(code, EXIT_PERMANENT)
+                self.assertEqual(state["phase"], "failed_permanent")
+                self.assertEqual(launches, ["run"])
+                self.assertEqual(sleeps, [])
+
+    def test_cli_default_budget_stops_unknown_exit_after_one_launch(self) -> None:
+        launches: list[str] = []
+
+        class UnexpectedExitInvoker:
+            def __init__(self, **_: object) -> None:
+                pass
+
+            @property
+            def command_identity(self) -> dict[str, object]:
+                return {"entrypoint_sha256": "a" * 64, "args": []}
+
+            def __call__(self, phase: str) -> tuple[int, dict[str, object]]:
+                launches.append(phase)
+                raise UnexpectedProcessExit("unexpected exit code 17")
+
+        with (
+            mock.patch.object(
+                supervisor_module,
+                "SubprocessEntrypointInvoker",
+                UnexpectedExitInvoker,
+            ),
+            mock.patch.object(FullPublicationSupervisor, "_delay") as delay,
+        ):
+            code = supervisor_module.main(["--state-path", str(self.state_path)])
+
+        self.assertEqual(code, EXIT_PERMANENT)
+        self.assertEqual(launches, ["run"])
+        delay.assert_not_called()
+        state = json.loads(self.state_path.read_text(encoding="utf-8"))
+        self.assertEqual(state["phase"], "failed_permanent")
+
     def test_completed_state_is_idempotent(self) -> None:
         first = SequenceInvoker([EXIT_COMPLETE] * 4)
         code, _ = self.supervisor(first, []).run()
@@ -183,7 +250,7 @@ class FullPublicationSupervisorTests(unittest.TestCase):
 
         invoker = SubprocessEntrypointInvoker(
             entrypoint=entrypoint,
-            entrypoint_args=("--run-root", "runs/full"),
+            entrypoint_args=(*FROZEN_ENTRYPOINT_ARGS, "--run-root", "runs/full"),
             python_executable=sys.executable,
             run_process=fake_process,
             environment={
@@ -193,6 +260,115 @@ class FullPublicationSupervisorTests(unittest.TestCase):
         )
         with self.assertRaisesRegex(SupervisorError, "capability secret"):
             invoker("run")
+
+    def test_subprocess_invoker_redacts_capabilities_loaded_from_link_file(self) -> None:
+        root = Path(self.temp.name)
+        entrypoint = root / "entrypoint.py"
+        entrypoint.write_text("# fixture\n", encoding="utf-8")
+        token = "FileReadCapabilityToken99"
+        (root / "seafile.txt").write_text(
+            "download link - https://seafile.example/d/" + token + "\n"
+            "upload link - https://seafile.example/u/d/FileUploadCapabilityToken99\n",
+            encoding="utf-8",
+        )
+
+        def fake_process(*_: object, **__: object) -> SimpleNamespace:
+            return SimpleNamespace(
+                returncode=EXIT_PERMANENT,
+                stdout=json.dumps({"message": token}),
+                stderr="",
+            )
+
+        invoker = SubprocessEntrypointInvoker(
+            entrypoint=entrypoint,
+            entrypoint_args=(
+                *FROZEN_ENTRYPOINT_ARGS,
+                "--project-root", str(root),
+                "--cloud-links-file", "seafile.txt",
+                "--run-root", "runs/full",
+            ),
+            python_executable=sys.executable,
+            run_process=fake_process,
+            environment={},
+        )
+        with self.assertRaisesRegex(SupervisorError, "capability secret"):
+            invoker("run")
+
+    def test_subprocess_invoker_requires_exact_frozen_contract_arguments(self) -> None:
+        entrypoint = Path(self.temp.name) / "entrypoint.py"
+        entrypoint.write_text("# fixture\n", encoding="utf-8")
+        for arguments in (
+            (),
+            (
+                "--expected-matrix-sha256",
+                "0" * 64,
+                "--expected-policy-contract-sha256",
+                FROZEN_PUBLICATION_POLICY_CONTRACT_SHA256,
+            ),
+            (
+                "--expected-matrix-sha256",
+                FROZEN_FULL_PUBLICATION_MATRIX_SHA256,
+                "--expected-policy-contract-sha256",
+                "0" * 64,
+            ),
+        ):
+            with self.subTest(arguments=arguments), self.assertRaisesRegex(
+                SupervisorError, "exact frozen"
+            ):
+                SubprocessEntrypointInvoker(
+                    entrypoint=entrypoint,
+                    entrypoint_args=arguments,
+                    python_executable=sys.executable,
+                    environment={},
+                )
+
+    def test_command_identity_explicitly_binds_frozen_contract(self) -> None:
+        entrypoint = Path(self.temp.name) / "entrypoint.py"
+        entrypoint.write_text("# fixture\n", encoding="utf-8")
+        invoker = SubprocessEntrypointInvoker(
+            entrypoint=entrypoint,
+            entrypoint_args=FROZEN_ENTRYPOINT_ARGS,
+            python_executable=sys.executable,
+            environment={},
+        )
+        self.assertEqual(
+            invoker.command_identity["frozen_publication_contract"],
+            {
+                "matrix_schema_version": (
+                    FROZEN_FULL_PUBLICATION_MATRIX_SCHEMA_VERSION
+                ),
+                "matrix_sha256": FROZEN_FULL_PUBLICATION_MATRIX_SHA256,
+                "policy_contract_sha256": (
+                    FROZEN_PUBLICATION_POLICY_CONTRACT_SHA256
+                ),
+            },
+        )
+
+    def test_subprocess_invoker_rejects_post_construction_source_replacement(self) -> None:
+        root = Path(self.temp.name)
+        entrypoint = root / "entrypoint.py"
+        marker = root / "entrypoint-marker.txt"
+        original = (
+            "from pathlib import Path\n"
+            f"Path({str(marker)!r}).write_text('original', encoding='utf-8')\n"
+        )
+        replacement = original.replace("original", "replaced")
+        self.assertEqual(len(original.encode()), len(replacement.encode()))
+        entrypoint.write_text(original, encoding="utf-8")
+        invoker = SubprocessEntrypointInvoker(
+            entrypoint=entrypoint,
+            entrypoint_args=FROZEN_ENTRYPOINT_ARGS,
+            python_executable=sys.executable,
+            environment={},
+        )
+        candidate = entrypoint.with_suffix(".replacement")
+        candidate.write_text(replacement, encoding="utf-8")
+        os.replace(candidate, entrypoint)
+        with self.assertRaisesRegex(
+            UnexpectedProcessExit, "unexpected exit code"
+        ):
+            invoker("run")
+        self.assertFalse(marker.exists())
 
 
 if __name__ == "__main__":

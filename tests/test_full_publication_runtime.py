@@ -14,9 +14,21 @@ from full_publication_runner import (  # noqa: E402
     ArmContext,
     PairContext,
     RunContext,
+    TransientRunError,
 )
 from full_publication_runtime import FullPublicationRuntime  # noqa: E402
 from publication_acceptance_evidence import accepted_arm_evidence_files  # noqa: E402
+from publication_article_statistics_v1 import (  # noqa: E402
+    build_article_statistics_pair_record_v1,
+    persist_article_statistics_pair_record_v1,
+)
+
+
+class SyntheticPairAcceptanceCrash(BaseException):
+    pass
+
+
+from tests.test_publication_article_statistics_v1 import _descriptive  # noqa: E402
 from tests.test_publication_cloud_transaction import FakeStore  # noqa: E402
 from checkpoint_acceptance_metadata_binding import (  # noqa: E402
     bind_checkpoint_acceptance_to_durable_metadata,
@@ -113,7 +125,7 @@ def accepted_arm_runner(
     *,
     parity_acceptance_identity_sha256: str | None = None,
 ) -> dict[str, object]:
-    arm_root.mkdir(parents=True)
+    arm_root.mkdir(parents=True, exist_ok=True)
     execution_binding = {
         "schema_version": 1,
         "artifact_kind": "vast_full_publication_arm_execution_binding",
@@ -222,6 +234,83 @@ def accepted_arm_runner(
     return {"status": "completed", "arm_id": context.arm["arm_id"]}
 
 
+def accepted_article_statistics_sealer(**kwargs: object) -> dict[str, object]:
+    run_root = Path(kwargs["run_root"])
+    pair_dir = Path(kwargs["pair_dir"])
+    pair = kwargs["pair"]
+    arm_records = kwargs["arm_records"]
+    assert isinstance(pair, dict)
+    assert isinstance(arm_records, list)
+    materials = []
+    for arm_index, (expected, arm_record) in enumerate(
+        zip(pair["arms"], arm_records, strict=True)
+    ):
+        arm_root = (
+            run_root / str(arm_record["runtime_acceptance_relative_path"])
+        ).parent
+        descriptors = []
+        names = {
+            *arm_record["evidence_sha256"],
+            "checkpoint_publication_acceptance.json",
+            "run_metadata.json",
+        }
+        for name in sorted(names):
+            path = arm_root / name
+            payload = path.read_bytes()
+            descriptors.append(
+                {
+                    "relative_path": path.relative_to(pair_dir).as_posix(),
+                    "size_bytes": len(payload),
+                    "sha256": hashlib.sha256(payload).hexdigest(),
+                }
+            )
+        materials.append(
+            {
+                "arm_index": arm_index,
+                "arm_id": expected["arm_id"],
+                "coordinate": {
+                    "arm_position": expected["arm_position"],
+                    "system": expected["system"],
+                    "scenario": expected["scenario"],
+                    "codec": expected["codec"],
+                    "dataset": expected["dataset"],
+                    "policy": expected["policy"],
+                    "deadline_ms": expected["deadline_ms"],
+                    "repeat": expected["repeat"],
+                    "streams": expected["streams"],
+                    "seed": expected["seed"],
+                    "warmup_s": expected["warmup_s"],
+                    "measurement_s": expected["measurement_s"],
+                    "run_seed": arm_record["run_seed"],
+                    "deployment_mode": "test",
+                    "host_topology": "test",
+                    "run_mode": "benchmark",
+                    "telemetry_source": "native",
+                },
+                "evidence_files": descriptors,
+                "descriptive_statistics": _descriptive(),
+                "primary_architecture_run_metric": None,
+            }
+        )
+    record = build_article_statistics_pair_record_v1(
+        pair_identity={
+            "matrix_sha256": kwargs["matrix_sha256"],
+            "run_id": kwargs["run_id"],
+            "pair_sequence": kwargs["pair_sequence"],
+            "pair_id": kwargs["pair_id"],
+            "pair_sha256": kwargs["pair_sha256"],
+            "attempt": kwargs["attempt"],
+        },
+        arms=materials,
+        primary_architecture_pair_metric=None,
+    )
+    return persist_article_statistics_pair_record_v1(
+        record,
+        run_root=run_root,
+        pair_dir=pair_dir,
+    )
+
+
 class FullPublicationRuntimeTests(unittest.TestCase):
     def make_runtime(
         self,
@@ -229,6 +318,8 @@ class FullPublicationRuntimeTests(unittest.TestCase):
         *,
         readiness: dict[str, object] | None = None,
         arm_runner=accepted_arm_runner,
+        article_statistics_sealer=accepted_article_statistics_sealer,
+        pair_acceptance_physical_fault=None,
     ) -> FullPublicationRuntime:
         return FullPublicationRuntime(
             run_root=root,
@@ -239,6 +330,8 @@ class FullPublicationRuntimeTests(unittest.TestCase):
             or {"passed": True, "blockers": []},
             minimum_free_bytes=1,
             capacity_confirmed_gib=500,
+            article_statistics_sealer=article_statistics_sealer,
+            pair_acceptance_physical_fault=pair_acceptance_physical_fault,
         )
 
     def test_pair_flows_from_two_arms_to_cloud_receipt_and_remote_verify(self) -> None:
@@ -286,6 +379,203 @@ class FullPublicationRuntimeTests(unittest.TestCase):
                 {arm["result"]["status"] for arm in compact["arms"]},
                 {"completed"},
             )
+
+    def test_pair_acceptance_rejects_article_statistics_bound_to_other_matrix(self) -> None:
+        def wrong_matrix_sealer(**kwargs: object) -> dict[str, object]:
+            changed = dict(kwargs)
+            changed["matrix_sha256"] = "f" * 64
+            return accepted_article_statistics_sealer(**changed)
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "run"
+            context = pair_context(root)
+            callbacks = self.make_runtime(
+                root, article_statistics_sealer=wrong_matrix_sealer
+            ).callbacks()
+            results = tuple(
+                callbacks.execute_arm(
+                    ArmContext(
+                        pair_context=context,
+                        arm_index=index,
+                        arm=arm,
+                    )
+                )
+                for index, arm in enumerate(context.pair["arms"])
+            )
+            decision = callbacks.accept_pair(context, results)
+
+            self.assertFalse(decision.accepted)
+            self.assertFalse(decision.retryable)
+            self.assertIn("pair identity differs", decision.reason)
+
+    def test_compact_acceptance_redirect_is_rejected_before_acceptance_writes(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "run"
+            context = pair_context(root)
+            runtime = self.make_runtime(root)
+            callbacks = runtime.callbacks()
+            results = tuple(
+                callbacks.execute_arm(
+                    ArmContext(
+                        pair_context=context,
+                        arm_index=index,
+                        arm=arm,
+                    )
+                )
+                for index, arm in enumerate(context.pair["arms"])
+            )
+            outside = Path(tmp) / "outside"
+            outside.mkdir()
+            redirect = root / "accepted_pairs"
+            try:
+                redirect.symlink_to(outside, target_is_directory=True)
+            except (NotImplementedError, OSError) as error:
+                self.skipTest(f"directory symlinks are unavailable: {error}")
+
+            decision = callbacks.accept_pair(context, results)
+
+            self.assertFalse(decision.accepted)
+            self.assertFalse(decision.retryable)
+            self.assertIn("physical namespace rejected", decision.reason)
+            self.assertFalse(
+                (runtime.attempt_root(context) / "acceptance.json").exists()
+            )
+            self.assertEqual(list(outside.iterdir()), [])
+
+    def test_preexisting_acceptance_leaf_is_never_replaced(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "run"
+            context = pair_context(root)
+            runtime = self.make_runtime(root)
+            callbacks = runtime.callbacks()
+            results = tuple(
+                callbacks.execute_arm(
+                    ArmContext(
+                        pair_context=context,
+                        arm_index=index,
+                        arm=arm,
+                    )
+                )
+                for index, arm in enumerate(context.pair["arms"])
+            )
+            acceptance_path = runtime.attempt_root(context) / "acceptance.json"
+            attacker_payload = b"attacker-owned\n"
+            acceptance_path.write_bytes(attacker_payload)
+
+            decision = callbacks.accept_pair(context, results)
+
+            self.assertFalse(decision.accepted)
+            self.assertFalse(decision.retryable)
+            self.assertIn("immutable pair acceptance collision", decision.reason)
+            self.assertEqual(acceptance_path.read_bytes(), attacker_payload)
+            self.assertEqual(list((root / "accepted_pairs").iterdir()), [])
+
+    def test_pair_acceptance_recovers_every_atomic_window_for_both_copies(
+        self,
+    ) -> None:
+        steps = (
+            "mid_write",
+            "post_fsync_pre_publish",
+            "post_publish_pre_parent_fsync",
+        )
+        for copy_name in ("attempt", "compact"):
+            for step in steps:
+                with self.subTest(copy=copy_name, step=step), tempfile.TemporaryDirectory() as tmp:
+                    root = Path(tmp) / "run"
+                    context = pair_context(root)
+                    faulted: list[Path] = []
+
+                    def crash(observed_step: str, path: Path) -> None:
+                        is_attempt = path.name == "acceptance.json"
+                        selected = is_attempt if copy_name == "attempt" else not is_attempt
+                        if selected and observed_step == step and not faulted:
+                            faulted.append(path)
+                            raise SyntheticPairAcceptanceCrash()
+
+                    runtime = self.make_runtime(
+                        root, pair_acceptance_physical_fault=crash
+                    )
+                    callbacks = runtime.callbacks()
+                    results = tuple(
+                        callbacks.execute_arm(
+                            ArmContext(
+                                pair_context=context,
+                                arm_index=index,
+                                arm=arm,
+                            )
+                        )
+                        for index, arm in enumerate(context.pair["arms"])
+                    )
+                    with self.assertRaises(SyntheticPairAcceptanceCrash):
+                        callbacks.accept_pair(context, results)
+                    self.assertEqual(len(faulted), 1)
+                    faulted_path = faulted[0]
+                    published_identity = (
+                        (faulted_path.stat().st_dev, faulted_path.stat().st_ino)
+                        if faulted_path.exists()
+                        else None
+                    )
+
+                    resumed = self.make_runtime(root).callbacks().accept_pair(
+                        context, results
+                    )
+                    self.assertTrue(resumed.accepted, resumed.reason)
+                    attempt_path = runtime.attempt_root(context) / "acceptance.json"
+                    compact_path = root / str(
+                        resumed.details["compact_acceptance_relative_path"]
+                    )
+                    self.assertEqual(
+                        attempt_path.read_bytes(), compact_path.read_bytes()
+                    )
+                    self.assertEqual(attempt_path.stat().st_mode & 0o777, 0o600)
+                    self.assertEqual(compact_path.stat().st_mode & 0o777, 0o600)
+                    self.assertEqual(attempt_path.stat().st_nlink, 1)
+                    self.assertEqual(compact_path.stat().st_nlink, 1)
+                    if published_identity is not None:
+                        self.assertEqual(
+                            (
+                                faulted_path.stat().st_dev,
+                                faulted_path.stat().st_ino,
+                            ),
+                            published_identity,
+                        )
+
+    def test_interrupted_arm_is_offered_same_attempt_root_for_safe_resume(self) -> None:
+        calls: list[tuple[int, Path, bool]] = []
+
+        def resumable_runner(
+            context: ArmContext, arm_root: Path
+        ) -> dict[str, object]:
+            calls.append((context.attempt, arm_root, arm_root.exists()))
+            if len(calls) == 1:
+                arm_root.mkdir(parents=True)
+                (arm_root / "parent-owned-resume-marker").write_text(
+                    "durable\n", encoding="ascii"
+                )
+                raise TransientRunError("interrupted before transaction commit")
+            self.assertEqual(
+                (arm_root / "parent-owned-resume-marker").read_text(
+                    encoding="ascii"
+                ),
+                "durable\n",
+            )
+            return accepted_arm_runner(context, arm_root)
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "run"
+            context = pair_context(root, attempt=7)
+            callbacks = self.make_runtime(
+                root, arm_runner=resumable_runner
+            ).callbacks()
+            arm_context = ArmContext(context, 0, context.pair["arms"][0])
+            with self.assertRaisesRegex(TransientRunError, "interrupted"):
+                callbacks.execute_arm(arm_context)
+            result = callbacks.execute_arm(arm_context)
+
+        self.assertEqual(result["status"], "completed")
+        self.assertEqual([value[0] for value in calls], [7, 7])
+        self.assertEqual(calls[0][1], calls[1][1])
+        self.assertEqual([value[2] for value in calls], [False, True])
 
     def test_pair_acceptance_rejects_schedule_or_evidence_drift(self) -> None:
         def drifted_runner(context: ArmContext, arm_root: Path) -> dict[str, object]:
@@ -388,7 +678,7 @@ class FullPublicationRuntimeTests(unittest.TestCase):
             self.assertFalse(decision.accepted)
             self.assertIn("qualification authorities", decision.reason)
 
-    def test_preflight_fails_closed_on_readiness_capacity_or_foreign_remote(self) -> None:
+    def test_preflight_fails_closed_on_readiness_capacity_or_owned_namespace_corruption(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp) / "run"
             context = pair_context(root)
@@ -423,7 +713,15 @@ class FullPublicationRuntimeTests(unittest.TestCase):
                 minimum_free_bytes=1,
                 capacity_confirmed_gib=500,
             )
-            self.assertFalse(foreign.preflight(context.run).accepted)
+            self.assertTrue(foreign.preflight(context.run).accepted)
+
+            run_key = hashlib.sha256(RUN_SHA.encode("utf-8")).hexdigest()[:16]
+            owned_prefix = f"{MATRIX_SHA}_{run_key}_"
+            foreign_store.remote[f"{owned_prefix}malformed.bin"] = b"collision"
+            corrupted = foreign.preflight(context.run)
+            self.assertFalse(corrupted.accepted)
+            self.assertFalse(corrupted.retryable)
+            self.assertIn("namespace", corrupted.reason)
 
     def test_resume_preflight_requires_exact_remote_prefix_and_allows_durable_inflight(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -467,8 +765,40 @@ class FullPublicationRuntimeTests(unittest.TestCase):
             )
             self.assertTrue(runtime.preflight(context).accepted)
 
-            store.remote[remote_name(1, "archive", "f" * 64)] = b"inflight"
+            receipt_name = remote_name(0, "receipt", "e" * 64)
+            receipt_payload = store.remote.pop(receipt_name)
+            mismatched_receipt = (
+                f"{prefix}0000_{'b' * 16}_{'e' * 64}.receipt.json"
+            )
+            store.remote[mismatched_receipt] = receipt_payload
+            pair_key_drift = runtime.preflight(context)
+            self.assertFalse(pair_key_drift.accepted)
+            self.assertFalse(pair_key_drift.retryable)
+            self.assertIn("pair key", pair_key_drift.reason)
+            del store.remote[mismatched_receipt]
+            store.remote[receipt_name] = receipt_payload
+
+            duplicate_archive = remote_name(0, "archive", "a" * 64)
+            store.remote[duplicate_archive] = b"duplicate"
+            collision = runtime.preflight(context)
+            self.assertFalse(collision.accepted)
+            self.assertFalse(collision.retryable)
+            self.assertIn("duplicate", collision.reason)
+            del store.remote[duplicate_archive]
+
+            inflight_archive = remote_name(1, "archive", "f" * 64)
+            store.remote[inflight_archive] = b"inflight"
             self.assertTrue(runtime.preflight(context).accepted)
+
+            del store.remote[inflight_archive]
+            inflight_receipt = remote_name(1, "receipt", "9" * 64)
+            store.remote[inflight_receipt] = b"invalid-order"
+            invalid_partial = runtime.preflight(context)
+            self.assertFalse(invalid_partial.accepted)
+            self.assertFalse(invalid_partial.retryable)
+            self.assertIn("inflight", invalid_partial.reason)
+            del store.remote[inflight_receipt]
+            store.remote[inflight_archive] = b"inflight"
 
             del store.remote[remote_name(0, "receipt", "e" * 64)]
             missing = runtime.preflight(context)

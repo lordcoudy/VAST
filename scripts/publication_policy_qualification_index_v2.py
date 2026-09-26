@@ -17,18 +17,26 @@ import argparse
 import hashlib
 import json
 import os
-import shutil
 import stat
-import tempfile
 from pathlib import Path
-from typing import Any, Mapping
+from typing import Any, Callable, Mapping
 
 import publication_policy_qualification as qualification
+from publication_physical_io_v1 import (
+    PhysicalRootCustodyV1,
+    PublicationPhysicalIoV1Error,
+)
 
 
 INDEX_FILENAME = "checkpoint_policy_qualification_index.v2.json"
 CANDIDATE_MANIFEST_FILENAME = "checkpoint_policy_capability_candidate_manifest.json"
 CANDIDATE_RECEIPT_FILENAME = "checkpoint_policy_qualification_candidate_receipt.json"
+_OUTPUT_NAMESPACE = frozenset(
+    {INDEX_FILENAME, CANDIDATE_MANIFEST_FILENAME, CANDIDATE_RECEIPT_FILENAME}
+)
+# DrvFS without the metadata mount option projects chmod(0444) as 0555.  Both
+# representations are world-readable and contain no write bit.
+_IMMUTABLE_OUTPUT_MODES = frozenset({0o444, 0o555})
 
 DEFAULT_FRAGMENT_PATHS = {
     "deepstream": Path(
@@ -59,6 +67,17 @@ PILOT_EVIDENCE_FILENAMES = {
 
 class PolicyQualificationIndexV2Error(RuntimeError):
     """An input or atomic candidate-index publication is unsafe."""
+
+
+ExecutionClosureLoader = Callable[..., dict[str, Any]]
+
+
+def _default_execution_closure_loader(**kwargs: Any) -> dict[str, Any]:
+    from publication_policy_qualification_execution_closure_v1 import (
+        load_publication_policy_qualification_execution_closure_v1,
+    )
+
+    return load_publication_policy_qualification_execution_closure_v1(**kwargs)
 
 
 def sha256_file(path: Path) -> str:
@@ -317,7 +336,7 @@ def _build_bindings(
                         "runtime_identity": row.get("runtime_identity"),
                     }
                 )
-    return bindings, fragments
+    return bindings, fragment_descriptors
 
 
 def _build_pilots(
@@ -377,23 +396,90 @@ def _build_pilots(
     return pilots
 
 
-def _output_destination(root: Path, output_dir: Path) -> Path:
-    candidate = Path(output_dir)
-    if not candidate.is_absolute():
-        candidate = root / candidate
-    if candidate.exists():
-        raise PolicyQualificationIndexV2Error(
-            "immutable qualification candidate output already exists"
-        )
+def _validated_execution_closure_descriptor(
+    *,
+    root: Path,
+    pilot_root: Path,
+    receipt_path: Path,
+    loader: ExecutionClosureLoader,
+    expected_fragment_descriptors: Mapping[str, Mapping[str, Any]],
+) -> dict[str, Any]:
+    descriptor = _descriptor(
+        root, receipt_path, "qualification execution closure receipt"
+    )
+    pilot_directory = _physical_directory(root, pilot_root, "pilot_root")
     try:
-        parent = candidate.parent.resolve(strict=True)
-        parent.relative_to(root)
-    except (OSError, ValueError) as exc:
+        loaded = loader(project_root=root, receipt_path=root / descriptor["path"])
+    except PolicyQualificationIndexV2Error:
+        raise
+    except Exception as exc:
         raise PolicyQualificationIndexV2Error(
-            "output_dir parent must be a physical directory under project_root"
+            f"qualification execution closure validation failed: {exc}"
         ) from exc
-    _physical_directory(root, parent, "output_dir parent")
-    return parent / candidate.name
+    if type(loaded) is not dict or loaded.get("receipt_descriptor") != descriptor:
+        raise PolicyQualificationIndexV2Error(
+            "qualification execution closure descriptor drifted"
+        )
+    receipt = loaded.get("receipt")
+    pilot_execution = receipt.get("pilot_execution") if type(receipt) is dict else None
+    pilot_identity = (
+        pilot_execution.get("pilot_root")
+        if type(pilot_execution) is dict
+        else None
+    )
+    cells = pilot_execution.get("cells") if type(pilot_execution) is dict else None
+    transaction = (
+        receipt.get("qualification_input_transaction")
+        if type(receipt) is dict
+        else None
+    )
+    transaction_fragments = (
+        transaction.get("fragments") if type(transaction) is dict else None
+    )
+    if not (
+        type(receipt) is dict
+        and receipt.get("schema_version") == 1
+        and receipt.get("artifact_kind")
+        == "vast_publication_policy_qualification_execution_closure_v1"
+        and receipt.get("status") == "qualification_execution_closed_nonpublication"
+        and receipt.get("qualification_execution_complete") is True
+        and receipt.get("accepted_for_full_publication") is False
+        and receipt.get("publication_ready") is False
+        and receipt.get("authorization_eligible") is False
+        and type(pilot_identity) is dict
+        and pilot_identity.get("path")
+        == pilot_directory.relative_to(root).as_posix()
+        and pilot_identity.get("cell_count") == 32
+        and type(cells) is list
+        and len(cells) == 32
+        and type(transaction_fragments) is dict
+        and set(transaction_fragments) == set(expected_fragment_descriptors)
+        and transaction_fragments
+        == {
+            system: dict(expected_fragment_descriptors[system])
+            for system in expected_fragment_descriptors
+        }
+    ):
+        raise PolicyQualificationIndexV2Error(
+            "qualification execution closure identity/pilot/transaction fragment binding drifted"
+        )
+    return descriptor
+
+
+def _output_destination(root: Path, output_dir: Path) -> Path:
+    raw = Path(output_dir)
+    if not raw.is_absolute() and any(part in {"", ".", ".."} for part in raw.parts):
+        raise PolicyQualificationIndexV2Error("output_dir path is not normalized")
+    candidate = Path(os.path.abspath(os.fspath(raw if raw.is_absolute() else root / raw)))
+    try:
+        relative = candidate.relative_to(root)
+    except ValueError as exc:
+        raise PolicyQualificationIndexV2Error(
+            "output_dir must remain under project_root"
+        ) from exc
+    if not relative.parts:
+        raise PolicyQualificationIndexV2Error("output_dir must be a dedicated directory")
+    return candidate
 
 
 def _descriptor_for_payload(root: Path, final_path: Path, payload: bytes) -> dict[str, Any]:
@@ -404,33 +490,55 @@ def _descriptor_for_payload(root: Path, final_path: Path, payload: bytes) -> dic
     }
 
 
-def _write_fsync(path: Path, payload: bytes) -> None:
-    with path.open("xb") as output:
-        output.write(payload)
-        output.flush()
-        os.fsync(output.fileno())
+def _commit_or_adopt_output(
+    custody: PhysicalRootCustodyV1,
+    path: Path,
+    payload: bytes,
+    *,
+    label: str,
+    after_physical_commit_step: Callable[[str, Path], None] | None = None,
+) -> None:
+    relative = path.relative_to(custody.root).as_posix()
+    expected = _descriptor_for_payload(custody.root, path, payload)
 
+    def physical_step(step: str) -> None:
+        if after_physical_commit_step is not None:
+            after_physical_commit_step(step, path)
 
-def _cleanup_staging_directory(staging: Path, *, parent: Path) -> None:
-    """Remove only the private sibling directory allocated by this module."""
     try:
-        resolved_parent = parent.resolve(strict=True)
-        resolved_staging = staging.resolve(strict=True)
-    except OSError as exc:
+        observed, identity, disposition = custody.commit_or_adopt_exact_identity(
+            relative,
+            payload,
+            label=label,
+            mode=0o444,
+            create_parents=False,
+            after_publish_step=physical_step,
+        )
+        cold, existing, cold_identity = custody.read_descriptor_identity(
+            relative,
+            label=f"committed {label}",
+            maximum=len(payload),
+            capture=True,
+        )
+        mode, stat_identity = custody.stat_regular_identity(
+            relative, label=f"committed {label} mode"
+        )
+    except PublicationPhysicalIoV1Error as exc:
         raise PolicyQualificationIndexV2Error(
-            "qualification staging cleanup target cannot be resolved"
+            f"immutable qualification candidate collision: {path.name}"
         ) from exc
     if (
-        resolved_staging.parent != resolved_parent
-        or not resolved_staging.name.startswith(".qualification-index-v2.")
-        or resolved_staging == Path.cwd().resolve()
-        or _is_link(resolved_staging)
-        or not resolved_staging.is_dir()
+        disposition not in {"published", "adopted"}
+        or observed != expected
+        or cold != expected
+        or existing != payload
+        or cold_identity != identity
+        or stat_identity != identity
+        or mode not in _IMMUTABLE_OUTPUT_MODES
     ):
         raise PolicyQualificationIndexV2Error(
-            "refusing unsafe qualification staging cleanup target"
+            f"immutable qualification candidate identity drifted: {path.name}"
         )
-    shutil.rmtree(resolved_staging)
 
 
 def _commit_output(
@@ -439,81 +547,133 @@ def _commit_output(
     destination: Path,
     index: dict[str, Any],
     candidate_manifest: dict[str, Any],
+    after_physical_commit_step: Callable[[str, Path], None] | None = None,
 ) -> dict[str, Path]:
-    parent = destination.parent
-    staging: Path | None = Path(
-        tempfile.mkdtemp(prefix=".qualification-index-v2.", dir=parent)
+    index_payload = _canonical_bytes(index)
+    candidate_payload = _canonical_bytes(candidate_manifest)
+    index_final = destination / INDEX_FILENAME
+    candidate_final = destination / CANDIDATE_MANIFEST_FILENAME
+    receipt_final = destination / CANDIDATE_RECEIPT_FILENAME
+    index_descriptor = _descriptor_for_payload(root, index_final, index_payload)
+    candidate_descriptor = _descriptor_for_payload(
+        root, candidate_final, candidate_payload
     )
+    receipt: dict[str, Any] = {
+        "schema_version": 1,
+        "artifact_kind": "vast_publication_policy_qualification_candidate_receipt",
+        "status": "qualification_candidate_not_accepted",
+        "accepted": False,
+        "publication_ready": False,
+        "scope": "forced_resource_qualification_pilots_only",
+        "policy_contract_sha256": candidate_manifest["policy_contract_sha256"],
+        "qualification_index": index_descriptor,
+        "candidate_manifest": candidate_descriptor,
+        "blockers": [
+            "candidate_is_not_a_full_publication_authority",
+            "requires_32_cell_native_pilot_validation_and_atomic_promotion",
+        ],
+    }
+    receipt["sha256"] = hashlib.sha256(
+        _canonical_bytes(receipt).rstrip(b"\n")
+    ).hexdigest()
+    receipt_payload = _canonical_bytes(receipt)
+    expected_payloads = {
+        INDEX_FILENAME: index_payload,
+        CANDIDATE_MANIFEST_FILENAME: candidate_payload,
+        CANDIDATE_RECEIPT_FILENAME: receipt_payload,
+    }
     try:
-        index_payload = _canonical_bytes(index)
-        candidate_payload = _canonical_bytes(candidate_manifest)
-        index_final = destination / INDEX_FILENAME
-        candidate_final = destination / CANDIDATE_MANIFEST_FILENAME
-        receipt_final = destination / CANDIDATE_RECEIPT_FILENAME
-        index_descriptor = _descriptor_for_payload(root, index_final, index_payload)
-        candidate_descriptor = _descriptor_for_payload(
-            root, candidate_final, candidate_payload
-        )
-        receipt: dict[str, Any] = {
-            "schema_version": 1,
-            "artifact_kind": "vast_publication_policy_qualification_candidate_receipt",
-            "status": "qualification_candidate_not_accepted",
-            "accepted": False,
-            "publication_ready": False,
-            "scope": "forced_resource_qualification_pilots_only",
-            "policy_contract_sha256": candidate_manifest["policy_contract_sha256"],
-            "qualification_index": index_descriptor,
-            "candidate_manifest": candidate_descriptor,
-            "blockers": [
-                "candidate_is_not_a_full_publication_authority",
-                "requires_32_cell_native_pilot_validation_and_atomic_promotion",
-            ],
-        }
-        receipt["sha256"] = hashlib.sha256(
-            _canonical_bytes(receipt).rstrip(b"\n")
-        ).hexdigest()
-        receipt_payload = _canonical_bytes(receipt)
-
-        _write_fsync(staging / INDEX_FILENAME, index_payload)
-        _write_fsync(staging / CANDIDATE_MANIFEST_FILENAME, candidate_payload)
-        _write_fsync(staging / CANDIDATE_RECEIPT_FILENAME, receipt_payload)
-        directory_descriptor = None
-        try:
-            directory_descriptor = os.open(
-                staging, os.O_RDONLY | getattr(os, "O_DIRECTORY", 0)
+        with PhysicalRootCustodyV1.open(
+            root, label="qualification candidate project_root"
+        ) as custody:
+            destination = custody.ensure_directory(
+                destination, label="qualification candidate output_dir"
             )
-            os.fsync(directory_descriptor)
-        except OSError:
-            pass
-        finally:
-            if directory_descriptor is not None:
-                os.close(directory_descriptor)
-
-        os.replace(staging, destination)
-        staging = None
-        directory_descriptor = None
-        try:
-            directory_descriptor = os.open(
-                parent, os.O_RDONLY | getattr(os, "O_DIRECTORY", 0)
+            initial = set(
+                custody.list_directory_names(
+                    destination, label="qualification candidate namespace"
+                )
             )
-            os.fsync(directory_descriptor)
-        except OSError:
-            pass
-        finally:
-            if directory_descriptor is not None:
-                os.close(directory_descriptor)
-        return {
-            "index_path": index_final,
-            "candidate_manifest_path": candidate_final,
-            "candidate_receipt_path": receipt_final,
-        }
-    except Exception as exc:
+            if CANDIDATE_RECEIPT_FILENAME in initial:
+                if initial != set(_OUTPUT_NAMESPACE):
+                    raise PolicyQualificationIndexV2Error(
+                        "completed qualification candidate namespace drifted"
+                    )
+            elif not initial <= {INDEX_FILENAME, CANDIDATE_MANIFEST_FILENAME}:
+                raise PolicyQualificationIndexV2Error(
+                    "incomplete qualification candidate namespace contains an extra entry"
+                )
+            _commit_or_adopt_output(
+                custody,
+                index_final,
+                index_payload,
+                label="qualification index",
+                after_physical_commit_step=after_physical_commit_step,
+            )
+            _commit_or_adopt_output(
+                custody,
+                candidate_final,
+                candidate_payload,
+                label="qualification candidate manifest",
+                after_physical_commit_step=after_physical_commit_step,
+            )
+            # Receipt is the final authority-bearing leaf and enables safe resume.
+            _commit_or_adopt_output(
+                custody,
+                receipt_final,
+                receipt_payload,
+                label="qualification candidate receipt",
+                after_physical_commit_step=after_physical_commit_step,
+            )
+            if set(
+                custody.list_directory_names(
+                    destination, label="committed qualification candidate namespace"
+                )
+            ) != set(_OUTPUT_NAMESPACE):
+                raise PolicyQualificationIndexV2Error(
+                    "committed qualification candidate namespace drifted"
+                )
+            custody.verify()
+
+        # Reopen after producer descriptors close and verify the exact frozen bundle.
+        with PhysicalRootCustodyV1.open(
+            root, label="cold qualification candidate project_root"
+        ) as custody:
+            if set(
+                custody.list_directory_names(
+                    destination, label="cold qualification candidate namespace"
+                )
+            ) != set(_OUTPUT_NAMESPACE):
+                raise PolicyQualificationIndexV2Error(
+                    "cold qualification candidate namespace drifted"
+                )
+            for name, payload in expected_payloads.items():
+                _descriptor, observed = custody.read_descriptor(
+                    destination / name,
+                    label=f"cold qualification candidate {name}",
+                    maximum=len(payload),
+                    capture=True,
+                )
+                mode, _identity = custody.stat_regular_identity(
+                    destination / name,
+                    label=f"cold qualification candidate {name}",
+                )
+                if observed != payload or mode not in _IMMUTABLE_OUTPUT_MODES:
+                    raise PolicyQualificationIndexV2Error(
+                        f"cold qualification candidate drifted: {name}"
+                    )
+            custody.verify()
+    except PolicyQualificationIndexV2Error:
+        raise
+    except (PublicationPhysicalIoV1Error, OSError) as exc:
         raise PolicyQualificationIndexV2Error(
-            f"atomic qualification candidate commit failed: {exc}"
+            f"immutable qualification candidate commit failed: {exc}"
         ) from exc
-    finally:
-        if staging is not None and staging.exists():
-            _cleanup_staging_directory(staging, parent=parent)
+    return {
+        "index_path": index_final,
+        "candidate_manifest_path": candidate_final,
+        "candidate_receipt_path": receipt_final,
+    }
 
 
 def build_policy_qualification_index_v2(
@@ -524,6 +684,9 @@ def build_policy_qualification_index_v2(
     output_dir: Path,
     policy: Any | None = None,
     fragment_validator: qualification.FragmentValidator | None = None,
+    execution_closure_receipt_path: Path | None = None,
+    execution_closure_loader: ExecutionClosureLoader | None = None,
+    after_physical_commit_step: Callable[[str, Path], None] | None = None,
 ) -> dict[str, Path]:
     """Atomically publish either a fragment-only or complete nonaccepted index."""
     root = _root(project_root)
@@ -532,7 +695,7 @@ def build_policy_qualification_index_v2(
     destination = _output_destination(root, output_dir)
 
     try:
-        bindings, _ = _build_bindings(
+        bindings, fragment_descriptors = _build_bindings(
             root=root,
             fragment_paths=fragment_paths,
             policy=policy_api,
@@ -551,11 +714,26 @@ def build_policy_qualification_index_v2(
             f"fragment-bound capability candidate validation failed: {exc}"
         ) from exc
 
-    pilots = (
-        []
-        if pilot_root is None
-        else _build_pilots(root=root, pilot_root=pilot_root, policy=policy_api)
-    )
+    if pilot_root is None:
+        if execution_closure_receipt_path is not None:
+            raise PolicyQualificationIndexV2Error(
+                "fragment-only bootstrap candidate cannot consume an execution closure"
+            )
+        pilots: list[dict[str, Any]] = []
+        execution_closure_descriptor: dict[str, Any] | None = None
+    else:
+        if execution_closure_receipt_path is None:
+            raise PolicyQualificationIndexV2Error(
+                "completed qualification index requires an execution closure receipt"
+            )
+        pilots = _build_pilots(root=root, pilot_root=pilot_root, policy=policy_api)
+        execution_closure_descriptor = _validated_execution_closure_descriptor(
+            root=root,
+            pilot_root=pilot_root,
+            receipt_path=execution_closure_receipt_path,
+            loader=(execution_closure_loader or _default_execution_closure_loader),
+            expected_fragment_descriptors=fragment_descriptors,
+        )
     dataset = _descriptor(root, root / "configs" / "datasets.yaml", "dataset manifest")
     index = {
         "schema_version": qualification.QUALIFICATION_INDEX_SCHEMA_VERSION,
@@ -565,11 +743,14 @@ def build_policy_qualification_index_v2(
         "bindings": bindings,
         "pilots": pilots,
     }
+    if execution_closure_descriptor is not None:
+        index["qualification_execution_closure"] = execution_closure_descriptor
     return _commit_output(
         root=root,
         destination=destination,
         index=index,
         candidate_manifest=candidate_manifest,
+        after_physical_commit_step=after_physical_commit_step,
     )
 
 
@@ -589,6 +770,7 @@ def _parse_args() -> argparse.Namespace:
         ),
     )
     parser.add_argument("--output-dir", type=Path, required=True)
+    parser.add_argument("--execution-closure-receipt", type=Path)
     for system, default in DEFAULT_FRAGMENT_PATHS.items():
         parser.add_argument(
             f"--{system.replace('_', '-')}-fragment",
@@ -610,6 +792,7 @@ def main() -> int:
         fragment_paths=fragments,
         pilot_root=args.pilot_root,
         output_dir=args.output_dir,
+        execution_closure_receipt_path=args.execution_closure_receipt,
     )
     print(
         json.dumps(

@@ -1,69 +1,129 @@
 ARG BASE_IMAGE=intel/dlstreamer@sha256:355435d2bdb986fe1d51f443d366da3ac1eb0c7175aa03ce2b31e4485f36b3bd
-FROM ${BASE_IMAGE}
+ARG BUILD_IMAGE=nvcr.io/nvidia/deepstream@sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759
+ARG SOURCE_DATE_EPOCH=1722470400
+
+FROM ${BUILD_IMAGE} AS native_builder
+
+ARG SOURCE_DATE_EPOCH
+ENV SOURCE_DATE_EPOCH=${SOURCE_DATE_EPOCH}
 USER root
 
-
-
-ENV DEBIAN_FRONTEND=noninteractive
-
-RUN for attempt in 1 2 3 4 5; do \
-      apt-get -o Acquire::Retries=5 update && \
-      apt-get -o Acquire::Retries=5 install -y --fix-missing --no-install-recommends \
-        build-essential \
-        ca-certificates \
-        cmake \
-        pkg-config \
-        libgstreamer1.0-dev \
-        libgstreamer-plugins-base1.0-dev && break; \
-      if [ "$attempt" -eq 5 ]; then exit 1; fi; \
-      rm -rf /var/lib/apt/lists/*; \
-      sleep "$attempt"; \
-    done \
-  && rm -rf /var/lib/apt/lists/*
-
-ARG VAST_NATIVE_PROBE_SOURCE_SHA=unknown
-LABEL org.vast.native_probe.source_sha="${VAST_NATIVE_PROBE_SOURCE_SHA}"
-LABEL org.vast.native_probe.kind="openvino-dlstreamer"
-
-ENV NVIDIA_DRIVER_CAPABILITIES=compute,utility,video
-ENV VAST_NATIVE_PYTHONPATH=/opt/intel/dlstreamer/gstreamer/lib/python3/dist-packages:/opt/intel/dlstreamer/python
-ENV GST_PLUGIN_PATH=/opt/vast/lib/gstreamer-1.0:/opt/intel/dlstreamer/lib:/opt/intel/dlstreamer/gstreamer/lib/gstreamer-1.0:/opt/intel/dlstreamer/gstreamer/lib/
+RUN command -v cc >/dev/null \
+  && command -v c++ >/dev/null \
+  && command -v pkg-config >/dev/null \
+  && pkg-config --exists \
+      gstreamer-1.0 gstreamer-app-1.0 gstreamer-base-1.0 \
+      gstreamer-rtp-1.0 gstreamer-video-1.0
 
 WORKDIR /workspace/project
 
 COPY CMakeLists.txt /workspace/project/CMakeLists.txt
-COPY deploy/native_gst_probe /workspace/project/deploy/native_gst_probe
-COPY deploy/gstreamer_adaptivescheduler /workspace/project/deploy/gstreamer_adaptivescheduler
-COPY deploy/gstreamer_analytics_terminal /workspace/project/deploy/gstreamer_analytics_terminal
+COPY deploy/gstreamer_adaptivescheduler/gstadaptivescheduler.c /workspace/project/deploy/gstreamer_adaptivescheduler/gstadaptivescheduler.c
+COPY deploy/gstreamer_analytics_terminal/checkpoint_analytics_model_provenance.hpp /workspace/project/deploy/gstreamer_analytics_terminal/checkpoint_analytics_model_provenance.hpp
+COPY deploy/gstreamer_analytics_terminal/gstvastanalyticsqueue.cpp /workspace/project/deploy/gstreamer_analytics_terminal/gstvastanalyticsqueue.cpp
+COPY deploy/gstreamer_analytics_terminal/gstvastanalyticsterminal.cpp /workspace/project/deploy/gstreamer_analytics_terminal/gstvastanalyticsterminal.cpp
+COPY deploy/gstreamer_analytics_terminal/gstvastcheckpointprefixqueue.cpp /workspace/project/deploy/gstreamer_analytics_terminal/gstvastcheckpointprefixqueue.cpp
+COPY deploy/native_gst_probe/checkpoint_admission_transport.hpp /workspace/project/deploy/native_gst_probe/checkpoint_admission_transport.hpp
+COPY deploy/native_gst_probe/checkpoint_analytics_execution_client.hpp /workspace/project/deploy/native_gst_probe/checkpoint_analytics_execution_client.hpp
+COPY deploy/native_gst_probe/checkpoint_analytics_terminal_transport.hpp /workspace/project/deploy/native_gst_probe/checkpoint_analytics_terminal_transport.hpp
+COPY deploy/native_gst_probe/checkpoint_gstreamer_analytics_bridge.hpp /workspace/project/deploy/native_gst_probe/checkpoint_gstreamer_analytics_bridge.hpp
+COPY deploy/native_gst_probe/checkpoint_native_policy_client.hpp /workspace/project/deploy/native_gst_probe/checkpoint_native_policy_client.hpp
+COPY deploy/native_gst_probe/checkpoint_resource_interval_emitter.hpp /workspace/project/deploy/native_gst_probe/checkpoint_resource_interval_emitter.hpp
+COPY deploy/native_gst_probe/checkpoint_runtime_emitter.hpp /workspace/project/deploy/native_gst_probe/checkpoint_runtime_emitter.hpp
+COPY deploy/native_gst_probe/checkpoint_source_coordinator.cpp /workspace/project/deploy/native_gst_probe/checkpoint_source_coordinator.cpp
+COPY deploy/native_gst_probe/vast_native_gst_probe.cpp /workspace/project/deploy/native_gst_probe/vast_native_gst_probe.cpp
 
-RUN cmake -S /workspace/project -B /workspace/project/build/cmake \
-      -DVAST_BUILD_NATIVE_GST_PROBE=ON \
-      -DVAST_BUILD_GSTREAMER_CUSTOM_PLUGIN=ON \
-      -DVAST_BUILD_CUSTOM_CUDA_QT=OFF \
-  && cmake --build /workspace/project/build/cmake \
-      --target vast_native_gst_probe vast_checkpoint_source \
-        gstadaptivescheduler gstvastanalyticsterminal gstvastanalyticsqueue gstvastcheckpointprefixqueue \
-      --parallel \
-  && install -m 0755 /workspace/project/build/bin/vast_native_gst_probe \
-      /usr/local/bin/vast_native_gst_probe \
-  && install -m 0755 /workspace/project/build/bin/vast_checkpoint_source \
-      /usr/local/bin/vast_checkpoint_source \
-  && install -d /opt/vast/lib/gstreamer-1.0 \
-  && install -m 0755 /workspace/project/build/lib/libgstadaptivescheduler.so \
-      /workspace/project/build/lib/libgstvastanalyticsterminal.so \
-      /workspace/project/build/lib/libgstvastanalyticsqueue.so \
-      /workspace/project/build/lib/libgstvastcheckpointprefixqueue.so \
-      /opt/vast/lib/gstreamer-1.0/
+RUN install -d -m 0755 \
+      /opt/vast/image-root/usr/local/bin \
+      /opt/vast/image-root/opt/vast/lib/gstreamer-1.0 \
+  && GST_CFLAGS="$(pkg-config --cflags \
+      gstreamer-1.0 gstreamer-app-1.0 gstreamer-rtp-1.0 gstreamer-video-1.0)" \
+  && GST_LIBS="$(pkg-config --libs \
+      gstreamer-1.0 gstreamer-app-1.0 gstreamer-rtp-1.0 gstreamer-video-1.0)" \
+  && GST_PLUGIN_CFLAGS="$(pkg-config --cflags \
+      gstreamer-1.0 gstreamer-base-1.0 gstreamer-video-1.0)" \
+  && GST_PLUGIN_LIBS="$(pkg-config --libs \
+      gstreamer-1.0 gstreamer-base-1.0 gstreamer-video-1.0)" \
+  && c++ -std=c++17 -O3 -DNDEBUG -fPIE -pthread \
+      ${GST_CFLAGS} \
+      /workspace/project/deploy/native_gst_probe/vast_native_gst_probe.cpp \
+      ${GST_LIBS} -pie \
+      -o /opt/vast/image-root/usr/local/bin/vast_native_gst_probe \
+  && c++ -std=c++17 -O3 -DNDEBUG -fPIE -pthread \
+      ${GST_CFLAGS} \
+      /workspace/project/deploy/native_gst_probe/checkpoint_source_coordinator.cpp \
+      ${GST_LIBS} -pie \
+      -o /opt/vast/image-root/usr/local/bin/vast_checkpoint_source \
+  && cc -std=c11 -O3 -DNDEBUG -fPIC -shared -DPACKAGE=\"vast\" \
+      ${GST_PLUGIN_CFLAGS} \
+      /workspace/project/deploy/gstreamer_adaptivescheduler/gstadaptivescheduler.c \
+      ${GST_PLUGIN_LIBS} \
+      -o /opt/vast/image-root/opt/vast/lib/gstreamer-1.0/libgstadaptivescheduler.so \
+  && c++ -std=c++17 -O3 -DNDEBUG -fPIC -shared -DPACKAGE=\"vast\" \
+      ${GST_PLUGIN_CFLAGS} \
+      -I/workspace/project/deploy/native_gst_probe \
+      /workspace/project/deploy/gstreamer_analytics_terminal/gstvastanalyticsterminal.cpp \
+      ${GST_PLUGIN_LIBS} \
+      -o /opt/vast/image-root/opt/vast/lib/gstreamer-1.0/libgstvastanalyticsterminal.so \
+  && c++ -std=c++17 -O3 -DNDEBUG -fPIC -shared -DPACKAGE=\"vast\" \
+      ${GST_PLUGIN_CFLAGS} \
+      -I/workspace/project/deploy/native_gst_probe \
+      -I/workspace/project/deploy/gstreamer_analytics_terminal \
+      /workspace/project/deploy/gstreamer_analytics_terminal/gstvastanalyticsqueue.cpp \
+      ${GST_PLUGIN_LIBS} \
+      -o /opt/vast/image-root/opt/vast/lib/gstreamer-1.0/libgstvastanalyticsqueue.so \
+  && c++ -std=c++17 -O3 -DNDEBUG -fPIC -shared -DPACKAGE=\"vast\" \
+      ${GST_PLUGIN_CFLAGS} \
+      -I/workspace/project/deploy/native_gst_probe \
+      /workspace/project/deploy/gstreamer_analytics_terminal/gstvastcheckpointprefixqueue.cpp \
+      ${GST_PLUGIN_LIBS} \
+      -o /opt/vast/image-root/opt/vast/lib/gstreamer-1.0/libgstvastcheckpointprefixqueue.so \
+  && find /opt/vast/image-root -type f -exec chmod 0555 {} + \
+  && find /opt/vast/image-root -exec touch -h -d "@${SOURCE_DATE_EPOCH}" {} +
 
+FROM ${BASE_IMAGE}
+
+ARG SOURCE_DATE_EPOCH
+ARG VAST_SOURCE_SET_SHA256
+ARG VAST_DEPENDENCY_SET_SHA256
+ARG VAST_BUILD_CONTEXT_SHA256
+ARG VAST_BASE_IMAGE_ID
+ARG VAST_BUILD_IMAGE_ID
+
+LABEL org.vast.component="openvino-native-probe-publication-foundation"
+LABEL org.vast.native_probe.kind="openvino-dlstreamer"
+LABEL org.vast.native_probe.source_sha="${VAST_SOURCE_SET_SHA256}"
+LABEL org.vast.publication-image.source-set-sha256="${VAST_SOURCE_SET_SHA256}"
+LABEL org.vast.publication-image.dependency-set-sha256="${VAST_DEPENDENCY_SET_SHA256}"
+LABEL org.vast.publication-image.build-context-sha256="${VAST_BUILD_CONTEXT_SHA256}"
+LABEL org.vast.publication-image.base-image-id="${VAST_BASE_IMAGE_ID}"
+LABEL org.vast.publication-image.build-image-id="${VAST_BUILD_IMAGE_ID}"
+
+ENV NVIDIA_DRIVER_CAPABILITIES=compute,utility,video
+ENV VAST_NATIVE_PYTHONPATH=/opt/intel/dlstreamer/gstreamer/lib/python3/dist-packages:/opt/intel/dlstreamer/python
 ENV VAST_GST_REGISTRY_TEMPLATE=/opt/vast/share/gstreamer-registry.bin
+ENV GST_PLUGIN_PATH=/opt/vast/lib/gstreamer-1.0:/opt/intel/dlstreamer/lib:/opt/intel/dlstreamer/gstreamer/lib/gstreamer-1.0:/opt/intel/dlstreamer/gstreamer/lib/
 
-RUN install -d -m 0755 /opt/vast/share \
-  && GST_REGISTRY=${VAST_GST_REGISTRY_TEMPLATE} gst-inspect-1.0 gvadetect >/dev/null \
-  && GST_REGISTRY=${VAST_GST_REGISTRY_TEMPLATE} gst-inspect-1.0 vastanalyticsqueue >/dev/null \
-  && GST_REGISTRY=${VAST_GST_REGISTRY_TEMPLATE} gst-inspect-1.0 vastcheckpointprefixqueue >/dev/null \
-  && GST_REGISTRY=${VAST_GST_REGISTRY_TEMPLATE} gst-inspect-1.0 vastanalyticsterminal >/dev/null \
-  && chmod 0444 ${VAST_GST_REGISTRY_TEMPLATE}
-
+USER root
+COPY --from=native_builder /opt/vast/image-root/ /
+RUN command -v gst-inspect-1.0 >/dev/null \
+  && install -d -m 0755 /opt/vast/share \
+  && mv /opt/intel/dlstreamer/gstreamer/lib/gstreamer-1.0/libgstpython.so \
+      /tmp/libgstpython.so \
+  && GST_PLUGIN_PATH=/opt/vast/lib/gstreamer-1.0:/opt/intel/dlstreamer/lib:/opt/intel/dlstreamer/gstreamer/lib/gstreamer-1.0:/opt/intel/dlstreamer/gstreamer/lib/ \
+     GST_REGISTRY=/opt/vast/share/gstreamer-registry.bin \
+     GST_REGISTRY_FORK=no \
+     gst-inspect-1.0 vastanalyticsqueue >/dev/null \
+  && GST_PLUGIN_PATH=/opt/vast/lib/gstreamer-1.0:/opt/intel/dlstreamer/lib:/opt/intel/dlstreamer/gstreamer/lib/gstreamer-1.0:/opt/intel/dlstreamer/gstreamer/lib/ \
+     GST_REGISTRY=/opt/vast/share/gstreamer-registry.bin \
+     GST_REGISTRY_FORK=no \
+     gst-inspect-1.0 vastcheckpointprefixqueue >/dev/null \
+  && mv /tmp/libgstpython.so \
+      /opt/intel/dlstreamer/gstreamer/lib/gstreamer-1.0/libgstpython.so \
+  && touch -h -d "@${SOURCE_DATE_EPOCH}" \
+      /opt/intel/dlstreamer/gstreamer/lib/gstreamer-1.0/libgstpython.so \
+  && chmod 0444 /opt/vast/share/gstreamer-registry.bin \
+  && touch -h -d "@${SOURCE_DATE_EPOCH}" /opt/vast/share/gstreamer-registry.bin
 USER dlstreamer
 
 ENTRYPOINT ["/usr/local/bin/vast_native_gst_probe"]

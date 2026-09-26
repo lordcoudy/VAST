@@ -12,10 +12,11 @@ import math
 import os
 import platform
 import re
+import stat
 import subprocess
 import sys
 from dataclasses import asdict, dataclass
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Any, Callable, Mapping, Sequence
 
 import psutil
@@ -27,6 +28,8 @@ from benchmark_contract import (
     ContractError,
     assess_hardware_target,
     resource_capability_grant_from_identity_artifacts,
+    validate_primary_architecture_contrast,
+    validate_primary_architecture_pair_run_contract,
     validate_pre_run_resource_capability_grant,
 )
 from backend_runtime_grant import (
@@ -69,6 +72,14 @@ from publication_matrix import (
     publication_matrix_identity,
     validate_full_publication_readiness,
 )
+from publication_policy_contract import assess_capability_manifest
+from publication_q4_runtime_registry_materializer_v4 import (
+    PublicationQ4RuntimeRegistryMaterializerV4Error,
+    validate_publication_q4_runtime_launcher_input_wrapper_v3,
+)
+from production_parent_artifact_pin_store_v1 import (
+    ProductionParentArtifactPinStoreV1,
+)
 from backend_publication_launcher_invocation_v3 import (
     publication_launcher_invocation_v3_contract,
 )
@@ -89,6 +100,10 @@ from seafile_capacity_attestation_v1 import (
     SeafileCapacityAttestationV1Error,
     validate_seafile_capacity_attestation_v1,
 )
+from seafile_operator_capacity_attestation_v2 import (
+    SeafileOperatorCapacityAttestationV2Error,
+    validate_seafile_operator_capacity_attestation_v2,
+)
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -96,6 +111,13 @@ IDENTITY_INPUTS_SCHEMA_VERSION = 1
 RUNTIME_SOURCE_ROOTS = ("scripts", "deploy", "configs", "policies")
 RUNTIME_ROOT_FILES = ("CMakeLists.txt", "requirements.txt")
 FULL_PUBLICATION_RUN_NAMESPACE = Path("runs/full_publication")
+FROZEN_FULL_PUBLICATION_MATRIX_SCHEMA_VERSION = 4
+FROZEN_FULL_PUBLICATION_MATRIX_SHA256 = (
+    "a1115ea9fa5f496f45d75636b8376366a48413cdc4c9787cb7ca4baac04b230e"
+)
+FROZEN_PUBLICATION_POLICY_CONTRACT_SHA256 = (
+    "4168818527ced4b3611c9aeabff6b04a7962314f4d80beb3da9dc814ba369016"
+)
 PRODUCTION_RUNTIME_SOURCE_RELATIVE = Path(
     ".local/state/vast/publication/runtime/full-publication-cp312-v1"
 )
@@ -123,6 +145,7 @@ ARM_FIELDS = frozenset(
         "measurement_s",
     }
 )
+PRIMARY_ARCHITECTURE_PAIR_FIELD = "primary_architecture_pair"
 _SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 
 
@@ -212,6 +235,207 @@ def _project_path(value: Path | str, *, project_root: Path, label: str) -> Path:
     except ValueError:
         raise ContractError(f"{label} must be inside project_root") from None
     return resolved
+
+
+def _validated_accepted_policy_capability_manifest(
+    value: Mapping[str, Any],
+) -> dict[str, Any]:
+    manifest = _json_copy(value)
+    if type(manifest) is not dict:
+        raise ContractError("accepted policy capability manifest must be a mapping")
+    if (
+        manifest.get("policy_contract_sha256")
+        != FROZEN_PUBLICATION_POLICY_CONTRACT_SHA256
+    ):
+        raise ContractError(
+            "accepted policy capability manifest does not bind the frozen "
+            "publication policy contract SHA-256"
+        )
+    assessment = assess_capability_manifest(manifest)
+    if type(assessment) is not dict or assessment.get("passed") is not True:
+        blockers = (
+            [str(item) for item in assessment.get("blockers") or []]
+            if isinstance(assessment, Mapping)
+            else ["invalid_capability_assessment"]
+        )
+        raise ContractError(
+            "accepted policy capability manifest is not accepted: "
+            + ", ".join(blockers[:5])
+        )
+    return manifest
+
+
+def _load_accepted_policy_capability_manifest(
+    *,
+    project_root: Path | str,
+    identity_artifacts: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Reopen the cold-validated accepted policy manifest fail-closed."""
+
+    try:
+        descriptor = identity_artifacts["bindings"]["policy_qualification"][
+            "outputs"
+        ]["capability_manifest"]
+    except (KeyError, TypeError):
+        raise ContractError(
+            "accepted policy capability manifest descriptor is missing"
+        ) from None
+    if (
+        type(descriptor) is not dict
+        or set(descriptor) != {"path", "size_bytes", "sha256"}
+        or type(descriptor.get("path")) is not str
+        or type(descriptor.get("size_bytes")) is not int
+        or not 0 < descriptor["size_bytes"] <= 64 * 1024 * 1024
+        or type(descriptor.get("sha256")) is not str
+        or _SHA256_RE.fullmatch(descriptor["sha256"]) is None
+    ):
+        raise ContractError(
+            "accepted policy capability manifest descriptor is invalid"
+        )
+
+    files = identity_artifacts.get("files")
+    same_path = (
+        [
+            item
+            for item in files
+            if type(item) is dict and item.get("path") == descriptor["path"]
+        ]
+        if type(files) is list
+        else []
+    )
+    if len(same_path) != 1 or same_path[0] != descriptor:
+        raise ContractError(
+            "accepted policy capability manifest descriptor does not exactly match "
+            "identity_artifacts.files"
+        )
+
+    raw_relative = descriptor["path"]
+    relative = PurePosixPath(raw_relative)
+    if (
+        raw_relative == ""
+        or "\\" in raw_relative
+        or relative.is_absolute()
+        or relative.as_posix() != raw_relative
+        or any(part in {"", ".", ".."} for part in relative.parts)
+    ):
+        raise ContractError(
+            "accepted policy capability manifest must be inside project_root"
+        )
+    try:
+        root = Path(project_root).resolve(strict=True)
+    except OSError as error:
+        raise ContractError(f"project_root is unavailable: {error}") from error
+    if not root.is_dir():
+        raise ContractError("project_root must be a physical directory")
+    candidate = root.joinpath(*relative.parts)
+    try:
+        candidate.relative_to(root)
+    except ValueError:
+        raise ContractError(
+            "accepted policy capability manifest must be inside project_root"
+        ) from None
+
+    current = root
+    try:
+        for position, part in enumerate(relative.parts):
+            current = current / part
+            entry_stat = current.lstat()
+            is_junction = bool(
+                getattr(current, "is_junction", lambda: False)()
+            )
+            if stat.S_ISLNK(entry_stat.st_mode) or is_junction:
+                raise ContractError(
+                    "accepted policy capability manifest must be a physical "
+                    "regular non-link file"
+                )
+            if position < len(relative.parts) - 1:
+                if not stat.S_ISDIR(entry_stat.st_mode):
+                    raise ContractError(
+                        "accepted policy capability manifest parent is not a "
+                        "physical directory"
+                    )
+            elif not stat.S_ISREG(entry_stat.st_mode):
+                raise ContractError(
+                    "accepted policy capability manifest must be a physical "
+                    "regular non-link file"
+                )
+    except FileNotFoundError as error:
+        raise ContractError(
+            "accepted policy capability manifest file is missing"
+        ) from error
+    except OSError as error:
+        raise ContractError(
+            f"accepted policy capability manifest physical stat failed: {error}"
+        ) from error
+
+    try:
+        resolved_candidate = candidate.resolve(strict=True)
+        resolved_candidate.relative_to(root)
+    except (OSError, ValueError) as error:
+        raise ContractError(
+            "accepted policy capability manifest must be inside project_root"
+        ) from error
+    if resolved_candidate != candidate:
+        raise ContractError(
+            "accepted policy capability manifest must be a physical regular "
+            "non-link file"
+        )
+
+    flags = os.O_RDONLY | getattr(os, "O_BINARY", 0) | getattr(os, "O_NOFOLLOW", 0)
+    try:
+        handle = os.open(candidate, flags)
+    except OSError as error:
+        raise ContractError(
+            f"accepted policy capability manifest file could not be opened: {error}"
+        ) from error
+    try:
+        before = os.fstat(handle)
+        if not stat.S_ISREG(before.st_mode):
+            raise ContractError(
+                "accepted policy capability manifest must be a physical regular "
+                "non-link file"
+            )
+        with os.fdopen(handle, "rb", closefd=False) as source:
+            payload = source.read(int(descriptor["size_bytes"]) + 1)
+        after = os.fstat(handle)
+    finally:
+        os.close(handle)
+    stable_fields = ("st_dev", "st_ino", "st_size", "st_mtime_ns")
+    if any(getattr(before, field, None) != getattr(after, field, None) for field in stable_fields):
+        raise ContractError(
+            "accepted policy capability manifest changed while being read"
+        )
+    try:
+        final_stat = candidate.lstat()
+    except OSError as error:
+        raise ContractError(
+            "accepted policy capability manifest changed while being read"
+        ) from error
+    if (
+        stat.S_ISLNK(final_stat.st_mode)
+        or not stat.S_ISREG(final_stat.st_mode)
+        or getattr(final_stat, "st_dev", None) != getattr(after, "st_dev", None)
+        or getattr(final_stat, "st_ino", None) != getattr(after, "st_ino", None)
+    ):
+        raise ContractError(
+            "accepted policy capability manifest changed while being read"
+        )
+    if len(payload) != descriptor["size_bytes"] or after.st_size != descriptor["size_bytes"]:
+        raise ContractError("accepted policy capability manifest size mismatch")
+    if _sha256_bytes(payload) != descriptor["sha256"]:
+        raise ContractError("accepted policy capability manifest SHA-256 mismatch")
+    try:
+        manifest = json.loads(payload.decode("utf-8"))
+    except (UnicodeError, json.JSONDecodeError) as error:
+        raise ContractError(
+            f"accepted policy capability manifest is invalid JSON: {error}"
+        ) from error
+    if type(manifest) is not dict or payload != _canonical_json(manifest) + b"\n":
+        raise ContractError(
+            "accepted policy capability manifest is not canonical JSON with one "
+            "trailing LF"
+        )
+    return _validated_accepted_policy_capability_manifest(manifest)
 
 
 def _validated_run_root(value: Path | str, *, project_root: Path) -> Path:
@@ -826,7 +1050,69 @@ def build_identity_inputs(**kwargs: Any) -> dict[str, Any]:
     return build_identity_material(**kwargs).identity_inputs
 
 
-def build_offline_publication_plan(config: Mapping[str, Any]) -> dict[str, Any]:
+def _validated_frozen_publication_pins(
+    *,
+    expected_matrix_sha256: Any,
+    expected_policy_contract_sha256: Any,
+) -> dict[str, Any]:
+    if (
+        type(expected_matrix_sha256) is not str
+        or _SHA256_RE.fullmatch(expected_matrix_sha256) is None
+        or expected_matrix_sha256 != FROZEN_FULL_PUBLICATION_MATRIX_SHA256
+    ):
+        raise ContractError(
+            "expected full publication matrix SHA-256 must equal the frozen v4 pin"
+        )
+    if (
+        type(expected_policy_contract_sha256) is not str
+        or _SHA256_RE.fullmatch(expected_policy_contract_sha256) is None
+        or expected_policy_contract_sha256
+        != FROZEN_PUBLICATION_POLICY_CONTRACT_SHA256
+    ):
+        raise ContractError(
+            "expected publication policy contract SHA-256 must equal the frozen pin"
+        )
+    return {
+        "matrix_schema_version": FROZEN_FULL_PUBLICATION_MATRIX_SCHEMA_VERSION,
+        "matrix_sha256": expected_matrix_sha256,
+        "policy_contract_sha256": expected_policy_contract_sha256,
+    }
+
+
+def _validate_frozen_publication_matrix(
+    matrix: Mapping[str, Any],
+    *,
+    frozen_contract: Mapping[str, Any],
+) -> tuple[dict[str, Any], dict[str, Any]]:
+    if type(matrix) is not dict:
+        raise ContractError("full publication matrix must be a mapping")
+    if matrix.get("schema_version") != frozen_contract.get(
+        "matrix_schema_version"
+    ):
+        raise ContractError("full publication matrix schema is not frozen v4")
+    policy_identity = _json_copy(matrix.get("policy_contract_identity"))
+    if (
+        type(policy_identity) is not dict
+        or set(policy_identity) != {"schema_version", "sha256"}
+        or policy_identity.get("schema_version") != 1
+        or policy_identity.get("sha256")
+        != frozen_contract.get("policy_contract_sha256")
+    ):
+        raise ContractError("frozen publication policy contract SHA-256 mismatch")
+    matrix_identity = publication_matrix_identity(dict(matrix))
+    if matrix_identity.get("sha256") != frozen_contract.get("matrix_sha256"):
+        raise ContractError("frozen full publication matrix SHA-256 mismatch")
+    return _json_copy(matrix_identity), policy_identity
+
+
+def build_offline_publication_plan(
+    config: Mapping[str, Any],
+    *,
+    expected_matrix_sha256: str = FROZEN_FULL_PUBLICATION_MATRIX_SHA256,
+    expected_policy_contract_sha256: str = (
+        FROZEN_PUBLICATION_POLICY_CONTRACT_SHA256
+    ),
+) -> dict[str, Any]:
     """Build and validate the frozen matrix/policy plan without execution probes.
 
     The offline plan deliberately has no ``run_identity``.  That identity is only
@@ -834,6 +1120,10 @@ def build_offline_publication_plan(config: Mapping[str, Any]) -> dict[str, Any]:
     container image IDs, hardware, and the stable cloud destination.
     """
 
+    frozen_contract = _validated_frozen_publication_pins(
+        expected_matrix_sha256=expected_matrix_sha256,
+        expected_policy_contract_sha256=expected_policy_contract_sha256,
+    )
     copied_config = _json_copy(config)
     if type(copied_config) is not dict:
         raise ContractError("benchmark config must be a mapping")
@@ -848,7 +1138,10 @@ def build_offline_publication_plan(config: Mapping[str, Any]) -> dict[str, Any]:
         matrix_builder=lambda _config: copy.deepcopy(matrix),
     )
     validated = validation_runner.plan()
-    matrix_identity = publication_matrix_identity(matrix)
+    matrix_identity, policy_identity = _validate_frozen_publication_matrix(
+        matrix,
+        frozen_contract=frozen_contract,
+    )
     if _canonical_json(validated.get("matrix_identity")) != _canonical_json(
         matrix_identity
     ):
@@ -859,16 +1152,11 @@ def build_offline_publication_plan(config: Mapping[str, Any]) -> dict[str, Any]:
     ):
         raise ContractError("offline full publication matrix cardinality drift")
 
-    policy_identity = _json_copy(matrix.get("policy_contract_identity"))
-    if (
-        type(policy_identity) is not dict
-        or _SHA256_RE.fullmatch(str(policy_identity.get("sha256", ""))) is None
-    ):
-        raise ContractError("offline full publication policy identity is invalid")
     contract_fields = (
         "publication_scope",
         "selection_basis",
         "order_strategy",
+        "primary_architecture_pair_contract",
         "policy_contract_identity",
         "seed",
         "systems",
@@ -900,6 +1188,7 @@ def build_offline_publication_plan(config: Mapping[str, Any]) -> dict[str, Any]:
                 "schema_version": 1,
                 "sha256": _sha256_bytes(_canonical_json(offline_identity_material)),
             },
+            "frozen_publication_contract": frozen_contract,
             "matrix_identity": matrix_identity,
             "policy_contract_identity": policy_identity,
             "matrix_contract": matrix_contract,
@@ -1521,6 +1810,70 @@ def _canonical_production_v3_deadline(value: Any) -> int | float:
     raise ContractError("production-v3 deadline is outside the frozen coordinate set")
 
 
+def _validated_primary_architecture_pair_for_arm(
+    config: Mapping[str, Any],
+    arm: Mapping[str, Any],
+) -> dict[str, Any] | None:
+    """Fail closed on the matrix-only preregistered architecture pair marker."""
+
+    if type(config) is not dict or type(arm) is not dict:
+        raise ContractError("primary architecture arm validation requires mappings")
+    primary = validate_primary_architecture_contrast(config)
+    primary_scenarios = {
+        str(primary["baseline_scenario"]),
+        str(primary["shared_scenario"]),
+    }
+    deadline = arm.get("deadline_ms")
+    deadline_matches = (
+        not isinstance(deadline, bool)
+        and isinstance(deadline, (int, float))
+        and math.isclose(
+            float(deadline),
+            float(primary["deadline_ms"]),
+            rel_tol=0.0,
+            abs_tol=1.0e-9,
+        )
+    )
+    exact_primary_cell = (
+        arm.get("system") == primary["system"]
+        and arm.get("codec") == primary["codec"]
+        and arm.get("dataset") == primary["dataset"]
+        and arm.get("policy") == primary["policy"]
+        and arm.get("scenario") in primary_scenarios
+        and arm.get("streams") == primary["streams"]
+        and isinstance(arm.get("repeat"), int)
+        and not isinstance(arm.get("repeat"), bool)
+        and 1 <= int(arm["repeat"]) <= int(primary["repeats"])
+        and deadline_matches
+    )
+    has_metadata = PRIMARY_ARCHITECTURE_PAIR_FIELD in arm
+    if exact_primary_cell and not has_metadata:
+        raise ContractError(
+            "exact primary architecture arm requires pair metadata"
+        )
+    if not exact_primary_cell and has_metadata:
+        raise ContractError(
+            "primary architecture pair metadata is forbidden outside the exact cell"
+        )
+    if not exact_primary_cell:
+        return None
+
+    validated = validate_primary_architecture_pair_run_contract(
+        config,
+        system=str(arm["system"]),
+        scenario=str(arm["scenario"]),
+        policy=str(arm["policy"]),
+        dataset=str(arm["dataset"]),
+        deadline_ms=float(arm["deadline_ms"]),
+        streams=int(arm["streams"]),
+        repeat=int(arm["repeat"]),
+        metadata=arm.get(PRIMARY_ARCHITECTURE_PAIR_FIELD),
+    )
+    if validated.get("arm_position") != arm.get("arm_position"):
+        raise ContractError("primary architecture arm_position drift")
+    return _json_copy(validated)
+
+
 def _production_v3_coordinate_match(
     value: Mapping[str, Any], *, coordinate: Mapping[str, Any]
 ) -> bool:
@@ -1542,6 +1895,7 @@ def _select_production_v3_authority(
     identity_artifacts: Mapping[str, Any],
     backend_runtime_grant: Mapping[str, Any],
     coordinate: Mapping[str, Any],
+    runtime_authority_snapshot: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     bindings = identity_artifacts.get("bindings")
     backend_binding = (
@@ -1608,20 +1962,34 @@ def _select_production_v3_authority(
     launcher_content = (
         launcher_input.get("content") if type(launcher_input) is dict else None
     )
-    runtime_input_key = _PRODUCTION_RUNTIME_INPUT_KEYS.get(system)
     if (
-        type(launcher_content) is not dict
-        or launcher_content.get("system") != system
-        or launcher_content.get("launcher_kind")
-        != "dedicated_publication_runtime_v3"
-        or launcher_content.get("dataset_runtime_input_key") != runtime_input_key
-        or type(launcher_content.get("dataset_runtime_input")) is not dict
-        or type(launcher_content.get("launcher_evidence_files")) is not list
+        type(launcher_input) is not dict
+        or set(launcher_input) != {"content", "content_identity_sha256"}
+        or type(launcher_content) is not dict
+        or launcher_input.get("content_identity_sha256")
+        != _sha256_bytes(_canonical_json(launcher_content))
     ):
         raise ContractError(
-            "production-v3 system launcher input is not materialized in runtime authority"
+            "production-v3 system launcher input content binding drifted"
         )
-    evidence_names = launcher_content["launcher_evidence_files"]
+    try:
+        launcher_wrapper = (
+            validate_publication_q4_runtime_launcher_input_wrapper_v3(
+                launcher_content,
+                expected_system=system,
+                expected_policy=str(coordinate["policy"]),
+            )
+        )
+    except PublicationQ4RuntimeRegistryMaterializerV4Error as error:
+        raise ContractError(
+            f"production-v3 dual-projection launcher input rejected: {error}"
+        ) from error
+    runtime_input_key = _PRODUCTION_RUNTIME_INPUT_KEYS.get(system)
+    if launcher_wrapper["dataset_runtime_input_key"] != runtime_input_key:
+        raise ContractError("production-v3 runtime-input key crossbinding drifted")
+    qualification_projection = launcher_wrapper["qualification_projection"]
+    production_projection = launcher_wrapper["production_projection"]
+    evidence_names = production_projection["launcher_evidence_files"]
     if (
         not evidence_names
         or len(evidence_names) != len(set(evidence_names))
@@ -1636,14 +2004,27 @@ def _select_production_v3_authority(
         <= set(evidence_names)
     ):
         raise ContractError("production-v3 launcher evidence allowlist is incomplete")
-    runtime_input = copy.deepcopy(launcher_content["dataset_runtime_input"])
-    evidence_mapping = runtime_input.get("evidence_mapping")
-    if (
-        type(evidence_mapping) is not dict
-        or set(evidence_mapping) != set(evidence_names)
-        or len(set(evidence_mapping.values())) != len(evidence_mapping)
-    ):
-        raise ContractError("production-v3 runtime evidence mapping drifted")
+    runtime_input = copy.deepcopy(
+        production_projection["runtime_input_template"]
+    )
+
+    if runtime_authority_snapshot is not None:
+        authority_coordinate = {
+            key: coordinate[key]
+            for key in ("system", "codec", "topology_kind", "policy")
+        }
+        if (
+            type(runtime_authority_snapshot) is not dict
+            or runtime_authority_snapshot.get("coordinate")
+            != authority_coordinate
+            or runtime_authority_snapshot.get("runtime_authority_sha256")
+            != authority_sha
+            or runtime_authority_snapshot.get("runtime_input_template")
+            != qualification_projection["runtime_input_template"]
+        ):
+            raise ContractError(
+                "production-v3 qualification/registry projection crossbinding drifted"
+            )
 
     grant_cells = grant_system.get("qualified_cells")
     identity_cells = identity_system.get("qualified_cells")
@@ -1689,12 +2070,28 @@ def _select_production_v3_authority(
         ),
         "runtime_authority_sha256": authority_sha,
         "model_parity_acceptance_binding_sha256": _required_sha(
-            authority.get("model_parity_acceptance_binding_sha256"),
+            (
+                authority.get("upstream_identities", {}).get(
+                    "model_parity_acceptance_binding_sha256"
+                )
+                if type(authority.get("upstream_identities")) is dict
+                else None
+            ),
             label="runtime authority model-parity acceptance",
         ),
         "dataset_runtime_input_key": runtime_input_key,
         "dataset_runtime_input": runtime_input,
         "launcher_evidence_files": list(evidence_names),
+        "qualification_dataset_runtime_input": copy.deepcopy(
+            qualification_projection["runtime_input_template"]
+        ),
+        "qualification_launcher_evidence_files": list(
+            qualification_projection["launcher_evidence_files"]
+        ),
+        "launcher_input_wrapper_sha256": launcher_wrapper["wrapper_sha256"],
+        "launcher_input_projection_crossbinding_sha256": launcher_wrapper[
+            "projection_crossbinding_sha256"
+        ],
     }
 
 
@@ -1717,7 +2114,7 @@ def _execute_production_v3_arm(
 ) -> dict[str, Any]:
     """Build and commit exactly one parent-owned production ABI-v3 arm."""
 
-    del config
+    _validated_primary_architecture_pair_for_arm(config, arm)
     if (
         type(resource_capability_grant) is not dict
         or type(backend_runtime_grant) is not dict
@@ -1808,8 +2205,22 @@ def _execute_production_v3_arm(
         relative_output = output_dir.relative_to(root)
     except ValueError:
         raise ContractError("production-v3 arm output escaped project_root") from None
-    if not relative_output.parts or output_dir.exists():
-        raise ContractError("production-v3 arm output must be a fresh project descendant")
+    if not relative_output.parts:
+        raise ContractError("production-v3 arm output must be a project descendant")
+    output_exists = output_dir.exists()
+    if output_exists:
+        try:
+            output_info = output_dir.lstat()
+        except OSError as error:
+            raise ContractError(
+                f"production-v3 arm output is unavailable: {error}"
+            ) from error
+        if stat.S_ISLNK(output_info.st_mode) or not stat.S_ISDIR(
+            output_info.st_mode
+        ):
+            raise ContractError(
+                "production-v3 arm output resume target is not a plain directory"
+            )
     run_id = "-".join(
         part
         for part in (
@@ -1868,54 +2279,92 @@ def _execute_production_v3_arm(
     )
     arm_file_sha = hashlib.sha256(raw_arm).hexdigest()
     try:
-        prepared = (
-            production_transaction_v3.prepare_backend_publication_production_transaction_v3(
-                output_dir=output_dir,
-                arm_contract=arm_contract,
+        if not output_exists:
+            prepared = (
+                production_transaction_v3.prepare_backend_publication_production_transaction_v3(
+                    output_dir=output_dir,
+                    arm_contract=arm_contract,
+                )
             )
-        )
-        if (
-            prepared.get("status") != "prepared_production_arm_not_executed"
-            or prepared.get("sha256") != arm_file_sha
-            or any(
-                prepared.get(field) is not False
-                for field in production_transaction_v3.PRODUCTION_ACCEPTANCE_CLAIM_FIELDS
-            )
-        ):
-            raise ContractError("production-v3 prepare authority drifted")
-        return production_transaction_v3.run_or_resume_backend_publication_production_transaction_v3(
+            if (
+                prepared.get("status") != "prepared_production_arm_not_executed"
+                or prepared.get("sha256") != arm_file_sha
+                or any(
+                    prepared.get(field) is not False
+                    for field in production_transaction_v3.PRODUCTION_ACCEPTANCE_CLAIM_FIELDS
+                )
+            ):
+                raise ContractError("production-v3 prepare authority drifted")
+        parent_pin_store = ProductionParentArtifactPinStoreV1(
             project_root=root,
             output_dir=output_dir,
-            expected_arm_contract_file_sha256=arm_file_sha,
-            execution_scope=production_transaction_v3.PRODUCTION_EXECUTION_SCOPE,
-            expected_coordinate=coordinate,
-            expected_python_executable=python_descriptor,
-            expected_publication_launcher=selected["launcher"],
-            expected_launcher_invocation_sha256=invocation["invocation_sha256"],
-            expected_backend_runtime_grant_sha256=backend_grant_sha,
-            expected_identity_artifact_binding_sha256=identity_sha,
-            expected_cell_identity_sha256=selected["cell_identity_sha256"],
-            expected_validation_record_sha256=selected[
-                "validation_record_sha256"
-            ],
-            expected_runtime_binding_identity_sha256=runtime_binding_sha,
-            expected_dispatch_resolution_sha256=resolution["resolution_sha256"],
-            expected_full_publication_execution_binding=execution_binding,
-            expected_resource_capability_grant_sha256=resource_grant_sha,
-            expected_model_parity_grant_sha256=model_grant_sha,
-            expected_model_parity_acceptance_binding_sha256=parity_binding_sha,
-            expected_runtime_inputs=runtime_inputs,
-            expected_launcher_evidence_files=evidence_names,
-            expected_semantic_validator_identity_sha256=(
-                semantic_validator_identity_sha256
-            ),
-            semantic_evidence_validator=semantic_evidence_validator,
-            expected_production_runtime_bind_mount=production_runtime_bind_mount,
+            arm_contract_file_sha256=arm_file_sha,
+            execution_binding=execution_binding,
         )
+        try:
+            expected_parent_pin = parent_pin_store.load_expected_pin()
+            return production_transaction_v3.run_or_resume_backend_publication_production_transaction_v3(
+                project_root=root,
+                output_dir=output_dir,
+                expected_arm_contract_file_sha256=arm_file_sha,
+                execution_scope=production_transaction_v3.PRODUCTION_EXECUTION_SCOPE,
+                expected_coordinate=coordinate,
+                expected_python_executable=python_descriptor,
+                expected_publication_launcher=selected["launcher"],
+                expected_launcher_invocation_sha256=invocation["invocation_sha256"],
+                expected_backend_runtime_grant_sha256=backend_grant_sha,
+                expected_identity_artifact_binding_sha256=identity_sha,
+                expected_cell_identity_sha256=selected["cell_identity_sha256"],
+                expected_validation_record_sha256=selected[
+                    "validation_record_sha256"
+                ],
+                expected_runtime_binding_identity_sha256=runtime_binding_sha,
+                expected_dispatch_resolution_sha256=resolution["resolution_sha256"],
+                expected_full_publication_execution_binding=execution_binding,
+                expected_resource_capability_grant_sha256=resource_grant_sha,
+                expected_model_parity_grant_sha256=model_grant_sha,
+                expected_model_parity_acceptance_binding_sha256=parity_binding_sha,
+                expected_runtime_inputs=runtime_inputs,
+                expected_launcher_evidence_files=evidence_names,
+                expected_semantic_validator_identity_sha256=(
+                    semantic_validator_identity_sha256
+                ),
+                semantic_evidence_validator=semantic_evidence_validator,
+                expected_durable_parent_artifact_pin=expected_parent_pin,
+                durable_parent_artifact_pin_sink=parent_pin_store,
+                expected_production_runtime_bind_mount=production_runtime_bind_mount,
+            )
+        finally:
+            parent_pin_store.close()
     except ContractError:
         raise
     except Exception as error:
         raise ContractError(f"production-v3 transaction rejected arm: {error}") from error
+
+
+def _production_scratch_roots(identity_artifacts: Mapping[str, Any]) -> tuple[Path, ...]:
+    """Read native scratch locations from the already validated production identities."""
+    roots: set[Path] = set()
+    try:
+        systems = identity_artifacts["bindings"]["backend_runtime_qualification"]["systems"]
+        for system, binding in systems.items():
+            for record in binding["runtime_authorities"]:
+                launcher_input = record["artifact"]["system_specific_launcher_input"]
+                content = launcher_input["content"]
+                if launcher_input["content_identity_sha256"] != _sha256_bytes(_canonical_json(content)):
+                    raise ContractError("production scratch launcher input binding drifted")
+                wrapper = validate_publication_q4_runtime_launcher_input_wrapper_v3(
+                    content, expected_system=system, expected_policy=record["policy"],
+                )
+                raw = wrapper["production_projection"]["runtime_input_template"]["scratch_root"]
+                if type(raw) is not str or not raw or not Path(raw).is_absolute():
+                    raise ContractError("production scratch root must be an absolute path")
+                roots.add(Path(raw))
+    except (KeyError, TypeError, AttributeError, PublicationQ4RuntimeRegistryMaterializerV4Error) as error:
+        raise ContractError("production scratch runtime projection is invalid") from error
+    if not roots:
+        raise ContractError("production scratch runtime projections are missing")
+    return tuple(sorted(roots))
 
 
 class RealArmRunner:
@@ -2155,8 +2604,15 @@ class RealArmRunner:
             )
         self.execution_guards = tuple(refreshed)
 
-    def _validate_arm(self, arm: Mapping[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
-        if type(arm) is not dict or set(arm) != ARM_FIELDS:
+    def _validate_arm(
+        self,
+        arm: Mapping[str, Any],
+    ) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any] | None]:
+        allowed_fields = (
+            ARM_FIELDS,
+            ARM_FIELDS | {PRIMARY_ARCHITECTURE_PAIR_FIELD},
+        )
+        if type(arm) is not dict or set(arm) not in allowed_fields:
             raise ContractError("frozen arm schema drift")
         protocol = self.config.get("protocol") or {}
         exact_protocol = {
@@ -2205,7 +2661,11 @@ class RealArmRunner:
         workload_streams = int((scenario.get("workload") or {}).get("streams", 0) or 0)
         if workload_streams != arm["streams"]:
             raise ContractError("frozen arm streams differ from scenario workload")
-        return scenario, dataset
+        primary_architecture_pair = _validated_primary_architecture_pair_for_arm(
+            self.config,
+            arm,
+        )
+        return scenario, dataset, primary_architecture_pair
 
     @staticmethod
     def _validate_production_v3_authority(
@@ -2217,7 +2677,7 @@ class RealArmRunner:
         if type(value) is not dict:
             raise ContractError("production-v3 transaction returned no receipt authority")
         if (
-            value.get("schema_version") != 3
+            value.get("schema_version") != 4
             or value.get("artifact_kind")
             != production_transaction_v3.RECEIPT_AUTHORITY_KIND
             or value.get("status") != "accepted_publishable_backend_output"
@@ -2277,7 +2737,7 @@ class RealArmRunner:
     def __call__(self, context: ArmContext, arm_root: Path) -> dict[str, Any]:
         self._verify_execution_inputs_unchanged()
         arm = _json_copy(context.arm)
-        scenario, dataset = self._validate_arm(arm)
+        scenario, dataset, primary_architecture_pair = self._validate_arm(arm)
         self._verify_dataset_unchanged(str(arm["dataset"]))
         workload = scenario.get("workload") or {}
         object_density = workload.get("object_density") or {}
@@ -2375,7 +2835,7 @@ class RealArmRunner:
             dry_run_plan=False,
             directory_dataset_name=str(arm["dataset"]),
             directory_policy=str(arm["policy"]),
-            primary_architecture_pair=None,
+            primary_architecture_pair=copy.deepcopy(primary_architecture_pair),
             primary_policy_pair=None,
             resource_capability_grant=copy.deepcopy(
                 self.resource_capability_grant
@@ -2421,6 +2881,7 @@ def production_readiness_validator(
     config: Mapping[str, Any],
     *,
     detected_hardware: Mapping[str, Any],
+    accepted_policy_capability_manifest: Mapping[str, Any] | None = None,
     resource_capability_grant: Mapping[str, Any] | None = None,
     backend_runtime_grant: Mapping[str, Any] | None = None,
     model_parity_grant: Mapping[str, Any] | None = None,
@@ -2456,6 +2917,21 @@ def production_readiness_validator(
     except ModelParityGrantError as error:
         raise ContractError(f"invalid pre-run model-parity grant: {error}") from error
     copied_config = _json_copy(config)
+    if accepted_policy_capability_manifest is not None:
+        accepted_policy_manifest = _validated_accepted_policy_capability_manifest(
+            accepted_policy_capability_manifest
+        )
+        benchmark = copied_config.get("benchmark")
+        if type(benchmark) is not dict:
+            raise ContractError(
+                "benchmark config must be a mapping before policy capability injection"
+            )
+        field = "publication_policy_capability_manifest"
+        if field in benchmark and benchmark[field] != accepted_policy_manifest:
+            raise ContractError(
+                "benchmark config contains a conflicting policy capability manifest"
+            )
+        benchmark[field] = copy.deepcopy(accepted_policy_manifest)
     try:
         inspect.signature(scientific_validator).bind(
             copied_config,
@@ -2500,8 +2976,20 @@ def production_readiness_validator(
 class OfflinePlanEntrypoint:
     """Dispatch only a pure, explicitly non-executable matrix/policy plan."""
 
-    def __init__(self, *, config: Mapping[str, Any]) -> None:
-        self._plan_payload = build_offline_publication_plan(config)
+    def __init__(
+        self,
+        *,
+        config: Mapping[str, Any],
+        expected_matrix_sha256: str = FROZEN_FULL_PUBLICATION_MATRIX_SHA256,
+        expected_policy_contract_sha256: str = (
+            FROZEN_PUBLICATION_POLICY_CONTRACT_SHA256
+        ),
+    ) -> None:
+        self._plan_payload = build_offline_publication_plan(
+            config,
+            expected_matrix_sha256=expected_matrix_sha256,
+            expected_policy_contract_sha256=expected_policy_contract_sha256,
+        )
 
     def dispatch(self, command: str) -> tuple[int, dict[str, Any]]:
         if command != "plan":
@@ -2518,10 +3006,18 @@ class ProductionEntrypoint:
         runner: FullPublicationRunner,
         runtime: FullPublicationRuntime,
         results_exporter: ResultsExporter = export_finalized_results,
+        expected_matrix_sha256: str = FROZEN_FULL_PUBLICATION_MATRIX_SHA256,
+        expected_policy_contract_sha256: str = (
+            FROZEN_PUBLICATION_POLICY_CONTRACT_SHA256
+        ),
     ) -> None:
         self.runner = runner
         self.runtime = runtime
         self.results_exporter = results_exporter
+        self.frozen_publication_contract = _validated_frozen_publication_pins(
+            expected_matrix_sha256=expected_matrix_sha256,
+            expected_policy_contract_sha256=expected_policy_contract_sha256,
+        )
 
     def _plan(self) -> dict[str, Any]:
         plan = _json_copy(self.runner.plan())
@@ -2536,6 +3032,14 @@ class ProductionEntrypoint:
             value = plan.get(field)
             if type(value) is not dict or _SHA256_RE.fullmatch(str(value.get("sha256", ""))) is None:
                 raise ContractError(f"full publication plan lacks {field}")
+        if (
+            plan["matrix_identity"].get("sha256")
+            != self.frozen_publication_contract["matrix_sha256"]
+        ):
+            raise ContractError("frozen full publication matrix SHA-256 mismatch")
+        plan["frozen_publication_contract"] = copy.deepcopy(
+            self.frozen_publication_contract
+        )
         return plan
 
     def external_preflight(self) -> CallbackDecision:
@@ -2548,6 +3052,7 @@ class ProductionEntrypoint:
             getattr(self.runner, "CHECKPOINT_NAME", "checkpoint.json")
         )
         next_sequence = 0
+        recovering_accepted_pair = False
         if manifest_path.exists() or checkpoint_path.exists():
             if (
                 manifest_path.is_symlink()
@@ -2570,12 +3075,19 @@ class ProductionEntrypoint:
             ):
                 raise ContractError("full publication resume status identity drift")
             next_sequence = completed_pairs
+            inflight = status.get("inflight")
+            recovering_accepted_pair = (
+                isinstance(inflight, dict)
+                and inflight.get("phase") == "accepted"
+                and inflight.get("sequence") == completed_pairs
+            )
         context = RunContext(
             run_root=run_root,
             matrix_identity=plan["matrix_identity"],
             run_identity=plan["run_identity"],
             next_sequence=next_sequence,
             total_pairs=int(plan["expected_pairs"]),
+            recovering_accepted_pair=recovering_accepted_pair,
         )
         decision = self.runtime.preflight(context)
         if type(decision) is not CallbackDecision:
@@ -2709,22 +3221,60 @@ def _load_seafile_capacity_attestation(
         raw = json.loads(resolved.read_text(encoding="utf-8"))
     except (OSError, UnicodeError, json.JSONDecodeError) as error:
         raise ContractError(f"invalid Seafile capacity attestation: {error}") from error
+    upload_url = f"{links.base_url}/u/d/{links.upload_token}"
+    read_url = f"{links.base_url}/d/{links.read_token}"
+    artifact_kind = raw.get("artifact_kind") if type(raw) is dict else None
     try:
-        accepted = validate_seafile_capacity_attestation_v1(
-            raw,
-            upload_url=(
-                f"{links.base_url}/u/d/{links.upload_token}"
-            ),
-            read_url=f"{links.base_url}/d/{links.read_token}",
-            repo_id=destination_id,
-        )
-    except SeafileCapacityAttestationV1Error as error:
+        if artifact_kind == "vast_seafile_operator_capacity_attestation_v2":
+            accepted = validate_seafile_operator_capacity_attestation_v2(
+                raw,
+                upload_url=upload_url,
+                read_url=read_url,
+                destination_id=destination_id,
+            )
+            available = int(
+                accepted["operator_capacity"][
+                    "available_capacity_lower_bound_bytes"
+                ]
+            )
+        elif artifact_kind == "vast_seafile_capacity_attestation_v1":
+            accepted = validate_seafile_capacity_attestation_v1(
+                raw,
+                upload_url=upload_url,
+                read_url=read_url,
+                repo_id=destination_id,
+            )
+            available = int(accepted["account_quota"]["available_bytes"])
+        else:
+            raise ContractError(
+                "Seafile capacity attestation has an unsupported artifact kind"
+            )
+    except (
+        SeafileCapacityAttestationV1Error,
+        SeafileOperatorCapacityAttestationV2Error,
+    ) as error:
         raise ContractError(f"Seafile capacity attestation is blocked: {error}") from error
-    available = int(accepted["account_quota"]["available_bytes"])
+    if artifact_kind == "vast_seafile_operator_capacity_attestation_v2":
+        destination_identity_sha256 = accepted["destination"].get(
+            "destination_binding_sha256"
+        )
+    else:
+        destination_identity_sha256 = accepted["destination"].get(
+            "destination_identity_sha256"
+        )
+    if (
+        type(destination_identity_sha256) is not str
+        or re.fullmatch(r"[0-9a-f]{64}", destination_identity_sha256) is None
+    ):
+        raise ContractError(
+            "Seafile capacity attestation destination identity is invalid"
+        )
     return {
         "attestation": accepted,
         "descriptor": descriptor,
+        "available_capacity_bytes": available,
         "capacity_confirmed_gib": available / float(1024**3),
+        "destination_identity_sha256": destination_identity_sha256,
     }
 
 
@@ -2740,9 +3290,35 @@ def _destination_id_from_args(args: argparse.Namespace) -> str:
     return normalized
 
 
-def _consume_cloud_links_from_environment() -> SeafileShareLinks:
+def _consume_cloud_links(
+    *, project_root: Path, links_file: Path | None,
+) -> SeafileShareLinks:
     try:
-        return SeafileShareLinks.from_environment()
+        root = project_root.resolve(strict=True)
+        if links_file is None:
+            raise ContractError(
+                "--cloud-links-file seafile.txt is required for production"
+            )
+        candidate = links_file if links_file.is_absolute() else root / links_file
+        lexical = Path(os.path.abspath(os.fspath(candidate)))
+        expected = root / "seafile.txt"
+        try:
+            lexical.relative_to(root)
+            parent = lexical.parent.resolve(strict=True)
+            parent.relative_to(root)
+        except (OSError, ValueError) as error:
+            raise ContractError(
+                "Seafile link file must be a physical file inside project_root"
+            ) from error
+        if (
+            parent != lexical.parent
+            or lexical != expected
+            or lexical.name != "seafile.txt"
+        ):
+            raise ContractError(
+                "production Seafile links must come only from project_root/seafile.txt"
+            )
+        return SeafileShareLinks.from_file(lexical)
     finally:
         os.environ.pop("VAST_SEAFILE_UPLOAD_LINK", None)
         os.environ.pop("VAST_SEAFILE_READ_LINK", None)
@@ -2795,8 +3371,23 @@ def create_application(
     config = load_config(config_path)
     if type(config) is not dict:
         raise ContractError("benchmark config must be a mapping")
+    frozen_contract = _validated_frozen_publication_pins(
+        expected_matrix_sha256=args.expected_matrix_sha256,
+        expected_policy_contract_sha256=args.expected_policy_contract_sha256,
+    )
     if args.command == "plan":
-        return OfflinePlanEntrypoint(config=config)
+        return OfflinePlanEntrypoint(
+            config=config,
+            expected_matrix_sha256=frozen_contract["matrix_sha256"],
+            expected_policy_contract_sha256=frozen_contract[
+                "policy_contract_sha256"
+            ],
+        )
+
+    _validate_frozen_publication_matrix(
+        build_full_publication_matrix(_json_copy(config)),
+        frozen_contract=frozen_contract,
+    )
 
     if args.run_root is None:
         raise ContractError(f"--run-root is required for '{args.command}'")
@@ -2821,6 +3412,12 @@ def create_application(
         raise ContractError(
             f"full publication identity artifacts are blocked: {error}"
         ) from error
+    accepted_policy_capability_manifest = (
+        _load_accepted_policy_capability_manifest(
+            project_root=project_root,
+            identity_artifacts=identity_artifacts,
+        )
+    )
     try:
         model_parity_grant = model_parity_grant_from_identity_artifacts(
             identity_artifacts
@@ -2840,7 +3437,10 @@ def create_application(
         raise ContractError(
             f"full publication backend runtime grant is blocked: {error}"
         ) from error
-    links = _consume_cloud_links_from_environment()
+    links = _consume_cloud_links(
+        project_root=project_root,
+        links_file=args.cloud_links_file,
+    )
     destination_id = _destination_id_from_args(args)
     capacity_binding = _load_seafile_capacity_attestation(
         project_root=project_root,
@@ -2873,13 +3473,13 @@ def create_application(
     material.identity_inputs["seafile_capacity_attestation"] = {
         "descriptor": copy.deepcopy(capacity_descriptor),
         "attestation_sha256": capacity_attestation["sha256"],
-        "destination_identity_sha256": capacity_attestation["destination"][
+        "destination_identity_sha256": capacity_binding[
             "destination_identity_sha256"
         ],
         "required_capacity_bytes": capacity_attestation["sizing_projection"][
             "required_capacity_bytes"
         ],
-        "available_bytes": capacity_attestation["account_quota"]["available_bytes"],
+        "available_bytes": int(capacity_binding["available_capacity_bytes"]),
     }
     capacity_path = project_root / str(capacity_descriptor["path"])
     capacity_stat = capacity_path.stat()
@@ -2896,6 +3496,7 @@ def create_application(
     readiness = lambda value: production_readiness_validator(
         value,
         detected_hardware=detected_hardware,
+        accepted_policy_capability_manifest=accepted_policy_capability_manifest,
         resource_capability_grant=resource_capability_grant,
         backend_runtime_grant=backend_runtime_grant,
         model_parity_grant=model_parity_grant,
@@ -2925,6 +3526,7 @@ def create_application(
         arm_runner=arm_runner,
         readiness_validator=readiness,
         minimum_free_bytes=int(float(args.minimum_free_gib) * 1024**3),
+        scratch_roots=_production_scratch_roots(identity_artifacts),
         capacity_confirmed_gib=float(capacity_binding["capacity_confirmed_gib"]),
     )
     runner = FullPublicationRunner(
@@ -2933,7 +3535,14 @@ def create_application(
         identity_inputs=material.identity_inputs,
         callbacks=runtime.callbacks(),
     )
-    return ProductionEntrypoint(runner=runner, runtime=runtime)
+    return ProductionEntrypoint(
+        runner=runner,
+        runtime=runtime,
+        expected_matrix_sha256=frozen_contract["matrix_sha256"],
+        expected_policy_contract_sha256=frozen_contract[
+            "policy_contract_sha256"
+        ],
+    )
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -2942,6 +3551,22 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--project-root", type=Path, default=PROJECT_ROOT)
     parser.add_argument("--run-root", type=Path)
+    parser.add_argument(
+        "--expected-matrix-sha256",
+        default=FROZEN_FULL_PUBLICATION_MATRIX_SHA256,
+        help=(
+            "mandatory frozen full-publication matrix v4 SHA-256; alternate "
+            "values are rejected"
+        ),
+    )
+    parser.add_argument(
+        "--expected-policy-contract-sha256",
+        default=FROZEN_PUBLICATION_POLICY_CONTRACT_SHA256,
+        help=(
+            "mandatory frozen publication-policy contract SHA-256; alternate "
+            "values are rejected"
+        ),
+    )
     parser.add_argument("--config", type=Path, default=Path("configs/experiments.yaml"))
     parser.add_argument("--datasets", type=Path, default=Path("configs/datasets.yaml"))
     parser.add_argument(
@@ -2960,6 +3585,7 @@ def build_parser() -> argparse.ArgumentParser:
         help="deprecated and rejected: use --capacity-attestation",
     )
     parser.add_argument("--capacity-attestation", type=Path)
+    parser.add_argument("--cloud-links-file", type=Path)
     parser.add_argument("--cloud-destination-id")
     parser.add_argument("--minimum-free-gib", type=float, default=20.0)
     parser.add_argument("--cloud-timeout-s", type=float, default=120.0)
@@ -3029,6 +3655,9 @@ if __name__ == "__main__":
 
 
 __all__ = [
+    "FROZEN_FULL_PUBLICATION_MATRIX_SCHEMA_VERSION",
+    "FROZEN_FULL_PUBLICATION_MATRIX_SHA256",
+    "FROZEN_PUBLICATION_POLICY_CONTRACT_SHA256",
     "IdentityMaterial",
     "ImmutableFileGuard",
     "OfflinePlanEntrypoint",

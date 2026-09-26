@@ -57,24 +57,36 @@ int main() {
   VastDeepStreamFrameObservation observed{};
   std::array<char, 512> error{};
 
+  if (vast_deepstream_observe_frame(
+          fixture.buffer, 2, &observed, error.data(), error.size()) != 0) {
+    std::cerr << "observation failed: " << error.data() << '\n';
+    return 1;
+  }
+  if (observed.abi_version != 1 || observed.num_frames_in_batch != 1 ||
+      observed.source_id != 2 || observed.frame_num != 7 ||
+      observed.buf_pts_ns != 123456789) {
+    std::cerr << "read-only observation drifted\n";
+    return 2;
+  }
+
   if (vast_deepstream_bind_admission(
           fixture.buffer, 2, 123456789, identity.data(), &observed,
           error.data(), error.size()) != 0) {
     std::cerr << "bind failed: " << error.data() << '\n';
-    return 1;
+    return 3;
   }
   if (observed.abi_version != 1 || observed.num_frames_in_batch != 1 ||
       observed.source_id != 2 || observed.frame_num != 7 ||
       observed.buf_pts_ns != 123456789 ||
       std::memcmp(observed.identity_sha256, identity.data(), identity.size()) != 0) {
     std::cerr << "bound observation drifted\n";
-    return 2;
+    return 4;
   }
   if (vast_deepstream_verify_admission(
           fixture.buffer, 2, 123456789, identity.data(), &observed,
           error.data(), error.size()) != 0) {
     std::cerr << "verify failed: " << error.data() << '\n';
-    return 3;
+    return 5;
   }
 
   auto wrong_identity = identity;
@@ -84,21 +96,21 @@ int main() {
           fixture.buffer, 2, 123456789, wrong_identity.data(), &observed,
           error.data(), error.size()) == 0 || !contains(error.data(), "digest mismatch")) {
     std::cerr << "digest mismatch was accepted\n";
-    return 4;
+    return 6;
   }
   error.fill(0);
   if (vast_deepstream_verify_admission(
           fixture.buffer, 3, 123456789, identity.data(), &observed,
           error.data(), error.size()) == 0 || !contains(error.data(), "source_id mismatch")) {
     std::cerr << "source mismatch was accepted\n";
-    return 5;
+    return 7;
   }
   error.fill(0);
   if (vast_deepstream_verify_admission(
           fixture.buffer, 2, 123456790, identity.data(), &observed,
           error.data(), error.size()) == 0 || !contains(error.data(), "buf_pts mismatch")) {
     std::cerr << "PTS mismatch was accepted\n";
-    return 6;
+    return 8;
   }
   fixture.frame->frame_num = -1;
   error.fill(0);
@@ -106,7 +118,7 @@ int main() {
           fixture.buffer, 2, 123456789, identity.data(), &observed,
           error.data(), error.size()) == 0 || !contains(error.data(), "negative")) {
     std::cerr << "negative frame counter was accepted\n";
-    return 7;
+    return 9;
   }
   return 0;
 }

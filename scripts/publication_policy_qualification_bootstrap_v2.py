@@ -17,10 +17,15 @@ import stat
 import tempfile
 from pathlib import Path
 from statistics import median
+from functools import wraps
 from typing import Any, Callable, Mapping
 
 import checkpoint_model_parity_acceptance as model_parity_acceptance
 import publication_policy_contract as policy
+from publication_physical_io_v1 import (
+    PhysicalRootCustodyV1,
+    PublicationPhysicalIoV1Error,
+)
 
 
 SCOPE = "forced_resource_qualification_pilots_only"
@@ -246,9 +251,28 @@ def _read_json(path: Path, label: str) -> dict[str, Any]:
 
 
 def _load_model_parity_manifest(path: Path) -> Mapping[str, Any]:
-    from checkpoint_model_parity import load_parity_manifest
-
-    return load_parity_manifest(path)
+    try:
+        import yaml
+        header = yaml.safe_load(path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, yaml.YAMLError) as exc:
+        raise BootstrapCalibrationV2Error(
+            f"invalid accepted model-parity manifest header: {exc}"
+        ) from exc
+    coordinate = (
+        header.get("schema_version") if type(header) is dict else None,
+        header.get("artifact_kind") if type(header) is dict else None,
+    )
+    if coordinate == (3, "checkpoint_analytics_model_parity_manifest"):
+        from checkpoint_model_parity import load_parity_manifest
+        return load_parity_manifest(path)
+    if coordinate == (4, "checkpoint_analytics_model_parity_manifest_v4"):
+        from checkpoint_model_parity_v4 import load_parity_manifest_v4
+        return load_parity_manifest_v4(
+            path, project_root=Path(__file__).resolve().parents[1]
+        )
+    raise BootstrapCalibrationV2Error(
+        "accepted model-parity manifest schema/kind is unsupported"
+    )
 
 
 def _candidate_material(
@@ -379,12 +403,35 @@ def _validate_acceptance_binding(
         type(binding) is dict,
         "production model-parity validator returned no binding",
     )
+    coordinate = (
+        binding.get("schema_version"), binding.get("artifact_kind")
+    )
+    if coordinate == (2, "vast_verified_model_parity_acceptance_binding"):
+        expected_file_count = 36
+    elif coordinate == (4, "vast_verified_model_parity_acceptance_binding_v4"):
+        expected_file_count = 50
+        try:
+            from checkpoint_model_parity_acceptance_v4 import (
+                validate_refresh_authority_v4,
+            )
+            refresh = validate_refresh_authority_v4(
+                binding.get("refresh_authority")
+            )
+        except Exception as exc:
+            raise BootstrapCalibrationV2Error(
+                f"production model-parity v4 refresh authority failed: {exc}"
+            ) from exc
+        _require(
+            refresh == binding.get("refresh_authority"),
+            "production model-parity v4 refresh authority drifted",
+        )
+    else:
+        raise BootstrapCalibrationV2Error(
+            "production model-parity schema-v2 acceptance binding identity drifted"
+        )
     _require(
-        binding.get("schema_version") == 2
-        and binding.get("artifact_kind")
-        == "vast_verified_model_parity_acceptance_binding"
-        and binding.get("evidence_count") == 32,
-        "production model-parity schema-v2 acceptance binding identity drifted",
+        binding.get("evidence_count") == 32,
+        "production model-parity acceptance evidence coverage drifted",
     )
     transaction_binding = binding.get("transaction_index")
     _require(
@@ -449,7 +496,12 @@ def _validate_acceptance_binding(
         )
     raw_files = binding.get("files")
     _require(
-        type(raw_files) is list and raw_files,
+        type(raw_files) is list
+        and (
+            bool(raw_files)
+            if expected_file_count == 36
+            else len(raw_files) == expected_file_count
+        ),
         "model-parity binding file set is missing",
     )
     binding_files: dict[str, dict[str, Any]] = {}
@@ -501,11 +553,36 @@ def _accepted_calibration_material(
         root, accepted_receipt_path, "accepted model-parity receipt"
     )
     try:
-        raw_binding = (
-            model_parity_acceptance.load_verified_model_parity_acceptance(
-                project_root=root,
-                receipt_path=root / receipt_relative,
+        import yaml
+        manifest_header = yaml.safe_load(
+            (root / manifest_relative).read_text(encoding="utf-8")
+        )
+        manifest_header_coordinate = (
+            manifest_header.get("schema_version")
+            if type(manifest_header) is dict else None,
+            manifest_header.get("artifact_kind")
+            if type(manifest_header) is dict else None,
+        )
+        if manifest_header_coordinate == (
+            3, "checkpoint_analytics_model_parity_manifest"
+        ):
+            acceptance_loader = (
+                model_parity_acceptance.load_verified_model_parity_acceptance
             )
+        elif manifest_header_coordinate == (
+            4, "checkpoint_analytics_model_parity_manifest_v4"
+        ):
+            from checkpoint_model_parity_acceptance_v4 import (
+                load_verified_model_parity_acceptance_v4,
+            )
+            acceptance_loader = load_verified_model_parity_acceptance_v4
+        else:
+            raise BootstrapCalibrationV2Error(
+                "accepted model-parity manifest schema/kind is unsupported"
+            )
+        raw_binding = acceptance_loader(
+            project_root=root,
+            receipt_path=root / receipt_relative,
         )
     except Exception as exc:
         raise BootstrapCalibrationV2Error(
@@ -528,10 +605,15 @@ def _accepted_calibration_material(
         type(manifest) is dict,
         "accepted model-parity manifest is not an object",
     )
+    manifest_coordinate = (
+        manifest.get("schema_version"), manifest.get("artifact_kind")
+    )
     _require(
-        manifest.get("schema_version") == 3
-        and manifest.get("artifact_kind")
-        == "checkpoint_analytics_model_parity_manifest",
+        manifest_coordinate
+        in {
+            (3, "checkpoint_analytics_model_parity_manifest"),
+            (4, "checkpoint_analytics_model_parity_manifest_v4"),
+        },
         "accepted model-parity manifest schema/kind drifted",
     )
     slots = manifest.get("workload_slots")
@@ -671,7 +753,7 @@ def _accepted_calibration_material(
     calibration_records.sort(
         key=lambda row: (row["branch"], row["resource"])
     )
-    return {
+    result = {
         "acceptance_binding": binding,
         "acceptance_binding_sha256": binding["binding_sha256"],
         "accepted_manifest": _descriptor_fields(
@@ -694,6 +776,11 @@ def _accepted_calibration_material(
         "services": services,
         "transfers": transfers,
     }
+    if manifest_coordinate[0] == 4:
+        result["model_parity_refresh_authority"] = json.loads(
+            _canonical_bytes(binding["refresh_authority"]).decode("ascii")
+        )
+    return result
 
 
 def _execution_bundle_material(
@@ -1396,6 +1483,10 @@ def _derive_snapshot(
             "physical_response_evidence_sha256"
         ],
     }
+    if "model_parity_refresh_authority" in parity:
+        snapshot["model_parity_refresh_authority"] = parity[
+            "model_parity_refresh_authority"
+        ]
     return candidate, snapshot, calibrations
 
 
@@ -1411,10 +1502,6 @@ def _output_destination(root: Path, output_dir: Path | str) -> Path:
             "output_dir escaped project_root"
         ) from exc
     _require(candidate != root, "output_dir cannot be project_root")
-    _require(
-        not candidate.exists() and not os.path.lexists(candidate),
-        "immutable bootstrap output already exists",
-    )
     parent = candidate.parent
     _require(parent.is_dir(), "output_dir parent must already exist")
     relative_parent = parent.relative_to(root)
@@ -1429,6 +1516,13 @@ def _output_destination(root: Path, output_dir: Path | str) -> Path:
         parent.resolve(strict=True) == parent,
         "output_dir parent is an alias",
     )
+    if os.path.lexists(candidate):
+        _require(
+            candidate.is_dir()
+            and not _is_link(candidate)
+            and candidate.resolve(strict=True) == candidate,
+            "immutable bootstrap output is not one physical directory",
+        )
     return candidate
 
 
@@ -1460,7 +1554,142 @@ def _write_new(path: Path, payload: bytes) -> None:
         os.close(descriptor)
 
 
-def _cleanup_staging(staging: Path, *, parent: Path) -> None:
+def _directory_identity(path: Path) -> tuple[int, int]:
+    info = path.lstat()
+    _require(
+        stat.S_ISDIR(info.st_mode) and not _is_link(path),
+        "bootstrap directory identity is unsafe",
+    )
+    return int(info.st_dev), int(info.st_ino)
+
+
+def _bootstrap_result(destination: Path) -> dict[str, Any]:
+    return {
+        "mapping_path": destination / MAPPING_FILENAME,
+        "calibration_paths": {
+            system: destination / CALIBRATION_FILENAME.format(system=system)
+            for system in policy.PUBLISHABLE_SYSTEMS
+        },
+        "receipt_path": destination / RECEIPT_FILENAME,
+    }
+
+
+def _require_exact_bootstrap_tree(
+    destination: Path,
+    payloads: Mapping[str, bytes],
+) -> tuple[int, int]:
+    identity = _directory_identity(destination)
+    try:
+        names = {entry.name for entry in destination.iterdir()}
+    except OSError as error:
+        raise BootstrapCalibrationV2Error(
+            "bootstrap output cannot be enumerated for exact adoption"
+        ) from error
+    _require(names == set(payloads), "immutable bootstrap output namespace drifted")
+    for name, payload in payloads.items():
+        path = destination / name
+        try:
+            before = path.lstat()
+            observed = path.read_bytes()
+            after = path.lstat()
+        except OSError as error:
+            raise BootstrapCalibrationV2Error(
+                f"bootstrap output {name} cannot be adopted"
+            ) from error
+        _require(
+            stat.S_ISREG(before.st_mode)
+            and not _is_link(path)
+            and int(before.st_nlink) == 1
+            and (int(before.st_dev), int(before.st_ino), int(before.st_size))
+            == (int(after.st_dev), int(after.st_ino), int(after.st_size))
+            and observed == payload,
+            f"immutable bootstrap output collision: {name}",
+        )
+    _require(
+        _directory_identity(destination) == identity,
+        "bootstrap output directory changed during exact adoption",
+    )
+    return identity
+
+
+def _durable_bootstrap_tree(
+    destination: Path,
+    *,
+    parent: Path,
+    expected_identity: tuple[int, int],
+    expected_parent_identity: tuple[int, int],
+) -> None:
+    _require(
+        destination.parent == parent
+        and _directory_identity(destination) == expected_identity,
+        "bootstrap output directory identity drifted before durability barrier",
+    )
+    _require(
+        _directory_identity(parent) == expected_parent_identity,
+        "bootstrap output parent identity drifted before durability barrier",
+    )
+    try:
+        for path in sorted(destination.iterdir(), key=lambda item: item.name):
+            before = path.lstat()
+            _require(
+                stat.S_ISREG(before.st_mode)
+                and not _is_link(path)
+                and int(before.st_nlink) == 1,
+                f"bootstrap durability barrier found unsafe leaf: {path.name}",
+            )
+            descriptor = os.open(
+                path,
+                os.O_RDONLY
+                | int(getattr(os, "O_NOFOLLOW", 0))
+                | int(getattr(os, "O_CLOEXEC", 0)),
+            )
+            try:
+                opened = os.fstat(descriptor)
+                _require(
+                    (int(opened.st_dev), int(opened.st_ino))
+                    == (int(before.st_dev), int(before.st_ino)),
+                    f"bootstrap durability leaf rebound: {path.name}",
+                )
+                os.fsync(descriptor)
+            finally:
+                os.close(descriptor)
+        for directory in (destination, parent):
+            directory_identity = _directory_identity(directory)
+            descriptor = os.open(
+                directory,
+                os.O_RDONLY
+                | int(getattr(os, "O_DIRECTORY", 0))
+                | int(getattr(os, "O_NOFOLLOW", 0))
+                | int(getattr(os, "O_CLOEXEC", 0)),
+            )
+            try:
+                opened = os.fstat(descriptor)
+                _require(
+                    (int(opened.st_dev), int(opened.st_ino))
+                    == directory_identity,
+                    "bootstrap durability directory rebound",
+                )
+                os.fsync(descriptor)
+            finally:
+                os.close(descriptor)
+    except OSError as error:
+        raise BootstrapCalibrationV2Error(
+            "bootstrap final tree durability barrier failed"
+        ) from error
+    _require(
+        _directory_identity(destination) == expected_identity
+        and _directory_identity(parent) == expected_parent_identity,
+        "bootstrap output directory/parent changed across durability barrier",
+    )
+
+
+def _cleanup_staging(
+    staging: Path,
+    *,
+    parent: Path,
+    expected_staging_identity: tuple[int, int],
+    expected_parent_identity: tuple[int, int],
+) -> None:
     try:
         resolved_parent = parent.resolve(strict=True)
         resolved_staging = staging.resolve(strict=True)
@@ -1476,7 +1705,88 @@ def _cleanup_staging(staging: Path, *, parent: Path) -> None:
         and not _is_link(resolved_staging),
         "refusing unsafe bootstrap staging cleanup target",
     )
+    _require(
+        _directory_identity(resolved_parent) == expected_parent_identity
+        and _directory_identity(resolved_staging) == expected_staging_identity,
+        "refusing bootstrap cleanup after parent/staging inode replacement",
+    )
+    for entry in resolved_staging.iterdir():
+        info = entry.lstat()
+        _require(
+            stat.S_ISREG(info.st_mode)
+            and not _is_link(entry)
+            and int(info.st_nlink) == 1,
+            "refusing bootstrap cleanup of an unowned staging inode",
+        )
     shutil.rmtree(resolved_staging)
+
+
+def _rename_directory_noreplace(source: Path, destination: Path) -> None:
+    """Use the hardened shared directory publisher without an import cycle."""
+
+    from publication_policy_qualification_pilot_executor_v2 import (
+        _rename_directory_noreplace as publish,
+    )
+
+    publish(source, destination)
+
+
+def _cold_validate_bootstrap_commit(
+    *, root: Path, result: Mapping[str, Any], custody: PhysicalRootCustodyV1
+) -> None:
+    receipt_path = Path(result["receipt_path"])
+    try:
+        receipt_descriptor, receipt_payload = custody.read_descriptor(
+            receipt_path,
+            label="cold bootstrap receipt",
+            maximum=64 * 1024 * 1024,
+            capture=True,
+        )
+    except PublicationPhysicalIoV1Error as error:
+        raise BootstrapCalibrationV2Error(
+            f"cold bootstrap receipt custody failed: {error}"
+        ) from error
+    assert receipt_payload is not None
+    try:
+        receipt = json.loads(receipt_payload)
+    except (UnicodeError, json.JSONDecodeError) as error:
+        raise BootstrapCalibrationV2Error(
+            "cold bootstrap receipt is not JSON"
+        ) from error
+    unsigned = {
+        key: value for key, value in receipt.items() if key != "receipt_sha256"
+    }
+    _require(
+        type(receipt) is dict
+        and receipt_payload == _canonical_bytes(receipt) + b"\n"
+        and receipt.get("receipt_sha256") == _canonical_sha(unsigned),
+        "cold bootstrap receipt identity drifted",
+    )
+    expected: list[tuple[str, Path, Any]] = [
+        ("mapping", Path(result["mapping_path"]), receipt.get("mapping")),
+        *(
+            (
+                f"calibration {system}",
+                Path(result["calibration_paths"][system]),
+                receipt.get("calibrations", {}).get(system),
+            )
+            for system in policy.PUBLISHABLE_SYSTEMS
+        ),
+    ]
+    for label, path, descriptor in expected:
+        try:
+            observed, _payload = custody.read_descriptor(
+                path, label=f"cold bootstrap {label}", maximum=64 * 1024 * 1024
+            )
+        except PublicationPhysicalIoV1Error as error:
+            raise BootstrapCalibrationV2Error(
+                f"cold bootstrap {label} custody failed: {error}"
+            ) from error
+        _require(observed == descriptor, f"cold bootstrap {label} drifted")
+    _require(
+        receipt_descriptor["path"] == receipt_path.relative_to(root).as_posix(),
+        "cold bootstrap receipt path drifted",
+    )
 
 
 def _commit(
@@ -1489,11 +1799,12 @@ def _commit(
     revalidate: Callable[
         [], tuple[dict[str, Any], dict[str, Any], dict[str, dict[str, Any]]]
     ],
+    after_directory_publish_step: Callable[[str, Path], None] | None = None,
 ) -> dict[str, Any]:
     parent = destination.parent
-    staging: Path | None = Path(
-        tempfile.mkdtemp(prefix=".policy-bootstrap-v2.", dir=parent)
-    )
+    parent_identity = _directory_identity(parent)
+    staging: Path | None = None
+    staging_identity: tuple[int, int] | None = None
     try:
         payloads: dict[str, bytes] = {}
         mapping_payload = _canonical_bytes(mapping) + b"\n"
@@ -1560,56 +1871,83 @@ def _commit(
                 "bootstrap_is_valid_only_for_forced_cpu_only_gpu_only_pilots",
             ],
         }
+        if "model_parity_refresh_authority" in snapshot:
+            receipt["model_parity_refresh_authority"] = snapshot[
+                "model_parity_refresh_authority"
+            ]
         receipt["receipt_sha256"] = _canonical_sha(receipt)
         payloads[RECEIPT_FILENAME] = _canonical_bytes(receipt) + b"\n"
+        _require(
+            tuple(payloads)[-1] == RECEIPT_FILENAME,
+            "bootstrap receipt is not the last staged payload",
+        )
+        if os.path.lexists(destination):
+            existing_identity = _require_exact_bootstrap_tree(
+                destination, payloads
+            )
+            _durable_bootstrap_tree(
+                destination,
+                parent=parent,
+                expected_identity=existing_identity,
+                expected_parent_identity=parent_identity,
+            )
+            return _bootstrap_result(destination)
+
+        staging = Path(
+            tempfile.mkdtemp(prefix=".policy-bootstrap-v2.", dir=parent)
+        )
+        staging_identity = _directory_identity(staging)
         for filename, payload in payloads.items():
             _write_new(staging / filename, payload)
             _require(
                 (staging / filename).read_bytes() == payload,
                 f"staged bootstrap output {filename} drifted",
             )
-        directory_descriptor = None
-        try:
-            directory_descriptor = os.open(
-                staging,
-                os.O_RDONLY | int(getattr(os, "O_DIRECTORY", 0)),
-            )
-            os.fsync(directory_descriptor)
-        except OSError:
-            pass
-        finally:
-            if directory_descriptor is not None:
-                os.close(directory_descriptor)
-
         _, second_snapshot, second_calibrations = revalidate()
         _require(
             second_snapshot == snapshot
             and second_calibrations == calibrations,
             "bootstrap inputs changed before atomic commit",
         )
-        os.replace(staging, destination)
-        staging = None
-        directory_descriptor = None
+        _require(
+            _directory_identity(parent) == parent_identity,
+            "bootstrap output parent changed before commit",
+        )
         try:
-            directory_descriptor = os.open(
-                parent,
-                os.O_RDONLY | int(getattr(os, "O_DIRECTORY", 0)),
+            _durable_bootstrap_tree(
+                staging,
+                parent=parent,
+                expected_identity=staging_identity,
+                expected_parent_identity=parent_identity,
             )
-            os.fsync(directory_descriptor)
-        except OSError:
-            pass
-        finally:
-            if directory_descriptor is not None:
-                os.close(directory_descriptor)
-        return {
-            "mapping_path": destination / MAPPING_FILENAME,
-            "calibration_paths": {
-                system: destination
-                / CALIBRATION_FILENAME.format(system=system)
-                for system in policy.PUBLISHABLE_SYSTEMS
-            },
-            "receipt_path": destination / RECEIPT_FILENAME,
-        }
+            _rename_directory_noreplace(staging, destination)
+        except Exception:
+            if not os.path.lexists(destination):
+                raise
+            adopted_identity = _require_exact_bootstrap_tree(
+                destination, payloads
+            )
+            _durable_bootstrap_tree(
+                destination,
+                parent=parent,
+                expected_identity=adopted_identity,
+                expected_parent_identity=parent_identity,
+            )
+            return _bootstrap_result(destination)
+        published_identity = staging_identity
+        staging = None
+        staging_identity = None
+        if after_directory_publish_step is not None:
+            after_directory_publish_step(
+                "post_publish_pre_parent_fsync", destination
+            )
+        _durable_bootstrap_tree(
+            destination,
+            parent=parent,
+            expected_identity=published_identity,
+            expected_parent_identity=parent_identity,
+        )
+        return _bootstrap_result(destination)
     except BootstrapCalibrationV2Error:
         raise
     except Exception as exc:
@@ -1618,10 +1956,16 @@ def _commit(
         ) from exc
     finally:
         if staging is not None and staging.exists():
-            _cleanup_staging(staging, parent=parent)
+            assert staging_identity is not None
+            _cleanup_staging(
+                staging,
+                parent=parent,
+                expected_staging_identity=staging_identity,
+                expected_parent_identity=parent_identity,
+            )
 
 
-def build_qualification_bootstrap_calibration_v2(
+def _build_qualification_bootstrap_calibration_v2_held(
     *,
     project_root: Path | str,
     candidate_manifest_path: Path | str,
@@ -1630,6 +1974,7 @@ def build_qualification_bootstrap_calibration_v2(
     accepted_model_parity_assessment_path: Path | str,
     accepted_model_parity_receipt_path: Path | str,
     output_dir: Path | str,
+    after_directory_publish_step: Callable[[str, Path], None] | None = None,
 ) -> dict[str, Any]:
     """Revalidate all inputs and atomically write a nonaccepted bootstrap."""
 
@@ -1685,6 +2030,10 @@ def build_qualification_bootstrap_calibration_v2(
         ],
         "calibrations": calibrations,
     }
+    if "model_parity_refresh_authority" in snapshot:
+        mapping["model_parity_refresh_authority"] = snapshot[
+            "model_parity_refresh_authority"
+        ]
     _require(
         candidate.get("artifact_kind")
         == "vast_publication_policy_capability_manifest",
@@ -1697,7 +2046,105 @@ def build_qualification_bootstrap_calibration_v2(
         calibrations=calibrations,
         snapshot=snapshot,
         revalidate=derive,
+        after_directory_publish_step=after_directory_publish_step,
     )
+
+
+@wraps(_build_qualification_bootstrap_calibration_v2_held)
+def build_qualification_bootstrap_calibration_v2(
+    *args: Any, **kwargs: Any
+) -> dict[str, Any]:
+    """Build under held input/root custody and cold-load through a fresh root."""
+
+    _require(not args, "bootstrap builder accepts keyword arguments only")
+    root = _physical_root(kwargs.get("project_root"))
+    input_paths = (
+        kwargs.get("candidate_manifest_path"),
+        kwargs.get("candidate_receipt_path"),
+        kwargs.get("accepted_model_parity_manifest_path"),
+        kwargs.get("accepted_model_parity_assessment_path"),
+        kwargs.get("accepted_model_parity_receipt_path"),
+    )
+    resolved_inputs = tuple(
+        _resolve_file(
+            root,
+            _relative_input(root, value, f"qualification bootstrap input[{position}]"),
+            f"qualification bootstrap input[{position}]",
+        )
+        for position, value in enumerate(input_paths)
+    )
+    candidate_inputs = resolved_inputs[:2]
+    acceptance_inputs = resolved_inputs[2:]
+    candidate_parents = {path.parent for path in candidate_inputs}
+    acceptance_parents = {path.parent for path in acceptance_inputs}
+    _require(
+        len(candidate_parents) == 1 and len(acceptance_parents) == 1,
+        "qualification bootstrap input groups must each share one physical parent",
+    )
+    candidate_parent = next(iter(candidate_parents))
+    acceptance_parent = next(iter(acceptance_parents))
+    try:
+        with PhysicalRootCustodyV1.open(
+            root, label="qualification bootstrap project_root"
+        ) as custody, PhysicalRootCustodyV1.open(
+            candidate_parent, label="qualification bootstrap candidate parent"
+        ) as candidate_custody, PhysicalRootCustodyV1.open(
+            acceptance_parent, label="qualification bootstrap acceptance parent"
+        ) as acceptance_custody:
+            candidate_namespace = candidate_custody.capture_read_namespace(
+                candidate_inputs, label="qualification bootstrap candidate inputs"
+            )
+            acceptance_namespace = acceptance_custody.capture_read_namespace(
+                acceptance_inputs, label="qualification bootstrap acceptance inputs"
+            )
+            candidate_watch = None
+            acceptance_watch = None
+            try:
+                candidate_watch = candidate_custody.begin_read_namespace_mutation_watch(
+                    candidate_inputs,
+                    label="qualification bootstrap candidate inputs",
+                )
+                acceptance_watch = acceptance_custody.begin_read_namespace_mutation_watch(
+                    acceptance_inputs,
+                    label="qualification bootstrap acceptance inputs",
+                )
+                result = _build_qualification_bootstrap_calibration_v2_held(**kwargs)
+                candidate_custody.verify_read_namespace(
+                    candidate_namespace,
+                    label="qualification bootstrap candidate inputs",
+                )
+                acceptance_custody.verify_read_namespace(
+                    acceptance_namespace,
+                    label="qualification bootstrap acceptance inputs",
+                )
+                candidate_custody.verify_pinned_directory_mutation_watch(
+                    candidate_watch,
+                    label="qualification bootstrap candidate inputs",
+                )
+                acceptance_custody.verify_pinned_directory_mutation_watch(
+                    acceptance_watch,
+                    label="qualification bootstrap acceptance inputs",
+                )
+                candidate_custody.verify()
+                acceptance_custody.verify()
+            finally:
+                if candidate_watch is not None:
+                    candidate_watch.close()
+                if acceptance_watch is not None:
+                    acceptance_watch.close()
+            custody.verify()
+        with PhysicalRootCustodyV1.open(
+            root, label="qualification bootstrap cold project_root"
+        ) as cold:
+            _cold_validate_bootstrap_commit(root=root, result=result, custody=cold)
+            cold.verify()
+        return result
+    except BootstrapCalibrationV2Error:
+        raise
+    except PublicationPhysicalIoV1Error as error:
+        raise BootstrapCalibrationV2Error(
+            f"qualification bootstrap physical custody failed: {error}"
+        ) from error
 
 
 def build_policy_qualification_bootstrap_v2(**kwargs: Any) -> dict[str, Any]:

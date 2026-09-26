@@ -666,6 +666,22 @@ def _read_windows(
             ) from close_error
 
 
+def _stable_posix_file_fingerprint(info: os.stat_result) -> tuple[int, ...]:
+    """Mutation fingerprint excluding read-driven access time."""
+
+    return (
+        int(info.st_dev),
+        int(info.st_ino),
+        int(info.st_mode),
+        int(info.st_nlink),
+        int(info.st_uid),
+        int(info.st_gid),
+        int(info.st_size),
+        int(info.st_mtime_ns),
+        int(info.st_ctime_ns),
+    )
+
+
 def _read_posix(
     root: Path, relative: PurePosixPath, root_identity: tuple[int, int],
 ) -> tuple[dict[str, Any], tuple[Any, ...], bytes]:
@@ -722,7 +738,8 @@ def _read_posix(
                      "replay runner v3 artifact exceeds size limit")
             chunks.append(chunk)
         after = os.fstat(descriptor_fd)
-        _require(opened == after,
+        _require(_stable_posix_file_fingerprint(opened)
+                 == _stable_posix_file_fingerprint(after),
                  "replay runner v3 artifact changed while reading")
         verify_parent = os.open(root, directory_flags)
         verification.append(verify_parent)
@@ -739,7 +756,8 @@ def _read_posix(
             verify_parent = child_fd
         verify_fd = os.open(relative.parts[-1], flags, dir_fd=verify_parent)
         verification.append(verify_fd)
-        _require(os.fstat(verify_fd) == after,
+        _require(_stable_posix_file_fingerprint(os.fstat(verify_fd))
+                 == _stable_posix_file_fingerprint(after),
                  "replay runner v3 artifact path changed while reading")
         payload = b"".join(chunks)
         return ({

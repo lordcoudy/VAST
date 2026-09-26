@@ -59,42 +59,45 @@ PROTOCOL_IDENTITY_SHA256 = (
     "3bed4ad0e5cd46b01649b054fa520c0f728a1ceeb14502fb9fe1f0f8f5941eff"
 )
 CPU_WORKER_IMAGE_ID = (
-    "sha256:e2b01f8f40da08fc59d671e19a7f4eca6dd7d46678de0138ab7af51b09cb9b03"
+    "sha256:c5dae0aecf0b4c1140736d1861b7d391bb67799182a3bc107822505fbd7bd187"
 )
 GPU_WORKER_IMAGE_ID = (
-    "sha256:2ff600e743e6fc089ace1ea40894d73581fcda8007fa758fd0f32eb9b1c72f09"
+    "sha256:c6ab136d82aa55024eef8752ad7dceda7ab0e063fd315aad0d1fe0bb01bc7e3a"
 )
 WORKER_IMPLEMENTATIONS = {
-    "cpu": "f15ab5fd7d846376ccba55e55b663f4d16e114ef4cf5519794795cde7a416f8b",
-    "gpu": "eb6fce9ec42f26e0d38263053aedbb8d9c247c1872be39d67d7f3c0da4c48ab7",
+    "cpu": "b5782c91b6bdab9958a4f63485acae8975b4930843453a61e2fbe61b2c4da63b",
+    "gpu": "b8e6250e6f3871a2ffa5753a62300aeea77f132194b4309728ff74f49fbb9feb",
 }
+OPENVINO_GVA_IMAGE_REFERENCE = (
+    "vast/openvino-gva-publication-runtime-v3:materialized"
+)
 OPENVINO_GVA_IMAGE_ID = (
-    "sha256:6ded3d8dbe94782c8c8132bfde1edb3670167165324b40dc8f6da63909fc485c"
+    "sha256:8766ea52010813f235dee1709797309b55acd367b3fba4d45327808836c4c7d5"
 )
 OPENVINO_GVA_REPOSITORY_DIGEST = (
     "vast/openvino-gva-publication-runtime-v3@"
-    "sha256:6ded3d8dbe94782c8c8132bfde1edb3670167165324b40dc8f6da63909fc485c"
+    "sha256:8766ea52010813f235dee1709797309b55acd367b3fba4d45327808836c4c7d5"
 )
 OPENVINO_GVA_IMAGE_PROJECTION_SHA256 = (
-    "b364a3a900f9ebd52106630e5bcab7cead102778323973d3db9d167d06a463fc"
+    "d6812e6217e525592b05a7d5e02e5278f279e626c797c890769c2525da030d03"
 )
 OPENVINO_GVA_BASE_IMAGE_ID = (
-    "sha256:5c43c6c1f95b3fbb4a95957d1d293b1272c1db6a44a7a2063aad3aeba7c951d1"
+    "sha256:42cd0677bde38c83624b2a954c84cfd1a29b75b3055480db9c79cdc8c748dc26"
 )
 OPENVINO_GVA_RUNTIME_SOURCE_SHA256 = (
-    "4b7d6fcb2cdd29eff66dc7c166367bb731c451d81b1bf2ed1a64de0d9b1e0e4e"
+    "ab4feedc2785d4e709708783e65b7ee007b34b8bfa5bd4d5e1c5e3910ff89af4"
 )
 OPENVINO_GVA_NATIVE_SOURCE_SHA256 = (
-    "676c1d301a5a0913efec17b60a444a35b588036737d68fa113fef4f6c28922d7"
+    "6ade7a39de496c484425d8bf66250c6ec655a54ba880d8a2672318007aeecb95"
 )
 OPENVINO_GVA_DEPENDENCY_SET_SHA256 = (
     "0f338b3aeca6756d31dccdbbc8caeb6239e8e07fec0541c1df3fea91dfc1963e"
 )
 OPENVINO_GVA_SOURCE_ALLOWLIST_SHA256 = (
-    "4c5449aa2e43cf63268dc77c4eb7c7fc288a88828d228199c672c37c280ed5a9"
+    "c6ac2d9b54b2a9f9ba883ba814a35c39f319fba9c923497a4fe46432fce7cff9"
 )
 OPENVINO_GVA_EMBEDDED_SET_SHA256 = (
-    "aa730f3bea2a34597c19ffcfea2b037c2c15fe8a3978c35d4f3cc00410e69b9e"
+    "abc2c68d3ad0d50d5f1d72aa49e5bd77d7cac001d185325460de1e23b4d91c0f"
 )
 GPU_UUID = "GPU-00bb784b-60f3-8bf6-bbd3-5a0c09805266"
 GPU_NAME = "NVIDIA GeForce RTX 3060"
@@ -172,6 +175,7 @@ def _runtime_sources(root: Path) -> dict[str, dict[str, Any]]:
 
 def _image_identity(root: Path) -> dict[str, Any]:
     return {
+        "final_reference": OPENVINO_GVA_IMAGE_REFERENCE,
         "image_id": OPENVINO_GVA_IMAGE_ID,
         "repository_digest": OPENVINO_GVA_REPOSITORY_DIGEST,
         "inspect_projection_sha256": OPENVINO_GVA_IMAGE_PROJECTION_SHA256,
@@ -205,7 +209,10 @@ def _policy_identity(
             CPU_WORKER_IMAGE_ID if resource == "cpu" else GPU_WORKER_IMAGE_ID
         ),
         "implementation_version": "sha256:" + WORKER_IMPLEMENTATIONS[resource],
-        "terminal_detector": str(binding["model_id"]),
+        "terminal_detector": (
+            f"{binding['model_id']};"
+            f"model_sha256={binding['source_model_sha256']}"
+        ),
         "terminal_backend": (
             f"analytics-execution:{probe['engine']};runtime={probe['runtime_name']};"
             f"native_api={probe['native_inference_api']};device={device}"
@@ -566,7 +573,8 @@ if __name__ == "__main__":
 
 __all__ = [
     "ARTIFACT_KIND", "BRANCHES", "CPU_WORKER_IMAGE_ID", "FRAGMENT_FILENAME",
-    "GPU_WORKER_IMAGE_ID", "OPENVINO_GVA_IMAGE_ID", "POLICY_RUNTIME_FIELDS",
+    "GPU_WORKER_IMAGE_ID", "OPENVINO_GVA_IMAGE_ID",
+    "OPENVINO_GVA_IMAGE_REFERENCE", "POLICY_RUNTIME_FIELDS",
     "QualificationFragmentError", "RESOURCES", "RESOURCE_RUNTIME_FIELDS",
     "ROW_FIELDS", "assess_qualification_fragment", "materialize_qualification_fragment",
 ]

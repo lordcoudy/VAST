@@ -12,7 +12,7 @@ import re
 import shutil
 import tempfile
 from pathlib import Path
-from typing import Any, Callable, Mapping
+from typing import Any, Callable, Mapping, Sequence
 
 from benchmark_contract import ContractError
 from checkpoint_acceptance_metadata_binding import (
@@ -36,6 +36,15 @@ from publication_cloud_transaction import (
     CloudTransactionError,
     LedgerIntegrityError,
     PublicationCloudTransaction,
+)
+from publication_article_statistics_v1 import (
+    ArticleStatisticsV1Error,
+    seal_pair_article_statistics_v1,
+    validate_article_statistics_binding_v1,
+)
+from publication_physical_io_v1 import (
+    PhysicalRootCustodyV1,
+    PublicationPhysicalIoV1Error,
 )
 from publication_matrix import validate_full_publication_readiness
 from seafile_artifact_store import ArtifactIntegrityError, ArtifactStoreError
@@ -64,6 +73,8 @@ _FULL_RESOURCE_EVIDENCE_NAMES = frozenset(FULL_RESOURCE_EVIDENCE_FILES)
 
 ArmRunner = Callable[[ArmContext, Path], Mapping[str, Any]]
 ReadinessValidator = Callable[[dict[str, Any]], Mapping[str, Any]]
+ArticleStatisticsSealer = Callable[..., Mapping[str, Any]]
+PairAcceptancePhysicalFault = Callable[[str, Path], None]
 
 
 def _canonical_json(value: Any) -> bytes:
@@ -105,37 +116,97 @@ def _read_object(path: Path, *, label: str) -> dict[str, Any]:
     return value
 
 
-def _write_immutable_json(path: Path, value: Mapping[str, Any]) -> str:
-    payload = _canonical_json(value) + b"\n"
-    if path.exists():
-        if not path.is_file() or path.read_bytes() != payload:
-            raise ContractError(f"immutable pair acceptance collision: {path.name}")
-        return _sha256_bytes(payload)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    descriptor, temporary_name = tempfile.mkstemp(
-        prefix=f".{path.name}.", suffix=".tmp", dir=path.parent
-    )
-    temporary = Path(temporary_name)
-    try:
-        with os.fdopen(descriptor, "wb") as output:
-            output.write(payload)
-            output.flush()
-            os.fsync(output.fileno())
-        os.replace(temporary, path)
+class _AcceptedPairOutputJournal:
+    """Durably publish/adopt the two causal pair-acceptance copies."""
+
+    def __init__(
+        self,
+        custody: PhysicalRootCustodyV1,
+        *,
+        after_physical_commit_step: PairAcceptancePhysicalFault | None,
+    ) -> None:
+        self.custody = custody
+        self.after_physical_commit_step = after_physical_commit_step
+        self.entries: dict[
+            Path, tuple[dict[str, Any], bytes, tuple[int, int]]
+        ] = {}
+
+    def commit(self, path: Path, value: Mapping[str, Any]) -> str:
+        if path in self.entries:
+            raise ContractError(f"pair acceptance journal duplicated: {path.name}")
+        payload = _canonical_json(value) + b"\n"
+        relative = path.relative_to(self.custody.root).as_posix()
+        expected = {
+            "path": relative,
+            "size_bytes": len(payload),
+            "sha256": _sha256_bytes(payload),
+        }
+
+        def physical_step(step: str) -> None:
+            if self.after_physical_commit_step is not None:
+                self.after_physical_commit_step(step, path)
+
         try:
-            directory_descriptor = os.open(path.parent, os.O_RDONLY)
-        except OSError:
-            directory_descriptor = None
-        if directory_descriptor is not None:
+            descriptor, identity, disposition = (
+                self.custody.commit_or_adopt_exact_identity(
+                    relative,
+                    payload,
+                    label="pair acceptance",
+                    mode=0o600,
+                    create_parents=False,
+                    after_publish_step=physical_step,
+                )
+            )
+        except PublicationPhysicalIoV1Error as write_error:
             try:
-                os.fsync(directory_descriptor)
-            except OSError:
-                pass
-            finally:
-                os.close(directory_descriptor)
-    finally:
-        temporary.unlink(missing_ok=True)
-    return _sha256_bytes(payload)
+                _descriptor, existing = self.custody.read_descriptor(
+                    relative,
+                    label="existing pair acceptance",
+                    maximum=len(payload),
+                    capture=True,
+                )
+            except PublicationPhysicalIoV1Error as read_error:
+                raise ContractError(
+                    "pair acceptance physical immutable commit failed: "
+                    f"{write_error}"
+                ) from read_error
+            if existing != payload:
+                raise ContractError(
+                    f"immutable pair acceptance collision: {path.name}"
+                ) from write_error
+            raise ContractError(
+                f"pair acceptance exact adoption failed: {path.name}"
+            ) from write_error
+        if descriptor != expected or disposition not in {"published", "adopted"}:
+            raise ContractError("pair acceptance atomic commit result drifted")
+        self.entries[path] = (descriptor, payload, identity)
+        return descriptor["sha256"]
+
+    def verify(self) -> None:
+        if len(self.entries) != 2:
+            raise ContractError("pair acceptance journal is incomplete")
+        for path, (expected, payload, identity) in self.entries.items():
+            observed, cold_payload, cold_identity = (
+                self.custody.read_descriptor_identity(
+                    expected["path"],
+                    label=f"committed pair acceptance {path.name}",
+                    maximum=len(payload),
+                    capture=True,
+                )
+            )
+            observed_mode, stat_identity = self.custody.stat_regular_identity(
+                expected["path"],
+                label=f"committed pair acceptance {path.name} mode",
+            )
+            if (
+                observed != expected
+                or cold_payload != payload
+                or cold_identity != identity
+                or stat_identity != identity
+                or observed_mode != 0o600
+            ):
+                raise ContractError("pair acceptance journal identity drifted")
+        self.custody.verify()
 
 
 class FullPublicationRuntime:
@@ -149,16 +220,24 @@ class FullPublicationRuntime:
         cloud_store: Any,
         arm_runner: ArmRunner,
         readiness_validator: ReadinessValidator = validate_full_publication_readiness,
+        article_statistics_sealer: ArticleStatisticsSealer = (
+            seal_pair_article_statistics_v1
+        ),
         minimum_free_bytes: int = 20 * 1024**3,
+        scratch_roots: Sequence[Path | str] = (),
         capacity_confirmed_gib: float = 0.0,
+        pair_acceptance_physical_fault: PairAcceptancePhysicalFault | None = None,
     ) -> None:
         self.run_root = Path(run_root).resolve()
         self.config = _json_copy(config)
         self.cloud_store = cloud_store
         self.arm_runner = arm_runner
         self.readiness_validator = readiness_validator
+        self.article_statistics_sealer = article_statistics_sealer
         self.minimum_free_bytes = int(minimum_free_bytes)
+        self.scratch_roots = tuple(Path(path).resolve() for path in scratch_roots)
         self.capacity_confirmed_gib = float(capacity_confirmed_gib)
+        self.pair_acceptance_physical_fault = pair_acceptance_physical_fault
         if self.minimum_free_bytes < 1:
             raise ContractError("minimum_free_bytes must be positive")
         if not math.isfinite(self.capacity_confirmed_gib):
@@ -171,6 +250,7 @@ class FullPublicationRuntime:
             accept_pair=self.accept_pair,
             cloud_transaction=self.cloud_transaction,
             verify_cloud=self.verify_cloud,
+            before_pair=self.before_pair,
         )
 
     def _assert_context_root(self, context: RunContext) -> None:
@@ -229,6 +309,37 @@ class FullPublicationRuntime:
             raise ContractError("cannot resolve a filesystem for run_root")
         return candidate
 
+    def _disk_admission(self) -> CallbackDecision:
+        """Apply the operational reserve to results, native scratch and host storage."""
+        try:
+            paths = [self._existing_ancestor(), Path(tempfile.gettempdir()), *self.scratch_roots]
+            host_backing = Path("/mnt/c")
+            if host_backing.is_dir():
+                paths.append(host_backing)
+            observations = []
+            for path in dict.fromkeys(paths):
+                free = int(shutil.disk_usage(path).free)
+                observations.append({"path": str(path), "free_bytes": free})
+            details = {
+                "filesystems": observations,
+                "free_bytes": observations[0]["free_bytes"],
+                "minimum_free_bytes": self.minimum_free_bytes,
+            }
+            if any(item["free_bytes"] < self.minimum_free_bytes for item in observations):
+                return CallbackDecision.rejected(
+                    "local storage is below the operational free-space reserve",
+                    details=details, retryable=True,
+                )
+            return CallbackDecision.passed(details)
+        except OSError:
+            return CallbackDecision.rejected(
+                "local storage free-space check is unavailable", retryable=True,
+            )
+
+    def before_pair(self, context: PairContext) -> CallbackDecision:
+        self._assert_context_root(context.run)
+        return self._disk_admission()
+
     def _allow_remote_inflight_sequence(self, completed_pairs: int) -> bool:
         checkpoint_path = self.run_root / "checkpoint.json"
         if not checkpoint_path.exists():
@@ -261,8 +372,8 @@ class FullPublicationRuntime:
             rf"(?P<pair_key>[0-9a-f]{{16}})_(?P<sha256>[0-9a-f]{{64}})"
             rf"(?P<suffix>\.tar\.zst|\.receipt\.json)$"
         )
-        observed: dict[int, set[str]] = {}
-        foreign: list[str] = []
+        observed: dict[int, dict[str, str]] = {}
+        malformed_owned_names = 0
         for raw_name, metadata in remote_files.items():
             name = str(raw_name)
             if (
@@ -274,7 +385,8 @@ class FullPublicationRuntime:
                 raise ArtifactStoreError("Seafile remote listing entry is invalid")
             match = pattern.fullmatch(name)
             if match is None:
-                foreign.append(name)
+                if name.startswith(allowed_prefix):
+                    malformed_owned_names += 1
                 continue
             sequence = int(match.group("sequence"))
             kind = (
@@ -282,19 +394,24 @@ class FullPublicationRuntime:
                 if match.group("suffix") == ".tar.zst"
                 else "receipt"
             )
-            kinds = observed.setdefault(sequence, set())
+            pair_key = match.group("pair_key")
+            kinds = observed.setdefault(sequence, {})
             if kind in kinds:
                 raise ArtifactIntegrityError(
                     f"duplicate remote {kind} for pair sequence {sequence}"
                 )
-            kinds.add(kind)
-        if foreign:
+            if kinds and pair_key not in set(kinds.values()):
+                raise ArtifactIntegrityError(
+                    f"remote pair key mismatch for pair sequence {sequence}"
+                )
+            kinds[kind] = pair_key
+        if malformed_owned_names:
             raise ContractError(
-                "Seafile destination is not dedicated to this frozen run"
+                "Seafile frozen run namespace contains malformed artifacts"
             )
         expected_complete = set(range(completed_pairs))
         for sequence in expected_complete:
-            if observed.get(sequence) != {"archive", "receipt"}:
+            if set(observed.get(sequence, {})) != {"archive", "receipt"}:
                 raise ArtifactIntegrityError(
                     f"remote pair continuity is incomplete at sequence {sequence}"
                 )
@@ -303,7 +420,7 @@ class FullPublicationRuntime:
         if unexpected - ({completed_pairs} if allow_inflight else set()):
             raise ArtifactIntegrityError("remote pair sequence exceeds local checkpoint")
         if completed_pairs in observed:
-            kinds = observed[completed_pairs]
+            kinds = set(observed[completed_pairs])
             if not allow_inflight or not kinds <= {"archive", "receipt"} or (
                 "receipt" in kinds and "archive" not in kinds
             ):
@@ -327,19 +444,15 @@ class FullPublicationRuntime:
                 )
             if self.capacity_confirmed_gib < MINIMUM_CONFIRMED_CLOUD_GIB:
                 return CallbackDecision.rejected(
-                    "dedicated Seafile capacity confirmation must be at least 500 GiB",
+                    "Seafile capacity lower-bound attestation must be at least 500 GiB",
                     retryable=False,
                 )
-            free_bytes = int(shutil.disk_usage(self._existing_ancestor()).free)
-            if free_bytes < self.minimum_free_bytes:
-                return CallbackDecision.rejected(
-                    "insufficient local free space for one crash-safe pair",
-                    details={
-                        "free_bytes": free_bytes,
-                        "minimum_free_bytes": self.minimum_free_bytes,
-                    },
-                    retryable=True,
-                )
+            disk = (
+                CallbackDecision.passed({"storage_admission_deferred_for_accepted_pair": True})
+                if context.recovering_accepted_pair else self._disk_admission()
+            )
+            if not disk.accepted:
+                return disk
             cloud = _json_copy(self.cloud_store.preflight())
             if type(cloud) is not dict or cloud.get("status") != "ready":
                 raise ArtifactStoreError("Seafile preflight did not return ready")
@@ -359,7 +472,7 @@ class FullPublicationRuntime:
                 {
                     "readiness": assessment,
                     "cloud": cloud,
-                    "free_bytes": free_bytes,
+                    **disk.details,
                     "minimum_free_bytes": self.minimum_free_bytes,
                     "capacity_confirmed_gib": self.capacity_confirmed_gib,
                 }
@@ -382,7 +495,8 @@ class FullPublicationRuntime:
             raise ContractError("arm callback identity drift")
         arm_root = self._arm_root(context)
         if arm_root.exists():
-            raise ContractError("arm attempt root already exists")
+            if arm_root.is_symlink() or not arm_root.is_dir():
+                raise ContractError("arm attempt root is not a regular directory")
         arm_root.parent.mkdir(parents=True, exist_ok=True)
         raw_result = self.arm_runner(context, arm_root)
         result = _json_copy(raw_result)
@@ -666,6 +780,48 @@ class FullPublicationRuntime:
                 raise ContractError("paired arms do not cover both checkpoint architectures")
 
             attempt_root = self.attempt_root(context)
+            pair_sha256 = _sha256_bytes(_canonical_json(context.pair))
+            statistics_binding = _json_copy(
+                self.article_statistics_sealer(
+                    run_root=self.run_root,
+                    pair_dir=attempt_root,
+                    config=copy.deepcopy(self.config),
+                    pair=copy.deepcopy(context.pair),
+                    arm_records=copy.deepcopy(records),
+                    matrix_sha256=str(context.run.matrix_identity["sha256"]),
+                    run_id=str(context.run.run_identity["sha256"]),
+                    pair_sequence=context.sequence,
+                    pair_id=str(context.pair["pair_id"]),
+                    pair_sha256=pair_sha256,
+                    attempt=context.attempt,
+                )
+            )
+            statistics_binding = validate_article_statistics_binding_v1(
+                statistics_binding,
+                run_root=self.run_root,
+                pair_dir=attempt_root,
+                require_attempt_copy=True,
+                require_retained_copy=True,
+                require_raw_evidence=True,
+            )
+            expected_statistics_pair = {
+                "matrix_sha256": str(context.run.matrix_identity["sha256"]),
+                "run_id": str(context.run.run_identity["sha256"]),
+                "pair_sequence": context.sequence,
+                "pair_id": str(context.pair["pair_id"]),
+                "pair_sha256": pair_sha256,
+                "attempt": context.attempt,
+            }
+            if statistics_binding["pair"] != expected_statistics_pair:
+                raise ContractError(
+                    "article-statistics pair identity differs from runtime context"
+                )
+            if statistics_binding["arm_ids"] != [
+                str(arm["arm_id"]) for arm in expected_arms
+            ]:
+                raise ContractError(
+                    "article-statistics arm identities differ from runtime context"
+                )
             manifest = {
                 "schema_version": PAIR_ACCEPTANCE_SCHEMA_VERSION,
                 "artifact_kind": "vast_full_publication_pair_acceptance",
@@ -674,7 +830,7 @@ class FullPublicationRuntime:
                 "run_id": str(context.run.run_identity["sha256"]),
                 "pair_sequence": context.sequence,
                 "pair_id": str(context.pair["pair_id"]),
-                "pair_sha256": _sha256_bytes(_canonical_json(context.pair)),
+                "pair_sha256": pair_sha256,
                 "attempt": context.attempt,
                 "arm_ids": [str(arm["arm_id"]) for arm in expected_arms],
                 "run_seed": records[0]["run_seed"],
@@ -688,11 +844,12 @@ class FullPublicationRuntime:
                     "run_seed_exact_match": True,
                     "all_evidence_hashes_verified": True,
                     "common_identity_and_qualification_authorities": True,
+                    "article_statistics_sealed_and_cross_bound": True,
                 },
                 "arms": records,
+                "article_statistics": statistics_binding,
             }
             acceptance_path = attempt_root / "acceptance.json"
-            digest = _write_immutable_json(acceptance_path, manifest)
             compact_path = (
                 self.run_root
                 / "accepted_pairs"
@@ -702,7 +859,34 @@ class FullPublicationRuntime:
                     f".attempt-{context.attempt:04d}.acceptance.json"
                 )
             )
-            compact_digest = _write_immutable_json(compact_path, manifest)
+            try:
+                with PhysicalRootCustodyV1.open(
+                    self.run_root, label="full publication run_root"
+                ) as custody:
+                    # Pin both parent chains before either acceptance copy is
+                    # committed, so a compact-root redirect cannot create an
+                    # external partial write.
+                    custody.ensure_directory(
+                        acceptance_path.parent,
+                        label="pair acceptance parent",
+                    )
+                    custody.ensure_directory(
+                        compact_path.parent,
+                        label="compact pair acceptance parent",
+                    )
+                    journal = _AcceptedPairOutputJournal(
+                        custody,
+                        after_physical_commit_step=(
+                            self.pair_acceptance_physical_fault
+                        ),
+                    )
+                    digest = journal.commit(acceptance_path, manifest)
+                    compact_digest = journal.commit(compact_path, manifest)
+                    journal.verify()
+            except PublicationPhysicalIoV1Error as error:
+                raise ContractError(
+                    f"pair acceptance physical namespace rejected: {error}"
+                ) from error
             if compact_digest != digest:
                 raise ContractError("compact pair acceptance identity drift")
             return CallbackDecision.passed(
@@ -718,9 +902,15 @@ class FullPublicationRuntime:
                     "measurement_schedule_fingerprint_sha256": manifest[
                         "measurement_schedule_fingerprint_sha256"
                     ],
+                    "article_statistics_record_identity_sha256": (
+                        statistics_binding["record_identity_sha256"]
+                    ),
+                    "article_statistics_retained_relative_path": (
+                        statistics_binding["retained_copy"]["relative_path"]
+                    ),
                 }
             )
-        except ContractError as error:
+        except (ArticleStatisticsV1Error, ContractError) as error:
             return CallbackDecision.rejected(str(error), retryable=False)
 
     def _acceptance_path(
@@ -779,6 +969,20 @@ class FullPublicationRuntime:
                 pair_sequence=context.sequence,
                 pair_id=str(context.pair["pair_id"]),
             )
+            # The transaction API also reports statistics already bound into its
+            # ledger and the durable acceptance manifest. Keep the runner's
+            # established checkpoint receipt schema at this callback boundary.
+            for field in (
+                "article_statistics_record_identity_sha256",
+                "article_statistics_statistics_aggregate_sha256",
+            ):
+                value = result.pop(field, None)
+                if type(value) is not str or _SHA256_RE.fullmatch(value) is None:
+                    raise ContractError("cloud transaction statistics identity is invalid")
+            retained = result.pop("article_statistics_retained_relative_path", None)
+            if type(retained) is not str or not retained or Path(retained).is_absolute():
+                raise ContractError("cloud transaction retained statistics path is invalid")
+            self._inside_run(self.run_root / retained, label="retained article statistics")
             return CloudTransactionReceipt.verified_receipt(_json_copy(result))
         except (ArtifactIntegrityError, LedgerIntegrityError, PairArchiveError, ContractError) as error:
             return CloudTransactionReceipt.unverified(str(error), retryable=False)

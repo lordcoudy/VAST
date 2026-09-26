@@ -78,6 +78,18 @@ Write clean templates in this change's preparation-plan.md rather than applying 
 
 Validate Bash fences with syntax-only parsing, inspect the variable-name set against an explicit allowlist, and compare each CLI flag and path constraint with current parser source. Syntax alone cannot catch a consistently misspelled variable. The reference typo issue affects documentation, not the 44 verified runtime files.
 
+### 8. Integrate the native-probe qualification path
+
+Qualification runs and nonpromoting pre-checks showed that the OpenVINO GVA and GStreamer Custom native-probe path has never completed a cell, and each repair exposed the next latent defect. The first three are implemented under the operator's scope decisions: a type-safe reset queue-level read (`c61328db`), a 4096-task container ceiling matching Savant's (`0f25cb41`), and decode-stage artifacts limited to loaded factories (`0f25cb41`).
+
+The policy client SHALL validate identifiers by the manifest grammar (non-empty, at most 4096 bytes, no controls) plus exact membership of the frozen branch set, instead of an 8-byte minimum that rejects `damage`.
+
+The probe currently binds CPU paths to the pre-qualification v1 scheme (`gstreamer-custom-openvino-cpu-v1`, `vast-native-gst-policy-path-v1`, the probe executable hash). The qualification-v2 manifest instead selects `<system>-qualification-authority-v2` / `<system>-native-policy-emitter-v2` identities with the fragment implementation hash, and names an analytics-execution backend. No runtime injects the GPU identities the probe reads. Recommended option: the runtime injects each branch's CPU and GPU `implementation_id`, `emitter_id` and `emitter_sha256` from the frozen manifest as analytics bindings. The probe uses them for both resources and verifies the loaded analytics path against the manifest's `terminal_backend` before measurement. The v1 compiled scheme is removed from qualification. Alternative: if review determines that in-process `gvadetect` is the intended CPU path, correct the manifest producer rather than the probe. Either choice needs positive and fail-closed regressions.
+
+The GStreamer Custom runtime SHALL accept the bundle's project-relative copied container-engine client under the same size, SHA-256 and containment checks the OpenVINO runtime applies, instead of requiring an absolute host path.
+
+Pre-check replays use the stock runtime with engine-output capture only, run against the live nonpromoting guardian, and never promote evidence. Each native-source change renews the image chain, parity, final suite and qualification chain.
+
 ## Risks / Trade-offs
 
 - Original A269 cause remains unidentified -> distinguish demonstrated defects from forensic certainty; require fresh physical qualification.

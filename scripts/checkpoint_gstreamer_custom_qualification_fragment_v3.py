@@ -40,84 +40,87 @@ RESOURCE_RUNTIME_FIELDS = {
 }
 
 ACCEPTED_PARITY = (
-    "configs/checkpoint_analytics_model_parity.accepted.yaml", 25229,
-    "a570b8cc4bcc66119930f01239ed0fb2de7accd449b769d5a4b0511d70fb72b6",
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260925b.accepted.yaml", 30052,
+    "92a846f4fdfd4fca108308977813f4db0343febbf2c0595463f9f558c006abfa",
 )
 ACCEPTED_PARITY_CONTENT_SHA256 = (
-    "05059ee44a21a82728f2608dc13804f55cc7df9eeedb245ad2d63a7c1ca46ee8"
+    "c322daffd14a27bc2a2a0938e11c21cc9edd35d2cc6578aae59cd8d207edba2c"
 )
 PREPROCESSING_CONTRACT_SHA256 = (
     "0307abfe6c5f652cc06f3f3df8ecf5050e5ed29b9ed5f40cb6fe728f47627090"
 )
 ANALYTICS_INDEX = (
-    "artifacts/analytics_execution_bindings/publication_v3/index.json", 1877,
-    "8ff3d495b80024eca2067a43239fc984961629465288d307d7f8f4de32c31e87",
+    "artifacts/fix_benchmark_preparations_20260925b/model_parity_v4/bindings/index.json", 1877,
+    "1eeba751eadabf5ccda37070a48c4005a44037d69fd4f437a80c6f1921b0f926",
 )
 ANALYTICS_INDEX_IDENTITY = (
-    "6fb0a64f19d61ef7021a50ae35f04f55b344f0fe67911d29d43e03a00ebb635b"
+    "c79902e0b0cad245bccc45876c4a490659a548320290babe2b16883b4e85e495"
 )
 ANALYTICS_BINDINGS_IDENTITY = (
-    "7504b2a73c886cbda01b3d1d02c1dab360146285c3dba2cdec6496b7510956ab"
+    "65dcfea86b63f39b88ebdb6a4454d6632eb154fea29d3a31c019fcb39545c399"
 )
 EXECUTION_CONFIG_IDENTITY = (
-    "3daed67a3e4c6549bf463b929e5de840e5aab7daacac75fff328f624b867b512"
+    "73d2df3186cfb181806ac3c79259acc108b95d84bbcdca2ed1cfb034ebf54ed4"
 )
 MODEL_PARITY_MANIFEST_IDENTITY = (
-    "4065e9a766bbdf82771534ec1f5f13f32f4d6ab6de9ac27143663cc27634fd80"
+    "e87a30203dd895df1c0fbc97315ddaa5f6272a9d3385f8905578b0425ad06cd6"
 )
 PROTOCOL_IDENTITY = (
     "3bed4ad0e5cd46b01649b054fa520c0f728a1ceeb14502fb9fe1f0f8f5941eff"
 )
 RUNTIME_PROBES = {
     "cpu": (
-        "artifacts/analytics_runtime_probes/publication_v3/cpu_runtime_probe.json",
-        659, "e6008e33e137d315f1672adb2e241004e2ea08f1220467dcbf089a566060ddfb",
+        "artifacts/fix_benchmark_preparations_20260925b/model_parity_v4/runtime_probes/cpu_runtime_probe.json",
+        659, "0b496134ac3fec04449072218ddb6e2767d21b782127ab0d57c81c3b0daac874",
     ),
     "gpu": (
-        "artifacts/analytics_runtime_probes/publication_v3/gpu_runtime_probe.json",
-        654, "24986e7aadd93ab9bb72704c5a83d568bc0e4fd70154803e303b3bda5aa4a752",
+        "artifacts/fix_benchmark_preparations_20260925b/model_parity_v4/runtime_probes/gpu_runtime_probe.json",
+        654, "b627a3790622cfb0e2334e7d3b31e6acf0b0fc5396f921d4552850056ba9b962",
     ),
 }
 CPU_WORKER_IMAGE_ID = (
-    "sha256:e2b01f8f40da08fc59d671e19a7f4eca6dd7d46678de0138ab7af51b09cb9b03"
+    "sha256:c5dae0aecf0b4c1140736d1861b7d391bb67799182a3bc107822505fbd7bd187"
 )
 GPU_WORKER_IMAGE_ID = (
-    "sha256:2ff600e743e6fc089ace1ea40894d73581fcda8007fa758fd0f32eb9b1c72f09"
+    "sha256:c6ab136d82aa55024eef8752ad7dceda7ab0e063fd315aad0d1fe0bb01bc7e3a"
 )
 WORKER_IMPLEMENTATIONS = {
-    "cpu": "f15ab5fd7d846376ccba55e55b663f4d16e114ef4cf5519794795cde7a416f8b",
-    "gpu": "eb6fce9ec42f26e0d38263053aedbb8d9c247c1872be39d67d7f3c0da4c48ab7",
+    "cpu": "b5782c91b6bdab9958a4f63485acae8975b4930843453a61e2fbe61b2c4da63b",
+    "gpu": "b8e6250e6f3871a2ffa5753a62300aeea77f132194b4309728ff74f49fbb9feb",
 }
+GSTREAMER_IMAGE_REFERENCE = (
+    "vast/gstreamer-custom-publication-runtime-v3:materialized"
+)
 GSTREAMER_IMAGE_ID = (
-    "sha256:3c63c15ed7a8022c45f5fb3038ab6d1ff5cc152f430681bbc97c1f332091ebf7"
+    "sha256:4dd8453c5251154383f2f70f9f30c4dca59d72267d7475e8570495bbd16af73a"
 )
 GSTREAMER_REPOSITORY_DIGEST = (
     "vast/gstreamer-custom-publication-runtime-v3@"
-    "sha256:3c63c15ed7a8022c45f5fb3038ab6d1ff5cc152f430681bbc97c1f332091ebf7"
+    "sha256:4dd8453c5251154383f2f70f9f30c4dca59d72267d7475e8570495bbd16af73a"
 )
 GSTREAMER_IMAGE_PROJECTION_SHA256 = (
-    "f5fda9d722635f5ae24797031b3a89d479ab86efccc5a11a9915eb2414890e42"
+    "2ce97a40cdbf28bfc6596f8190435f50ca15de8367239372879a8b9935ed3a07"
 )
 GSTREAMER_BASE_IMAGE_ID = (
-    "sha256:5c43c6c1f95b3fbb4a95957d1d293b1272c1db6a44a7a2063aad3aeba7c951d1"
+    "sha256:42cd0677bde38c83624b2a954c84cfd1a29b75b3055480db9c79cdc8c748dc26"
 )
 GSTREAMER_RUNTIME_SOURCE_SHA256 = (
-    "304b5d4af5cd9efc23b13a5dec4e2d28161feb047e5639028d323dc61042f7f3"
+    "4e986646aac2e3659dcdb4fdfdd3be200f790b14c6e220607020158306791a66"
 )
 GSTREAMER_NATIVE_SOURCE_SHA256 = (
-    "676c1d301a5a0913efec17b60a444a35b588036737d68fa113fef4f6c28922d7"
+    "6ade7a39de496c484425d8bf66250c6ec655a54ba880d8a2672318007aeecb95"
 )
 GSTREAMER_DEPENDENCY_SET_SHA256 = (
     "0f338b3aeca6756d31dccdbbc8caeb6239e8e07fec0541c1df3fea91dfc1963e"
 )
 GSTREAMER_SOURCE_ALLOWLIST_SHA256 = (
-    "424e44bd99d04a1b24f5926f42f7d5bfbd406390b9428b16cd256589444f8c2a"
+    "dea819344804486529aeb32c0076690b42acfd8f5f861c2651d02b01c54608dc"
 )
 NATIVE_PROBE_SHA256 = (
-    "7df65e53a8f80721c6d432fab1fc405e99894d08f163fb802749dd7e1e3db6f1"
+    "0a6c149d8290d273b1c853c9ccc1852053ccad7e7e9903a4a79baac670500626"
 )
 ANALYTICS_TERMINAL_SHA256 = (
-    "eb53eed6fcb49586cad6dd9266052f519db2f30c00fcf1476a2579cf760b0d55"
+    "04962e14523cc570ce1b24735e76334820ed730b5aee72beac0685a4704f9e45"
 )
 GPU_UUID = "GPU-00bb784b-60f3-8bf6-bbd3-5a0c09805266"
 GPU_NAME = "NVIDIA GeForce RTX 3060"
@@ -511,6 +514,7 @@ def _source_set_identity(root: Path) -> dict[str, Any]:
 
 def _image_identity(root: Path) -> dict[str, Any]:
     return {
+        "final_reference": GSTREAMER_IMAGE_REFERENCE,
         "image_id": GSTREAMER_IMAGE_ID,
         "repository_digest": GSTREAMER_REPOSITORY_DIGEST,
         "inspect_projection_sha256": GSTREAMER_IMAGE_PROJECTION_SHA256,
@@ -530,7 +534,10 @@ def _policy_identity(
     worker: Mapping[str, Any],
     probe: Mapping[str, Any],
 ) -> dict[str, Any]:
-    terminal_detector = str(worker["model_id"])
+    terminal_detector = (
+        f"{worker['model_id']};"
+        f"model_sha256={worker['source_model_sha256']}"
+    )
     device = "CPU" if resource == "cpu" else "NVIDIA_CUDA:0"
     terminal_backend = (
         f"analytics-execution:{probe['engine']};runtime={probe['runtime_name']};"
@@ -914,6 +921,7 @@ if __name__ == "__main__":
 
 __all__ = [
     "ARTIFACT_KIND", "BRANCHES", "CPU_WORKER_IMAGE_ID", "FRAGMENT_FILENAME",
-    "GPU_WORKER_IMAGE_ID", "GSTREAMER_IMAGE_ID", "QualificationFragmentError",
+    "GPU_WORKER_IMAGE_ID", "GSTREAMER_IMAGE_ID", "GSTREAMER_IMAGE_REFERENCE",
+    "QualificationFragmentError",
     "RESOURCES", "assess_qualification_fragment", "materialize_qualification_fragment",
 ]

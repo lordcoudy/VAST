@@ -58,13 +58,16 @@ from checkpoint_runtime_plan import (
 )
 from checkpoint_native_policy_runtime import (
     NativePolicyRuntimeCoordinator,
+    EXTERNAL_EXECUTION_MANIFEST_KIND,
     assess_gstreamer_native_policy_execution_manifest,
     canonical_frames_from_events,
     require_exact_native_cpu_capability_bindings,
 )
 from checkpoint_publication_runtime import publish_checkpoint_runtime
+from publication_owned_staging_cleanup_v1 import retire_owned_runtime_output_v1
 from publication_policy_contract import POLICIES
 from resource_interval_contract import (
+    PLATFORM_BACKWARD_CLOCK_STEP_NS,
     RESOURCE_INTERVAL_COLUMNS,
     RESOURCE_INTERVAL_CONTRACT_VERSION,
     ResourceIntervalContractError,
@@ -1321,7 +1324,7 @@ def merge_runtime_resource_intervals(
     run_id: str,
     topology_events: list[dict[str, Any]] | tuple[dict[str, Any], ...],
 ) -> Path:
-    """Merge exact native NVDEC/fanout fragments without accepting them for publication."""
+    """Merge exact native NVDEC/fanout/CUDA fragments without accepting them."""
 
     _require(bool(specs), "resource interval merge requires checkpoint workers")
     shared = all(spec.branch_id is None for spec in specs)
@@ -1331,6 +1334,7 @@ def merge_runtime_resource_intervals(
     topology_by_execution: dict[tuple[str, str, int, int, str], dict[str, Any]] = {}
     expected_nvdec: set[tuple[str, str, int, int, str]] = set()
     expected_fanout: set[tuple[str, str, int, int, str]] = set()
+    eligible_transfers: set[tuple[tuple[str, str, int, int, str], str]] = set()
     for raw in topology_events:
         key = (
             str(raw["run_id"]),
@@ -1347,15 +1351,48 @@ def merge_runtime_resource_intervals(
             expected_nvdec.add(key)
         if event_kind == "fanout":
             expected_fanout.add(key)
+        if event_kind == "stage_complete":
+            trace_id = str(raw["trace_id"])
+            branch_id = str(raw["branch_id"])
+            execution_id = str(raw["execution_id"])
+            if stage == branch_id and execution_id == f"{trace_id}:{branch_id}:analytics":
+                eligible_transfers.add((key, "h2d"))
+            if (
+                stage == f"postprocess_{branch_id}"
+                and execution_id == f"{trace_id}:{branch_id}:postprocess"
+            ):
+                eligible_transfers.add((key, "d2h"))
     _require(bool(expected_nvdec), "runtime topology produced no decode executions for NVDEC coverage")
     _require(
         bool(expected_fanout) == shared,
         "runtime fanout topology does not match the worker topology kind",
     )
 
+    declared_policies = {
+        str(getattr(spec, "environment", {}).get("SCHEDULER_POLICY", "")).strip()
+        for spec in specs
+        if str(getattr(spec, "environment", {}).get("SCHEDULER_POLICY", "")).strip()
+    }
+    _require(
+        len(declared_policies) <= 1,
+        "resource interval workers declare inconsistent scheduler policies",
+    )
+    declared_policy = next(iter(declared_policies), None)
+    expected_transfers = eligible_transfers if declared_policy == "gpu_only" else set()
+    if declared_policy == "gpu_only":
+        _require(
+            bool(expected_transfers),
+            "gpu_only runtime topology produced no eligible CUDA transfer executions",
+        )
+
     rows: list[dict[str, str]] = []
     observed_nvdec: set[tuple[str, str, int, int, str]] = set()
     observed_fanout: set[tuple[str, str, int, int, str]] = set()
+    observed_transfers: set[tuple[tuple[str, str, int, int, str], str]] = set()
+    observed_transfer_directions: dict[tuple[str, str, int, int, str], set[str]] = {}
+    observed_transfer_intervals: dict[
+        tuple[str, str, int, int, str], dict[str, tuple[int, int, str]]
+    ] = {}
     native_event_ids: set[str] = set()
     for spec in specs:
         worker_output = Path(spec.command[spec.command.index("--output-dir") + 1])
@@ -1405,10 +1442,19 @@ def merge_runtime_resource_intervals(
             )
             _require(str(row["run_id"]) == run_id, f"{spec.worker_id}: resource interval run_id mismatch")
             _require(stream_id == int(spec.stream_id), f"{spec.worker_id}: resource interval stream mismatch")
+            component = str(row["component"])
+            host_width_ns = end_ns - start_ns
             _require(
-                start_ns < end_ns and duration_ns == end_ns - start_ns and payload_bytes > 0,
-                f"{spec.worker_id}: native diagnostic interval is invalid",
+                start_ns < end_ns
+                and 0 < duration_ns <= host_width_ns
+                and payload_bytes > 0,
+                f"{spec.worker_id}: native interval or host envelope is invalid",
             )
+            if component != "transfer":
+                _require(
+                    duration_ns == host_width_ns,
+                    f"{spec.worker_id}: native diagnostic interval is invalid",
+                )
             native_event_id = str(row["native_event_id"])
             _require(
                 re.fullmatch(r"[0-9a-f]{64}", native_event_id) is not None
@@ -1428,11 +1474,6 @@ def merge_runtime_resource_intervals(
                 and str(topology["branch_id"]) == branch_id,
                 f"{spec.worker_id}: resource interval topology linkage drifted",
             )
-            topology_ns = int(topology["timestamp_ms"]) * 1_000_000
-            _require(
-                end_ns <= topology_ns + 1_000_000,
-                f"{spec.worker_id}: resource interval ends after its topology event",
-            )
             try:
                 parents = json.loads(str(topology["parent_execution_ids_json"]))
             except json.JSONDecodeError as exc:
@@ -1443,12 +1484,23 @@ def merge_runtime_resource_intervals(
                 parent = topology_by_execution.get((run_id, trace_id, stream_id, frame_id, str(parent_id)))
                 _require(parent is not None, f"{spec.worker_id}: resource interval parent is missing")
                 parent_times.append(int(parent["timestamp_ms"]) * 1_000_000)
-            _require(
-                start_ns >= max(parent_times),
-                f"{spec.worker_id}: resource interval starts before its topology parent",
-            )
+            if component != "transfer":
+                topology_ns = int(topology["timestamp_ms"]) * 1_000_000
+                _require(
+                    end_ns
+                    <= topology_ns + 1_000_000 + PLATFORM_BACKWARD_CLOCK_STEP_NS,
+                    f"{spec.worker_id}: resource interval ends after its topology event",
+                )
+                _require(
+                    # Topology timestamps are upward-rounded milliseconds; the
+                    # precise native edge may therefore be <1 ms earlier.  The
+                    # platform allowance covers a backward host clock step
+                    # landing between the two captures.
+                    start_ns + 1_000_000 + PLATFORM_BACKWARD_CLOCK_STEP_NS
+                    >= max(parent_times),
+                    f"{spec.worker_id}: resource interval starts before its topology parent",
+                )
 
-            component = str(row["component"])
             if component == "nvdec_submit_complete":
                 _require(
                     (
@@ -1503,6 +1555,58 @@ def merge_runtime_resource_intervals(
                 )
                 _require(key not in observed_fanout, "fanout execution has more than one interval")
                 observed_fanout.add(key)
+            elif component == "transfer":
+                direction = str(row["direction"])
+                transfer_key = (key, direction)
+                _require(
+                    transfer_key in eligible_transfers,
+                    f"{spec.worker_id}: CUDA transfer has no eligible topology edge",
+                )
+                _require(
+                    (
+                        str(row["counter_scope"]),
+                        str(row["duration_provenance"]),
+                        str(row["telemetry_source"]),
+                    )
+                    == (
+                        "per_trace_interval",
+                        "native_cuda_event_interval_v1",
+                        "native",
+                    ),
+                    f"{spec.worker_id}: CUDA transfer interval provenance drifted",
+                )
+                _require(
+                    str(row["device_id"]).startswith("gpu:")
+                    and re.fullmatch(r"[a-z][a-z0-9_.:-]*", str(row["device_id"])) is not None,
+                    f"{spec.worker_id}: CUDA transfer device identity drifted",
+                )
+                _require(
+                    spec.branch_id is None or branch_id == str(spec.branch_id),
+                    f"{spec.worker_id}: CUDA transfer branch escaped its worker",
+                )
+                expected_parent = (
+                    f"{trace_id}:{branch_id}:analytics"
+                    if direction == "d2h"
+                    else (
+                        f"{trace_id}:{branch_id}:fanout"
+                        if shared
+                        else f"{trace_id}:{branch_id}:preprocess"
+                    )
+                )
+                _require(
+                    parents == [expected_parent],
+                    f"{spec.worker_id}: CUDA transfer topology parent drifted",
+                )
+                _require(
+                    transfer_key not in observed_transfers,
+                    f"{spec.worker_id}: CUDA transfer execution/direction is duplicated",
+                )
+                observed_transfers.add(transfer_key)
+                frame_branch_key = (run_id, trace_id, stream_id, frame_id, branch_id)
+                observed_transfer_directions.setdefault(frame_branch_key, set()).add(direction)
+                observed_transfer_intervals.setdefault(frame_branch_key, {})[
+                    direction
+                ] = (start_ns, end_ns, str(row["device_id"]))
             else:
                 raise ContractError(
                     f"{spec.worker_id}: runtime resource fragment contains unsupported component {component}"
@@ -1511,6 +1615,23 @@ def merge_runtime_resource_intervals(
 
     _require(observed_nvdec == expected_nvdec, "runtime NVDEC interval coverage is not exact")
     _require(observed_fanout == expected_fanout, "runtime fanout interval coverage is not exact")
+    _require(
+        all(directions == {"h2d", "d2h"} for directions in observed_transfer_directions.values()),
+        "runtime CUDA transfer coverage is not paired by frame and branch",
+    )
+    _require(
+        all(
+            intervals["h2d"][1] <= intervals["d2h"][0]
+            and intervals["h2d"][2] == intervals["d2h"][2]
+            for intervals in observed_transfer_intervals.values()
+        ),
+        "runtime CUDA transfer pair order or device binding drifted",
+    )
+    if declared_policy in {"cpu_only", "gpu_only"}:
+        _require(
+            observed_transfers == expected_transfers,
+            f"runtime {declared_policy} CUDA transfer coverage is not exact",
+        )
     output_root.mkdir(parents=True, exist_ok=True)
     merged = output_root / "resource_intervals.runtime.csv"
     with merged.open("w", newline="", encoding="utf-8") as output:
@@ -1667,7 +1788,7 @@ def merge_runtime_fanout_intervals(
             )
             topology_ns = int(topology["timestamp_ms"]) * 1_000_000
             _require(
-                abs(end_ns - topology_ns) <= 1_000_000,
+                abs(end_ns - topology_ns) <= 1_000_000 + PLATFORM_BACKWARD_CLOCK_STEP_NS,
                 f"{spec.worker_id}: fanout interval end differs from topology event",
             )
             parents = json.loads(str(topology["parent_execution_ids_json"]))
@@ -1684,7 +1805,11 @@ def merge_runtime_fanout_intervals(
                 f"{spec.worker_id}: fanout interval parent is not shared preprocess",
             )
             _require(
-                start_ns >= int(parent["timestamp_ms"]) * 1_000_000,
+                # Preserve the precise host interval while allowing the
+                # parent's upward millisecond quantization bucket and a
+                # backward host clock step between the two captures.
+                start_ns + 1_000_000 + PLATFORM_BACKWARD_CLOCK_STEP_NS
+                >= int(parent["timestamp_ms"]) * 1_000_000,
                 f"{spec.worker_id}: fanout interval starts before preprocess completes",
             )
             _require(key not in observed_fanout, "fanout execution has more than one interval")
@@ -1849,6 +1974,34 @@ def merge_runtime_fanout_work_counters(
     return merged
 
 
+def _accepted_topology_execution_keys(
+    *,
+    topology_events: pd.DataFrame,
+    accepted_frame_keys: set[tuple[str, str, int, int]],
+    label: str,
+) -> set[tuple[str, str, int, int, str]]:
+    required = {"run_id", "trace_id", "stream_id", "frame_id", "execution_id"}
+    if topology_events.empty or not required.issubset(topology_events.columns):
+        raise FullResourceContractError(
+            f"{label} requires accepted topology execution identities"
+        )
+    result: set[tuple[str, str, int, int, str]] = set()
+    for row in topology_events.to_dict(orient="records"):
+        frame_key = (
+            str(row["run_id"]),
+            str(row["trace_id"]),
+            int(row["stream_id"]),
+            int(row["frame_id"]),
+        )
+        if frame_key in accepted_frame_keys:
+            result.add((*frame_key, str(row["execution_id"])))
+    if not result:
+        raise FullResourceContractError(
+            f"{label} has no accepted topology execution identities"
+        )
+    return result
+
+
 def promote_runtime_interval_and_fanout_evidence(
     *,
     runtime_resource_intervals: Path,
@@ -1884,6 +2037,11 @@ def promote_runtime_interval_and_fanout_evidence(
     }
     if {key[0] for key in accepted_keys} != {expected_run_id}:
         raise FullResourceContractError("runtime resource promotion run identity drifted")
+    accepted_topology_execution_keys = _accepted_topology_execution_keys(
+        topology_events=topology_events,
+        accepted_frame_keys=accepted_keys,
+        label="runtime resource promotion",
+    )
 
     def read_exact(path: Path, columns: list[str], label: str) -> list[dict[str, str]]:
         if path.is_symlink() or not path.is_file():
@@ -1910,8 +2068,9 @@ def promote_runtime_interval_and_fanout_evidence(
             str(row["trace_id"]),
             int(row["stream_id"]),
             int(row["frame_id"]),
+            str(row["execution_id"]),
         )
-        in accepted_keys
+        in accepted_topology_execution_keys
     ]
     if not accepted_interval_rows:
         raise FullResourceContractError("accepted cohort has no runtime resource intervals")
@@ -1924,7 +2083,7 @@ def promote_runtime_interval_and_fanout_evidence(
         if runtime_fanout_work_counters is not None
         else []
     )
-    accepted_counter_rows = [
+    accepted_frame_counter_rows = [
         row
         for row in counter_rows
         if (
@@ -1945,12 +2104,35 @@ def promote_runtime_interval_and_fanout_evidence(
         )
         for row in topology_events.to_dict(orient="records")
         if str(row["event_kind"]) == "fanout"
+        and (
+            str(row["run_id"]),
+            str(row["trace_id"]),
+            int(row["stream_id"]),
+            int(row["frame_id"]),
+        )
+        in accepted_keys
     }
     require_fanout = topology_kind == "shared_video_dag"
     if require_fanout and runtime_fanout_work_counters is None:
         raise FullResourceContractError("shared runtime lacks fanout work evidence")
     if require_fanout != bool(expected_fanout_keys):
         raise FullResourceContractError("accepted fanout topology coverage is inconsistent")
+    accepted_counter_rows = (
+        [
+            row
+            for row in accepted_frame_counter_rows
+            if (
+                str(row["trace_id"]),
+                int(row["stream_id"]),
+                int(row["frame_id"]),
+                str(row["branch_id"]),
+                str(row["execution_id"]),
+            )
+            in expected_fanout_keys
+        ]
+        if require_fanout
+        else accepted_frame_counter_rows
+    )
 
     try:
         with tempfile.TemporaryDirectory(prefix=".resource-frame-staging-", dir=output_root) as tmp:
@@ -2036,6 +2218,11 @@ def promote_runtime_full_resource_evidence(
     }
     if not accepted_keys or {key[0] for key in accepted_keys} != {expected_run_id}:
         raise FullResourceContractError("accepted ingress cohort run identity drifted")
+    accepted_topology_execution_keys = _accepted_topology_execution_keys(
+        topology_events=topology_events,
+        accepted_frame_keys=accepted_keys,
+        label="full-resource promotion",
+    )
 
     def read_exact(path: Path, columns: list[str], label: str) -> list[dict[str, str]]:
         if path.is_symlink() or not path.is_file():
@@ -2062,8 +2249,9 @@ def promote_runtime_full_resource_evidence(
             str(row["trace_id"]),
             int(row["stream_id"]),
             int(row["frame_id"]),
+            str(row["execution_id"]),
         )
-        in accepted_keys
+        in accepted_topology_execution_keys
     ]
     if not accepted_interval_rows:
         raise FullResourceContractError("accepted cohort has no native resource intervals")
@@ -2081,7 +2269,7 @@ def promote_runtime_full_resource_evidence(
         if runtime_fanout_work_counters is not None
         else []
     )
-    accepted_counter_rows = [
+    accepted_frame_counter_rows = [
         row
         for row in counter_rows
         if (
@@ -2092,10 +2280,43 @@ def promote_runtime_full_resource_evidence(
         )
         in accepted_keys
     ]
-    if topology_kind == "shared_video_dag" and runtime_fanout_work_counters is None:
+    expected_fanout_keys = {
+        (
+            str(row["trace_id"]),
+            int(row["stream_id"]),
+            int(row["frame_id"]),
+            str(row["branch_id"]),
+            str(row["execution_id"]),
+        )
+        for row in topology_events.to_dict(orient="records")
+        if str(row["event_kind"]) == "fanout"
+        and (
+            str(row["run_id"]),
+            str(row["trace_id"]),
+            int(row["stream_id"]),
+            int(row["frame_id"]),
+        )
+        in accepted_keys
+    }
+    require_fanout = topology_kind == "shared_video_dag"
+    if require_fanout and runtime_fanout_work_counters is None:
         raise FullResourceContractError("shared topology lacks native fanout work counters")
-    if topology_kind == "independent_processes" and accepted_counter_rows:
+    if require_fanout != bool(expected_fanout_keys):
+        raise FullResourceContractError("accepted fanout topology coverage is inconsistent")
+    if not require_fanout and accepted_frame_counter_rows:
         raise FullResourceContractError("independent topology reported fanout work counters")
+    accepted_counter_rows = [
+        row
+        for row in accepted_frame_counter_rows
+        if (
+            str(row["trace_id"]),
+            int(row["stream_id"]),
+            int(row["frame_id"]),
+            str(row["branch_id"]),
+            str(row["execution_id"]),
+        )
+        in expected_fanout_keys
+    ]
 
     try:
         with tempfile.TemporaryDirectory(prefix=".resource-v2-staging-", dir=output_root) as tmp:
@@ -2554,8 +2775,18 @@ def main(
             and analytics_model_bindings is not None,
             "publication policy runtime requires exact model and execution manifests",
         )
+        _require(
+            args.policy_capability_manifest is not None,
+            "publication policy capability manifest is required",
+        )
+        _require(args.policy_calibration is not None, "publication policy calibration is required")
+        capability_manifest = _load_yaml(args.policy_capability_manifest)
+        execution_manifest = _load_yaml(args.analytics_execution_manifest)
         native_policy_capability_assessment = assess_gstreamer_native_policy_execution_manifest(
-            _load_yaml(args.analytics_execution_manifest)
+            execution_manifest,
+            system=args.system,
+            capability_manifest=capability_manifest,
+            preprocessing_contract_sha256=args.analytics_preprocessing_contract_sha256,
         )
         _require(
             native_policy_capability_assessment["passed"] is True
@@ -2563,23 +2794,18 @@ def main(
             "native gstreamer policy is blocked by execution capabilities: "
             + ",".join(native_policy_capability_assessment["blockers"][:8]),
         )
-        _require(
-            args.policy_capability_manifest is not None,
-            "publication policy capability manifest is required",
-        )
-        _require(args.policy_calibration is not None, "publication policy calibration is required")
-        capability_manifest = _load_yaml(args.policy_capability_manifest)
         calibration = _load_yaml(args.policy_calibration)
         static_hybrid_map = (
             _load_yaml(args.static_hybrid_map)
             if args.static_hybrid_map is not None
             else None
         )
-        require_exact_native_cpu_capability_bindings(
-            binary=args.binary,
-            analytics_bindings=analytics_model_bindings,
-            capability_manifest=capability_manifest,
-        )
+        if execution_manifest.get("artifact_kind") != EXTERNAL_EXECUTION_MANIFEST_KIND:
+            require_exact_native_cpu_capability_bindings(
+                binary=args.binary,
+                analytics_bindings=analytics_model_bindings,
+                capability_manifest=capability_manifest,
+            )
         native_policy_runtime = NativePolicyRuntimeCoordinator(
             run_id=args.run_id,
             arm_id=(
@@ -2729,7 +2955,7 @@ def main(
         specs,
         source_specs,
         template_path=args.gst_registry_template,
-        refresh_hardware_plugins=not publication_mode,
+        refresh_hardware_plugins=True,
     )
     telemetry_sink_preexisting_entry_count = (
         sum(1 for _ in runtime_output_dir.iterdir()) if runtime_output_dir.exists() else 0
@@ -3020,6 +3246,16 @@ def main(
             "target-hardware execution has not been accepted",
         ] if publication_acceptance is None else [],
     }
+    if publication_mode:
+        _require(
+            runtime_output_dir is not None,
+            "publication native runtime output directory is absent at terminal handoff",
+        )
+        retire_owned_runtime_output_v1(
+            runtime_output_dir,
+            output_root=args.output_dir,
+            label=f"{args.system} publication native runtime output",
+        )
     print(json.dumps(status, indent=2, sort_keys=True))
     return 0 if not result.unresolved_frames else 2
 

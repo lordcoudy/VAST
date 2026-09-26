@@ -13,6 +13,7 @@ from typing import Any, Mapping
 SCHEMA_VERSION = 2
 GRANT_KIND = "vast_verified_pre_run_model_parity_grant"
 GRANT_STATUS = "accepted_physical_model_parity_v3"
+GRANT_STATUS_V4 = "accepted_physical_model_parity_v4"
 IDENTITY_SCHEMA_VERSION = 2
 PARITY_BINDING_KIND = "vast_verified_model_parity_acceptance_binding"
 _SHA_RE = re.compile(r"^[0-9a-f]{64}$")
@@ -39,6 +40,7 @@ _PARITY_BINDING_FIELDS = {
     "runtime_registries_sha256", "runtime_images_sha256", "files", "files_sha256",
     "binding_sha256",
 }
+_PARITY_BINDING_FIELDS_V4 = _PARITY_BINDING_FIELDS | {"refresh_authority"}
 _IDENTITY_FIELDS = {
     "schema_version", "artifact_kind", "manifest", "bindings", "files",
     "files_sha256", "binding_sha256",
@@ -108,7 +110,7 @@ def _normalized_grant(value: Mapping[str, Any]) -> dict[str, Any]:
     if (
         value.get("schema_version") != SCHEMA_VERSION
         or value.get("artifact_kind") != GRANT_KIND
-        or value.get("status") != GRANT_STATUS
+        or value.get("status") not in {GRANT_STATUS, GRANT_STATUS_V4}
     ):
         raise ModelParityGrantError("model-parity grant schema/kind/status drifted")
     for field in (
@@ -202,10 +204,39 @@ def model_parity_grant_from_identity_artifacts(identity: dict[str, Any]) -> dict
     known = {item["path"]: item for item in normalized_files}
     bindings = identity.get("bindings")
     parity = bindings.get("analytics_model_parity") if type(bindings) is dict else None
+    coordinate = (
+        parity.get("schema_version") if type(parity) is dict else None,
+        parity.get("artifact_kind") if type(parity) is dict else None,
+    )
+    if coordinate == (SCHEMA_VERSION, PARITY_BINDING_KIND):
+        parity_fields = _PARITY_BINDING_FIELDS
+        parity_file_count = 36
+        grant_status = GRANT_STATUS
+    elif coordinate == (4, "vast_verified_model_parity_acceptance_binding_v4"):
+        parity_fields = _PARITY_BINDING_FIELDS_V4
+        parity_file_count = 50
+        grant_status = GRANT_STATUS_V4
+        try:
+            from checkpoint_model_parity_acceptance_v4 import (
+                validate_refresh_authority_v4,
+            )
+            refresh = validate_refresh_authority_v4(
+                parity.get("refresh_authority")
+            )
+        except Exception as error:
+            raise ModelParityGrantError(
+                f"validated model-parity v4 refresh authority is invalid: {error}"
+            ) from error
+        if refresh != parity.get("refresh_authority"):
+            raise ModelParityGrantError(
+                "validated model-parity v4 refresh authority drifted"
+            )
+    else:
+        parity_fields = set()
+        parity_file_count = 0
+        grant_status = ""
     if (
-        type(parity) is not dict or set(parity) != _PARITY_BINDING_FIELDS
-        or parity.get("schema_version") != SCHEMA_VERSION
-        or parity.get("artifact_kind") != PARITY_BINDING_KIND
+        type(parity) is not dict or set(parity) != parity_fields
         or not _valid_sha(parity.get("binding_sha256"))
         or parity["binding_sha256"]
         != _sha({key: item for key, item in parity.items() if key != "binding_sha256"})
@@ -214,8 +245,10 @@ def model_parity_grant_from_identity_artifacts(identity: dict[str, Any]) -> dict
     if parity.get("evidence_count") != 32:
         raise ModelParityGrantError("validated model-parity evidence coverage is not exact 32")
     parity_files = parity.get("files")
-    if type(parity_files) is not list or len(parity_files) != 36:
-        raise ModelParityGrantError("validated model-parity file coverage is not exact 36")
+    if type(parity_files) is not list or len(parity_files) != parity_file_count:
+        raise ModelParityGrantError(
+            f"validated model-parity file coverage is not exact {parity_file_count}"
+        )
     normalized_parity_files = [
         _descriptor(item, f"parity file[{index}]")
         for index, item in enumerate(parity_files)
@@ -223,7 +256,8 @@ def model_parity_grant_from_identity_artifacts(identity: dict[str, Any]) -> dict
     if (
         normalized_parity_files
         != sorted(normalized_parity_files, key=lambda item: item["path"])
-        or len({item["path"] for item in normalized_parity_files}) != 36
+        or len({item["path"] for item in normalized_parity_files})
+        != parity_file_count
         or parity.get("files_sha256") != _sha(normalized_parity_files)
         or any(known.get(item["path"]) != item for item in normalized_parity_files)
     ):
@@ -254,7 +288,7 @@ def model_parity_grant_from_identity_artifacts(identity: dict[str, Any]) -> dict
     material = {
         "schema_version": SCHEMA_VERSION,
         "artifact_kind": GRANT_KIND,
-        "status": GRANT_STATUS,
+        "status": grant_status,
         "identity_artifact_binding_sha256": identity["binding_sha256"],
         "parity_acceptance_binding_sha256": parity["binding_sha256"],
         **descriptors,
@@ -285,7 +319,7 @@ def model_parity_grant_from_identity_artifacts(identity: dict[str, Any]) -> dict
 
 
 __all__ = [
-    "GRANT_KIND", "GRANT_STATUS", "ModelParityGrantError", "SCHEMA_VERSION",
+    "GRANT_KIND", "GRANT_STATUS", "GRANT_STATUS_V4", "ModelParityGrantError", "SCHEMA_VERSION",
     "assess_pre_run_model_parity_grant", "model_parity_grant_from_identity_artifacts",
     "validate_pre_run_model_parity_grant",
 ]

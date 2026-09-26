@@ -4,6 +4,8 @@ from __future__ import annotations
 import sys
 import tempfile
 import unittest
+import json
+import math
 from pathlib import Path
 
 
@@ -11,6 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
 from benchmark_contract import ContractError
+import checkpoint_publication_runtime as publication_runtime
 from checkpoint_publication_runtime import (
     _accepted_branch_rows,
     _accepted_frame_event_rows,
@@ -84,7 +87,13 @@ def event(
                 "execution_resource": "nvdec" if stage == "decode" else "cpu",
                 "scheduler_policy": "static_hybrid",
                 "policy_action": (
-                    "static_hybrid:nvdec" if stage == "decode" else "static_hybrid:cpu"
+                    "static_hybrid:fixed_outside_analytics_scope:nvdec"
+                    if stage == "decode"
+                    else (
+                        "static_hybrid:cpu:decision:damage"
+                        if stage == branch_id and branch_id != "not_applicable"
+                        else "static_hybrid:fixed_outside_analytics_scope:cpu"
+                    )
                 ),
                 "policy_decision_id": f"decision:{execution_id}",
                 "execution_binding_provenance": "native_scheduler_execution_binding_v1",
@@ -94,10 +103,32 @@ def event(
                 "benchmark_deadline_ms": 100.0,
             }
         )
+        if stage == branch_id and branch_id != "not_applicable":
+            row.update(
+                {
+                    "scheduler_queue_depth": 3,
+                    "scheduler_estimated_cost_ms": 7.25,
+                }
+            )
     return row
 
 
 class CheckpointPublicationRuntimeTests(unittest.TestCase):
+    def test_acceptance_summary_serializes_unavailable_metrics_as_json_null(self) -> None:
+        summary = {
+            "required_finite": 12.5,
+            "unavailable": float("nan"),
+            "nested": [float("inf"), {"negative": float("-inf")}],
+        }
+
+        converted = publication_runtime._json_finite_or_null(summary)
+
+        self.assertEqual(converted["required_finite"], 12.5)
+        self.assertIsNone(converted["unavailable"])
+        self.assertEqual(converted["nested"], [None, {"negative": None}])
+        self.assertTrue(math.isnan(summary["unavailable"]))
+        json.dumps(converted, allow_nan=False)
+
     def test_checkpoint_aggregate_backend_is_exact_and_fail_closed_per_native_system(self) -> None:
         self.assertEqual(
             checkpoint_aggregate_backend("gstreamer_custom"),
@@ -200,6 +231,9 @@ class CheckpointPublicationRuntimeTests(unittest.TestCase):
         self.assertEqual(by_stage["aggregate"]["stage_end_timestamp_ms"], 1_153)
         self.assertEqual(by_stage["record"]["stage_start_timestamp_ms"], 1_153)
         self.assertEqual(by_stage["record"]["stage_end_timestamp_ms"], 1_153)
+        self.assertEqual(by_stage["damage"]["queue_depth"], 3)
+        self.assertEqual(by_stage["damage"]["estimated_cost_ms"], 7.25)
+        self.assertEqual(by_stage["preprocess"]["estimated_cost_ms"], 10)
 
     def test_frame_intervals_reject_inferred_policy_and_resource_labels(self) -> None:
         events = (

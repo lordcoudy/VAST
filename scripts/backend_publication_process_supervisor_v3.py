@@ -23,7 +23,12 @@ import time
 from collections.abc import Sequence
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, BinaryIO
+from typing import Any, BinaryIO, Callable
+
+from publication_physical_io_v1 import (
+    PhysicalRootCustodyV1,
+    PublicationPhysicalIoV1Error,
+)
 
 _POSIX_HELD_BROKER_MODE = "--internal-posix-held-process-broker-production-v3"
 _HELD_INVOCATION_MODULE = "backend_publication_launcher_invocation_v3"
@@ -167,6 +172,13 @@ _POSIX_BROKER_MAX_HEADER_BYTES = 128 * 1024
 _POSIX_BROKER_MAX_DIAGNOSTIC_BYTES = 64 * 1024
 _POSIX_BROKER_CLEANUP_MARGIN_MS = 15_000
 _POSIX_BROKER_TERMINATION_GRACE_SECONDS = 12.0
+_DURABLE_JOURNAL_RESPONSE_FILENAME = "terminal-response.frame"
+_DURABLE_JOURNAL_OWNER_FILENAME = "broker-owner.json"
+_DURABLE_JOURNAL_REQUEST_FILENAME = "request.json"
+_DURABLE_JOURNAL_TERMINAL_FILENAME = "terminal-intent.json"
+_DURABLE_JOURNAL_KIND = "vast_backend_publication_process_journal_v1"
+_DURABLE_JOURNAL_DOMAIN = b"VAST:backend-publication-process-journal:v1\0"
+_DURABLE_TERMINAL_SETTLE_SECONDS = 0.2
 
 _FROZEN_INVOCATION = validate_publication_launcher_invocation_v3(
     publication_launcher_invocation_v3_contract()
@@ -213,6 +225,7 @@ class BackendPublicationProcessRunV3:
     stdout: bytes
     stderr: bytes
     observation: dict[str, Any]
+    durable_journal_response: dict[str, Any] | None = None
 
     def __getattribute__(self, name: str) -> Any:
         value = object.__getattribute__(self, name)
@@ -224,6 +237,19 @@ class BackendPublicationProcessRunV3:
         object.__setattr__(self, "stdout", bytes(self.stdout))
         object.__setattr__(self, "stderr", bytes(self.stderr))
         object.__setattr__(self, "observation", copy.deepcopy(self.observation))
+        object.__setattr__(
+            self,
+            "durable_journal_response",
+            copy.deepcopy(self.durable_journal_response),
+        )
+
+
+@dataclass(frozen=True, slots=True)
+class _DurableJournalSpec:
+    directory: Path
+    authorization_path: Path
+    authorization_sha256: str
+    session_sha256: str
 
 
 @dataclass(frozen=True, slots=True)
@@ -1180,7 +1206,12 @@ def _parse_canonical_broker_object(payload: bytes, *, label: str) -> dict[str, A
     return value
 
 
-def _broker_request_bytes(command: tuple[str, ...], cwd: Path) -> bytes:
+def _broker_request_bytes(
+    command: tuple[str, ...],
+    cwd: Path,
+    *,
+    durable_journal: _DurableJournalSpec | None = None,
+) -> bytes:
     core: dict[str, Any] = {
         "schema_version": SCHEMA_VERSION,
         "artifact_kind": _POSIX_BROKER_REQUEST_KIND,
@@ -1188,6 +1219,14 @@ def _broker_request_bytes(command: tuple[str, ...], cwd: Path) -> bytes:
         "cwd": str(cwd),
         "publication_execution_authorized": False,
     }
+    if durable_journal is not None:
+        core["durable_journal"] = {
+            "artifact_kind": _DURABLE_JOURNAL_KIND,
+            "directory": str(durable_journal.directory),
+            "authorization_path": str(durable_journal.authorization_path),
+            "authorization_sha256": durable_journal.authorization_sha256,
+            "session_sha256": durable_journal.session_sha256,
+        }
     value = {
         **core,
         "request_sha256": _sha256(
@@ -1240,7 +1279,9 @@ def _read_broker_request_frame_v3(descriptor: int) -> bytes:
     return _read_descriptor_exact_v3(descriptor, payload_size)
 
 
-def _validate_broker_request(payload: bytes) -> tuple[tuple[str, ...], Path]:
+def _validate_broker_request(
+    payload: bytes,
+) -> tuple[tuple[str, ...], Path, _DurableJournalSpec | None]:
     value = _parse_canonical_broker_object(payload, label="request")
     fields = {
         "schema_version",
@@ -1251,6 +1292,9 @@ def _validate_broker_request(payload: bytes) -> tuple[tuple[str, ...], Path]:
         "request_sha256",
     }
     unsigned = {key: item for key, item in value.items() if key != "request_sha256"}
+    durable_value = value.get("durable_journal")
+    if durable_value is not None:
+        fields.add("durable_journal")
     if (
         set(value) != fields
         or value.get("schema_version") != SCHEMA_VERSION
@@ -1265,7 +1309,47 @@ def _validate_broker_request(payload: bytes) -> tuple[tuple[str, ...], Path]:
         raise BackendPublicationProcessSupervisorV3Error(
             "backend publication POSIX broker request drifted"
         )
-    return _validate_invocation(value["argv"], Path(value["cwd"]))
+    command, cwd = _validate_invocation(value["argv"], Path(value["cwd"]))
+    if durable_value is None:
+        return command, cwd, None
+    if (
+        type(durable_value) is not dict
+        or set(durable_value)
+        != {
+            "artifact_kind",
+            "directory",
+            "authorization_path",
+            "authorization_sha256",
+            "session_sha256",
+        }
+        or durable_value.get("artifact_kind") != _DURABLE_JOURNAL_KIND
+        or not _SHA256_RE.fullmatch(str(durable_value.get("authorization_sha256")))
+        or not _SHA256_RE.fullmatch(str(durable_value.get("session_sha256")))
+    ):
+        raise BackendPublicationProcessSupervisorV3Error(
+            "backend publication durable journal request drifted"
+        )
+    directory = _canonical_existing_path(
+        str(durable_value.get("directory")),
+        label="durable journal directory",
+        directory=True,
+    )
+    authorization_path = Path(str(durable_value.get("authorization_path")))
+    if (
+        not authorization_path.is_absolute()
+        or _raw_path_has_dot_segment(str(authorization_path))
+        or authorization_path.parent.resolve(strict=True)
+        != authorization_path.parent
+    ):
+        raise BackendPublicationProcessSupervisorV3Error(
+            "backend publication durable journal authorization path drifted"
+        )
+    return command, cwd, _DurableJournalSpec(
+        directory=directory,
+        authorization_path=authorization_path,
+        authorization_sha256=str(durable_value["authorization_sha256"]),
+        session_sha256=str(durable_value["session_sha256"]),
+    )
 
 
 def _broker_response_frame(
@@ -1312,6 +1396,228 @@ def _broker_response_frame(
         + header
         + stdout
         + stderr
+    )
+
+
+def _durable_journal_descriptor(path: Path, payload: bytes) -> dict[str, Any]:
+    return {
+        "path": str(path),
+        "size_bytes": len(payload),
+        "sha256": _sha256(payload),
+    }
+
+
+def _commit_durable_journal_leaf(
+    journal: _DurableJournalSpec,
+    name: str,
+    payload: bytes,
+    *,
+    label: str,
+) -> dict[str, Any]:
+    try:
+        with PhysicalRootCustodyV1.open(
+            journal.directory.parent,
+            label=f"{label} parent",
+        ) as custody:
+            relative = f"{journal.directory.name}/{name}"
+            observed, _identity, _disposition = (
+                custody.commit_or_adopt_exact_identity(
+                    relative,
+                    payload,
+                    label=label,
+                    mode=0o600,
+                    create_parents=False,
+                    allow_empty=False,
+                )
+            )
+        expected = {
+            "path": relative,
+            "size_bytes": len(payload),
+            "sha256": _sha256(payload),
+        }
+        if observed != expected:
+            raise BackendPublicationProcessSupervisorV3Error(
+                f"{label} descriptor drifted"
+            )
+        return _durable_journal_descriptor(journal.directory / name, payload)
+    except PublicationPhysicalIoV1Error as exc:
+        raise BackendPublicationProcessSupervisorV3Error(
+            f"{label} atomic commit failed"
+        ) from exc
+
+
+def _load_durable_journal_leaf(
+    journal: _DurableJournalSpec,
+    name: str,
+    *,
+    limit: int,
+    required: bool,
+) -> tuple[bytes, dict[str, Any]] | None:
+    path = journal.directory / name
+    try:
+        before = path.lstat()
+    except FileNotFoundError:
+        if required:
+            raise BackendPublicationProcessSupervisorV3Error(
+                f"durable journal {name} is missing"
+            )
+        return None
+    if (
+        not stat.S_ISREG(before.st_mode)
+        or stat.S_ISLNK(before.st_mode)
+        or int(before.st_nlink) != 1
+        or not 0 < int(before.st_size) <= limit
+    ):
+        raise BackendPublicationProcessSupervisorV3Error(
+            f"durable journal {name} identity drifted"
+        )
+    payload = path.read_bytes()
+    after = path.lstat()
+    stable_before = (
+        int(before.st_dev),
+        int(before.st_ino),
+        int(before.st_mode),
+        int(before.st_nlink),
+        int(before.st_size),
+        int(before.st_mtime_ns),
+        int(before.st_ctime_ns),
+    )
+    stable_after = (
+        int(after.st_dev),
+        int(after.st_ino),
+        int(after.st_mode),
+        int(after.st_nlink),
+        int(after.st_size),
+        int(after.st_mtime_ns),
+        int(after.st_ctime_ns),
+    )
+    if stable_before != stable_after or len(payload) != int(after.st_size):
+        raise BackendPublicationProcessSupervisorV3Error(
+            f"durable journal {name} changed while reading"
+        )
+    return payload, _durable_journal_descriptor(path, payload)
+
+
+def _wait_for_durable_authorization(journal: _DurableJournalSpec) -> None:
+    deadline = time.monotonic() + (_PROCESS_TIMEOUT_MS / 1000.0) + 300.0
+    while time.monotonic() < deadline:
+        try:
+            payload = journal.authorization_path.read_bytes()
+            info = journal.authorization_path.lstat()
+        except FileNotFoundError:
+            time.sleep(0.02)
+            continue
+        except OSError as exc:
+            raise BackendPublicationProcessSupervisorV3Error(
+                "durable launch authorization cannot be read"
+            ) from exc
+        if (
+            not stat.S_ISREG(info.st_mode)
+            or stat.S_ISLNK(info.st_mode)
+            or int(info.st_nlink) != 1
+            or _sha256(payload) != journal.authorization_sha256
+        ):
+            raise BackendPublicationProcessSupervisorV3Error(
+                "durable launch authorization identity drifted"
+            )
+        return
+    raise BackendPublicationProcessSupervisorV3Error(
+        "durable launch authorization timed out"
+    )
+
+
+def _linux_process_starttime(pid: int) -> int:
+    try:
+        payload = Path(f"/proc/{pid}/stat").read_bytes()
+        close = payload.rfind(b")")
+        fields = payload[close + 2 :].split()
+        value = int(fields[19])
+    except (OSError, ValueError, IndexError) as exc:
+        raise BackendPublicationProcessSupervisorV3Error(
+            "durable broker process identity cannot be read"
+        ) from exc
+    if close <= 0 or value <= 0:
+        raise BackendPublicationProcessSupervisorV3Error(
+            "durable broker process identity drifted"
+        )
+    return value
+
+
+def _durable_owner_payload(journal: _DurableJournalSpec) -> bytes:
+    core = {
+        "schema_version": 1,
+        "artifact_kind": "vast_backend_publication_process_broker_owner_v1",
+        "broker_pid": os.getpid(),
+        "broker_starttime_ticks": _linux_process_starttime(os.getpid()),
+        "broker_session_id": os.getsid(0),
+        "session_sha256": journal.session_sha256,
+    }
+    return _canonical_json(
+        {
+            **core,
+            "owner_sha256": _sha256(
+                _DURABLE_JOURNAL_DOMAIN + _canonical_json(core)
+            ),
+        }
+    ) + b"\n"
+
+
+def _commit_durable_owner(journal: _DurableJournalSpec) -> None:
+    _commit_durable_journal_leaf(
+        journal,
+        _DURABLE_JOURNAL_OWNER_FILENAME,
+        _durable_owner_payload(journal),
+        label="backend publication durable broker owner",
+    )
+
+
+def _validate_durable_owner(
+    journal: _DurableJournalSpec,
+) -> tuple[int, int, int]:
+    loaded = _load_durable_journal_leaf(
+        journal,
+        _DURABLE_JOURNAL_OWNER_FILENAME,
+        limit=64 * 1024,
+        required=True,
+    )
+    assert loaded is not None
+    payload, _descriptor = loaded
+    try:
+        value = json.loads(payload.decode("ascii"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise BackendPublicationProcessSupervisorV3Error(
+            "durable broker owner is invalid"
+        ) from exc
+    unsigned = {key: item for key, item in value.items() if key != "owner_sha256"}
+    if (
+        type(value) is not dict
+        or set(value)
+        != {
+            "schema_version",
+            "artifact_kind",
+            "broker_pid",
+            "broker_starttime_ticks",
+            "broker_session_id",
+            "session_sha256",
+            "owner_sha256",
+        }
+        or value.get("schema_version") != 1
+        or value.get("artifact_kind")
+        != "vast_backend_publication_process_broker_owner_v1"
+        or value.get("session_sha256") != journal.session_sha256
+        or value.get("owner_sha256")
+        != _sha256(_DURABLE_JOURNAL_DOMAIN + _canonical_json(unsigned))
+        or type(value.get("broker_pid")) is not int
+        or type(value.get("broker_starttime_ticks")) is not int
+        or type(value.get("broker_session_id")) is not int
+    ):
+        raise BackendPublicationProcessSupervisorV3Error(
+            "durable broker owner drifted"
+        )
+    return (
+        int(value["broker_pid"]),
+        int(value["broker_starttime_ticks"]),
+        int(value["broker_session_id"]),
     )
 
 
@@ -2116,7 +2422,10 @@ def _enter_linux_pid_namespace_v3() -> tuple[int, int]:
 
 
 def _wait_linux_namespace_init_v3(
-    namespace_init_pid: int, parent_liveness_descriptor: int
+    namespace_init_pid: int,
+    parent_liveness_descriptor: int,
+    *,
+    survive_supervisor_parent: bool = False,
 ) -> int:
     try:
         namespace_init_pidfd = os.pidfd_open(namespace_init_pid, 0)
@@ -2144,7 +2453,9 @@ def _wait_linux_namespace_init_v3(
                 break
             if waited_pid != 0:
                 return 74
-            events = poller.poll(20)
+            events = [] if survive_supervisor_parent else poller.poll(20)
+            if survive_supervisor_parent:
+                time.sleep(0.02)
             if events:
                 try:
                     trailing = os.read(0, 1)
@@ -2177,6 +2488,7 @@ def _run_linux_namespace_init_broker_v3(
     physical_command: tuple[str, ...] | None = None,
     physical_cwd: Path | None = None,
     inherited_descriptors: tuple[int, ...] = (),
+    durable_journal: _DurableJournalSpec | None = None,
 ) -> int:
     def cancel(_signo: int, _frame: Any) -> None:
         raise _PosixBrokerCancelled()
@@ -2230,7 +2542,43 @@ def _run_linux_namespace_init_broker_v3(
         except BaseException:
             return 74
     try:
-        _write_descriptor_all(1, frame)
+        if durable_journal is None:
+            _write_descriptor_all(1, frame)
+        else:
+            terminal_core = {
+                "schema_version": 1,
+                "artifact_kind": (
+                    "vast_backend_publication_process_terminal_intent_v1"
+                ),
+                "session_sha256": durable_journal.session_sha256,
+                "response_size_bytes": len(frame),
+                "response_sha256": _sha256(frame),
+            }
+            terminal_payload = _canonical_json(
+                {
+                    **terminal_core,
+                    "terminal_intent_sha256": _sha256(
+                        _DURABLE_JOURNAL_DOMAIN
+                        + _canonical_json(terminal_core)
+                    ),
+                }
+            ) + b"\n"
+            _commit_durable_journal_leaf(
+                durable_journal,
+                _DURABLE_JOURNAL_TERMINAL_FILENAME,
+                terminal_payload,
+                label="backend publication durable terminal intent",
+            )
+            # Keep the terminal intent as a separately durable causal barrier;
+            # a replacement coordinator can observe it before the response
+            # frame is published, while the broker remains its sole writer.
+            time.sleep(_DURABLE_TERMINAL_SETTLE_SECONDS)
+            _commit_durable_journal_leaf(
+                durable_journal,
+                _DURABLE_JOURNAL_RESPONSE_FILENAME,
+                frame,
+                label="backend publication durable terminal response",
+            )
     except BaseException:
         return 74
     return 0
@@ -2241,7 +2589,10 @@ def _posix_broker_entry_v3() -> int:
         return 78
     try:
         request = _read_broker_request_frame_v3(0)
-        command, cwd = _validate_broker_request(request)
+        command, cwd, durable_journal = _validate_broker_request(request)
+        if durable_journal is not None:
+            _commit_durable_owner(durable_journal)
+            _wait_for_durable_authorization(durable_journal)
         namespace_init_pid, parent_liveness_descriptor = (
             _enter_linux_pid_namespace_v3()
         )
@@ -2260,9 +2611,13 @@ def _posix_broker_entry_v3() -> int:
         return 0
     if namespace_init_pid != 0:
         return _wait_linux_namespace_init_v3(
-            namespace_init_pid, parent_liveness_descriptor
+            namespace_init_pid,
+            parent_liveness_descriptor,
+            survive_supervisor_parent=durable_journal is not None,
         )
-    return _run_linux_namespace_init_broker_v3(command, cwd)
+    return _run_linux_namespace_init_broker_v3(
+        command, cwd, durable_journal=durable_journal
+    )
 
 
 def _held_descriptor_identity_v3(info: os.stat_result) -> tuple[int, ...]:
@@ -2330,7 +2685,10 @@ def _posix_held_broker_entry_production_v3(
         return 78
     try:
         request = _read_broker_request_frame_v3(0)
-        command, cwd = _validate_broker_request(request)
+        command, cwd, durable_journal = _validate_broker_request(request)
+        if durable_journal is not None:
+            _commit_durable_owner(durable_journal)
+            _wait_for_durable_authorization(durable_journal)
         physical_command, physical_cwd, inherited_descriptors = (
             _held_physical_invocation_v3(command, cwd, descriptors)
         )
@@ -2352,7 +2710,9 @@ def _posix_held_broker_entry_production_v3(
         return 0
     if namespace_init_pid != 0:
         return _wait_linux_namespace_init_v3(
-            namespace_init_pid, parent_liveness_descriptor
+            namespace_init_pid,
+            parent_liveness_descriptor,
+            survive_supervisor_parent=durable_journal is not None,
         )
     return _run_linux_namespace_init_broker_v3(
         command,
@@ -2360,6 +2720,7 @@ def _posix_held_broker_entry_production_v3(
         physical_command=physical_command,
         physical_cwd=physical_cwd,
         inherited_descriptors=inherited_descriptors,
+        durable_journal=durable_journal,
     )
 
 
@@ -2553,8 +2914,171 @@ def _run_backend_publication_posix_broker_v3(
     *,
     held_descriptors: tuple[int, int, int] | None = None,
     broker_source_descriptors: tuple[int, int] | None = None,
+    durable_journal_directory: Path | None = None,
+    launch_authorization_path: Path | None = None,
+    launch_authorization_sha256: str | None = None,
+    launch_barrier: Callable[[], None] | None = None,
 ) -> BackendPublicationProcessRunV3:
-    request = _broker_request_bytes(command, cwd)
+    durable_journal: _DurableJournalSpec | None = None
+    if durable_journal_directory is not None:
+        if (
+            launch_authorization_path is None
+            or launch_authorization_sha256 is None
+            or launch_barrier is None
+            or not _SHA256_RE.fullmatch(launch_authorization_sha256)
+        ):
+            raise BackendPublicationProcessSupervisorV3Error(
+                "durable broker journal controls are incomplete"
+            )
+        try:
+            journal_directory = durable_journal_directory.resolve(strict=True)
+            authorization_parent = launch_authorization_path.parent.resolve(
+                strict=True
+            )
+        except OSError as exc:
+            raise BackendPublicationProcessSupervisorV3Error(
+                "durable broker journal path is unavailable"
+            ) from exc
+        authorization_path = authorization_parent / launch_authorization_path.name
+        session_core = {
+            "argv": list(command),
+            "cwd": str(cwd),
+            "journal_directory": str(journal_directory),
+            "authorization_path": str(authorization_path),
+            "authorization_sha256": launch_authorization_sha256,
+        }
+        durable_journal = _DurableJournalSpec(
+            directory=journal_directory,
+            authorization_path=authorization_path,
+            authorization_sha256=launch_authorization_sha256,
+            session_sha256=_sha256(
+                _DURABLE_JOURNAL_DOMAIN + _canonical_json(session_core)
+            ),
+        )
+    elif any(
+        value is not None
+        for value in (
+            launch_authorization_path,
+            launch_authorization_sha256,
+            launch_barrier,
+        )
+    ):
+        raise BackendPublicationProcessSupervisorV3Error(
+            "durable broker journal controls are partial"
+        )
+    request = _broker_request_bytes(
+        command, cwd, durable_journal=durable_journal
+    )
+
+    def journal_result_if_present() -> BackendPublicationProcessRunV3 | None:
+        if durable_journal is None:
+            return None
+        loaded = _load_durable_journal_leaf(
+            durable_journal,
+            _DURABLE_JOURNAL_RESPONSE_FILENAME,
+            limit=(
+                len(_POSIX_BROKER_FRAME_MAGIC)
+                + 8
+                + _POSIX_BROKER_MAX_HEADER_BYTES
+                + _MAX_STDOUT_BYTES
+                + _MAX_STDERR_BYTES
+            ),
+            required=False,
+        )
+        if loaded is None:
+            return None
+        payload, descriptor = loaded
+        terminal_loaded = _load_durable_journal_leaf(
+            durable_journal,
+            _DURABLE_JOURNAL_TERMINAL_FILENAME,
+            limit=64 * 1024,
+            required=True,
+        )
+        assert terminal_loaded is not None
+        terminal_payload, terminal_descriptor = terminal_loaded
+        try:
+            terminal = json.loads(terminal_payload.decode("ascii"))
+        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+            raise BackendPublicationProcessSupervisorV3Error(
+                "durable terminal intent is invalid"
+            ) from exc
+        terminal_unsigned = {
+            key: item
+            for key, item in terminal.items()
+            if key != "terminal_intent_sha256"
+        }
+        if (
+            type(terminal) is not dict
+            or terminal.get("artifact_kind")
+            != "vast_backend_publication_process_terminal_intent_v1"
+            or terminal.get("session_sha256") != durable_journal.session_sha256
+            or terminal.get("response_size_bytes") != len(payload)
+            or terminal.get("response_sha256") != _sha256(payload)
+            or terminal.get("terminal_intent_sha256")
+            != _sha256(
+                _DURABLE_JOURNAL_DOMAIN + _canonical_json(terminal_unsigned)
+            )
+        ):
+            raise BackendPublicationProcessSupervisorV3Error(
+                "durable terminal intent drifted"
+            )
+        parsed = _parse_broker_response_frame(payload, command=command, cwd=cwd)
+        return BackendPublicationProcessRunV3(
+            stdout=parsed.stdout,
+            stderr=parsed.stderr,
+            observation=parsed.observation,
+            durable_journal_response={
+                **descriptor,
+                "session_sha256": durable_journal.session_sha256,
+                "terminal_intent": terminal_descriptor,
+            },
+        )
+
+    def wait_journal_result() -> BackendPublicationProcessRunV3:
+        deadline = time.monotonic() + (
+            (_PROCESS_TIMEOUT_MS + _POSIX_BROKER_CLEANUP_MARGIN_MS) / 1000.0
+        )
+        while time.monotonic() < deadline:
+            result = journal_result_if_present()
+            if result is not None:
+                return result
+            time.sleep(0.02)
+        raise BackendPublicationProcessSupervisorV3Error(
+            "durable broker terminal response timed out"
+        )
+
+    if durable_journal is not None:
+        _commit_durable_journal_leaf(
+            durable_journal,
+            _DURABLE_JOURNAL_REQUEST_FILENAME,
+            request,
+            label="backend publication durable broker request",
+        )
+        existing_result = journal_result_if_present()
+        if existing_result is not None:
+            launch_barrier()
+            return existing_result
+        owner = _load_durable_journal_leaf(
+            durable_journal,
+            _DURABLE_JOURNAL_OWNER_FILENAME,
+            limit=64 * 1024,
+            required=False,
+        )
+        if owner is not None:
+            pid, starttime, session_id = _validate_durable_owner(durable_journal)
+            try:
+                alive = (
+                    _linux_process_starttime(pid) == starttime
+                    and os.getsid(pid) == session_id
+                )
+            except (ProcessLookupError, BackendPublicationProcessSupervisorV3Error):
+                alive = False
+            if not alive:
+                raise BackendPublicationProcessSupervisorV3Error(
+                    "durable broker owner is orphaned without a terminal response"
+                )
+            launch_barrier()
+            return wait_journal_result()
     supervisor_path = Path(__file__).resolve(strict=True)
     process: subprocess.Popen[bytes] | None = None
     broker_identity: _PosixBrokerIdentity | None = None
@@ -2672,6 +3196,37 @@ def _run_backend_publication_posix_broker_v3(
         for reader in readers:
             reader.start()
         _write_descriptor_all(process.stdin.fileno(), request)
+        if durable_journal is not None:
+            owner_deadline = time.monotonic() + 30.0
+            while time.monotonic() < owner_deadline:
+                if _load_durable_journal_leaf(
+                    durable_journal,
+                    _DURABLE_JOURNAL_OWNER_FILENAME,
+                    limit=64 * 1024,
+                    required=False,
+                ) is not None:
+                    owner_pid, owner_starttime, owner_session = (
+                        _validate_durable_owner(durable_journal)
+                    )
+                    if (
+                        owner_pid != process.pid
+                        or owner_starttime != _linux_process_starttime(process.pid)
+                        or owner_session != os.getsid(process.pid)
+                    ):
+                        raise BackendPublicationProcessSupervisorV3Error(
+                            "durable broker owner does not bind the spawned broker"
+                        )
+                    break
+                if process.poll() is not None:
+                    raise BackendPublicationProcessSupervisorV3Error(
+                        "durable broker exited before owner commit"
+                    )
+                time.sleep(0.02)
+            else:
+                raise BackendPublicationProcessSupervisorV3Error(
+                    "durable broker owner commit timed out"
+                )
+            launch_barrier()
         monitor = _monitor_process_v3(
             process,
             readers,
@@ -2713,6 +3268,8 @@ def _run_backend_publication_posix_broker_v3(
             raise BackendPublicationProcessSupervisorV3Error(
                 "backend publication POSIX broker did not reach quiescence"
             )
+        if durable_journal is not None:
+            return wait_journal_result()
         return _parse_broker_response_frame(
             readers[0].payload(), command=command, cwd=cwd
         )
@@ -2759,6 +3316,36 @@ def run_backend_publication_process_v3(
     return _run_backend_publication_posix_broker_v3(command, canonical_cwd)
 
 
+def _run_backend_publication_process_durable_v3(
+    argv: Sequence[str],
+    *,
+    cwd: Path,
+    durable_journal_directory: Path | None = None,
+    launch_authorization_path: Path | None = None,
+    launch_authorization_sha256: str | None = None,
+    launch_barrier: Callable[[], None] | None = None,
+) -> BackendPublicationProcessRunV3:
+    """Transaction-owned durable broker entrypoint; never a public tuning ABI."""
+
+    command, canonical_cwd = _validate_invocation(argv, cwd)
+    if os.name == "nt":
+        if durable_journal_directory is not None:
+            raise BackendPublicationProcessSupervisorV3Error(
+                "durable process journal requires POSIX"
+            )
+        return _run_backend_publication_process_direct_v3(
+            command, canonical_cwd, posix_scope=None
+        )
+    return _run_backend_publication_posix_broker_v3(
+        command,
+        canonical_cwd,
+        durable_journal_directory=durable_journal_directory,
+        launch_authorization_path=launch_authorization_path,
+        launch_authorization_sha256=launch_authorization_sha256,
+        launch_barrier=launch_barrier,
+    )
+
+
 def _run_backend_publication_process_from_held_fds_production_v3(
     argv: Sequence[str],
     *,
@@ -2768,6 +3355,10 @@ def _run_backend_publication_process_from_held_fds_production_v3(
     cwd_descriptor: int,
     supervisor_descriptor: int,
     invocation_descriptor: int,
+    durable_journal_directory: Path | None = None,
+    launch_authorization_path: Path | None = None,
+    launch_authorization_sha256: str | None = None,
+    launch_barrier: Callable[[], None] | None = None,
 ) -> BackendPublicationProcessRunV3:
     """Production-only POSIX entrypoint; the public engineering ABI is unchanged."""
 
@@ -2794,6 +3385,10 @@ def _run_backend_publication_process_from_held_fds_production_v3(
         canonical_cwd,
         held_descriptors=descriptors[:3],
         broker_source_descriptors=descriptors[3:],
+        durable_journal_directory=durable_journal_directory,
+        launch_authorization_path=launch_authorization_path,
+        launch_authorization_sha256=launch_authorization_sha256,
+        launch_barrier=launch_barrier,
     )
 
 

@@ -26,11 +26,14 @@ from collections.abc import Mapping, Sequence
 from pathlib import Path
 from typing import Any
 
+from publication_owned_staging_cleanup_v1 import retire_owned_runtime_output_v1
+
 
 SYSTEM = "deepstream"
 TERMINAL_STATUS_KIND = "vast_deepstream_publication_terminal_status_v3"
 INPUT_ROOT = Path("/opt/vast/input")
 OUTPUT_ROOT = Path("/opt/vast/output")
+FROZEN_PROJECT_ROOT = Path("/workspace")
 WORKER_EXECUTABLE = Path("/usr/local/bin/vast_deepstream_checkpoint_runtime")
 SOURCE_EXECUTABLE = Path("/usr/local/bin/vast_checkpoint_source")
 SCENARIO_TOPOLOGY = {
@@ -452,24 +455,43 @@ def _verify_binding_artifacts(
     binding: Mapping[str, Any],
     *,
     resource: str,
-    model_paths: set[Path],
+    model_bindings: Mapping[str, Path],
+    input_root: Path = INPUT_ROOT,
+    frozen_project_root: Path = FROZEN_PROJECT_ROOT,
 ) -> set[Path]:
     fields = ["source_path", "model_path", "weights_path"] if resource == "cpu" else ["source_path", "engine_path"]
-    referenced: set[Path] = set()
-    for field in fields:
-        path = _plain_regular_file(Path(str(binding.get(field, ""))))
-        _require(path in model_paths, f"{resource} binding references an undeclared model artifact")
-        referenced.add(path)
     digest_fields = {
         "source_path": "source_model_sha256",
         "model_path": "model_artifact_sha256",
         "weights_path": "runtime_weights_sha256",
         "engine_path": "model_artifact_sha256",
     }
+    referenced: set[Path] = set()
     for field in fields:
         expected = str(binding.get(digest_fields[field], ""))
         _require(SHA_RE.fullmatch(expected) is not None, f"{resource} binding digest is invalid")
-        _require(_sha256_file(Path(str(binding[field]))) == expected, f"{resource} binding artifact digest drifted")
+        declared = Path(str(binding.get(field, "")))
+        try:
+            lexical = Path(os.path.abspath(os.fspath(declared)))
+            relative = declared.relative_to(frozen_project_root)
+        except (OSError, RuntimeError, ValueError) as exc:
+            raise DeepStreamContainerRuntimeV3Error(
+                f"{resource} binding artifact is outside the frozen project namespace"
+            ) from exc
+        _require(
+            declared.is_absolute()
+            and lexical == declared
+            and bool(relative.parts)
+            and relative.parts[0] == "models",
+            f"{resource} binding artifact is not a canonical frozen model path",
+        )
+        path = _plain_regular_file(input_root / "models" / relative, root=input_root)
+        _require(
+            model_bindings.get(expected) == path,
+            f"{resource} binding references an undeclared model artifact",
+        )
+        _require(_sha256_file(path) == expected, f"{resource} binding artifact digest drifted")
+        referenced.add(path)
     return referenced
 
 
@@ -483,7 +505,10 @@ def validate_adapter_materialization(
 ) -> dict[str, Any]:
     """Bind adapter references and endpoint handshakes to declared input bytes."""
 
-    from analytics_execution_endpoint import expected_capability_from_binding_and_probe
+    from analytics_execution_endpoint import (
+        expected_capability_from_binding_and_probe,
+        terminal_detector_identity,
+    )
     from checkpoint_deepstream_protocol_adapter import validate_adapter_config
     from checkpoint_deepstream_protocol_bridge import analytics_backend_identity
 
@@ -528,7 +553,8 @@ def validate_adapter_materialization(
                 f"{branch}/{resource} adapter implementation differs from policy capability",
             )
             _require(
-                str(policy_binding.get("terminal_detector")) == str(capability["model_id"])
+                str(policy_binding.get("terminal_detector"))
+                == terminal_detector_identity(capability)
                 and str(policy_binding.get("terminal_backend", ""))
                 == analytics_backend_identity(capability),
                 f"{branch}/{resource} terminal identity differs from endpoint capability",
@@ -537,7 +563,7 @@ def validate_adapter_materialization(
                 _verify_binding_artifacts(
                     binding,
                     resource=resource,
-                    model_paths=model_paths,
+                    model_bindings=model_bindings,
                 )
             )
     _require(referenced_support == support_paths, "DeepStream support binding set has unreferenced material")
@@ -850,9 +876,20 @@ def execute_publication_arm(args: argparse.Namespace) -> dict[str, Any]:
     for path in native_stdio_paths:
         path.unlink()
     _require(not result.unresolved_frames, "DeepStream arm has unresolved native frames")
+    ledger_rows, _cohort_id = _accepted_ingress_rows(
+        result, run_id=args.run_id
+    )
+    accepted_input_keys = {
+        str(row["input_frame_key"]) for row in ledger_rows
+    }
+    cohort_frames = {
+        key: value
+        for key, value in canonical_frames_from_events(result.events).items()
+        if key in accepted_input_keys
+    }
     policy_promotion = policy_runtime.promote(
         args.output_dir,
-        canonical_frames=canonical_frames_from_events(result.events),
+        canonical_frames=cohort_frames,
     )
     result = dataclasses.replace(
         result,
@@ -918,7 +955,6 @@ def execute_publication_arm(args: argparse.Namespace) -> dict[str, Any]:
     )
     _write_json(runtime_output / "branch_terminal_audit.runtime.json", branch_terminal_audit)
 
-    ledger_rows, _cohort_id = _accepted_ingress_rows(result, run_id=args.run_id)
     frame_event_rows = _accepted_frame_event_rows(
         result,
         ledger_rows=ledger_rows,
@@ -990,7 +1026,13 @@ def execute_publication_arm(args: argparse.Namespace) -> dict[str, Any]:
             "publication_acceptance": acceptance,
         },
     )
-    return terminal_status(args, publication_acceptance=acceptance)
+    status = terminal_status(args, publication_acceptance=acceptance)
+    retire_owned_runtime_output_v1(
+        runtime_output,
+        output_root=args.output_dir,
+        label="DeepStream publication native runtime output",
+    )
+    return status
 
 
 def terminal_status(

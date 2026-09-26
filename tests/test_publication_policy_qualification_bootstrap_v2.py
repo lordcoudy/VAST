@@ -58,14 +58,25 @@ def descriptor(root: Path, path: Path) -> dict[str, object]:
 
 
 class BootstrapFixture:
-    def __init__(self, root: Path, *, short_coordinate: tuple[str, str] | None = None):
+    def __init__(
+        self,
+        root: Path,
+        *,
+        short_coordinate: tuple[str, str] | None = None,
+        transaction_layout: bool = False,
+    ):
         self.root = root
-        self.candidate_manifest_path = root / "candidate/capability.json"
-        self.candidate_receipt_path = root / "candidate/receipt.json"
+        candidate_root = root / ("inputs/candidate" if transaction_layout else "candidate")
+        self.candidate_manifest_path = candidate_root / "capability.json"
+        self.candidate_receipt_path = candidate_root / "receipt.json"
         self.accepted_manifest_path = root / "accepted/model-parity.yaml"
         self.accepted_assessment_path = root / "accepted/assessment.json"
         self.accepted_receipt_path = root / "accepted/receipt.json"
-        self.output_dir = root / "publication-store/bootstrap-v2"
+        self.output_dir = root / (
+            "inputs/bootstrap-v2"
+            if transaction_layout
+            else "publication-store/bootstrap-v2"
+        )
         self.output_dir.parent.mkdir(parents=True, exist_ok=True)
         self.response_paths: list[Path] = []
         self.calibration_paths: dict[tuple[str, str], Path] = {}
@@ -427,7 +438,13 @@ class BootstrapFixture:
 
 
 class PublicationPolicyQualificationBootstrapV2Tests(unittest.TestCase):
-    def _build(self, fixture: BootstrapFixture):
+    def _build(
+        self,
+        fixture: BootstrapFixture,
+        *,
+        after_directory_publish_step=None,
+        expected_validator_calls: int = 2,
+    ):
         with mock.patch.object(
             target.model_parity_acceptance,
             "load_verified_model_parity_acceptance",
@@ -445,8 +462,9 @@ class PublicationPolicyQualificationBootstrapV2Tests(unittest.TestCase):
                 accepted_model_parity_assessment_path=fixture.accepted_assessment_path,
                 accepted_model_parity_receipt_path=fixture.accepted_receipt_path,
                 output_dir=fixture.output_dir,
+                after_directory_publish_step=after_directory_publish_step,
             )
-        self.assertEqual(validator.call_count, 2)
+        self.assertEqual(validator.call_count, expected_validator_calls)
         return result
 
     def test_happy_path_uses_physical_medians_and_stays_nonaccepted(self) -> None:
@@ -493,6 +511,49 @@ class PublicationPolicyQualificationBootstrapV2Tests(unittest.TestCase):
                 policy.select_static_hybrid_map(
                     system, calibration, fixture.candidate_manifest
                 )
+
+    def test_sibling_bootstrap_commit_preserves_scoped_input_custody(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            fixture = BootstrapFixture(Path(tmp), transaction_layout=True)
+            result = self._build(fixture)
+
+            self.assertTrue(result["receipt_path"].is_file())
+            self.assertEqual(
+                result["receipt_path"].parent,
+                fixture.root / "inputs/bootstrap-v2",
+            )
+
+    def test_postpublish_crash_resumes_exact_bootstrap_tree_same_path(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            fixture = BootstrapFixture(Path(tmp))
+
+            def crash(step: str, path: Path) -> None:
+                self.assertEqual(step, "post_publish_pre_parent_fsync")
+                self.assertEqual(path, fixture.output_dir)
+                raise KeyboardInterrupt("simulated hard crash")
+
+            with self.assertRaises(KeyboardInterrupt):
+                self._build(
+                    fixture,
+                    after_directory_publish_step=crash,
+                )
+            directory_inode = fixture.output_dir.stat().st_ino
+            leaf_inodes = {
+                path.name: path.stat().st_ino
+                for path in fixture.output_dir.iterdir()
+            }
+
+            result = self._build(fixture, expected_validator_calls=1)
+
+            self.assertEqual(fixture.output_dir.stat().st_ino, directory_inode)
+            self.assertEqual(
+                {
+                    path.name: path.stat().st_ino
+                    for path in fixture.output_dir.iterdir()
+                },
+                leaf_inodes,
+            )
+            self.assertTrue(result["receipt_path"].is_file())
 
     def test_candidate_manifest_and_receipt_tamper_fail_before_output(self) -> None:
         for target_name in ("candidate_manifest", "candidate_receipt"):
@@ -592,7 +653,9 @@ class PublicationPolicyQualificationBootstrapV2Tests(unittest.TestCase):
                 target,
                 "_load_model_parity_manifest",
                 side_effect=fixture.manifest_loader,
-            ), mock.patch.object(target.os, "replace", side_effect=OSError("injected")):
+            ), mock.patch.object(
+                target, "_rename_directory_noreplace", side_effect=OSError("injected")
+            ):
                 with self.assertRaisesRegex(
                     target.BootstrapCalibrationV2Error,
                     "atomic bootstrap calibration commit failed",
@@ -611,6 +674,60 @@ class PublicationPolicyQualificationBootstrapV2Tests(unittest.TestCase):
             self.assertEqual(
                 list(sentinel.parent.glob(".policy-bootstrap-v2.*")), []
             )
+
+    def test_raced_empty_destination_is_not_replaced(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            fixture = BootstrapFixture(Path(tmp))
+
+            def collide(_source: Path, destination: Path) -> None:
+                destination.mkdir()
+                raise FileExistsError("injected raced destination")
+
+            with mock.patch.object(
+                target.model_parity_acceptance,
+                "load_verified_model_parity_acceptance",
+                side_effect=fixture.acceptance_loader,
+            ), mock.patch.object(
+                target,
+                "_load_model_parity_manifest",
+                side_effect=fixture.manifest_loader,
+            ), mock.patch.object(
+                target, "_rename_directory_noreplace", side_effect=collide
+            ):
+                with self.assertRaises(target.BootstrapCalibrationV2Error):
+                    target.build_qualification_bootstrap_calibration_v2(
+                        project_root=fixture.root,
+                        candidate_manifest_path=fixture.candidate_manifest_path,
+                        candidate_receipt_path=fixture.candidate_receipt_path,
+                        accepted_model_parity_manifest_path=fixture.accepted_manifest_path,
+                        accepted_model_parity_assessment_path=fixture.accepted_assessment_path,
+                        accepted_model_parity_receipt_path=fixture.accepted_receipt_path,
+                        output_dir=fixture.output_dir,
+                    )
+            self.assertTrue(fixture.output_dir.is_dir())
+            self.assertEqual(list(fixture.output_dir.iterdir()), [])
+
+    def test_cleanup_refuses_hardlinked_staging_inode(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            parent = Path(tmp).resolve()
+            staging = Path(
+                tempfile.mkdtemp(prefix=".policy-bootstrap-v2.", dir=parent)
+            )
+            source = staging / "payload.json"
+            alias = staging / "payload.alias.json"
+            source.write_text("{}\n", encoding="ascii")
+            alias.hardlink_to(source)
+            with self.assertRaisesRegex(
+                target.BootstrapCalibrationV2Error, "unowned staging inode"
+            ):
+                target._cleanup_staging(
+                    staging,
+                    parent=parent,
+                    expected_staging_identity=target._directory_identity(staging),
+                    expected_parent_identity=target._directory_identity(parent),
+                )
+            self.assertTrue(source.exists())
+            self.assertTrue(alias.exists())
 
 
 if __name__ == "__main__":

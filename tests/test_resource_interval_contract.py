@@ -16,6 +16,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
 from resource_interval_contract import (
+    PLATFORM_BACKWARD_CLOCK_STEP_NS,
     RESOURCE_INTERVAL_COLUMNS,
     RESOURCE_INTERVAL_CONTRACT_VERSION,
     ResourceIntervalContractError,
@@ -283,6 +284,55 @@ class ResourceIntervalContractTests(unittest.TestCase):
         self.assertFalse(summary["nvdec_busy_time_measured"])
         self.assertFalse(summary["fanout_resource_work_measured"])
 
+    def test_epoch_scale_integer_timestamps_do_not_gain_float_rounding_error(self) -> None:
+        topology_timestamp_ms = 1_788_508_983_879
+        offset_ms = topology_timestamp_ms - 1_021
+        offset_ns = offset_ms * 1_000_000
+
+        ingress = ingress_ledger()
+        for column in ("ingress_timestamp_ms", "terminal_timestamp_ms"):
+            ingress[column] = ingress[column].map(
+                lambda value: int(value) + offset_ms
+            )
+        topology = topology_events()
+        topology["timestamp_ms"] = topology["timestamp_ms"].map(
+            lambda value: int(value) + offset_ms
+        )
+        events = frame_events()
+        for column in ("stage_start_timestamp_ms", "stage_end_timestamp_ms"):
+            events[column] = events[column].map(
+                lambda value: int(value) + offset_ms
+            )
+
+        rows = valid_rows()
+        for row in rows:
+            row["host_start_timestamp_ns"] = (
+                int(row["host_start_timestamp_ns"]) + offset_ns
+            )
+            row["host_end_timestamp_ns"] = (
+                int(row["host_end_timestamp_ns"]) + offset_ns
+            )
+        exact_topology_ns = topology_timestamp_ms * 1_000_000
+        rows[1]["host_start_timestamp_ns"] = exact_topology_ns - 1_000_000
+        rows[1]["host_end_timestamp_ns"] = exact_topology_ns - 999_999
+        rows[1]["duration_ns"] = 1
+
+        legacy_float_topology_ns = round(float(topology_timestamp_ms) * 1_000_000)
+        self.assertGreater(
+            abs(int(rows[1]["host_end_timestamp_ns"]) - legacy_float_topology_ns),
+            1_000_000,
+        )
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "resource_intervals.csv"
+            write_intervals(path, rows)
+            validated = validate_resource_intervals(
+                path,
+                ingress_ledger=ingress,
+                topology_events=topology,
+                frame_events=events,
+            )
+        self.assertEqual(len(validated), len(rows))
+
     def test_static_status_is_explicitly_nonpublication(self) -> None:
         status = static_contract_status()
         self.assertEqual(status["contract_version"], 2)
@@ -390,7 +440,7 @@ class ResourceIntervalContractTests(unittest.TestCase):
                     with self.assertRaisesRegex(ResourceIntervalContractError, pattern):
                         self.validate(path)
 
-    def test_interval_must_stay_inside_frame_and_stage(self) -> None:
+    def test_interval_must_stay_inside_frame_and_nvdec_stage(self) -> None:
         rows = valid_rows()
         rows[0]["host_start_timestamp_ns"] = 999_000_000
         rows[0]["duration_ns"] = 10_500_000
@@ -401,22 +451,77 @@ class ResourceIntervalContractTests(unittest.TestCase):
                 self.validate(path)
 
         rows = valid_rows()
-        rows[2]["host_start_timestamp_ns"] = 1_019_000_000
+        # Beyond the millisecond rounding plus the platform backward clock step.
+        rows[0]["host_end_timestamp_ns"] = 1_023_000_000
+        rows[0]["duration_ns"] = 21_000_000
+        topology = topology_events()
+        topology.loc[topology["execution_id"] == "decode-1", "timestamp_ms"] = 1023.0
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "resource_intervals.csv"
             write_intervals(path, rows)
             with self.assertRaisesRegex(ResourceIntervalContractError, "outside the linked stage interval"):
-                self.validate(path)
+                validate_resource_intervals(
+                    path,
+                    ingress_ledger=ingress_ledger(),
+                    topology_events=topology,
+                    frame_events=frame_events(),
+                )
+
+    def test_transfer_accepts_topology_serialization_clock_clamped_forward(self) -> None:
+        topology = topology_events()
+        topology.loc[topology["execution_id"] == "analytics-1", "timestamp_ms"] = 1050.0
+        topology.loc[topology["execution_id"] == "record-1", "timestamp_ms"] = 1060.0
+        events = frame_events()
+        events.loc[events["stage"] == "plate_number", "stage_start_timestamp_ms"] = 1040.0
+        events.loc[events["stage"] == "plate_number", "stage_end_timestamp_ms"] = 1050.0
+        events.loc[events["stage"] == "record", "stage_start_timestamp_ms"] = 1050.0
+        events.loc[events["stage"] == "record", "stage_end_timestamp_ms"] = 1060.0
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "resource_intervals.csv"
+            write_intervals(path, valid_rows())
+            validated = validate_resource_intervals(
+                path,
+                ingress_ledger=ingress_ledger(),
+                topology_events=topology,
+                frame_events=events,
+            )
+        self.assertEqual(len(validated), 4)
 
     def test_fanout_interval_cannot_precede_parent(self) -> None:
+        rows = valid_rows()
+        # A disorder larger than the platform backward clock step still fails closed.
+        rows[1]["host_start_timestamp_ns"] = 1_008_999_999
+        rows[1]["duration_ns"] = 12_000_001
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "resource_intervals.csv"
+            write_intervals(path, rows)
+            with self.assertRaisesRegex(ResourceIntervalContractError, "starts before its topology parent"):
+                self.validate(path)
+
+    def test_fanout_accepts_a_backward_platform_clock_step_at_parent(self) -> None:
+        # The WSL platform steps the wall clock backwards by up to about 2.6 ms while
+        # the monotonic clock keeps running, so a native interval start captured after
+        # its parent can carry an earlier wall-clock value.  Within the recorded bound
+        # this is the platform, not a causal violation.
+        rows = valid_rows()
+        rows[1]["host_start_timestamp_ns"] = 1_020_000_000 - PLATFORM_BACKWARD_CLOCK_STEP_NS
+        rows[1]["host_end_timestamp_ns"] = 1_021_000_000 - PLATFORM_BACKWARD_CLOCK_STEP_NS
+        rows[1]["duration_ns"] = 1_000_000
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "resource_intervals.csv"
+            write_intervals(path, rows)
+            validated = self.validate(path)
+        self.assertEqual(len(validated), 4)
+
+    def test_fanout_accepts_upward_millisecond_quantization_at_parent(self) -> None:
         rows = valid_rows()
         rows[1]["host_start_timestamp_ns"] = 1_019_000_000
         rows[1]["duration_ns"] = 2_000_000
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "resource_intervals.csv"
             write_intervals(path, rows)
-            with self.assertRaisesRegex(ResourceIntervalContractError, "starts before its topology parent"):
-                self.validate(path)
+            validated = self.validate(path)
+        self.assertEqual(len(validated), 4)
 
     def test_missing_component_keeps_extension_incomplete(self) -> None:
         for component, coverage_field in (

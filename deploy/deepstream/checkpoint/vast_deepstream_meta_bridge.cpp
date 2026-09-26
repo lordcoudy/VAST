@@ -28,7 +28,6 @@ int fail(char* output, size_t output_size, const char* format, ...) {
 NvDsFrameMeta* exact_frame(
     void* raw_buffer,
     uint32_t expected_source_id,
-    uint64_t expected_buf_pts_ns,
     NvDsBatchMeta** batch_output,
     char* error,
     size_t error_size) {
@@ -65,12 +64,6 @@ NvDsFrameMeta* exact_frame(
          frame->frame_num);
     return nullptr;
   }
-  if (frame->buf_pts != expected_buf_pts_ns) {
-    fail(error, error_size, "NvDsFrameMeta buf_pts mismatch: actual=%llu expected=%llu",
-         static_cast<unsigned long long>(frame->buf_pts),
-         static_cast<unsigned long long>(expected_buf_pts_ns));
-    return nullptr;
-  }
   *batch_output = batch;
   return frame;
 }
@@ -105,10 +98,15 @@ int access_admission(
   }
   NvDsBatchMeta* batch = nullptr;
   NvDsFrameMeta* frame = exact_frame(
-      gst_buffer, expected_source_id, expected_buf_pts_ns,
-      &batch, error, error_size);
+      gst_buffer, expected_source_id, &batch, error, error_size);
   if (frame == nullptr) {
     return -1;
+  }
+  if (frame->buf_pts != expected_buf_pts_ns) {
+    return fail(error, error_size,
+                "NvDsFrameMeta buf_pts mismatch: actual=%llu expected=%llu",
+                static_cast<unsigned long long>(frame->buf_pts),
+                static_cast<unsigned long long>(expected_buf_pts_ns));
   }
   if (bind) {
     std::memcpy(frame->misc_frame_info, identity_sha256, kIdentityBytes);
@@ -123,6 +121,25 @@ int access_admission(
 }
 
 }  // namespace
+
+extern "C" int vast_deepstream_observe_frame(
+    void* gst_buffer,
+    uint32_t expected_source_id,
+    VastDeepStreamFrameObservation* observation,
+    char* error,
+    size_t error_size) {
+  if (observation == nullptr) {
+    return fail(error, error_size, "null observation");
+  }
+  NvDsBatchMeta* batch = nullptr;
+  NvDsFrameMeta* frame = exact_frame(
+      gst_buffer, expected_source_id, &batch, error, error_size);
+  if (frame == nullptr) {
+    return -1;
+  }
+  observe(batch, frame, observation);
+  return 0;
+}
 
 extern "C" int vast_deepstream_bind_admission(
     void* gst_buffer,

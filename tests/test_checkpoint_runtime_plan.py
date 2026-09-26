@@ -202,14 +202,16 @@ class CheckpointRuntimePlanTests(unittest.TestCase):
     def test_pair_builder_rejects_missing_finite_source_contract(self) -> None:
         config = load_yaml(ROOT / "configs" / "experiments.yaml")
         datasets = load_yaml(ROOT / "configs" / "datasets.yaml")["datasets"]
-        datasets["kpp_real_h264"]["streams"][0].pop("duration_s")
+        dataset_name = config["benchmark"]["primary_architecture_contrast"]["dataset"]
+        datasets[dataset_name]["streams"][0].pop("duration_s")
         with self.assertRaisesRegex(ContractError, "duration_s"):
             build_primary_pair_plans(config=config, datasets=datasets, system="gstreamer_custom")
 
     def test_pair_builder_rejects_playback_contract_drift(self) -> None:
         config = load_yaml(ROOT / "configs" / "experiments.yaml")
         datasets = load_yaml(ROOT / "configs" / "datasets.yaml")["datasets"]
-        datasets["kpp_real_h264"]["benchmark_playback"]["timestamp_scale"] = 1
+        dataset_name = config["benchmark"]["primary_architecture_contrast"]["dataset"]
+        datasets[dataset_name]["benchmark_playback"]["timestamp_scale"] = 1
         with self.assertRaisesRegex(ContractError, "benchmark playback contract drifted"):
             build_primary_pair_plans(config=config, datasets=datasets, system="gstreamer_custom")
 

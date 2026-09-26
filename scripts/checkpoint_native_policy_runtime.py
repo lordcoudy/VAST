@@ -16,6 +16,9 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Mapping
 
+from analytics_execution_endpoint import terminal_detector_identity
+from analytics_execution_worker import validate_worker_capability
+
 from benchmark_contract import (
     POLICY_DECISION_COLUMNS,
     TELEMETRY_SCHEMA_VERSION,
@@ -43,6 +46,11 @@ NATIVE_EXECUTION_BINDING_PROVENANCE = "native_scheduler_execution_binding_v1"
 POLICY_DECISIONS_JSONL = "publication_policy_decisions.jsonl"
 POLICY_FEEDBACK_JSONL = "publication_policy_feedback.jsonl"
 POLICY_DECISIONS_CSV = "policy_decisions.csv"
+
+_NVIDIA_CUDA_TERMINAL_BACKEND = re.compile(
+    r"^analytics-execution:tensorrt_cuda;runtime=[^;\r\n]+;"
+    r"native_api=[^;\r\n]+;device=NVIDIA_CUDA:[^;\r\n]+$"
+)
 
 _REQUEST_FIELDS = {
     "schema_version",
@@ -94,10 +102,117 @@ _TERMINAL_FIELDS = {
 }
 
 
+EXTERNAL_EXECUTION_MANIFEST_KIND = "vast_checkpoint_external_analytics_execution_manifest_v1"
+
+
+def _assess_external_worker_execution_manifest(
+    manifest: Mapping[str, Any],
+    *,
+    system: str | None,
+    capability_manifest: Mapping[str, Any] | None,
+    preprocessing_contract_sha256: str | None,
+) -> dict[str, Any]:
+    """Bind all eight real service workers to the exact policy authority."""
+    blockers: list[str] = []
+    ready: dict[str, set[str]] = {resource: set() for resource in RESOURCES}
+    expected_fields = {
+        "schema_version", "artifact_kind", "system",
+        "policy_capability_manifest_sha256", "execution_config", "branches",
+    }
+    if set(manifest) != expected_fields or manifest.get("schema_version") != 1:
+        blockers.append("external_execution_manifest_schema_mismatch")
+    if system not in {"openvino_gva", "gstreamer_custom"} or manifest.get("system") != system:
+        blockers.append("external_execution_manifest_system_mismatch")
+    execution = manifest.get("execution_config")
+    if not isinstance(execution, Mapping) or set(execution) != {"path", "size_bytes", "sha256"}:
+        blockers.append("external_execution_config_descriptor_missing")
+    else:
+        path = execution.get("path")
+        if (not isinstance(path, str) or not path or ":" in path or "\\" in path
+                or any(part in {"", ".", ".."} for part in path.split("/"))
+                or type(execution.get("size_bytes")) is not int or execution["size_bytes"] <= 0
+                or not isinstance(execution.get("sha256"), str)
+                or re.fullmatch(r"[0-9a-f]{64}", execution["sha256"]) is None):
+            blockers.append("external_execution_config_descriptor_invalid")
+    assessment = assess_capability_manifest(capability_manifest)
+    if not assessment["passed"]:
+        blockers.extend(assessment["blockers"])
+    if manifest.get("policy_capability_manifest_sha256") != assessment.get("manifest_sha256"):
+        blockers.append("external_execution_policy_manifest_identity_mismatch")
+    if not isinstance(preprocessing_contract_sha256, str) or re.fullmatch(r"[0-9a-f]{64}", preprocessing_contract_sha256) is None:
+        blockers.append("external_execution_preprocessing_identity_missing")
+    branches = manifest.get("branches")
+    if not isinstance(branches, Mapping) or set(branches) != set(ANALYTICS_BRANCHES):
+        blockers.append("external_execution_branch_set_mismatch")
+    if not blockers:
+        for branch in ANALYTICS_BRANCHES:
+            resources = branches[branch]
+            if not isinstance(resources, Mapping) or set(resources) != set(RESOURCES):
+                blockers.append(f"external_execution:{branch}:resource_set_mismatch")
+                continue
+            checked: dict[str, dict[str, Any]] = {}
+            for resource in RESOURCES:
+                label = f"external_execution:{branch}:{resource}"
+                try:
+                    worker = validate_worker_capability(resources[resource])
+                    binding = capability_manifest["systems"][system]["branches"][branch][resource]
+                    engine = "openvino_cpu" if resource == "cpu" else "tensorrt_cuda"
+                    if worker["branch"] != branch or worker["engine"] != engine:
+                        raise ValueError("branch or resource identity mismatch")
+                    if worker["preprocessing_contract_sha256"] != preprocessing_contract_sha256:
+                        raise ValueError("preprocessing identity mismatch")
+                    expected = {
+                        "worker_image_digest": worker["worker_image_id"],
+                        "implementation_version": "sha256:" + worker["worker_implementation_sha256"],
+                        "terminal_detector": terminal_detector_identity(worker),
+                        # Same attested terminal format emitted by the service;
+                        # native images do not ship the SDK protocol bridge.
+                        "terminal_backend": (
+                            f"analytics-execution:{worker['engine']};runtime={worker['runtime_name']};"
+                            f"native_api={worker['native_inference_api']};"
+                            f"device={worker['device_api']}:{worker['device_id']}"
+                        ),
+                        "device_api": "CPU" if resource == "cpu" else "NVIDIA_CUDA",
+                        "gpu_id": None if resource == "cpu" else 0,
+                    }
+                    if any(binding.get(key) != value for key, value in expected.items()):
+                        raise ValueError("worker differs from exact policy capability binding")
+                    checked[resource] = worker
+                    ready[resource].add(branch)
+                except (ValueError, TypeError, KeyError) as error:
+                    blockers.append(f"{label}:{error}")
+            if len(checked) == 2 and any(
+                checked["cpu"][field] != checked["gpu"][field]
+                for field in ("model_id", "source_model_sha256", "preprocessing_contract_sha256", "output_contract_sha256")
+            ):
+                blockers.append(f"external_execution:{branch}:cpu_gpu_model_contract_mismatch")
+    passed = not blockers and all(ready[resource] == set(ANALYTICS_BRANCHES) for resource in RESOURCES)
+    return {
+        "schema_version": 1,
+        "artifact_kind": "vast_checkpoint_gstreamer_native_policy_capability_assessment",
+        "passed": passed,
+        "status": "ready" if passed else "blocked",
+        "cpu_ready_branches": sorted(ready["cpu"]),
+        "nvidia_gpu_ready_branches": sorted(ready["gpu"]),
+        "eligible_policies": list(POLICIES) if passed else [],
+        "blockers": list(dict.fromkeys(blockers)),
+    }
+
+
 def assess_gstreamer_native_policy_execution_manifest(
     manifest: Mapping[str, Any] | None,
+    *,
+    system: str | None = None,
+    capability_manifest: Mapping[str, Any] | None = None,
+    preprocessing_contract_sha256: str | None = None,
 ) -> dict[str, Any]:
     """Assess real CPU/NVIDIA analytics paths; OpenVINO ``GPU`` is not CUDA."""
+
+    if isinstance(manifest, Mapping) and manifest.get("artifact_kind") == EXTERNAL_EXECUTION_MANIFEST_KIND:
+        return _assess_external_worker_execution_manifest(
+            manifest, system=system, capability_manifest=capability_manifest,
+            preprocessing_contract_sha256=preprocessing_contract_sha256,
+        )
 
     blockers: list[str] = []
     cpu_ready: set[str] = set()
@@ -329,6 +444,7 @@ class _DecisionState:
     input_frame_key: str
     transport_pts_ns: int
     feature_observed_timestamp_ms: float
+    submitted_decision_time_ms: float
     record: dict[str, Any]
     path: dict[str, Any] | None = None
     terminal: dict[str, Any] | None = None
@@ -418,6 +534,7 @@ class NativePolicyRuntimeCoordinator:
         self._lock = threading.RLock()
         self._next_decision_seq = 1
         self._next_feedback_seq = 1
+        self._last_decision_timestamp_ms = 0.0
         self._resource_available_ms = {resource: 0.0 for resource in RESOURCES}
         self._states: dict[str, _DecisionState] = {}
         self._decision_by_execution: dict[tuple[str, str, str, int], str] = {}
@@ -452,14 +569,26 @@ class NativePolicyRuntimeCoordinator:
         if branch not in self.branches:
             raise NativePolicyRuntimeError("decision branch is outside analytics_only scope")
         arrival_ms = _finite(message.get("arrival_ms"), "arrival_ms")
-        decision_time_ms = _finite(message.get("decision_time_ms"), "decision_time_ms", positive=True)
+        submitted_decision_time_ms = _finite(
+            message.get("decision_time_ms"), "decision_time_ms", positive=True
+        )
         observed_ms = _finite(
             message.get("feature_observed_timestamp_ms"),
             "feature_observed_timestamp_ms",
             positive=True,
         )
-        if observed_ms > decision_time_ms or arrival_ms > decision_time_ms:
+        if (
+            observed_ms > submitted_decision_time_ms
+            or arrival_ms > submitted_decision_time_ms
+        ):
             raise NativePolicyRuntimeError("decision features or arrival occur after the decision")
+        # Worker processes capture their timestamps before contending for this
+        # coordinator lock.  The decision sequence is assigned here, so bind
+        # its timestamp to the same serialized order while retaining the
+        # original feature observation for provenance/age.
+        decision_time_ms = max(
+            submitted_decision_time_ms, self._last_decision_timestamp_ms
+        )
         raw_depths = message.get("queue_depths")
         if not isinstance(raw_depths, Mapping) or set(raw_depths) != set(RESOURCES):
             raise NativePolicyRuntimeError("queue_depths must contain exactly cpu and gpu")
@@ -523,10 +652,14 @@ class NativePolicyRuntimeCoordinator:
             input_frame_key=input_frame_key,
             transport_pts_ns=transport_pts_ns,
             feature_observed_timestamp_ms=observed_ms,
+            submitted_decision_time_ms=submitted_decision_time_ms,
             record=record,
         )
         self._states[decision_id] = state
         self._decision_by_execution[execution_key] = decision_id
+        self._last_decision_timestamp_ms = float(
+            record["request"]["decision_time_ms"]
+        )
         self._next_decision_seq += 1
         binding = self._binding(branch, selected)
         native = binding["native_evidence"]
@@ -594,7 +727,12 @@ class NativePolicyRuntimeCoordinator:
                 raise NativePolicyRuntimeError(f"native path {field} does not match capability binding")
         _text(message.get("event_id"), "event_id")
         timestamp_ms = _finite(message.get("timestamp_ms"), "timestamp_ms", positive=True)
-        if timestamp_ms < float(state.record["request"]["decision_time_ms"]):
+        # Bound the path entry by the decision timestamp the worker submitted,
+        # not by the serialized value this coordinator may have raised above it.
+        # The raised value is never returned to the worker, so holding a worker
+        # to it turns a host wall-clock regression between two concurrent
+        # workers into a false native ordering violation.
+        if timestamp_ms < state.submitted_decision_time_ms:
             raise NativePolicyRuntimeError("native path entry precedes its decision")
         state.path = copy.deepcopy(dict(message))
         return {
@@ -662,7 +800,8 @@ class NativePolicyRuntimeCoordinator:
                 identity.get("device_api") == "NVIDIA_CUDA"
                 and type(identity.get("gpu_id")) is int
                 and identity.get("gpu_id") == 0
-                and "device=NVIDIA_CUDA:0" in expected_backend
+                and _NVIDIA_CUDA_TERMINAL_BACKEND.fullmatch(expected_backend)
+                is not None
             )
         if (
             not identity_projection_matches
@@ -899,10 +1038,19 @@ class NativePolicyRuntimeCoordinator:
                 raise NativePolicyRuntimeError(
                     "unterminated native decisions: " + ", ".join(pending[:5])
                 )
-            ordered = sorted(
+            runtime_ordered = sorted(
                 self._states.values(),
                 key=lambda state: int(state.record["decision_seq"]),
             )
+            ordered = [
+                state
+                for state in runtime_ordered
+                if state.input_frame_key in canonical_frames
+            ]
+            if not ordered:
+                raise NativePolicyRuntimeError(
+                    "native policy runtime has no accepted measurement-cohort decisions"
+                )
             canonical_by_state: list[Mapping[str, Any]] = []
             for state in ordered:
                 canonical = canonical_frames.get(state.input_frame_key)
@@ -989,7 +1137,11 @@ class NativePolicyRuntimeCoordinator:
                 "codec": self.codec,
                 "policy": self.policy,
                 "deadline_ms": self.deadline_ms,
+                "runtime_decision_count": len(runtime_ordered),
                 "accepted_decision_count": len(ordered),
+                "excluded_noncohort_decision_count": (
+                    len(runtime_ordered) - len(ordered)
+                ),
                 "feedback_count": len(feedback_records),
                 "status": "accepted",
             }
@@ -1016,15 +1168,30 @@ class NativePolicyRuntimeCoordinator:
                 if stage in self.branches:
                     state = by_frame_branch.get((input_key, stage))
                 if state is not None and stage in {str(state.record["branch"]), branch}:
-                    resource = str(state.record["selected_resource"])
-                    decision_id = str(state.record["decision_id"])
+                    accepted = state.accepted
+                    if accepted is None:
+                        raise NativePolicyRuntimeError(
+                            "accepted native execution state lost its policy record"
+                        )
+                    resource = str(accepted["selected_resource"])
+                    decision_id = str(accepted["decision_id"])
                     action = f"{self.policy}:{resource}:{decision_id}"
+                    request = accepted["request"]
+                    scheduler_binding = {
+                        "scheduler_queue_depth": int(
+                            request["candidates"][resource]["queue_depth"]
+                        ),
+                        "scheduler_estimated_cost_ms": self._policy_score(
+                            accepted, resource
+                        ),
+                    }
                 else:
                     base = stage.split("_", 1)[0]
                     resource = "nvdec" if base == "decode" else "cpu"
                     execution_id = str(row.get("execution_id", stage))
                     decision_id = f"{self.run_id}:fixed:{input_key}:{execution_id}"
                     action = f"{self.policy}:fixed_outside_analytics_scope:{resource}"
+                    scheduler_binding = {}
                 row.update(
                     {
                         "execution_resource": resource,
@@ -1036,6 +1203,7 @@ class NativePolicyRuntimeCoordinator:
                         "benchmark_scenario": self.scenario,
                         "benchmark_codec": self.codec,
                         "benchmark_deadline_ms": self.deadline_ms,
+                        **scheduler_binding,
                     }
                 )
                 enriched.append(row)

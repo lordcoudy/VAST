@@ -26,14 +26,19 @@ from typing import Any, Callable, Iterator, Mapping
 
 from benchmark_contract import ContractError
 from publication_matrix import build_full_publication_matrix, publication_matrix_identity
+from publication_physical_io_v1 import (
+    PhysicalRootCustodyV1,
+    PublicationPhysicalIoV1Error,
+)
 
 
 RUN_MANIFEST_SCHEMA_VERSION = 1
-CHECKPOINT_SCHEMA_VERSION = 1
+CHECKPOINT_SCHEMA_VERSION = 2
 FINALIZATION_SCHEMA_VERSION = 1
 _SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 _WINDOWS_REPLACE_RETRY_DELAYS_S = (0.01, 0.025, 0.05, 0.1, 0.2)
 _WINDOWS_RETRYABLE_REPLACE_ERRORS = frozenset({5, 32, 33})
+_IMMUTABLE_INTENT_ROOT = ".full-publication-runner-immutable-intents-v1"
 _CLOUD_RECEIPT_FIELDS = frozenset(
     {
         "state",
@@ -150,6 +155,7 @@ class RunContext:
     run_identity: Mapping[str, Any]
     next_sequence: int
     total_pairs: int
+    recovering_accepted_pair: bool = False
 
 
 @dataclass(frozen=True)
@@ -195,6 +201,7 @@ class RunnerCallbacks:
     accept_pair: PairAcceptanceCallback
     cloud_transaction: CloudTransactionCallback
     verify_cloud: CloudVerificationCallback
+    before_pair: Callable[[PairContext], CallbackDecision] | None = None
 
 
 @dataclass(frozen=True)
@@ -354,12 +361,16 @@ class FullPublicationRunner:
         matrix_builder: Callable[[dict[str, Any]], dict[str, Any]] = (
             build_full_publication_matrix
         ),
+        immutable_artifact_physical_fault: (
+            Callable[[str, Path], None] | None
+        ) = None,
     ) -> None:
         self.run_root = Path(run_root)
         self.config = _json_copy(config)
         self.identity_inputs = _json_copy(identity_inputs)
         self.callbacks = callbacks
         self.matrix_builder = matrix_builder
+        self.immutable_artifact_physical_fault = immutable_artifact_physical_fault
 
     @property
     def manifest_path(self) -> Path:
@@ -376,6 +387,97 @@ class FullPublicationRunner:
     @property
     def lock_path(self) -> Path:
         return self.run_root / self.LOCK_NAME
+
+    def _immutable_intent_path(self, target: Path) -> Path:
+        return self.run_root / _IMMUTABLE_INTENT_ROOT / target.name
+
+    def _commit_immutable_json(
+        self,
+        path: Path,
+        value: Mapping[str, Any],
+        *,
+        label: str,
+        expose_fault: bool,
+        mode: int,
+    ) -> tuple[int, int]:
+        payload = _canonical_json(value) + b"\n"
+        try:
+            relative = path.relative_to(self.run_root).as_posix()
+        except ValueError:
+            raise ContractError(f"{label} escaped run_root") from None
+
+        def physical_step(step: str) -> None:
+            if expose_fault and self.immutable_artifact_physical_fault is not None:
+                self.immutable_artifact_physical_fault(step, path)
+
+        try:
+            with PhysicalRootCustodyV1.open(
+                self.run_root, label="full publication immutable run_root"
+            ) as custody:
+                descriptor, identity, _disposition = (
+                    custody.commit_or_adopt_exact_identity(
+                        relative,
+                        payload,
+                        label=label,
+                        mode=mode,
+                        create_parents=True,
+                        after_publish_step=(physical_step if expose_fault else None),
+                    )
+                )
+                expected = {
+                    "path": relative,
+                    "size_bytes": len(payload),
+                    "sha256": hashlib.sha256(payload).hexdigest(),
+                }
+                cold_descriptor, cold_payload, cold_identity = (
+                    custody.read_descriptor_identity(
+                        relative,
+                        label=f"cold {label}",
+                        maximum=len(payload),
+                        capture=True,
+                    )
+                )
+                cold_mode, cold_stat_identity = custody.stat_regular_identity(
+                    relative,
+                    label=f"cold {label}",
+                )
+                if (
+                    descriptor != expected
+                    or cold_descriptor != expected
+                    or cold_payload != payload
+                    or cold_identity != identity
+                    or cold_stat_identity != identity
+                    or (
+                        custody.permission_modes_enforced
+                        and cold_mode != mode
+                    )
+                ):
+                    raise ContractError(f"{label} changed across cold reload")
+                return identity
+        except PublicationPhysicalIoV1Error as error:
+            raise ContractError(f"{label} immutable collision") from error
+
+    def _load_or_create_immutable_intent(
+        self,
+        target: Path,
+        candidate: Mapping[str, Any],
+        *,
+        label: str,
+    ) -> dict[str, Any]:
+        intent_path = self._immutable_intent_path(target)
+        intended = (
+            _read_json(intent_path, label=f"{label} materialization intent")
+            if intent_path.exists()
+            else _strict_json_object(candidate, label=f"{label} intent candidate")
+        )
+        self._commit_immutable_json(
+            intent_path,
+            intended,
+            label=f"{label} materialization intent",
+            expose_fault=False,
+            mode=0o444,
+        )
+        return intended
 
     @contextmanager
     def _exclusive_run_root_lock(self) -> Iterator[None]:
@@ -474,7 +576,15 @@ class FullPublicationRunner:
                 raise PermanentRunError("runner callbacks are not configured")
 
             prefix = int(checkpoint["verified_prefix_length"])
-            run_context = self._run_context(manifest, next_sequence=prefix)
+            inflight = checkpoint.get("inflight")
+            run_context = self._run_context(
+                manifest, next_sequence=prefix,
+                recovering_accepted_pair=(
+                    isinstance(inflight, dict)
+                    and inflight.get("phase") == "accepted"
+                    and inflight.get("sequence") == prefix
+                ),
+            )
             preflight = self._require_decision(
                 self.callbacks.preflight(run_context), callback_name="preflight"
             )
@@ -496,33 +606,87 @@ class FullPublicationRunner:
                     )
                     acceptance = CallbackDecision.passed(acceptance_details)
                 else:
-                    previous_attempt = (
-                        int(previous_inflight.get("attempt", 0))
-                        if isinstance(previous_inflight, dict)
+                    if self.callbacks.before_pair is not None:
+                        admission = self._require_decision(
+                            self.callbacks.before_pair(self._pair_context(
+                                manifest, sequence=sequence,
+                                attempt=(int(previous_inflight["attempt"])
+                                         if isinstance(previous_inflight, dict) else 1),
+                            )),
+                            callback_name="before_pair",
+                        )
+                        if not admission.accepted:
+                            self._raise_rejected(admission, "pair admission rejected")
+                    if (
+                        isinstance(previous_inflight, dict)
+                        and previous_inflight.get("phase") == "executing"
                         and previous_inflight.get("sequence") == sequence
-                        else 0
-                    )
-                    attempt = previous_attempt + 1
-                    checkpoint["state"] = "running"
-                    checkpoint["inflight"] = self._inflight_identity(
-                        pair, sequence=sequence, attempt=attempt, phase="executing"
-                    )
-                    checkpoint["last_error"] = None
-                    self._write_checkpoint(checkpoint)
+                    ):
+                        attempt = int(previous_inflight["attempt"])
+                    else:
+                        attempt = 1
+                        checkpoint["state"] = "running"
+                        checkpoint["inflight"] = self._executing_inflight_identity(
+                            pair,
+                            sequence=sequence,
+                            attempt=attempt,
+                        )
+                        checkpoint["last_error"] = None
+                        self._write_checkpoint(checkpoint)
 
                     arm_results: list[Any] = []
                     for arm_index, arm in enumerate(pair["arms"]):
-                        arm_results.append(
-                            self.callbacks.execute_arm(
-                                ArmContext(
-                                    pair_context=self._pair_context(
-                                        manifest, sequence=sequence, attempt=attempt
-                                    ),
-                                    arm_index=arm_index,
-                                    arm=copy.deepcopy(arm),
+                        inflight = checkpoint.get("inflight")
+                        if (
+                            type(inflight) is not dict
+                            or inflight.get("phase") != "executing"
+                        ):
+                            raise PermanentRunError(
+                                "executing pair lost its durable arm state"
+                            )
+                        arm_states = inflight.get("arm_states")
+                        if type(arm_states) is not list or len(arm_states) != 2:
+                            raise PermanentRunError(
+                                "executing pair has invalid durable arm state"
+                            )
+                        arm_state = arm_states[arm_index]
+                        if arm_state.get("state") == "committed":
+                            arm_results.append(
+                                _strict_json_copy(
+                                    arm_state["result"],
+                                    label="durable arm result",
                                 )
                             )
+                            continue
+                        if arm_state.get("state") not in {"pending", "executing"}:
+                            raise PermanentRunError(
+                                "executing pair has an invalid arm transition"
+                            )
+                        if arm_state["state"] == "pending":
+                            arm_state["state"] = "executing"
+                            checkpoint["state"] = "running"
+                            checkpoint["last_error"] = None
+                            self._write_checkpoint(checkpoint)
+                        raw_arm_result = self.callbacks.execute_arm(
+                            ArmContext(
+                                pair_context=self._pair_context(
+                                    manifest, sequence=sequence, attempt=attempt
+                                ),
+                                arm_index=arm_index,
+                                arm=copy.deepcopy(arm),
+                            )
                         )
+                        arm_result = _strict_json_copy(
+                            raw_arm_result,
+                            label="execute_arm callback result",
+                        )
+                        arm_state["state"] = "committed"
+                        arm_state["result"] = copy.deepcopy(arm_result)
+                        arm_state["result_sha256"] = _identity(arm_result)["sha256"]
+                        checkpoint["state"] = "running"
+                        checkpoint["last_error"] = None
+                        self._write_checkpoint(checkpoint)
+                        arm_results.append(arm_result)
                     if len(arm_results) != 2:
                         raise PermanentRunError(
                             "pair executor did not produce exactly two arms"
@@ -715,75 +879,98 @@ class FullPublicationRunner:
         ):
             raise ContractError("cannot finalize incomplete run")
 
-        if self.finalization_path.exists():
+        if checkpoint["state"] == "finalized":
             finalization = _read_json(
                 self.finalization_path, label="full publication finalization"
             )
             self._validate_finalization(finalization, manifest, checkpoint)
-        else:
-            if self.callbacks is None:
-                raise PermanentRunError(
-                    "runner callbacks are required for remote finalization verification"
-                )
-            for sequence, record in enumerate(checkpoint["verified_pairs"]):
-                acceptance_details = _strict_json_object(
-                    record["acceptance"], label="checkpoint pair acceptance"
-                )
-                stored_details = _strict_json_object(
-                    record["cloud_receipt"], label="checkpoint cloud receipt"
-                )
-                callback_context = self._pair_context(
+            return copy.deepcopy(finalization)
+
+        if self.callbacks is None:
+            raise PermanentRunError(
+                "runner callbacks are required for remote finalization verification"
+            )
+        for sequence, record in enumerate(checkpoint["verified_pairs"]):
+            acceptance_details = _strict_json_object(
+                record["acceptance"], label="checkpoint pair acceptance"
+            )
+            stored_details = _strict_json_object(
+                record["cloud_receipt"], label="checkpoint cloud receipt"
+            )
+            callback_context = self._pair_context(
+                manifest,
+                sequence=sequence,
+                attempt=int(record["attempt"]),
+            )
+            remote_value = self.callbacks.verify_cloud(
+                callback_context,
+                CloudTransactionReceipt.verified_receipt(
+                    copy.deepcopy(stored_details)
+                ),
+            )
+            remotely_verified = self._require_cloud_receipt(
+                remote_value,
+                context=self._pair_context(
                     manifest,
                     sequence=sequence,
                     attempt=int(record["attempt"]),
+                ),
+                acceptance_details=acceptance_details,
+                callback_name="verify_cloud",
+            )
+            if _canonical_json(remotely_verified.details) != _canonical_json(
+                stored_details
+            ):
+                raise PermanentRunError(
+                    f"remote cloud receipt drift for pair {record['pair_id']}"
                 )
-                remote_value = self.callbacks.verify_cloud(
-                    callback_context,
-                    CloudTransactionReceipt.verified_receipt(
-                        copy.deepcopy(stored_details)
-                    ),
-                )
-                remotely_verified = self._require_cloud_receipt(
-                    remote_value,
-                    context=self._pair_context(
-                        manifest,
-                        sequence=sequence,
-                        attempt=int(record["attempt"]),
-                    ),
-                    acceptance_details=acceptance_details,
-                    callback_name="verify_cloud",
-                )
-                if _canonical_json(remotely_verified.details) != _canonical_json(
-                    stored_details
-                ):
-                    raise PermanentRunError(
-                        f"remote cloud receipt drift for pair {record['pair_id']}"
-                    )
 
-            verified_pairs_sha256 = _identity(checkpoint["verified_pairs"])["sha256"]
-            remote_verification_sha256 = _identity(
-                self._remote_verification_material(checkpoint["verified_pairs"])
-            )["sha256"]
-            finalization = {
-                "schema_version": FINALIZATION_SCHEMA_VERSION,
-                "artifact_kind": "vast_full_publication_finalization",
-                "verified": True,
-                "matrix_identity": copy.deepcopy(manifest["matrix_identity"]),
-                "run_identity": copy.deepcopy(manifest["run_identity"]),
-                "verified_pairs": total_pairs,
-                "verified_arms": total_pairs * 2,
-                "verified_pairs_sha256": verified_pairs_sha256,
-                "remote_verified_pairs": total_pairs,
-                "remote_verification_sha256": remote_verification_sha256,
-                "finalized_at": _utc_now(),
-            }
-            _atomic_write_json(self.finalization_path, finalization)
+        verified_pairs_sha256 = _identity(checkpoint["verified_pairs"])["sha256"]
+        remote_verification_sha256 = _identity(
+            self._remote_verification_material(checkpoint["verified_pairs"])
+        )["sha256"]
+        candidate_finalization = {
+            "schema_version": FINALIZATION_SCHEMA_VERSION,
+            "artifact_kind": "vast_full_publication_finalization",
+            "verified": True,
+            "matrix_identity": copy.deepcopy(manifest["matrix_identity"]),
+            "run_identity": copy.deepcopy(manifest["run_identity"]),
+            "verified_pairs": total_pairs,
+            "verified_arms": total_pairs * 2,
+            "verified_pairs_sha256": verified_pairs_sha256,
+            "remote_verified_pairs": total_pairs,
+            "remote_verification_sha256": remote_verification_sha256,
+            "finalized_at": _utc_now(),
+        }
+        finalization_preexisted = self.finalization_path.exists()
+        if finalization_preexisted:
+            existing_finalization = _read_json(
+                self.finalization_path, label="full publication finalization"
+            )
+            self._validate_finalization(existing_finalization, manifest, checkpoint)
+            finalization_seed = existing_finalization
+        else:
+            finalization_seed = candidate_finalization
+        finalization = self._load_or_create_immutable_intent(
+            self.finalization_path,
+            finalization_seed,
+            label="full publication finalization",
+        )
+        self._validate_finalization(finalization, manifest, checkpoint)
+        if finalization_preexisted and finalization != existing_finalization:
+            raise ContractError("full publication finalization intent drift")
+        self._commit_immutable_json(
+            self.finalization_path,
+            finalization,
+            label="full publication finalization",
+            expose_fault=True,
+            mode=0o600,
+        )
 
-        if checkpoint["state"] != "finalized":
-            checkpoint["state"] = "finalized"
-            checkpoint["last_error"] = None
-            checkpoint["inflight"] = None
-            self._write_checkpoint(checkpoint)
+        checkpoint["state"] = "finalized"
+        checkpoint["last_error"] = None
+        checkpoint["inflight"] = None
+        self._write_checkpoint(checkpoint)
         return copy.deepcopy(finalization)
 
     def _current_matrix(self) -> dict[str, Any]:
@@ -867,16 +1054,32 @@ class FullPublicationRunner:
     def _initialize_or_resume(self) -> tuple[dict[str, Any], dict[str, Any]]:
         candidate = self._candidate_manifest()
         self.run_root.mkdir(parents=True, exist_ok=True)
-        if self.manifest_path.exists():
-            manifest = _read_json(
+        manifest_preexisted = self.manifest_path.exists()
+        if manifest_preexisted:
+            existing_manifest = _read_json(
                 self.manifest_path, label="full publication run manifest"
             )
-            self._validate_manifest(manifest, candidate=candidate)
+            self._validate_manifest(existing_manifest, candidate=candidate)
+            manifest_seed = existing_manifest
         else:
             if self.checkpoint_path.exists() or self.finalization_path.exists():
                 raise ContractError("run state exists without an immutable run manifest")
-            _atomic_write_json(self.manifest_path, candidate)
-            manifest = candidate
+            manifest_seed = candidate
+        manifest = self._load_or_create_immutable_intent(
+            self.manifest_path,
+            manifest_seed,
+            label="full publication run manifest",
+        )
+        self._validate_manifest(manifest, candidate=candidate)
+        if manifest_preexisted and manifest != existing_manifest:
+            raise ContractError("full publication run manifest intent drift")
+        self._commit_immutable_json(
+            self.manifest_path,
+            manifest,
+            label="full publication run manifest",
+            expose_fault=True,
+            mode=0o600,
+        )
 
         if self.checkpoint_path.exists():
             checkpoint = _read_json(
@@ -1056,7 +1259,7 @@ class FullPublicationRunner:
                 "attempt",
             }
             expected_fields = (
-                base_fields
+                base_fields | {"arm_states"}
                 if phase == "executing"
                 else base_fields | {"acceptance", "acceptance_sha256"}
                 if phase == "accepted"
@@ -1090,6 +1293,39 @@ class FullPublicationRunner:
                     != _identity(acceptance)["sha256"]
                 ):
                     raise ContractError("inflight pair acceptance receipt drift")
+            if phase == "executing":
+                arm_states = inflight.get("arm_states")
+                if type(arm_states) is not list or len(arm_states) != 2:
+                    raise ContractError("inflight pair arm state cardinality drift")
+                for arm_index, arm_state in enumerate(arm_states):
+                    expected_arm = expected_pair["arms"][arm_index]
+                    if type(arm_state) is not dict:
+                        raise ContractError("inflight pair arm state is invalid")
+                    arm_phase = arm_state.get("state")
+                    arm_base_fields = {"arm_index", "arm_id", "state"}
+                    arm_expected_fields = (
+                        arm_base_fields | {"result", "result_sha256"}
+                        if arm_phase == "committed"
+                        else arm_base_fields
+                        if arm_phase in {"pending", "executing"}
+                        else set()
+                    )
+                    if (
+                        set(arm_state) != arm_expected_fields
+                        or arm_state.get("arm_index") != arm_index
+                        or arm_state.get("arm_id") != expected_arm["arm_id"]
+                    ):
+                        raise ContractError("inflight pair arm state identity drift")
+                    if arm_phase == "committed":
+                        result = _strict_json_copy(
+                            arm_state.get("result"),
+                            label="checkpoint arm result",
+                        )
+                        if arm_state.get("result_sha256") != _identity(result)["sha256"]:
+                            raise ContractError("inflight pair arm result drift")
+                phases = [arm_state["state"] for arm_state in arm_states]
+                if phases[1] != "pending" and phases[0] != "committed":
+                    raise ContractError("inflight pair arm state is not a prefix")
         if state in {"complete", "finalized"}:
             if prefix != len(pairs) or inflight is not None:
                 raise ContractError("completed checkpoint is not fully verified")
@@ -1276,6 +1512,30 @@ class FullPublicationRunner:
             "attempt": attempt,
         }
 
+    @classmethod
+    def _executing_inflight_identity(
+        cls,
+        pair: Mapping[str, Any],
+        *,
+        sequence: int,
+        attempt: int,
+    ) -> dict[str, Any]:
+        value = cls._inflight_identity(
+            pair,
+            sequence=sequence,
+            attempt=attempt,
+            phase="executing",
+        )
+        value["arm_states"] = [
+            {
+                "arm_index": arm_index,
+                "arm_id": arm["arm_id"],
+                "state": "pending",
+            }
+            for arm_index, arm in enumerate(pair["arms"])
+        ]
+        return value
+
     @staticmethod
     def _raise_rejected(decision: CallbackDecision, default_reason: str) -> None:
         error_type = TransientRunError if decision.retryable else PermanentRunError
@@ -1336,7 +1596,8 @@ class FullPublicationRunner:
         self._write_checkpoint(checkpoint)
 
     def _run_context(
-        self, manifest: Mapping[str, Any], *, next_sequence: int
+        self, manifest: Mapping[str, Any], *, next_sequence: int,
+        recovering_accepted_pair: bool = False,
     ) -> RunContext:
         return RunContext(
             run_root=self.run_root,
@@ -1344,6 +1605,7 @@ class FullPublicationRunner:
             run_identity=copy.deepcopy(manifest["run_identity"]),
             next_sequence=next_sequence,
             total_pairs=int(manifest["matrix"]["expected_pairs"]),
+            recovering_accepted_pair=recovering_accepted_pair,
         )
 
     def _result(

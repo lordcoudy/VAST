@@ -8,11 +8,14 @@ import json
 import os
 import re
 import stat
-import tempfile
 from pathlib import Path
 from typing import Any, Callable, Mapping
 
 import full_publication_identity_artifacts as identity
+from publication_physical_io_v1 import (
+    PhysicalRootCustodyV1,
+    PublicationPhysicalIoV1Error,
+)
 
 
 SYSTEMS = identity.SYSTEMS
@@ -50,73 +53,53 @@ def _is_link(path: Path) -> bool:
 
 
 def _root(project_root: Path) -> Path:
+    supplied = Path(os.path.abspath(os.fspath(project_root)))
     try:
-        root = Path(project_root).resolve(strict=True)
+        info = supplied.lstat()
+        root = supplied.resolve(strict=True)
     except OSError as exc:
         raise FullPublicationIdentityManifestV2Error(
             "project_root is unavailable"
         ) from exc
-    if not root.is_dir() or _is_link(root):
+    if root != supplied or not stat.S_ISDIR(info.st_mode) or _is_link(supplied):
         raise FullPublicationIdentityManifestV2Error(
             "project_root must be a physical directory"
         )
     return root
 
 
-def _physical_file(root: Path, value: Any, label: str) -> tuple[Path, dict[str, Any]]:
+def _physical_file(
+    root: Path,
+    custody: PhysicalRootCustodyV1,
+    value: Any,
+    label: str,
+) -> tuple[Path, dict[str, Any], tuple[int, int]]:
     candidate = Path(value)
     if not candidate.is_absolute():
         candidate = root / candidate
     try:
-        resolved = candidate.resolve(strict=True)
-        relative = resolved.relative_to(root)
-    except (OSError, ValueError) as exc:
+        absolute = Path(os.path.abspath(os.fspath(candidate)))
+        relative = absolute.relative_to(root)
+        descriptor, _payload, filesystem_identity = custody.read_descriptor_identity(
+            absolute,
+            label=label,
+            maximum=512 * 1024 * 1024,
+            capture=False,
+        )
+    except (OSError, ValueError, PublicationPhysicalIoV1Error) as exc:
         raise FullPublicationIdentityManifestV2Error(
             f"{label} is missing or outside project_root"
         ) from exc
-    cursor = root
-    for part in relative.parts:
-        cursor = cursor / part
-        if _is_link(cursor):
-            raise FullPublicationIdentityManifestV2Error(
-                f"{label} path contains a symlink/reparse point"
-            )
-    before = resolved.stat()
-    if not stat.S_ISREG(before.st_mode) or int(before.st_nlink) != 1 or before.st_size <= 0:
+    if descriptor["path"] != relative.as_posix():
         raise FullPublicationIdentityManifestV2Error(
-            f"{label} must be a unique nonempty physical regular file"
+            f"{label} physical path normalization drifted"
         )
-    digest = hashlib.sha256()
-    with resolved.open("rb") as source:
-        for chunk in iter(lambda: source.read(1024 * 1024), b""):
-            digest.update(chunk)
-    after = resolved.stat()
-    before_identity = (
-        before.st_dev,
-        before.st_ino,
-        before.st_size,
-        before.st_mtime_ns,
-        int(getattr(before, "st_ctime_ns", 0)),
-    )
-    after_identity = (
-        after.st_dev,
-        after.st_ino,
-        after.st_size,
-        after.st_mtime_ns,
-        int(getattr(after, "st_ctime_ns", 0)),
-    )
-    if before_identity != after_identity:
-        raise FullPublicationIdentityManifestV2Error(
-            f"{label} changed while hashing"
-        )
-    return resolved, {
-        "path": relative.as_posix(),
-        "size_bytes": int(after.st_size),
-        "sha256": digest.hexdigest(),
-    }
+    return absolute, descriptor, filesystem_identity
 
 
-def _descriptor_registry(root: Path) -> tuple[
+def _descriptor_registry(
+    root: Path, custody: PhysicalRootCustodyV1
+) -> tuple[
     Callable[[Any, str], dict[str, Any]],
     set[str],
     set[tuple[int, int]],
@@ -125,8 +108,9 @@ def _descriptor_registry(root: Path) -> tuple[
     identities: set[tuple[int, int]] = set()
 
     def add(value: Any, label: str) -> dict[str, Any]:
-        physical, descriptor = _physical_file(root, value, label)
-        filesystem_identity = (int(physical.stat().st_dev), int(physical.stat().st_ino))
+        _physical, descriptor, filesystem_identity = _physical_file(
+            root, custody, value, label
+        )
         if descriptor["path"] in paths or filesystem_identity in identities:
             raise FullPublicationIdentityManifestV2Error(
                 f"{label} artifact alias is prohibited"
@@ -148,27 +132,74 @@ def _output(root: Path, output_path: Path) -> Path:
     candidate = Path(output_path)
     if not candidate.is_absolute():
         candidate = root / candidate
-    if candidate.exists():
-        raise FullPublicationIdentityManifestV2Error(
-            "immutable identity manifest output already exists"
-        )
+    candidate = Path(os.path.abspath(os.fspath(candidate)))
     try:
-        parent = candidate.parent.resolve(strict=True)
-        parent.relative_to(root)
-    except (OSError, ValueError) as exc:
+        candidate.relative_to(root)
+    except ValueError as exc:
+        raise FullPublicationIdentityManifestV2Error(
+            "identity manifest output escaped project_root"
+        ) from exc
+    try:
+        parent_info = candidate.parent.lstat()
+    except OSError as exc:
         raise FullPublicationIdentityManifestV2Error(
             "identity manifest output parent must exist under project_root"
         ) from exc
-    if not parent.is_dir() or _is_link(parent):
+    if not stat.S_ISDIR(parent_info.st_mode) or _is_link(candidate.parent):
         raise FullPublicationIdentityManifestV2Error(
             "identity manifest output parent must be physical"
         )
-    return parent / candidate.name
+    return candidate
 
 
-def build_full_publication_identity_manifest_v2(
+def _guarded_identity_load(
     *,
-    project_root: Path,
+    custody: PhysicalRootCustodyV1,
+    root: Path,
+    manifest_path: Path,
+    bound_paths: list[Path],
+    identity_loader: IdentityLoader,
+    label: str,
+) -> dict[str, Any]:
+    try:
+        token = custody.capture_read_namespace(
+            [manifest_path, *bound_paths],
+            label=f"{label} physical closure",
+        )
+    except PublicationPhysicalIoV1Error as exc:
+        raise FullPublicationIdentityManifestV2Error(
+            f"{label} physical closure could not be pinned: {exc}"
+        ) from exc
+    load_error: Exception | None = None
+    accepted: dict[str, Any] | None = None
+    try:
+        accepted = identity_loader(project_root=root, manifest_path=manifest_path)
+    except Exception as exc:  # the namespace check below remains mandatory
+        load_error = exc
+    try:
+        custody.verify_read_namespace(
+            token,
+            label=f"{label} physical closure",
+        )
+    except PublicationPhysicalIoV1Error as exc:
+        raise FullPublicationIdentityManifestV2Error(
+            f"{label} namespace changed during physical validation: {exc}"
+        ) from exc
+    if load_error is not None:
+        raise FullPublicationIdentityManifestV2Error(
+            f"{label} physical identity validation failed: {load_error}"
+        ) from load_error
+    if type(accepted) is not dict:
+        raise FullPublicationIdentityManifestV2Error(
+            f"{label} physical identity validation returned a non-object"
+        )
+    return accepted
+
+
+def _build_full_publication_identity_manifest_v2_with_custody(
+    *,
+    root: Path,
+    custody: PhysicalRootCustodyV1,
     output_path: Path,
     analytics_model_parity: Mapping[str, Any],
     analytics_execution_layer: Mapping[str, Any],
@@ -176,11 +207,11 @@ def build_full_publication_identity_manifest_v2(
     resource_qualification: Mapping[str, Any],
     backend_runtime_qualification: Mapping[str, Any],
     identity_loader: IdentityLoader = identity.load_full_publication_identity_artifacts,
+    after_publish_step: Callable[[str], None] | None = None,
 ) -> dict[str, Any]:
     """Commit only a candidate that the physical identity loader accepts."""
-    root = _root(project_root)
     destination = _output(root, output_path)
-    add, _, _ = _descriptor_registry(root)
+    add, registered_paths, _ = _descriptor_registry(root, custody)
 
     parity = _mapping(
         analytics_model_parity,
@@ -266,59 +297,115 @@ def build_full_publication_identity_manifest_v2(
         },
     }
     payload = _canonical_bytes(manifest)
-    descriptor, temporary_name = tempfile.mkstemp(
-        prefix=".full-identity-v2.", suffix=".json", dir=destination.parent
-    )
-    temporary = Path(temporary_name)
+    bound_paths = [root / item for item in sorted(registered_paths)]
+    temporary: Path | None = None
+    temporary_identity: tuple[int, int] | None = None
     try:
-        with os.fdopen(descriptor, "wb") as output:
-            output.write(payload)
-            output.flush()
-            os.fsync(output.fileno())
-        try:
-            identity_loader(project_root=root, manifest_path=temporary)
-        except Exception as exc:
-            raise FullPublicationIdentityManifestV2Error(
-                f"candidate physical identity validation failed: {exc}"
-            ) from exc
-        try:
-            os.replace(temporary, destination)
-        except OSError as exc:
-            raise FullPublicationIdentityManifestV2Error(
-                f"identity manifest atomic commit failed: {exc}"
-            ) from exc
-        try:
-            directory_descriptor = os.open(
-                destination.parent, os.O_RDONLY | getattr(os, "O_DIRECTORY", 0)
-            )
-        except OSError:
-            directory_descriptor = None
-        if directory_descriptor is not None:
+        for _attempt in range(32):
+            token = hashlib.sha256(os.urandom(32)).hexdigest()[:24]
+            candidate = destination.parent / f".full-identity-v2.{token}.json"
             try:
-                os.fsync(directory_descriptor)
-            except OSError:
-                pass
-            finally:
-                os.close(directory_descriptor)
-        try:
-            accepted = identity_loader(project_root=root, manifest_path=destination)
-        except Exception as exc:
-            raise FullPublicationIdentityManifestV2Error(
-                f"committed physical identity revalidation failed: {exc}"
-            ) from exc
-    finally:
-        if temporary.exists():
-            info = temporary.lstat()
-            if (
-                temporary.parent != destination.parent
-                or not temporary.name.startswith(".full-identity-v2.")
-                or not stat.S_ISREG(info.st_mode)
-            ):
-                raise FullPublicationIdentityManifestV2Error(
-                    "refusing unsafe identity manifest temporary cleanup"
+                _temporary_descriptor, temporary_identity = (
+                    custody.write_exclusive_identity(
+                        candidate,
+                        payload,
+                        label="identity manifest private candidate",
+                        mode=0o400,
+                        create_parents=False,
+                    )
                 )
-            temporary.unlink()
+                temporary = candidate
+                break
+            except PublicationPhysicalIoV1Error as exc:
+                if "already exists" in str(exc):
+                    continue
+                raise FullPublicationIdentityManifestV2Error(
+                    f"identity manifest private candidate commit failed: {exc}"
+                ) from exc
+        if temporary is None or temporary_identity is None:
+            raise FullPublicationIdentityManifestV2Error(
+                "identity manifest private candidate namespace is exhausted"
+            )
+        _guarded_identity_load(
+            custody=custody,
+            root=root,
+            manifest_path=temporary,
+            bound_paths=bound_paths,
+            identity_loader=identity_loader,
+            label="candidate",
+        )
+        try:
+            custody.commit_or_adopt_exact_identity(
+                destination,
+                payload,
+                label="immutable identity manifest output",
+                mode=0o444,
+                create_parents=False,
+                after_publish_step=after_publish_step,
+            )
+        except PublicationPhysicalIoV1Error as exc:
+            raise FullPublicationIdentityManifestV2Error(
+                "identity manifest atomic no-overwrite/resume commit failed: "
+                f"{exc}"
+            ) from exc
+        accepted = _guarded_identity_load(
+            custody=custody,
+            root=root,
+            manifest_path=destination,
+            bound_paths=bound_paths,
+            identity_loader=identity_loader,
+            label="committed",
+        )
+    finally:
+        if temporary is not None and temporary_identity is not None:
+            try:
+                custody.unlink_owned_identity(
+                    temporary,
+                    temporary_identity,
+                    label="identity manifest private candidate",
+                )
+            except PublicationPhysicalIoV1Error as exc:
+                raise FullPublicationIdentityManifestV2Error(
+                    f"identity manifest private candidate retirement failed: {exc}"
+                ) from exc
     return {"manifest_path": str(destination), "binding": accepted}
+
+
+def build_full_publication_identity_manifest_v2(
+    *,
+    project_root: Path,
+    output_path: Path,
+    analytics_model_parity: Mapping[str, Any],
+    analytics_execution_layer: Mapping[str, Any],
+    policy_qualification: Mapping[str, Any],
+    resource_qualification: Mapping[str, Any],
+    backend_runtime_qualification: Mapping[str, Any],
+    identity_loader: IdentityLoader = identity.load_full_publication_identity_artifacts,
+    after_publish_step: Callable[[str], None] | None = None,
+) -> dict[str, Any]:
+    root = _root(project_root)
+    try:
+        with PhysicalRootCustodyV1.open(
+            root, label="full-publication identity project_root"
+        ) as custody:
+            return _build_full_publication_identity_manifest_v2_with_custody(
+                root=root,
+                custody=custody,
+                output_path=output_path,
+                analytics_model_parity=analytics_model_parity,
+                analytics_execution_layer=analytics_execution_layer,
+                policy_qualification=policy_qualification,
+                resource_qualification=resource_qualification,
+                backend_runtime_qualification=backend_runtime_qualification,
+                identity_loader=identity_loader,
+                after_publish_step=after_publish_step,
+            )
+    except FullPublicationIdentityManifestV2Error:
+        raise
+    except PublicationPhysicalIoV1Error as exc:
+        raise FullPublicationIdentityManifestV2Error(
+            f"full-publication identity physical custody failed: {exc}"
+        ) from exc
 
 
 def _parse_args() -> argparse.Namespace:

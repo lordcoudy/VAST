@@ -56,9 +56,12 @@ def capability_manifest() -> dict:
                     "implementation_version": f"{system}-{branch}-{resource}-implementation-v3",
                     "terminal_detector": f"{system}-{branch}-{resource}-native-detector-v1",
                     "terminal_backend": (
-                        "openvino-dlstreamer:gvadetect;device=CPU"
+                        "analytics-execution:openvino_cpu;runtime=openvino-2026.1.0;"
+                        "native_api=OpenVINO-C++;device=CPU:0"
                         if resource == "cpu"
-                        else "cuda-tensorrt:nvinfer;device=NVIDIA_CUDA:0"
+                        else "analytics-execution:tensorrt_cuda;runtime=TensorRT-8.6.1.6;"
+                        "native_api=TensorRT-C++;"
+                        "device=NVIDIA_CUDA:GPU-00bb784b-60f3-8bf6-bbd3-5a0c09805266"
                     ),
                 }
                 bindings[resource] = {
@@ -216,6 +219,90 @@ def terminal_message(
 
 
 class NativePolicyRuntimeCoordinatorTests(unittest.TestCase):
+    def test_gpu_terminal_accepts_the_pinned_cuda_uuid_identity(self) -> None:
+        runtime = coordinator("gpu_only")
+        request = request_message()
+        response = runtime.handle_message(request["worker_id"], request)
+        self.assertEqual(response["selected_resource"], "gpu")
+        runtime.handle_message(
+            request["worker_id"], path_message(response, request=request)
+        )
+        terminal = runtime.handle_message(
+            request["worker_id"], terminal_message(response, request=request)
+        )
+        self.assertTrue(terminal["accepted"])
+
+    def test_decision_timestamp_is_bound_to_serialized_decision_sequence(self) -> None:
+        runtime = coordinator("cpu_only")
+        first = request_message(frame_id=1)
+        first.update(
+            arrival_ms=1_990.0,
+            decision_time_ms=2_000.0,
+            feature_observed_timestamp_ms=1_999.0,
+        )
+        second = request_message(frame_id=2)
+        second.update(
+            arrival_ms=1_990.0,
+            decision_time_ms=1_999.0,
+            feature_observed_timestamp_ms=1_998.0,
+        )
+
+        first_response = runtime.handle_message(first["worker_id"], first)
+        second_response = runtime.handle_message(second["worker_id"], second)
+        first_state = runtime._states[first_response["decision_id"]]
+        second_state = runtime._states[second_response["decision_id"]]
+        self.assertEqual(first_state.record["request"]["decision_time_ms"], 2_000.0)
+        self.assertEqual(second_state.record["request"]["decision_time_ms"], 2_000.0)
+        self.assertEqual(second_state.feature_observed_timestamp_ms, 1_998.0)
+
+    def test_serialized_clamp_does_not_reject_a_worker_bound_path_entry(self) -> None:
+        # The coordinator raises a late-serialized decision timestamp to the
+        # last serialized decision.  The worker never learns that raised value:
+        # it binds its path entry to its own post-response clock, floored by the
+        # decision timestamp it submitted.  A host wall-clock regression between
+        # two workers must therefore not be relabelled as a native ordering
+        # violation (A229 Savant shared_video_dag terminal failure).
+        runtime = coordinator("cpu_only")
+        leading = request_message(frame_id=1)
+        leading.update(
+            arrival_ms=1_990.0,
+            decision_time_ms=2_000.0,
+            feature_observed_timestamp_ms=1_999.0,
+        )
+        runtime.handle_message(leading["worker_id"], leading)
+
+        regressed = request_message(frame_id=2)
+        regressed.update(
+            worker_id="worker-shared-0002",
+            arrival_ms=1_990.0,
+            decision_time_ms=1_999.0,
+            feature_observed_timestamp_ms=1_998.0,
+        )
+        response = runtime.handle_message(regressed["worker_id"], regressed)
+        state = runtime._states[response["decision_id"]]
+        self.assertEqual(state.record["request"]["decision_time_ms"], 2_000.0)
+
+        path = path_message(response, request=regressed)
+        # max(post-response worker clock, submitted decision time)
+        path["timestamp_ms"] = 1_999.4
+        ack = runtime.handle_message(regressed["worker_id"], path)
+        self.assertTrue(ack["accepted"])
+
+        terminal = terminal_message(response, request=regressed)
+        terminal["terminal_timestamp_ms"] = 2_009.4
+        accepted = runtime.handle_message(regressed["worker_id"], terminal)
+        self.assertTrue(accepted["accepted"])
+
+    def test_path_entry_before_the_worker_submitted_decision_is_still_rejected(self) -> None:
+        runtime = coordinator("cpu_only")
+        request = request_message(frame_id=1)
+        response = runtime.handle_message(request["worker_id"], request)
+        path = path_message(response, request=request)
+        path["timestamp_ms"] = float(request["decision_time_ms"]) - 1.0
+        with self.assertRaises(NativePolicyRuntimeError) as raised:
+            runtime.handle_message(request["worker_id"], path)
+        self.assertIn("native path entry precedes its decision", str(raised.exception))
+
     def test_all_four_publishable_systems_use_the_same_terminal_bound_coordinator(self) -> None:
         manifest = capability_manifest()
         for system in PUBLISHABLE_SYSTEMS:
@@ -397,6 +484,76 @@ class NativePolicyRuntimeCoordinatorTests(unittest.TestCase):
                 self.assertEqual(canonical[0]["record_status"], "accepted_native_runtime_decision")
                 if policy == "adaptive_weights":
                     self.assertTrue((Path(tmp) / "publication_policy_feedback.jsonl").is_file())
+
+    def test_promotion_excludes_completed_warmup_decisions_from_measurement_sidecars(self) -> None:
+        runtime = coordinator("cpu_only")
+        warmup = request_message(frame_id=1)
+        measured = request_message(frame_id=2)
+        warmup_response = runtime.handle_message(warmup["worker_id"], warmup)
+        measured_response = runtime.handle_message(measured["worker_id"], measured)
+        for request, response in (
+            (warmup, warmup_response),
+            (measured, measured_response),
+        ):
+            runtime.handle_message(
+                request["worker_id"], path_message(response, request=request)
+            )
+            runtime.handle_message(
+                request["worker_id"], terminal_message(response, request=request)
+            )
+
+        with tempfile.TemporaryDirectory() as tmp:
+            output = Path(tmp)
+            summary = runtime.promote(
+                output,
+                canonical_frames={
+                    measured["input_frame_key"]: {
+                        "trace_id": "canonical-measurement-trace-0002",
+                        "stream_id": 0,
+                        "frame_id": 2,
+                    }
+                },
+            )
+            self.assertEqual(summary["runtime_decision_count"], 2)
+            self.assertEqual(summary["accepted_decision_count"], 1)
+            self.assertEqual(summary["excluded_noncohort_decision_count"], 1)
+            records = [
+                json.loads(line)
+                for line in (output / "publication_policy_decisions.jsonl")
+                .read_text(encoding="utf-8")
+                .splitlines()
+            ]
+            self.assertEqual(
+                [record["decision_id"] for record in records],
+                [measured_response["decision_id"]],
+            )
+
+    def test_event_enrichment_carries_exact_selected_policy_cost_and_queue_depth(self) -> None:
+        runtime = coordinator("cpu_only")
+        request = request_message(branch="plate_number", frame_id=3)
+        response = runtime.handle_message(request["worker_id"], request)
+        runtime.handle_message(
+            request["worker_id"], path_message(response, request=request)
+        )
+        runtime.handle_message(
+            request["worker_id"], terminal_message(response, request=request)
+        )
+        enriched = runtime.enrich_runtime_events(
+            (
+                {
+                    "input_frame_key": request["input_frame_key"],
+                    "stage": request["branch"],
+                    "branch_id": request["branch"],
+                    "execution_id": "analytics-stage",
+                },
+            )
+        )[0]
+        self.assertEqual(enriched["scheduler_queue_depth"], 0)
+        self.assertEqual(enriched["scheduler_estimated_cost_ms"], 1005.0)
+        self.assertEqual(
+            enriched["policy_action"],
+            f"cpu_only:cpu:{response['decision_id']}",
+        )
 
     def test_adaptive_feedback_uses_application_order_and_is_mandatory(self) -> None:
         self.assertTrue(frozen_policy_requires_feedback("adaptive_weights"))

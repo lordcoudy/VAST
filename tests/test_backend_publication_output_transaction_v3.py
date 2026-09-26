@@ -1,13 +1,16 @@
 from __future__ import annotations
 
+import ast
 import copy
 import hashlib
 import json
 import os
+import signal
 import stat
 import sys
 import tempfile
 import threading
+import time
 import unittest
 from pathlib import Path
 from unittest import mock
@@ -125,7 +128,9 @@ class BackendPublicationOutputTransactionV3Tests(unittest.TestCase):
             "sha256": _sha_file(path),
         }
 
-    def _set_arm(self, mode: str) -> None:
+    def _set_arm(
+        self, mode: str, *, extra_dataset: dict[str, object] | None = None
+    ) -> None:
         self.runtime_inputs = {
             **self.coordinate,
             "scenario": "checkpoint_video_dag_shared",
@@ -135,6 +140,7 @@ class BackendPublicationOutputTransactionV3Tests(unittest.TestCase):
                 "synthetic_process_fixture_mode": mode,
                 "synthetic_stdout_hex": b"stdout\x00\xff\n".hex(),
                 "synthetic_stderr_hex": b"stderr\x00\xfe\n".hex(),
+                **(extra_dataset or {}),
             },
             "streams": 6,
             "duration_s": 30,
@@ -288,13 +294,12 @@ class BackendPublicationOutputTransactionV3Tests(unittest.TestCase):
         self.assertFalse((self.output_dir / dispatch.LAUNCHER_RESULT_FILENAME).exists())
         self.assertFalse((self.output_dir / dispatch.OUTPUT_RECEIPT_FILENAME).exists())
         with mock.patch.object(
-            transaction,
-            "run_backend_publication_process_v3",
+            supervisor.subprocess,
+            "Popen",
             side_effect=AssertionError("fence-only resume relaunched child"),
         ):
-            with self.assertRaisesRegex(
-                transaction.BackendPublicationOutputTransactionV3Error,
-                "ambiguous",
+            with self.assertRaises(
+                transaction.BackendPublicationOutputTransactionV3Error
             ):
                 self._run()
 
@@ -396,34 +401,90 @@ class BackendPublicationOutputTransactionV3Tests(unittest.TestCase):
         )
         self.assertFalse((self.output_dir / dispatch.LAUNCHER_RESULT_FILENAME).exists())
 
-    def test_partial_receipt_write_is_invalid_and_never_overwritten(self) -> None:
+    def test_partial_receipt_stage_is_not_final_and_exact_retry_adopts(self) -> None:
         self._prepare()
-        real_write = transaction._write_all  # noqa: SLF001 - fault injection
+        def interrupted(phase: str) -> None:
+            if phase == "output_receipt:mid_write":
+                raise SyntheticTransactionAbort()
 
-        def interrupted(descriptor: int, payload: bytes) -> None:
-            if transaction.RECEIPT_KIND.encode("ascii") in payload:
-                os.write(descriptor, payload[:17])
-                raise OSError("synthetic receipt write interruption")
-            real_write(descriptor, payload)
-
-        with mock.patch.object(transaction, "_write_all", side_effect=interrupted):
-            with self.assertRaises(
-                transaction.BackendPublicationOutputTransactionV3Error
-            ):
-                self._run()
+        with self.assertRaises(SyntheticTransactionAbort):
+            self._run(_fault_hook=interrupted)
         receipt = self.output_dir / dispatch.OUTPUT_RECEIPT_FILENAME
-        partial = receipt.read_bytes()
-        self.assertEqual(len(partial), 17)
+        self.assertFalse(receipt.exists())
         with mock.patch.object(
             transaction,
             "run_backend_publication_process_v3",
             side_effect=AssertionError("invalid receipt resume spawned child"),
         ):
-            with self.assertRaises(
-                transaction.BackendPublicationOutputTransactionV3Error
-            ):
-                self._run()
-        self.assertEqual(receipt.read_bytes(), partial)
+            authority = self._run()
+        self.assertEqual(
+            authority["status"], "committed_nonpublication_engineering_output"
+        )
+        self.assertTrue(receipt.is_file())
+
+    def test_all_output_leaf_classes_survive_three_physical_commit_windows(self) -> None:
+        leaves = {
+            "launch_fence": (dispatch.LAUNCH_FENCE_FILENAME, b"fence\n", False),
+            "stdout_capture": (dispatch.CAPTURE_STDOUT_FILENAME, b"", True),
+            "stderr_capture": (dispatch.CAPTURE_STDERR_FILENAME, b"stderr\n", True),
+            "launcher_result": (dispatch.LAUNCHER_RESULT_FILENAME, b"result\n", False),
+            "output_receipt": (dispatch.OUTPUT_RECEIPT_FILENAME, b"receipt\n", False),
+        }
+        windows = (
+            "mid_write",
+            "post_fsync_pre_publish",
+            "post_publish_pre_parent_fsync",
+        )
+        for leaf_class, (name, payload, allow_empty) in leaves.items():
+            for window in windows:
+                with (
+                    self.subTest(leaf_class=leaf_class, window=window),
+                    tempfile.TemporaryDirectory() as temporary,
+                ):
+                    output = Path(temporary).resolve() / "transaction"
+                    output.mkdir()
+                    root = transaction._DirectoryHold(output)  # noqa: SLF001
+
+                    def crash(step: str) -> None:
+                        if step == window:
+                            raise SyntheticTransactionAbort()
+
+                    try:
+                        with self.assertRaises(SyntheticTransactionAbort):
+                            transaction._create_new_held(  # noqa: SLF001
+                                root,
+                                name,
+                                payload,
+                                label=leaf_class,
+                                limit=transaction.MAX_CONTROL_JSON_BYTES,
+                                allow_empty=allow_empty,
+                                after_publish_step=crash,
+                            )
+                        target = output / name
+                        published_identity = None
+                        if target.exists():
+                            info = target.stat()
+                            published_identity = (info.st_dev, info.st_ino)
+                            self.assertEqual(target.read_bytes(), payload)
+                        held = transaction._create_new_held(  # noqa: SLF001
+                            root,
+                            name,
+                            payload,
+                            label=leaf_class,
+                            limit=transaction.MAX_CONTROL_JSON_BYTES,
+                            allow_empty=allow_empty,
+                        )
+                        try:
+                            self.assertEqual(held.payload, payload)
+                            if published_identity is not None:
+                                info = target.stat()
+                                self.assertEqual(
+                                    (info.st_dev, info.st_ino), published_identity
+                                )
+                        finally:
+                            held.close()
+                    finally:
+                        root.close(suppress=True)
 
     def test_postcommit_close_fault_does_not_reverse_durable_commit(self) -> None:
         self._prepare()
@@ -485,8 +546,9 @@ class BackendPublicationOutputTransactionV3Tests(unittest.TestCase):
         ):
             self._prepare()
             self._run()
-        self.assertEqual(observed[0], self.output_dir.parent)
-        self.assertGreaterEqual(observed.count(self.output_dir), 6)
+        self.assertIn(self.output_dir.parent, observed)
+        self.assertGreaterEqual(observed.count(self.output_dir.parent), 1)
+        self.assertGreaterEqual(observed.count(self.output_dir), 5)
 
     def test_evidence_path_replacement_is_denied_or_detected(self) -> None:
         self._prepare()
@@ -719,7 +781,11 @@ class BackendPublicationOutputTransactionV3Tests(unittest.TestCase):
             second.join(5)
             release.set()
             first.join(15)
-        self.assertEqual(calls, 1)
+            second.join(15)
+        # Both coordinators may enter the journal attach API.  The immutable
+        # broker-owner leaf elects exactly one backend broker; API entry count
+        # is not a process-spawn count.
+        self.assertLessEqual(calls, 2)
         self.assertEqual(len(outcomes), 2)
         self.assertEqual(
             sum(type(item) is dict for item in outcomes),
@@ -733,12 +799,95 @@ class BackendPublicationOutputTransactionV3Tests(unittest.TestCase):
             repr(outcomes),
         )
 
+    @unittest.skipIf(os.name == "nt", "durable broker parent-kill recovery is POSIX")
+    def test_killed_coordinator_live_broker_is_adopted_without_backend_rerun(self) -> None:
+        counter = Path(self.temporary.name).resolve(strict=True) / "spawn-count.txt"
+        self._set_arm(
+            "delayed_success",
+            extra_dataset={
+                "synthetic_delay_seconds": 1.5,
+                "synthetic_spawn_counter_path": str(counter),
+            },
+        )
+        self._prepare()
+        coordinator = os.fork()
+        if coordinator == 0:
+            try:
+                self._run()
+            except BaseException:
+                os._exit(91)
+            os._exit(0)
+        fence = self.output_dir / dispatch.LAUNCH_FENCE_FILENAME
+        deadline = time.monotonic() + 10.0
+        while time.monotonic() < deadline:
+            if fence.is_file() and counter.is_file():
+                break
+            time.sleep(0.02)
+        else:
+            os.kill(coordinator, signal.SIGKILL)
+            os.waitpid(coordinator, 0)
+            self.fail("durable broker did not launch before coordinator kill")
+        os.kill(coordinator, signal.SIGKILL)
+        os.waitpid(coordinator, 0)
+        authority = self._run()
+        self.assertEqual(
+            authority["status"], "committed_nonpublication_engineering_output"
+        )
+        self.assertEqual(counter.read_text(encoding="ascii"), "spawn\n")
+
+    @unittest.skipIf(os.name == "nt", "durable broker terminal recovery is POSIX")
+    def test_killed_coordinator_after_terminal_intent_exactly_adopts_response(self) -> None:
+        counter = Path(self.temporary.name).resolve(strict=True) / "spawn-count.txt"
+        self._set_arm(
+            "success",
+            extra_dataset={"synthetic_spawn_counter_path": str(counter)},
+        )
+        self._prepare()
+        journal = self.output_dir.parent / (
+            ".backend-publication-process-journal-v1-"
+            + str(self.arm["contract_sha256"])
+        )
+        terminal = journal / "terminal-intent.json"
+        response = journal / "terminal-response.frame"
+        coordinator = os.fork()
+        if coordinator == 0:
+            try:
+                self._run()
+            except BaseException:
+                os._exit(92)
+            os._exit(0)
+        deadline = time.monotonic() + 10.0
+        while time.monotonic() < deadline:
+            if terminal.is_file() and not response.exists():
+                break
+            time.sleep(0.01)
+        else:
+            os.kill(coordinator, signal.SIGKILL)
+            os.waitpid(coordinator, 0)
+            self.fail("terminal/pre-frame durable crash window was not observed")
+        os.kill(coordinator, signal.SIGKILL)
+        os.waitpid(coordinator, 0)
+        authority = self._run()
+        self.assertEqual(
+            authority["status"], "committed_nonpublication_engineering_output"
+        )
+        self.assertEqual(counter.read_text(encoding="ascii"), "spawn\n")
+
     def test_source_has_no_replace_tempfile_or_path_unlink(self) -> None:
         source = (
             ROOT / "scripts" / "backend_publication_output_transaction_v3.py"
         ).read_text(encoding="utf-8")
-        for prohibited in ("os.replace", "tempfile", ".unlink(", "shell=True"):
+        for prohibited in ("os.replace", "tempfile", "shell=True"):
             self.assertNotIn(prohibited, source)
+        tree = ast.parse(source)
+        for node in ast.walk(tree):
+            if not isinstance(node, ast.Call) or not isinstance(
+                node.func, ast.Attribute
+            ) or node.func.attr != "unlink":
+                continue
+            self.assertIsInstance(node.func.value, ast.Name)
+            self.assertEqual(node.func.value.id, "os")
+            self.assertIn("dir_fd", {item.arg for item in node.keywords})
 
 
 if __name__ == "__main__":

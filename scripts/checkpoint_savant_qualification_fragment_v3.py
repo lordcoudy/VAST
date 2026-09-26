@@ -91,10 +91,10 @@ SAVANT_BASE_IMAGE_ID = (
     "sha256:3c0ef6f4bb57e385644da526789626f0c943dcb90ff32b72a7883e05798ce9e6"
 )
 NATIVE_BUILDER_IMAGE_ID = (
-    "sha256:ef70f6fae0558d1d90ae32fc931256bc71169749c15ae00b70a8ca00c0b70513"
+    "sha256:314d4a4d71130e9b86caacb802e92fe97a89ee92b0240f9947dccebca3adc3dc"
 )
 NATIVE_BUILDER_SOURCE_SHA256 = (
-    "e38aa56050381aef7ce9ff6fb934ae3da0d44175f10fb67f4cecea34433ded01"
+    "b6772ea56a31886b2599ed602e325d39b876d33d740bd3b983f1b96dbcf82c0f"
 )
 GPU_UUID = "GPU-00bb784b-60f3-8bf6-bbd3-5a0c09805266"
 GPU_NAME = "NVIDIA GeForce RTX 3060"
@@ -370,8 +370,10 @@ def _image_materialization(
 def _policy_identity(
     resource: str, binding: Mapping[str, Any],
 ) -> dict[str, Any]:
-    worker_id = str(binding["worker_id"])
-    detector = f"{worker_id};model_sha256={binding['model_artifact_sha256']}"
+    detector = (
+        f"{binding['model_id']};"
+        f"model_sha256={binding['source_model_sha256']}"
+    )
     return {
         "runtime_backend": (
             "savant_0.5.17_direct_openvino_cpu_endpoint_v3"

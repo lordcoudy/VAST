@@ -42,6 +42,8 @@ def _canonical_sha(value: object) -> str:
 
 def _write_json(path: Path, value: object) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
+    if path.exists():
+        path.chmod(0o644)
     path.write_bytes(_canonical_bytes(value) + b"\n")
 
 
@@ -64,6 +66,13 @@ class _Fixture:
         self.run_id = "qualification-run-deepstream-gpu-h264-shared-0001"
         self.arm_id = "qualification-pilot.deepstream.gpu.h264.shared_video_dag.v1"
         self.policy_contract_sha256 = "a" * 64
+        self.hardware_resource_collector_path = root / "scripts/collect_metrics.py"
+        self.hardware_resource_collector_path.parent.mkdir(
+            parents=True, exist_ok=True
+        )
+        self.hardware_resource_collector_path.write_bytes(
+            b"# qualification collector fixture\n"
+        )
 
         evidence_names = accepted_arm_evidence_files(
             "gpu_only", full_resource=True
@@ -262,6 +271,69 @@ class _Fixture:
         )
         _write_json(self.bootstrap_receipt_path, bootstrap_receipt)
 
+        operational_dir = root / "operational"
+        self.qualification_transaction_receipt_path = (
+            operational_dir / "qualification_input_transaction.v2.receipt.json"
+        )
+        self.runtime_input_materialization_receipt_path = (
+            operational_dir / "qualification-runtime-inputs.materialization.v2.json"
+        )
+        self.runtime_input_bundle_path = operational_dir / "cell-runtime-input.json"
+        self.guardian_service_authority_path = (
+            operational_dir / "service_authority.v1.json"
+        )
+        self.preprocessing_contract_path = (
+            operational_dir / "checkpoint_analytics_preprocessing_contract.v1.json"
+        )
+        self.preprocessing_contract_receipt_path = operational_dir / (
+            "checkpoint_analytics_preprocessing_contract.v1.receipt.json"
+        )
+        _write_json(self.qualification_transaction_receipt_path, {"role": "tx"})
+        _write_json(
+            self.runtime_input_materialization_receipt_path,
+            {"role": "runtime-materialization"},
+        )
+        _write_json(self.runtime_input_bundle_path, {"role": "runtime-bundle"})
+        _write_json(
+            self.guardian_service_authority_path,
+            {"role": "guardian-service"},
+        )
+        _write_json(
+            self.preprocessing_contract_path,
+            {"role": "preprocessing-contract"},
+        )
+        _write_json(
+            self.preprocessing_contract_receipt_path,
+            {
+                "preprocessing_contract": _descriptor(
+                    root, self.preprocessing_contract_path
+                )
+            },
+        )
+        self.operational_binding = {
+            "hardware_resource_collector": _descriptor(
+                root, self.hardware_resource_collector_path
+            ),
+            "qualification_input_transaction_receipt": _descriptor(
+                root, self.qualification_transaction_receipt_path
+            ),
+            "qualification_input_transaction_receipt_identity_sha256": "8" * 64,
+            "runtime_input_materialization_receipt": _descriptor(
+                root, self.runtime_input_materialization_receipt_path
+            ),
+            "runtime_input_materialization_receipt_identity_sha256": "9" * 64,
+            "runtime_input_bundle": _descriptor(root, self.runtime_input_bundle_path),
+            "runtime_input_bundle_identity_sha256": "a" * 64,
+            "guardian_service_authority": _descriptor(
+                root, self.guardian_service_authority_path
+            ),
+            "guardian_service_authority_identity_sha256": "b" * 64,
+            "guardian_preprocessing_contract_receipt": _descriptor(
+                root, self.preprocessing_contract_receipt_path
+            ),
+            "guardian_preprocessing_contract_receipt_identity_sha256": "c" * 64,
+        }
+
         self.full_resource_summary = {
             "assessment_schema_version": 1,
             "resource_contract_version": 2,
@@ -325,6 +397,11 @@ class _Fixture:
                 "load_verified_model_parity_acceptance",
                 return_value=copy.deepcopy(self.parity_binding),
             ),
+            mock.patch.object(
+                target,
+                "_operational_material",
+                return_value=copy.deepcopy(self.operational_binding),
+            ),
         ):
             return target.finalize_checkpoint_qualification_pilot_acceptance_v1(
                 project_root=self.root,
@@ -347,10 +424,149 @@ class _Fixture:
                     "deepstream"
                 ],
                 bootstrap_receipt_path=self.bootstrap_receipt_path,
+                **self.operational_arguments(),
             )
+
+    def operational_arguments(self) -> dict[str, Path]:
+        return {
+            "qualification_transaction_receipt_path": (
+                self.qualification_transaction_receipt_path
+            ),
+            "runtime_input_materialization_receipt_path": (
+                self.runtime_input_materialization_receipt_path
+            ),
+            "runtime_input_bundle_path": self.runtime_input_bundle_path,
+            "guardian_service_authority_path": (
+                self.guardian_service_authority_path
+            ),
+            "preprocessing_contract_path": self.preprocessing_contract_path,
+            "preprocessing_contract_receipt_path": (
+                self.preprocessing_contract_receipt_path
+            ),
+        }
 
 
 class CheckpointQualificationPilotAcceptanceV1Tests(unittest.TestCase):
+    def test_acceptance_atomic_commit_three_windows_exact_retry(self) -> None:
+        windows = (
+            "mid_write",
+            "post_fsync_pre_publish",
+            "post_publish_pre_parent_fsync",
+        )
+        for window in windows:
+            with self.subTest(window=window), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp).resolve()
+                output = root / "pilot"
+                output.mkdir()
+                path = output / target.ACCEPTANCE_FILENAME
+                value = {"artifact_kind": target.ARTIFACT_KIND, "status": target.STATUS}
+
+                def crash(step: str) -> None:
+                    if step == window:
+                        raise RuntimeError("synthetic physical crash")
+
+                with self.assertRaisesRegex(RuntimeError, "synthetic physical crash"):
+                    target._write_immutable_json(  # noqa: SLF001
+                        root, path, value, _fault_hook=crash
+                    )
+                identity = None
+                if path.exists():
+                    info = path.stat()
+                    identity = (info.st_dev, info.st_ino)
+                target._write_immutable_json(root, path, value)  # noqa: SLF001
+                self.assertEqual(path.read_bytes(), _canonical_bytes(value) + b"\n")
+                if identity is not None:
+                    info = path.stat()
+                    self.assertEqual((info.st_dev, info.st_ino), identity)
+
+    def test_guardian_live_validation_is_bound_to_preprocessing_authority(
+        self,
+    ) -> None:
+        import checkpoint_gstreamer_analytics_sidecar as sidecar
+
+        preprocessing_authority = {"policy_contract_sha256": "1" * 64}
+        runtime_expectations = {
+            "execution_config_identity_sha256": "7" * 64,
+            "binding_set_identity_sha256": "8" * 64,
+            "bindings_identity_sha256": "9" * 64,
+            "worker_image_ids": {
+                "cpu": "sha256:" + "a" * 64,
+                "gpu": "sha256:" + "b" * 64,
+            },
+            "policy_contract_sha256": "1" * 64,
+            "preprocessing_contract_content_sha256": "c" * 64,
+        }
+        checked = {
+            "front_socket": {"path": "/tmp/guardian.sock"},
+            "execution_config_identity_sha256": "2" * 64,
+            "binding_set_identity_sha256": "3" * 64,
+            "worker_image_ids": {
+                "cpu": "sha256:" + "4" * 64,
+                "gpu": "sha256:" + "5" * 64,
+            },
+            "preprocessing_contract_authority": preprocessing_authority,
+            "service_identity_sha256": "6" * 64,
+        }
+        with (
+            mock.patch.object(
+                sidecar,
+                "validate_publication_sidecar_service_authority_v1",
+                return_value=checked,
+            ),
+            mock.patch.object(
+                sidecar,
+                "assert_publication_sidecar_service_authority_v1",
+                return_value=checked,
+            ) as assertion,
+            mock.patch.object(
+                sidecar,
+                "assert_publication_sidecar_service_authority_identity_v1",
+                return_value=checked,
+            ) as offline_assertion,
+        ):
+            self.assertEqual(
+                target._validate_guardian_service_authority(
+                    checked,
+                    require_live=True,
+                    expected_preprocessing_contract_authority=(
+                        preprocessing_authority
+                    ),
+                    expected_runtime_expectations=runtime_expectations,
+                ),
+                checked,
+            )
+            self.assertEqual(
+                target._validate_guardian_service_authority(
+                    checked,
+                    require_live=False,
+                    expected_preprocessing_contract_authority=(
+                        preprocessing_authority
+                    ),
+                    expected_runtime_expectations=runtime_expectations,
+                ),
+                checked,
+            )
+        assertion.assert_called_once_with(
+            checked,
+            expected_front_socket="/tmp/guardian.sock",
+            expected_execution_config_identity_sha256="7" * 64,
+            expected_binding_set_identity_sha256="8" * 64,
+            expected_worker_image_ids=runtime_expectations["worker_image_ids"],
+            expected_preprocessing_contract_authority=preprocessing_authority,
+            expected_service_identity_sha256="6" * 64,
+            expected_policy_contract_sha256="1" * 64,
+        )
+        offline_assertion.assert_called_once_with(
+            checked,
+            expected_front_socket="/tmp/guardian.sock",
+            expected_execution_config_identity_sha256="7" * 64,
+            expected_binding_set_identity_sha256="8" * 64,
+            expected_worker_image_ids=runtime_expectations["worker_image_ids"],
+            expected_preprocessing_contract_authority=preprocessing_authority,
+            expected_service_identity_sha256="6" * 64,
+            expected_policy_contract_sha256="1" * 64,
+        )
+
     def test_accepts_real_index_v2_and_bootstrap_v2_output_shapes(self) -> None:
         import publication_policy_qualification_bootstrap_v2 as bootstrap
         import publication_policy_qualification_index_v2 as index_builder
@@ -432,6 +648,11 @@ class CheckpointQualificationPilotAcceptanceV1Tests(unittest.TestCase):
                     "load_verified_model_parity_acceptance",
                     side_effect=parity.acceptance_loader,
                 ),
+                mock.patch.object(
+                    target,
+                    "_operational_material",
+                    return_value=copy.deepcopy(physical.operational_binding),
+                ),
             ):
                 acceptance = (
                     target.finalize_checkpoint_qualification_pilot_acceptance_v1(
@@ -459,6 +680,7 @@ class CheckpointQualificationPilotAcceptanceV1Tests(unittest.TestCase):
                             "calibration_paths"
                         ]["deepstream"],
                         bootstrap_receipt_path=bootstrap_result["receipt_path"],
+                        **physical.operational_arguments(),
                     )
                 )
             self.assertEqual(acceptance["artifact_kind"], target.ARTIFACT_KIND)
@@ -474,9 +696,11 @@ class CheckpointQualificationPilotAcceptanceV1Tests(unittest.TestCase):
                 events.append("prepare")
                 return copy.deepcopy(fixture.prepared)
 
-            def write(path: Path, value: dict[str, object]) -> None:
+            def write(
+                root: Path, path: Path, value: dict[str, object]
+            ) -> None:
                 events.append(path.name)
-                immutable_writer(path, value)
+                immutable_writer(root, path, value)
 
             with (
                 mock.patch.object(
@@ -491,6 +715,11 @@ class CheckpointQualificationPilotAcceptanceV1Tests(unittest.TestCase):
                 ),
                 mock.patch.object(
                     target, "_write_immutable_json", side_effect=write
+                ),
+                mock.patch.object(
+                    target,
+                    "_operational_material",
+                    return_value=copy.deepcopy(fixture.operational_binding),
                 ),
             ):
                 acceptance = target.finalize_checkpoint_qualification_pilot_acceptance_v1(
@@ -514,6 +743,7 @@ class CheckpointQualificationPilotAcceptanceV1Tests(unittest.TestCase):
                         fixture.bootstrap_calibration_paths["deepstream"]
                     ),
                     bootstrap_receipt_path=fixture.bootstrap_receipt_path,
+                    **fixture.operational_arguments(),
                 )
 
             self.assertEqual(
@@ -585,6 +815,7 @@ class CheckpointQualificationPilotAcceptanceV1Tests(unittest.TestCase):
             "mapping",
             "calibration",
             "parity_binding",
+            "operational_binding",
             "extra_production_field",
         )
         for case in cases:
@@ -601,6 +832,17 @@ class CheckpointQualificationPilotAcceptanceV1Tests(unittest.TestCase):
                     )
                 elif case == "parity_binding":
                     fixture.parity_binding["binding_sha256"] = "f" * 64
+                elif case == "operational_binding":
+                    acceptance["operational_binding"][
+                        "runtime_input_bundle_identity_sha256"
+                    ] = "f" * 64
+                    unsigned = dict(acceptance)
+                    unsigned.pop("sha256")
+                    acceptance["sha256"] = _canonical_sha(unsigned)
+                    _write_json(
+                        fixture.output_dir / target.ACCEPTANCE_FILENAME,
+                        acceptance,
+                    )
                 else:
                     acceptance["production_metadata_binding"] = {
                         "forbidden": True
@@ -617,6 +859,11 @@ class CheckpointQualificationPilotAcceptanceV1Tests(unittest.TestCase):
                         target.model_parity_acceptance,
                         "load_verified_model_parity_acceptance",
                         return_value=copy.deepcopy(fixture.parity_binding),
+                    ),
+                    mock.patch.object(
+                        target,
+                        "_operational_material",
+                        return_value=copy.deepcopy(fixture.operational_binding),
                     ),
                     self.assertRaises(target.QualificationPilotAcceptanceV1Error),
                 ):
@@ -650,6 +897,11 @@ class CheckpointQualificationPilotAcceptanceV1Tests(unittest.TestCase):
                     "load_verified_model_parity_acceptance",
                     return_value=copy.deepcopy(fixture.parity_binding),
                 ),
+                mock.patch.object(
+                    target,
+                    "_operational_material",
+                    return_value=copy.deepcopy(fixture.operational_binding),
+                ),
                 self.assertRaisesRegex(
                     target.QualificationPilotAcceptanceV1Error,
                     "14|evidence",
@@ -680,6 +932,11 @@ class CheckpointQualificationPilotAcceptanceV1Tests(unittest.TestCase):
                     target.model_parity_acceptance,
                     "load_verified_model_parity_acceptance",
                     return_value=copy.deepcopy(fixture.parity_binding),
+                ),
+                mock.patch.object(
+                    target,
+                    "_operational_material",
+                    return_value=copy.deepcopy(fixture.operational_binding),
                 ),
                 self.assertRaisesRegex(
                     target.QualificationPilotAcceptanceV1Error,

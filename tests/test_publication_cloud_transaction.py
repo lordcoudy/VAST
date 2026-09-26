@@ -4,6 +4,7 @@ import hashlib
 import json
 import os
 import shutil
+import struct
 import sys
 import tempfile
 import unittest
@@ -14,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
 import publication_cloud_transaction as cloud_transaction_module  # noqa: E402
+from publication_archive import PairArchiveError, build_pair_archive  # noqa: E402
 from publication_cloud_transaction import (  # noqa: E402
     CloudTransactionError,
     LedgerIntegrityError,
@@ -24,6 +26,12 @@ from publication_cloud_transaction import (  # noqa: E402
     verify_cloud_ledger,
 )
 from seafile_artifact_store import ArtifactIntegrityError  # noqa: E402
+from publication_article_statistics_v1 import (  # noqa: E402
+    build_article_statistics_pair_record_v1,
+    persist_article_statistics_pair_record_v1,
+    validate_article_statistics_binding_v1,
+)
+from tests.test_publication_article_statistics_v1 import _arm_material  # noqa: E402
 
 
 MATRIX_SHA256 = "a" * 64
@@ -112,6 +120,24 @@ def prepare_pair(
         / f"attempt-{attempt:04d}"
     )
     pair_dir.mkdir(parents=True)
+    pair_sha256 = "b" * 64
+    statistics_record = build_article_statistics_pair_record_v1(
+        pair_identity={
+            "matrix_sha256": matrix_sha256,
+            "run_id": run_id,
+            "pair_sequence": pair_sequence,
+            "pair_id": pair_id,
+            "pair_sha256": pair_sha256,
+            "attempt": attempt,
+        },
+        arms=[_arm_material(pair_dir, 0), _arm_material(pair_dir, 1)],
+        primary_architecture_pair_metric=None,
+    )
+    statistics_binding = persist_article_statistics_pair_record_v1(
+        statistics_record,
+        run_root=run_root,
+        pair_dir=pair_dir,
+    )
     acceptance = pair_dir / "acceptance.json"
     acceptance.write_text(
         json.dumps(
@@ -123,8 +149,9 @@ def prepare_pair(
                 "run_id": run_id,
                 "pair_sequence": pair_sequence,
                 "pair_id": pair_id,
+                "pair_sha256": pair_sha256,
                 "attempt": attempt,
-                "arm_ids": ["baseline-arm", "shared-arm"],
+                "arm_ids": ["arm-1", "arm-2"],
                 "qualification_authorities": {
                     "identity_artifact_binding_sha256": "a" * 64,
                     "resource_capability_grant_sha256": "b" * 64,
@@ -134,7 +161,9 @@ def prepare_pair(
                 },
                 "pair_gates": {
                     "common_identity_and_qualification_authorities": True,
+                    "article_statistics_sealed_and_cross_bound": True,
                 },
+                "article_statistics": statistics_binding,
             },
             sort_keys=True,
         )
@@ -215,6 +244,29 @@ class PublicationCloudTransactionTests(unittest.TestCase):
             self.assertEqual(
                 hashlib.sha256(actual_recovered).hexdigest(),
                 hashlib.sha256(expected_recovered).hexdigest(),
+            )
+            durable_binding = recovered_rows[-1]["article_statistics_binding"]
+            self.assertEqual(
+                result["article_statistics_record_identity_sha256"],
+                durable_binding["record_identity_sha256"],
+            )
+            retained = run_root / durable_binding["retained_copy"]["relative_path"]
+            self.assertTrue(retained.is_file())
+            validate_article_statistics_binding_v1(
+                durable_binding,
+                run_root=run_root,
+                pair_dir=pair_dir,
+                require_attempt_copy=False,
+                require_retained_copy=True,
+                require_raw_evidence=False,
+            )
+            receipt_names = [
+                name for name in store.remote if name.endswith(".receipt.json")
+            ]
+            self.assertEqual(len(receipt_names), 1)
+            remote_receipt = json.loads(store.remote[receipt_names[0]])
+            self.assertEqual(
+                remote_receipt["article_statistics"], durable_binding
             )
 
     def test_all_ledger_write_descriptors_use_portable_binary_mode(self) -> None:
@@ -425,8 +477,9 @@ class PublicationCloudTransactionTests(unittest.TestCase):
             "run_id": "other-run",
             "pair_sequence": 2,
             "pair_id": "other-pair",
+            "pair_sha256": "c" * 64,
             "attempt": 2,
-            "arm_ids": ["same-arm", "same-arm"],
+            "arm_ids": ["other-arm-1", "other-arm-2"],
             "qualification_authorities": {
                 "identity_artifact_binding_sha256": "a" * 64,
             },
@@ -597,6 +650,245 @@ class PublicationCloudTransactionTests(unittest.TestCase):
                 self.assertEqual(result["state"], "local_pruned")
                 entries = verify_cloud_ledger(run_root / "cloud_ledger.jsonl")
                 self.assertEqual([entry["state"] for entry in entries], list(TRANSACTION_STATES))
+
+    def test_mid_prune_crash_resumes_partial_tombstone_without_reupload(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            run_root = Path(tmp) / "run"
+            pair_dir, acceptance = prepare_pair(run_root)
+            store = FakeStore()
+            observed_entries: list[str] = []
+
+            def crash_mid_prune(entry: str) -> None:
+                observed_entries.append(entry)
+                raise SimulatedCrash(entry)
+
+            with self.assertRaises(SimulatedCrash):
+                commit(
+                    PublicationCloudTransaction(
+                        store=store,
+                        run_root=run_root,
+                        prune_entry_hook=crash_mid_prune,
+                    ),
+                    pair_dir,
+                    acceptance,
+                )
+
+            self.assertTrue(observed_entries)
+            self.assertFalse(pair_dir.exists())
+            entries = verify_cloud_ledger(run_root / "cloud_ledger.jsonl")
+            self.assertEqual(entries[-1]["state"], "prune_started")
+            tombstone = run_root / str(entries[-1]["prune_tombstone_relative_path"])
+            self.assertTrue(tombstone.is_dir())
+            uploads_before_resume = list(store.upload_calls)
+
+            result = commit(
+                PublicationCloudTransaction(store=store, run_root=run_root),
+                pair_dir,
+                acceptance,
+            )
+
+            self.assertEqual(result["state"], "local_pruned")
+            self.assertEqual(store.upload_calls, uploads_before_resume)
+            self.assertFalse(pair_dir.exists())
+            self.assertFalse(tombstone.exists())
+
+    def test_crash_after_tombstone_rename_resumes_without_reupload(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            run_root = Path(tmp) / "run"
+            pair_dir, acceptance = prepare_pair(run_root)
+            store = FakeStore()
+
+            def crash_before_first_delete(**_: object) -> None:
+                raise SimulatedCrash("after-tombstone-rename")
+
+            with mock.patch(
+                "publication_cloud_transaction._remove_owned_tombstone_tree",
+                side_effect=crash_before_first_delete,
+            ):
+                with self.assertRaises(SimulatedCrash):
+                    commit(
+                        PublicationCloudTransaction(store=store, run_root=run_root),
+                        pair_dir,
+                        acceptance,
+                    )
+
+            latest = verify_cloud_ledger(run_root / "cloud_ledger.jsonl")[-1]
+            self.assertEqual(latest["state"], "prune_started")
+            tombstone = run_root / str(latest["prune_tombstone_relative_path"])
+            self.assertFalse(pair_dir.exists())
+            self.assertTrue(tombstone.is_dir())
+            uploads_before_resume = list(store.upload_calls)
+
+            result = commit(
+                PublicationCloudTransaction(store=store, run_root=run_root),
+                pair_dir,
+                acceptance,
+            )
+
+            self.assertEqual(result["state"], "local_pruned")
+            self.assertEqual(store.upload_calls, uploads_before_resume)
+            self.assertFalse(tombstone.exists())
+
+    def test_crash_after_delete_before_local_pruned_wal_resumes(self) -> None:
+        class CrashBeforeLocalPruned(PublicationCloudTransaction):
+            crashed = False
+
+            def _append_transition(
+                self, snapshot: object, *, state: str
+            ) -> dict[str, object]:
+                if state == "local_pruned" and not self.crashed:
+                    self.crashed = True
+                    raise SimulatedCrash("before-local-pruned-wal")
+                return super()._append_transition(snapshot, state=state)  # type: ignore[arg-type]
+
+        with tempfile.TemporaryDirectory() as tmp:
+            run_root = Path(tmp) / "run"
+            pair_dir, acceptance = prepare_pair(run_root)
+            store = FakeStore()
+            transaction = CrashBeforeLocalPruned(store=store, run_root=run_root)
+
+            with self.assertRaises(SimulatedCrash):
+                commit(transaction, pair_dir, acceptance)
+
+            latest = verify_cloud_ledger(run_root / "cloud_ledger.jsonl")[-1]
+            self.assertEqual(latest["state"], "prune_started")
+            tombstone = run_root / str(latest["prune_tombstone_relative_path"])
+            self.assertFalse(pair_dir.exists())
+            self.assertFalse(tombstone.exists())
+            self.assertFalse(Path(str(latest["local_archive_path"])).exists())
+            uploads_before_resume = list(store.upload_calls)
+
+            result = commit(
+                PublicationCloudTransaction(store=store, run_root=run_root),
+                pair_dir,
+                acceptance,
+            )
+
+            self.assertEqual(result["state"], "local_pruned")
+            self.assertEqual(store.upload_calls, uploads_before_resume)
+
+    def test_resume_rejects_source_replacement_after_tombstoning(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            run_root = Path(tmp) / "run"
+            pair_dir, acceptance = prepare_pair(run_root)
+            store = FakeStore()
+            crashed = False
+
+            def replace_source_and_crash(entry: str) -> None:
+                nonlocal crashed
+                if crashed:
+                    return
+                crashed = True
+                pair_dir.mkdir(parents=True)
+                (pair_dir / "must-survive.txt").write_text(
+                    "replacement", encoding="utf-8"
+                )
+                raise SimulatedCrash(entry)
+
+            with self.assertRaises(SimulatedCrash):
+                commit(
+                    PublicationCloudTransaction(
+                        store=store,
+                        run_root=run_root,
+                        prune_entry_hook=replace_source_and_crash,
+                    ),
+                    pair_dir,
+                    acceptance,
+                )
+
+            with self.assertRaisesRegex(
+                CloudTransactionError,
+                "source and tombstone both exist|source path was replaced",
+            ):
+                commit(
+                    PublicationCloudTransaction(store=store, run_root=run_root),
+                    pair_dir,
+                    acceptance,
+                )
+            self.assertEqual(
+                (pair_dir / "must-survive.txt").read_text(encoding="utf-8"),
+                "replacement",
+            )
+
+    def test_resume_rejects_tombstone_aba_replacement(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            run_root = Path(tmp) / "run"
+            pair_dir, acceptance = prepare_pair(run_root)
+            store = FakeStore()
+
+            def crash_mid_prune(entry: str) -> None:
+                raise SimulatedCrash(entry)
+
+            with self.assertRaises(SimulatedCrash):
+                commit(
+                    PublicationCloudTransaction(
+                        store=store,
+                        run_root=run_root,
+                        prune_entry_hook=crash_mid_prune,
+                    ),
+                    pair_dir,
+                    acceptance,
+                )
+            latest = verify_cloud_ledger(run_root / "cloud_ledger.jsonl")[-1]
+            tombstone = run_root / str(latest["prune_tombstone_relative_path"])
+            displaced = run_root / "displaced-owned-tombstone"
+            tombstone.rename(displaced)
+            tombstone.mkdir()
+            sentinel = tombstone / "must-survive.txt"
+            sentinel.write_text("replacement", encoding="utf-8")
+
+            with self.assertRaisesRegex(
+                CloudTransactionError, "tombstone identity changed"
+            ):
+                commit(
+                    PublicationCloudTransaction(store=store, run_root=run_root),
+                    pair_dir,
+                    acceptance,
+                )
+            self.assertEqual(sentinel.read_text(encoding="utf-8"), "replacement")
+
+    def test_resume_rejects_tombstone_redirect(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            run_root = root / "run"
+            pair_dir, acceptance = prepare_pair(run_root)
+            store = FakeStore()
+
+            def crash_mid_prune(entry: str) -> None:
+                raise SimulatedCrash(entry)
+
+            with self.assertRaises(SimulatedCrash):
+                commit(
+                    PublicationCloudTransaction(
+                        store=store,
+                        run_root=run_root,
+                        prune_entry_hook=crash_mid_prune,
+                    ),
+                    pair_dir,
+                    acceptance,
+                )
+            latest = verify_cloud_ledger(run_root / "cloud_ledger.jsonl")[-1]
+            tombstone = run_root / str(latest["prune_tombstone_relative_path"])
+            displaced = run_root / "displaced-owned-tombstone"
+            tombstone.rename(displaced)
+            outside = root / "must-survive"
+            outside.mkdir()
+            sentinel = outside / "sentinel.txt"
+            sentinel.write_text("keep", encoding="utf-8")
+            try:
+                tombstone.symlink_to(outside, target_is_directory=True)
+            except (OSError, NotImplementedError):
+                self.skipTest("directory symlinks are unavailable")
+
+            with self.assertRaisesRegex(
+                CloudTransactionError, "not a plain directory"
+            ):
+                commit(
+                    PublicationCloudTransaction(store=store, run_root=run_root),
+                    pair_dir,
+                    acceptance,
+                )
+            self.assertEqual(sentinel.read_text(encoding="utf-8"), "keep")
 
     def test_lost_upload_response_reuses_existing_spool_and_remote_object(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -884,21 +1176,29 @@ class PublicationCloudTransactionTests(unittest.TestCase):
                     )
             self.assertTrue(pair_dir.is_dir())
 
-    def test_successful_prune_calls_rmtree_only_for_exact_recorded_pair(self) -> None:
+    def test_successful_prune_uses_exact_recorded_source_and_tombstone(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             run_root = Path(tmp) / "run"
             pair_dir, acceptance = prepare_pair(run_root)
-            real_rmtree = shutil.rmtree
-            observed: list[Path] = []
+            real_remove = cloud_transaction_module._remove_owned_tombstone_tree
+            observed: list[dict[str, object]] = []
 
-            def guarded_rmtree(path: Path, *args: object, **kwargs: object) -> None:
-                observed.append(Path(path))
-                self.assertEqual(Path(path), pair_dir)
-                real_rmtree(path, *args, **kwargs)
+            def guarded_remove(**kwargs: object) -> None:
+                observed.append(dict(kwargs))
+                self.assertEqual(kwargs["run_root"], run_root)
+                self.assertEqual(
+                    kwargs["source_relative"],
+                    pair_dir.relative_to(run_root),
+                )
+                self.assertEqual(
+                    Path(str(kwargs["tombstone_relative"])).parent,
+                    Path("cloud_prune_tombstones"),
+                )
+                real_remove(**kwargs)
 
             with mock.patch(
-                "publication_cloud_transaction.shutil.rmtree",
-                side_effect=guarded_rmtree,
+                "publication_cloud_transaction._remove_owned_tombstone_tree",
+                side_effect=guarded_remove,
             ):
                 result = commit(
                     PublicationCloudTransaction(store=FakeStore(), run_root=run_root),
@@ -907,7 +1207,7 @@ class PublicationCloudTransactionTests(unittest.TestCase):
                 )
 
             self.assertEqual(result["state"], "local_pruned")
-            self.assertEqual(observed, [pair_dir])
+            self.assertEqual(len(observed), 1)
 
     def test_materialize_restores_pair_only_after_remote_verification(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -945,6 +1245,90 @@ class PublicationCloudTransactionTests(unittest.TestCase):
                 )
             self.assertFalse(restored_pair.exists())
 
+    def test_materialize_rejects_self_consistent_foreign_archive_not_in_ledger(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            run_root = root / "run"
+            pair_dir, acceptance = prepare_pair(run_root)
+            original_store = FakeStore()
+            committed = commit(
+                PublicationCloudTransaction(
+                    store=original_store, run_root=run_root
+                ),
+                pair_dir,
+                acceptance,
+            )
+
+            foreign_pair = root / "foreign" / "attempt-0001"
+            foreign_pair.mkdir(parents=True)
+            (foreign_pair / "foreign-evidence.bin").write_bytes(
+                b"self-consistent-but-not-ledger-authorized\n"
+            )
+            foreign_archive = root / "foreign.tar.zst"
+            build_pair_archive(
+                pair_dir=foreign_pair,
+                archive_path=foreign_archive,
+                compression_level=3,
+            )
+            foreign_payload = foreign_archive.read_bytes()
+            expected_archive_size = int(committed["archive_size_bytes"])
+            padding_size = expected_archive_size - len(foreign_payload)
+            self.assertGreaterEqual(padding_size, 8)
+            # Zstandard skippable frame: keep the foreign tar stream valid and
+            # force its archive size to equal the ledger-pinned archive size,
+            # so this regression exercises the SHA binding rather than only
+            # the size gate.
+            foreign_payload += struct.pack(
+                "<II", 0x184D2A50, padding_size - 8
+            ) + (b"\x00" * (padding_size - 8))
+            self.assertEqual(len(foreign_payload), expected_archive_size)
+            self.assertNotEqual(
+                hashlib.sha256(foreign_payload).hexdigest(),
+                committed["archive_sha256"],
+            )
+
+            class ForeignMaterializeStore(FakeStore):
+                def materialize_remote(
+                    self,
+                    remote_name: str,
+                    *,
+                    destination: Path,
+                    expected_sha256: str,
+                    expected_size: int,
+                ) -> dict[str, object]:
+                    self.verify_remote(
+                        remote_name,
+                        expected_sha256=expected_sha256,
+                        expected_size=expected_size,
+                    )
+                    destination.parent.mkdir(parents=True, exist_ok=True)
+                    destination.write_bytes(foreign_payload)
+                    # Model a compromised/downstream-raced store response that
+                    # repeats ledger fields while publishing a different,
+                    # internally valid tar.zst.
+                    return {
+                        "status": "materialized_and_verified",
+                        "remote_name": remote_name,
+                        "size_bytes": expected_size,
+                        "sha256": expected_sha256,
+                        "destination": str(destination),
+                    }
+
+            malicious = ForeignMaterializeStore()
+            malicious.remote = dict(original_store.remote)
+            destination = root / "materialized"
+            with self.assertRaisesRegex(
+                PairArchiveError, "cloud ledger receipt"
+            ):
+                PublicationCloudTransaction(
+                    store=malicious, run_root=run_root
+                ).materialize_pair(
+                    pair_sequence=1,
+                    pair_id="pair-0001",
+                    destination_root=destination,
+                )
+            self.assertFalse((destination / "attempt-0001").exists())
+
     def test_materialize_never_reuses_or_deletes_predictable_temporary_path(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             run_root = Path(tmp) / "run"
@@ -967,6 +1351,207 @@ class PublicationCloudTransactionTests(unittest.TestCase):
 
             self.assertTrue(Path(str(restored["pair_path"])).is_dir())
             self.assertEqual(sentinel.read_bytes(), b"must-survive")
+
+    def test_materialize_directory_recovers_each_physical_crash_window(self) -> None:
+        for crash_step in (
+            "mid_write",
+            "post_fsync_pre_publish",
+            "post_publish_pre_parent_fsync",
+        ):
+            with self.subTest(crash_step=crash_step), tempfile.TemporaryDirectory() as tmp:
+                run_root = Path(tmp) / "run"
+                pair_dir, acceptance = prepare_pair(run_root)
+                store = FakeStore()
+                commit(
+                    PublicationCloudTransaction(store=store, run_root=run_root),
+                    pair_dir,
+                    acceptance,
+                )
+                destination = Path(tmp) / "materialized"
+                final = destination / "attempt-0001"
+                faulted = False
+
+                def fault(step: str, path: Path) -> None:
+                    nonlocal faulted
+                    self.assertEqual(path, final)
+                    if step == crash_step and not faulted:
+                        faulted = True
+                        raise SimulatedCrash(step)
+
+                with self.assertRaises(SimulatedCrash):
+                    PublicationCloudTransaction(
+                        store=store,
+                        run_root=run_root,
+                        materialize_directory_physical_fault=fault,
+                    ).materialize_pair(
+                        pair_sequence=1,
+                        pair_id="pair-0001",
+                        destination_root=destination,
+                    )
+                published_inode = final.stat().st_ino if final.exists() else None
+                staged_inodes = {
+                    path.stat().st_ino
+                    for path in destination.glob(".attempt-0001.*.tmp")
+                    if path.is_dir()
+                }
+
+                restored = PublicationCloudTransaction(
+                    store=store,
+                    run_root=run_root,
+                ).materialize_pair(
+                    pair_sequence=1,
+                    pair_id="pair-0001",
+                    destination_root=destination,
+                )
+                self.assertTrue(faulted)
+                self.assertEqual(
+                    Path(str(restored["pair_path"])),
+                    final,
+                )
+                if published_inode is not None:
+                    self.assertEqual(final.stat().st_ino, published_inode)
+                elif crash_step == "post_fsync_pre_publish":
+                    self.assertIn(final.stat().st_ino, staged_inodes)
+
+    def test_materialize_directory_rejects_racing_foreign_and_rebind(self) -> None:
+        for attack_step in (
+            "post_fsync_pre_publish",
+            "post_publish_pre_parent_fsync",
+        ):
+            with self.subTest(attack_step=attack_step), tempfile.TemporaryDirectory() as tmp:
+                run_root = Path(tmp) / "run"
+                pair_dir, acceptance = prepare_pair(run_root)
+                store = FakeStore()
+                commit(
+                    PublicationCloudTransaction(store=store, run_root=run_root),
+                    pair_dir,
+                    acceptance,
+                )
+                destination = Path(tmp) / "materialized"
+                final = destination / "attempt-0001"
+
+                def attack(step: str, path: Path) -> None:
+                    if step != attack_step:
+                        return
+                    if path.exists():
+                        shutil.rmtree(path)
+                    path.mkdir()
+                    (path / "foreign.txt").write_bytes(b"foreign-materialization\n")
+
+                with self.assertRaises(PairArchiveError):
+                    PublicationCloudTransaction(
+                        store=store,
+                        run_root=run_root,
+                        materialize_directory_physical_fault=attack,
+                    ).materialize_pair(
+                        pair_sequence=1,
+                        pair_id="pair-0001",
+                        destination_root=destination,
+                    )
+                foreign_inode = final.stat().st_ino
+                foreign_payload = (final / "foreign.txt").read_bytes()
+                with self.assertRaises(PairArchiveError):
+                    PublicationCloudTransaction(
+                        store=store,
+                        run_root=run_root,
+                    ).materialize_pair(
+                        pair_sequence=1,
+                        pair_id="pair-0001",
+                        destination_root=destination,
+                    )
+                self.assertEqual(final.stat().st_ino, foreign_inode)
+                self.assertEqual(
+                    (final / "foreign.txt").read_bytes(),
+                    foreign_payload,
+                )
+
+    def test_local_receipt_recovers_each_physical_crash_window(self) -> None:
+        for crash_step in (
+            "mid_write",
+            "post_fsync_pre_publish",
+            "post_publish_pre_parent_fsync",
+        ):
+            with self.subTest(crash_step=crash_step), tempfile.TemporaryDirectory() as tmp:
+                run_root = Path(tmp) / "run"
+                pair_dir, acceptance = prepare_pair(run_root)
+                store = FakeStore()
+                faulted = False
+
+                def fault(step: str, path: Path) -> None:
+                    nonlocal faulted
+                    self.assertEqual(path.parent, run_root / "cloud_receipts")
+                    if step == crash_step and not faulted:
+                        faulted = True
+                        raise SimulatedCrash(step)
+
+                with self.assertRaises(SimulatedCrash):
+                    commit(
+                        PublicationCloudTransaction(
+                            store=store,
+                            run_root=run_root,
+                            immutable_receipt_physical_fault=fault,
+                        ),
+                        pair_dir,
+                        acceptance,
+                    )
+                receipts = tuple((run_root / "cloud_receipts").glob("*.receipt.json"))
+                self.assertLessEqual(len(receipts), 1)
+                published_inode = receipts[0].stat().st_ino if receipts else None
+
+                result = commit(
+                    PublicationCloudTransaction(store=store, run_root=run_root),
+                    pair_dir,
+                    acceptance,
+                )
+                receipt_path = Path(str(result["local_receipt_path"]))
+                self.assertTrue(faulted)
+                self.assertEqual(result["state"], "local_pruned")
+                if published_inode is not None:
+                    self.assertEqual(receipt_path.stat().st_ino, published_inode)
+
+    def test_local_receipt_rejects_racing_foreign_and_rebound_final(self) -> None:
+        for attack_step in (
+            "post_fsync_pre_publish",
+            "post_publish_pre_parent_fsync",
+        ):
+            with self.subTest(attack_step=attack_step), tempfile.TemporaryDirectory() as tmp:
+                run_root = Path(tmp) / "run"
+                pair_dir, acceptance = prepare_pair(run_root)
+                store = FakeStore()
+                attacked_path: Path | None = None
+
+                def attack(step: str, path: Path) -> None:
+                    nonlocal attacked_path
+                    if step != attack_step:
+                        return
+                    attacked_path = path
+                    if path.exists():
+                        path.unlink()
+                    path.write_bytes(b"foreign-cloud-receipt\n")
+                    path.chmod(0o444)
+
+                with self.assertRaises(CloudTransactionError):
+                    commit(
+                        PublicationCloudTransaction(
+                            store=store,
+                            run_root=run_root,
+                            immutable_receipt_physical_fault=attack,
+                        ),
+                        pair_dir,
+                        acceptance,
+                    )
+                assert attacked_path is not None
+                foreign_inode = attacked_path.stat().st_ino
+                foreign_payload = attacked_path.read_bytes()
+                with self.assertRaises(CloudTransactionError):
+                    commit(
+                        PublicationCloudTransaction(store=store, run_root=run_root),
+                        pair_dir,
+                        acceptance,
+                    )
+                self.assertEqual(attacked_path.stat().st_ino, foreign_inode)
+                self.assertEqual(attacked_path.read_bytes(), foreign_payload)
+                self.assertTrue(pair_dir.is_dir())
 
 
 if __name__ == "__main__":

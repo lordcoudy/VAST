@@ -8750,21 +8750,32 @@ time.sleep(600)
                                 ],
                                 False,
                             )
-                            self.assertEqual(
+                            self.assertIn(
                                 document["filesystem_custody"],
-                                {
-                                    "statfs_magic": executor._LINUX_V9FS_MAGIC,
-                                    "statfs_magic_hex": "0x01021997",
-                                    "filesystem_type": (
-                                        "drvfs_9p_without_metadata_observed"
-                                    ),
-                                    "mount_observation": (
-                                        "drvfs_9p_effective_mode_projection"
-                                    ),
-                                    "run_root_effective_mode": "0777",
-                                    "requested_file_mode": "0400",
-                                    "file_effective_mode": "0555",
-                                },
+                                (
+                                    {
+                                        "statfs_magic": executor._LINUX_EXT_FILESYSTEM_MAGIC,
+                                        "statfs_magic_hex": "0x0000ef53",
+                                        "filesystem_type": "linux_ext_native",
+                                        "mount_observation": "native_ext_mode_enforcement",
+                                        "run_root_effective_mode": "0700",
+                                        "requested_file_mode": "0400",
+                                        "file_effective_mode": "0400",
+                                    },
+                                    {
+                                        "statfs_magic": executor._LINUX_V9FS_MAGIC,
+                                        "statfs_magic_hex": "0x01021997",
+                                        "filesystem_type": (
+                                            "drvfs_9p_without_metadata_observed"
+                                        ),
+                                        "mount_observation": (
+                                            "drvfs_9p_effective_mode_projection"
+                                        ),
+                                        "run_root_effective_mode": "0777",
+                                        "requested_file_mode": "0400",
+                                        "file_effective_mode": "0555",
+                                    },
+                                ),
                             )
                             self.assertIs(
                                 document["confidentiality_attested"],
@@ -9352,6 +9363,17 @@ time.sleep(600)
         identities: dict[str, executor.FileIdentity] = {}
         for branch in pilot.BRANCHES:
             document, mounts, image_labels = self._v2_mount_fixture(branch)
+            captured_prefix = "/mnt/e/STUDY/VAST/"
+            replacement = ROOT.resolve().as_posix() + "/"
+            document = copy.deepcopy(document)
+            for collection in (
+                document["HostConfig"]["Mounts"],
+                document.get("Mounts") or [],
+            ):
+                for item in collection:
+                    source = item.get("Source")
+                    if isinstance(source, str) and source.startswith(captured_prefix):
+                        item["Source"] = replacement + source[len(captured_prefix):]
             documents[branch] = document
             if expected_image_labels is None:
                 expected_image_labels = image_labels

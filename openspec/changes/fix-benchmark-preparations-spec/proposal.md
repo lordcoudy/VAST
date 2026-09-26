@@ -7,6 +7,7 @@ VAST cannot safely begin its full benchmark while A269 qualification is failed, 
 - Repair the native payload/hash binding, enforce the existing 67,108,864-byte limit before copying, and execute its regression in normal Linux test discovery.
 - Retain bounded integrity-failure evidence and correct request accounting without changing the historical guardian lifecycle schema or weakening rejection.
 - Default full-publication service/supervisor unexpected retries to zero; preserve transient exit 75 recovery and permanent exit 78 stops.
+- Integrate the OpenVINO GVA and GStreamer Custom native-probe qualification path, which has never completed a cell: type-safe reset queue reads, a 4096-task container ceiling, decode artifacts limited to real factories, identifier rules that admit every frozen branch name, native policy identities taken from the frozen qualification-v2 capability manifest for both resources, and a container-engine pin the qualification bundle can satisfy. Require nonpromoting pre-check replays of native-probe cell types before a 32-cell attempt.
 - Renew affected images, parity, source identities and final exact-byte tests; then perform a fresh 32-cell qualification, Q4 560 phase-A runs/boundary/560 phase-B runs and 280 sizing pairs.
 - Obtain dated cloud-capacity attestation, complete current preflight, and produce a validated, unstarted service package and launch handoff.
 - Replace corrupted command examples and stale operating guidance with a checked, self-contained preparation runbook and evidence checklist.

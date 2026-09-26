@@ -152,6 +152,28 @@ class BackendRuntimeValidationRunnerAuthorityTest(unittest.TestCase):
         self.assertIs(assessment["execution_authorized"], False)
         self.assertIs(assessment["validation_records_authenticated"], False)
 
+    @unittest.skipUnless(os.name == "posix", "POSIX atime regression")
+    def test_posix_physical_read_accepts_forced_old_atime(self) -> None:
+        old_atime_ns = 946684800 * 1_000_000_000
+        for path in (self.root / "runtime").rglob("*"):
+            if path.is_file():
+                observed = path.stat()
+                os.utime(
+                    path,
+                    ns=(old_atime_ns, int(observed.st_mtime_ns)),
+                    follow_symlinks=False,
+                )
+
+        authority = self.build()
+        assessment = assess_backend_runtime_validation_runner_authority(
+            authority,
+            project_root=self.root,
+            expected_runner_authority_sha256=authority[
+                "runner_authority_sha256"
+            ],
+        )
+        self.assertEqual(assessment["status"], "physically_valid")
+
     def test_invocation_contract_is_exact_isolated_shell_free_and_self_hashed(self) -> None:
         invocation = runner_invocation_contract()
         self.assertEqual(invocation["argv_template"][:8], [

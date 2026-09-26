@@ -499,7 +499,10 @@ def _terminal_identities(
                 f"DeepStream {branch}/{resource} accepted worker pin drifted",
             )
             result[(branch, resource)] = {
-                "terminal_detector": str(binding["model_id"]),
+                "terminal_detector": (
+                    f"{binding['model_id']};"
+                    f"model_sha256={binding['source_model_sha256']}"
+                ),
                 "terminal_backend": backend,
                 "worker_image_id": worker_image,
                 "worker_implementation_sha256": worker_implementation,

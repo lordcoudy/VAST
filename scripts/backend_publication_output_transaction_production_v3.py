@@ -43,11 +43,12 @@ from backend_publication_process_supervisor_v3 import (
 
 
 SCHEMA_VERSION = 3
+DURABLE_OUTPUT_SCHEMA_VERSION = 4
 PRODUCTION_EXECUTION_SCOPE = "full_publication_measurement_v3"
 ARM_AUTHORITY_KIND = (
     "vast_backend_publication_production_arm_contract_file_authority_v3"
 )
-FENCE_KIND = "vast_backend_publication_production_launch_fence_v3"
+FENCE_KIND = "vast_backend_publication_production_launch_fence_v4"
 SEMANTIC_REQUEST_KIND = (
     "vast_backend_publication_production_semantic_evidence_request_v3"
 )
@@ -57,10 +58,10 @@ SEMANTIC_ASSESSMENT_KIND = (
 SEMANTIC_VALIDATOR_IDENTITY_KIND = (
     "vast_backend_publication_production_semantic_validator_identity_v3"
 )
-RESULT_KIND = "vast_backend_publication_production_launcher_result_v3"
-RECEIPT_KIND = "vast_backend_publication_production_output_receipt_v3"
+RESULT_KIND = "vast_backend_publication_production_launcher_result_v4"
+RECEIPT_KIND = "vast_backend_publication_production_output_receipt_v4"
 RECEIPT_AUTHORITY_KIND = (
-    "vast_backend_publication_production_output_receipt_authority_v3"
+    "vast_backend_publication_production_output_receipt_authority_v4"
 )
 PRODUCTION_RUNTIME_BIND_MOUNT_KIND = (
     "vast_backend_publication_production_runtime_bind_mount_v3"
@@ -117,6 +118,7 @@ BackendPublicationOutputProductionV3Error = (
     engineering.BackendPublicationOutputTransactionV3Error
 )
 SemanticEvidenceValidator = Callable[[dict[str, object]], Mapping[str, Any]]
+DurableParentArtifactPinSink = Callable[[dict[str, Any]], None]
 
 
 def run_backend_publication_process_v3(
@@ -128,6 +130,10 @@ def run_backend_publication_process_v3(
     _cwd_descriptor: int | None = None,
     _supervisor_descriptor: int | None = None,
     _invocation_descriptor: int | None = None,
+    durable_journal_directory: Path | None = None,
+    launch_authorization_path: Path | None = None,
+    launch_authorization_sha256: str | None = None,
+    launch_barrier: Callable[[], None] | None = None,
 ) -> process_supervisor.BackendPublicationProcessRunV3:
     """Production-only held-fd facade; the engineering supervisor ABI is intact."""
 
@@ -143,7 +149,14 @@ def run_backend_publication_process_v3(
             raise BackendPublicationProcessSupervisorV3Error(
                 "production POSIX held descriptors were supplied on Windows"
             )
-        return _run_backend_publication_process_v3(argv, cwd=cwd)
+        return process_supervisor._run_backend_publication_process_durable_v3(  # noqa: SLF001
+            argv,
+            cwd=cwd,
+            durable_journal_directory=durable_journal_directory,
+            launch_authorization_path=launch_authorization_path,
+            launch_authorization_sha256=launch_authorization_sha256,
+            launch_barrier=launch_barrier,
+        )
     if any(type(value) is not int or value < 3 for value in descriptors):
         raise BackendPublicationProcessSupervisorV3Error(
             "production POSIX held descriptors are unavailable"
@@ -156,6 +169,10 @@ def run_backend_publication_process_v3(
         cwd_descriptor=_cwd_descriptor,
         supervisor_descriptor=_supervisor_descriptor,
         invocation_descriptor=_invocation_descriptor,
+        durable_journal_directory=durable_journal_directory,
+        launch_authorization_path=launch_authorization_path,
+        launch_authorization_sha256=launch_authorization_sha256,
+        launch_barrier=launch_barrier,
     )
 
 
@@ -460,8 +477,8 @@ def preflight_production_runtime_bind_mount_v3(
 def _validate_durable_parent_artifact_pin(
     value: Mapping[str, Any] | None,
     *,
-    expected_state: str,
-    held: engineering._HeldFile,  # noqa: SLF001
+    expected_states: frozenset[str],
+    descriptor: Mapping[str, Any],
 ) -> dict[str, Any]:
     """Validate a pin loaded from durable storage outside the child namespace.
 
@@ -470,20 +487,26 @@ def _validate_durable_parent_artifact_pin(
     artifact descriptor before losing the original live transaction context.
     """
 
-    if type(value) is not dict or set(value) != {
+    if (
+        not expected_states
+        or not expected_states <= {"result", "receipt_intent", "committed"}
+        or type(value) is not dict
+        or set(value) != {
         "state",
         "path",
         "size_bytes",
         "sha256",
-    }:
+        }
+    ):
         raise BackendPublicationOutputProductionV3Error(
             "production resume durable parent artifact pin fields drifted"
         )
-    if value.get("state") != expected_state:
+    state = value.get("state")
+    if state not in expected_states:
         raise BackendPublicationOutputProductionV3Error(
             "production resume durable parent artifact pin state drifted"
         )
-    descriptor = engineering._descriptor(  # noqa: SLF001
+    pinned_descriptor = engineering._descriptor(  # noqa: SLF001
         {
             "path": value.get("path"),
             "size_bytes": value.get("size_bytes"),
@@ -492,11 +515,58 @@ def _validate_durable_parent_artifact_pin(
         label="durable parent artifact pin",
         allow_empty=False,
     )
-    if descriptor != held.file_descriptor():
+    observed_descriptor = engineering._descriptor(  # noqa: SLF001
+        dict(descriptor),
+        label="durable parent artifact observation",
+        allow_empty=False,
+    )
+    if pinned_descriptor != observed_descriptor:
         raise BackendPublicationOutputProductionV3Error(
             "production resume durable parent artifact pin raw descriptor drifted"
         )
-    return {"state": expected_state, **descriptor}
+    return {"state": state, **pinned_descriptor}
+
+
+def _persist_durable_parent_artifact_pin(
+    sink: DurableParentArtifactPinSink | None,
+    *,
+    state: str,
+    descriptor: Mapping[str, Any],
+) -> None:
+    """Publish a parent-owned resume pin before the next transaction commit.
+
+    The sink must durably persist the supplied descriptor outside the child
+    output namespace before returning.  A crash after this callback can then
+    resume a result-only or committed transaction without reconstructing
+    authority from child-controlled files.
+    """
+
+    if sink is None:
+        return
+    if state not in {"result", "receipt_intent", "committed"}:
+        raise BackendPublicationOutputProductionV3Error(
+            "production durable parent artifact pin state is invalid"
+        )
+    normalized = engineering._descriptor(  # noqa: SLF001
+        dict(descriptor),
+        label="durable parent artifact observation",
+        allow_empty=False,
+    )
+    expected_path = (
+        LAUNCHER_RESULT_FILENAME
+        if state == "result"
+        else OUTPUT_RECEIPT_FILENAME
+    )
+    if normalized["path"] != expected_path:
+        raise BackendPublicationOutputProductionV3Error(
+            "production durable parent artifact pin path drifted"
+        )
+    pin = {"state": state, **normalized}
+    outcome = sink(copy.deepcopy(pin))
+    if outcome is not None:
+        raise BackendPublicationOutputProductionV3Error(
+            "production durable parent artifact pin sink returned a value"
+        )
 
 
 def _validator_code_objects(code: types.CodeType) -> Iterable[types.CodeType]:
@@ -629,12 +699,14 @@ def prepare_backend_publication_production_transaction_v3(
     *,
     output_dir: Path,
     arm_contract: Mapping[str, Any],
+    after_bootstrap_step: Callable[[str], None] | None = None,
 ) -> dict[str, Any]:
     """Create a fresh transaction namespace and immutable ABI-v3 arm."""
 
     prepared = engineering.prepare_backend_publication_engineering_transaction_v3(
         output_dir=output_dir,
         arm_contract=arm_contract,
+        after_bootstrap_step=after_bootstrap_step,
     )
     return _arm_authority_material(prepared)
 
@@ -645,7 +717,7 @@ def _fence_material(
     dispatch = arm["dispatch_resolution"]
     execution = arm["full_publication_execution_binding"]
     value: dict[str, Any] = {
-        "schema_version": SCHEMA_VERSION,
+        "schema_version": DURABLE_OUTPUT_SCHEMA_VERSION,
         "artifact_kind": FENCE_KIND,
         "status": "production_launch_fenced_not_yet_accepted",
         "execution_scope": PRODUCTION_EXECUTION_SCOPE,
@@ -774,6 +846,7 @@ def _result_material(
     process_observation: Mapping[str, Any],
     evidence_descriptors: Sequence[Mapping[str, Any]],
     semantic_assessment: Mapping[str, Any],
+    durable_journal_response: Mapping[str, Any],
 ) -> dict[str, Any]:
     dispatch = arm["dispatch_resolution"]
     execution = arm["full_publication_execution_binding"]
@@ -782,7 +855,7 @@ def _result_material(
         for item in evidence_descriptors
     ]
     value: dict[str, Any] = {
-        "schema_version": SCHEMA_VERSION,
+        "schema_version": DURABLE_OUTPUT_SCHEMA_VERSION,
         "artifact_kind": RESULT_KIND,
         "status": "completed_publishable_process_evidence_accepted",
         "execution_scope": PRODUCTION_EXECUTION_SCOPE,
@@ -795,6 +868,9 @@ def _result_material(
         ),
         "launch_fence_content_sha256": fence["fence_sha256"],
         "process_observation": copy.deepcopy(dict(process_observation)),
+        "durable_process_journal_response": copy.deepcopy(
+            dict(durable_journal_response)
+        ),
         "stdout_capture": engineering._descriptor(  # noqa: SLF001
             dict(stdout_descriptor), label="stdout capture"
         ),
@@ -850,7 +926,7 @@ def _receipt_material(
         for item in evidence_descriptors
     ]
     value: dict[str, Any] = {
-        "schema_version": SCHEMA_VERSION,
+        "schema_version": DURABLE_OUTPUT_SCHEMA_VERSION,
         "artifact_kind": RECEIPT_KIND,
         "status": "committed_publishable_launcher_output",
         "execution_scope": PRODUCTION_EXECUTION_SCOPE,
@@ -862,6 +938,9 @@ def _receipt_material(
             dict(fence_descriptor), label="launch fence", allow_empty=False
         ),
         "launch_fence_content_sha256": fence["fence_sha256"],
+        "durable_process_journal_response": copy.deepcopy(
+            result["durable_process_journal_response"]
+        ),
         "stdout_capture": engineering._descriptor(  # noqa: SLF001
             dict(stdout_descriptor), label="stdout capture"
         ),
@@ -909,7 +988,7 @@ def _authority_material(
 ) -> dict[str, Any]:
     execution = arm["full_publication_execution_binding"]
     value: dict[str, Any] = {
-        "schema_version": SCHEMA_VERSION,
+        "schema_version": DURABLE_OUTPUT_SCHEMA_VERSION,
         "artifact_kind": RECEIPT_AUTHORITY_KIND,
         "status": "accepted_publishable_backend_output",
         "execution_scope": PRODUCTION_EXECUTION_SCOPE,
@@ -919,6 +998,9 @@ def _authority_material(
         "content_sha256": receipt["receipt_sha256"],
         "arm_contract": copy.deepcopy(receipt["arm_contract"]),
         "launcher_result": copy.deepcopy(receipt["launcher_result"]),
+        "durable_process_journal_response": copy.deepcopy(
+            receipt["durable_process_journal_response"]
+        ),
         "evidence_files": copy.deepcopy(receipt["evidence_files"]),
         "evidence_aggregate_sha256": receipt["evidence_aggregate_sha256"],
         "semantic_evidence_assessment": copy.deepcopy(
@@ -964,6 +1046,9 @@ def _validate_result_material(
         cwd=cwd,
         process_contract=process_contract,
     )
+    journal_response = engineering._validate_durable_journal_response(  # noqa: SLF001
+        observed.get("durable_process_journal_response"), arm=arm
+    )
     expected = _result_material(
         arm,
         arm_descriptor=arm_descriptor,
@@ -974,6 +1059,7 @@ def _validate_result_material(
         process_observation=process,
         evidence_descriptors=engineering._evidence_descriptors(evidence),  # noqa: SLF001
         semantic_assessment=semantic_assessment,
+        durable_journal_response=journal_response,
     )
     if observed != expected:
         raise BackendPublicationOutputProductionV3Error(
@@ -1046,6 +1132,7 @@ def run_or_resume_backend_publication_production_transaction_v3(
     expected_semantic_validator_identity_sha256: str,
     semantic_evidence_validator: SemanticEvidenceValidator,
     expected_durable_parent_artifact_pin: Mapping[str, Any] | None = None,
+    durable_parent_artifact_pin_sink: DurableParentArtifactPinSink | None = None,
     expected_production_runtime_bind_mount: Mapping[str, Any] | None = None,
     _fault_hook: Callable[[str], None] | None = None,
     _allow_spawn: bool = True,
@@ -1097,6 +1184,7 @@ def run_or_resume_backend_publication_production_transaction_v3(
     primary: BaseException | None = None
     semantic_commit = False
     receipt_hold: engineering._HeldFile | None = None  # noqa: SLF001
+    resume_parent_pin_state: str | None = None
     try:
         output_hold = engineering._DirectoryHold(output_path)  # noqa: SLF001
         project_hold = engineering._DirectoryHold(root_path)  # noqa: SLF001
@@ -1243,30 +1331,58 @@ def run_or_resume_backend_publication_production_transaction_v3(
         states = engineering._expected_sets(evidence_names)  # noqa: SLF001
         observed_names = output_hold.names()
 
-        if observed_names == states["prepared"]:
+        resumable_partial = (
+            LAUNCH_FENCE_FILENAME in observed_names
+            and observed_names < states["result"]
+            and observed_names <= states["result"]
+        )
+        if observed_names == states["prepared"] or resumable_partial:
             if expected_durable_parent_artifact_pin is not None:
                 raise BackendPublicationOutputProductionV3Error(
-                    "production prepared transaction received a stale durable parent artifact pin"
+                    "production pending transaction received a stale durable parent artifact pin"
                 )
             if _allow_spawn is not True:
                 raise BackendPublicationOutputProductionV3Error(
-                    "production read-only validation cannot spawn a prepared arm"
+                    "production read-only validation cannot spawn or attach a pending arm"
                 )
             fence = _fence_material(arm, arm_descriptor=arm_descriptor)
-            fence_hold = engineering._create_new_held(  # noqa: SLF001
-                output_hold,
-                LAUNCH_FENCE_FILENAME,
-                engineering._canonical_file_bytes(fence),  # noqa: SLF001
-                label="production launch fence",
-                limit=MAX_CONTROL_JSON_BYTES,
-                allow_empty=False,
+            fence_payload = engineering._canonical_file_bytes(fence)  # noqa: SLF001
+            fence_hold: engineering._HeldFile | None = None  # noqa: SLF001
+
+            def commit_launch_barrier() -> None:
+                nonlocal fence_hold
+                if fence_hold is not None:
+                    fence_hold.verify()
+                    return
+                fence_hold = engineering._create_new_held(  # noqa: SLF001
+                    output_hold,
+                    LAUNCH_FENCE_FILENAME,
+                    fence_payload,
+                    label="production launch fence",
+                    limit=MAX_CONTROL_JSON_BYTES,
+                    allow_empty=False,
+                )
+                file_holds.append(fence_hold)
+                if _fault_hook is not None:
+                    _fault_hook("after_fence_commit")
+
+            journal_name = (
+                ".backend-publication-process-journal-v1-"
+                + str(arm["contract_sha256"])
             )
-            file_holds.append(fence_hold)
-            engineering._assert_exact_namespace(  # noqa: SLF001
-                output_hold, states["fenced"], label="production fenced transaction"
-            )
-            if _fault_hook is not None:
-                _fault_hook("after_fence_commit")
+            try:
+                with engineering.PhysicalRootCustodyV1.open(
+                    output_path.parent,
+                    label="production backend process journal parent",
+                ) as journal_parent:
+                    journal_path, _created = journal_parent.ensure_directory_owned(
+                        journal_name,
+                        label="production backend process journal",
+                    )
+            except engineering.PublicationPhysicalIoV1Error as error:
+                raise BackendPublicationOutputProductionV3Error(
+                    "production backend process journal cannot be held"
+                ) from error
             try:
                 process_options: dict[str, int] = {}
                 if os.name != "nt":
@@ -1281,11 +1397,23 @@ def run_or_resume_backend_publication_production_transaction_v3(
                     command,
                     cwd=root_path,
                     **process_options,
+                    durable_journal_directory=journal_path,
+                    launch_authorization_path=(
+                        output_path / LAUNCH_FENCE_FILENAME
+                    ),
+                    launch_authorization_sha256=hashlib.sha256(
+                        fence_payload
+                    ).hexdigest(),
+                    launch_barrier=commit_launch_barrier,
                 )
             except BackendPublicationProcessSupervisorV3Error as error:
                 raise BackendPublicationOutputProductionV3Error(
                     f"production backend v3 process failed: {error}"
                 ) from error
+            if fence_hold is None:
+                raise BackendPublicationOutputProductionV3Error(
+                    "production backend journal returned without launch fence custody"
+                )
             process_observation = engineering._validate_process_observation(  # noqa: SLF001
                 process_run.observation,
                 stdout=process_run.stdout,
@@ -1306,11 +1434,15 @@ def run_or_resume_backend_publication_production_transaction_v3(
                 invocation_hold.verify()
                 assert supervisor_parent is not None
                 supervisor_parent.verify()
-            engineering._assert_exact_namespace(  # noqa: SLF001
-                output_hold,
-                states["fenced"] | set(evidence_names),
-                label="production launcher-completed transaction",
-            )
+            expected_after_child = states["fenced"] | set(evidence_names)
+            current_after_child = output_hold.names()
+            if not (
+                expected_after_child <= current_after_child
+                and current_after_child <= states["captured"]
+            ):
+                raise BackendPublicationOutputProductionV3Error(
+                    "production launcher-completed transaction namespace drifted"
+                )
             evidence_holds = engineering._open_evidence(  # noqa: SLF001
                 output_hold, evidence_names
             )
@@ -1358,6 +1490,12 @@ def run_or_resume_backend_publication_production_transaction_v3(
                     evidence_holds
                 ),
                 semantic_assessment=semantic_assessment,
+                durable_journal_response=(
+                    engineering._validate_durable_journal_response(  # noqa: SLF001
+                        process_run.durable_journal_response,
+                        arm=arm,
+                    )
+                ),
             )
             result_hold = engineering._create_new_held(  # noqa: SLF001
                 output_hold,
@@ -1372,6 +1510,11 @@ def run_or_resume_backend_publication_production_transaction_v3(
                 output_hold,
                 states["result"],
                 label="production result transaction",
+            )
+            _persist_durable_parent_artifact_pin(
+                durable_parent_artifact_pin_sink,
+                state="result",
+                descriptor=result_hold.file_descriptor(),
             )
             if _fault_hook is not None:
                 _fault_hook("after_result_commit")
@@ -1426,11 +1569,33 @@ def run_or_resume_backend_publication_production_transaction_v3(
                     allow_empty=False,
                 )
                 file_holds.append(receipt_hold)
-            _validate_durable_parent_artifact_pin(
-                expected_durable_parent_artifact_pin,
-                expected_state=resume_state,
-                held=result_hold if resume_state == "result" else receipt_hold,
-            )
+            if resume_state == "result":
+                if expected_durable_parent_artifact_pin.get("state") == "result":
+                    checked_parent_pin = _validate_durable_parent_artifact_pin(
+                        expected_durable_parent_artifact_pin,
+                        expected_states=frozenset({"result"}),
+                        descriptor=result_hold.file_descriptor(),
+                    )
+                else:
+                    # A receipt intent names a deterministic receipt that does
+                    # not exist yet.  Its descriptor is checked after the held
+                    # result has regenerated the exact receipt bytes.
+                    checked_parent_pin = copy.deepcopy(
+                        dict(expected_durable_parent_artifact_pin)
+                    )
+                    if checked_parent_pin.get("state") != "receipt_intent":
+                        raise BackendPublicationOutputProductionV3Error(
+                            "production resume durable parent artifact pin state drifted"
+                        )
+                resume_parent_pin_state = str(checked_parent_pin["state"])
+            else:
+                assert receipt_hold is not None
+                checked_parent_pin = _validate_durable_parent_artifact_pin(
+                    expected_durable_parent_artifact_pin,
+                    expected_states=frozenset({"receipt_intent", "committed"}),
+                    descriptor=receipt_hold.file_descriptor(),
+                )
+                resume_parent_pin_state = str(checked_parent_pin["state"])
             fence = _validate_fence(
                 engineering._load_control(  # noqa: SLF001
                     fence_hold, label="production launch fence"
@@ -1518,6 +1683,24 @@ def run_or_resume_backend_publication_production_transaction_v3(
                 receipt_descriptor=receipt_descriptor,
                 receipt=receipt,
             )
+            if resume_parent_pin_state == "receipt_intent":
+                _validate_durable_parent_artifact_pin(
+                    expected_durable_parent_artifact_pin,
+                    expected_states=frozenset({"receipt_intent"}),
+                    descriptor=receipt_descriptor,
+                )
+                if durable_parent_artifact_pin_sink is None:
+                    raise BackendPublicationOutputProductionV3Error(
+                        "production receipt-intent resume requires its durable parent sink"
+                    )
+            else:
+                _persist_durable_parent_artifact_pin(
+                    durable_parent_artifact_pin_sink,
+                    state="receipt_intent",
+                    descriptor=receipt_descriptor,
+                )
+            if _fault_hook is not None:
+                _fault_hook("after_receipt_intent_commit")
             receipt_hold = engineering._create_new_held(  # noqa: SLF001
                 output_hold,
                 OUTPUT_RECEIPT_FILENAME,
@@ -1527,6 +1710,13 @@ def run_or_resume_backend_publication_production_transaction_v3(
                 allow_empty=False,
             )
             file_holds.append(receipt_hold)
+            if _fault_hook is not None:
+                _fault_hook("after_receipt_file_commit")
+            _persist_durable_parent_artifact_pin(
+                durable_parent_artifact_pin_sink,
+                state="committed",
+                descriptor=receipt_hold.file_descriptor(),
+            )
             semantic_commit = True
             if _fault_hook is not None:
                 _fault_hook("after_receipt_commit")
@@ -1584,6 +1774,22 @@ def run_or_resume_backend_publication_production_transaction_v3(
             receipt_descriptor=receipt_hold.file_descriptor(),
             receipt=receipt,
         )
+        if resume_parent_pin_state == "receipt_intent":
+            if _allow_finalize is not True:
+                raise BackendPublicationOutputProductionV3Error(
+                    "production read-only validation cannot promote a receipt intent"
+                )
+            if durable_parent_artifact_pin_sink is None:
+                raise BackendPublicationOutputProductionV3Error(
+                    "production committed receipt-intent resume requires its durable parent sink"
+                )
+            _persist_durable_parent_artifact_pin(
+                durable_parent_artifact_pin_sink,
+                state="committed",
+                descriptor=receipt_hold.file_descriptor(),
+            )
+            if _fault_hook is not None:
+                _fault_hook("after_receipt_intent_promotion")
         semantic_commit = True
         return authority
     except BaseException as error:
@@ -1612,7 +1818,13 @@ def validate_backend_publication_production_transaction_v3(
     """Read-only validate a committed production transaction."""
 
     if any(
-        name in kwargs for name in ("_allow_spawn", "_allow_finalize", "_fault_hook")
+        name in kwargs
+        for name in (
+            "_allow_spawn",
+            "_allow_finalize",
+            "_fault_hook",
+            "durable_parent_artifact_pin_sink",
+        )
     ):
         raise BackendPublicationOutputProductionV3Error(
             "production read-only validation received unsafe private controls"
@@ -1627,6 +1839,7 @@ def validate_backend_publication_production_transaction_v3(
 __all__ = [
     "ARM_AUTHORITY_KIND",
     "BackendPublicationOutputProductionV3Error",
+    "DurableParentArtifactPinSink",
     "FENCE_KIND",
     "MAX_CONTROL_JSON_BYTES",
     "MAX_EVIDENCE_AGGREGATE_BYTES",

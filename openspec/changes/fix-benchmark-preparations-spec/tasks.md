@@ -1,40 +1,50 @@
 ## 1. Approved baseline and evidence ownership
 
-- [ ] 1.1 Verify approval of this change's exact planning commit in its Draft PR and a separate apply request; record both in the implementation evidence record before code changes.
-- [ ] 1.2 Reconcile the reviewed dirty runtime into the same implementation branch without unrelated changes; verify the inspected-file manifest and record a complete source/fixture/configuration baseline and reviewed diff.
-- [ ] 1.3 Capture environment, resource settings, image/data/model identities and current process ownership; verify A269 remains retired and no duplicate worker, verifier or active stage is created.
+- [x] 1.1 Verify approval of this change's exact planning commit in its Draft PR and a separate apply request; record both in the implementation evidence record before code changes.
+- [x] 1.2 Reconcile the reviewed dirty runtime into the same implementation branch without unrelated changes; verify the inspected-file manifest and record a complete source/fixture/configuration baseline and reviewed diff.
+- [x] 1.3 Capture environment, resource settings, image/data/model identities and current process ownership; verify A269 remains retired and no duplicate worker, verifier or active stage is created.
 
 ## 2. Native payload integrity
 
-- [ ] 2.1 Validate envelope and 1..67,108,864-byte bounds before snapshot allocation, hash one owned snapshot, reject a mismatched supplied digest and seal that snapshot; verify correct payload, wrong digest, zero and oversized input regressions.
-- [ ] 2.2 Verify synchronized caller-buffer reuse after capture preserves transmitted bytes, upper-bound acceptance and exception/FD cleanup; ensure no test introduces an unsynchronized C++ data race.
-- [ ] 2.3 Integrate the standalone C++ client regression into normal Linux test discovery with existing GLib tooling; verify the runner actually executes it and fails on the pre-fix digest defect.
+- [x] 2.1 Validate envelope and 1..67,108,864-byte bounds before snapshot allocation, hash one owned snapshot, reject a mismatched supplied digest and seal that snapshot; verify correct payload, wrong digest, zero and oversized input regressions.
+- [x] 2.2 Verify synchronized caller-buffer reuse after capture preserves transmitted bytes, upper-bound acceptance and exception/FD cleanup; ensure no test introduces an unsynchronized C++ data race.
+- [x] 2.3 Integrate the standalone C++ client regression into normal Linux test discovery with existing GLib tooling; verify the runner actually executes it and fails on the pre-fix digest defect.
 
 ## 3. Guardian attribution and evidence
 
-- [ ] 3.1 Validate the control envelope and route before reserving a request, then verify payload integrity; verify exactly-once failed accounting for attributable wrong-content requests and connection-only accounting before attribution.
-- [ ] 3.2 Add the bounded immutable diagnostic and lifecycle-message/evidence hash binding described in design.md; verify safe expected/observed facts, null unknowns, no raw payload/credentials and the 8-KiB limit.
-- [ ] 3.3 Preserve original failures under concurrency or diagnostic-write failure and close received descriptors; verify no inference, retries or successful lifecycle outcome after terminal rejection.
-- [ ] 3.4 Verify existing lifecycle v1 fixtures remain valid unchanged and new evidence remains consumable by closure/snapshot validators; add focused compatibility regressions where needed.
+- [x] 3.1 Validate the control envelope and route before reserving a request, then verify payload integrity; verify exactly-once failed accounting for attributable wrong-content requests and connection-only accounting before attribution.
+- [x] 3.2 Add the bounded immutable diagnostic and lifecycle-message/evidence hash binding described in design.md; verify safe expected/observed facts, null unknowns, no raw payload/credentials and the 8-KiB limit.
+- [x] 3.3 Preserve original failures under concurrency or diagnostic-write failure and close received descriptors; verify no inference, retries or successful lifecycle outcome after terminal rejection.
+- [x] 3.4 Verify existing lifecycle v1 fixtures remain valid unchanged and new evidence remains consumable by closure/snapshot validators; add focused compatibility regressions where needed.
 
 ## 4. Retry defaults and retained recovery
 
-- [ ] 4.1 Set all four supervisor/service API/CLI unexpected-retry defaults to zero; verify omission in each interface yields one launch, no retry sleep and failed_permanent (exit 78) for unknown exits/exceptions.
-- [ ] 4.2 Verify transport/low-space transient exit 75 recovery retains the same checkpoint, accepted pairs are not remeasured, and remote integrity failures remain permanent with raw evidence retained; preserve existing reserve and offload-order coverage.
+- [x] 4.1 Set all four supervisor/service API/CLI unexpected-retry defaults to zero; verify omission in each interface yields one launch, no retry sleep and failed_permanent (exit 78) for unknown exits/exceptions.
+- [x] 4.2 Verify transport/low-space transient exit 75 recovery retains the same checkpoint, accepted pairs are not remeasured, and remote integrity failures remain permanent with raw evidence retained; preserve existing reserve and offload-order coverage.
 
 ## 5. Source closure and final validation
 
-- [ ] 5.1 Map changed files through native foundations and publication/worker image allowlists; verify an explicit invalidation list covers every affected image, parity and downstream receipt.
-- [ ] 5.2 Rebuild affected images deterministically and execute packaged regressions; verify source/image receipt hashes and preserved unaffected identities.
-- [ ] 5.3 Renew required physical parity and identity fixtures, including all 480 executions/32 groups when that closure is affected; verify original successful invocations and complete accepted receipts.
-- [ ] 5.4 Run affected native builds/tests and one final full ext4 suite on the final source/fixture/mirror bytes; verify before/after manifests, original exit status and reviewed skip-identity differences against the historical 87 skips.
+- [x] 5.1 Map changed files through native foundations and publication/worker image allowlists; verify an explicit invalidation list covers every affected image, parity and downstream receipt.
+- [x] 5.2 Rebuild affected images deterministically and execute packaged regressions; verify source/image receipt hashes and preserved unaffected identities.
+- [x] 5.3 Renew required physical parity and identity fixtures, including all 480 executions/32 groups when that closure is affected; verify original successful invocations and complete accepted receipts.
+- [x] 5.4 Run affected native builds/tests and one final full ext4 suite on the final source/fixture/mirror bytes; verify before/after manifests, original exit status and reviewed skip-identity differences against the historical 87 skips.
 
 ## 6. Fresh qualification
 
-- [ ] 6.1 Produce fresh input/preprocessing receipts and canonical mount/identity checks; start one new guardian with eight authenticated workers and materialize 32 bundles/four assets, verifying their current receipt bindings.
+- [x] 6.1 Produce fresh input/preprocessing receipts and canonical mount/identity checks; start one new guardian with eight authenticated workers and materialize 32 bundles/four assets, verifying their current receipt bindings.
 - [ ] 6.2 Run the gated 180-second Savant video diagnostic for the new chain; verify its original successful terminal and physical evidence before qualification.
 - [ ] 6.3 Launch the single fresh 32-cell qualification under its supported owner and record invocation identity/checkpoint; verify no A269 cells or helpers are reused.
 - [ ] 6.4 Collect all 32 successful cells, authenticated stop/lifecycle/closure and policy/resource promotion; verify every physical descriptor and accepted validator result before Q4.
+
+## 10. Native-probe qualification integration (added 2026-09-26; required before 6.2-6.4)
+
+- [x] 10.1 Read reset-check queue levels at their declared width and add a discovered native regression that fails on the pre-fix read (c61328db).
+- [x] 10.2 Raise the OpenVINO GVA and GStreamer Custom container task ceiling to 4096 with runtime tests (0f25cb41).
+- [x] 10.3 Limit decode-stage artifacts to loaded GStreamer factories with a regression that fails on the pre-fix list (0f25cb41).
+- [ ] 10.4 Validate native policy identifiers by manifest grammar and frozen branch membership; verify `damage` is accepted and invalid names still rejected.
+- [ ] 10.5 Bind CPU and GPU native policy identities to the frozen qualification-v2 manifest per design decision 8 and verify the loaded analytics path matches the manifest backend; add positive and fail-closed regressions.
+- [ ] 10.6 Accept the qualification bundle's copied, hash-verified container-engine client in the GStreamer Custom runtime; verify containment and byte mismatches are rejected.
+- [ ] 10.7 Renew images, parity and the final suite, then run nonpromoting OpenVINO GVA and GStreamer Custom pre-check replays to a successful terminal before 6.2-6.4.
 
 ## 7. Q4 prerequisite evidence
 
@@ -54,6 +64,6 @@
 
 ## 9. Handoff and conformance
 
-- [ ] 9.1 Publish the checked preparation runbook and link README/PLAN/progress while preserving historical facts and PLAN obligations; verify Bash syntax, variable allowlist, current flags and the stopping boundary.
+- [x] 9.1 Publish the checked preparation runbook and link README/PLAN/progress while preserving historical facts and PLAN obligations; verify Bash syntax, variable allowlist, current flags and the stopping boundary.
 - [ ] 9.2 Deliver the preparation handoff packet from design.md with accepted evidence for every gate; verify preparation_ready=true, full_run_started=false, publication_ready=false and zero full-run arms, or report an explicit blocker without marking this task complete.
 - [ ] 9.3 Complete requirement/scenario conformance using verification-plan.md and review the final diff; verify each implementation/evidence location, actual test result, remaining CI limitation and latest commit. Follow the separate repository sync/archive/final-review workflow only after all preparation tasks pass; do not claim full-run completion.

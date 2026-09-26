@@ -31,6 +31,10 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_MANIFEST = PROJECT_ROOT / "configs" / "checkpoint_analytics_model_parity.yaml"
 SCHEMA_VERSION = 3
 ARTIFACT_KIND = "checkpoint_analytics_model_parity_manifest"
+PREPROCESSING_PROJECTION_V4_SCHEMA_VERSION = 4
+PREPROCESSING_PROJECTION_V4_ARTIFACT_KIND = (
+    "checkpoint_analytics_model_parity_manifest_v4"
+)
 EXECUTION_CONFIG_PATH = "configs/analytics_execution_layer.yaml"
 EXECUTION_CONFIG_SHA256 = "d9bec961f22395c005ac6866633aeeb8b9a829fd39bd776776a3b0cd84526033"
 EXECUTION_CONFIG_CONTENT_IDENTITY_SHA256 = "3daed67a3e4c6549bf463b929e5de840e5aab7daacac75fff328f624b867b512"
@@ -339,6 +343,20 @@ def _validate_slot_v2(branch: str, value: Any, sources: Mapping[str, Any]) -> No
         _validate_ref_v2(evidence[name], f"{branch}: {name}", digest_required=False)
 
 
+def _validate_preprocessing_contract(value: Any) -> Mapping[str, Any]:
+    preprocessing = _exact_fields(value, {"contract_id", "decoded_color_order", "tensor_color_order", "decode_dtype", "resize_shorter_side", "resize_long_side_formula", "resize_algorithm", "resize_coordinate_transform", "half_pixel_coordinate_formula", "border_mode", "interpolation_accumulator_dtype", "interpolation_output_dtype", "interpolation_rounding", "resize_rounding", "center_crop", "normalization_scale", "normalization_mean", "normalization_std", "normalization_evaluation_order", "normalization_accumulator_dtype", "channel_transform", "output_dtype", "output_layout", "execution_shape", "tensor_serialization", "tensor_header", "tensor_endianness", "tensor_memory_order"}, "preprocessing_contract")
+    _require(preprocessing.get("contract_id") == "imagenet_resnet_fp32_center_crop_v2", "preprocessing contract id drifted")
+    _require(preprocessing.get("decoded_color_order") == "RGB" and preprocessing.get("tensor_color_order") == "RGB" and preprocessing.get("decode_dtype") == "uint8", "preprocessing decode contract drifted")
+    _require(preprocessing.get("resize_shorter_side") == 256 and preprocessing.get("center_crop") == [224, 224], "preprocessing geometry drifted")
+    _require(preprocessing.get("resize_long_side_formula") == "floor(long_side*256/short_side+0.5)" and preprocessing.get("resize_algorithm") == "bilinear" and preprocessing.get("resize_coordinate_transform") == "half_pixel" and preprocessing.get("half_pixel_coordinate_formula") == "src=(dst+0.5)*src_size/dst_size-0.5" and preprocessing.get("border_mode") == "edge_clamp", "preprocessing resize geometry drifted")
+    _require(preprocessing.get("interpolation_accumulator_dtype") == "float32" and preprocessing.get("interpolation_output_dtype") == "float32" and preprocessing.get("interpolation_rounding") == "none", "preprocessing interpolation numeric semantics drifted")
+    _require(preprocessing.get("normalization_scale") == 1.0 / 255.0 and preprocessing.get("normalization_mean") == [0.485, 0.456, 0.406] and preprocessing.get("normalization_std") == [0.229, 0.224, 0.225], "preprocessing normalization drifted")
+    _require(preprocessing.get("normalization_evaluation_order") == "float32((float32(pixel)*scale-mean[channel])/std[channel])" and preprocessing.get("normalization_accumulator_dtype") == "float32", "preprocessing normalization evaluation drifted")
+    _require(preprocessing.get("channel_transform") == "HWC_RGB_to_CHW_RGB" and preprocessing.get("output_dtype") == "float32" and preprocessing.get("output_layout") == "NCHW" and preprocessing.get("execution_shape") == [1, 3, 224, 224], "preprocessing output contract drifted")
+    _require(preprocessing.get("tensor_serialization") == "raw_f32_le_c_contiguous_v1" and preprocessing.get("tensor_header") == "none" and preprocessing.get("tensor_endianness") == "little" and preprocessing.get("tensor_memory_order") == "C", "preprocessed tensor serialization drifted")
+    return preprocessing
+
+
 def _validate_manifest_v3(value: Any) -> None:
     manifest = _exact_fields(
         value,
@@ -362,16 +380,7 @@ def _validate_manifest_v3(value: Any) -> None:
     _require(matrix.get("openvino_gpu_accepted") is False, "OpenVINO GPU cannot count as NVIDIA CUDA")
     _require(matrix.get("network_download_allowed") is False, "model parity assessment must not download")
     _require(matrix.get("same_source_semantics_required") is True, "same-source semantics must be required")
-    preprocessing = _exact_fields(manifest.get("preprocessing_contract"), {"contract_id", "decoded_color_order", "tensor_color_order", "decode_dtype", "resize_shorter_side", "resize_long_side_formula", "resize_algorithm", "resize_coordinate_transform", "half_pixel_coordinate_formula", "border_mode", "interpolation_accumulator_dtype", "interpolation_output_dtype", "interpolation_rounding", "resize_rounding", "center_crop", "normalization_scale", "normalization_mean", "normalization_std", "normalization_evaluation_order", "normalization_accumulator_dtype", "channel_transform", "output_dtype", "output_layout", "execution_shape", "tensor_serialization", "tensor_header", "tensor_endianness", "tensor_memory_order"}, "preprocessing_contract")
-    _require(preprocessing.get("contract_id") == "imagenet_resnet_fp32_center_crop_v2", "preprocessing contract id drifted")
-    _require(preprocessing.get("decoded_color_order") == "RGB" and preprocessing.get("tensor_color_order") == "RGB" and preprocessing.get("decode_dtype") == "uint8", "preprocessing decode contract drifted")
-    _require(preprocessing.get("resize_shorter_side") == 256 and preprocessing.get("center_crop") == [224, 224], "preprocessing geometry drifted")
-    _require(preprocessing.get("resize_long_side_formula") == "floor(long_side*256/short_side+0.5)" and preprocessing.get("resize_algorithm") == "bilinear" and preprocessing.get("resize_coordinate_transform") == "half_pixel" and preprocessing.get("half_pixel_coordinate_formula") == "src=(dst+0.5)*src_size/dst_size-0.5" and preprocessing.get("border_mode") == "edge_clamp", "preprocessing resize geometry drifted")
-    _require(preprocessing.get("interpolation_accumulator_dtype") == "float32" and preprocessing.get("interpolation_output_dtype") == "float32" and preprocessing.get("interpolation_rounding") == "none", "preprocessing interpolation numeric semantics drifted")
-    _require(preprocessing.get("normalization_scale") == 1.0 / 255.0 and preprocessing.get("normalization_mean") == [0.485, 0.456, 0.406] and preprocessing.get("normalization_std") == [0.229, 0.224, 0.225], "preprocessing normalization drifted")
-    _require(preprocessing.get("normalization_evaluation_order") == "float32((float32(pixel)*scale-mean[channel])/std[channel])" and preprocessing.get("normalization_accumulator_dtype") == "float32", "preprocessing normalization evaluation drifted")
-    _require(preprocessing.get("channel_transform") == "HWC_RGB_to_CHW_RGB" and preprocessing.get("output_dtype") == "float32" and preprocessing.get("output_layout") == "NCHW" and preprocessing.get("execution_shape") == [1, 3, 224, 224], "preprocessing output contract drifted")
-    _require(preprocessing.get("tensor_serialization") == "raw_f32_le_c_contiguous_v1" and preprocessing.get("tensor_header") == "none" and preprocessing.get("tensor_endianness") == "little" and preprocessing.get("tensor_memory_order") == "C", "preprocessed tensor serialization drifted")
+    _validate_preprocessing_contract(manifest.get("preprocessing_contract"))
     classification = _exact_fields(manifest.get("classification_contract"), {"contract_id", "dtype", "semantics", "class_count", "softmax_applied", "argmax_tie_break"}, "classification_contract")
     _require(classification == {"contract_id": "imagenet_1000_raw_logits_fp32_v2", "dtype": "float32", "semantics": "raw_logits_pre_softmax", "class_count": 1000, "softmax_applied": False, "argmax_tie_break": "lowest_class_index"}, "classification raw-logits contract drifted")
     policy = _exact_fields(manifest.get("evidence_policy"), {"minimum_calibration_samples_per_branch_resource", "minimum_parity_samples_per_branch", "calibration_and_evaluation_disjoint", "claimed_aggregates_accepted", "max_evidence_json_bytes", "relative_error_floor", "tolerances"}, "evidence_policy")
@@ -868,7 +877,10 @@ def _read_manifest_preflight(
     return payload
 
 
-def load_parity_manifest(path: Path | str = DEFAULT_MANIFEST) -> dict[str, Any]:
+def _load_parity_manifest_with_validator(
+    path: Path | str,
+    validator: Callable[[Any], Any],
+) -> Any:
     candidate = Path(path)
     lexical_path = Path(os.path.abspath(os.fspath(candidate)))
     lexical_before_chain = _manifest_chain_snapshot(lexical_path)
@@ -983,8 +995,7 @@ def load_parity_manifest(path: Path | str = DEFAULT_MANIFEST) -> dict[str, Any]:
                         raise ContractError(
                             f"invalid model parity manifest: {error}"
                         ) from error
-                    _validate_manifest_v3(raw)
-                    result = _with_identity(raw)
+                    result = validator(raw)
 
                     handle_final = _manifest_handle_snapshot(source)
                     lexical_after_chain = _manifest_chain_snapshot(lexical_path)
@@ -1013,6 +1024,88 @@ def load_parity_manifest(path: Path | str = DEFAULT_MANIFEST) -> dict[str, Any]:
                     f"failure: {error}"
                 ) from error
     return result
+
+
+def _validated_manifest_v3(value: Any) -> dict[str, Any]:
+    _validate_manifest_v3(value)
+    return _with_identity(value)
+
+
+def _validated_preprocessing_projection(
+    value: Any,
+    *,
+    expected_sha256: str,
+) -> dict[str, Any]:
+    """Validate only the inner-runtime projection of an externally pinned manifest.
+
+    Schema-v4 refresh provenance is validated by the qualification transaction
+    before the manifest is materialized. The SDK container needs only the
+    immutable preprocessing contract, so this projection accepts v4 without
+    requiring the external project tree while still closing its schema, frozen
+    semantics, and unanimous execution-binding hash.
+    """
+
+    _required_digest(expected_sha256, "expected preprocessing contract SHA-256")
+    _require(isinstance(value, Mapping), "model parity manifest must be a mapping")
+    schema_version = value.get("schema_version")
+    if schema_version == SCHEMA_VERSION:
+        _validate_manifest_v3(value)
+    else:
+        manifest = _exact_fields(
+            value,
+            {
+                "schema_version", "artifact_kind", "manifest_id", "claim_scope",
+                "semantic_claim", "required_branches", "matrix_binding",
+                "preprocessing_contract", "classification_contract",
+                "evidence_policy", "source_registry", "toolchain_registry",
+                "worker_runtime_registry", "workload_slots", "refresh_authority",
+            },
+            "model parity preprocessing projection",
+        )
+        _require(
+            manifest.get("schema_version") == PREPROCESSING_PROJECTION_V4_SCHEMA_VERSION
+            and manifest.get("artifact_kind") == PREPROCESSING_PROJECTION_V4_ARTIFACT_KIND,
+            "model parity preprocessing projection schema/kind drifted",
+        )
+        _require(
+            _STABLE_ID_RE.fullmatch(str(manifest.get("manifest_id") or "")) is not None
+            and str(manifest["manifest_id"]).endswith("-v4"),
+            "model parity preprocessing projection manifest_id is invalid",
+        )
+        _require(
+            manifest.get("claim_scope") == "cpu_openvino_vs_nvidia_cuda_tensorrt"
+            and manifest.get("semantic_claim") == "topology_load_proxy_only"
+            and manifest.get("required_branches") == list(BRANCHES),
+            "model parity preprocessing projection scope drifted",
+        )
+        _exact_fields(
+            manifest.get("refresh_authority"),
+            {"source_manifest", "image_identity_patch", "runtime_probes", "execution_config"},
+            "model parity preprocessing refresh authority",
+        )
+    preprocessing = _validate_preprocessing_contract(value.get("preprocessing_contract"))
+    _require(
+        _sha256_bytes(_canonical_json(preprocessing)) == expected_sha256,
+        "model parity preprocessing contract differs from execution bindings",
+    )
+    return _json_copy(preprocessing)
+
+
+def load_parity_manifest(path: Path | str = DEFAULT_MANIFEST) -> dict[str, Any]:
+    return _load_parity_manifest_with_validator(path, _validated_manifest_v3)
+
+
+def load_parity_preprocessing_contract(
+    path: Path | str,
+    *,
+    expected_sha256: str,
+) -> dict[str, Any]:
+    return _load_parity_manifest_with_validator(
+        path,
+        lambda value: _validated_preprocessing_projection(
+            value, expected_sha256=expected_sha256
+        ),
+    )
 
 
 def build_image_inspect_command(image: str) -> list[str]:
@@ -1798,6 +1891,7 @@ __all__ = [
     "build_image_inspect_command",
     "build_parser",
     "load_parity_manifest",
+    "load_parity_preprocessing_contract",
     "main",
     "validate_manifest_identity",
 ]

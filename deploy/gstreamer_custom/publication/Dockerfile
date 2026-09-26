@@ -1,5 +1,7 @@
-ARG BASE_IMAGE=vast/openvino-native-probe@sha256:5c43c6c1f95b3fbb4a95957d1d293b1272c1db6a44a7a2063aad3aeba7c951d1
+ARG BASE_IMAGE=vast/openvino-native-probe@sha256:fc26a96b600484da32fc304461a0484225b931e0e1ddfc9a1f112414d737b16a
 ARG SOURCE_DATE_EPOCH=0
+
+FROM ${BASE_IMAGE} AS native-provider
 
 FROM ${BASE_IMAGE} AS runtime_builder
 
@@ -8,7 +10,9 @@ USER root
 
 RUN install -d -m 0755 \
       /opt/vast/runtime-root/opt/vast/checkpoint \
+      /opt/vast/runtime-root/opt/vast/lib/gstreamer-1.0 \
       /opt/vast/runtime-root/opt/vast/python \
+      /opt/vast/runtime-root/opt/vast/share \
       /opt/vast/runtime-root/usr/local/bin \
       /opt/vast/wheels
 
@@ -23,8 +27,12 @@ RUN /usr/bin/python3 -m pip install \
 
 # BEGIN VAST_RUNTIME_SOURCE_ALLOWLIST
 COPY \
+  scripts/analytics_execution_endpoint.py \
+  scripts/analytics_execution_protocol.py \
+  scripts/analytics_execution_worker.py \
   scripts/analytics_model_contract.py \
   scripts/backend_publication_dispatch.py \
+  scripts/backend_publication_launcher_invocation_v3.py \
   scripts/backend_publication_output_receipt.py \
   scripts/backend_publication_runtime_authority.py \
   scripts/backend_runtime_grant.py \
@@ -32,10 +40,19 @@ COPY \
   scripts/benchmark_contract.py \
   scripts/checkpoint_acceptance_metadata_binding.py \
   scripts/checkpoint_admission.py \
+  scripts/checkpoint_deepstream_protocol_bridge.py \
+  scripts/checkpoint_deepstream_qualification_fragment_v1.py \
+  scripts/checkpoint_gstreamer_analytics_bridge.py \
+  scripts/checkpoint_gstreamer_analytics_sidecar.py \
   scripts/checkpoint_gstreamer_custom_container_coordinator_v3.py \
   scripts/checkpoint_gstreamer_runtime.py \
+  scripts/checkpoint_model_parity.py \
+  scripts/checkpoint_model_parity_acceptance.py \
+  scripts/checkpoint_model_parity_acceptance_v4.py \
+  scripts/checkpoint_model_parity_v4.py \
   scripts/checkpoint_native_policy_runtime.py \
   scripts/checkpoint_publication_runtime.py \
+  scripts/checkpoint_qualification_pilot_acceptance_v1.py \
   scripts/checkpoint_runtime.py \
   scripts/checkpoint_runtime_plan.py \
   scripts/extract_kpp_legacy_iss.py \
@@ -49,7 +66,15 @@ COPY \
   scripts/kpp_legacy_iss_v2_manifest.py \
   scripts/model_parity_grant.py \
   scripts/publication_acceptance_evidence.py \
+  scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py \
+  scripts/publication_guardian_preprocessing_contract_v1.py \
+  scripts/publication_guardian_runtime_expectations_v1.py \
+  scripts/publication_owned_staging_cleanup_v1.py \
+  scripts/publication_physical_io_v1.py \
   scripts/publication_policy_contract.py \
+  scripts/publication_policy_qualification.py \
+  scripts/publication_policy_qualification_execution_closure_v1.py \
+  scripts/publication_qualification_image_refreeze_v1.py \
   scripts/resource_interval_contract.py \
   scripts/topology_contract.py \
   /opt/vast/runtime-root/opt/vast/checkpoint/
@@ -69,38 +94,38 @@ COPY deploy/gstreamer_custom/publication/runtime-source-allowlist.txt \
 COPY deploy/gstreamer_custom/publication/vast_gstreamer_custom_publication_runtime_v3 \
   /opt/vast/runtime-root/usr/local/bin/vast_gstreamer_custom_publication_runtime_v3
 
-RUN /usr/bin/c++ \
-      -std=c++17 -O2 -DNDEBUG \
-      -ffile-prefix-map=/opt/vast/native-src=. \
-      -fdebug-prefix-map=/opt/vast/native-src=. \
-      $(/usr/bin/pkg-config --cflags \
-        gstreamer-1.0 gstreamer-app-1.0 gstreamer-rtp-1.0 gstreamer-video-1.0) \
-      /opt/vast/native-src/vast_native_gst_probe.cpp \
-      $(/usr/bin/pkg-config --libs \
-        gstreamer-1.0 gstreamer-app-1.0 gstreamer-rtp-1.0 gstreamer-video-1.0) \
-      -o /opt/vast/runtime-root/usr/local/bin/vast_native_gst_probe \
-  && /usr/bin/strip --strip-unneeded \
+COPY --from=native-provider /usr/local/bin/vast_native_gst_probe /opt/vast/runtime-root/usr/local/bin/vast_native_gst_probe
+COPY --from=native-provider /usr/local/bin/vast_checkpoint_source /opt/vast/runtime-root/usr/local/bin/vast_checkpoint_source
+COPY --from=native-provider /opt/vast/lib/gstreamer-1.0/libgstadaptivescheduler.so /opt/vast/runtime-root/opt/vast/lib/gstreamer-1.0/libgstadaptivescheduler.so
+COPY --from=native-provider /opt/vast/lib/gstreamer-1.0/libgstvastanalyticsterminal.so /opt/vast/runtime-root/opt/vast/lib/gstreamer-1.0/libgstvastanalyticsterminal.so
+COPY --from=native-provider /opt/vast/lib/gstreamer-1.0/libgstvastanalyticsqueue.so /opt/vast/runtime-root/opt/vast/lib/gstreamer-1.0/libgstvastanalyticsqueue.so
+COPY --from=native-provider /opt/vast/lib/gstreamer-1.0/libgstvastcheckpointprefixqueue.so /opt/vast/runtime-root/opt/vast/lib/gstreamer-1.0/libgstvastcheckpointprefixqueue.so
+COPY --from=native-provider /opt/vast/share/gstreamer-registry.bin /opt/vast/runtime-root/opt/vast/share/gstreamer-registry.bin
+
+RUN chmod 0555 \
       /opt/vast/runtime-root/usr/local/bin/vast_native_gst_probe \
-  && chmod 0555 \
-      /opt/vast/runtime-root/usr/local/bin/vast_native_gst_probe \
+      /opt/vast/runtime-root/usr/local/bin/vast_checkpoint_source \
       /opt/vast/runtime-root/usr/local/bin/vast_gstreamer_custom_publication_runtime_v3 \
+      /opt/vast/runtime-root/opt/vast/lib/gstreamer-1.0/*.so \
   && chmod 0444 \
       /opt/vast/runtime-root/opt/vast/checkpoint/*.py \
+      /opt/vast/runtime-root/opt/vast/share/gstreamer-registry.bin \
       /opt/vast/runtime-root/opt/vast/runtime-source-allowlist.txt \
   && find /opt/vast/runtime-root -exec touch -h -d "@${SOURCE_DATE_EPOCH}" {} + \
   && PYTHONDONTWRITEBYTECODE=1 \
      PYTHONPATH=/opt/vast/runtime-root/opt/vast/checkpoint:/opt/vast/runtime-root/opt/vast/python \
-     /usr/bin/python3 -B -c 'import checkpoint_gstreamer_custom_container_coordinator_v3'
+     /usr/bin/python3 -B -c 'import checkpoint_gstreamer_custom_container_coordinator_v3; import checkpoint_gstreamer_analytics_bridge; import checkpoint_gstreamer_analytics_sidecar'
 
 FROM ${BASE_IMAGE}
 
 ARG VAST_RUNTIME_SOURCE_SHA256
 ARG VAST_DEPENDENCY_SET_SHA256
 ARG VAST_NATIVE_PROBE_SOURCE_SHA256
+ARG VAST_BASE_IMAGE_ID
 
 LABEL org.vast.component="gstreamer-custom-checkpoint-publication-runtime"
 LABEL org.vast.publication-runtime-abi="3"
-LABEL org.vast.base-image-id="sha256:5c43c6c1f95b3fbb4a95957d1d293b1272c1db6a44a7a2063aad3aeba7c951d1"
+LABEL org.vast.base-image-id="${VAST_BASE_IMAGE_ID}"
 LABEL org.vast.native_probe.source_sha="${VAST_NATIVE_PROBE_SOURCE_SHA256}"
 LABEL org.vast.runtime-source-sha256="${VAST_RUNTIME_SOURCE_SHA256}"
 LABEL org.vast.runtime-dependency-set-sha256="${VAST_DEPENDENCY_SET_SHA256}"

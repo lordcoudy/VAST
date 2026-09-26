@@ -19,6 +19,10 @@ class AnalyticsWorkerDockerfileTests(unittest.TestCase):
         source = path.read_text(encoding="utf-8")
         self.assertIn("ARG SOURCE_DATE_EPOCH=0", source)
         self.assertIn("AS worker_builder", source)
+        build_from = "FROM " + chr(36) + "{BUILD_IMAGE}"
+        base_from = "FROM " + chr(36) + "{BASE_IMAGE}"
+        self.assertEqual(source.count(build_from), 1)
+        source = source.replace(build_from, base_from)
         self.assertEqual(source.count("FROM ${BASE_IMAGE}"), 2)
         self.assertIn(f"ARG EXPECTED_BASE_IMAGE_ID={base_id}", source)
         self.assertIn('touch -h -d "@${SOURCE_DATE_EPOCH}"', source)

@@ -101,7 +101,7 @@ class PublicationMatrixTests(unittest.TestCase):
         second = build_full_publication_matrix(config)
 
         self.assertEqual(first, second)
-        self.assertEqual(first["schema_version"], 3)
+        self.assertEqual(first["schema_version"], 4)
         self.assertEqual(first["publication_scope"], FULL_RESOURCE_PUBLICATION_SCOPE)
         self.assertEqual(first["policies"], list(POLICIES))
         self.assertEqual(
@@ -133,6 +133,43 @@ class PublicationMatrixTests(unittest.TestCase):
             5600,
         )
 
+        primary_pairs = [
+            pair
+            for pair in first["pairs"]
+            if pair["system"] == "gstreamer_custom"
+            and pair["codec"] == "h264"
+            and pair["policy"] == "static_hybrid"
+            and pair["deadline_ms"] == 100.0
+        ]
+        self.assertEqual(len(primary_pairs), 10)
+        self.assertEqual(
+            first["primary_architecture_pair_contract"]["pair_count"], 10
+        )
+        self.assertEqual(
+            first["primary_architecture_pair_contract"]["arm_count"], 20
+        )
+        expected_first_arms = config["benchmark"]["primary_architecture_contrast"][
+            "arm_order"
+        ]["first_arm_by_pair"]
+        for pair in primary_pairs:
+            repeat = pair["repeat"]
+            self.assertEqual(
+                pair["arms"][0]["scenario"], expected_first_arms[repeat - 1]
+            )
+            for position, arm in enumerate(pair["arms"], start=1):
+                metadata = arm["primary_architecture_pair"]
+                self.assertEqual(metadata["contract_version"], 1)
+                self.assertEqual(metadata["repeat"], repeat)
+                self.assertEqual(metadata["arm_position"], position)
+                self.assertEqual(metadata["first_arm"], pair["arms"][0]["scenario"])
+                self.assertEqual(metadata["second_arm"], pair["arms"][1]["scenario"])
+
+        for pair in first["pairs"]:
+            if pair not in primary_pairs:
+                self.assertTrue(
+                    all("primary_architecture_pair" not in arm for arm in pair["arms"])
+                )
+
         for pair in first["pairs"]:
             self.assertEqual(len(pair["arms"]), 2)
             self.assertEqual(
@@ -148,7 +185,7 @@ class PublicationMatrixTests(unittest.TestCase):
                 self.assertEqual(arm["streams"], 6)
 
         identity = publication_matrix_identity(first)
-        self.assertEqual(identity["schema_version"], 3)
+        self.assertEqual(identity["schema_version"], 4)
         self.assertRegex(identity["sha256"], r"^[0-9a-f]{64}$")
         self.assertEqual(identity, publication_matrix_identity(second))
 

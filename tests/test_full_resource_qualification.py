@@ -7,6 +7,8 @@ import os
 import inspect
 import sys
 import tempfile
+import threading
+import time
 import unittest
 from pathlib import Path
 from unittest import mock
@@ -134,8 +136,14 @@ def _fixture(root: Path) -> tuple[Path, dict]:
                         "evidence": evidence,
                     })
 
+    execution_closure = root / "execution-closure" / (
+        "qualification_execution_closure.v1.receipt.json"
+    )
+    execution_closure.parent.mkdir(parents=True, exist_ok=True)
+    execution_closure.write_text("{}\n", encoding="utf-8")
+
     index = {
-        "schema_version": 1,
+        "schema_version": 2,
         "artifact_kind": "vast_pre_run_full_resource_qualification_index",
         "resource_contract": {
             "contract_version": 2,
@@ -146,10 +154,32 @@ def _fixture(root: Path) -> tuple[Path, dict]:
         "dataset_manifest": _descriptor(root, dataset_manifest),
         "bindings": bindings,
         "pilots": pilots,
+        "qualification_execution_closure": _descriptor(root, execution_closure),
     }
     index_path = root / "full-resource-qualification-index.json"
     index_path.write_text(json.dumps(index, sort_keys=True) + "\n", encoding="utf-8")
     return index_path, index
+
+
+def _fake_execution_closure_loader(
+    *, project_root: Path, receipt_path: Path
+) -> dict:
+    descriptor = _descriptor(project_root, Path(receipt_path))
+    return {
+        "receipt_descriptor": descriptor,
+        "receipt": {
+            "schema_version": 1,
+            "artifact_kind": (
+                "vast_publication_policy_qualification_execution_closure_v1"
+            ),
+            "status": "qualification_execution_closed_nonpublication",
+            "qualification_execution_complete": True,
+            "accepted_for_full_publication": False,
+            "publication_ready": False,
+            "authorization_eligible": False,
+            "pilot_execution": {"cells": [{} for _ in range(32)]},
+        },
+    }
 
 
 def _fake_pilot_validator(pilot: dict, context: dict) -> dict:
@@ -199,6 +229,10 @@ def _fake_pilot_validator(pilot: dict, context: dict) -> dict:
     }
 
 
+class SyntheticAtomicCrash(BaseException):
+    pass
+
+
 class FullResourceQualificationTests(unittest.TestCase):
     def test_active_publication_dataset_ids_are_kpp_iss_v3(self) -> None:
         self.assertEqual(
@@ -210,7 +244,16 @@ class FullResourceQualificationTests(unittest.TestCase):
         )
 
     def _assess(self, root: Path, index_path: Path, validator=_fake_pilot_validator) -> dict:
-        with mock.patch.object(target, "_load_and_verify_kpp_datasets", return_value=_datasets()):
+        with (
+            mock.patch.object(
+                target, "_load_and_verify_kpp_datasets", return_value=_datasets()
+            ),
+            mock.patch.object(
+                target,
+                "_load_execution_closure",
+                side_effect=_fake_execution_closure_loader,
+            ),
+        ):
             return target.assess_full_resource_qualification(
                 project_root=root,
                 index_path=index_path,
@@ -234,6 +277,29 @@ class FullResourceQualificationTests(unittest.TestCase):
             self.assertEqual(manifest["qualification_scope"], "pre_run_hardware_and_emitter_capability_only")
             self.assertTrue(manifest["post_run_per_arm_evidence"]["required"])
             self.assertFalse(manifest["post_run_per_arm_evidence"]["configuration_evidence_accepted_mutated"])
+
+    def test_completed_legacy_schema_or_missing_closure_cannot_be_assessed(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            index_path, index = _fixture(root)
+
+            legacy = copy.deepcopy(index)
+            legacy["schema_version"] = 1
+            index_path.write_text(
+                json.dumps(legacy, sort_keys=True) + "\n", encoding="utf-8"
+            )
+            rejected_legacy = self._assess(root, index_path)
+            self.assertFalse(rejected_legacy["passed"])
+            self.assertIn("schema/fields", " ".join(rejected_legacy["blockers"]))
+
+            missing = copy.deepcopy(index)
+            missing.pop("qualification_execution_closure")
+            index_path.write_text(
+                json.dumps(missing, sort_keys=True) + "\n", encoding="utf-8"
+            )
+            rejected_missing = self._assess(root, index_path)
+            self.assertFalse(rejected_missing["passed"])
+            self.assertIn("schema/fields", " ".join(rejected_missing["blockers"]))
 
     def test_exact_shared_native_emitter_sources_are_not_false_aliases(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -343,6 +409,11 @@ class FullResourceQualificationTests(unittest.TestCase):
             index_path, _ = _fixture(root)
             with (
                 mock.patch.object(target, "_load_and_verify_kpp_datasets", return_value=_datasets()),
+                mock.patch.object(
+                    target,
+                    "_load_execution_closure",
+                    side_effect=_fake_execution_closure_loader,
+                ),
                 mock.patch.object(target, "_load_resource_validators", side_effect=AssertionError("too early")),
             ):
                 result = target.assess_full_resource_qualification(
@@ -374,12 +445,17 @@ class FullResourceQualificationTests(unittest.TestCase):
             writes = []
             immutable_writer = target._write_immutable_json
 
-            def record_write(path: Path, value: dict) -> dict:
+            def record_write(path: Path, value: dict, **kwargs: object) -> dict:
                 writes.append(path.name)
-                return immutable_writer(path, value)
+                return immutable_writer(path, value, **kwargs)
 
             with (
                 mock.patch.object(target, "_load_and_verify_kpp_datasets", return_value=_datasets()),
+                mock.patch.object(
+                    target,
+                    "_load_execution_closure",
+                    side_effect=_fake_execution_closure_loader,
+                ),
                 mock.patch.object(target, "_default_pilot_validator", side_effect=_fake_pilot_validator),
                 mock.patch.object(target, "_write_immutable_json", side_effect=record_write),
             ):
@@ -428,6 +504,8 @@ class FullResourceQualificationTests(unittest.TestCase):
             )
             manifest_path = output / receipt["outputs"]["capability_manifest"]["path"]
             self.assertEqual(_sha(manifest_path), receipt["outputs"]["capability_manifest"]["sha256"])
+            self.assertEqual(manifest_path.stat().st_mode & 0o777, 0o444)
+            self.assertEqual(receipt_path.stat().st_mode & 0o777, 0o444)
 
             alias = output / "capability-manifest-hardlink.json"
             try:
@@ -436,10 +514,16 @@ class FullResourceQualificationTests(unittest.TestCase):
                 self.skipTest("hard links are unavailable")
             with (
                 mock.patch.object(target, "_load_and_verify_kpp_datasets", return_value=_datasets()),
+                mock.patch.object(
+                    target,
+                    "_load_execution_closure",
+                    side_effect=_fake_execution_closure_loader,
+                ),
                 mock.patch.object(target, "_default_pilot_validator", side_effect=_fake_pilot_validator),
             ):
                 with self.assertRaisesRegex(
-                    target.FullResourceQualificationError, "collision"
+                    target.FullResourceQualificationError,
+                    "collision|namespace",
                 ):
                     target.promote_full_resource_qualification(
                         project_root=root,
@@ -448,9 +532,15 @@ class FullResourceQualificationTests(unittest.TestCase):
                     )
             alias.unlink()
 
+            manifest_path.chmod(0o600)
             manifest_path.write_text("{}\n", encoding="utf-8")
             with (
                 mock.patch.object(target, "_load_and_verify_kpp_datasets", return_value=_datasets()),
+                mock.patch.object(
+                    target,
+                    "_load_execution_closure",
+                    side_effect=_fake_execution_closure_loader,
+                ),
                 mock.patch.object(target, "_default_pilot_validator", side_effect=_fake_pilot_validator),
             ):
                 with self.assertRaises(target.FullResourceQualificationError):
@@ -458,6 +548,222 @@ class FullResourceQualificationTests(unittest.TestCase):
                         project_root=root,
                         index_path=index_path,
                         output_dir=output,
+                    )
+
+    def test_immutable_writer_refuses_no_overwrite_race(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            path = root / "race.json"
+            value = {"stable": True}
+            payload = target._canonical_bytes(value) + b"\n"
+            path.write_bytes(payload)
+            with (
+                mock.patch.object(target.os.path, "lexists", return_value=False),
+                self.assertRaisesRegex(
+                    target.FullResourceQualificationError, "collision"
+                ),
+            ):
+                target._write_immutable_json(path, value)
+            self.assertEqual(path.read_bytes(), payload)
+
+    def test_immutable_writer_accepts_only_completed_identical_concurrent_commit(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp).resolve()
+            value = {"stable": True}
+            expected = target._canonical_bytes(value) + b"\n"
+            identical = root / "identical.json"
+            identical.write_bytes(expected)
+            identical.chmod(0o444)
+            descriptor = target._write_immutable_json(identical, value)
+            self.assertEqual(descriptor["sha256"], _sha(identical))
+
+            conflicting = root / "conflicting.json"
+            conflicting.write_bytes(
+                target._canonical_bytes({"stable": False}) + b"\n"
+            )
+            conflicting.chmod(0o444)
+            before = conflicting.read_bytes()
+            with self.assertRaisesRegex(
+                target.FullResourceQualificationError, "collision"
+            ):
+                target._write_immutable_json(conflicting, value)
+            self.assertEqual(conflicting.read_bytes(), before)
+
+    def test_immutable_writer_waits_when_concurrent_leaf_is_already_visible(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp).resolve()
+            value = {"stable": True}
+            stuck = root / "visible-foreign-partial.json"
+            stuck.write_bytes(b"pending")
+            stuck.chmod(0o600)
+            with self.assertRaisesRegex(
+                target.FullResourceQualificationError, "collision"
+            ):
+                target._write_immutable_json(stuck, value)
+            self.assertEqual(stuck.read_bytes(), b"pending")
+
+    def test_promotion_resumes_exact_prefix_after_pre_receipt_failure(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            index_path, _ = _fixture(root)
+            output = root / "promoted"
+            immutable_writer = target._write_immutable_json
+
+            def fail_before_receipt(
+                path: Path, value: dict, **kwargs: object
+            ) -> dict:
+                if path.name == target.QUALIFICATION_RECEIPT_FILENAME:
+                    raise target.FullResourceQualificationError(
+                        "injected pre-receipt failure"
+                    )
+                return immutable_writer(path, value, **kwargs)
+
+            common = (
+                mock.patch.object(
+                    target,
+                    "_load_and_verify_kpp_datasets",
+                    return_value=_datasets(),
+                ),
+                mock.patch.object(
+                    target,
+                    "_load_execution_closure",
+                    side_effect=_fake_execution_closure_loader,
+                ),
+                mock.patch.object(
+                    target,
+                    "_default_pilot_validator",
+                    side_effect=_fake_pilot_validator,
+                ),
+            )
+            with (
+                common[0],
+                common[1],
+                common[2],
+                mock.patch.object(
+                    target, "_write_immutable_json", side_effect=fail_before_receipt
+                ),
+                self.assertRaisesRegex(
+                    target.FullResourceQualificationError, "pre-receipt"
+                ),
+            ):
+                target.promote_full_resource_qualification(
+                    project_root=root,
+                    index_path=index_path,
+                    output_dir=output,
+                )
+            self.assertEqual(
+                set(entry.name for entry in output.iterdir()),
+                {target.CAPABILITY_MANIFEST_FILENAME},
+            )
+            with (
+                mock.patch.object(
+                    target,
+                    "_load_and_verify_kpp_datasets",
+                    return_value=_datasets(),
+                ),
+                mock.patch.object(
+                    target,
+                    "_load_execution_closure",
+                    side_effect=_fake_execution_closure_loader,
+                ),
+                mock.patch.object(
+                    target,
+                    "_default_pilot_validator",
+                    side_effect=_fake_pilot_validator,
+                ),
+            ):
+                resumed = target.promote_full_resource_qualification(
+                    project_root=root,
+                    index_path=index_path,
+                    output_dir=output,
+                )
+            self.assertTrue(resumed["passed"])
+            self.assertEqual(
+                set(entry.name for entry in output.iterdir()),
+                set(target._PROMOTION_FILE_SEQUENCE),
+            )
+
+    def test_promotion_receipt_recovers_every_atomic_physical_window(self) -> None:
+        for step in (
+            "mid_write",
+            "post_fsync_pre_publish",
+            "post_publish_pre_parent_fsync",
+        ):
+            with self.subTest(step=step), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp).resolve()
+                index_path, _ = _fixture(root)
+                output = root / "atomic-promoted"
+                receipt_path = output / target.QUALIFICATION_RECEIPT_FILENAME
+                fired = False
+
+                def crash(observed_step: str, path: Path) -> None:
+                    nonlocal fired
+                    if not fired and path == receipt_path and observed_step == step:
+                        fired = True
+                        raise SyntheticAtomicCrash(step)
+
+                arguments = {
+                    "project_root": root,
+                    "index_path": index_path,
+                    "output_dir": output,
+                }
+                patches = (
+                    mock.patch.object(
+                        target, "_load_and_verify_kpp_datasets", return_value=_datasets()
+                    ),
+                    mock.patch.object(
+                        target,
+                        "_load_execution_closure",
+                        side_effect=_fake_execution_closure_loader,
+                    ),
+                    mock.patch.object(
+                        target,
+                        "_default_pilot_validator",
+                        side_effect=_fake_pilot_validator,
+                    ),
+                )
+                with (
+                    patches[0],
+                    patches[1],
+                    patches[2],
+                    self.assertRaises(SyntheticAtomicCrash),
+                ):
+                    target.promote_full_resource_qualification(
+                        **arguments,
+                        after_physical_commit_step=crash,
+                    )
+                self.assertTrue(fired)
+                published_identity = (
+                    (receipt_path.stat().st_dev, receipt_path.stat().st_ino)
+                    if step == "post_publish_pre_parent_fsync"
+                    else None
+                )
+                patches = (
+                    mock.patch.object(
+                        target, "_load_and_verify_kpp_datasets", return_value=_datasets()
+                    ),
+                    mock.patch.object(
+                        target,
+                        "_load_execution_closure",
+                        side_effect=_fake_execution_closure_loader,
+                    ),
+                    mock.patch.object(
+                        target,
+                        "_default_pilot_validator",
+                        side_effect=_fake_pilot_validator,
+                    ),
+                )
+                with patches[0], patches[1], patches[2]:
+                    resumed = target.promote_full_resource_qualification(**arguments)
+                self.assertTrue(resumed["passed"])
+                if published_identity is not None:
+                    self.assertEqual(
+                        (receipt_path.stat().st_dev, receipt_path.stat().st_ino),
+                        published_identity,
                     )
 
 

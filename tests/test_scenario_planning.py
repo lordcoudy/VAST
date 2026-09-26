@@ -1534,24 +1534,26 @@ class ScenarioPlanningTests(unittest.TestCase):
         self.assertIn('gst_element_register(plugin, "adaptivescheduler"', body)
         self.assertIn("GST_PLUGIN_DEFINE", body)
 
-    def test_native_probe_dockerfiles_disable_unneeded_custom_plugin_target(self) -> None:
+    def test_native_probe_dockerfiles_compile_only_the_probe_sources(self) -> None:
         for name in ("Dockerfile.deepstream", "Dockerfile.savant"):
             body = (ROOT / "deploy" / "native_gst_probe" / name).read_text(encoding="utf-8")
             self.assertIn("COPY deploy/native_gst_probe", body)
-            self.assertIn("VAST_NATIVE_PROBE_SOURCE_SHA", body)
-            self.assertIn('org.vast.native_probe.source_sha="${VAST_NATIVE_PROBE_SOURCE_SHA}"', body)
-            self.assertIn("for attempt in 1 2 3 4 5", body)
-            self.assertIn("apt-get -o Acquire::Retries=5 update &&", body)
-            self.assertIn("apt-get -o Acquire::Retries=5 install -y --fix-missing", body)
-            self.assertIn('if [ "$attempt" -eq 5 ]; then exit 1; fi;', body)
-            self.assertNotIn("$$attempt", body)
-            self.assertIn("-DVAST_BUILD_NATIVE_GST_PROBE=ON", body)
-            self.assertIn("-DVAST_BUILD_GSTREAMER_CUSTOM_PLUGIN=OFF", body)
-            self.assertIn("-DVAST_BUILD_CUSTOM_CUDA_QT=OFF", body)
+            self.assertNotIn("COPY deploy/native_gst_probe /", body)
+            self.assertIn("VAST_SOURCE_SET_SHA256", body)
+            self.assertIn('org.vast.native_probe.source_sha="${VAST_SOURCE_SET_SHA256}"', body)
+            self.assertNotIn("apt-get", body)
+            self.assertNotIn("curl ", body)
+            self.assertIn("c++ -std=c++17 -O3 -DNDEBUG -fPIE -pthread", body)
+            self.assertIn(
+                "/workspace/project/deploy/native_gst_probe/vast_native_gst_probe.cpp",
+                body,
+            )
+            self.assertNotIn("cmake -S", body)
+            self.assertNotIn("VAST_BUILD_GSTREAMER_CUSTOM_PLUGIN", body)
 
         build_script = (ROOT / "scripts" / "build_native_probe_images.sh").read_text(encoding="utf-8")
-        self.assertIn("--build-arg VAST_NATIVE_PROBE_SOURCE_SHA", build_script)
-        self.assertIn("--label \"$SOURCE_LABEL=", build_script)
+        self.assertIn("build_native_probe_images_publication_v1.sh", build_script)
+        self.assertNotIn("docker build", build_script)
 
     def test_native_probe_sets_string_properties_after_parse_launch(self) -> None:
         body = (ROOT / "deploy" / "native_gst_probe" / "vast_native_gst_probe.cpp").read_text(encoding="utf-8")

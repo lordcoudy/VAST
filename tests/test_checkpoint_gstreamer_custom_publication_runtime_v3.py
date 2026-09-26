@@ -43,12 +43,16 @@ FILE_ROLES = (
 class GstreamerPublicationContainerBoundaryV3Tests(unittest.TestCase):
     def test_runtime_is_bound_to_the_materialized_image_and_not_host_native_dispatch(self) -> None:
         self.assertEqual(
+            runtime.EXPECTED_IMAGE_REFERENCE,
+            "vast/gstreamer-custom-publication-runtime-v3:materialized",
+        )
+        self.assertEqual(
             runtime.EXPECTED_IMAGE_ID,
-            "sha256:3c63c15ed7a8022c45f5fb3038ab6d1ff5cc152f430681bbc97c1f332091ebf7",
+            "sha256:4dd8453c5251154383f2f70f9f30c4dca59d72267d7475e8570495bbd16af73a",
         )
         self.assertEqual(
             runtime.EXPECTED_IMAGE_INSPECT_PROJECTION_SHA256,
-            "f5fda9d722635f5ae24797031b3a89d479ab86efccc5a11a9915eb2414890e42",
+            "2ce97a40cdbf28bfc6596f8190435f50ca15de8367239372879a8b9935ed3a07",
         )
         self.assertTrue({
             "container_image", "embedded_artifacts", "container_engine_socket",
@@ -75,6 +79,12 @@ def descriptor(
 
 @unittest.skipUnless(os.name == "posix", "exact descriptor execution is POSIX-only")
 class GstreamerPublicationRuntimeV3Tests(unittest.TestCase):
+    def test_container_pid_ceiling_admits_all_native_workers(self) -> None:
+        contract = mock.Mock(device={"docker_gpus_request": "device=GPU-test"})
+        argv = runtime._security_argv(contract)
+        self.assertEqual(argv[argv.index("--pids-limit") + 1], "4096")
+        self.assertEqual(runtime.MAX_CONTAINER_PIDS, 4096)
+
     def setUp(self) -> None:
         self.temporary = tempfile.TemporaryDirectory()
         self.root = Path(self.temporary.name).resolve()
@@ -157,9 +167,9 @@ class GstreamerPublicationRuntimeV3Tests(unittest.TestCase):
             "container_image": {
                 "image_id": runtime.EXPECTED_IMAGE_ID,
                 "repository_digest": runtime.EXPECTED_REPOSITORY_DIGEST,
-                "inspect_projection_sha256": hashlib.sha256(
-                    runtime._canonical(self.inspect_projection)
-                ).hexdigest(),
+                "inspect_projection_sha256": runtime.image_projection_sha256(
+                    self.inspect_projection
+                ),
                 "base_image_id": runtime.EXPECTED_BASE_IMAGE_ID,
             },
             "embedded_artifacts": runtime.EXPECTED_EMBEDDED_ARTIFACTS,
@@ -300,6 +310,10 @@ class GstreamerPublicationRuntimeV3Tests(unittest.TestCase):
             self.assertEqual(engine_socket["path"], self.engine_socket["path"])
             calls.append(argv)
             if argv[:2] == ("image", "inspect"):
+                self.assertEqual(
+                    argv,
+                    ("image", "inspect", runtime.EXPECTED_IMAGE_REFERENCE),
+                )
                 return mock.Mock(
                     returncode=0,
                     stdout=(json.dumps([self.inspect_projection]) + "\n").encode(),
@@ -329,8 +343,19 @@ class GstreamerPublicationRuntimeV3Tests(unittest.TestCase):
                 )
             self.assertEqual(timeout_s, 900.0)
             self.assertEqual(argv[0], "run")
+            user_index = argv.index("--user")
+            self.assertEqual(
+                argv[user_index + 1], f"{os.getuid()}:{os.getgid()}"
+            )
             self.assertIn(runtime.EXPECTED_IMAGE_ID, argv)
             self.assertNotIn("--system", argv)
+            for binding in (
+                "OPENBLAS_NUM_THREADS=1",
+                "OMP_NUM_THREADS=1",
+                "MKL_NUM_THREADS=1",
+                "NUMEXPR_NUM_THREADS=1",
+            ):
+                self.assertEqual(argv[argv.index(binding) - 1], "--env")
             for value in (
                 "--rm", "--network", "none", "--read-only", "--cap-drop",
                 "ALL", "--security-opt", "no-new-privileges", "--gpus",
@@ -378,8 +403,8 @@ class GstreamerPublicationRuntimeV3Tests(unittest.TestCase):
         return invoke
 
     def test_launcher_is_implemented_and_binds_both_topologies_to_genuine_runner(self) -> None:
-        self.assertFalse(launcher.PUBLICATION_READY)
-        self.assertEqual(len(launcher.MISSING_RUNTIME_PINS), 2)
+        self.assertTrue(launcher.PUBLICATION_READY)
+        self.assertFalse(hasattr(launcher, "MISSING_RUNTIME_PINS"))
         self.assertEqual(
             set(launcher.NATIVE_TOPOLOGY_RUNNERS),
             {"independent_processes", "shared_video_dag"},

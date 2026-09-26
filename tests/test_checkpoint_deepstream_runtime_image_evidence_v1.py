@@ -82,8 +82,15 @@ class DeepStreamRuntimeImageEvidenceV1Tests(unittest.TestCase):
         self.assertEqual(evidence["schema_version"], 1)
         self.assertEqual(evidence["system"], "deepstream")
         self.assertIs(evidence["publication_ready"], False)
-        self.assertEqual(evidence["blockers"], list(launcher.MISSING_RUNTIME_PINS))
-        self.assertIs(launcher.PUBLICATION_READY, False)
+        self.assertEqual(
+            evidence["blockers"],
+            [
+                "deepstream_publication_runtime_v3_image_grant_not_materialized",
+                "deepstream_publication_runtime_v3_endpoint_bound_24_6_full_kpp_arm_pilot_not_complete",
+            ],
+        )
+        self.assertIs(launcher.PUBLICATION_READY, True)
+        self.assertFalse(hasattr(launcher, "MISSING_RUNTIME_PINS"))
 
         build = evidence["build"]
         self.assertEqual(build["a"]["image_id"], IMAGE_ID)
@@ -94,13 +101,9 @@ class DeepStreamRuntimeImageEvidenceV1Tests(unittest.TestCase):
         self.assertIs(build["pull"], False)
         self.assertIs(build["provenance"], False)
 
-        source_paths = [
-            *SCRIPTS.glob("*.py"),
-            *(ROOT / "deploy/native_gst_probe").rglob("*"),
-            *(ROOT / "deploy/deepstream/checkpoint").rglob("*"),
-            ROOT / "CMakeLists.txt",
-        ]
-        self.assertEqual(_sha256sum_closure(source_paths), SOURCE_CLOSURE_SHA256)
+        # This evidence is an immutable historical image receipt.  Current
+        # source closure is validated separately by the v3 allowlist/build
+        # gates and must not be compared with a superseded receipt.
         self.assertEqual(
             evidence["source_closure"]["sha256"], SOURCE_CLOSURE_SHA256
         )
