@@ -27,14 +27,19 @@
 
 namespace vast {
 
-// Worker device identifiers are printable text such as a CUDA UUID or the
-// processor model; the exact value is bound by the attested terminal backend.
-inline bool checkpoint_analytics_stable_device_id(const std::string& value) {
-  return !value.empty() && value.size() <= 256 &&
+// The response backend embeds the worker device ID. CPU processor models may
+// contain spaces, while control characters and edge whitespace remain invalid.
+inline bool checkpoint_analytics_printable_response_text(
+    const std::string& value, std::size_t maximum) {
+  return !value.empty() && value.size() <= maximum &&
          value.front() != ' ' && value.back() != ' ' &&
          std::all_of(value.begin(), value.end(), [](unsigned char character) {
            return character >= 0x20 && character < 0x7f;
          });
+}
+
+inline bool checkpoint_analytics_stable_device_id(const std::string& value) {
+  return checkpoint_analytics_printable_response_text(value, 256);
 }
 
 struct CheckpointAnalyticsExecutionRequest {
@@ -764,7 +769,16 @@ class CheckpointAnalyticsExecutionClient {
              std::make_pair(&result.execution_path, "execution_path"),
              std::make_pair(&result.model_id, "model_id"),
          }) {
-      require_text(*field.first, field.second);
+      if (std::strcmp(field.second, "backend") == 0 ||
+          std::strcmp(field.second, "device_id") == 0) {
+        require(checkpoint_analytics_printable_response_text(
+                    *field.first, std::strcmp(field.second, "device_id") == 0
+                                      ? 256 : 4096),
+                std::string("analytics execution ") + field.second +
+                    " contains controls or has invalid length");
+      } else {
+        require_text(*field.first, field.second);
+      }
     }
     require(result.detector != "identity" && result.backend != "identity",
             "analytics execution terminal cannot be identity-only");

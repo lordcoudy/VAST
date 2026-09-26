@@ -4,6 +4,17 @@
 #include <string>
 
 int main() {
+  const std::string cpu_backend =
+      "analytics-execution:openvino_cpu;runtime=OpenVINO;native_api="
+      "openvino.CompiledModel.__call__;device=CPU:Intel(R) Core(TM) i7-14700K";
+  if (!vast::checkpoint_analytics_printable_response_text(cpu_backend, 4096) ||
+      vast::checkpoint_analytics_printable_response_text(
+          cpu_backend + "\n", 4096) ||
+      vast::checkpoint_analytics_printable_response_text(
+          " " + cpu_backend, 4096)) {
+    std::cerr << "CPU backend printable text validation drifted\n";
+    return 1;
+  }
   const char* accepted[] = {
       "Intel(R) Core(TM) i7-14700K",
       "GPU-00bb784b-60f3-8bf6-bbd3-5a0c09805266",

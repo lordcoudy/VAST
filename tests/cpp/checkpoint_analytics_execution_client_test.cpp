@@ -398,7 +398,7 @@ int main() {
         ::close(packet.fd);
         send_packet(
             descriptors[1],
-            "{\"backend\":\"cuda-tensorrt:sidecar;device=NVIDIA_CUDA:0\"," 
+            "{\"backend\":\"cuda-tensorrt:sidecar;device=NVIDIA CUDA:0\","
             "\"branch\":\"damage\",\"decision_id\":\"decision-native-0001\"," 
             "\"decision_seq\":7,\"detector\":\"damage-gpu-detector-v1\"," 
             "\"device_api\":\"NVIDIA_CUDA\",\"device_id\":\"GPU-00000000-0000-0000-0000-000000000001\"," 
@@ -476,6 +476,7 @@ int main() {
         result.selected_resource != "gpu" || result.device_api != "NVIDIA_CUDA" ||
         result.raw_input_sha256 != raw_sha || result.terminal_status != "completed" ||
         result.detector != "damage-gpu-detector-v1" || result.objects != 1 ||
+        result.backend != "cuda-tensorrt:sidecar;device=NVIDIA CUDA:0" ||
         result.cuda_transfer_intervals.size() != 2 ||
         result.cuda_transfer_intervals[0].direction != "h2d" ||
         result.cuda_transfer_intervals[1].direction != "d2h") {
