@@ -36,6 +36,16 @@
 - [ ] 6.3 Launch the single fresh 32-cell qualification under its supported owner and record invocation identity/checkpoint; verify no A269 cells or helpers are reused.
 - [ ] 6.4 Collect all 32 successful cells, authenticated stop/lifecycle/closure and policy/resource promotion; verify every physical descriptor and accepted validator result before Q4.
 
+## 10. Native-probe qualification integration (added 2026-09-26; required before 6.2-6.4)
+
+- [x] 10.1 Read reset-check queue levels at their declared width and add a discovered native regression that fails on the pre-fix read (c61328db).
+- [x] 10.2 Raise the OpenVINO GVA and GStreamer Custom container task ceiling to 4096 with runtime tests (0f25cb41).
+- [x] 10.3 Limit decode-stage artifacts to loaded GStreamer factories with a regression that fails on the pre-fix list (0f25cb41).
+- [ ] 10.4 Validate native policy identifiers by manifest grammar and frozen branch membership; verify `damage` is accepted and invalid names still rejected.
+- [ ] 10.5 Bind CPU and GPU native policy identities to the frozen qualification-v2 manifest per design decision 8 and verify the loaded analytics path matches the manifest backend; add positive and fail-closed regressions.
+- [ ] 10.6 Accept the qualification bundle's copied, hash-verified container-engine client in the GStreamer Custom runtime; verify containment and byte mismatches are rejected.
+- [ ] 10.7 Renew images, parity and the final suite, then run nonpromoting OpenVINO GVA and GStreamer Custom pre-check replays to a successful terminal before 6.2-6.4.
+
 ## 7. Q4 prerequisite evidence
 
 - [ ] 7.1 Start the accepted-policy guardian and generate Q4 source request/material, phase1 plan/runtime registry, phase2 and two-phase source registry; verify exact receipt file/semantic hashes and reviewed ordered executor argv.
