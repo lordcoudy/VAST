@@ -44,9 +44,9 @@ from publication_child_evidence_materializer_v1 import (
 RUNTIME_INPUT_KEY = "openvino_gva_publication_runtime_v3"
 RUNTIME_INPUT_KIND = "vast_openvino_gva_publication_runtime_inputs_v3"
 EXPECTED_IMAGE_REFERENCE = 'vast/openvino-gva-publication-runtime-v3:materialized'
-EXPECTED_IMAGE_ID = 'sha256:df4a996ed2b9e808b15fc9e01329f9159f9c47e87310dd828cd199795972810f'
-EXPECTED_REPOSITORY_DIGEST = 'vast/openvino-gva-publication-runtime-v3@sha256:df4a996ed2b9e808b15fc9e01329f9159f9c47e87310dd828cd199795972810f'
-EXPECTED_IMAGE_INSPECT_PROJECTION_SHA256 = '3bb9cce5ef4e35acca69153d3f39a9a57065a0b5bf9f93542960caeadb67330b'
+EXPECTED_IMAGE_ID = 'sha256:22f13eb93d46c8db0cb3ac20ee1c3a094d1b1fb2e69a3b209170f6cb6ab7e62c'
+EXPECTED_REPOSITORY_DIGEST = 'vast/openvino-gva-publication-runtime-v3@sha256:22f13eb93d46c8db0cb3ac20ee1c3a094d1b1fb2e69a3b209170f6cb6ab7e62c'
+EXPECTED_IMAGE_INSPECT_PROJECTION_SHA256 = '9b9380523f9279ce39cd66be81222b7b6b80b40295fbbae7ecd4dce2b2d934ee'
 EXPECTED_BASE_IMAGE_ID = 'sha256:1ea1b48e2cfa4d979540392cfebfa871157dbbe8221e4410bbc1c72caef3ec49'
 EXPECTED_IMAGE_LABELS = {'org.vast.base-image-id': 'sha256:1ea1b48e2cfa4d979540392cfebfa871157dbbe8221e4410bbc1c72caef3ec49',
  'org.vast.component': 'openvino-gva-checkpoint-publication-runtime',
@@ -56,7 +56,7 @@ EXPECTED_IMAGE_LABELS = {'org.vast.base-image-id': 'sha256:1ea1b48e2cfa4d9795403
  'org.vast.publication-runtime-abi': '3',
  'org.vast.runtime-dependency-set-sha256': '0f338b3aeca6756d31dccdbbc8caeb6239e8e07fec0541c1df3fea91dfc1963e',
  'org.vast.runtime-source-allowlist-sha256': 'c6ac2d9b54b2a9f9ba883ba814a35c39f319fba9c923497a4fe46432fce7cff9',
- 'org.vast.runtime-source-sha256': 'e1fa251cfa6de2ad65141871374ff62854dd8c5974e682064c6ebaec662a2af6'}
+ 'org.vast.runtime-source-sha256': '1c837495ba3ceadb48935d722527a7f34a3696429bcdbf0195432af5328a79e9'}
 EXPECTED_IMAGE_ENTRYPOINT = "/usr/local/bin/vast_openvino_gva_publication_runtime_v3"
 EXPECTED_IMAGE_USER = "dlstreamer"
 EXPECTED_EMBEDDED_ARTIFACTS = {'/opt/vast/checkpoint/checkpoint_gstreamer_runtime.py': '160906b4b6a490f2e4d8e397216f4e8b7defc38234673f70902cbe77e98c38c9',
