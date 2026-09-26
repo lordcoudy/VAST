@@ -266,6 +266,19 @@ class CheckpointNativePolicyClient {
     }
   }
 
+  // Branches are a frozen enumeration, not opaque IDs: "damage" is shorter
+  // than the stable-ID minimum, so validate by exact membership instead.
+  static void require_frozen_branch(const std::string& value) {
+    static const char* const kBranches[] = {
+        "damage", "foreign_object", "plate_number", "vehicle_type"};
+    for (const char* branch : kBranches) {
+      if (value == branch) {
+        return;
+      }
+    }
+    throw std::runtime_error("native policy branch is outside the frozen branch set");
+  }
+
   static void require_sha256(const std::string& value, const char* name) {
     if (value.size() != 64) {
       throw std::runtime_error(std::string("native policy ") + name + " is not SHA-256");
@@ -283,7 +296,7 @@ class CheckpointNativePolicyClient {
     require_stable_text(request.worker_id, "worker_id");
     require_stable_text(request.input_frame_key, "input_frame_key");
     require_stable_text(request.trace_id, "trace_id");
-    require_stable_text(request.branch, "branch");
+    require_frozen_branch(request.branch);
     require_finite(request.arrival_ms, "arrival_ms", false);
     require_finite(request.decision_time_ms, "decision_time_ms", true);
     require_finite(

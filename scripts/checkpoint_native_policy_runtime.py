@@ -299,6 +299,45 @@ def assess_gstreamer_native_policy_execution_manifest(
     }
 
 
+def native_policy_identity_environment(
+    *,
+    system: str,
+    capability_manifest: Mapping[str, Any],
+) -> dict[str, str]:
+    """Expose each branch's frozen CPU/GPU policy identities to native workers.
+
+    Qualification-v2 identities are coordinate hashes over the image patch,
+    parity and analytics bindings, so the native probe cannot derive them; it
+    binds the manifest's values exactly and the coordinator rejects any other.
+    """
+    try:
+        branches = capability_manifest["systems"][system]["branches"]
+    except (KeyError, TypeError) as exc:
+        raise NativePolicyRuntimeError(f"{system} capability bindings are missing") from exc
+    if not isinstance(branches, Mapping) or set(branches) != set(ANALYTICS_BRANCHES):
+        raise NativePolicyRuntimeError("native policy identities do not cover every branch")
+    environment: dict[str, str] = {}
+    for branch in ANALYTICS_BRANCHES:
+        for resource in RESOURCES:
+            try:
+                binding = branches[branch][resource]
+                native = binding["native_evidence"]
+                values = {
+                    "IMPLEMENTATION_ID": _text(binding["implementation_id"], "implementation_id"),
+                    "EMITTER_ID": _text(native["emitter_id"], "emitter_id"),
+                    "EMITTER_SHA256": str(native["emitter_sha256"]),
+                }
+            except (KeyError, TypeError) as exc:
+                raise NativePolicyRuntimeError(
+                    f"{branch}:{resource}: native policy identity is missing"
+                ) from exc
+            if re.fullmatch(r"[0-9a-f]{64}", values["EMITTER_SHA256"]) is None:
+                raise NativePolicyRuntimeError(f"{branch}:{resource}: emitter_sha256 is invalid")
+            for field, value in values.items():
+                environment[f"VAST_CHECKPOINT_ANALYTICS_{resource.upper()}_{field}_{branch}"] = value
+    return environment
+
+
 def require_exact_native_cpu_capability_bindings(
     *,
     binary: Path,

@@ -75,6 +75,15 @@ class CheckpointAnalyticsExecutionClientCppTest(unittest.TestCase):
             ("gstreamer-1.0", "gstreamer-app-1.0", "gstreamer-rtp-1.0", "gstreamer-video-1.0"),
         )
 
+    def test_native_policy_client_regression(self) -> None:
+        self._compile_and_run("checkpoint_native_policy_client_test.cpp", ("glib-2.0",))
+
+    def test_native_policy_identity_regression(self) -> None:
+        self._compile_and_run(
+            "checkpoint_native_policy_identity_test.cpp",
+            ("gstreamer-1.0", "gstreamer-app-1.0", "gstreamer-rtp-1.0", "gstreamer-video-1.0"),
+        )
+
     def test_native_stage_artifact_regression(self) -> None:
         self._compile_and_run(
             "checkpoint_native_stage_artifact_test.cpp",

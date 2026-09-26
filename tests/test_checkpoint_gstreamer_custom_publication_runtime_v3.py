@@ -79,6 +79,46 @@ def descriptor(
 
 @unittest.skipUnless(os.name == "posix", "exact descriptor execution is POSIX-only")
 class GstreamerPublicationRuntimeV3Tests(unittest.TestCase):
+    def test_container_engine_accepts_the_bundle_copied_client(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary).resolve()
+            copied = root / "artifacts/bundle/_assets/container-engine/docker"
+            copied.parent.mkdir(parents=True)
+            payload = b"docker-client-frozen\n"
+            copied.write_bytes(payload)
+            copied.chmod(0o755)
+            relative = copied.relative_to(root).as_posix()
+            digest = hashlib.sha256(payload).hexdigest()
+
+            def descriptor(path: str, sha: str = digest) -> dict:
+                return {"path": path, "size_bytes": len(payload), "sha256": sha}
+
+            pin = runtime._open_pin(
+                root, "container_engine", descriptor(relative),
+                executable=True, mounted=False,
+            )
+            try:
+                self.assertEqual(pin.path, copied)
+                self.assertIsNone(pin.container_path)
+            finally:
+                os.close(pin.fd)
+            host = runtime._open_pin(
+                root, "container_engine", descriptor(str(copied)),
+                executable=True, mounted=False,
+            )
+            os.close(host.fd)
+            for invalid, blocker in (
+                ("../outside/docker", "gstreamer_runtime_input_path_invalid"),
+                (relative, "gstreamer_runtime_file"),
+            ):
+                with self.subTest(path=invalid, blocker=blocker):
+                    sha = digest if invalid.startswith("..") else "0" * 64
+                    with self.assertRaisesRegex(runtime.GstreamerPublicationRuntimeV3Error, blocker):
+                        runtime._open_pin(
+                            root, "container_engine", descriptor(invalid, sha),
+                            executable=True, mounted=False,
+                        )
+
     def test_container_pid_ceiling_admits_all_native_workers(self) -> None:
         contract = mock.Mock(device={"docker_gpus_request": "device=GPU-test"})
         argv = runtime._security_argv(contract)

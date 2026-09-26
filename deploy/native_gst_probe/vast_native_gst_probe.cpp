@@ -13,6 +13,7 @@
 
 #include <algorithm>
 #include <array>
+#include <cctype>
 #include <atomic>
 #include <chrono>
 #include <cmath>
@@ -164,6 +165,58 @@ std::vector<std::pair<std::string, std::string>> checkpoint_decode_artifact_fact
       {"decoder", decoder_factory},
       {"format_converter", "videoconvert"},
   };
+}
+
+// Frozen qualification-v2 policy identity injected by the runtime for one
+// branch/resource. Returns false when no identity was injected at all; a
+// partial or malformed identity is an error.
+bool checkpoint_injected_policy_identity(
+    const std::string& branch,
+    const std::string& resource,
+    vast::CheckpointNativeExecutionBinding& binding) {
+  std::string prefix;
+  for (const char character : resource) {
+    prefix.push_back(static_cast<char>(std::toupper(static_cast<unsigned char>(character))));
+  }
+  const auto read = [&](const char* field) -> const char* {
+    const std::string name =
+        "VAST_CHECKPOINT_ANALYTICS_" + prefix + "_" + field + "_" + branch;
+    return std::getenv(name.c_str());
+  };
+  const char* implementation = read("IMPLEMENTATION_ID");
+  const char* emitter = read("EMITTER_ID");
+  const char* emitter_sha = read("EMITTER_SHA256");
+  if (implementation == nullptr && emitter == nullptr && emitter_sha == nullptr) {
+    return false;
+  }
+  const auto stable_identity = [](const char* value) {
+    if (value == nullptr) {
+      return false;
+    }
+    const std::string text(value);
+    return !text.empty() && text.size() <= 4096 &&
+           std::all_of(text.begin(), text.end(), [](unsigned char character) {
+             return character >= 0x21 && character != 0x7f;
+           });
+  };
+  const auto sha256_text = [](const char* value) {
+    if (value == nullptr) {
+      return false;
+    }
+    const std::string text(value);
+    return text.size() == 64 &&
+           std::all_of(text.begin(), text.end(), [](char character) {
+             return (character >= '0' && character <= '9') ||
+                    (character >= 'a' && character <= 'f');
+           });
+  };
+  if (!stable_identity(implementation) || !stable_identity(emitter) ||
+      !sha256_text(emitter_sha)) {
+    throw std::runtime_error(
+        "injected " + resource + " analytics path has no exact native policy identity");
+  }
+  binding = vast::CheckpointNativeExecutionBinding{resource, implementation, emitter, emitter_sha};
+  return true;
 }
 
 // Returns the number of observable queues after proving every one is empty.
@@ -3186,24 +3239,17 @@ class NativeProbeRuntime {
     if (resource != "cpu" && resource != "gpu") {
       throw std::runtime_error("checkpoint policy selected an invalid execution resource");
     }
+    vast::CheckpointNativeExecutionBinding injected;
     if (resource == "gpu") {
-      const std::string implementation =
-          checkpoint_analytics_binding(branch, "GPU_IMPLEMENTATION_ID");
-      const std::string emitter = checkpoint_analytics_binding(branch, "GPU_EMITTER_ID");
-      const std::string emitter_sha =
-          checkpoint_analytics_binding(branch, "GPU_EMITTER_SHA256");
-      const auto stable_identity = [](const std::string& value) {
-        return !value.empty() && value.size() <= 4096 &&
-               std::all_of(value.begin(), value.end(), [](unsigned char character) {
-                 return character >= 0x21 && character != 0x7f;
-               });
-      };
-      if (!stable_identity(implementation) || !stable_identity(emitter) ||
-          !valid_sha256(emitter_sha)) {
+      if (!checkpoint_injected_policy_identity(branch, "gpu", injected)) {
         throw std::runtime_error("loaded GPU analytics path has no exact native policy identity");
       }
-      return vast::CheckpointNativeExecutionBinding{
-          "gpu", implementation, emitter, emitter_sha};
+      return injected;
+    }
+    // Qualification-v2 runtimes inject the frozen manifest identity for CPU as
+    // well; only the legacy in-process path derives the v1 identity below.
+    if (checkpoint_injected_policy_identity(branch, "cpu", injected)) {
+      return injected;
     }
     const std::string factory = checkpoint_analytics_binding(branch, "FACTORY");
     const std::string device = checkpoint_analytics_binding(branch, "DEVICE");

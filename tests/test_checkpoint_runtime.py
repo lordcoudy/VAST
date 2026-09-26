@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import ast
 import csv
+import copy
 import hashlib
 import json
 import os
@@ -397,6 +398,94 @@ class CheckpointRuntimeTests(unittest.TestCase):
                 for spec in specs
             )
         )
+
+    def test_native_policy_worker_specs_inject_frozen_manifest_identities(self) -> None:
+        from checkpoint_native_policy_runtime import (
+            NativePolicyRuntimeError,
+            native_policy_identity_environment,
+        )
+
+        def manifest(system: str) -> dict:
+            branches = {}
+            for branch in BRANCHES:
+                branches[branch] = {}
+                for resource in ("cpu", "gpu"):
+                    coordinate = hashlib.sha256(f"{branch}:{resource}".encode()).hexdigest()
+                    branches[branch][resource] = {
+                        "implementation_id": (
+                            f"{system}-qualification-authority-v2:{branch}:{resource}:{coordinate}"
+                        ),
+                        "native_evidence": {
+                            "emitter_id": (
+                                f"{system}-native-policy-emitter-v2:{branch}:{resource}:{coordinate}"
+                            ),
+                            "emitter_sha256": coordinate,
+                        },
+                    }
+            return {"systems": {system: {"branches": branches}}}
+
+        frozen = manifest("gstreamer_custom")
+        identities = native_policy_identity_environment(
+            system="gstreamer_custom", capability_manifest=frozen
+        )
+        self.assertEqual(len(identities), len(BRANCHES) * 2 * 3)
+        damage_cpu = frozen["systems"]["gstreamer_custom"]["branches"]["damage"]["cpu"]
+        self.assertEqual(
+            identities["VAST_CHECKPOINT_ANALYTICS_CPU_IMPLEMENTATION_ID_damage"],
+            damage_cpu["implementation_id"],
+        )
+        self.assertEqual(
+            identities["VAST_CHECKPOINT_ANALYTICS_CPU_EMITTER_SHA256_damage"],
+            damage_cpu["native_evidence"]["emitter_sha256"],
+        )
+
+        broken = copy.deepcopy(frozen)
+        broken["systems"]["gstreamer_custom"]["branches"]["damage"]["gpu"]["native_evidence"][
+            "emitter_sha256"
+        ] = "A" * 64
+        with self.assertRaisesRegex(NativePolicyRuntimeError, "emitter_sha256 is invalid"):
+            native_policy_identity_environment(system="gstreamer_custom", capability_manifest=broken)
+        missing = copy.deepcopy(frozen)
+        del missing["systems"]["gstreamer_custom"]["branches"]["damage"]
+        with self.assertRaisesRegex(NativePolicyRuntimeError, "every branch"):
+            native_policy_identity_environment(system="gstreamer_custom", capability_manifest=missing)
+        with self.assertRaisesRegex(NativePolicyRuntimeError, "capability bindings are missing"):
+            native_policy_identity_environment(system="openvino_gva", capability_manifest=frozen)
+
+        config = load_config(ROOT / "configs" / "experiments.yaml")
+        datasets = load_config(ROOT / "configs" / "datasets.yaml")["datasets"]
+        plan = build_primary_pair_plans(
+            config=config, datasets=datasets, system="gstreamer_custom"
+        )["shared"]
+        common = {
+            "plan": plan,
+            "binary": Path("/tmp/vast_native_gst_probe"),
+            "output_root": Path("/tmp/vast-checkpoint-engineering"),
+            "project_root": ROOT,
+            "run_id": "native-policy-run",
+            "duration_s": 5,
+            "detect_bin": "vastanalytics branch={branch}",
+            "analytics_terminal_mode": NATIVE_TERMINAL_ANALYTICS_MODE,
+        }
+        policy = {
+            "native_policy": "heft",
+            "native_policy_deadline_ms": 100.0,
+            "analytics_execution_socket": "/tmp/vast-analytics-execution.sock",
+            "analytics_preprocessing_contract_sha256": "b" * 64,
+        }
+        specs = build_gstreamer_worker_specs(
+            native_policy_identities=identities, **policy, **common
+        )
+        self.assertTrue(specs)
+        for spec in specs:
+            for name, value in identities.items():
+                self.assertEqual(spec.environment[name], value)
+        partial = dict(identities)
+        del partial["VAST_CHECKPOINT_ANALYTICS_GPU_EMITTER_ID_damage"]
+        with self.assertRaisesRegex(ContractError, "every branch/resource identity"):
+            build_gstreamer_worker_specs(native_policy_identities=partial, **policy, **common)
+        with self.assertRaisesRegex(ContractError, "every branch/resource identity"):
+            build_gstreamer_worker_specs(native_policy_identities=identities, **common)
 
     def test_native_policy_worker_specs_bind_exact_policy_and_deadline(self) -> None:
         config = load_config(ROOT / "configs" / "experiments.yaml")

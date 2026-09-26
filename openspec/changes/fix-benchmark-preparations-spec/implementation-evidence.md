@@ -43,3 +43,7 @@ After the Sep25 pilot failed at cell 17 on a 512-task container ceiling and a de
 ## 2026-09-25 spec revision required
 
 Nonpromoting pre-checks found three further OpenVINO GVA / GStreamer Custom qualification integration defects (identifier minimum length, CPU policy identity scheme, GStreamer Custom container-engine pin). Because the identity scheme needs a design decision, the operator chose to revise and re-review the planning artifacts with `openspec-update-change` before any further production-code change. Implementation is paused until that revision is approved.
+
+## 2026-09-26 revision approval
+
+The revised planning commit `16b5fefe793590eec2dcc8c601fe2d909e3440c3` (requirement "Native-probe qualification path is integrated before qualification", design decision 8, tasks 10.1-10.7) was approved on PR #2 at https://github.com/lordcoudy/VAST/pull/2#issuecomment-5844363496 (2026-09-26T07:45:54Z), after which implementation was requested with `/opsx:apply`. The approval does not select the design alternative, so decision 8's recommended option (manifest-injected CPU/GPU identities) is implemented.

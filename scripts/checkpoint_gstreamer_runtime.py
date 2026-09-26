@@ -61,11 +61,12 @@ from checkpoint_native_policy_runtime import (
     EXTERNAL_EXECUTION_MANIFEST_KIND,
     assess_gstreamer_native_policy_execution_manifest,
     canonical_frames_from_events,
+    native_policy_identity_environment,
     require_exact_native_cpu_capability_bindings,
 )
 from checkpoint_publication_runtime import publish_checkpoint_runtime
 from publication_owned_staging_cleanup_v1 import retire_owned_runtime_output_v1
-from publication_policy_contract import POLICIES
+from publication_policy_contract import ANALYTICS_BRANCHES, POLICIES
 from resource_interval_contract import (
     PLATFORM_BACKWARD_CLOCK_STEP_NS,
     RESOURCE_INTERVAL_COLUMNS,
@@ -828,6 +829,7 @@ def build_gstreamer_worker_specs(
     native_policy_deadline_ms: float | None = None,
     analytics_execution_socket: Path | str | None = None,
     analytics_preprocessing_contract_sha256: str | None = None,
+    native_policy_identities: dict[str, str] | None = None,
     inherited_native_fds: tuple[int, ...] = (),
     gst_plugin_path: str | None = None,
 ) -> list[WorkerLaunchSpec]:
@@ -865,6 +867,17 @@ def build_gstreamer_worker_specs(
         ),
         "gstreamer_custom native policy runtime requires one frozen policy, a positive deadline, an analytics execution socket, and a preprocessing contract SHA-256",
     )
+    if native_policy_identities is not None:
+        expected_identity_names = {
+            _binding_environment_name(f"{resource.upper()}_{field}", branch)
+            for branch in ANALYTICS_BRANCHES
+            for resource in ("cpu", "gpu")
+            for field in ("IMPLEMENTATION_ID", "EMITTER_ID", "EMITTER_SHA256")
+        }
+        _require(
+            policy_runtime_enabled and set(native_policy_identities) == expected_identity_names,
+            "native policy identities require the policy runtime and every branch/resource identity",
+        )
     resolved_execution_socket = (
         _analytics_execution_socket_path(analytics_execution_socket)
         if policy_runtime_enabled
@@ -1015,6 +1028,7 @@ def build_gstreamer_worker_specs(
                                         ): str(resolved_preprocessing_sha256)
                                         for required_branch in branches
                                     },
+                                    **(native_policy_identities or {}),
                                 }
                                 if policy_runtime_enabled
                                 else {}
@@ -1110,6 +1124,7 @@ def build_gstreamer_worker_specs(
                                     ): str(resolved_preprocessing_sha256)
                                     for required_branch in branches
                                 },
+                                **(native_policy_identities or {}),
                             }
                             if policy_runtime_enabled
                             else {}
@@ -2768,6 +2783,7 @@ def main(
         )
     native_policy_runtime: NativePolicyRuntimeCoordinator | None = None
     native_policy_capability_assessment: dict[str, Any] | None = None
+    native_policy_identities: dict[str, str] | None = None
     if publication_mode:
         _require(
             args.analytics_model_manifest is not None
@@ -2804,6 +2820,11 @@ def main(
             require_exact_native_cpu_capability_bindings(
                 binary=args.binary,
                 analytics_bindings=analytics_model_bindings,
+                capability_manifest=capability_manifest,
+            )
+        else:
+            native_policy_identities = native_policy_identity_environment(
+                system=args.system,
                 capability_manifest=capability_manifest,
             )
         native_policy_runtime = NativePolicyRuntimeCoordinator(
@@ -2852,6 +2873,7 @@ def main(
             if native_policy_runtime is not None
             else None
         ),
+        native_policy_identities=native_policy_identities,
         inherited_native_fds=inherited_native_fds,
         gst_plugin_path=(
             str(args.gst_plugin_path)

@@ -362,9 +362,12 @@ def _open_pin(
     ):
         _fail("gstreamer_runtime_file_descriptor_identity_invalid")
     project_path = value.get("path")
+    # Qualification bundles copy the engine client into the project, as the
+    # other runtimes accept; a host path remains supported when absolute.
     path = (
         _project_path(root, project_path)
-        if mounted else _absolute_host_file_path(project_path)
+        if mounted or (type(project_path) is str and not project_path.startswith("/"))
+        else _absolute_host_file_path(project_path)
     )
     container_path = (
         _container_project_path(value.get("container_path"), project_path)

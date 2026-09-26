@@ -41,9 +41,9 @@
 - [x] 10.1 Read reset-check queue levels at their declared width and add a discovered native regression that fails on the pre-fix read (c61328db).
 - [x] 10.2 Raise the OpenVINO GVA and GStreamer Custom container task ceiling to 4096 with runtime tests (0f25cb41).
 - [x] 10.3 Limit decode-stage artifacts to loaded GStreamer factories with a regression that fails on the pre-fix list (0f25cb41).
-- [ ] 10.4 Validate native policy identifiers by manifest grammar and frozen branch membership; verify `damage` is accepted and invalid names still rejected.
-- [ ] 10.5 Bind CPU and GPU native policy identities to the frozen qualification-v2 manifest per design decision 8 and verify the loaded analytics path matches the manifest backend; add positive and fail-closed regressions.
-- [ ] 10.6 Accept the qualification bundle's copied, hash-verified container-engine client in the GStreamer Custom runtime; verify containment and byte mismatches are rejected.
+- [x] 10.4 Validate native policy identifiers by manifest grammar and frozen branch membership; verify `damage` is accepted and invalid names still rejected.
+- [x] 10.5 Bind CPU and GPU native policy identities to the frozen qualification-v2 manifest per design decision 8 and verify the loaded analytics path matches the manifest backend; add positive and fail-closed regressions.
+- [x] 10.6 Accept the qualification bundle's copied, hash-verified container-engine client in the GStreamer Custom runtime; verify containment and byte mismatches are rejected.
 - [ ] 10.7 Renew images, parity and the final suite, then run nonpromoting OpenVINO GVA and GStreamer Custom pre-check replays to a successful terminal before 6.2-6.4.
 
 ## 7. Q4 prerequisite evidence
