@@ -47,3 +47,7 @@ The probe source is in the DeepStream, OpenVINO and Savant native-probe allowlis
 ## 2026-09-25 decoder artifact and PID-ceiling renewal
 
 The decode-stage artifact fix changes `deploy/native_gst_probe/vast_native_gst_probe.cpp` (pin `c3cdaaf2…`), invalidating the full nine-image chain, patch `e98b4994…`, parity `4a37e012…`, the 2,517/88 ext4 suite and the Sep25 qualification chain. The `MAX_CONTAINER_PIDS` change is host-side only (`scripts/checkpoint_openvino_gva_publication_runtime_v3.py`, `scripts/checkpoint_gstreamer_publication_runtime_v3.py`; neither is in an image allowlist) but is part of the qualification execution-code closure. Renew steps 1-9 in order.
+
+## 2026-09-26 native policy terminal backend renewal
+
+The `20260926e` OpenVINO CPU pre-check reached its measurement call and failed because `deploy/native_gst_probe/checkpoint_native_policy_client.hpp` rejected spaces in the attested CPU processor model inside the terminal `backend`. This header is in all three native-probe source allowlists and directly in the OpenVINO GVA and GStreamer Custom runtime allowlists. Its narrow printable-backend fix invalidates all three native foundations, both worker builds transitively, four publication runtimes, the image patch, physical parity, host identity pins, final suite and qualification chain. The successful `20260926e` image/parity/suite/inputs remain historical evidence; renew steps 1-9 before any qualification promotion.

@@ -72,7 +72,7 @@ int main() {
             "\"message_type\":\"path_ack\",\"schema_version\":1}");
         const std::string terminal = receive_packet(descriptors[1]);
         if (!contains(terminal, "\"message_type\":\"terminal\"") ||
-            !contains(terminal, "\"backend\":\"openvino-dlstreamer:gvadetect;device=CPU\"") ||
+            !contains(terminal, "\"backend\":\"analytics-execution:openvino_cpu;runtime=OpenVINO;native_api=openvino.CompiledModel.__call__;device=CPU:Intel(R) Core(TM) i7-14700K\"") ||
             !contains(terminal, "\"actual_service_ms\":2.5")) {
           throw std::runtime_error("terminal evidence is incomplete");
         }
@@ -117,10 +117,23 @@ int main() {
         1004.5,
         2.5,
         "plate-number-detector-v1",
-        "openvino-dlstreamer:gvadetect;device=CPU");
+        "analytics-execution:openvino_cpu;runtime=OpenVINO;native_api=openvino.CompiledModel.__call__;device=CPU:Intel(R) Core(TM) i7-14700K");
     server.join();
     if (server_error) {
       std::rethrow_exception(server_error);
+    }
+    for (const std::string& invalid_backend : {
+             " leading-backend", "trailing-backend ", "backend\tcontrol"}) {
+      bool rejected = false;
+      try {
+        client.terminal(request, decision, binding, "completed", 1004.5,
+                        2.5, "plate-number-detector-v1", invalid_backend);
+      } catch (const std::exception& error) {
+        rejected = contains(error.what(), "backend contains controls");
+      }
+      if (!rejected) {
+        throw std::runtime_error("unsafe native policy backend was accepted");
+      }
     }
 
     int mismatch_fds[2] = {-1, -1};

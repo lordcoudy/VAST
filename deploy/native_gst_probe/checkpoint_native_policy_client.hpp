@@ -208,7 +208,9 @@ class CheckpointNativePolicyClient {
       throw std::runtime_error("native terminal precedes policy decision");
     }
     require_stable_text(detector, "detector");
-    require_stable_text(backend, "backend");
+    // The attested CPU backend embeds the processor model, which can contain
+    // spaces. Keep identifier fields strict and reject edge/control whitespace.
+    require_stable_text(backend, "backend", true);
     std::ostringstream json;
     json << "{\"actual_service_ms\":" << number(actual_service_ms)
          << ",\"backend\":\"" << escape(backend)
@@ -255,12 +257,16 @@ class CheckpointNativePolicyClient {
     }
   }
 
-  static void require_stable_text(const std::string& value, const char* name) {
+  static void require_stable_text(
+      const std::string& value, const char* name, bool allow_internal_space = false) {
     if (value.size() < 8 || value.size() > 4096) {
       throw std::runtime_error(std::string("native policy ") + name + " has invalid length");
     }
-    for (const unsigned char character : value) {
-      if (character < 0x21 || character == 0x7f) {
+    for (std::size_t index = 0; index < value.size(); ++index) {
+      const unsigned char character = static_cast<unsigned char>(value[index]);
+      if (character < 0x20 || character == 0x7f ||
+          (character == ' ' &&
+           (!allow_internal_space || index == 0 || index + 1 == value.size()))) {
         throw std::runtime_error(std::string("native policy ") + name + " contains controls");
       }
     }
