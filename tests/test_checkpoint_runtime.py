@@ -2152,6 +2152,18 @@ class CheckpointRuntimeTests(unittest.TestCase):
         self.assertEqual(sum(row["event_kind"] == "join_complete" for row in emitted), 1)
         self.assertEqual(coordinator.unresolved_frames(), ())
 
+    def test_gstreamer_native_runtime_selects_v2_join_contract(self) -> None:
+        tree = ast.parse((ROOT / "scripts/checkpoint_gstreamer_runtime.py").read_text(encoding="utf-8"))
+        calls = [
+            node for node in ast.walk(tree)
+            if isinstance(node, ast.Call)
+            and isinstance(node.func, ast.Name)
+            and node.func.id == "run_worker_processes"
+        ]
+        self.assertEqual(len(calls), 1)
+        keywords = {item.arg: item.value for item in calls[0].keywords}
+        self.assertEqual(ast.literal_eval(keywords["topology_contract_version"]), 2)
+
     def test_join_coordinator_keeps_v1_and_v2_shapes_strictly_separate(self) -> None:
         bindings = [
             WorkerBinding(

@@ -3004,6 +3004,7 @@ def main(
         result = run_worker_processes(
             run_id=args.run_id,
             topology_kind=plan["topology_kind"],
+            topology_contract_version=2,
             branches=plan["required_branches"],
             specs=specs,
             source_specs=source_specs,
