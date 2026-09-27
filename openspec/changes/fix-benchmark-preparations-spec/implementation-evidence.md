@@ -1,6 +1,6 @@
 # Implementation evidence
 
-Status: implementation in progress; preparation_ready=false, full_run_started=false, publication_ready=false. The 2026-09-27 and `20260927b` failed pre-check chains remain historical and unaccepted; the latter guardian stopped cleanly. The `20260927b` image, 480-run parity and exact-byte suite receipts passed on their original bytes but are invalidated for qualification by the newly identified shared-runtime `resource_events.csv` repair. Fresh qualification, Q4, capacity and preflight remain open. No full-run arms have started. See implementation-validation.md for physical evidence.
+Status: implementation in progress; preparation_ready=false, full_run_started=false, publication_ready=false. Earlier failed pre-check chains, including `20260927b` through `20260927e`, remain historical and unaccepted with their actual guardian lifecycles preserved. The `20260927f` nine-image, 23-check packaged, 480-execution/32-group parity and final ext4 retry gates have passed on their exact bytes; the retry ran 2,545 tests with 88 reviewed skips and the independent checker rehashed 2,874 files. Its first failed ext4 attempt remains preserved. Fresh f input materialization is running; guardian, four native CPU/GPU pre-checks, Savant diagnostic and 32 qualification cells remain unaccepted. Q4, capacity and preflight remain open. No full-run arms have started. See implementation-validation.md for physical evidence and limits.
 
 ## Approval and workflow recovery
 
