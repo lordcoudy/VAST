@@ -456,6 +456,44 @@ def _require(condition: bool, message: str) -> None:
         raise ContractError(message)
 
 
+def _promote_native_policy_measurement(
+    policy_runtime: NativePolicyRuntimeCoordinator,
+    output_dir: Path,
+    *,
+    result: RuntimeRunResult,
+    run_id: str,
+) -> dict[str, Any]:
+    """Promote only decisions linked to the accepted measurement ingress."""
+    ingress_rows, _cohort_id = _accepted_ingress_rows(result, run_id=run_id)
+    runtime_frames = canonical_frames_from_events(result.events)
+    accepted_frames: dict[str, dict[str, Any]] = {}
+    accepted_identities: set[tuple[str, int, int]] = set()
+    for row in ingress_rows:
+        input_key = row["input_frame_key"]
+        _require(
+            type(input_key) is str and bool(input_key) and input_key not in accepted_frames,
+            "accepted measurement ingress has a duplicate or invalid input frame key",
+        )
+        identity = (str(row["trace_id"]), int(row["stream_id"]), int(row["frame_id"]))
+        _require(
+            identity not in accepted_identities,
+            "accepted measurement ingress has a duplicate frame identity",
+        )
+        canonical = runtime_frames.get(input_key)
+        _require(canonical is not None, "accepted measurement ingress is missing canonical runtime frame")
+        _require(
+            canonical == {
+                "trace_id": identity[0],
+                "stream_id": identity[1],
+                "frame_id": identity[2],
+            },
+            "accepted measurement ingress canonical frame identity drifted",
+        )
+        accepted_frames[input_key] = canonical
+        accepted_identities.add(identity)
+    return policy_runtime.promote(output_dir, canonical_frames=accepted_frames)
+
+
 def write_native_stage_resource_events(
     output_dir: Path,
     *,
@@ -3229,9 +3267,11 @@ def main(
         )
     native_policy_promotion: dict[str, Any] | None = None
     if native_policy_runtime is not None:
-        native_policy_promotion = native_policy_runtime.promote(
+        native_policy_promotion = _promote_native_policy_measurement(
+            native_policy_runtime,
             args.output_dir,
-            canonical_frames=canonical_frames_from_events(result.events),
+            result=result,
+            run_id=args.run_id,
         )
         result = dataclasses.replace(
             result,

@@ -25,6 +25,8 @@ from checkpoint_native_policy_runtime import (  # noqa: E402
     assess_gstreamer_native_policy_execution_manifest,
     require_exact_native_cpu_capability_bindings,
 )
+import checkpoint_gstreamer_runtime as gstreamer_runtime  # noqa: E402
+from checkpoint_runtime import RuntimeRunResult  # noqa: E402
 from publication_policy_contract import (  # noqa: E402
     ANALYTICS_BRANCHES,
     POLICIES,
@@ -527,6 +529,68 @@ class NativePolicyRuntimeCoordinatorTests(unittest.TestCase):
                 [record["decision_id"] for record in records],
                 [measured_response["decision_id"]],
             )
+
+    def test_gstreamer_caller_promotes_only_measurement_decisions(self) -> None:
+        runtime = coordinator("cpu_only")
+        requests = [request_message(frame_id=frame_id) for frame_id in (1, 2, 3)]
+        responses = []
+        for request in requests:
+            response = runtime.handle_message(request["worker_id"], request)
+            runtime.handle_message(request["worker_id"], path_message(response, request=request))
+            runtime.handle_message(request["worker_id"], terminal_message(response, request=request))
+            responses.append(response)
+        measured = requests[1]
+        result = RuntimeRunResult(
+            events=tuple(
+                {
+                    "input_frame_key": request["input_frame_key"],
+                    "trace_id": request["trace_id"],
+                    "stream_id": request["stream_id"],
+                    "frame_id": request["frame_id"],
+                }
+                for request in requests
+            ),
+            unresolved_frames=(),
+            process_ids={},
+            event_observed_ns={},
+            process_exit_ns={},
+            terminal_ingress_rows=(
+                {
+                    "run_id": measured["run_id"],
+                    "input_frame_key": measured["input_frame_key"],
+                    "trace_id": measured["trace_id"],
+                    "stream_id": measured["stream_id"],
+                    "frame_id": measured["frame_id"],
+                    "window_start_timestamp_ms": 1_000,
+                    "window_end_timestamp_ms": 2_000,
+                    "terminal_status": "completed",
+                    "terminal_provenance": "native_completion_event",
+                },
+            ),
+        )
+        with tempfile.TemporaryDirectory() as tmp:
+            output = Path(tmp)
+            summary = gstreamer_runtime._promote_native_policy_measurement(
+                runtime, output, result=result, run_id=measured["run_id"],
+            )
+            self.assertEqual(summary["runtime_decision_count"], 3)
+            self.assertEqual(summary["accepted_decision_count"], 1)
+            self.assertEqual(summary["excluded_noncohort_decision_count"], 2)
+            decisions = validate_policy_decisions(
+                output / "policy_decisions.csv",
+                require_labeled_provenance=True,
+                require_full_trace=True,
+                require_causal_trace=True,
+            )
+            self.assertEqual(len(decisions), 1)
+            self.assertEqual(int(decisions.iloc[0]["frame_id"]), 2)
+            records = [
+                json.loads(line)
+                for line in (output / "publication_policy_decisions.jsonl")
+                .read_text(encoding="utf-8")
+                .splitlines()
+            ]
+            self.assertEqual([record["decision_id"] for record in records], [responses[1]["decision_id"]])
 
     def test_event_enrichment_carries_exact_selected_policy_cost_and_queue_depth(self) -> None:
         runtime = coordinator("cpu_only")

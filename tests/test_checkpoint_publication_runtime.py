@@ -10,7 +10,7 @@ import math
 import copy
 from dataclasses import replace
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -253,6 +253,91 @@ class CheckpointPublicationRuntimeTests(unittest.TestCase):
             "native resource_events.csv",
         ):
             _require_native_execution_sidecars(Path(tmp))
+
+    def test_native_policy_promotion_uses_only_accepted_measurement_frames(self) -> None:
+        measured = event(
+            kind="stage_complete", stage="damage", execution_id="measurement:damage",
+            parents="[]", timestamp_ms=1_200, branch_id="damage",
+        )
+        warmup = dict(
+            measured, input_frame_key="warmup-key", trace_id=f"{RUN_ID}:0:30",
+            frame_id=30,
+        )
+        drain = dict(
+            measured, input_frame_key="drain-key", trace_id=f"{RUN_ID}:0:32",
+            frame_id=32,
+        )
+        result = runtime_result(
+            events=(
+                warmup, measured,
+                dict(measured, execution_id="measurement:postprocess"), drain,
+            ),
+            terminal_ingress_rows=(ingress_row(),),
+        )
+        policy_runtime = Mock()
+        policy_runtime.promote.return_value = {"accepted_decision_count": 1}
+
+        self.assertEqual(
+            gstreamer_runtime._promote_native_policy_measurement(
+                policy_runtime, Path("unused-output"), result=result, run_id=RUN_ID,
+            ),
+            {"accepted_decision_count": 1},
+        )
+        policy_runtime.promote.assert_called_once_with(
+            Path("unused-output"),
+            canonical_frames={
+                INPUT_FRAME_KEY: {
+                    "trace_id": TRACE_ID, "stream_id": 0, "frame_id": 31,
+                },
+            },
+        )
+
+    def test_native_policy_promotion_rejects_duplicate_missing_and_drifted_cohort(self) -> None:
+        measured = event(
+            kind="stage_complete", stage="damage", execution_id="measurement:damage",
+            parents="[]", timestamp_ms=1_200, branch_id="damage",
+        )
+        cases = (
+            (
+                "duplicate",
+                runtime_result(
+                    events=(measured,),
+                    terminal_ingress_rows=(ingress_row(), ingress_row()),
+                ),
+                "duplicate",
+            ),
+            (
+                "duplicate_identity",
+                runtime_result(
+                    events=(measured, dict(measured, input_frame_key="duplicate-key")),
+                    terminal_ingress_rows=(
+                        ingress_row(), ingress_row(input_frame_key="duplicate-key"),
+                    ),
+                ),
+                "duplicate frame identity",
+            ),
+            (
+                "missing",
+                runtime_result(events=(), terminal_ingress_rows=(ingress_row(),)),
+                "missing canonical",
+            ),
+            (
+                "drift",
+                runtime_result(
+                    events=(dict(measured, frame_id=32),),
+                    terminal_ingress_rows=(ingress_row(),),
+                ),
+                "identity drift",
+            ),
+        )
+        for label, result, message in cases:
+            with self.subTest(label=label):
+                policy_runtime = Mock()
+                with self.assertRaisesRegex(ContractError, message):
+                    gstreamer_runtime._promote_native_policy_measurement(
+                        policy_runtime, Path("unused-output"), result=result, run_id=RUN_ID,
+                    )
+                policy_runtime.promote.assert_not_called()
 
     def test_ingress_promotion_rejects_censoring_and_non_native_terminal_provenance(self) -> None:
         cases = (
