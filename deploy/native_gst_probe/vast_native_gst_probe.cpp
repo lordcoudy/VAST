@@ -18,6 +18,7 @@
 #include <chrono>
 #include <cmath>
 #include <condition_variable>
+#include <cstddef>
 #include <cstdint>
 #include <cstdlib>
 #include <deque>
@@ -423,6 +424,7 @@ class NativeProbeRuntime {
   std::unique_ptr<vast::CheckpointFanoutWorkCounterEmitter> checkpoint_fanout_work_emitter_;
   std::unique_ptr<vast::CheckpointNativePolicyClient> checkpoint_policy_client_;
   std::unique_ptr<vast::CheckpointAnalyticsExecutionClient> checkpoint_analytics_execution_client_;
+  bool checkpoint_external_execution_mode_ = false;
   std::string checkpoint_worker_id_;
   std::string checkpoint_policy_emitter_sha256_;
   GMainLoop* loop_ = nullptr;
@@ -1010,6 +1012,43 @@ class NativeProbeRuntime {
     });
   }
 
+  static bool valid_drop_detector_identity(const std::string& value) {
+    const std::string marker = ";model_sha256=";
+    const std::size_t split = value.find(marker);
+    if (split == std::string::npos || split == 0 || split > 80 ||
+        value.find(';') != split) {
+      return false;
+    }
+    if (value.compare(0, split, "identity") == 0 ||
+        value.compare(0, split, "topology_only") == 0) {
+      return false;
+    }
+    const bool valid_model_id = std::all_of(
+        value.begin(), value.begin() + static_cast<std::ptrdiff_t>(split),
+        [](unsigned char character) {
+          return (character >= 'a' && character <= 'z') ||
+                 (character >= 'A' && character <= 'Z') ||
+                 (character >= '0' && character <= '9') ||
+                 character == '.' || character == '_' || character == '-';
+        });
+    return valid_model_id && valid_sha256(value.substr(split + marker.size()));
+  }
+
+  static bool has_external_drop_detector_binding(const std::string& branch) {
+    vast::CheckpointNativeExecutionBinding cpu_binding;
+    vast::CheckpointNativeExecutionBinding gpu_binding;
+    const bool has_cpu = checkpoint_injected_policy_identity(branch, "cpu", cpu_binding);
+    const bool has_gpu = checkpoint_injected_policy_identity(branch, "gpu", gpu_binding);
+    const std::string pin_name =
+        "VAST_CHECKPOINT_ANALYTICS_DROP_DETECTOR_" + branch;
+    const bool has_pin = std::getenv(pin_name.c_str()) != nullptr;
+    if (has_cpu != has_gpu || (has_pin && !has_cpu)) {
+      throw std::runtime_error(
+          "native analytics drop has incomplete external execution bindings");
+    }
+    return has_cpu;
+  }
+
   static std::uint64_t parse_uint64(const std::string& raw, const char* name) {
     std::size_t consumed = 0;
     std::uint64_t value = 0;
@@ -1288,6 +1327,7 @@ class NativeProbeRuntime {
     }
     initialize_checkpoint_analytics_bridge();
     initialize_checkpoint_policy_runtime();
+    initialize_checkpoint_external_execution_mode();
   }
 
   bool native_checkpoint_analytics_enabled() const {
@@ -1332,6 +1372,34 @@ class NativeProbeRuntime {
     checkpoint_analytics_execution_client_ =
         std::make_unique<vast::CheckpointAnalyticsExecutionClient>(
             vast::CheckpointAnalyticsExecutionClient::from_environment());
+  }
+
+  void initialize_checkpoint_external_execution_mode() {
+    const char* raw_mode =
+        std::getenv("VAST_CHECKPOINT_ANALYTICS_EXTERNAL_EXECUTION_MODE");
+    if (raw_mode != nullptr && std::string(raw_mode) != "1") {
+      throw std::runtime_error("checkpoint external execution mode marker is invalid");
+    }
+    checkpoint_external_execution_mode_ = raw_mode != nullptr;
+    if (checkpoint_external_execution_mode_ &&
+        (checkpoint_policy_client_ == nullptr ||
+         checkpoint_analytics_execution_client_ == nullptr)) {
+      throw std::runtime_error("checkpoint external execution mode lacks policy/execution bridge");
+    }
+    for (const std::string& branch : checkpoint_branches_) {
+      const bool has_external_bindings = has_external_drop_detector_binding(branch);
+      if (has_external_bindings != checkpoint_external_execution_mode_) {
+        throw std::runtime_error(
+            "checkpoint external execution mode and branch bindings disagree");
+      }
+      if (checkpoint_external_execution_mode_) {
+        const std::string drop_detector =
+            checkpoint_analytics_binding(branch, "DROP_DETECTOR");
+        if (!valid_drop_detector_identity(drop_detector)) {
+          throw std::runtime_error("native analytics drop semantic detector pin is invalid");
+        }
+      }
+    }
   }
 
   void initialize_checkpoint_analytics_bridge() {
@@ -1820,6 +1888,23 @@ class NativeProbeRuntime {
       if (branch_executions_it != state.checkpoint_policy_executions_by_branch.end() &&
           branch_executions_it->second.count(resolved_terminal.transport_pts_ns) != 0) {
         throw std::runtime_error("native analytics drop followed policy path entry");
+      }
+      const bool has_external_bindings =
+          has_external_drop_detector_binding(resolved_terminal.branch_id);
+      if (has_external_bindings != checkpoint_external_execution_mode_) {
+        throw std::runtime_error(
+            "checkpoint external execution mode and branch bindings disagree");
+      }
+      if (checkpoint_external_execution_mode_) {
+        // The queue attests the physical OMZ proxy above.  A dropped frame
+        // never enters the external worker, but its branch terminal must use
+        // the same frozen semantic model identity as completed worker frames.
+        const std::string drop_detector =
+            checkpoint_analytics_binding(resolved_terminal.branch_id, "DROP_DETECTOR");
+        if (!valid_drop_detector_identity(drop_detector)) {
+          throw std::runtime_error("native analytics drop semantic detector pin is invalid");
+        }
+        resolved_terminal.detector = drop_detector;
       }
     } else if (resolved_terminal.terminal_reason != "native_roi_metadata_committed") {
       throw std::runtime_error("native detector completion reason drifted");

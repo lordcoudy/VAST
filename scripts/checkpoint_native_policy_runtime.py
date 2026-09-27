@@ -51,6 +51,9 @@ _NVIDIA_CUDA_TERMINAL_BACKEND = re.compile(
     r"^analytics-execution:tensorrt_cuda;runtime=[^;\r\n]+;"
     r"native_api=[^;\r\n]+;device=NVIDIA_CUDA:[^;\r\n]+$"
 )
+_DROP_DETECTOR_IDENTITY = re.compile(
+    r"^(?!identity;|topology_only;)[A-Za-z0-9._-]{1,80};model_sha256=[0-9a-f]{64}$"
+)
 
 _REQUEST_FIELDS = {
     "schema_version",
@@ -318,10 +321,13 @@ def native_policy_identity_environment(
         raise NativePolicyRuntimeError("native policy identities do not cover every branch")
     environment: dict[str, str] = {}
     for branch in ANALYTICS_BRANCHES:
+        drop_detectors: set[str] = set()
         for resource in RESOURCES:
             try:
                 binding = branches[branch][resource]
                 native = binding["native_evidence"]
+                drop_detector = binding["terminal_detector"]
+                runtime_identity = binding["runtime_identity"]
                 values = {
                     "IMPLEMENTATION_ID": _text(binding["implementation_id"], "implementation_id"),
                     "EMITTER_ID": _text(native["emitter_id"], "emitter_id"),
@@ -333,8 +339,26 @@ def native_policy_identity_environment(
                 ) from exc
             if re.fullmatch(r"[0-9a-f]{64}", values["EMITTER_SHA256"]) is None:
                 raise NativePolicyRuntimeError(f"{branch}:{resource}: emitter_sha256 is invalid")
+            if (
+                type(drop_detector) is not str
+                or _DROP_DETECTOR_IDENTITY.fullmatch(drop_detector) is None
+                or not isinstance(runtime_identity, Mapping)
+                or runtime_identity.get("terminal_detector") != drop_detector
+            ):
+                raise NativePolicyRuntimeError(
+                    f"{branch}:{resource}: external drop detector identity is invalid or drifted"
+                )
+            drop_detectors.add(drop_detector)
             for field, value in values.items():
                 environment[f"VAST_CHECKPOINT_ANALYTICS_{resource.upper()}_{field}_{branch}"] = value
+        if len(drop_detectors) != 1:
+            raise NativePolicyRuntimeError(
+                f"{branch}: CPU/GPU external drop detector identities differ"
+            )
+        environment[f"VAST_CHECKPOINT_ANALYTICS_DROP_DETECTOR_{branch}"] = next(
+            iter(drop_detectors)
+        )
+    environment["VAST_CHECKPOINT_ANALYTICS_EXTERNAL_EXECUTION_MODE"] = "1"
     return environment
 
 

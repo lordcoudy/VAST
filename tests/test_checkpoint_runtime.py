@@ -409,6 +409,10 @@ class CheckpointRuntimeTests(unittest.TestCase):
             branches = {}
             for branch in BRANCHES:
                 branches[branch] = {}
+                detector = (
+                    f"{branch}-worker;model_sha256="
+                    + hashlib.sha256(branch.encode()).hexdigest()
+                )
                 for resource in ("cpu", "gpu"):
                     coordinate = hashlib.sha256(f"{branch}:{resource}".encode()).hexdigest()
                     branches[branch][resource] = {
@@ -421,6 +425,8 @@ class CheckpointRuntimeTests(unittest.TestCase):
                             ),
                             "emitter_sha256": coordinate,
                         },
+                        "terminal_detector": detector,
+                        "runtime_identity": {"terminal_detector": detector},
                     }
             return {"systems": {system: {"branches": branches}}}
 
@@ -428,7 +434,10 @@ class CheckpointRuntimeTests(unittest.TestCase):
         identities = native_policy_identity_environment(
             system="gstreamer_custom", capability_manifest=frozen
         )
-        self.assertEqual(len(identities), len(BRANCHES) * 2 * 3)
+        self.assertEqual(len(identities), len(BRANCHES) * (2 * 3 + 1) + 1)
+        self.assertEqual(
+            identities["VAST_CHECKPOINT_ANALYTICS_EXTERNAL_EXECUTION_MODE"], "1"
+        )
         damage_cpu = frozen["systems"]["gstreamer_custom"]["branches"]["damage"]["cpu"]
         self.assertEqual(
             identities["VAST_CHECKPOINT_ANALYTICS_CPU_IMPLEMENTATION_ID_damage"],
@@ -437,6 +446,10 @@ class CheckpointRuntimeTests(unittest.TestCase):
         self.assertEqual(
             identities["VAST_CHECKPOINT_ANALYTICS_CPU_EMITTER_SHA256_damage"],
             damage_cpu["native_evidence"]["emitter_sha256"],
+        )
+        self.assertEqual(
+            identities["VAST_CHECKPOINT_ANALYTICS_DROP_DETECTOR_damage"],
+            damage_cpu["terminal_detector"],
         )
 
         broken = copy.deepcopy(frozen)
@@ -484,6 +497,14 @@ class CheckpointRuntimeTests(unittest.TestCase):
         del partial["VAST_CHECKPOINT_ANALYTICS_GPU_EMITTER_ID_damage"]
         with self.assertRaisesRegex(ContractError, "every branch/resource identity"):
             build_gstreamer_worker_specs(native_policy_identities=partial, **policy, **common)
+        partial = dict(identities)
+        del partial["VAST_CHECKPOINT_ANALYTICS_EXTERNAL_EXECUTION_MODE"]
+        with self.assertRaisesRegex(ContractError, "every branch/resource identity"):
+            build_gstreamer_worker_specs(native_policy_identities=partial, **policy, **common)
+        malformed = dict(identities)
+        malformed["VAST_CHECKPOINT_ANALYTICS_EXTERNAL_EXECUTION_MODE"] = "0"
+        with self.assertRaisesRegex(ContractError, "every branch/resource identity"):
+            build_gstreamer_worker_specs(native_policy_identities=malformed, **policy, **common)
         with self.assertRaisesRegex(ContractError, "every branch/resource identity"):
             build_gstreamer_worker_specs(native_policy_identities=identities, **common)
 

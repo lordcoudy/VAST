@@ -131,13 +131,28 @@ std::string detector_identity(const std::string& branch) {
          ";weights_sha256=" + std::string(64, 'c');
 }
 
+std::string worker_detector_identity(const std::string& branch) {
+  return "opaque_" + branch + ";model_sha256=" + std::string(64, 'd');
+}
+
 void configure_model_bindings() {
+  ::setenv("VAST_CHECKPOINT_ANALYTICS_EXTERNAL_EXECUTION_MODE", "1", 1);
   for (const std::string& branch : kBranches) {
     const std::string prefix = "VAST_CHECKPOINT_ANALYTICS_";
     ::setenv((prefix + "DETECTOR_ID_" + branch).c_str(), (branch + "-detector").c_str(), 1);
     ::setenv((prefix + "MODEL_SHA256_" + branch).c_str(), std::string(64, 'b').c_str(), 1);
     ::setenv((prefix + "WEIGHTS_SHA256_" + branch).c_str(), std::string(64, 'c').c_str(), 1);
     ::setenv((prefix + "FACTORY_" + branch).c_str(), "gvadetect", 1);
+    ::setenv((prefix + "DROP_DETECTOR_" + branch).c_str(),
+             worker_detector_identity(branch).c_str(), 1);
+    for (const std::string& resource : {"CPU", "GPU"}) {
+      ::setenv((prefix + resource + "_IMPLEMENTATION_ID_" + branch).c_str(),
+               ("qualified-" + resource + "-implementation").c_str(), 1);
+      ::setenv((prefix + resource + "_EMITTER_ID_" + branch).c_str(),
+               ("qualified-" + resource + "-emitter").c_str(), 1);
+      ::setenv((prefix + resource + "_EMITTER_SHA256_" + branch).c_str(),
+               std::string(64, 'e').c_str(), 1);
+    }
   }
 }
 
@@ -199,7 +214,13 @@ std::vector<std::string> drain_event_lines(int fd) {
 void expect_no_policy_or_inference_calls(const Descriptors& descriptors) {
   for (int fd : {descriptors.policy_socket[1], descriptors.execution_socket[1]}) {
     pollfd descriptor{fd, POLLIN, 0};
-    if (::poll(&descriptor, 1, 0) != 0) {
+    const int ready = ::poll(&descriptor, 1, 0);
+    if (ready < 0) {
+      throw std::runtime_error("native queue drop could not inspect policy/inference socket");
+    }
+    char byte = 0;
+    if (ready > 0 && (descriptor.revents & POLLIN) != 0 &&
+        ::recv(fd, &byte, 1, MSG_PEEK | MSG_DONTWAIT) != 0) {
       throw std::runtime_error("native queue drop sent a policy or inference call");
     }
   }
@@ -239,6 +260,14 @@ void exercise_valid_drop(
   }
   for (std::size_t index = 0; index < branches.size(); ++index) {
     const std::string& branch = branches[index];
+    vast::CheckpointAnalyticsExecutionResult completed_result;
+    completed_result.branch = branch;
+    completed_result.terminal_status = "completed";
+    completed_result.terminal_reason = "external_worker_completed";
+    completed_result.detector = worker_detector_identity(branch);
+    completed_result.backend = "analytics-execution:openvino_cpu";
+    const auto completed_terminal = vast::checkpoint_terminal_from_validated_execution(
+        completed_result, kTestPts, branch);
     const std::string expected_parent =
         "run-native-policy-topology-0001:0:7:" +
         std::string(postdecode ? (shared ? "shared:decode" : branch + ":decode")
@@ -251,7 +280,7 @@ void exercise_valid_drop(
                               queue_drop(branch, postdecode).terminal_reason + "\"") ==
             std::string::npos ||
         lines[index].find("\"objects\":0") == std::string::npos ||
-        lines[index].find("\"detector\":\"" + detector_identity(branch) + "\"") ==
+        lines[index].find("\"detector\":\"" + completed_terminal.detector + "\"") ==
             std::string::npos ||
         lines[index].find("\"backend\":\"openvino-dlstreamer:gvadetect\"") ==
             std::string::npos ||
@@ -265,6 +294,8 @@ void exercise_valid_drop(
   }
   expect_no_policy_or_inference_calls(descriptors);
 }
+
+void expect_rejected(const Args& args, const char* expected);
 
 void exercise_invalid_drops(const std::filesystem::path& output) {
   {
@@ -324,6 +355,132 @@ void exercise_invalid_drops(const std::filesystem::path& output) {
         descriptors.event_pipe[0]);
     expect_no_policy_or_inference_calls(descriptors);
   }
+  {
+    const std::string pin = "VAST_CHECKPOINT_ANALYTICS_DROP_DETECTOR_damage";
+    ::unsetenv(pin.c_str());
+    Descriptors descriptors;
+    configure_environment(descriptors, "stream-0-branch-damage");
+    expect_rejected(
+        drop_args(output / "missing-semantic-pin", false),
+        "missing checkpoint analytics model binding");
+    expect_no_policy_or_inference_calls(descriptors);
+    ::setenv(pin.c_str(), worker_detector_identity("damage").c_str(), 1);
+  }
+  {
+    for (const std::string& field : {"IMPLEMENTATION_ID", "EMITTER_ID", "EMITTER_SHA256"}) {
+      ::unsetenv(("VAST_CHECKPOINT_ANALYTICS_GPU_" + field + "_damage").c_str());
+    }
+    Descriptors descriptors;
+    configure_environment(descriptors, "stream-0-branch-damage");
+    expect_rejected(
+        drop_args(output / "partial-external-bindings", false),
+        "incomplete external execution bindings");
+    expect_no_policy_or_inference_calls(descriptors);
+    configure_model_bindings();
+  }
+  {
+    const std::string pin = "VAST_CHECKPOINT_ANALYTICS_DROP_DETECTOR_damage";
+    const std::string malformed = "opaque_damage;model_sha256=" + std::string(64, 'A');
+    Descriptors descriptors;
+    configure_environment(descriptors, "stream-0-branch-damage");
+    NativeProbeRuntime runtime(drop_args(output / "post-start-invalid-semantic-pin", false));
+    NativeProbeRuntimeTestAccess::admit(runtime, kTestPts);
+    ::setenv(pin.c_str(), malformed.c_str(), 1);
+    auto unverified_proxy = queue_drop("damage", false);
+    unverified_proxy.detector = "unverified-proxy";
+    expect_rejected_drop(
+        runtime, unverified_proxy, "detector/backend binding drifted",
+        descriptors.event_pipe[0]);
+    expect_rejected_drop(
+        runtime, queue_drop("damage", false), "semantic detector pin is invalid",
+        descriptors.event_pipe[0]);
+    for (const std::string& reserved : {"identity", "topology_only"}) {
+      const std::string invalid = reserved + ";model_sha256=" + std::string(64, 'd');
+      ::setenv(pin.c_str(), invalid.c_str(), 1);
+      expect_rejected_drop(
+          runtime, queue_drop("damage", false), "semantic detector pin is invalid",
+          descriptors.event_pipe[0]);
+    }
+    expect_no_policy_or_inference_calls(descriptors);
+    ::setenv(pin.c_str(), worker_detector_identity("damage").c_str(), 1);
+  }
+  {
+    const std::string pin = "VAST_CHECKPOINT_ANALYTICS_DROP_DETECTOR_damage";
+    const std::string malformed = "opaque_damage;model_sha256=" + std::string(64, 'A');
+    ::setenv(pin.c_str(), malformed.c_str(), 1);
+    Descriptors descriptors;
+    configure_environment(descriptors, "stream-0-branch-damage");
+    expect_rejected(
+        drop_args(output / "startup-invalid-semantic-pin", false),
+        "semantic detector pin is invalid");
+    expect_no_policy_or_inference_calls(descriptors);
+    ::setenv(pin.c_str(), worker_detector_identity("damage").c_str(), 1);
+  }
+  {
+    ::unsetenv("VAST_CHECKPOINT_ANALYTICS_EXTERNAL_EXECUTION_MODE");
+    Descriptors descriptors;
+    configure_environment(descriptors, "stream-0-branch-damage");
+    expect_rejected(
+        drop_args(output / "missing-external-mode", false),
+        "mode and branch bindings disagree");
+    expect_no_policy_or_inference_calls(descriptors);
+  }
+  {
+    ::setenv("VAST_CHECKPOINT_ANALYTICS_EXTERNAL_EXECUTION_MODE", "invalid", 1);
+    Descriptors descriptors;
+    configure_environment(descriptors, "stream-0-branch-damage");
+    expect_rejected(
+        drop_args(output / "invalid-external-mode", false),
+        "external execution mode marker is invalid");
+    expect_no_policy_or_inference_calls(descriptors);
+    ::setenv("VAST_CHECKPOINT_ANALYTICS_EXTERNAL_EXECUTION_MODE", "1", 1);
+  }
+  {
+    const std::string pin = "VAST_CHECKPOINT_ANALYTICS_DROP_DETECTOR_damage";
+    ::unsetenv(pin.c_str());
+    for (const std::string& resource : {"CPU", "GPU"}) {
+      for (const std::string& field : {"IMPLEMENTATION_ID", "EMITTER_ID", "EMITTER_SHA256"}) {
+        ::unsetenv(("VAST_CHECKPOINT_ANALYTICS_" + resource + "_" + field + "_damage").c_str());
+      }
+    }
+    Descriptors descriptors;
+    configure_environment(descriptors, "stream-0-branch-damage");
+    expect_rejected(
+        drop_args(output / "missing-all-external-pins", false),
+        "mode and branch bindings disagree");
+    expect_no_policy_or_inference_calls(descriptors);
+    configure_model_bindings();
+  }
+}
+
+void exercise_legacy_drop(const std::filesystem::path& output) {
+  Descriptors descriptors;
+  configure_environment(descriptors, "stream-0-branch-damage");
+  ::unsetenv("VAST_CHECKPOINT_ANALYTICS_EXTERNAL_EXECUTION_MODE");
+  const std::string pin = "VAST_CHECKPOINT_ANALYTICS_DROP_DETECTOR_damage";
+  ::unsetenv(pin.c_str());
+  for (const std::string& resource : {"CPU", "GPU"}) {
+    for (const std::string& field : {"IMPLEMENTATION_ID", "EMITTER_ID", "EMITTER_SHA256"}) {
+      ::unsetenv(("VAST_CHECKPOINT_ANALYTICS_" + resource + "_" + field + "_damage").c_str());
+    }
+  }
+  NativeProbeRuntime runtime(drop_args(output, false));
+  NativeProbeRuntimeTestAccess::admit(runtime, kTestPts);
+  ::setenv(pin.c_str(), worker_detector_identity("damage").c_str(), 1);
+  expect_rejected_drop(
+      runtime, queue_drop("damage", false), "incomplete external execution bindings",
+      descriptors.event_pipe[0]);
+  ::unsetenv(pin.c_str());
+  NativeProbeRuntimeTestAccess::handle(runtime, queue_drop("damage", false));
+  const auto lines = drain_event_lines(descriptors.event_pipe[0]);
+  if (lines.size() != 1 ||
+      lines.front().find("\"detector\":\"" + detector_identity("damage") + "\"") ==
+          std::string::npos ||
+      lines.front().find("\"backend\":\"openvino-dlstreamer:gvadetect\"") ==
+          std::string::npos) {
+    throw std::runtime_error("legacy native CPU drop identity changed");
+  }
+  expect_no_policy_or_inference_calls(descriptors);
 }
 
 void expect_rejected(const Args& args, const char* expected) {
@@ -375,6 +532,7 @@ int main() {
     exercise_valid_drop(temporary / "shared-prefix-drop", true, true);
     exercise_valid_drop(temporary / "shared-detector-drop", true, false);
     exercise_invalid_drops(temporary / "invalid-drops");
+    exercise_legacy_drop(temporary / "legacy-drop");
     std::filesystem::remove_all(temporary);
     return 0;
   } catch (const std::exception& error) {

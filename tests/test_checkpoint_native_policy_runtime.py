@@ -23,6 +23,7 @@ from checkpoint_native_policy_runtime import (  # noqa: E402
     NativePolicyRuntimeCoordinator,
     NativePolicyRuntimeError,
     assess_gstreamer_native_policy_execution_manifest,
+    native_policy_identity_environment,
     require_exact_native_cpu_capability_bindings,
 )
 import checkpoint_gstreamer_runtime as gstreamer_runtime  # noqa: E402
@@ -449,6 +450,64 @@ class NativePolicyRuntimeCoordinatorTests(unittest.TestCase):
                     analytics_bindings=analytics,
                     capability_manifest=manifest,
                 )
+
+    def test_external_drop_detector_is_one_attested_source_identity_per_branch(self) -> None:
+        manifest = capability_manifest()
+        branches = manifest["systems"]["openvino_gva"]["branches"]
+        for index, branch in enumerate(ANALYTICS_BRANCHES, start=1):
+            detector = f"worker-{branch};model_sha256={index:064x}"
+            for resource in RESOURCES:
+                binding = branches[branch][resource]
+                binding["terminal_detector"] = detector
+                binding["runtime_identity"]["terminal_detector"] = detector
+
+        environment = native_policy_identity_environment(
+            system="openvino_gva", capability_manifest=manifest
+        )
+        self.assertEqual(len(environment), len(ANALYTICS_BRANCHES) * 7 + 1)
+        self.assertEqual(
+            environment["VAST_CHECKPOINT_ANALYTICS_EXTERNAL_EXECUTION_MODE"], "1"
+        )
+        for branch in ANALYTICS_BRANCHES:
+            self.assertEqual(
+                environment[f"VAST_CHECKPOINT_ANALYTICS_DROP_DETECTOR_{branch}"],
+                branches[branch]["cpu"]["terminal_detector"],
+            )
+
+        def rejected(mutator, message: str) -> None:
+            changed = copy.deepcopy(manifest)
+            mutator(changed["systems"]["openvino_gva"]["branches"]["foreign_object"])
+            with self.assertRaisesRegex(NativePolicyRuntimeError, message):
+                native_policy_identity_environment(
+                    system="openvino_gva", capability_manifest=changed
+                )
+
+        rejected(
+            lambda branch: branch["gpu"].update(
+                terminal_detector="other-model;model_sha256=" + "a" * 64,
+                runtime_identity={
+                    **branch["gpu"]["runtime_identity"],
+                    "terminal_detector": "other-model;model_sha256=" + "a" * 64,
+                },
+            ),
+            "CPU/GPU external drop detector identities differ",
+        )
+        rejected(
+            lambda branch: branch["cpu"].pop("terminal_detector"),
+            "native policy identity is missing",
+        )
+        rejected(
+            lambda branch: branch["cpu"].update(
+                terminal_detector="worker-foreign_object;model_sha256=" + "A" * 64
+            ),
+            "external drop detector identity is invalid or drifted",
+        )
+        rejected(
+            lambda branch: branch["cpu"]["runtime_identity"].update(
+                terminal_detector="other-model;model_sha256=" + "a" * 64
+            ),
+            "external drop detector identity is invalid or drifted",
+        )
     def test_all_seven_policies_require_native_path_and_terminal_before_promotion(self) -> None:
         for policy in POLICIES:
             with self.subTest(policy=policy), tempfile.TemporaryDirectory() as tmp:

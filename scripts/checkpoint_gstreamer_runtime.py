@@ -1110,9 +1110,16 @@ def build_gstreamer_worker_specs(
             for resource in ("cpu", "gpu")
             for field in ("IMPLEMENTATION_ID", "EMITTER_ID", "EMITTER_SHA256")
         }
+        expected_identity_names.update(
+            _binding_environment_name("DROP_DETECTOR", branch)
+            for branch in ANALYTICS_BRANCHES
+        )
+        expected_identity_names.add("VAST_CHECKPOINT_ANALYTICS_EXTERNAL_EXECUTION_MODE")
         _require(
-            policy_runtime_enabled and set(native_policy_identities) == expected_identity_names,
-            "native policy identities require the policy runtime and every branch/resource identity",
+            policy_runtime_enabled
+            and set(native_policy_identities) == expected_identity_names
+            and native_policy_identities["VAST_CHECKPOINT_ANALYTICS_EXTERNAL_EXECUTION_MODE"] == "1",
+            "native policy identities require the policy runtime and every branch/resource identity and drop detector",
         )
     resolved_execution_socket = (
         _analytics_execution_socket_path(analytics_execution_socket)
