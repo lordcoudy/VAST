@@ -44,9 +44,9 @@ from publication_child_evidence_materializer_v1 import (
 RUNTIME_INPUT_KEY = "openvino_gva_publication_runtime_v3"
 RUNTIME_INPUT_KIND = "vast_openvino_gva_publication_runtime_inputs_v3"
 EXPECTED_IMAGE_REFERENCE = 'vast/openvino-gva-publication-runtime-v3:materialized'
-EXPECTED_IMAGE_ID = 'sha256:a54b0e9ba8c76801e30a1fd2e7568c0ea34e7ccfb313f87372778290ea02b512'
-EXPECTED_REPOSITORY_DIGEST = 'vast/openvino-gva-publication-runtime-v3@sha256:a54b0e9ba8c76801e30a1fd2e7568c0ea34e7ccfb313f87372778290ea02b512'
-EXPECTED_IMAGE_INSPECT_PROJECTION_SHA256 = '7d1276c56d14230043f634006b00955a7caf766cbdb5e76fe36678e86e68b293'
+EXPECTED_IMAGE_ID = 'sha256:45f5f89a702c01a27927608e999221f1421baed6ba63af05d1eb5ee6aff6a36b'
+EXPECTED_REPOSITORY_DIGEST = 'vast/openvino-gva-publication-runtime-v3@sha256:45f5f89a702c01a27927608e999221f1421baed6ba63af05d1eb5ee6aff6a36b'
+EXPECTED_IMAGE_INSPECT_PROJECTION_SHA256 = 'edacc441576bba59b2ae2f9a90ccdd30dc87036e2ecf288f9c240e3f682c73df'
 EXPECTED_BASE_IMAGE_ID = 'sha256:b36ff0db1ed319dacb8451725af1b04d1ec31caa6276a32122b134f91fa89f5e'
 EXPECTED_IMAGE_LABELS = {'org.vast.base-image-id': 'sha256:b36ff0db1ed319dacb8451725af1b04d1ec31caa6276a32122b134f91fa89f5e',
  'org.vast.component': 'openvino-gva-checkpoint-publication-runtime',
@@ -56,10 +56,10 @@ EXPECTED_IMAGE_LABELS = {'org.vast.base-image-id': 'sha256:b36ff0db1ed319dacb845
  'org.vast.publication-runtime-abi': '3',
  'org.vast.runtime-dependency-set-sha256': '0f338b3aeca6756d31dccdbbc8caeb6239e8e07fec0541c1df3fea91dfc1963e',
  'org.vast.runtime-source-allowlist-sha256': 'c6ac2d9b54b2a9f9ba883ba814a35c39f319fba9c923497a4fe46432fce7cff9',
- 'org.vast.runtime-source-sha256': '0137fd1d725e5f27e7e83d84766de60bccb7c27aa86c47f78bd42a66280e7f0a'}
+ 'org.vast.runtime-source-sha256': '465dce032c47ea15a0c0ba1129b9c0de09fe370bb3ab9c973732518e70026870'}
 EXPECTED_IMAGE_ENTRYPOINT = "/usr/local/bin/vast_openvino_gva_publication_runtime_v3"
 EXPECTED_IMAGE_USER = "dlstreamer"
-EXPECTED_EMBEDDED_ARTIFACTS = {'/opt/vast/checkpoint/checkpoint_gstreamer_runtime.py': '6abbd217a165ea8529304e5b7e066a9a821e5451e6782c3e85bed48b91cd4271',
+EXPECTED_EMBEDDED_ARTIFACTS = {'/opt/vast/checkpoint/checkpoint_gstreamer_runtime.py': '501adb900d792b6110a56d05f976f5a7893f9184c7dc3bd5e316fa6718b608d7',
  '/opt/vast/checkpoint/checkpoint_openvino_gva_container_coordinator_v3.py': '33a94d90919880c8f04b9e49a9841cda21ceceee1bb36ef1489e9103d2b4b583',
  '/opt/vast/lib/gstreamer-1.0/libgstadaptivescheduler.so': 'd36642c99d55fac7d834c75b500c7ffd086f022e671cb2b38aecaf38b8d0ad9f',
  '/opt/vast/lib/gstreamer-1.0/libgstvastanalyticsqueue.so': '9909f2b19adc3f7e82dcf8923a3e719f8546cd4e5126663deafdce04121d2258',
