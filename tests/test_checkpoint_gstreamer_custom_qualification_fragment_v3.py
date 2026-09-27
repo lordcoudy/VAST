@@ -190,10 +190,10 @@ class GstreamerCustomQualificationFragmentV3Tests(unittest.TestCase):
                 self.assertEqual(
                     artifact["accepted_model_parity_manifest"],
                     {
-                        "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260927.accepted.yaml",
-                        "size_bytes": 30015,
-                        "sha256": "62d441796d2c4c17f4b0315dc073ee4ef435343e4f77f2d85c8ed21c12b245d6",
-                        "content_identity_sha256": "fd2ff7fdec032d24d327fb4d9171eae352b6c088525fbf70c9853c52a8ae302a",
+                        "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260927b.accepted.yaml",
+                        "size_bytes": 30052,
+                        "sha256": "908f247f3ec0a0927b8ee7bd7cd3c6e25bd8031c748d6229a27320f001c053d9",
+                        "content_identity_sha256": "c3f6fe8fdbeb1505498b37f78802934264179521eb18e5b13da51834ae4b6c09",
                     },
                 )
                 self.assertEqual(
