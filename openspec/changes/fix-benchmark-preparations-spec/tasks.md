@@ -25,11 +25,11 @@
 ## 5. Source closure and final validation
 
 - [x] 5.1 Map the new shared-runtime source change through native foundations and publication/worker image allowlists; verify an explicit invalidation list covers every affected image, parity and downstream receipt.
-- [ ] 5.2 Rebuild affected images deterministically and execute packaged regressions; verify source/image receipt hashes and preserved unaffected identities after the native resource-sidecar and topology-event projection repairs.
-- [ ] 5.3 Renew required physical parity and identity fixtures, including all 480 executions/32 groups when that closure is affected; verify original successful invocations and complete accepted receipts after the native resource-sidecar and topology-event projection repairs.
-- [ ] 5.4 Run affected native builds/tests and one final full ext4 suite on the final source/fixture/mirror bytes; verify before/after manifests, original exit status and reviewed skip-identity differences against the historical 87 skips after the native resource-sidecar and topology-event projection repairs.
+- [x] 5.2 Rebuild affected images deterministically and execute packaged regressions; verify source/image receipt hashes and preserved unaffected identities after the native resource-sidecar and topology-event projection repairs.
+- [x] 5.3 Renew required physical parity and identity fixtures, including all 480 executions/32 groups when that closure is affected; verify original successful invocations and complete accepted receipts after the native resource-sidecar and topology-event projection repairs.
+- [x] 5.4 Run affected native builds/tests and one final full ext4 suite on the final source/fixture/mirror bytes; verify before/after manifests, original exit status and reviewed skip-identity differences against the historical 87 skips after the native resource-sidecar and topology-event projection repairs.
 
-The `20260927c` image/parity/suite checks passed for their then-current bytes, but its corrected OpenVINO GVA CPU pre-check exposed a packaged `checkpoint_publication_runtime.py` projection defect. Tasks 5.2-5.4 are reopened for the next source closure. Task 6.1 remains pending for new receipts, guardian and bundles; the failed c evidence cannot be reused for qualification.
+The `20260927c` image/parity/suite checks passed for their then-current bytes, but its corrected OpenVINO GVA CPU pre-check exposed a packaged `checkpoint_publication_runtime.py` projection defect. The `20260927d` renewal has now completed tasks 5.2-5.4 for the repaired source; see the image, parity and final-suite records in implementation-validation.md. Task 6.1 remains pending for new receipts, guardian and bundles; the failed c evidence cannot be reused for qualification.
 
 ## 6. Fresh qualification
 
