@@ -82,7 +82,7 @@ Preparation SHALL bind exact source/fixture/configuration bytes, runtime/package
 - **THEN** its matrix/policy identities, pair/arm order, seeds, durations and analysis settings SHALL match exactly.
 
 ### Requirement: Native-probe qualification path is integrated before qualification
-OpenVINO GVA and GStreamer Custom qualification cells SHALL execute through the native probe with queue-level reads matching each property's declared width, a container task ceiling that admits all 24 workers (4096), decode-stage artifacts that are loaded GStreamer factories only, and identifier validation that accepts every frozen branch name. CPU and GPU native policy implementation, emitter and emitter-hash identities SHALL be bound to the frozen qualification-v2 capability manifest, and the executing analytics path SHALL match the manifest's selected backend. The GStreamer Custom runtime SHALL accept the qualification bundle's copied, hash-verified container-engine client. Before any 32-cell attempt, one nonpromoting pre-check replay per native-probe system SHALL reach its original successful terminal.
+OpenVINO GVA and GStreamer Custom qualification cells SHALL execute through the native probe with queue-level reads matching each property's declared width, a container task ceiling that admits all 24 workers (4096), decode-stage artifacts that are loaded GStreamer factories only, and identifier validation that accepts every frozen branch name. CPU and GPU native policy implementation, emitter and emitter-hash identities SHALL be bound to the frozen qualification-v2 capability manifest, and the executing analytics path SHALL match the manifest's selected backend. A verified native queue overflow before policy path entry SHALL produce one native branch-drop terminal with correct trace lineage and no policy decision, path entry, policy execution terminal or analytics inference for that branch/frame. Stage and resource attribution SHALL reflect only physically completed stages: a postdecode prefix drop has decode evidence but no preprocessing for its affected branch, whereas a pre-detector drop follows preprocessing. Missing preprocessing for any other branch outcome SHALL remain invalid. Unknown, duplicate or post-entry drops SHALL fail closed. The GStreamer Custom runtime SHALL accept the qualification bundle's copied, hash-verified container-engine client. Before any 32-cell attempt, one nonpromoting pre-check replay for each native-probe system and resource SHALL reach its original successful terminal.
 
 #### Scenario: Mixed-width queue properties
 - **WHEN** pipeline elements expose `current-level-buffers` as `guint` and `guint64`
@@ -103,6 +103,26 @@ OpenVINO GVA and GStreamer Custom qualification cells SHALL execute through the 
 #### Scenario: Qualification bundle supplies a copied engine client
 - **WHEN** the container-engine pin is a project-relative copied client with matching size and SHA-256
 - **THEN** the runtime SHALL accept it; a path escaping the project root or with mismatched bytes SHALL be rejected.
+
+#### Scenario: Postdecode prefix queue overflows before policy entry
+- **WHEN** the native postdecode queue emits `native_postdecode_preprocess_queue_full_drop_newest` for an admitted branch/frame before policy path entry
+- **THEN** exactly one correctly linked native branch-drop terminal and the completed decode evidence SHALL be recorded without a fabricated preprocessing stage/interval or a policy decision, path entry, policy execution terminal or analytics inference for that branch/frame.
+
+#### Scenario: Pre-detector queue overflows before policy entry
+- **WHEN** the native pre-detector queue emits `native_pre_detector_queue_full_drop_newest` for an admitted branch/frame before policy path entry
+- **THEN** exactly one correctly linked native branch-drop terminal and the completed decode/preprocessing evidence SHALL be recorded without a policy decision, path entry, policy execution terminal or analytics inference for that branch/frame.
+
+#### Scenario: Queue-drop identity or ordering is invalid
+- **WHEN** a queue-drop terminal has an unknown reason or binding, no matching admitted branch/frame, a duplicate terminal, or an already entered policy path
+- **THEN** the attempt SHALL fail closed before emitting a terminal for that invalid event, without relabelling it as a completed policy execution or promoting evidence.
+
+#### Scenario: Preprocessing evidence is missing without a verified prefix drop
+- **WHEN** a completed branch or pre-detector drop lacks its native preprocessing stage/interval, or a claimed prefix drop lacks its native reason and lineage
+- **THEN** publication and resource-attribution validation SHALL reject the measurement rather than infer or fabricate an interval.
+
+#### Scenario: Independent and shared prefix-drop coverage
+- **WHEN** independent branches have mixed verified prefix drops and other outcomes, or a shared postdecode prefix queue drops a frame
+- **THEN** stage/resource coverage SHALL be checked for each independent branch, while a shared prefix drop SHALL cover every branch of that frame with shared decode and no shared preprocess/fanout; a partial shared prefix drop SHALL be rejected.
 
 #### Scenario: Pre-check fails
 - **WHEN** a native-probe pre-check replay does not reach a successful terminal

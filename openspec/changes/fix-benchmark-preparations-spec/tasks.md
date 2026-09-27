@@ -44,7 +44,9 @@
 - [x] 10.4 Validate native policy identifiers by manifest grammar and frozen branch membership; verify `damage` is accepted and invalid names still rejected.
 - [x] 10.5 Bind CPU and GPU native policy identities to the frozen qualification-v2 manifest per design decision 8 and verify the loaded analytics path matches the manifest backend; add positive and fail-closed regressions.
 - [x] 10.6 Accept the qualification bundle's copied, hash-verified container-engine client in the GStreamer Custom runtime; verify containment and byte mismatches are rejected.
-- [ ] 10.7 Renew images, parity and the final suite, then run nonpromoting OpenVINO GVA and GStreamer Custom pre-check replays to a successful terminal before 6.2-6.4.
+- [ ] 10.7 Handle only verified native queue drops before policy entry as one correctly linked branch drop with no policy/inference call; add executable native or deterministic adapter-level regressions for both queues and topologies and fail-closed regressions for wrong provenance/reason, orphan/duplicate PTS before emission and post-entry drop.
+- [ ] 10.8 Bind publication stage and resource-attribution checks to verified branch-level drop provenance: require decode but not fabricated preprocessing for a postdecode prefix drop, require both for pre-detector drops and completed branches, enforce shared all-or-none prefix drops, and version the changed measurement stage-reduction signature; verify independent mixed/all-prefix and shared all-prefix outcomes plus malformed provenance and missing/extra intervals with executable positive/negative tests.
+- [ ] 10.9 Renew affected images, parity, identity fixtures and the final exact-byte suite after 10.7-10.8, then run one fresh nonpromoting CPU and GPU pre-check per native-probe system to its original successful terminal before 6.2-6.4; preserve the failed 2026-09-27 guardian/pre-check evidence without reuse.
 
 ## 7. Q4 prerequisite evidence
 
