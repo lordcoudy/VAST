@@ -32,11 +32,15 @@ from benchmark_contract import (
     PRIMARY_ARCHITECTURE_DECODER_PLACEMENT_CONTRACT,
     PRIMARY_ANALYTICS_QUEUE_CONTRACT,
     RESET_EVIDENCE_COLUMNS,
+    RESOURCE_EVENT_COLUMNS,
     STAGE_CONTRACT_COLUMNS,
+    stage_base_name,
+    validate_resource_events,
     validate_stage_contracts,
 )
 from checkpoint_admission import schedule_fingerprint_for_records
 from checkpoint_runtime import (
+    RuntimeRunResult,
     SourceLaunchSpec,
     WorkerLaunchSpec,
     build_runtime_reset_evidence,
@@ -63,6 +67,11 @@ from checkpoint_native_policy_runtime import (
     canonical_frames_from_events,
     native_policy_identity_environment,
     require_exact_native_cpu_capability_bindings,
+)
+from checkpoint_publication_runtime import (
+    _accepted_branch_rows,
+    _accepted_frame_event_rows,
+    _accepted_ingress_rows,
 )
 from checkpoint_publication_runtime import publish_checkpoint_runtime
 from publication_owned_staging_cleanup_v1 import retire_owned_runtime_output_v1
@@ -445,6 +454,195 @@ def build_runtime_cohort_audit(
 def _require(condition: bool, message: str) -> None:
     if not condition:
         raise ContractError(message)
+
+
+def write_native_stage_resource_events(
+    output_dir: Path,
+    *,
+    result: RuntimeRunResult,
+    plan: dict[str, Any],
+    scenario: dict[str, Any],
+    dataset: dict[str, Any],
+    run_id: str,
+    policy: str,
+    deadline_ms: float,
+) -> Path:
+    """Write one resource row per accepted native frame-stage interval."""
+    required_branches = [str(branch) for branch in plan["required_branches"]]
+    topology_kind = str(plan["topology_kind"])
+    _require(
+        bool(required_branches) and len(set(required_branches)) == len(required_branches)
+        and topology_kind in {"independent_processes", "shared_video_dag"},
+        "native resource evidence has invalid branch topology",
+    )
+    ledger_rows, cohort_id = _accepted_ingress_rows(result, run_id=run_id)
+    branch_rows = _accepted_branch_rows(
+        result,
+        ledger_rows=ledger_rows,
+        cohort_id=cohort_id,
+        required_branches=required_branches,
+    )
+    stage_rows = _accepted_frame_event_rows(
+        result,
+        ledger_rows=ledger_rows,
+        policy=policy,
+        system=str(plan["system"]),
+        scenario=str(scenario["name"]),
+        codec=str(dataset["codec_variant"]),
+        deadline_ms=deadline_ms,
+        branch_rows=branch_rows,
+        topology_kind=topology_kind,
+        required_branches=required_branches,
+    )
+    _require(bool(stage_rows), "native resource evidence has no accepted stage intervals")
+
+    streams = dataset.get("streams")
+    _require(isinstance(streams, list), "native resource dataset streams are missing")
+    bytes_by_stream: dict[int, int] = {}
+    for stream in streams:
+        _require(isinstance(stream, dict), "native resource dataset stream is invalid")
+        stream_id = stream.get("stream_id")
+        width = stream.get("width")
+        height = stream.get("height")
+        _require(
+            type(stream_id) is int and type(width) is int and type(height) is int
+            and width > 0 and height > 0 and stream_id not in bytes_by_stream,
+            "native resource dataset stream dimensions or identity are invalid",
+        )
+        bytes_by_stream[stream_id] = width * height * 3
+
+    allowed_stages = {"aggregate", "record"}
+    if topology_kind == "shared_video_dag":
+        allowed_stages.update({"decode", "preprocess"})
+    else:
+        allowed_stages.update(f"decode_{branch}" for branch in required_branches)
+        allowed_stages.update(f"preprocess_{branch}" for branch in required_branches)
+    allowed_stages.update(required_branches)
+    allowed_stages.update(f"postprocess_{branch}" for branch in required_branches)
+
+    ledger_bounds: dict[tuple[str, str, int, int], tuple[float, float]] = {}
+    ingress_keys: dict[tuple[str, str, int, int], str] = {}
+    for ingress in ledger_rows:
+        key = (
+            str(ingress["run_id"]), str(ingress["trace_id"]),
+            int(ingress["stream_id"]), int(ingress["frame_id"]),
+        )
+        try:
+            start = float(ingress["ingress_timestamp_ms"])
+            end = float(ingress["terminal_timestamp_ms"])
+        except (KeyError, TypeError, ValueError, OverflowError) as error:
+            raise ContractError("accepted native ingress has invalid time bounds") from error
+        _require(
+            math.isfinite(start) and math.isfinite(end) and 0 <= start <= end,
+            "accepted native ingress has invalid time bounds",
+        )
+        ledger_bounds[key] = (start, end)
+        ingress_keys[key] = str(ingress["input_frame_key"])
+    _require(len(ledger_bounds) == len(ledger_rows), "accepted native ingress keys are duplicated")
+
+    for native_event in result.events:
+        frame_key = (
+            str(native_event["run_id"]), str(native_event["trace_id"]),
+            int(native_event["stream_id"]), int(native_event["frame_id"]),
+        )
+        if frame_key not in ledger_bounds:
+            continue
+        _require(
+            str(native_event["input_frame_key"]) == ingress_keys[frame_key]
+            and str(native_event["event_provenance"]) == "native_runtime_event"
+            and str(native_event["telemetry_source"]) == "native",
+            "native resource event has unmatched accepted ingress or non-native provenance",
+        )
+
+    rows: list[dict[str, Any]] = []
+    stage_keys: set[tuple[str, str, int, int, str]] = set()
+    for stage in stage_rows:
+        frame_key = (
+            str(stage["run_id"]), str(stage["trace_id"]),
+            int(stage["stream_id"]), int(stage["frame_id"]),
+        )
+        stage_name = str(stage["stage"])
+        stage_key = (*frame_key, stage_name)
+        _require(
+            frame_key in ledger_bounds and stage_name in allowed_stages
+            and stage_key not in stage_keys,
+            "native resource stage is duplicate, unmatched or outside accepted ingress",
+        )
+        stage_keys.add(stage_key)
+        _require(
+            frame_key[2] in bytes_by_stream,
+            "native resource stage has no dataset stream dimensions",
+        )
+        resource = str(stage["resource"]).strip().lower()
+        _require(resource in {"cpu", "gpu", "nvdec"}, "native resource stage label is invalid")
+        try:
+            queue_enter = float(stage["queue_enter_timestamp_ms"])
+            start = float(stage["stage_start_timestamp_ms"])
+            end = float(stage["stage_end_timestamp_ms"])
+        except (KeyError, TypeError, ValueError, OverflowError) as error:
+            raise ContractError("native resource stage interval is invalid") from error
+        ingress_start, terminal_end = ledger_bounds[frame_key]
+        _require(
+            all(math.isfinite(value) for value in (queue_enter, start, end))
+            and ingress_start <= queue_enter <= start <= end <= terminal_end,
+            "native resource stage interval is invalid or outside accepted ingress",
+        )
+        duration = end - start
+        transfer_bytes = bytes_by_stream[frame_key[2]]
+        is_gpu = resource == "gpu"
+        rows.append({
+            "schema_version": TELEMETRY_SCHEMA_VERSION,
+            "run_id": frame_key[0],
+            "trace_id": frame_key[1],
+            "stream_id": frame_key[2],
+            "frame_id": frame_key[3],
+            "stage": stage_name,
+            "resource": resource,
+            "timestamp_ms": round(end, 6),
+            "cpu_time_ms": round(0.0 if is_gpu else duration, 6),
+            "gpu_time_ms": round(duration if is_gpu else 0.0, 6),
+            "h2d_bytes": transfer_bytes if is_gpu else 0,
+            "d2h_bytes": max(0, transfer_bytes // 12) if is_gpu else 0,
+            "nvdec_util_percent": 1.0 if stage_base_name(stage_name) == "decode" else 0.0,
+            "vram_mb": round(transfer_bytes / (1024 * 1024), 6) if is_gpu else 0.0,
+            "time_provenance": "derived_from_native_stage_timestamps",
+            "transfer_provenance": "estimated_from_frame_dimensions",
+            "nvdec_provenance": "stage_presence_proxy",
+            "vram_provenance": "estimated_from_frame_dimensions",
+            "telemetry_source": "native",
+        })
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+    path = output_dir / "resource_events.csv"
+    try:
+        with path.open("x", newline="", encoding="utf-8") as output:
+            writer = csv.DictWriter(output, fieldnames=RESOURCE_EVENT_COLUMNS)
+            writer.writeheader()
+            writer.writerows(rows)
+            output.flush()
+            os.fsync(output.fileno())
+    except FileExistsError as error:
+        raise ContractError("native resource_events.csv already exists") from error
+    observed = validate_resource_events(path, require_labeled_provenance=True)
+    _require(
+        observed.to_dict(orient="records") == rows,
+        "native resource_events.csv differs from accepted stage intervals",
+    )
+    return path
+
+
+def _publish_with_native_resource_events(**publication_args: Any) -> dict[str, Any]:
+    write_native_stage_resource_events(
+        Path(publication_args["output_dir"]),
+        result=publication_args["result"],
+        plan=publication_args["plan"],
+        scenario=publication_args["scenario"],
+        dataset=publication_args["dataset"],
+        run_id=publication_args["run_id"],
+        policy=publication_args["policy"],
+        deadline_ms=publication_args["deadline_ms"],
+    )
+    return publish_checkpoint_runtime(**publication_args)
 
 
 def _load_yaml(path: Path) -> dict[str, Any]:
@@ -3161,7 +3359,7 @@ def main(
         scenario = dict((config.get("scenarios") or {}).get(args.scenario) or {})
         scenario["name"] = args.scenario
         dataset = dict(datasets[str(plan["dataset"])])
-        publication_acceptance = publish_checkpoint_runtime(
+        publication_acceptance = _publish_with_native_resource_events(
             output_dir=args.output_dir,
             plan=plan,
             scenario=scenario,

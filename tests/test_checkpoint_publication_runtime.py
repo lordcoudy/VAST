@@ -4,10 +4,13 @@ from __future__ import annotations
 import sys
 import tempfile
 import unittest
+import csv
 import json
 import math
 import copy
+from dataclasses import replace
 from pathlib import Path
+from unittest.mock import patch
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -16,6 +19,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 from benchmark_contract import ContractError
 from benchmark_contract import POSTDECODE_PREFIX_DROP_REASON, PRE_DETECTOR_DROP_REASON
 import checkpoint_publication_runtime as publication_runtime
+import checkpoint_gstreamer_runtime as gstreamer_runtime
 from checkpoint_publication_runtime import (
     _accepted_branch_rows,
     _accepted_frame_event_rows,
@@ -389,6 +393,244 @@ class CheckpointPublicationRuntimeTests(unittest.TestCase):
             topology_kind=topology_kind,
             required_branches=BRANCHES,
         )
+
+    def _native_resource_fixture(
+        self,
+        topology_kind: str,
+        outcomes: dict[str, str],
+        *,
+        system: str = "gstreamer_custom",
+    ) -> tuple[RuntimeRunResult, dict[str, object], dict[str, object], dict[str, object], list[dict[str, object]]]:
+        source, terminals = branch_stage_fixture(topology_kind, outcomes)
+        events = copy.deepcopy(list(source.events))
+        for row in events:
+            if "benchmark_system" in row:
+                row["benchmark_system"] = system
+        terminal_records = []
+        for value in terminals:
+            row = dict(value)
+            row.update({
+                "runtime_protocol_version": 3,
+                "event_provenance": "native_runtime_event",
+                "objects": 0,
+                "detector": "native_detector",
+                "backend": "native_backend",
+            })
+            terminal_records.append(row)
+        status = "drop" if "drop" in {row["terminal_status"] for row in terminals} else "completed"
+        if status == "completed":
+            events.append(event(
+                kind="join_complete", stage="aggregate", execution_id="joined",
+                parents=json.dumps([f"{branch}:terminal" for branch in BRANCHES]),
+                timestamp_ms=1_150,
+            ))
+        ingress = ingress_row(
+            terminal_status=status,
+            terminal_provenance=("native_drop_event" if status == "drop" else "native_completion_event"),
+            ingress_timestamp_ms=1_000,
+            terminal_timestamp_ms=1_150 if status == "completed" else 1_500,
+        )
+        result = runtime_result(
+            events=tuple(events),
+            terminal_ingress_rows=(ingress,),
+            branch_terminal_records=tuple(terminal_records),
+        )
+        plan: dict[str, object] = {
+            "system": system,
+            "topology_kind": topology_kind,
+            "required_branches": BRANCHES,
+        }
+        scenario: dict[str, object] = {"name": "checkpoint_video_dag_shared"}
+        dataset: dict[str, object] = {
+            "codec_variant": "h264",
+            "streams": [{"stream_id": 0, "width": 1920, "height": 1080}],
+        }
+        ledger, cohort_id = _accepted_ingress_rows(result, run_id=RUN_ID)
+        branches = _accepted_branch_rows(
+            result,
+            ledger_rows=ledger,
+            cohort_id=cohort_id,
+            required_branches=BRANCHES,
+        )
+        stages = _accepted_frame_event_rows(
+            result,
+            ledger_rows=ledger,
+            policy="static_hybrid",
+            system=system,
+            scenario=str(scenario["name"]),
+            codec="h264",
+            deadline_ms=100.0,
+            branch_rows=branches,
+            topology_kind=topology_kind,
+            required_branches=BRANCHES,
+        )
+        return result, plan, scenario, dataset, stages
+
+    def _write_native_resource_fixture(
+        self,
+        output_dir: Path,
+        result: RuntimeRunResult,
+        plan: dict[str, object],
+        scenario: dict[str, object],
+        dataset: dict[str, object],
+    ) -> Path:
+        return gstreamer_runtime.write_native_stage_resource_events(
+            output_dir,
+            result=result,
+            plan=plan,
+            scenario=scenario,
+            dataset=dataset,
+            run_id=RUN_ID,
+            policy="static_hybrid",
+            deadline_ms=100.0,
+        )
+
+    def test_native_resource_producer_matches_physical_intervals_and_excludes_warmup_drain(self) -> None:
+        cases = (
+            ("independent_processes", {
+                "damage": "prefix", "plate_number": "pre_detector",
+                "vehicle": "completed", "face": "completed",
+            }, "gstreamer_custom"),
+            ("shared_video_dag", {branch: "prefix" for branch in BRANCHES}, "openvino_gva"),
+            ("shared_video_dag", {branch: "completed" for branch in BRANCHES}, "gstreamer_custom"),
+        )
+        for topology_kind, outcomes, system in cases:
+            with self.subTest(topology_kind=topology_kind, system=system), tempfile.TemporaryDirectory() as tmp:
+                result, plan, scenario, dataset, stages = self._native_resource_fixture(
+                    topology_kind, outcomes, system=system,
+                )
+                other = copy.deepcopy(result.events[0])
+                other.update({"trace_id": "warmup-trace", "frame_id": 30})
+                drain = copy.deepcopy(result.events[0])
+                drain.update({"trace_id": "drain-trace", "frame_id": 32})
+                result = replace(result, events=(*result.events, other, drain))
+                path = self._write_native_resource_fixture(
+                    Path(tmp), result, plan, scenario, dataset,
+                )
+                with path.open(newline="", encoding="utf-8") as source:
+                    resources = list(csv.DictReader(source))
+                self.assertEqual(len(resources), len(stages))
+                by_stage = {str(row["stage"]): row for row in stages}
+                self.assertEqual({row["stage"] for row in resources}, set(by_stage))
+                for row in resources:
+                    stage = by_stage[row["stage"]]
+                    self.assertEqual(row["run_id"], stage["run_id"])
+                    self.assertEqual(row["trace_id"], stage["trace_id"])
+                    self.assertEqual(int(row["stream_id"]), stage["stream_id"])
+                    self.assertEqual(int(row["frame_id"]), stage["frame_id"])
+                    self.assertEqual(row["resource"], stage["resource"])
+                    self.assertEqual(float(row["timestamp_ms"]), stage["stage_end_timestamp_ms"])
+                    duration = stage["stage_end_timestamp_ms"] - stage["stage_start_timestamp_ms"]
+                    self.assertEqual(float(row["cpu_time_ms"]) + float(row["gpu_time_ms"]), duration)
+                    self.assertEqual(row["time_provenance"], "derived_from_native_stage_timestamps")
+                    self.assertEqual(row["transfer_provenance"], "estimated_from_frame_dimensions")
+                    self.assertEqual(row["nvdec_provenance"], "stage_presence_proxy")
+                    self.assertEqual(row["vram_provenance"], "estimated_from_frame_dimensions")
+                    self.assertEqual(row["telemetry_source"], "native")
+                if all(outcome == "prefix" for outcome in outcomes.values()):
+                    self.assertEqual(set(by_stage), {"decode"})
+                elif topology_kind == "independent_processes":
+                    self.assertNotIn("preprocess_damage", by_stage)
+                    self.assertIn("preprocess_plate_number", by_stage)
+                else:
+                    self.assertIn("aggregate", by_stage)
+                    self.assertEqual(float(next(row for row in resources if row["stage"] == "record")["cpu_time_ms"]), 0.0)
+
+    def test_native_resource_producer_rejects_missing_duplicate_invalid_and_extra_intervals(self) -> None:
+        outcomes = {"damage": "prefix", "plate_number": "pre_detector",
+                    "vehicle": "completed", "face": "completed"}
+        result, plan, scenario, dataset, _ = self._native_resource_fixture(
+            "independent_processes", outcomes,
+        )
+        duplicate = copy.deepcopy(next(row for row in result.events if row["stage"] == "decode_damage"))
+        duplicate["execution_id"] = "damage:duplicate-decode"
+        extra = event(
+            kind="stage_complete", stage="unmatched_stage", execution_id="damage:extra",
+            parents='["damage:decode"]', timestamp_ms=1_115, branch_id="damage",
+        )
+        wrong_ingress = event(
+            kind="stage_complete", stage="postprocess_vehicle", execution_id="vehicle:extra",
+            parents='["vehicle:analytics"]', timestamp_ms=1_135, branch_id="vehicle",
+        )
+        wrong_ingress["input_frame_key"] = "other-input-frame"
+        missing = [row for row in result.events if row["stage"] != "preprocess_plate_number"]
+        reversed_interval = copy.deepcopy(list(result.events))
+        next(row for row in reversed_interval if row["stage"] == "decode_damage")[
+            "timestamp_ms"
+        ] = 1_090
+        invalid_resource = copy.deepcopy(list(result.events))
+        next(row for row in invalid_resource if row["stage"] == "preprocess_plate_number")[
+            "execution_resource"
+        ] = "tpu"
+        bad_ingress = dict(result.terminal_ingress_rows[0])
+        bad_ingress["ingress_timestamp_ms"] = 1_115
+        bad_dataset = copy.deepcopy(dataset)
+        bad_dataset["streams"][0]["width"] = 0
+        cases = (
+            ("missing", replace(result, events=tuple(missing)), dataset),
+            ("duplicate", replace(result, events=(*result.events, duplicate)), dataset),
+            ("extra", replace(result, events=(*result.events, extra)), dataset),
+            ("wrong_ingress", replace(result, events=(*result.events, wrong_ingress)), dataset),
+            ("reversed", replace(result, events=tuple(reversed_interval)), dataset),
+            ("resource", replace(result, events=tuple(invalid_resource)), dataset),
+            ("out_of_bounds", replace(result, terminal_ingress_rows=(bad_ingress,)), dataset),
+            ("dimensions", result, bad_dataset),
+        )
+        for label, candidate, candidate_dataset in cases:
+            with self.subTest(label=label), tempfile.TemporaryDirectory() as tmp:
+                with self.assertRaises(ContractError):
+                    self._write_native_resource_fixture(
+                        Path(tmp), candidate, plan, scenario, candidate_dataset,
+                    )
+                self.assertFalse((Path(tmp) / "resource_events.csv").exists())
+
+    def test_native_resource_producer_refuses_existing_target_and_precedes_publication(self) -> None:
+        outcomes = {branch: "prefix" for branch in BRANCHES}
+        result, plan, scenario, dataset, stages = self._native_resource_fixture(
+            "shared_video_dag", outcomes,
+        )
+        with tempfile.TemporaryDirectory() as tmp:
+            output = Path(tmp)
+            target = output / "resource_events.csv"
+            target.write_bytes(b"existing\n")
+            with patch.object(gstreamer_runtime, "publish_checkpoint_runtime") as publisher:
+                with self.assertRaisesRegex(ContractError, "already exists"):
+                    gstreamer_runtime._publish_with_native_resource_events(
+                        output_dir=output, result=result, plan=plan,
+                        scenario=scenario, dataset=dataset, run_id=RUN_ID,
+                        policy="static_hybrid", deadline_ms=100.0,
+                    )
+                publisher.assert_not_called()
+            self.assertEqual(target.read_bytes(), b"existing\n")
+
+        with tempfile.TemporaryDirectory() as tmp:
+            output = Path(tmp)
+            (output / "policy_decisions.csv").write_text("native policy evidence\n", encoding="utf-8")
+            observed_order = []
+
+            def assert_publication_sees_sidecar(**kwargs: object) -> dict[str, object]:
+                _require_native_execution_sidecars(output)
+                with (output / "resource_events.csv").open(newline="", encoding="utf-8") as source:
+                    resources = list(csv.DictReader(source))
+                self.assertEqual(len(resources), len(stages))
+                self.assertEqual({row["stage"] for row in resources}, {row["stage"] for row in stages})
+                observed_order.append("publication")
+                return {"accepted": True}
+
+            with patch.object(
+                gstreamer_runtime, "publish_checkpoint_runtime",
+                side_effect=assert_publication_sees_sidecar,
+            ) as publisher:
+                self.assertEqual(
+                    gstreamer_runtime._publish_with_native_resource_events(
+                        output_dir=output, result=result, plan=plan,
+                        scenario=scenario, dataset=dataset, run_id=RUN_ID,
+                        policy="static_hybrid", deadline_ms=100.0,
+                    ),
+                    {"accepted": True},
+                )
+                publisher.assert_called_once()
+            self.assertEqual(observed_order, ["publication"])
 
     def test_independent_mixed_and_all_prefix_reduce_only_completed_stages(self) -> None:
         mixed = {"damage": "prefix", "plate_number": "pre_detector",

@@ -944,7 +944,7 @@ class CheckpointRuntimeTests(unittest.TestCase):
         self.assertIn('terminal_admission_audit.runtime.json', launcher_body)
         self.assertIn('from checkpoint_publication_runtime import publish_checkpoint_runtime', launcher_body)
         self.assertIn('--execute-publication-runtime', launcher_body)
-        self.assertIn('publication_acceptance = publish_checkpoint_runtime(', launcher_body)
+        self.assertIn('publication_acceptance = _publish_with_native_resource_events(', launcher_body)
         self.assertIn(
             'defer_full_resource_acceptance=full_resource_requested',
             launcher_body,

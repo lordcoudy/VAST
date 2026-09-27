@@ -1,6 +1,6 @@
 # Implementation evidence
 
-Status: implementation in progress; preparation_ready=false, full_run_started=false, publication_ready=false. The 2026-09-27 failed guardian/pre-check chain remains historical and unaccepted. The renewed `20260927b` chain has implemented and reviewed native drop handling and attribution, rebuilt affected images, passed 480-run physical parity, and passed the final exact-byte suite. Fresh qualification inputs are running; guardian/pre-check, Q4, capacity and preflight remain open. No full-run arms have started. See implementation-validation.md for physical evidence.
+Status: implementation in progress; preparation_ready=false, full_run_started=false, publication_ready=false. The 2026-09-27 and `20260927b` failed pre-check chains remain historical and unaccepted; the latter guardian stopped cleanly. The `20260927b` image, 480-run parity and exact-byte suite receipts passed on their original bytes but are invalidated for qualification by the newly identified shared-runtime `resource_events.csv` repair. Fresh qualification, Q4, capacity and preflight remain open. No full-run arms have started. See implementation-validation.md for physical evidence.
 
 ## Approval and workflow recovery
 
