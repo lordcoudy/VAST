@@ -3074,6 +3074,12 @@ def _run_backend_publication_posix_broker_v3(
             except (ProcessLookupError, BackendPublicationProcessSupervisorV3Error):
                 alive = False
             if not alive:
+                # The broker can publish its durable response and exit between
+                # the first response read and this owner-liveness check.
+                completed_result = journal_result_if_present()
+                if completed_result is not None:
+                    launch_barrier()
+                    return completed_result
                 raise BackendPublicationProcessSupervisorV3Error(
                     "durable broker owner is orphaned without a terminal response"
                 )

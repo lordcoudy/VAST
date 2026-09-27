@@ -873,6 +873,91 @@ class BackendPublicationOutputTransactionV3Tests(unittest.TestCase):
         )
         self.assertEqual(counter.read_text(encoding="ascii"), "spawn\n")
 
+    @unittest.skipIf(os.name == "nt", "durable broker owner race is POSIX")
+    def test_durable_response_published_during_owner_death_check_is_adopted(self) -> None:
+        counter = Path(self.temporary.name).resolve(strict=True) / "spawn-count.txt"
+        self._set_arm(
+            "success",
+            extra_dataset={"synthetic_spawn_counter_path": str(counter)},
+        )
+        self._prepare()
+        journal = self.output_dir.parent / (
+            ".backend-publication-process-journal-v1-"
+            + str(self.arm["contract_sha256"])
+        )
+        terminal = journal / "terminal-intent.json"
+        response = journal / "terminal-response.frame"
+        coordinator = os.fork()
+        if coordinator == 0:
+            try:
+                self._run()
+            except BaseException:
+                os._exit(92)
+            os._exit(0)
+        deadline = time.monotonic() + 10.0
+        while time.monotonic() < deadline:
+            if terminal.is_file() and not response.exists():
+                break
+            time.sleep(0.01)
+        else:
+            os.kill(coordinator, signal.SIGKILL)
+            os.waitpid(coordinator, 0)
+            self.fail("terminal/pre-frame durable crash window was not observed")
+        os.kill(coordinator, signal.SIGKILL)
+        os.waitpid(coordinator, 0)
+        while time.monotonic() < deadline and not response.is_file():
+            time.sleep(0.01)
+        self.assertTrue(response.is_file())
+
+        real_read = supervisor._load_durable_journal_leaf
+        real_starttime = supervisor._linux_process_starttime
+        owner_pid = json.loads(
+            (journal / "broker-owner.json").read_text(encoding="ascii")
+        )["broker_pid"]
+
+        def owner_disappears(pid: int) -> int:
+            if pid == owner_pid:
+                raise ProcessLookupError("broker exited after response commit")
+            return real_starttime(pid)
+
+        def hidden_response(*args: object, **kwargs: object) -> object:
+            if args[1] == supervisor._DURABLE_JOURNAL_RESPONSE_FILENAME:
+                return None
+            return real_read(*args, **kwargs)
+
+        with mock.patch.object(
+            supervisor, "_load_durable_journal_leaf", side_effect=hidden_response
+        ), mock.patch.object(
+            supervisor, "_linux_process_starttime", side_effect=owner_disappears
+        ):
+            with self.assertRaisesRegex(
+                transaction.BackendPublicationOutputTransactionV3Error,
+                "owner is orphaned without a terminal response",
+            ):
+                self._run()
+
+        response_reads = 0
+
+        def response_appears(*args: object, **kwargs: object) -> object:
+            nonlocal response_reads
+            if args[1] == supervisor._DURABLE_JOURNAL_RESPONSE_FILENAME:
+                response_reads += 1
+                if response_reads == 1:
+                    return None
+            return real_read(*args, **kwargs)
+
+        with mock.patch.object(
+            supervisor, "_load_durable_journal_leaf", side_effect=response_appears
+        ), mock.patch.object(
+            supervisor, "_linux_process_starttime", side_effect=owner_disappears
+        ):
+            authority = self._run()
+        self.assertEqual(response_reads, 2)
+        self.assertEqual(
+            authority["status"], "committed_nonpublication_engineering_output"
+        )
+        self.assertEqual(counter.read_text(encoding="ascii"), "spawn\n")
+
     def test_source_has_no_replace_tempfile_or_path_unlink(self) -> None:
         source = (
             ROOT / "scripts" / "backend_publication_output_transaction_v3.py"
