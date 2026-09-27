@@ -1997,7 +1997,14 @@ def _descriptive_from_evidence(
     resources = sidecars["resource_events"].copy()
     decisions = sidecars["policy_decisions"].copy()
     drops = sidecars["drop_counters"].copy()
-    passport = summarize_measurement_passport(resources, ingress, events)
+    passport = summarize_measurement_passport(
+        resources,
+        ingress,
+        events,
+        branch_terminals=sidecars["branch_terminals"],
+        topology_kind=evidence["topology_kind"],
+        required_branches=evidence["required_branches"],
+    )
     measurement_window = float(passport["measurement_window_duration_ms"])
     stream_ids = list(range(int(coordinate["streams"])))
     observed_ingress = sorted(

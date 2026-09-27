@@ -407,6 +407,9 @@ class NativeProbeRuntime {
   }
 
  private:
+#ifdef VAST_NATIVE_PROBE_TESTING
+  friend struct NativeProbeRuntimeTestAccess;
+#endif
   Args args_;
   int streams_ = 1;
   std::vector<StreamState> states_;
@@ -1777,45 +1780,85 @@ class NativeProbeRuntime {
     if (trace_it == state.local_traces_by_pts.end()) {
       throw std::runtime_error("checkpoint analytics terminal has no admitted transport PTS");
     }
+    const auto completed_it = state.checkpoint_completed_branches_by_pts.find(
+        resolved_terminal.transport_pts_ns);
+    if (completed_it != state.checkpoint_completed_branches_by_pts.end() &&
+        completed_it->second.count(resolved_terminal.branch_id) != 0) {
+      throw std::runtime_error("duplicate checkpoint analytics terminal for one branch and frame");
+    }
     const Trace trace = trace_it->second;
-    if (checkpoint_policy_client_ != nullptr) {
-      if (postdecode_prefix_drop ||
-          resolved_terminal.status != vast::CheckpointAnalyticsTerminalStatus::kCompleted) {
-        throw std::runtime_error(
-            "native policy publication cannot bind a pre-detector/drop terminal as execution");
+    if (resolved_terminal.status != vast::CheckpointAnalyticsTerminalStatus::kDrop &&
+        resolved_terminal.status != vast::CheckpointAnalyticsTerminalStatus::kCompleted) {
+      throw std::runtime_error("native analytics terminal status is invalid");
+    }
+    if (resolved_terminal.status == vast::CheckpointAnalyticsTerminalStatus::kDrop) {
+      if (resolved_terminal.objects != 0) {
+        throw std::runtime_error("native analytics drop reported accepted objects");
       }
-      auto branch_executions_it =
-          state.checkpoint_policy_executions_by_branch.find(resolved_terminal.branch_id);
-      if (branch_executions_it == state.checkpoint_policy_executions_by_branch.end()) {
-        throw std::runtime_error("native detector terminal has no selected policy path entry");
+      if (!postdecode_prefix_drop &&
+          resolved_terminal.terminal_reason != "native_pre_detector_queue_full_drop_newest") {
+        throw std::runtime_error("native analytics drop has no verified queue origin");
       }
-      auto execution_it =
-          branch_executions_it->second.find(resolved_terminal.transport_pts_ns);
-      if (execution_it == branch_executions_it->second.end()) {
-        throw std::runtime_error("native detector terminal has no matching policy PTS entry");
-      }
-      const NativePolicyExecution execution = execution_it->second;
-      if (terminal_timestamp_ns <= execution.path_entry_timestamp_ns) {
-        throw std::runtime_error("native detector terminal does not follow its selected path entry");
+      std::string expected_detector =
+          checkpoint_analytics_binding(resolved_terminal.branch_id, "DETECTOR_ID") +
+          ";model_sha256=" +
+          checkpoint_analytics_binding(resolved_terminal.branch_id, "MODEL_SHA256");
+      const std::string weights_sha256 =
+          checkpoint_analytics_binding(resolved_terminal.branch_id, "WEIGHTS_SHA256", true);
+      if (!weights_sha256.empty()) {
+        expected_detector += ";weights_sha256=" + weights_sha256;
       }
       const std::string expected_backend =
           "openvino-dlstreamer:" +
-          checkpoint_analytics_binding(resolved_terminal.branch_id, "FACTORY") +
-          ";device=CPU";
-      if (resolved_terminal.backend != expected_backend) {
-        throw std::runtime_error("native detector terminal backend/device identity drifted");
+          checkpoint_analytics_binding(resolved_terminal.branch_id, "FACTORY");
+      if (resolved_terminal.detector != expected_detector ||
+          resolved_terminal.backend != expected_backend) {
+        throw std::runtime_error("native analytics drop detector/backend binding drifted");
       }
-      checkpoint_policy_client_->terminal(
-          execution.request,
-          execution.decision,
-          execution.binding,
-          "completed",
-          static_cast<double>(terminal_timestamp_ns) / 1'000'000.0,
-          static_cast<double>(terminal_timestamp_ns - execution.path_entry_timestamp_ns) /
-              1'000'000.0,
-          resolved_terminal.detector,
-          resolved_terminal.backend);
-      branch_executions_it->second.erase(execution_it);
+      const auto branch_executions_it =
+          state.checkpoint_policy_executions_by_branch.find(resolved_terminal.branch_id);
+      if (branch_executions_it != state.checkpoint_policy_executions_by_branch.end() &&
+          branch_executions_it->second.count(resolved_terminal.transport_pts_ns) != 0) {
+        throw std::runtime_error("native analytics drop followed policy path entry");
+      }
+    } else if (resolved_terminal.terminal_reason != "native_roi_metadata_committed") {
+      throw std::runtime_error("native detector completion reason drifted");
+    }
+    if (checkpoint_policy_client_ != nullptr) {
+      if (resolved_terminal.status == vast::CheckpointAnalyticsTerminalStatus::kCompleted) {
+        auto branch_executions_it =
+            state.checkpoint_policy_executions_by_branch.find(resolved_terminal.branch_id);
+        if (branch_executions_it == state.checkpoint_policy_executions_by_branch.end()) {
+          throw std::runtime_error("native detector terminal has no selected policy path entry");
+        }
+        auto execution_it =
+            branch_executions_it->second.find(resolved_terminal.transport_pts_ns);
+        if (execution_it == branch_executions_it->second.end()) {
+          throw std::runtime_error("native detector terminal has no matching policy PTS entry");
+        }
+        const NativePolicyExecution execution = execution_it->second;
+        if (terminal_timestamp_ns <= execution.path_entry_timestamp_ns) {
+          throw std::runtime_error("native detector terminal does not follow its selected path entry");
+        }
+        const std::string expected_backend =
+            "openvino-dlstreamer:" +
+            checkpoint_analytics_binding(resolved_terminal.branch_id, "FACTORY") +
+            ";device=CPU";
+        if (resolved_terminal.backend != expected_backend) {
+          throw std::runtime_error("native detector terminal backend/device identity drifted");
+        }
+        checkpoint_policy_client_->terminal(
+            execution.request,
+            execution.decision,
+            execution.binding,
+            "completed",
+            static_cast<double>(terminal_timestamp_ns) / 1'000'000.0,
+            static_cast<double>(terminal_timestamp_ns - execution.path_entry_timestamp_ns) /
+                1'000'000.0,
+            resolved_terminal.detector,
+            resolved_terminal.backend);
+        branch_executions_it->second.erase(execution_it);
+      }
     }
     const std::string prefix_parent =
         postdecode_prefix_drop

@@ -1,6 +1,6 @@
 # Implementation evidence
 
-Status: implementation in progress; preparation_ready=false, full_run_started=false, publication_ready=false. The Sep24 32-cell pilot failed at cell 17 on a native reset-check defect; after its repair, the image chain and a fresh qualification must be renewed; Q4 and full-run arms have not started. See implementation-validation.md for the current physical evidence.
+Status: implementation in progress; preparation_ready=false, full_run_started=false, publication_ready=false. The 2026-09-27 fresh guardian authenticated eight workers and materialized 32 runtime bundles/four assets, but the first OpenVINO GVA CPU pre-check failed at its native measurement and the guardian exited 78. That chain is historical and not accepted. Native drop handling, downstream attribution, affected images/parity, final suite and a new qualification chain remain pending. Q4 and full-run arms have not started. See implementation-validation.md for earlier physical evidence.
 
 ## Approval and workflow recovery
 
@@ -51,3 +51,11 @@ The revised planning commit `16b5fefe793590eec2dcc8c601fe2d909e3440c3` (requirem
 ## 2026-09-26 execution-deadline decision
 
 The native probe used the policy deadline as the analytics worker execution deadline, so a single late frame aborted a qualification cell through the fail-closed guardian. The operator chose to align OpenVINO GVA and GStreamer Custom with the DeepStream adapter: worker requests carry the same 300-second transport bound, and policy-deadline misses remain measured outcomes. This does not change the deadlines, policies, estimands or acceptance rules.
+
+## 2026-09-27 native drop failure and delegated planning review
+
+Fresh guardian invocation `c69470b3e9df4167af8b2d12b58166d7` attested eight workers. The runtime-input materialization service exited 0, and an independent audit verified 32 bundles and four assets. OpenVINO GVA CPU pre-check invocation `05c7c45af2b7422f8285ecbdaf221fd8` failed at engine call 5: the 180-second native measurement returned 1 after 215.203 seconds, with captured stderr SHA-256 `b67d213279c55f332920733d8d0a4a2263d4b9c326bf57554c551872e75ac99b` and the message `native policy publication cannot bind a pre-detector/drop terminal as execution`. The log does not identify which of the two native queues emitted the drop. The guardian exited 78 with a connection-reset ProtocolError and `failed_stop_nonpublication` lifecycle, then retired its socket and workers. An authenticated stop request was no longer possible because the owner process had already exited. No later pre-check or qualification cell was launched for this chain.
+
+The operator then instructed: “Work fully autonomously with openspec. Review, approve and apply all by yourself. Continue work.” This supersedes the earlier request for confirmation of each planning edit. Proposal, delta spec, design and tasks were revised and self-reviewed at exact planning commit `280059541853ad0ef0ed9601b65f44f229799e89`, pushed to the same branch and Draft PR #2. Strict OpenSpec validation passed. GitHub COMMENT review `5329408254` is anchored to that commit and records the operator-delegated self-approval; it is explicitly not an independent GitHub APPROVE review. The PR remains Draft. Implementation may proceed under this delegated decision, while CI, accepted runtime evidence, archive and final merge gates remain outstanding.
+
+The renewed native and publication source invalidates the previous 20260927 image, parity and final-suite receipts. Tasks 5.2-5.4 are reopened until replacement evidence is verified. A fresh 20260927b host clearance at 2026-09-27T07:59:50Z passed: Windows commit headroom beyond possible WSL growth was 29,043,167,232 bytes, and C:, E: and WSL ext4 all exceeded the 20-GiB reserve. This is a point-in-time observation, not qualification acceptance; clearance must be checked again before the long live chain.

@@ -1,15 +1,51 @@
+#define VAST_NATIVE_PROBE_TESTING 1
 #define main vast_native_gst_probe_embedded_main
 #include "../../deploy/native_gst_probe/vast_native_gst_probe.cpp"
 #undef main
 
 #include <filesystem>
 #include <iostream>
+#include <poll.h>
+#include <sstream>
 #include <stdexcept>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include <sys/socket.h>
 #include <unistd.h>
+
+struct NativeProbeRuntimeTestAccess {
+  static void admit(NativeProbeRuntime& runtime, std::uint64_t pts) {
+    Trace trace;
+    trace.stream_id = 0;
+    trace.frame_id = 7;
+    trace.ingress_ms = 1000;
+    trace.source_pts_ns = pts;
+    trace.admission_id = "test-admission-7";
+    trace.payload_sha256 = std::string(64, 'a');
+    runtime.states_.front().local_traces_by_pts.emplace(pts, trace);
+    runtime.states_.front().traces.push_back(trace);
+  }
+
+  static void handle(
+      NativeProbeRuntime& runtime,
+      const vast::CheckpointAnalyticsTerminal& terminal) {
+    runtime.handle_checkpoint_analytics_terminal(terminal);
+  }
+
+  static void register_policy_entry(
+      NativeProbeRuntime& runtime,
+      const std::string& branch,
+      std::uint64_t pts) {
+    runtime.states_.front().checkpoint_policy_executions_by_branch[branch][pts] =
+        NativePolicyExecution{};
+  }
+
+  static bool has_admitted_pts(const NativeProbeRuntime& runtime, std::uint64_t pts) {
+    return runtime.states_.front().local_traces_by_pts.count(pts) != 0;
+  }
+};
 
 namespace {
 
@@ -86,6 +122,210 @@ void configure_environment(const Descriptors& descriptors, const std::string& wo
   ::setenv("VAST_CHECKPOINT_ADMISSION_MODE", "native_common_source_coordinator", 1);
 }
 
+constexpr std::uint64_t kTestPts = 123456789;
+const std::vector<std::string> kBranches = {
+    "damage", "foreign_object", "plate_number", "vehicle_type"};
+
+std::string detector_identity(const std::string& branch) {
+  return branch + "-detector;model_sha256=" + std::string(64, 'b') +
+         ";weights_sha256=" + std::string(64, 'c');
+}
+
+void configure_model_bindings() {
+  for (const std::string& branch : kBranches) {
+    const std::string prefix = "VAST_CHECKPOINT_ANALYTICS_";
+    ::setenv((prefix + "DETECTOR_ID_" + branch).c_str(), (branch + "-detector").c_str(), 1);
+    ::setenv((prefix + "MODEL_SHA256_" + branch).c_str(), std::string(64, 'b').c_str(), 1);
+    ::setenv((prefix + "WEIGHTS_SHA256_" + branch).c_str(), std::string(64, 'c').c_str(), 1);
+    ::setenv((prefix + "FACTORY_" + branch).c_str(), "gvadetect", 1);
+  }
+}
+
+vast::CheckpointAnalyticsTerminal queue_drop(
+    const std::string& branch,
+    bool postdecode) {
+  vast::CheckpointAnalyticsTerminal terminal;
+  terminal.transport_pts_ns = kTestPts;
+  terminal.status = vast::CheckpointAnalyticsTerminalStatus::kDrop;
+  terminal.objects = 0;
+  terminal.branch_id = branch;
+  terminal.terminal_reason = postdecode
+      ? "native_postdecode_preprocess_queue_full_drop_newest"
+      : "native_pre_detector_queue_full_drop_newest";
+  terminal.detector = postdecode ? "runtime-bound-postdecode-drop" : detector_identity(branch);
+  terminal.backend = postdecode ? "runtime-bound-postdecode-drop" : "openvino-dlstreamer:gvadetect";
+  return terminal;
+}
+
+Args drop_args(const std::filesystem::path& output, bool shared) {
+  Args args = checkpoint_args(output, "openvino_gva");
+  if (shared) {
+    args.role = "checkpoint_shared";
+    args.checkpoint_branch.clear();
+    args.checkpoint_branches = "damage,foreign_object,plate_number,vehicle_type";
+  }
+  return args;
+}
+
+std::vector<std::string> drain_event_lines(int fd) {
+  std::string data;
+  while (true) {
+    pollfd descriptor{fd, POLLIN, 0};
+    const int ready = ::poll(&descriptor, 1, 0);
+    if (ready < 0) {
+      throw std::runtime_error("native drop test could not poll event pipe");
+    }
+    if (ready == 0 || (descriptor.revents & POLLIN) == 0) {
+      break;
+    }
+    char buffer[8192];
+    const ssize_t size = ::read(fd, buffer, sizeof(buffer));
+    if (size <= 0) {
+      throw std::runtime_error("native drop test failed to drain event pipe");
+    }
+    data.append(buffer, static_cast<std::size_t>(size));
+  }
+  std::vector<std::string> lines;
+  std::istringstream input(data);
+  std::string line;
+  while (std::getline(input, line)) {
+    if (!line.empty()) {
+      lines.push_back(line);
+    }
+  }
+  return lines;
+}
+
+void expect_no_policy_or_inference_calls(const Descriptors& descriptors) {
+  for (int fd : {descriptors.policy_socket[1], descriptors.execution_socket[1]}) {
+    pollfd descriptor{fd, POLLIN, 0};
+    if (::poll(&descriptor, 1, 0) != 0) {
+      throw std::runtime_error("native queue drop sent a policy or inference call");
+    }
+  }
+}
+
+void expect_rejected_drop(
+    NativeProbeRuntime& runtime,
+    const vast::CheckpointAnalyticsTerminal& terminal,
+    const std::string& message,
+    int event_fd) {
+  bool rejected = false;
+  try {
+    NativeProbeRuntimeTestAccess::handle(runtime, terminal);
+  } catch (const std::exception& error) {
+    rejected = std::string(error.what()).find(message) != std::string::npos;
+  }
+  if (!rejected || !drain_event_lines(event_fd).empty()) {
+    throw std::runtime_error("native queue drop was not rejected before event emission: " + message);
+  }
+}
+
+void exercise_valid_drop(
+    const std::filesystem::path& output,
+    bool shared,
+    bool postdecode) {
+  Descriptors descriptors;
+  configure_environment(descriptors, shared ? "stream-0-shared" : "stream-0-branch-damage");
+  NativeProbeRuntime runtime(drop_args(output, shared));
+  NativeProbeRuntimeTestAccess::admit(runtime, kTestPts);
+  const std::vector<std::string> branches = shared ? kBranches : std::vector<std::string>{"damage"};
+  for (const std::string& branch : branches) {
+    NativeProbeRuntimeTestAccess::handle(runtime, queue_drop(branch, postdecode));
+  }
+  const std::vector<std::string> lines = drain_event_lines(descriptors.event_pipe[0]);
+  if (lines.size() != branches.size()) {
+    throw std::runtime_error("native queue drop did not emit one terminal per branch");
+  }
+  for (std::size_t index = 0; index < branches.size(); ++index) {
+    const std::string& branch = branches[index];
+    const std::string expected_parent =
+        "run-native-policy-topology-0001:0:7:" +
+        std::string(postdecode ? (shared ? "shared:decode" : branch + ":decode")
+                               : (shared ? branch + ":fanout" : branch + ":preprocess"));
+    if (lines[index].find("\"event_kind\":\"branch_drop\"") == std::string::npos ||
+        lines[index].find("\"branch_id\":\"" + branch + "\"") == std::string::npos ||
+        lines[index].find("\"parent_execution_ids\":[\"" + expected_parent + "\"]") ==
+            std::string::npos ||
+        lines[index].find("\"terminal_reason\":\"" +
+                              queue_drop(branch, postdecode).terminal_reason + "\"") ==
+            std::string::npos ||
+        lines[index].find("\"objects\":0") == std::string::npos ||
+        lines[index].find("\"detector\":\"" + detector_identity(branch) + "\"") ==
+            std::string::npos ||
+        lines[index].find("\"backend\":\"openvino-dlstreamer:gvadetect\"") ==
+            std::string::npos ||
+        lines[index].find("\"admission_id\":\"test-admission-7\"") ==
+            std::string::npos) {
+      throw std::runtime_error("native queue drop terminal identity or lineage drifted");
+    }
+  }
+  if (NativeProbeRuntimeTestAccess::has_admitted_pts(runtime, kTestPts)) {
+    throw std::runtime_error("fully terminalized native drop frame retained its admitted trace");
+  }
+  expect_no_policy_or_inference_calls(descriptors);
+}
+
+void exercise_invalid_drops(const std::filesystem::path& output) {
+  {
+    Descriptors descriptors;
+    configure_environment(descriptors, "stream-0-branch-damage");
+    NativeProbeRuntime runtime(drop_args(output / "wrong-origin", false));
+    NativeProbeRuntimeTestAccess::admit(runtime, kTestPts);
+    auto terminal = queue_drop("damage", false);
+    terminal.terminal_reason = "unverified_queue_drop";
+    expect_rejected_drop(runtime, terminal, "verified queue origin", descriptors.event_pipe[0]);
+    terminal = queue_drop("damage", false);
+    terminal.detector = "unverified-detector";
+    expect_rejected_drop(runtime, terminal, "detector/backend binding drifted", descriptors.event_pipe[0]);
+    terminal = queue_drop("damage", false);
+    terminal.backend = "openvino-dlstreamer:other";
+    expect_rejected_drop(runtime, terminal, "detector/backend binding drifted", descriptors.event_pipe[0]);
+    terminal = queue_drop("damage", false);
+    terminal.objects = 1;
+    expect_rejected_drop(runtime, terminal, "reported accepted objects", descriptors.event_pipe[0]);
+    terminal = queue_drop("damage", true);
+    terminal.detector = "unverified-placeholder";
+    expect_rejected_drop(runtime, terminal, "invalid terminal binding", descriptors.event_pipe[0]);
+    terminal = queue_drop("damage", false);
+    terminal.status = vast::CheckpointAnalyticsTerminalStatus::kCompleted;
+    expect_rejected_drop(runtime, terminal, "completion reason drifted", descriptors.event_pipe[0]);
+    expect_no_policy_or_inference_calls(descriptors);
+  }
+  {
+    Descriptors descriptors;
+    configure_environment(descriptors, "stream-0-branch-damage");
+    NativeProbeRuntime runtime(drop_args(output / "orphan", false));
+    expect_rejected_drop(
+        runtime, queue_drop("damage", false), "no admitted transport PTS", descriptors.event_pipe[0]);
+    expect_no_policy_or_inference_calls(descriptors);
+  }
+  {
+    Descriptors descriptors;
+    configure_environment(descriptors, "stream-0-branch-damage");
+    NativeProbeRuntime runtime(drop_args(output / "post-entry", false));
+    NativeProbeRuntimeTestAccess::admit(runtime, kTestPts);
+    NativeProbeRuntimeTestAccess::register_policy_entry(runtime, "damage", kTestPts);
+    expect_rejected_drop(
+        runtime, queue_drop("damage", false), "followed policy path entry", descriptors.event_pipe[0]);
+    expect_no_policy_or_inference_calls(descriptors);
+  }
+  {
+    Descriptors descriptors;
+    configure_environment(descriptors, "stream-0-shared");
+    NativeProbeRuntime runtime(drop_args(output / "duplicate", true));
+    NativeProbeRuntimeTestAccess::admit(runtime, kTestPts);
+    NativeProbeRuntimeTestAccess::handle(runtime, queue_drop("damage", false));
+    if (drain_event_lines(descriptors.event_pipe[0]).size() != 1) {
+      throw std::runtime_error("native duplicate setup did not emit first terminal");
+    }
+    expect_rejected_drop(
+        runtime, queue_drop("damage", false), "duplicate checkpoint analytics terminal",
+        descriptors.event_pipe[0]);
+    expect_no_policy_or_inference_calls(descriptors);
+  }
+}
+
 void expect_rejected(const Args& args, const char* expected) {
   bool rejected = false;
   try {
@@ -129,6 +369,12 @@ int main() {
           checkpoint_args(temporary / "unsafe-worker", "openvino_gva"),
           "requires a stable worker ID");
     }
+    configure_model_bindings();
+    exercise_valid_drop(temporary / "independent-prefix-drop", false, true);
+    exercise_valid_drop(temporary / "independent-detector-drop", false, false);
+    exercise_valid_drop(temporary / "shared-prefix-drop", true, true);
+    exercise_valid_drop(temporary / "shared-detector-drop", true, false);
+    exercise_invalid_drops(temporary / "invalid-drops");
     std::filesystem::remove_all(temporary);
     return 0;
   } catch (const std::exception& error) {

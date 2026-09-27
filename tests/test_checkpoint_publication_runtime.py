@@ -6,6 +6,7 @@ import tempfile
 import unittest
 import json
 import math
+import copy
 from pathlib import Path
 
 
@@ -13,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
 from benchmark_contract import ContractError
+from benchmark_contract import POSTDECODE_PREFIX_DROP_REASON, PRE_DETECTOR_DROP_REASON
 import checkpoint_publication_runtime as publication_runtime
 from checkpoint_publication_runtime import (
     _accepted_branch_rows,
@@ -80,15 +82,17 @@ def event(
         "timestamp_ms": timestamp_ms,
         "execution_domain": "host:pid=100",
         "branch_id": branch_id,
+        "event_provenance": "native_runtime_event",
+        "telemetry_source": "native",
     }
     if native_binding:
         row.update(
             {
-                "execution_resource": "nvdec" if stage == "decode" else "cpu",
+                "execution_resource": "nvdec" if stage.split("_", 1)[0] == "decode" else "cpu",
                 "scheduler_policy": "static_hybrid",
                 "policy_action": (
                     "static_hybrid:fixed_outside_analytics_scope:nvdec"
-                    if stage == "decode"
+                    if stage.split("_", 1)[0] == "decode"
                     else (
                         "static_hybrid:cpu:decision:damage"
                         if stage == branch_id and branch_id != "not_applicable"
@@ -111,6 +115,103 @@ def event(
                 }
             )
     return row
+
+
+BRANCHES = ["damage", "plate_number", "vehicle", "face"]
+
+
+def branch_stage_fixture(
+    topology_kind: str,
+    outcomes: dict[str, str],
+) -> tuple[RuntimeRunResult, list[dict[str, object]]]:
+    """Build a native graph with one exact terminal per branch."""
+    events: list[dict[str, object]] = []
+    terminals: list[dict[str, object]] = []
+    shared = topology_kind == "shared_video_dag"
+    if shared:
+        events.extend(
+            [
+                event(kind="source_read", stage="source", execution_id="shared:source", parents="[]",
+                      timestamp_ms=1_100, branch_id="shared", native_binding=False),
+                event(kind="stage_complete", stage="decode", execution_id="shared:decode",
+                      parents='["shared:source"]', timestamp_ms=1_110, branch_id="shared"),
+            ]
+        )
+        if any(value != "prefix" for value in outcomes.values()):
+            events.append(
+                event(kind="stage_complete", stage="preprocess", execution_id="shared:preprocess",
+                      parents='["shared:decode"]', timestamp_ms=1_120, branch_id="shared")
+            )
+    for index, branch in enumerate(BRANCHES):
+        outcome = outcomes[branch]
+        if shared:
+            if outcome == "prefix":
+                parent = "shared:decode"
+            else:
+                events.append(
+                    event(kind="fanout", stage="fanout", execution_id=f"{branch}:fanout",
+                          parents='["shared:preprocess"]', timestamp_ms=1_125,
+                          branch_id=branch, native_binding=False)
+                )
+                parent = f"{branch}:fanout"
+        else:
+            source = f"{branch}:source"
+            decode = f"{branch}:decode"
+            events.extend(
+                [
+                    event(kind="source_read", stage="source", execution_id=source, parents="[]",
+                          timestamp_ms=1_100 + index, branch_id=branch, native_binding=False),
+                    event(kind="stage_complete", stage=f"decode_{branch}", execution_id=decode,
+                          parents=json.dumps([source]), timestamp_ms=1_110 + index,
+                          branch_id=branch),
+                ]
+            )
+            parent = decode
+            if outcome != "prefix":
+                preprocess = f"{branch}:preprocess"
+                events.append(
+                    event(kind="stage_complete", stage=f"preprocess_{branch}",
+                          execution_id=preprocess, parents=json.dumps([decode]),
+                          timestamp_ms=1_120 + index, branch_id=branch)
+                )
+                parent = preprocess
+        if outcome == "completed":
+            analytics = f"{branch}:analytics"
+            events.append(
+                event(kind="stage_complete", stage=branch, execution_id=analytics,
+                      parents=json.dumps([parent]), timestamp_ms=1_130 + index, branch_id=branch)
+            )
+            parent = analytics
+        reason = (
+            POSTDECODE_PREFIX_DROP_REASON if outcome == "prefix" else
+            PRE_DETECTOR_DROP_REASON if outcome == "pre_detector" else
+            "native_result_committed"
+        )
+        status = "completed" if outcome == "completed" else "drop"
+        timestamp = 1_140 + index
+        terminal = event(
+            kind="branch_complete" if status == "completed" else "branch_drop",
+            stage=branch, execution_id=f"{branch}:terminal", parents=json.dumps([parent]),
+            timestamp_ms=timestamp, branch_id=branch, native_binding=False,
+        )
+        terminal["terminal_reason"] = reason
+        events.append(terminal)
+        terminals.append(
+            {
+                "run_id": RUN_ID,
+                "trace_id": TRACE_ID,
+                "input_frame_key": INPUT_FRAME_KEY,
+                "stream_id": 0,
+                "frame_id": 31,
+                "branch_id": branch,
+                "terminal_status": status,
+                "terminal_reason": reason,
+                "terminal_timestamp_ms": timestamp,
+                "terminal_provenance": "native_completion_event" if status == "completed" else "native_drop_event",
+                "telemetry_source": "native",
+            }
+        )
+    return runtime_result(events=tuple(events)), terminals
 
 
 class CheckpointPublicationRuntimeTests(unittest.TestCase):
@@ -269,6 +370,87 @@ class CheckpointPublicationRuntimeTests(unittest.TestCase):
                 codec="h264",
                 deadline_ms=100.0,
             )
+
+    def _strict_stage_rows(
+        self,
+        result: RuntimeRunResult,
+        terminals: list[dict[str, object]],
+        topology_kind: str,
+    ) -> list[dict[str, object]]:
+        return _accepted_frame_event_rows(
+            result,
+            ledger_rows=[ingress_row(terminal_status="drop")],
+            policy="static_hybrid",
+            system="gstreamer_custom",
+            scenario="checkpoint_video_dag_shared",
+            codec="h264",
+            deadline_ms=100.0,
+            branch_rows=terminals,
+            topology_kind=topology_kind,
+            required_branches=BRANCHES,
+        )
+
+    def test_independent_mixed_and_all_prefix_reduce_only_completed_stages(self) -> None:
+        mixed = {"damage": "prefix", "plate_number": "pre_detector",
+                 "vehicle": "completed", "face": "completed"}
+        result, terminals = branch_stage_fixture("independent_processes", mixed)
+        rows = self._strict_stage_rows(result, terminals, "independent_processes")
+        stages = {row["stage"] for row in rows}
+        self.assertIn("decode_damage", stages)
+        self.assertNotIn("preprocess_damage", stages)
+        self.assertIn("preprocess_plate_number", stages)
+        self.assertIn("preprocess_vehicle", stages)
+        self.assertIn("preprocess_face", stages)
+
+        all_prefix = {branch: "prefix" for branch in BRANCHES}
+        result, terminals = branch_stage_fixture("independent_processes", all_prefix)
+        rows = self._strict_stage_rows(result, terminals, "independent_processes")
+        self.assertEqual({row["stage"] for row in rows}, {f"decode_{branch}" for branch in BRANCHES})
+
+    def test_shared_all_prefix_has_decode_only_and_partial_prefix_fails(self) -> None:
+        all_prefix = {branch: "prefix" for branch in BRANCHES}
+        result, terminals = branch_stage_fixture("shared_video_dag", all_prefix)
+        rows = self._strict_stage_rows(result, terminals, "shared_video_dag")
+        self.assertEqual({row["stage"] for row in rows}, {"decode"})
+
+        partial = dict(all_prefix)
+        partial["damage"] = "pre_detector"
+        result, terminals = branch_stage_fixture("shared_video_dag", partial)
+        with self.assertRaisesRegex(ContractError, "partial shared prefix"):
+            self._strict_stage_rows(result, terminals, "shared_video_dag")
+
+    def test_prefix_reduction_rejects_fabricated_or_missing_stages_and_forged_lineage(self) -> None:
+        outcomes = {"damage": "prefix", "plate_number": "pre_detector",
+                    "vehicle": "completed", "face": "completed"}
+        result, terminals = branch_stage_fixture("independent_processes", outcomes)
+        base_events = list(result.events)
+
+        fabricated = copy.deepcopy(base_events)
+        fabricated.append(
+            event(kind="stage_complete", stage="preprocess_damage", execution_id="damage:fake",
+                  parents='["damage:decode"]', timestamp_ms=1_125, branch_id="damage")
+        )
+        with self.assertRaisesRegex(ContractError, "preprocessing contradicts terminal"):
+            self._strict_stage_rows(runtime_result(events=tuple(fabricated)), terminals, "independent_processes")
+
+        for branch in ("plate_number", "vehicle"):
+            missing = [row for row in base_events if row["stage"] != f"preprocess_{branch}"]
+            with self.subTest(branch=branch), self.assertRaises(ContractError):
+                self._strict_stage_rows(runtime_result(events=tuple(missing)), terminals,
+                                        "independent_processes")
+
+        forged_reason = copy.deepcopy(terminals)
+        forged_reason[0]["terminal_reason"] = PRE_DETECTOR_DROP_REASON
+        with self.assertRaisesRegex(ContractError, "reason or identity mismatch"):
+            self._strict_stage_rows(result, forged_reason, "independent_processes")
+
+        forged_parent = copy.deepcopy(base_events)
+        next(row for row in forged_parent if row["execution_id"] == "damage:terminal")[
+            "parent_execution_ids_json"
+        ] = '["damage:source"]'
+        with self.assertRaisesRegex(ContractError, "parent kind is invalid"):
+            self._strict_stage_rows(runtime_result(events=tuple(forged_parent)), terminals,
+                                    "independent_processes")
 
 
 if __name__ == "__main__":

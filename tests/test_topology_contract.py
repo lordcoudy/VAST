@@ -28,7 +28,7 @@ BRANCHES = ["plate_number", "damage"]
 
 def measurement_passport_fields(*, ingress_count: int = 1) -> dict[str, object]:
     payload = {
-        "contract_version": 5,
+        "contract_version": 6,
         "resource_attribution": "native_per_trace_bounded_stage_interval_ingress_cohort_v4",
         "resource_time_components": ["cpu_time_ms", "gpu_time_ms"],
         "resource_time_component_mapping": {
@@ -52,7 +52,7 @@ def measurement_passport_fields(*, ingress_count: int = 1) -> dict[str, object]:
         "transfer_time_components": [],
         "nvdec_busy_time_included": False,
         "fanout_time_included": False,
-        "stage_reduction_rule": "decode_preprocess_suffix_reduction_v1",
+        "stage_reduction_rule": "verified_branch_terminal_stage_reduction_v2",
         "cohort_terminal_rule": "completed_or_native_drop_no_censored",
     }
     payload_json = json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=True)

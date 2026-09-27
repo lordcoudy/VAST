@@ -1321,6 +1321,9 @@ def _validated_publication_run_artifacts(
         sidecars["resource_events"],
         ingress,
         events,
+        branch_terminals=branch_terminals,
+        topology_kind=topology_kind,
+        required_branches=required_branches,
     )
     semantic_prefix_hash = semantic_prefix_contract_sha256(stage_contracts)
     configured_primary = (config.get("benchmark") or {}).get("primary_architecture_contrast")
@@ -1397,6 +1400,8 @@ def _validated_publication_run_artifacts(
         "events": events,
         "topology_events": topology_events,
         "sidecars": sidecars,
+        "topology_kind": topology_kind,
+        "required_branches": required_branches,
         "raw_summary": raw_summary,
         "metadata": metadata,
     }
@@ -1431,6 +1436,9 @@ def _primary_run_metric(
         sidecars["resource_events"],
         ingress,
         events,
+        branch_terminals=branch_terminals,
+        topology_kind=evidence["topology_kind"],
+        required_branches=evidence["required_branches"],
     )
     semantic_prefix_hash = str(raw_summary["semantic_prefix_contract_sha256"])
     decoder_factory = str(raw_summary["decoder_factory"])

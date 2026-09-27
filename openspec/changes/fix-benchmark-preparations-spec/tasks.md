@@ -26,8 +26,8 @@
 
 - [x] 5.1 Map changed files through native foundations and publication/worker image allowlists; verify an explicit invalidation list covers every affected image, parity and downstream receipt.
 - [x] 5.2 Rebuild affected images deterministically and execute packaged regressions; verify source/image receipt hashes and preserved unaffected identities.
-- [x] 5.3 Renew required physical parity and identity fixtures, including all 480 executions/32 groups when that closure is affected; verify original successful invocations and complete accepted receipts.
-- [x] 5.4 Run affected native builds/tests and one final full ext4 suite on the final source/fixture/mirror bytes; verify before/after manifests, original exit status and reviewed skip-identity differences against the historical 87 skips.
+- [ ] 5.3 Renew required physical parity and identity fixtures, including all 480 executions/32 groups when that closure is affected; verify original successful invocations and complete accepted receipts.
+- [ ] 5.4 Run affected native builds/tests and one final full ext4 suite on the final source/fixture/mirror bytes; verify before/after manifests, original exit status and reviewed skip-identity differences against the historical 87 skips.
 
 ## 6. Fresh qualification
 
@@ -44,8 +44,8 @@
 - [x] 10.4 Validate native policy identifiers by manifest grammar and frozen branch membership; verify `damage` is accepted and invalid names still rejected.
 - [x] 10.5 Bind CPU and GPU native policy identities to the frozen qualification-v2 manifest per design decision 8 and verify the loaded analytics path matches the manifest backend; add positive and fail-closed regressions.
 - [x] 10.6 Accept the qualification bundle's copied, hash-verified container-engine client in the GStreamer Custom runtime; verify containment and byte mismatches are rejected.
-- [ ] 10.7 Handle only verified native queue drops before policy entry as one correctly linked branch drop with no policy/inference call; add executable native or deterministic adapter-level regressions for both queues and topologies and fail-closed regressions for wrong provenance/reason, orphan/duplicate PTS before emission and post-entry drop.
-- [ ] 10.8 Bind publication stage and resource-attribution checks to verified branch-level drop provenance: require decode but not fabricated preprocessing for a postdecode prefix drop, require both for pre-detector drops and completed branches, enforce shared all-or-none prefix drops, and version the changed measurement stage-reduction signature; verify independent mixed/all-prefix and shared all-prefix outcomes plus malformed provenance and missing/extra intervals with executable positive/negative tests.
+- [x] 10.7 Handle only verified native queue drops before policy entry as one correctly linked branch drop with no policy/inference call; add executable native or deterministic adapter-level regressions for both queues and topologies and fail-closed regressions for wrong provenance/reason, orphan/duplicate PTS before emission and post-entry drop.
+- [x] 10.8 Bind publication stage and resource-attribution checks to verified branch-level drop provenance: require decode but not fabricated preprocessing for a postdecode prefix drop, require both for pre-detector drops and completed branches, enforce shared all-or-none prefix drops, and version the changed measurement stage-reduction signature; verify independent mixed/all-prefix and shared all-prefix outcomes plus malformed provenance and missing/extra intervals with executable positive/negative tests.
 - [ ] 10.9 Renew affected images, parity, identity fixtures and the final exact-byte suite after 10.7-10.8, then run one fresh nonpromoting CPU and GPU pre-check per native-probe system to its original successful terminal before 6.2-6.4; preserve the failed 2026-09-27 guardian/pre-check evidence without reuse.
 
 ## 7. Q4 prerequisite evidence

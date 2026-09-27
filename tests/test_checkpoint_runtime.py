@@ -1649,6 +1649,33 @@ class CheckpointRuntimeTests(unittest.TestCase):
                 self.skipTest(queue_completed.stderr.strip())
             self.assertEqual(queue_completed.returncode, 0, queue_completed.stderr)
 
+            prefix_binary = Path(tmp) / "gst-vast-checkpoint-prefix-queue-test"
+            prefix_compiled = subprocess.run(
+                [
+                    compiler,
+                    "-std=c++17",
+                    "-I",
+                    str(ROOT / "deploy" / "native_gst_probe"),
+                    str(ROOT / "tests" / "cpp" / "gst_vast_checkpoint_prefix_queue_test.cpp"),
+                    *shlex.split(flags.stdout),
+                    "-o",
+                    str(prefix_binary),
+                ],
+                text=True,
+                capture_output=True,
+                check=False,
+            )
+            self.assertEqual(prefix_compiled.returncode, 0, prefix_compiled.stderr)
+            prefix_completed = subprocess.run(
+                [str(prefix_binary), str(prefix_queue_candidates[0])],
+                text=True,
+                capture_output=True,
+                check=False,
+                timeout=20,
+                env={**os.environ, "GST_REGISTRY_FORK": "no"},
+            )
+            self.assertEqual(prefix_completed.returncode, 0, prefix_completed.stderr)
+
     def test_blueprint_expands_to_24_baseline_and_6_shared_process_assignments(self) -> None:
         config = load_config(ROOT / "configs" / "experiments.yaml")
         datasets = load_config(ROOT / "configs" / "datasets.yaml")["datasets"]

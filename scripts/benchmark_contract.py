@@ -6852,9 +6852,13 @@ def _provenance_supports(
     return bool(values) and values.issubset(accepted) and (require_observed is None or require_observed in values)
 
 
-MEASUREMENT_PASSPORT_CONTRACT_VERSION = 5
+MEASUREMENT_PASSPORT_CONTRACT_VERSION = 6
+LEGACY_MEASUREMENT_PASSPORT_CONTRACT_VERSION = 5
 RESOURCE_ATTRIBUTION_RULE = "native_per_trace_bounded_stage_interval_ingress_cohort_v4"
-MEASUREMENT_STAGE_REDUCTION_RULE = "decode_preprocess_suffix_reduction_v1"
+MEASUREMENT_STAGE_REDUCTION_RULE = "verified_branch_terminal_stage_reduction_v2"
+LEGACY_MEASUREMENT_STAGE_REDUCTION_RULE = "decode_preprocess_suffix_reduction_v1"
+POSTDECODE_PREFIX_DROP_REASON = "native_postdecode_preprocess_queue_full_drop_newest"
+PRE_DETECTOR_DROP_REASON = "native_pre_detector_queue_full_drop_newest"
 MEASUREMENT_RESOURCE_TIME_PROVENANCE = {
     "native_hardware_counter",
     "derived_from_native_stage_timestamps",
@@ -6862,10 +6866,15 @@ MEASUREMENT_RESOURCE_TIME_PROVENANCE = {
 MEASUREMENT_CPU_COMPONENT_RESOURCES = {"cpu", "nvdec"}
 
 
-def build_measurement_signature_payload(time_provenance: list[str]) -> dict[str, Any]:
-    """Return the complete canonical semantics of measurement passport v4."""
+def build_measurement_signature_payload(
+    time_provenance: list[str], *, branch_terminal_aware: bool = False,
+) -> dict[str, Any]:
+    """Return exact legacy or verified-branch measurement semantics."""
     return {
-        "contract_version": MEASUREMENT_PASSPORT_CONTRACT_VERSION,
+        "contract_version": (
+            MEASUREMENT_PASSPORT_CONTRACT_VERSION if branch_terminal_aware
+            else LEGACY_MEASUREMENT_PASSPORT_CONTRACT_VERSION
+        ),
         "resource_attribution": RESOURCE_ATTRIBUTION_RULE,
         "resource_time_components": ["cpu_time_ms", "gpu_time_ms"],
         "resource_time_component_mapping": {
@@ -6889,7 +6898,10 @@ def build_measurement_signature_payload(time_provenance: list[str]) -> dict[str,
         "transfer_time_components": [],
         "nvdec_busy_time_included": False,
         "fanout_time_included": False,
-        "stage_reduction_rule": MEASUREMENT_STAGE_REDUCTION_RULE,
+        "stage_reduction_rule": (
+            MEASUREMENT_STAGE_REDUCTION_RULE if branch_terminal_aware
+            else LEGACY_MEASUREMENT_STAGE_REDUCTION_RULE
+        ),
         "cohort_terminal_rule": "completed_or_native_drop_no_censored",
     }
 
@@ -6912,7 +6924,10 @@ def measurement_signature_payload_is_valid(
         or resource_attribution != RESOURCE_ATTRIBUTION_RULE
     ):
         return False
-    return payload == build_measurement_signature_payload(time_provenance)
+    return payload in (
+        build_measurement_signature_payload(time_provenance),
+        build_measurement_signature_payload(time_provenance, branch_terminal_aware=True),
+    )
 
 
 def measurement_signature_identity_is_valid(
@@ -6978,10 +6993,109 @@ def input_frame_key_sequence_sha256(ingress: pd.DataFrame) -> str:
     return _canonical_json_sha256(rows)
 
 
+def _verified_branch_stage_coverage(
+    ledger: pd.DataFrame,
+    branch_terminals: pd.DataFrame,
+    *,
+    topology_kind: str,
+    required_branches: list[str] | tuple[str, ...],
+    stages_by_key: dict[tuple[Any, ...], set[str]],
+) -> bool:
+    """Check physical prefix work against validated, frame-linked branch outcomes."""
+    if topology_kind not in {"independent_processes", "shared_video_dag"}:
+        return False
+    branches = tuple(required_branches)
+    if not branches or len(set(branches)) != len(branches):
+        return False
+    if topology_kind == "shared_video_dag" and len(branches) != 4:
+        return False
+    required = set(BRANCH_TERMINAL_COLUMNS) | {"branch_terminal_claim_eligible"}
+    if not required.issubset(branch_terminals.columns):
+        return False
+    frame_columns = ("run_id", "trace_id", "stream_id", "frame_id")
+    ledger_by_key = {
+        tuple(row[column] for column in frame_columns): row
+        for row in ledger.to_dict(orient="records")
+    }
+    if len(ledger_by_key) != len(ledger):
+        return False
+    by_key: dict[tuple[Any, ...], dict[str, dict[str, Any]]] = {}
+    for row in branch_terminals.to_dict(orient="records"):
+        key = tuple(row[column] for column in frame_columns)
+        ingress = ledger_by_key.get(key)
+        branch = str(row["branch_id"])
+        if (
+            ingress is None
+            or branch not in branches
+            or branch in by_key.get(key, {})
+            or not bool(row["branch_terminal_claim_eligible"])
+            or str(row["telemetry_source"]) != "native"
+            or str(row["input_frame_key"]) != str(ingress["input_frame_key"])
+            or str(row["cohort_id"]) != str(ingress["cohort_id"])
+        ):
+            return False
+        status = str(row["terminal_status"])
+        reason = str(row["terminal_reason"])
+        if status == "drop":
+            if reason not in {POSTDECODE_PREFIX_DROP_REASON, PRE_DETECTOR_DROP_REASON}:
+                return False
+            if str(row["terminal_provenance"]) != "native_drop_event":
+                return False
+        elif status == "completed":
+            if not reason or reason in {POSTDECODE_PREFIX_DROP_REASON, PRE_DETECTOR_DROP_REASON}:
+                return False
+            if str(row["terminal_provenance"]) != "native_completion_event":
+                return False
+        else:
+            return False
+        by_key.setdefault(key, {})[branch] = row
+    if set(by_key) != set(ledger_by_key):
+        return False
+    for key, ingress in ledger_by_key.items():
+        outcomes = by_key[key]
+        if set(outcomes) != set(branches):
+            return False
+        statuses = {str(row["terminal_status"]) for row in outcomes.values()}
+        if str(ingress["terminal_status"]) == "completed":
+            if statuses != {"completed"}:
+                return False
+        elif str(ingress["terminal_status"]) == "drop":
+            if "drop" not in statuses:
+                return False
+        else:
+            return False
+        stages = stages_by_key.get(key, set())
+        if topology_kind == "independent_processes":
+            for branch, row in outcomes.items():
+                if f"decode_{branch}" not in stages:
+                    return False
+                prefix_drop = (
+                    str(row["terminal_status"]) == "drop"
+                    and str(row["terminal_reason"]) == POSTDECODE_PREFIX_DROP_REASON
+                )
+                if (f"preprocess_{branch}" in stages) == prefix_drop:
+                    return False
+        else:
+            prefix_drops = [
+                row for row in outcomes.values()
+                if str(row["terminal_status"]) == "drop"
+                and str(row["terminal_reason"]) == POSTDECODE_PREFIX_DROP_REASON
+            ]
+            if "decode" not in stages or (prefix_drops and len(prefix_drops) != len(branches)):
+                return False
+            if ("preprocess" in stages) == bool(prefix_drops):
+                return False
+    return True
+
+
 def summarize_measurement_passport(
     resources: pd.DataFrame,
     ingress: pd.DataFrame,
     frame_events: pd.DataFrame | None = None,
+    *,
+    branch_terminals: pd.DataFrame | None = None,
+    topology_kind: str | None = None,
+    required_branches: list[str] | tuple[str, ...] | None = None,
 ) -> dict[str, Any]:
     """Derive a claim-gating passport from accepted native sidecars only."""
     unavailable = {
@@ -7070,7 +7184,7 @@ def summarize_measurement_passport(
         resource_frame_keys,
         strict=True,
     ):
-        stages_by_key.setdefault(key, set()).add(stage_base_name(str(row["stage"])))
+        stages_by_key.setdefault(key, set()).add(str(row["stage"]))
         bounds = ledger_bounds.get(key)
         if bounds is None:
             timestamps_in_bounds = False
@@ -7079,10 +7193,29 @@ def summarize_measurement_passport(
         if timestamp < bounds[0] or timestamp > bounds[1]:
             timestamps_in_bounds = False
 
-    prefix_covered = all(
-        {"decode", "preprocess"}.issubset(stages_by_key.get(key, set()))
-        for key in ledger_keys
+    branch_terminal_aware = (
+        branch_terminals is not None or topology_kind is not None or required_branches is not None
     )
+    if branch_terminal_aware:
+        prefix_covered = bool(
+            branch_terminals is not None
+            and topology_kind is not None
+            and required_branches is not None
+            and _verified_branch_stage_coverage(
+                ledger,
+                branch_terminals,
+                topology_kind=topology_kind,
+                required_branches=required_branches,
+                stages_by_key=stages_by_key,
+            )
+        )
+    else:
+        prefix_covered = all(
+            {"decode", "preprocess"}.issubset(
+                {stage_base_name(stage) for stage in stages_by_key.get(key, set())}
+            )
+            for key in ledger_keys
+        )
     cpu_time = pd.to_numeric(resource_rows["cpu_time_ms"], errors="coerce")
     gpu_time = pd.to_numeric(resource_rows["gpu_time_ms"], errors="coerce")
     finite_nonnegative_time = bool(
@@ -7185,7 +7318,9 @@ def summarize_measurement_passport(
     if not attribution_complete:
         return unavailable
 
-    signature_payload = build_measurement_signature_payload(time_provenance)
+    signature_payload = build_measurement_signature_payload(
+        time_provenance, branch_terminal_aware=branch_terminal_aware,
+    )
     signature_json = json.dumps(
         signature_payload,
         sort_keys=True,
@@ -7421,6 +7556,13 @@ def summarize_sidecars(
                 resources,
                 ingress,
                 sidecars["frame_events"],
+                branch_terminals=(
+                    sidecars.get("branch_terminals")
+                    if topology_kind is not None or required_branches is not None
+                    else None
+                ),
+                topology_kind=topology_kind,
+                required_branches=required_branches,
             )
         )
 
