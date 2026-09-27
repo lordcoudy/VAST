@@ -28,6 +28,7 @@ from checkpoint_publication_runtime import (
     checkpoint_aggregate_backend,
 )
 from checkpoint_runtime import RuntimeRunResult
+from topology_contract import TOPOLOGY_EVENT_COLUMNS
 
 
 RUN_ID = "publication-fixture"
@@ -484,6 +485,70 @@ class CheckpointPublicationRuntimeTests(unittest.TestCase):
             policy="static_hybrid",
             deadline_ms=100.0,
         )
+
+    def _with_projected_branch_events(
+        self, result: RuntimeRunResult, topology_kind: str,
+    ) -> RuntimeRunResult:
+        events = []
+        for row in result.events:
+            if row["event_kind"] in {"branch_complete", "branch_drop"}:
+                source = {**row, "schema_version": 2, "topology_kind": topology_kind}
+                events.append({column: source[column] for column in TOPOLOGY_EVENT_COLUMNS})
+            else:
+                events.append(row)
+        self.assertTrue(any(row["event_kind"] == "branch_drop" for row in events))
+        self.assertTrue(all(
+            "terminal_reason" not in row for row in events
+            if row["event_kind"] in {"branch_complete", "branch_drop"}
+        ))
+        return replace(result, events=tuple(events))
+
+    def test_native_resource_producer_uses_direct_reason_with_projected_topology_events(self) -> None:
+        cases = (
+            ("independent_processes", {
+                "damage": "prefix", "plate_number": "pre_detector",
+                "vehicle": "completed", "face": "completed",
+            }, "gstreamer_custom"),
+            ("shared_video_dag", {branch: "prefix" for branch in BRANCHES}, "openvino_gva"),
+        )
+        for topology_kind, outcomes, system in cases:
+            with self.subTest(topology_kind=topology_kind, system=system), tempfile.TemporaryDirectory() as tmp:
+                result, plan, scenario, dataset, stages = self._native_resource_fixture(
+                    topology_kind, outcomes, system=system,
+                )
+                result = self._with_projected_branch_events(result, topology_kind)
+                path = self._write_native_resource_fixture(
+                    Path(tmp), result, plan, scenario, dataset,
+                )
+                with path.open(newline="", encoding="utf-8") as source:
+                    resources = list(csv.DictReader(source))
+                self.assertEqual({row["stage"] for row in resources}, {row["stage"] for row in stages})
+                if topology_kind == "independent_processes":
+                    self.assertNotIn("preprocess_damage", {row["stage"] for row in resources})
+                    self.assertIn("preprocess_plate_number", {row["stage"] for row in resources})
+                else:
+                    self.assertEqual({row["stage"] for row in resources}, {"decode"})
+
+                for invalid_reason in (PRE_DETECTOR_DROP_REASON, "", None):
+                    with self.subTest(invalid_reason=invalid_reason):
+                        wrong_reason = copy.deepcopy(list(result.branch_terminal_records))
+                        wrong_reason[0]["terminal_reason"] = invalid_reason
+                        with tempfile.TemporaryDirectory() as rejected_tmp, self.assertRaises(ContractError):
+                            self._write_native_resource_fixture(
+                                Path(rejected_tmp),
+                                replace(result, branch_terminal_records=tuple(wrong_reason)),
+                                plan, scenario, dataset,
+                            )
+
+                wrong_parent = copy.deepcopy(list(result.events))
+                next(row for row in wrong_parent if row["execution_id"] == "damage:terminal")[
+                    "parent_execution_ids_json"
+                ] = '["damage:source"]' if topology_kind == "independent_processes" else '["shared:source"]'
+                with tempfile.TemporaryDirectory() as rejected_tmp, self.assertRaises(ContractError):
+                    self._write_native_resource_fixture(
+                        Path(rejected_tmp), replace(result, events=tuple(wrong_parent)),
+                        plan, scenario, dataset,
+                    )
 
     def test_native_resource_producer_matches_physical_intervals_and_excludes_warmup_drain(self) -> None:
         cases = (

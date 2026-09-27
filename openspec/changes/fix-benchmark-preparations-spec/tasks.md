@@ -25,9 +25,11 @@
 ## 5. Source closure and final validation
 
 - [x] 5.1 Map the new shared-runtime source change through native foundations and publication/worker image allowlists; verify an explicit invalidation list covers every affected image, parity and downstream receipt.
-- [x] 5.2 Rebuild affected images deterministically and execute packaged regressions; verify source/image receipt hashes and preserved unaffected identities after the native resource-sidecar repair.
-- [x] 5.3 Renew required physical parity and identity fixtures, including all 480 executions/32 groups when that closure is affected; verify original successful invocations and complete accepted receipts after the native resource-sidecar repair.
-- [x] 5.4 Run affected native builds/tests and one final full ext4 suite on the final source/fixture/mirror bytes; verify before/after manifests, original exit status and reviewed skip-identity differences against the historical 87 skips after the native resource-sidecar repair.
+- [ ] 5.2 Rebuild affected images deterministically and execute packaged regressions; verify source/image receipt hashes and preserved unaffected identities after the native resource-sidecar and topology-event projection repairs.
+- [ ] 5.3 Renew required physical parity and identity fixtures, including all 480 executions/32 groups when that closure is affected; verify original successful invocations and complete accepted receipts after the native resource-sidecar and topology-event projection repairs.
+- [ ] 5.4 Run affected native builds/tests and one final full ext4 suite on the final source/fixture/mirror bytes; verify before/after manifests, original exit status and reviewed skip-identity differences against the historical 87 skips after the native resource-sidecar and topology-event projection repairs.
+
+The `20260927c` image/parity/suite checks passed for their then-current bytes, but its corrected OpenVINO GVA CPU pre-check exposed a packaged `checkpoint_publication_runtime.py` projection defect. Tasks 5.2-5.4 are reopened for the next source closure. Task 6.1 remains pending for new receipts, guardian and bundles; the failed c evidence cannot be reused for qualification.
 
 ## 6. Fresh qualification
 
@@ -47,7 +49,7 @@
 - [x] 10.7 Handle only verified native queue drops before policy entry as one correctly linked branch drop with no policy/inference call; add executable native or deterministic adapter-level regressions for both queues and topologies and fail-closed regressions for wrong provenance/reason, orphan/duplicate PTS before emission and post-entry drop.
 - [x] 10.8 Bind publication stage and resource-attribution checks to verified branch-level drop provenance: require decode but not fabricated preprocessing for a postdecode prefix drop, require both for pre-detector drops and completed branches, enforce shared all-or-none prefix drops, and version the changed measurement stage-reduction signature; verify independent mixed/all-prefix and shared all-prefix outcomes plus malformed provenance and missing/extra intervals with executable positive/negative tests.
 - [x] 10.8.1 Produce and validate the native-probe `resource_events.csv` from accepted physical frame-stage intervals before publication for both OpenVINO GVA and GStreamer Custom; verify exact stage/duration/provenance coverage, prefix-drop omission, malformed/duplicate/unmatched accepted-ingress interval rejection, existing-file rejection and call order, while excluding warmup and drain events.
-- [ ] 10.9 Renew affected images, parity, identity fixtures and the final exact-byte suite after 10.7-10.8.1, then run one fresh nonpromoting CPU and GPU pre-check per native-probe system to its original successful terminal before 6.2-6.4; preserve both failed 2026-09-27 pre-check chains and each guardian's actual lifecycle without reuse.
+- [ ] 10.9 Renew affected images, parity, identity fixtures and the final exact-byte suite after 10.7-10.8.1 and the topology-event projection repair, then run one fresh nonpromoting CPU and GPU pre-check per native-probe system to its original successful terminal before 6.2-6.4; preserve all failed 2026-09-27 pre-check chains, including `20260927c`, and each guardian's actual lifecycle without reuse.
 
 ## 7. Q4 prerequisite evidence
 

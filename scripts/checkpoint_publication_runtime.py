@@ -530,6 +530,10 @@ def _accepted_branch_rows(
         _require(int(row["runtime_protocol_version"]) == 3, "accepted branch outcome is not protocol-v3")
         _require(str(row["telemetry_source"]) == "native", "accepted branch outcome is not native")
         _require(str(row["event_provenance"]) == "native_runtime_event", "branch event provenance is not native")
+        _require(
+            isinstance(row.get("terminal_reason"), str) and bool(row["terminal_reason"].strip()),
+            "accepted branch outcome lacks a native terminal reason",
+        )
         grouped.setdefault(key, []).append(row)
 
     accepted: list[dict[str, Any]] = []
@@ -804,7 +808,12 @@ def _accepted_frame_event_rows(
                     and str(outcome["input_frame_key"]) == str(ledger["input_frame_key"])
                     and str(terminal["event_kind"]) == expected_kind
                     and str(terminal["stage"]) == branch
-                    and str(terminal["terminal_reason"]) == reason
+                    # The topology event projection omits terminal_reason; the
+                    # direct native branch outcome above is its source of truth.
+                    and (
+                        "terminal_reason" not in terminal
+                        or str(terminal["terminal_reason"]) == reason
+                    )
                     and int(terminal["timestamp_ms"]) == int(outcome["terminal_timestamp_ms"])
                     and str(terminal["input_frame_key"]) == str(outcome["input_frame_key"])
                     and str(terminal["event_provenance"]) == "native_runtime_event"
