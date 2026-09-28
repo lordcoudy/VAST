@@ -42,9 +42,9 @@ from publication_policy_contract import POLICIES as FROZEN_POLICIES
 RUNTIME_INPUT_KEY = "gstreamer_custom_publication_runtime_v3"
 RUNTIME_INPUT_KIND = "vast_gstreamer_custom_publication_runtime_inputs_v3"
 EXPECTED_IMAGE_REFERENCE = 'vast/gstreamer-custom-publication-runtime-v3:materialized'
-EXPECTED_IMAGE_ID = 'sha256:9ff3c2f674813bcef0693832c32098dc6274bbee0a6a1229baf42fb7fb1ef154'
-EXPECTED_REPOSITORY_DIGEST = 'vast/gstreamer-custom-publication-runtime-v3@sha256:9ff3c2f674813bcef0693832c32098dc6274bbee0a6a1229baf42fb7fb1ef154'
-EXPECTED_IMAGE_INSPECT_PROJECTION_SHA256 = 'a1690461441583e30f4f22e6ce093d0b7bbf7b098a51c00367984c91c85644a1'
+EXPECTED_IMAGE_ID = 'sha256:8d7b55fb1c4b11310dcbf7f2601681e28dc9fb0ba1e459f257b0545aad961626'
+EXPECTED_REPOSITORY_DIGEST = 'vast/gstreamer-custom-publication-runtime-v3@sha256:8d7b55fb1c4b11310dcbf7f2601681e28dc9fb0ba1e459f257b0545aad961626'
+EXPECTED_IMAGE_INSPECT_PROJECTION_SHA256 = '5b3552dc1f9d0a7c0fdf256fb99cfb90aaa02a07c487556a487439d29ae7b1db'
 EXPECTED_BASE_IMAGE_ID = 'sha256:b102aafc0f88f8cfad92349e6a55d0f9755a3f5bff109a70ebdb8936d4a8e84c'
 EXPECTED_IMAGE_ENTRYPOINT = (
     "/usr/local/bin/vast_gstreamer_custom_publication_runtime_v3"
@@ -58,14 +58,14 @@ EXPECTED_IMAGE_LABELS = {'org.opencontainers.image.version': '24.04',
  'org.vast.native_probe.source_sha': 'b9b350163f4d030ee4a182e06edd9b5f49ed809501d5e64de632dcff24ca8fab',
  'org.vast.publication-runtime-abi': '3',
  'org.vast.runtime-dependency-set-sha256': '0f338b3aeca6756d31dccdbbc8caeb6239e8e07fec0541c1df3fea91dfc1963e',
- 'org.vast.runtime-source-sha256': '7bb1290cd90c5298f575e1986cf882cac9642bf52b06e84bad9b0881db49f659'}
+ 'org.vast.runtime-source-sha256': 'c8ddf1acd1abb5003556ce3260850a82f3b43ec12cc6509692a0d9eb1aa2a88b'}
 EXPECTED_EMBEDDED_ARTIFACTS = {'/opt/vast/checkpoint/checkpoint_gstreamer_custom_container_coordinator_v3.py': '7f70138de1e87ab43dfab1e37674979c551dd24ee02fba205cd9905790b060c5',
  '/opt/vast/checkpoint/checkpoint_gstreamer_runtime.py': '5cb5e273831286f333c3647633bc50c445103b8ee62f9e6b99db08f33884f4cc',
  '/opt/vast/lib/gstreamer-1.0/libgstadaptivescheduler.so': 'd36642c99d55fac7d834c75b500c7ffd086f022e671cb2b38aecaf38b8d0ad9f',
  '/opt/vast/lib/gstreamer-1.0/libgstvastanalyticsqueue.so': '9909f2b19adc3f7e82dcf8923a3e719f8546cd4e5126663deafdce04121d2258',
  '/opt/vast/lib/gstreamer-1.0/libgstvastanalyticsterminal.so': '04962e14523cc570ce1b24735e76334820ed730b5aee72beac0685a4704f9e45',
  '/opt/vast/lib/gstreamer-1.0/libgstvastcheckpointprefixqueue.so': '797a9311f06cc60ce3768dfc2b3a191525a8577dd8ce2a4eca057aa4fcefdabf',
- '/opt/vast/runtime-source-allowlist.txt': 'dea819344804486529aeb32c0076690b42acfd8f5f861c2651d02b01c54608dc',
+ '/opt/vast/runtime-source-allowlist.txt': '0aff0fd0e6551d189174e628e3f0cbd23d99bd5f1496b7023e6cc945e6e93522',
  '/opt/vast/share/gstreamer-registry.bin': '18b3fb289de3a7c101b12854beaabb38a8edb72c1ecaf6fc5deea39d307508bc',
  '/usr/local/bin/vast_checkpoint_source': '7501479ccb90dc1e322386126c372a7650f40e5c7b76bfb29f4495470bd185df',
  '/usr/local/bin/vast_gstreamer_custom_publication_runtime_v3': '2f241d0fbf8e250d09f3dc8c6c97999910991c8649c44e56ee69d4f1cb38b8e7',
