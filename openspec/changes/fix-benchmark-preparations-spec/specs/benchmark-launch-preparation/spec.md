@@ -132,6 +132,49 @@ OpenVINO GVA and GStreamer Custom qualification cells SHALL execute through the 
 - **WHEN** a native-probe pre-check replay does not reach a successful terminal
 - **THEN** no 32-cell attempt SHALL start, and its evidence SHALL be preserved as nonpromoting.
 
+### Requirement: Published policy decisions preserve canonical linkage and actual runtime history
+Native policy publication SHALL project only the explicitly validated measurement cohort into canonical aggregate frame traces and dense decision ordinals 1..N. CSV, outer JSONL and each JSONL request SHALL agree on trace, ordinal, decision ID and branch; CSV and outer JSONL SHALL also agree on policy and selected resource without adding fields to the exact request schema. Projection metadata outside the request SHALL preserve original runtime decision identity, issued/accepted hashes, evaluations, state_before and native execution evidence reversibly, without changing the live engine, wire decisions, selected execution path, timing or actual feedback. For `adaptive_weights`, a strict versioned bounded runtime-history sidecar SHALL bind every actual issuance and feedback from the actual initial reset, including excluded warmup/drain predecessors and interleaved updates, to the adaptive acceptance evidence namespace and hashes. Original feedback payloads/hashes SHALL remain unchanged; dense measurement feedback ordinals SHALL be derived from the actual history, retaining original runtime ordinals in history envelopes. Cold decision/feedback validation, qualification and the independent Q4 reader SHALL reconstruct and replay originals, validate the complete measurement projection and reject inconsistent, incomplete or unsupported evidence. Manifest/native capability checks SHALL still require the actual accepted capability manifest; standalone mathematical replay SHALL NOT invent one or grant capability authority. Unprojected historical evidence SHALL retain its existing strict validation; failed historical artifacts SHALL not be rewritten.
+
+#### Scenario: Worker traces and runtime sequence gaps enter a measurement cohort
+- **WHEN** accepted measurement decisions have branch-worker trace IDs and runtime ordinals with excluded warmup/drain gaps
+- **THEN** publication SHALL use the original native `input_frame_key`, validated accepted-ingress mapping and original CSV feature provenance to bind canonical frame/worker/branch/PTS identity, then use original runtime order to emit matching aggregate traces and dense ordinals in CSV and both outer/request JSONL fields with reversible original identity/hash metadata, without trace-suffix inference.
+
+#### Scenario: Publication preserves live decision and feedback authority
+- **WHEN** a runtime decision is issued, executed, receives feedback and is later projected for publication
+- **THEN** its wire response, original issued-record hash, selected path, evaluations and actual engine transitions SHALL remain unchanged, and reconstruction SHALL verify both issued and accepted originals under the frozen policy/native evidence validators.
+
+#### Scenario: Excluded feedback influences a measured adaptive decision
+- **WHEN** excluded warmup/drain or interleaved feedback updates the adaptive engine before a measurement decision or its terminal
+- **THEN** cold validation SHALL replay every actual issuance and feedback in captured global order from the actual initial reset and verify all original states and measurement links; it SHALL NOT insert a reset or omit a predecessor update to make dense measurement feedback appear contiguous.
+
+#### Scenario: Nonadaptive publication preserves strict closure without adaptive history
+- **WHEN** CPU-only, GPU-only or another nonadaptive policy publishes a measurement cohort
+- **THEN** the producer SHALL require validated native terminal closure for every live issued decision, each measurement original SHALL be reconstructed and individually replayed with its actual reset state (same arm, weights 1 and empty EWMA), no history or feedback sidecar SHALL be accepted, and canonical projection checks SHALL run without a resource-specific bypass while preserving the existing nonadaptive evidence namespace.
+
+#### Scenario: Publication mapping or original proof is corrupt
+- **WHEN** a mapping is missing, ambiguous or orphaned, a projected outer/request identity differs, or an issued/accepted/native evidence hash or evaluation is changed
+- **THEN** promotion and cold qualification SHALL reject the output without treating it as accepted policy evidence.
+
+#### Scenario: Runtime history or projected ordering is incomplete
+- **WHEN** history has a duplicate, missing, reordered or orphan issuance/feedback, an unclosed issuance, a substituted initial state, an unsupported version, or the measurement decision/feedback view has non-dense ordinals or a mismatched cohort
+- **THEN** whole-history replay and publication SHALL fail closed without fabricating an event or state transition.
+
+#### Scenario: History input exceeds its bound or is malformed
+- **WHEN** the adaptive sidecar exceeds the existing 64-MiB per-file or 256-MiB aggregate acceptance bounds, 1,000,000 events or 256 KiB per record, or contains duplicate keys or nonfinite numbers
+- **THEN** the producer or cold reader SHALL reject it within bounded allocation before acceptance, incrementally enforcing the tighter existing stage custody bounds including Savant's 64-MiB child-output aggregate and retained-file count without raising them.
+
+#### Scenario: Existing strict historical records are read
+- **WHEN** an unprojected historical arm is validated
+- **THEN** the existing strict record/linkage/feedback path SHALL apply; a mixed projected/unprojected arm or incomplete projection metadata SHALL be rejected rather than admitted as legacy evidence.
+
+#### Scenario: Independent Q4 reader runs under its isolated loader
+- **WHEN** Q4 executes its pinned validator bytes through `python -I -S -B`
+- **THEN** projection reconstruction, independent policy evaluation and adaptive history validation SHALL succeed for valid evidence using a self-contained reader, without an unpinned helper import or unrestricted project search path; malformed evidence SHALL remain rejected by that same loader.
+
+#### Scenario: Original producer success has rejected cold evidence
+- **WHEN** an original diagnostic exits 0 but its physical policy artifacts fail cold canonical linkage, sequence or history validation
+- **THEN** process success and cold rejection SHALL be recorded separately, no qualification or Q4 stage SHALL start, and the attempt SHALL be preserved and its guardian authenticated-stopped as nonpublication before a reviewed repair and wholly fresh renewal chain.
+
 ### Requirement: Qualification and Q4 are complete before launch readiness
 Preparation SHALL require all 32 qualification cells in one fresh valid attempt, authenticated guardian stop, successful lifecycle/closure and policy/resource promotion. It SHALL then require Q4 phase A with 560 runs, its identity/grant boundary, phase B with 560 runs and 280 sizing pairs derived from phase B, all bound to current authorities. Failed attempts and partial cells SHALL never be combined.
 
