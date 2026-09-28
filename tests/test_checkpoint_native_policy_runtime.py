@@ -739,6 +739,12 @@ class NativePolicyRuntimeCoordinatorTests(unittest.TestCase):
                 feedback_path,
                 decisions=decisions,
                 require_complete=True,
+                ingress_rows=[
+                    {"input_frame_key": first_request["input_frame_key"],
+                     "trace_id": "canonical-trace-0001", "stream_id": 0, "frame_id": 1},
+                    {"input_frame_key": second_request["input_frame_key"],
+                     "trace_id": "canonical-trace-0002", "stream_id": 0, "frame_id": 2},
+                ],
             )
             self.assertEqual(
                 list(feedback["decision_id"]),

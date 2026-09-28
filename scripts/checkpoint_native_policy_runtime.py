@@ -11,6 +11,8 @@ import math
 import os
 import re
 import socket
+import shutil
+import tempfile
 import threading
 from dataclasses import dataclass
 from pathlib import Path
@@ -22,6 +24,7 @@ from analytics_execution_worker import validate_worker_capability
 from benchmark_contract import (
     POLICY_DECISION_COLUMNS,
     TELEMETRY_SCHEMA_VERSION,
+    validate_frozen_policy_decisions,
     validate_frozen_policy_feedback,
     validate_policy_decisions,
 )
@@ -36,6 +39,20 @@ from publication_policy_contract import (
     assess_capability_manifest,
     bind_native_decision_evidence,
     select_static_hybrid_map,
+    validate_decision_record,
+)
+from publication_policy_frozen_replay_v1 import (
+    canonical_json_v1, payload_with_sha256_v1,
+)
+from publication_policy_projection_v1 import (
+    MAX_ACCEPTANCE_AGGREGATE_BYTES_V1,
+    MAX_RUNTIME_HISTORY_BYTES_V1,
+    MAX_RUNTIME_HISTORY_EVENTS_V1,
+    MAX_RUNTIME_HISTORY_LINE_BYTES_V1,
+    RUNTIME_HISTORY_JSONL,
+    project_accepted_decision_v1,
+    serialize_runtime_history_v1,
+    validate_published_decisions_v1,
 )
 
 
@@ -594,6 +611,7 @@ class NativePolicyRuntimeCoordinator:
             static_hybrid_map=engine_static_map,
         )
         self._engine.reset(self.arm_id)
+        self._initial_policy_state = self._engine.state_snapshot()
         self._lock = threading.RLock()
         self._next_decision_seq = 1
         self._next_feedback_seq = 1
@@ -601,6 +619,31 @@ class NativePolicyRuntimeCoordinator:
         self._resource_available_ms = {resource: 0.0 for resource in RESOURCES}
         self._states: dict[str, _DecisionState] = {}
         self._decision_by_execution: dict[tuple[str, str, str, int], str] = {}
+        # Actual successful commits only, recorded under the same coordinator
+        # lock. Records already live in _states; this log stores compact refs.
+        self._history_events: list[dict[str, Any]] = []
+        self._history_capture_bytes = 4096  # bounded header reservation
+        self._history_error: str | None = None
+
+    def _capture_history_event(self, event: Mapping[str, Any]) -> None:
+        if self.policy != "adaptive_weights":
+            return
+        captured = payload_with_sha256_v1({
+            "schema_version": 1,
+            "artifact_kind": "vast_publication_policy_runtime_history_event_v1",
+            "event_seq": len(self._history_events) + 1,
+            **event,
+        })
+        line_bytes = len(canonical_json_v1(captured)) + 1
+        if (
+            len(self._history_events) >= MAX_RUNTIME_HISTORY_EVENTS_V1
+            or line_bytes > MAX_RUNTIME_HISTORY_LINE_BYTES_V1
+            or self._history_capture_bytes + line_bytes > MAX_RUNTIME_HISTORY_BYTES_V1
+        ):
+            self._history_error = "adaptive runtime history capture exceeds frozen bounds"
+            raise NativePolicyRuntimeError(self._history_error)
+        self._history_events.append(captured)
+        self._history_capture_bytes += line_bytes
 
     def _binding(self, branch: str, resource: str) -> Mapping[str, Any]:
         return self._capability_manifest["systems"][self.system]["branches"][branch][resource]
@@ -724,6 +767,13 @@ class NativePolicyRuntimeCoordinator:
             record["request"]["decision_time_ms"]
         )
         self._next_decision_seq += 1
+        if self.policy == "adaptive_weights":
+            self._capture_history_event({
+                "event_type": "decision_issued", "runtime_decision_seq": decision_seq,
+                "decision_id": decision_id, "measurement": False,
+                "issued_record_sha256": record["sha256"],
+                "accepted_record_sha256": "0" * 64, "accepted_record": None,
+            })
         binding = self._binding(branch, selected)
         native = binding["native_evidence"]
         return {
@@ -920,6 +970,12 @@ class NativePolicyRuntimeCoordinator:
         if feedback is not None:
             state.feedback_seq = self._next_feedback_seq
             self._next_feedback_seq += 1
+            self._capture_history_event({
+                "event_type": "feedback_applied", "runtime_feedback_seq": state.feedback_seq,
+                "decision_id": state.record["decision_id"], "measurement": False,
+                "issued_record_sha256": state.record["sha256"],
+                "feedback_record_sha256": feedback["sha256"], "feedback_record": None,
+            })
         self._resource_available_ms[selected] = max(
             self._resource_available_ms[selected],
             terminal_ms,
@@ -935,6 +991,8 @@ class NativePolicyRuntimeCoordinator:
         if not isinstance(message, Mapping):
             raise NativePolicyRuntimeError("native policy message must be a JSON object")
         with self._lock:
+            if self._history_error is not None:
+                raise NativePolicyRuntimeError(self._history_error)
             kind = message.get("message_type")
             if kind == "decision_request":
                 return self._handle_request(worker_id, message)
@@ -1122,74 +1180,149 @@ class NativePolicyRuntimeCoordinator:
                         f"native decision has no canonical frame linkage: {state.input_frame_key}"
                     )
                 canonical_by_state.append(canonical)
-            rows = [
-                self._policy_row(state, canonical)
-                for state, canonical in zip(ordered, canonical_by_state, strict=True)
+            if self._history_error is not None:
+                raise NativePolicyRuntimeError(self._history_error)
+            accepted_records = []
+            rows = []
+            for publication_seq, (state, canonical) in enumerate(
+                zip(ordered, canonical_by_state, strict=True), 1
+            ):
+                projected = project_accepted_decision_v1(
+                    state.accepted,
+                    canonical_trace_id=_text(canonical.get("trace_id"), "canonical trace_id"),
+                    publication_decision_seq=publication_seq,
+                    issued_record_sha256=state.record["sha256"],
+                )
+                row = self._policy_row(state, canonical)
+                row["decision_seq"] = publication_seq
+                rows.append(row)
+                accepted_records.append(projected)
+            ingress_rows = [
+                {"input_frame_key": key, "trace_id": value.get("trace_id"),
+                 "stream_id": value.get("stream_id"), "frame_id": value.get("frame_id")}
+                for key, value in canonical_frames.items()
             ]
-            accepted_records = [state.accepted for state in ordered]
             feedback_states = sorted(
                 (state for state in ordered if state.feedback is not None),
                 key=lambda state: int(state.feedback_seq or 0),
             )
             feedback_records = [state.feedback for state in feedback_states]
-            if self.policy == "adaptive_weights" and len(feedback_records) != len(ordered):
+            if self.policy == "adaptive_weights" and (
+                len(feedback_records) != len(ordered)
+                or any(state.feedback is None for state in runtime_ordered)
+            ):
                 raise NativePolicyRuntimeError(
                     "adaptive_weights lacks complete native terminal feedback"
                 )
-            if self.policy != "adaptive_weights" and feedback_records:
+            if self.policy != "adaptive_weights" and any(
+                state.feedback is not None for state in runtime_ordered
+            ):
                 raise NativePolicyRuntimeError("non-adaptive policy emitted feedback")
+            def bounded_jsonl(records):
+                buffer = io.BytesIO()
+                for record in records:
+                    line = canonical_json_v1(record) + b"\n"
+                    if buffer.tell() + len(line) > MAX_RUNTIME_HISTORY_BYTES_V1:
+                        raise NativePolicyRuntimeError("native policy JSONL exceeds frozen file byte bound")
+                    buffer.write(line)
+                return buffer.getvalue()
 
-            decisions_json = (
-                "\n".join(_canonical_json(record) for record in accepted_records) + "\n"
-            ).encode("utf-8")
-            feedback_json = (
-                "\n".join(_canonical_json(record) for record in feedback_records) + "\n"
-                if feedback_records
-                else ""
-            ).encode("utf-8")
+            decisions_json = bounded_jsonl(accepted_records)
+            feedback_json = bounded_jsonl(feedback_records)
             csv_buffer = io.StringIO(newline="")
             writer = csv.DictWriter(csv_buffer, fieldnames=POLICY_DECISION_COLUMNS)
             writer.writeheader()
-            writer.writerows(rows)
-            csv_payload = csv_buffer.getvalue().encode("utf-8")
-
-            targets = {
-                POLICY_DECISIONS_JSONL: decisions_json,
-                POLICY_DECISIONS_CSV: csv_payload,
-            }
-            if feedback_records:
+            for row in rows:
+                writer.writerow(row)
+                if csv_buffer.tell() > MAX_RUNTIME_HISTORY_BYTES_V1:
+                    raise NativePolicyRuntimeError("native policy CSV exceeds frozen file byte bound")
+            targets = {POLICY_DECISIONS_JSONL: decisions_json,
+                       POLICY_DECISIONS_CSV: csv_buffer.getvalue().encode("utf-8")}
+            if self.policy == "adaptive_weights":
                 targets[POLICY_FEEDBACK_JSONL] = feedback_json
-            for name in targets:
-                if (output_dir / name).exists():
+                measured_ids = {state.record["decision_id"] for state in ordered}
+                def actual_history_events():
+                    for captured in self._history_events:
+                        event = copy.deepcopy(captured)
+                        state = self._states[event["decision_id"]]
+                        measurement = event["decision_id"] in measured_ids
+                        event["measurement"] = measurement
+                        if event["event_type"] == "decision_issued":
+                            event["accepted_record_sha256"] = state.accepted["sha256"]
+                            event["accepted_record"] = None if measurement else state.accepted
+                        else:
+                            event["feedback_record"] = None if measurement else state.feedback
+                        yield payload_with_sha256_v1(event)
+                header = payload_with_sha256_v1({
+                    "schema_version": 1, "artifact_kind": "vast_publication_policy_runtime_history_v1",
+                    "record_kind": "header", "run_id": self.run_id, "arm_id": self.arm_id,
+                    "system": self.system, "policy": self.policy,
+                    "policy_contract_sha256": accepted_records[0]["policy_contract_sha256"],
+                    "engine_implementation_id": accepted_records[0]["engine_implementation_id"],
+                    "initial_state": self._initial_policy_state,
+                    "runtime_decision_count": len(runtime_ordered),
+                    "runtime_feedback_count": self._next_feedback_seq - 1,
+                    "measurement_decision_count": len(ordered),
+                    "measurement_feedback_count": len(feedback_records), "event_count": len(self._history_events),
+                })
+                try:
+                    targets[RUNTIME_HISTORY_JSONL] = serialize_runtime_history_v1(header, actual_history_events())
+                except ValueError as exc:
+                    raise NativePolicyRuntimeError(f"adaptive runtime history is blocked: {exc}") from exc
+            # Preserve existing custody limits; no publication may add an
+            # oversized sidecar or raise the aggregate acceptance budget.
+            if any(len(payload) > MAX_RUNTIME_HISTORY_BYTES_V1 for payload in targets.values()) or sum(
+                len(payload) for payload in targets.values()
+            ) > MAX_ACCEPTANCE_AGGREGATE_BYTES_V1:
+                raise NativePolicyRuntimeError("native policy publication exceeds frozen byte bounds")
+            for name in (POLICY_DECISIONS_JSONL, POLICY_DECISIONS_CSV,
+                         POLICY_FEEDBACK_JSONL, RUNTIME_HISTORY_JSONL):
+                if os.path.lexists(output_dir / name):
                     raise NativePolicyRuntimeError(
                         f"refusing to overwrite native policy evidence: {output_dir / name}"
                     )
-            candidates = {
-                name: output_dir / f".{name}.candidate.{os.getpid()}"
-                for name in targets
-            }
+            output_dir.mkdir(parents=True, exist_ok=True)
+            staging = Path(tempfile.mkdtemp(prefix=".native-policy-publication.", dir=output_dir))
+            published = []
             try:
                 for name, payload in targets.items():
-                    _write_atomic(candidates[name], payload)
+                    with (staging / name).open("xb") as stream:
+                        stream.write(payload)
                 validated_decisions = validate_policy_decisions(
-                    candidates[POLICY_DECISIONS_CSV],
-                    require_labeled_provenance=True,
-                    require_full_trace=True,
-                    require_causal_trace=True,
+                    staging / POLICY_DECISIONS_CSV,
+                    require_labeled_provenance=True, require_full_trace=True, require_causal_trace=True,
+                )
+                history_path = staging / RUNTIME_HISTORY_JSONL if self.policy == "adaptive_weights" else None
+                validate_published_decisions_v1(
+                    accepted_records, rows, ingress_rows=ingress_rows,
+                    history_path=history_path, feedback_records=feedback_records,
+                    authority_callback=lambda record: validate_decision_record(record, self._capability_manifest),
+                    expected_policy_contract_sha256=accepted_records[0]["policy_contract_sha256"],
+                )
+                validate_frozen_policy_decisions(
+                    staging / POLICY_DECISIONS_JSONL, decisions=validated_decisions,
+                    expected_policy=self.policy, ingress_rows=ingress_rows,
+                    runtime_history_path=history_path,
                 )
                 if feedback_records:
                     validate_frozen_policy_feedback(
-                        candidates[POLICY_FEEDBACK_JSONL],
-                        decisions=validated_decisions,
-                        decision_records_path=candidates[POLICY_DECISIONS_JSONL],
-                        require_complete=True,
+                        staging / POLICY_FEEDBACK_JSONL, decisions=validated_decisions,
+                        decision_records_path=staging / POLICY_DECISIONS_JSONL, require_complete=True,
+                        ingress_rows=ingress_rows, runtime_history_path=history_path,
                     )
+                # Exclusive hard links publish validated bytes without an
+                # overwrite race. Roll back only our own links on any failure.
                 for name in targets:
-                    os.replace(candidates[name], output_dir / name)
+                    target = output_dir / name
+                    os.link(staging / name, target)
+                    published.append((staging / name, target))
+            except BaseException:
+                for candidate, target in reversed(published):
+                    if target.exists() and os.path.samefile(candidate, target):
+                        target.unlink()
+                raise
             finally:
-                for candidate in candidates.values():
-                    if candidate.exists():
-                        candidate.unlink()
+                shutil.rmtree(staging)
             return {
                 "schema_version": 1,
                 "artifact_kind": "vast_checkpoint_native_policy_promotion",

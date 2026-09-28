@@ -57,6 +57,7 @@ from publication_acceptance_evidence import (
     BASE_ACCEPTANCE_EVIDENCE_FILES,
     FROZEN_POLICY_DECISIONS_JSONL,
     FROZEN_POLICY_FEEDBACK_JSONL,
+    FROZEN_POLICY_RUNTIME_HISTORY_JSONL,
     FULL_RESOURCE_EVIDENCE_FILES,
     frozen_policy_requires_feedback,
     pre_finalization_acceptance_evidence_files,
@@ -89,11 +90,15 @@ _CHECKPOINT_AGGREGATE_BACKENDS = {
 }
 
 
-def _acceptance_evidence_files(policy: str) -> tuple[str, ...]:
+def _acceptance_evidence_files(
+    policy: str, *, runtime_history: bool = False,
+) -> tuple[str, ...]:
     # The native coordinator emits a canonical replay record for every frozen
     # policy.  The CSV projection alone is insufficient to bind the accepted
     # native request/evaluation/terminal evidence used by qualification.
-    return pre_finalization_acceptance_evidence_files(policy)
+    return pre_finalization_acceptance_evidence_files(
+        policy, runtime_history=runtime_history,
+    )
 
 
 def _require(condition: bool, message: str) -> None:
@@ -273,7 +278,13 @@ def prepare_checkpoint_publication_acceptance(
     evidence = candidate.get("evidence_sha256")
     _require(
         type(evidence) is dict
-        and set(evidence) == set(_acceptance_evidence_files(expected_policy)),
+        and (
+            (FROZEN_POLICY_RUNTIME_HISTORY_JSONL in evidence)
+            == (output_dir / FROZEN_POLICY_RUNTIME_HISTORY_JSONL).is_file()
+        )
+        and set(evidence) == set(_acceptance_evidence_files(
+            expected_policy, runtime_history=FROZEN_POLICY_RUNTIME_HISTORY_JSONL in evidence,
+        )),
         "candidate evidence hash set drifted",
     )
     for name, expected_sha in evidence.items():
@@ -1283,7 +1294,9 @@ def publish_checkpoint_runtime(
         "summary": summary,
         "evidence_sha256": {
             name: _sha256_file(output_dir / name)
-            for name in _acceptance_evidence_files(policy)
+            for name in _acceptance_evidence_files(
+                policy, runtime_history=(output_dir / FROZEN_POLICY_RUNTIME_HISTORY_JSONL).is_file(),
+            )
         },
     }
     if defer_full_resource_acceptance:

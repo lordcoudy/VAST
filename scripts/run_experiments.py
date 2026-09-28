@@ -7,6 +7,7 @@ import hashlib
 import json
 import math
 import os
+import re
 import shlex
 import subprocess
 import sys
@@ -1434,9 +1435,17 @@ def load_resumable_result(
                     ) from exc
                 evidence = acceptance.get("evidence_sha256")
                 expected_files = set(
-                    accepted_arm_evidence_files(policy, full_resource=True)
+                    accepted_arm_evidence_files(
+                        policy, full_resource=True,
+                        runtime_history=type(evidence) is dict and "publication_policy_runtime_history.jsonl" in evidence,
+                    )
                 )
-                if type(evidence) is not dict or set(evidence) != expected_files:
+                if (
+                    type(evidence) is not dict
+                    or ("publication_policy_runtime_history.jsonl" in evidence)
+                    != (metadata_path.parent / "publication_policy_runtime_history.jsonl").is_file()
+                    or set(evidence) != expected_files
+                ):
                     raise ContractError("final full-resource checkpoint acceptance evidence set drift")
                 for name, digest in evidence.items():
                     evidence_path = metadata_path.parent / name
@@ -1598,7 +1607,8 @@ def build_backend_publication_arm_contract(
             "output_dir": str(Path(output_dir).resolve()),
         },
         "launcher_output_protocol": launcher_output_protocol(
-            dispatch_resolution["policy"]
+            dispatch_resolution["policy"],
+            runtime_history=dispatch_resolution["policy"] == "adaptive_weights",
         ),
     }
     material["contract_sha256"] = hashlib.sha256(

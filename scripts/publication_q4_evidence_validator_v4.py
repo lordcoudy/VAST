@@ -4,7 +4,7 @@
 The module has no third-party dependencies and performs no execution, network
 access, filesystem mutation, acceptance publication, or grant issuance.  It
 validates one formally pinned replay request, its raw-evidence manifest, the
-bound runtime-v4 contract, and the exact policy-aware v3 native evidence set.
+bound runtime-v4 contract, and the exact legacy or projected native evidence set.
 """
 from __future__ import annotations
 
@@ -65,6 +65,7 @@ BASE_EVIDENCE_FILES = (
 )
 POLICY_DECISIONS_JSONL = "publication_policy_decisions.jsonl"
 POLICY_FEEDBACK_JSONL = "publication_policy_feedback.jsonl"
+POLICY_RUNTIME_HISTORY_JSONL = "publication_policy_runtime_history.jsonl"
 FULL_RESOURCE_FILES = (
     "resource_intervals.csv", "hardware_resource_samples.csv",
     "fanout_work_counters.csv",
@@ -340,6 +341,26 @@ _FEEDBACK_RECORD_FIELDS = frozenset({
     "decision_id", "actual_service_ms", "completed_at_ms", "deadline_ms",
     "outcome", "state_before", "state_after", "sha256",
 })
+_PROJECTION_FIELDS = frozenset({
+    "schema_version", "original_worker_trace_id", "original_runtime_decision_seq",
+    "issued_record_sha256", "accepted_record_sha256",
+})
+_HISTORY_HEADER_FIELDS = frozenset({
+    "schema_version", "artifact_kind", "record_kind", "run_id", "arm_id",
+    "system", "policy", "policy_contract_sha256", "engine_implementation_id",
+    "initial_state", "runtime_decision_count", "runtime_feedback_count",
+    "measurement_decision_count", "measurement_feedback_count", "event_count", "sha256",
+})
+_HISTORY_DECISION_FIELDS = frozenset({
+    "schema_version", "artifact_kind", "event_seq", "event_type",
+    "runtime_decision_seq", "decision_id", "measurement", "issued_record_sha256",
+    "accepted_record_sha256", "accepted_record", "sha256",
+})
+_HISTORY_FEEDBACK_FIELDS = frozenset({
+    "schema_version", "artifact_kind", "event_seq", "event_type",
+    "runtime_feedback_seq", "decision_id", "measurement", "issued_record_sha256",
+    "feedback_record_sha256", "feedback_record", "sha256",
+})
 _RESERVED = frozenset(
     {"CON", "PRN", "AUX", "NUL"}
     | {f"COM{index}" for index in range(1, 10)}
@@ -350,6 +371,9 @@ _MAX_EVIDENCE_FILE_BYTES = 8 * 1024 * 1024 * 1024
 _MAX_TOTAL_EVIDENCE_BYTES = 64 * 1024 * 1024 * 1024
 _MAX_ROWS = 10_000_000
 _MAX_JSONL_LINE_BYTES = 8 * 1024 * 1024
+_MAX_HISTORY_BYTES = 64 * 1024 * 1024
+_MAX_HISTORY_LINE_BYTES = 256 * 1024
+_MAX_HISTORY_EVENTS = 1_000_000
 
 
 class PublicationQ4EvidenceV4Error(ValueError):
@@ -454,18 +478,28 @@ def _coordinate(value: Any) -> dict[str, Any]:
     return copy.deepcopy(expected)
 
 
-def pre_finalization_evidence_files_v4(policy: str) -> tuple[str, ...]:
+def pre_finalization_evidence_files_v4(policy: str, *, runtime_history: bool = False) -> tuple[str, ...]:
     _require(type(policy) is str and policy in POLICIES, "Q4 evidence policy is invalid")
+    _require(type(runtime_history) is bool and (not runtime_history or policy == "adaptive_weights"), "Q4 runtime history is only valid for adaptive_weights")
     values = (*BASE_EVIDENCE_FILES, POLICY_DECISIONS_JSONL)
-    return (*values, POLICY_FEEDBACK_JSONL) if policy == "adaptive_weights" else values
+    if policy == "adaptive_weights":
+        values = (*values, POLICY_FEEDBACK_JSONL)
+    return (*values, POLICY_RUNTIME_HISTORY_JSONL) if runtime_history else values
 
 
-def qualification_launcher_evidence_files_v4(policy: str) -> tuple[str, ...]:
-    return (*pre_finalization_evidence_files_v4(policy), "resource_intervals.csv", "fanout_work_counters.csv", CANDIDATE_FILENAME)
+def qualification_launcher_evidence_files_v4(policy: str, *, runtime_history: bool = False) -> tuple[str, ...]:
+    return (*pre_finalization_evidence_files_v4(policy, runtime_history=runtime_history), "resource_intervals.csv", "fanout_work_counters.csv", CANDIDATE_FILENAME)
 
 
-def raw_evidence_files_v4(policy: str) -> tuple[str, ...]:
-    return (*qualification_launcher_evidence_files_v4(policy), "hardware_resource_samples.csv")
+def raw_evidence_files_v4(policy: str, *, runtime_history: bool = False) -> tuple[str, ...]:
+    return (*qualification_launcher_evidence_files_v4(policy, runtime_history=runtime_history), "hardware_resource_samples.csv")
+
+
+def _history_namespace(names: Any, *, policy: str) -> bool:
+    _require(type(names) in {list, tuple}, "Q4 evidence namespace type drifted")
+    present = POLICY_RUNTIME_HISTORY_JSONL in names
+    _require(not present or policy == "adaptive_weights", "non-adaptive policy exposed runtime history")
+    return present
 
 
 def _physical_root(value: Path | str) -> Path:
@@ -513,8 +547,12 @@ def _physical_descriptor(root: Path, relative: str, *, label: str) -> dict[str, 
     try:
         before = path.lstat()
         _require(stat.S_ISREG(before.st_mode) and not stat.S_ISLNK(before.st_mode) and int(before.st_nlink) == 1, f"{label} is not a unique regular file")
+        if path.name == POLICY_RUNTIME_HISTORY_JSONL:
+            _require(0 < before.st_size <= _MAX_HISTORY_BYTES, "policy runtime history file exceeds the bound")
         fd = os.open(path, os.O_RDONLY | getattr(os, "O_CLOEXEC", 0) | getattr(os, "O_NOFOLLOW", 0))
         opened = os.fstat(fd)
+        if path.name == POLICY_RUNTIME_HISTORY_JSONL:
+            _require(0 < opened.st_size <= _MAX_HISTORY_BYTES, "policy runtime history file exceeds the bound")
         size, digest = _hash_fd(fd)
         after = path.lstat()
         # On Windows, opening a file can legitimately update the exposed creation/
@@ -608,7 +646,8 @@ def _runtime_contract(value: Any, *, coordinate: Mapping[str, Any], run_id: str,
     graph_unsigned = {key: item for key, item in graph.items() if key != "graph_contract_sha256"}
     _require(graph.get("graph_contract_sha256") == canonical_sha256(graph_unsigned), "native graph contract self-hash drifted")
     _require(graph.get("coordinate") == dict(coordinate) and graph.get("run_id") == run_id and graph.get("duration_s") == duration_s, "native graph contract run/coordinate drifted")
-    _require(graph.get("launcher_evidence_files") == list(qualification_launcher_evidence_files_v4(str(coordinate["policy"]))), "native graph policy-aware evidence contract drifted")
+    runtime_history = _history_namespace(graph.get("launcher_evidence_files"), policy=str(coordinate["policy"]))
+    _require(graph.get("launcher_evidence_files") == list(qualification_launcher_evidence_files_v4(str(coordinate["policy"]), runtime_history=runtime_history)), "native graph policy-aware evidence contract drifted")
     runtime_inputs = value.get("runtime_inputs")
     _require(
         type(runtime_inputs) is dict and set(runtime_inputs) == _RUNTIME_INPUT_FIELDS,
@@ -690,7 +729,7 @@ def _runtime_contract(value: Any, *, coordinate: Mapping[str, Any], run_id: str,
     )
     evidence_mapping = template.get("evidence_mapping")
     expected_evidence = qualification_launcher_evidence_files_v4(
-        str(coordinate["policy"])
+        str(coordinate["policy"]), runtime_history=runtime_history,
     )
     _require(
         type(evidence_mapping) is dict
@@ -819,7 +858,8 @@ def build_publication_q4_raw_evidence_manifest_v4(
     contract_descriptor = _physical_descriptor(root, contract_relative, label="runtime contract")
     contract = _runtime_contract(_load_json(contract_path, label="runtime contract"), coordinate=cell, run_id=run_id, duration_s=duration_s)
     graph = contract["native_graph_contract"]
-    names = raw_evidence_files_v4(cell["policy"])
+    runtime_history = _history_namespace(graph["launcher_evidence_files"], policy=cell["policy"])
+    names = raw_evidence_files_v4(cell["policy"], runtime_history=runtime_history)
     descriptors = [
         _physical_descriptor(
             root, (evidence_root / name).relative_to(root).as_posix(),
@@ -866,10 +906,13 @@ def validate_publication_q4_raw_evidence_manifest_v4(
     _require(value.get("runtime_authority_sha256") == runtime_authority, "Q4 raw evidence runtime authority cross-binding drifted")
     _sha(value.get("native_graph_contract_sha256"), "native graph contract")
     files = value.get("evidence_files")
-    expected_names = raw_evidence_files_v4(coordinate["policy"])
-    _require(type(files) is list and len(files) == len(expected_names), "Q4 raw evidence file coverage drifted")
+    _require(type(files) is list, "Q4 raw evidence file coverage drifted")
     checked = [_descriptor(item, f"Q4 evidence file {position}") for position, item in enumerate(files)]
     paths = [PurePosixPath(item["path"]) for item in checked]
+    runtime_history = _history_namespace([path.name for path in paths], policy=coordinate["policy"])
+    expected_names = raw_evidence_files_v4(coordinate["policy"], runtime_history=runtime_history)
+    _require(len(files) == len(expected_names), "Q4 raw evidence file coverage drifted")
+    _require(all(item["size_bytes"] <= _MAX_HISTORY_BYTES for item in checked if PurePosixPath(item["path"]).name == POLICY_RUNTIME_HISTORY_JSONL), "policy runtime history descriptor exceeds the bound")
     _require(tuple(path.name for path in paths) == expected_names and len({path.as_posix().casefold() for path in paths}) == len(paths), "Q4 raw evidence file order/name drifted")
     _require(len({path.parent.as_posix() for path in paths}) == 1, "Q4 raw evidence files are not direct siblings")
     _require(contract["path"].casefold() not in {path.as_posix().casefold() for path in paths}, "runtime contract aliases raw evidence")
@@ -934,7 +977,7 @@ def _json_array(value: Any, label: str) -> list[Any]:
 
 
 def _policy_evaluation(
-    record: Mapping[str, Any], *, policy: str,
+    record: Mapping[str, Any], *, policy: str, strict_original: bool = False,
 ) -> tuple[dict[str, dict[str, Any]], str, str]:
     request = record.get("request")
     _require(
@@ -960,7 +1003,8 @@ def _policy_evaluation(
     deadline = _finite(request.get("deadline_ms"), "policy deadline")
     rank = _finite(request.get("rank_u_ms"), "policy upward rank")
     _require(
-        0 <= arrival <= decision_time < deadline and rank >= 0,
+        arrival >= 0 and decision_time >= 0 and deadline > 0 and rank >= 0
+        and (strict_original or arrival <= decision_time < deadline),
         "policy decision request timing drifted",
     )
     evaluations: dict[str, dict[str, Any]] = {}
@@ -1093,6 +1137,152 @@ def _policy_evaluation(
     return evaluations, selected, reason
 
 
+def _json_object_pairs(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    result: dict[str, Any] = {}
+    for key, value in pairs:
+        _require(key not in result, "policy JSON contains duplicate keys")
+        result[key] = value
+    return result
+
+
+def _policy_jsonl(path: Path, *, label: str, history: bool = False) -> Iterable[dict[str, Any]]:
+    line_bound = _MAX_HISTORY_LINE_BYTES if history else _MAX_JSONL_LINE_BYTES
+    byte_bound = _MAX_HISTORY_BYTES if history else _MAX_EVIDENCE_FILE_BYTES
+    row_bound = _MAX_HISTORY_EVENTS + 1 if history else _MAX_ROWS
+    total = 0
+    try:
+        with path.open("rb") as source:
+            _require(0 < os.fstat(source.fileno()).st_size <= byte_bound, f"{label} file exceeds the bound")
+            number = 0
+            while raw := source.readline(line_bound + 1):
+                number += 1
+                total += len(raw)
+                _require(number <= row_bound and total <= byte_bound, f"{label} count/byte bound exceeded")
+                _require(0 < len(raw) <= line_bound and raw.endswith(b"\n"), f"{label} line {number} framing drifted")
+                value = json.loads(raw, object_pairs_hook=_json_object_pairs)
+                _require(type(value) is dict and raw == canonical_bytes(value) + b"\n", f"{label} line {number} is not canonical")
+                yield value
+    except (OSError, UnicodeError, ValueError, RecursionError) as error:
+        raise PublicationQ4EvidenceV4Error(f"{label} cannot be read: {error}") from error
+
+
+def _record_hash(value: Mapping[str, Any], *, label: str) -> None:
+    unsigned = {key: item for key, item in value.items() if key != "sha256"}
+    _require(value.get("sha256") == canonical_sha256(unsigned), f"{label} self-hash drifted")
+
+
+def _same_json(left: Any, right: Any) -> bool:
+    return canonical_bytes(left) == canonical_bytes(right)
+
+
+def _reset_state(arm_id: str) -> dict[str, Any]:
+    return {"arm_id": arm_id, "weights": {"cpu": 1.0, "gpu": 1.0}, "service_ewma_ms": {}}
+
+
+def _validate_policy_state(value: Any, *, arm_id: str, label: str) -> None:
+    _require(
+        type(value) is dict and set(value) == {"arm_id", "weights", "service_ewma_ms"}
+        and value.get("arm_id") == arm_id and type(value.get("weights")) is dict
+        and set(value["weights"]) == set(RESOURCES) and type(value.get("service_ewma_ms")) is dict
+        and set(value["service_ewma_ms"]).issubset(BRANCHES),
+        f"{label} fields drifted",
+    )
+    for resource in RESOURCES:
+        weight = value["weights"][resource]
+        _require(type(weight) in {int, float} and 0.5 <= _finite(weight, label) <= 1.5, f"{label} weight drifted")
+    for costs in value["service_ewma_ms"].values():
+        _require(type(costs) is dict and set(costs).issubset(RESOURCES) and bool(costs), f"{label} EWMA resource set drifted")
+        _require(all(type(cost) in {int, float} and _finite(cost, label) > 0 for cost in costs.values()), f"{label} EWMA cost drifted")
+
+
+def _reconstruct_projection(value: Mapping[str, Any]) -> dict[str, Any]:
+    _require(type(value) is dict and set(value) == _DECISION_RECORD_FIELDS | {"publication_projection"}, "policy publication projection record fields drifted")
+    _record_hash(value, label="policy projected decision")
+    projection = value.get("publication_projection")
+    _require(
+        type(projection) is dict and set(projection) == _PROJECTION_FIELDS
+        and type(projection.get("schema_version")) is int and projection["schema_version"] == 1,
+        "policy publication projection fields/version drifted",
+    )
+    trace = projection.get("original_worker_trace_id")
+    sequence = projection.get("original_runtime_decision_seq")
+    _require(type(trace) is str and len(trace) <= 4096 and re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._:+/-]{7,}", trace) is not None, "policy publication projection original trace is invalid")
+    _require(type(sequence) is int and sequence > 0, "policy publication projection runtime sequence is invalid")
+    request = value.get("request")
+    _require(
+        type(request) is dict and set(request) == _DECISION_REQUEST_FIELDS
+        and request.get("trace_id") == value.get("trace_id")
+        and type(request.get("decision_seq")) is int
+        and request.get("decision_seq") == value.get("decision_seq")
+        and request.get("decision_id") == value.get("decision_id")
+        and request.get("branch") == value.get("branch"),
+        "policy publication projection request/record identity drifted",
+    )
+    original = copy.deepcopy(dict(value))
+    original.pop("publication_projection")
+    original["trace_id"] = original["request"]["trace_id"] = trace
+    original["decision_seq"] = original["request"]["decision_seq"] = sequence
+    accepted_sha = canonical_sha256({key: item for key, item in original.items() if key != "sha256"})
+    _require(accepted_sha == _sha(projection.get("accepted_record_sha256"), "original accepted decision"), "policy publication projection original accepted hash drifted")
+    original["sha256"] = accepted_sha
+    issued = copy.deepcopy(original)
+    issued["record_status"] = "replayable_not_runtime_accepted"
+    issued["native_decision_evidence"] = None
+    issued_sha = canonical_sha256({key: item for key, item in issued.items() if key != "sha256"})
+    _require(issued_sha == _sha(projection.get("issued_record_sha256"), "original issued decision"), "policy publication projection original issued hash drifted")
+    return original
+
+
+def _validate_native_decision_record(
+    value: Mapping[str, Any], *, policy: str, system: str, arm_id: str,
+    contract_sha256: str, label: str, strict_original: bool = False,
+) -> None:
+    _require(type(value) is dict and set(value) == _DECISION_RECORD_FIELDS, f"{label} fields drifted")
+    _record_hash(value, label=label)
+    _require(value.get("schema_version") == 1 and value.get("artifact_kind") == "vast_publication_policy_decision" and value.get("policy_contract_sha256") == contract_sha256 and value.get("engine_implementation_id") == "vast-publication-policy-engine-v1" and value.get("policy_scope") == "analytics_only" and value.get("policy") == policy and value.get("system") == system and value.get("record_status") == "accepted_native_runtime_decision" and value.get("arm_id") == arm_id and value.get("branch") in BRANCHES, f"{label} native identity drifted")
+    expected_evaluations, expected_selected, expected_reason = _policy_evaluation(
+        value, policy=policy, strict_original=strict_original,
+    )
+    if strict_original:
+        _require(type(value.get("schema_version")) is int, f"{label} schema version type drifted")
+        request = value["request"]
+        for field in ("decision_id", "trace_id", "arm_id"):
+            text = value.get(field)
+            _require(type(text) is str and re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._:+/-]{7,}", text) is not None and text.lower() not in {"cpu", "gpu", "native", "unknown", "unavailable", "label_only", "derived", "placeholder"}, f"{label} original {field} is not a real stable identity")
+        _require(all(type(request.get(field)) is float for field in ("arrival_ms", "decision_time_ms", "deadline_ms", "rank_u_ms")), f"{label} original request is not normalized")
+        for candidate in request["candidates"].values():
+            _require(all(type(candidate.get(field)) is float for field in ("available_ms", "estimated_service_ms", "transfer_ms")), f"{label} original candidate is not normalized")
+        _require(_same_json(value.get("evaluations"), expected_evaluations), f"{label} original frozen policy evaluation types drifted")
+    _require(
+        value.get("evaluations") == expected_evaluations
+        and value.get("selected_resource") == expected_selected
+        and value.get("selected_implementation_id") == expected_evaluations[expected_selected]["implementation_id"]
+        and value.get("reason") == expected_reason,
+        f"{label} frozen policy replay drifted",
+    )
+    if policy != "static_hybrid":
+        _require(value.get("static_hybrid_map_sha256") is None and value.get("static_hybrid_placement") is None, f"{label} unexpected static map")
+    else:
+        _sha(value.get("static_hybrid_map_sha256"), f"{label} static map")
+    evidence = value.get("native_decision_evidence")
+    _require(
+        type(evidence) is dict and set(evidence) == _NATIVE_DECISION_EVIDENCE_FIELDS
+        and evidence.get("decision_id") == value.get("decision_id")
+        and evidence.get("system") == system and evidence.get("branch") == value.get("branch")
+        and evidence.get("selected_resource") == expected_selected
+        and evidence.get("implementation_id") == value.get("selected_implementation_id")
+        and evidence.get("telemetry_source") == "native" and evidence.get("terminal_status") == "completed"
+        and _SHA_RE.fullmatch(str(evidence.get("emitter_sha256", ""))) is not None
+        and all(type(evidence.get(field)) is str and bool(evidence[field]) for field in ("event_id", "emitter_id", "worker_id", "input_frame_key"))
+        and _finite(evidence.get("path_entry_timestamp_ms"), "native path entry") <= _finite(evidence.get("terminal_timestamp_ms"), "native terminal")
+        and _finite(evidence.get("actual_service_ms"), "native service") > 0
+        and type(evidence.get("transport_pts_ns")) is int,
+        f"{label} native evidence cross-binding drifted",
+    )
+    if strict_original:
+        _require(evidence["transport_pts_ns"] >= 0 and all(type(evidence.get(field)) in {int, float} and _finite(evidence[field], field) > 0 for field in ("path_entry_timestamp_ms", "terminal_timestamp_ms", "actual_service_ms")), f"{label} original native coordinates/timing drifted")
+
+
 def _validate_jsonl(
     path: Path, *, policy: str, system: str, run_id: str,
     expected_policy_contract_sha256: str,
@@ -1104,70 +1294,49 @@ def _validate_jsonl(
         if run_id.startswith("qualification-q4-v4-")
         else run_id
     )
-    try:
-        with path.open("rb") as source:
-            for number, raw in enumerate(source, start=1):
-                _require(number <= _MAX_ROWS, "policy decision JSONL row count exceeds bound")
-                _require(0 < len(raw) <= _MAX_JSONL_LINE_BYTES and raw.endswith(b"\n"), f"policy decision JSONL line {number} framing drifted")
-                value = json.loads(raw)
-                _require(type(value) is dict and raw == canonical_bytes(value) + b"\n", f"policy decision JSONL line {number} is not canonical")
-                _require(
-                    set(value) == _DECISION_RECORD_FIELDS,
-                    f"policy decision JSONL line {number} fields drifted",
-                )
-                unsigned = {key: item for key, item in value.items() if key != "sha256"}
-                _require(value.get("sha256") == canonical_sha256(unsigned), f"policy decision JSONL line {number} self-hash drifted")
-                evidence = value.get("native_decision_evidence")
-                _require(value.get("schema_version") == 1 and value.get("artifact_kind") == "vast_publication_policy_decision" and value.get("policy_contract_sha256") == expected_policy_contract_sha256 and value.get("engine_implementation_id") == "vast-publication-policy-engine-v1" and value.get("policy_scope") == "analytics_only" and value.get("policy") == policy and value.get("system") == system and value.get("record_status") == "accepted_native_runtime_decision" and value.get("arm_id") == expected_arm_id, f"policy decision JSONL line {number} native identity drifted")
-                expected_evaluations, expected_selected, expected_reason = _policy_evaluation(value, policy=policy)
-                _require(
-                    value.get("evaluations") == expected_evaluations
-                    and value.get("selected_resource") == expected_selected
-                    and value.get("selected_implementation_id")
-                    == expected_evaluations[expected_selected]["implementation_id"]
-                    and value.get("reason") == expected_reason,
-                    f"policy decision JSONL line {number} frozen policy replay drifted",
-                )
-                if policy != "static_hybrid":
-                    _require(value.get("static_hybrid_map_sha256") is None and value.get("static_hybrid_placement") is None, f"policy decision JSONL line {number} unexpected static map")
-                else:
-                    _require(_SHA_RE.fullmatch(str(value.get("static_hybrid_map_sha256", ""))) is not None, f"policy decision JSONL line {number} static map identity drifted")
-                _require(
-                    value.get("branch") in BRANCHES
-                    and type(evidence) is dict
-                    and set(evidence) == _NATIVE_DECISION_EVIDENCE_FIELDS
-                    and evidence.get("decision_id") == value.get("decision_id")
-                    and evidence.get("system") == system
-                    and evidence.get("branch") == value.get("branch")
-                    and evidence.get("selected_resource") == expected_selected
-                    and evidence.get("implementation_id")
-                    == value.get("selected_implementation_id")
-                    and evidence.get("telemetry_source") == "native"
-                    and evidence.get("terminal_status") == "completed"
-                    and _SHA_RE.fullmatch(str(evidence.get("emitter_sha256", ""))) is not None
-                    and type(evidence.get("event_id")) is str and bool(evidence["event_id"])
-                    and type(evidence.get("emitter_id")) is str and bool(evidence["emitter_id"])
-                    and type(evidence.get("worker_id")) is str and bool(evidence["worker_id"])
-                    and type(evidence.get("input_frame_key")) is str and bool(evidence["input_frame_key"])
-                    and _finite(evidence.get("path_entry_timestamp_ms"), "native path entry")
-                    <= _finite(evidence.get("terminal_timestamp_ms"), "native terminal")
-                    and _finite(evidence.get("actual_service_ms"), "native service") > 0
-                    and type(evidence.get("transport_pts_ns")) is int,
-                    f"policy decision JSONL line {number} native evidence cross-binding drifted",
-                )
-                records.append(dict(value))
-    except (OSError, UnicodeError, json.JSONDecodeError) as error:
-        raise PublicationQ4EvidenceV4Error(f"policy decision JSONL cannot be read: {error}") from error
+    projected: bool | None = None
+    originals: list[dict[str, Any]] = []
+    native_event_ids: set[str] = set()
+    for number, value in enumerate(_policy_jsonl(path, label="policy decision JSONL"), start=1):
+        current_projected = "publication_projection" in value
+        _require(projected is None or current_projected == projected, "policy decision arm mixes projected and legacy records")
+        projected = current_projected
+        original = _reconstruct_projection(value) if projected else value
+        _validate_native_decision_record(
+            original, policy=policy, system=system, arm_id=expected_arm_id,
+            contract_sha256=expected_policy_contract_sha256,
+            label=f"policy decision JSONL line {number}", strict_original=projected,
+        )
+        if projected:
+            event_id = original["native_decision_evidence"]["event_id"]
+            _require(event_id not in native_event_ids, "projected policy native decision event_id reused")
+            native_event_ids.add(event_id)
+            _validate_policy_state(original.get("state_before"), arm_id=expected_arm_id, label="original decision state")
+            if policy != "adaptive_weights":
+                _require(_same_json(original.get("state_before"), _reset_state(expected_arm_id)), "projected non-adaptive decision differs from actual reset state")
+        records.append(dict(value))
+        originals.append(dict(original))
     _require(bool(records), "policy decision JSONL must not be empty")
     decision_ids = [str(item.get("decision_id")) for item in records]
     csv_ids = [str(item.get("decision_id")) for item in csv_decisions]
     _require(len(set(decision_ids)) == len(decision_ids) and set(decision_ids) == set(csv_ids), "policy decision JSONL/CSV identity coverage drifted")
     sequences = [_canonical_int(item.get("decision_seq"), "policy decision sequence") for item in records]
     _require(sequences == list(range(1, len(sequences) + 1)), "policy decision sequence is not contiguous from one")
+    if projected:
+        runtime_sequences = [item["decision_seq"] for item in originals]
+        _require(runtime_sequences == sorted(set(runtime_sequences)), "projected decision original runtime ordering drifted")
     by_id = {str(item["decision_id"]): item for item in records}
     for row in csv_decisions:
         record = by_id[str(row["decision_id"])]
         _require(row.get("policy") == policy and row.get("stage") == record.get("branch") and row.get("resource") == record.get("selected_resource") and row.get("decision") == record.get("selected_implementation_id") and row.get("policy_version") == record.get("engine_implementation_id") and row.get("trace_id") == record.get("trace_id") and _canonical_int(row.get("decision_seq"), "policy CSV decision_seq") == record.get("decision_seq") and row.get("decision_provenance") == "native_scheduler_trace" and row.get("trace_completeness") == "full" and row.get("causal_trace_completeness") == "full", "policy decision CSV/JSONL semantic cross-binding drifted")
+        if projected:
+            try:
+                provenance = json.loads(str(row.get("feature_provenance_json", "")), object_pairs_hook=_json_object_pairs)
+            except (UnicodeError, json.JSONDecodeError, RecursionError) as error:
+                raise PublicationQ4EvidenceV4Error("projected policy feature provenance cannot be read") from error
+            _strict_json(provenance)
+            queues = provenance.get("native_queue_depths") if type(provenance) is dict else None
+            _require(type(queues) is dict and queues.get("source_trace_id") == record["publication_projection"]["original_worker_trace_id"] and queues.get("source") == f"native_worker_socket:{record['native_decision_evidence']['worker_id']}", "projected policy original worker/feature provenance drifted")
     selected = {str(item["selected_resource"]) for item in records}
     if policy == "cpu_only":
         _require(selected == {"cpu"}, "cpu_only evidence executed a non-CPU policy path")
@@ -1187,31 +1356,193 @@ def _validate_jsonl(
     return records
 
 
-def _validate_feedback(path: Path | None, *, policy: str, decisions: Sequence[Mapping[str, Any]]) -> None:
+def _validate_runtime_feedback(record: Any, *, decision: Mapping[str, Any]) -> None:
+    _require(type(record) is dict and set(record) == _FEEDBACK_RECORD_FIELDS, "runtime feedback fields drifted")
+    _record_hash(record, label="runtime feedback")
+    _require(
+        type(record.get("schema_version")) is int and record["schema_version"] == 1
+        and record.get("artifact_kind") == "vast_publication_policy_feedback"
+        and record.get("policy") == "adaptive_weights"
+        and all(record.get(field) == decision.get(field) for field in (
+            "system", "arm_id", "decision_id", "policy_contract_sha256", "engine_implementation_id",
+        )),
+        "runtime feedback decision identity drifted",
+    )
+    native = decision["native_decision_evidence"]
+    for field in ("actual_service_ms", "completed_at_ms", "deadline_ms"):
+        _require(type(record.get(field)) is float, f"runtime feedback {field} is not normalized")
+    service = _finite(record["actual_service_ms"], "runtime feedback service")
+    completed = _finite(record["completed_at_ms"], "runtime feedback completion")
+    deadline = _finite(record["deadline_ms"], "runtime feedback deadline")
+    _require(
+        service > 0 and completed >= 0 and deadline > 0
+        and service == float(native["actual_service_ms"])
+        and completed == float(native["terminal_timestamp_ms"])
+        and deadline == float(decision["request"]["deadline_ms"])
+        and record.get("outcome") == ("late" if completed > deadline else "on_time"),
+        "runtime feedback native terminal linkage drifted",
+    )
+    for label in ("state_before", "state_after"):
+        _validate_policy_state(record.get(label), arm_id=str(decision["arm_id"]), label=f"runtime feedback {label}")
+
+
+def _validate_runtime_history(
+    path: Path, *, run_id: str, decisions: Sequence[Mapping[str, Any]],
+    feedback: Sequence[Mapping[str, Any]], accepted_ingress_input_keys: set[str],
+) -> None:
+    # Keep this replay independent: the isolated runner executes only these
+    # pinned validator bytes and cannot import the producer's policy helpers.
+    originals = {str(item["decision_id"]): _reconstruct_projection(item) for item in decisions}
+    measured_feedback = {str(item["decision_id"]): item for item in feedback}
+    first = next(iter(originals.values()))
+    records = iter(_policy_jsonl(path, label="policy runtime history", history=True))
+    header = next(records, None)
+    _require(type(header) is dict and set(header) == _HISTORY_HEADER_FIELDS, "policy runtime history header fields drifted")
+    _record_hash(header, label="policy runtime history header")
+    _require(
+        type(header.get("schema_version")) is int and header["schema_version"] == 1
+        and header.get("artifact_kind") == "vast_publication_policy_runtime_history_v1"
+        and header.get("record_kind") == "header" and header.get("run_id") == run_id
+        and header.get("policy") == "adaptive_weights"
+        and all(header.get(field) == first.get(field) for field in (
+            "arm_id", "system", "policy_contract_sha256", "engine_implementation_id",
+        )),
+        "policy runtime history header identity/version drifted",
+    )
+    for field in (
+        "runtime_decision_count", "runtime_feedback_count", "measurement_decision_count",
+        "measurement_feedback_count", "event_count",
+    ):
+        _require(type(header.get(field)) is int and 0 < header[field] <= _MAX_HISTORY_EVENTS, "policy runtime history header count exceeds bound")
+    _require(
+        header["runtime_decision_count"] == header["runtime_feedback_count"]
+        and header["event_count"] == header["runtime_decision_count"] + header["runtime_feedback_count"]
+        and header["measurement_decision_count"] == len(originals)
+        and header["measurement_feedback_count"] == len(measured_feedback)
+        and header["runtime_decision_count"] >= len(originals),
+        "policy runtime history header count/measurement coverage drifted",
+    )
+    arm_id = str(first["arm_id"])
+    _validate_policy_state(header.get("initial_state"), arm_id=arm_id, label="policy runtime history initial state")
+    _require(_same_json(header.get("initial_state"), _reset_state(arm_id)), "policy runtime history differs from actual initial reset")
+    state = copy.deepcopy(header["initial_state"])
+    issued: dict[str, dict[str, Any]] = {}
+    issued_hashes: dict[str, str] = {}
+    native_event_ids: set[str] = set()
+    completed: set[str] = set()
+    measurement_order: list[str] = []
+    feedback_order: list[str] = []
+    _require(type(accepted_ingress_input_keys) is set and bool(accepted_ingress_input_keys) and all(type(key) is str and bool(key) for key in accepted_ingress_input_keys), "policy runtime history requires full validated accepted-ingress input keys")
+    event_count = 0
+    for event_count, event in enumerate(records, start=1):
+        _require(event_count <= header["event_count"], "policy runtime history has extra events")
+        kind = event.get("event_type")
+        expected_fields = _HISTORY_DECISION_FIELDS if kind == "decision_issued" else _HISTORY_FEEDBACK_FIELDS
+        _require(kind in {"decision_issued", "feedback_applied"} and set(event) == expected_fields, "policy runtime history event fields/type drifted")
+        _record_hash(event, label="policy runtime history event")
+        _require(
+            type(event.get("schema_version")) is int and event["schema_version"] == 1
+            and event.get("artifact_kind") == "vast_publication_policy_runtime_history_event_v1"
+            and type(event.get("event_seq")) is int and event["event_seq"] == event_count
+            and type(event.get("measurement")) is bool
+            and type(event.get("decision_id")) is str and bool(event["decision_id"]),
+            "policy runtime history event identity/order drifted",
+        )
+        decision_id = event["decision_id"]
+        measured = event["measurement"]
+        _require(measured == (decision_id in originals), "policy runtime history measurement cohort drifted")
+        _sha(event.get("issued_record_sha256"), "history issued decision")
+        if kind == "decision_issued":
+            _require(decision_id not in issued and type(event.get("runtime_decision_seq")) is int and event["runtime_decision_seq"] == len(issued) + 1, "policy runtime history issuance identity/ordinal drifted")
+            if measured:
+                _require(event.get("accepted_record") is None, "measured history issuance duplicates its original record")
+                original = originals[decision_id]
+                measurement_order.append(decision_id)
+            else:
+                original = event.get("accepted_record")
+            _validate_native_decision_record(
+                original, policy="adaptive_weights", system=str(first["system"]), arm_id=arm_id,
+                contract_sha256=str(first["policy_contract_sha256"]), label="policy history original decision", strict_original=True,
+            )
+            event_id = original["native_decision_evidence"]["event_id"]
+            _require(event_id not in native_event_ids, "policy runtime history original native decision event_id reused")
+            native_event_ids.add(event_id)
+            _validate_policy_state(original.get("state_before"), arm_id=arm_id, label="policy history decision state")
+            _require(
+                original.get("decision_id") == decision_id and original.get("decision_seq") == event["runtime_decision_seq"]
+                and original.get("sha256") == _sha(event.get("accepted_record_sha256"), "history accepted decision")
+                and _same_json(original.get("state_before"), state),
+                "policy runtime history decision original/state linkage drifted",
+            )
+            _require(measured == (original["native_decision_evidence"]["input_frame_key"] in accepted_ingress_input_keys), "policy runtime history omits/substitutes accepted measurement input cohort")
+            issued_record = copy.deepcopy(dict(original))
+            issued_record["record_status"] = "replayable_not_runtime_accepted"
+            issued_record["native_decision_evidence"] = None
+            issued_sha = canonical_sha256({key: item for key, item in issued_record.items() if key != "sha256"})
+            _require(issued_sha == event["issued_record_sha256"], "policy runtime history issued authority hash drifted")
+            issued[decision_id] = dict(original)
+            issued_hashes[decision_id] = issued_sha
+        else:
+            _require(decision_id in issued and decision_id not in completed and type(event.get("runtime_feedback_seq")) is int and event["runtime_feedback_seq"] == len(completed) + 1, "policy runtime history feedback orphan/duplicate/ordinal drifted")
+            _require(event["issued_record_sha256"] == issued_hashes[decision_id], "policy runtime history feedback issued authority drifted")
+            if measured:
+                _require(event.get("feedback_record") is None and decision_id in measured_feedback, "policy runtime history measurement feedback is missing or duplicated")
+                record = measured_feedback[decision_id]
+                feedback_order.append(decision_id)
+            else:
+                record = event.get("feedback_record")
+            decision = issued[decision_id]
+            _validate_runtime_feedback(record, decision=decision)
+            _require(record.get("sha256") == _sha(event.get("feedback_record_sha256"), "history original feedback") and _same_json(record.get("state_before"), state), "policy runtime history feedback hash/state_before drifted")
+            expected_after = copy.deepcopy(state)
+            branch, resource = str(decision["branch"]), str(decision["selected_resource"])
+            branch_ewma = expected_after["service_ewma_ms"].setdefault(branch, {})
+            previous = branch_ewma.get(resource)
+            actual = float(record["actual_service_ms"])
+            branch_ewma[resource] = actual if previous is None else 0.1 * actual + 0.9 * previous
+            delta = 0.002 if record["outcome"] == "late" else -0.0002
+            expected_after["weights"][resource] = min(1.5, max(0.5, expected_after["weights"][resource] + delta))
+            _require(_same_json(record.get("state_after"), expected_after), "policy runtime history feedback state_after frozen transition drifted")
+            state = expected_after
+            completed.add(decision_id)
+    _require(
+        event_count == header["event_count"] and len(issued) == header["runtime_decision_count"]
+        and len(completed) == header["runtime_feedback_count"] and completed == set(issued)
+        and measurement_order == [str(item["decision_id"]) for item in decisions]
+        and feedback_order == [str(item["decision_id"]) for item in feedback]
+        and set(measurement_order) == set(originals) and set(feedback_order) == set(originals),
+        "policy runtime history complete terminal/measurement ordering drifted",
+    )
+
+
+def _validate_feedback(
+    path: Path | None, *, policy: str, decisions: Sequence[Mapping[str, Any]],
+    runtime_history_path: Path | None = None, run_id: str | None = None,
+    accepted_ingress_input_keys: set[str] | None = None,
+) -> None:
+    projected = bool(decisions) and "publication_projection" in decisions[0]
+    _require(all(("publication_projection" in item) == projected for item in decisions), "policy feedback arm mixes projected and legacy decisions")
+    _require((runtime_history_path is not None) == (projected and policy == "adaptive_weights"), "policy runtime history is required exactly for projected adaptive decisions")
     if policy != "adaptive_weights":
         _require(path is None, "non-adaptive policy exposed feedback evidence")
         return
     _require(path is not None, "adaptive_weights feedback evidence is missing")
     records: list[dict[str, Any]] = []
-    try:
-        with path.open("rb") as source:
-            for number, raw in enumerate(source, start=1):
-                _require(0 < len(raw) <= _MAX_JSONL_LINE_BYTES and raw.endswith(b"\n"), f"policy feedback line {number} framing drifted")
-                item = json.loads(raw)
-                _require(type(item) is dict and raw == canonical_bytes(item) + b"\n", f"policy feedback line {number} is not canonical")
-                _require(
-                    set(item) == _FEEDBACK_RECORD_FIELDS,
-                    f"policy feedback line {number} fields drifted",
-                )
-                unsigned = {key: value for key, value in item.items() if key != "sha256"}
-                _require(item.get("sha256") == canonical_sha256(unsigned) and item.get("schema_version") == 1 and item.get("artifact_kind") == "vast_publication_policy_feedback" and item.get("policy") == "adaptive_weights", f"policy feedback line {number} identity drifted")
-                records.append(item)
-    except (OSError, UnicodeError, json.JSONDecodeError) as error:
-        raise PublicationQ4EvidenceV4Error(f"policy feedback JSONL cannot be read: {error}") from error
+    for number, item in enumerate(_policy_jsonl(path, label="policy feedback JSONL"), start=1):
+        _require(set(item) == _FEEDBACK_RECORD_FIELDS, f"policy feedback line {number} fields drifted")
+        _record_hash(item, label=f"policy feedback line {number}")
+        _require(item.get("schema_version") == 1 and item.get("artifact_kind") == "vast_publication_policy_feedback" and item.get("policy") == "adaptive_weights", f"policy feedback line {number} identity drifted")
+        records.append(item)
     _require(len(records) == len(decisions) and {str(item.get("decision_id")) for item in records} == {str(item.get("decision_id")) for item in decisions}, "adaptive_weights feedback coverage drifted")
     decisions_by_id = {str(item["decision_id"]): item for item in decisions}
     arm_ids = {str(item["arm_id"]) for item in decisions}
     _require(len(arm_ids) == 1, "adaptive_weights decision arm identity drifted")
+    if projected:
+        _validate_runtime_history(
+            runtime_history_path, run_id=run_id if run_id is not None else str(decisions[0]["arm_id"]),
+            decisions=decisions, feedback=records, accepted_ingress_input_keys=accepted_ingress_input_keys,
+        )
+        return
     for number, feedback in enumerate(records, start=1):
         decision = decisions_by_id[str(feedback["decision_id"])]
         evidence = decision["native_decision_evidence"]
@@ -1404,6 +1735,12 @@ def validate_publication_q4_evidence_files_v4(
         name = PurePosixPath(checked["path"]).name
         paths[name] = _verify_descriptor(root, checked, label=f"Q4 evidence {name}")
         descriptors[name] = checked
+    runtime_history = POLICY_RUNTIME_HISTORY_JSONL in paths
+    _require(
+        contract["native_graph_contract"]["launcher_evidence_files"]
+        == list(qualification_launcher_evidence_files_v4(coordinate["policy"], runtime_history=runtime_history)),
+        "Q4 runtime contract/raw evidence history namespace drifted",
+    )
 
     candidate = _load_json(paths[CANDIDATE_FILENAME], label="native checkpoint candidate", maximum=4 * 1024 * 1024)
     _require(set(candidate) == _CANDIDATE_FIELDS, "native checkpoint candidate fields drifted")
@@ -1435,7 +1772,7 @@ def validate_publication_q4_evidence_files_v4(
         and float(candidate_summary["c_obs_total_ms"]) > 0,
         "native checkpoint candidate resource observation is empty",
     )
-    expected_pre = pre_finalization_evidence_files_v4(coordinate["policy"])
+    expected_pre = pre_finalization_evidence_files_v4(coordinate["policy"], runtime_history=runtime_history)
     evidence_hashes = candidate.get("evidence_sha256")
     _require(
         type(evidence_hashes) is dict
@@ -1500,12 +1837,21 @@ def validate_publication_q4_evidence_files_v4(
         for row in rows["frame_events.csv"]
     }
     records_by_id = {str(item["decision_id"]): item for item in decision_records}
+    projected = "publication_projection" in decision_records[0]
+    ingress_by_frame = {_frame_key(row): row for row in ingress}
+    if projected:
+        _require(len({str(row.get("input_frame_key")) for row in ingress}) == len(ingress), "projected policy accepted ingress input-frame mapping is ambiguous")
+        decision_stage_keys = [(*_frame_key(row), str(row["stage"])) for row in decisions]
+        _require(len(set(decision_stage_keys)) == len(decision_stage_keys) and set(decision_stage_keys) == set(terminal_by_stage), "projected policy measurement branch cohort has duplicate/missing executions")
     for number, row in enumerate(decisions, start=2):
         record = records_by_id[str(row["decision_id"])]
         key = (*_frame_key(row), str(row["stage"]))
         terminal = terminal_by_stage.get(key)
         frame_event = frame_event_by_stage.get(key)
         native = record["native_decision_evidence"]
+        if projected:
+            accepted_ingress = ingress_by_frame.get(_frame_key(row))
+            _require(accepted_ingress is not None and accepted_ingress.get("input_frame_key") == native.get("input_frame_key"), "projected policy canonical accepted-ingress mapping drifted")
         _require(
             terminal is not None and frame_event is not None
             and terminal.get("input_frame_key") == native.get("input_frame_key")
@@ -1518,7 +1864,11 @@ def validate_publication_q4_evidence_files_v4(
             and frame_event.get("resource") == record.get("selected_resource"),
             f"policy decision CSV row {number} terminal/execution cross-binding drifted",
         )
-    _validate_feedback(paths.get(POLICY_FEEDBACK_JSONL), policy=coordinate["policy"], decisions=decision_records)
+    _validate_feedback(
+        paths.get(POLICY_FEEDBACK_JSONL), policy=coordinate["policy"], decisions=decision_records,
+        runtime_history_path=paths.get(POLICY_RUNTIME_HISTORY_JSONL), run_id=run_id,
+        accepted_ingress_input_keys={str(row["input_frame_key"]) for row in ingress},
+    )
     _validate_full_resource(
         run_id=run_id, topology_kind=coordinate["topology_kind"],
         ingress=ingress, topology=rows["topology_events.csv"],

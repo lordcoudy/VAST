@@ -48,6 +48,7 @@ from formal_aw_heft_reference import FormalAwHeftError, validate_reference_artif
 from publication_acceptance_evidence import (
     FROZEN_POLICY_DECISIONS_JSONL,
     FROZEN_POLICY_FEEDBACK_JSONL,
+    FROZEN_POLICY_RUNTIME_HISTORY_JSONL,
     FROZEN_PUBLICATION_FEEDBACK_POLICIES,
     accepted_arm_evidence_files,
     frozen_policy_requires_feedback,
@@ -2814,6 +2815,7 @@ def publication_evidence_bundle_files(
     scope: str,
     *,
     policy: str | None = None,
+    runtime_history: bool = False,
 ) -> tuple[str, ...]:
     """Return the exact, ordered raw-file set for one publication scope."""
 
@@ -2836,14 +2838,19 @@ def publication_evidence_bundle_files(
         files = accepted_arm_evidence_files(
             normalized_policy,
             full_resource=True,
+            runtime_history=runtime_history,
         )
     elif scope in {
         PUBLICATION_EVIDENCE_BUNDLE_POLICY_FROZEN_SCOPE,
         PUBLICATION_EVIDENCE_BUNDLE_POLICY_ONLINE_SCOPE,
     }:
-        files = pre_finalization_acceptance_evidence_files(normalized_policy)
+        files = pre_finalization_acceptance_evidence_files(
+            normalized_policy, runtime_history=runtime_history,
+        )
     else:
-        files = pre_finalization_acceptance_evidence_files(normalized_policy)
+        files = pre_finalization_acceptance_evidence_files(
+            normalized_policy, runtime_history=runtime_history,
+        )
     return tuple(sorted(files))
 
 
@@ -2856,7 +2863,10 @@ def build_publication_evidence_bundle(
     """Hash the exact claim-critical raw files after accepted-sidecar validation."""
 
     records: list[dict[str, Any]] = []
-    for relative_name in publication_evidence_bundle_files(scope, policy=policy):
+    for relative_name in publication_evidence_bundle_files(
+        scope, policy=policy,
+        runtime_history=(run_dir / FROZEN_POLICY_RUNTIME_HISTORY_JSONL).is_file(),
+    ):
         path = run_dir / relative_name
         if path.is_symlink():
             raise ContractError(
@@ -4224,12 +4234,63 @@ def _adaptive_states_close(left: Any, right: Any) -> bool:
     return left == right
 
 
+def _projected_native_policy_report(
+    path: Path,
+    *,
+    records: list[dict[str, Any]],
+    decisions: pd.DataFrame,
+    ingress_rows: Any = None,
+    runtime_history_path: Path | None = None,
+    feedback_records: list[dict[str, Any]] | None = None,
+) -> dict[str, Any] | None:
+    """Validate the new projection without granting capability authority."""
+    history_path = runtime_history_path or path.parent / FROZEN_POLICY_RUNTIME_HISTORY_JSONL
+    if not any("publication_projection" in record for record in records):
+        if history_path.exists():
+            raise ContractError(f"{path}: unprojected evidence cannot expose runtime history")
+        return None
+    # Lazy imports keep the policy-contract/benchmark-contract dependency acyclic.
+    from publication_policy_contract import policy_contract_identity
+    from publication_policy_projection_v1 import validate_published_decisions_v1
+
+    if ingress_rows is None:
+        frames = canonicalize_frames_csv(
+            path.parent / "frames.csv", mode="benchmark", run_id="", detector="", backend="",
+        )
+        ingress_rows = validate_ingress_ledger(
+            path.parent / "ingress_ledger.csv", frames=frames,
+        )
+    if isinstance(ingress_rows, pd.DataFrame):
+        ingress_rows = ingress_rows.to_dict(orient="records")
+    policies = {str(record.get("policy", "")) for record in records}
+    if policies != {"adaptive_weights"} and (path.parent / FROZEN_POLICY_FEEDBACK_JSONL).exists():
+        raise ContractError(f"{path}: projected nonadaptive evidence cannot expose feedback")
+    if policies == {"adaptive_weights"} and feedback_records is None:
+        feedback_records = _read_canonical_policy_jsonl(
+            path.parent / FROZEN_POLICY_FEEDBACK_JSONL,
+            artifact_kind="vast_publication_policy_feedback",
+        )
+    try:
+        return validate_published_decisions_v1(
+            records,
+            decisions.to_dict(orient="records"),
+            ingress_rows=ingress_rows,
+            history_path=history_path if history_path.exists() else None,
+            feedback_records=feedback_records,
+            expected_policy_contract_sha256=policy_contract_identity()["sha256"],
+        )
+    except (ValueError, TypeError, KeyError, OSError) as exc:
+        raise ContractError(f"{path}: canonical policy projection rejected: {exc}") from exc
+
+
 def validate_frozen_policy_feedback(
     path: Path,
     *,
     decisions: pd.DataFrame,
     decision_records_path: Path | None = None,
     require_complete: bool = False,
+    ingress_rows: Any = None,
+    runtime_history_path: Path | None = None,
 ) -> pd.DataFrame:
     """Validate canonical native feedback for frozen adaptive_weights."""
 
@@ -4259,6 +4320,18 @@ def validate_frozen_policy_feedback(
     }
     if len(csv_by_id) != len(adaptive):
         raise ContractError(f"{path}: adaptive_weights decision IDs are not unique")
+    projected = _projected_native_policy_report(
+        resolved_decisions_path,
+        records=decision_records,
+        decisions=decisions,
+        ingress_rows=ingress_rows,
+        runtime_history_path=runtime_history_path,
+        feedback_records=feedback_records,
+    )
+    if projected is not None:
+        if not projected.get("projected") or not projected.get("runtime_history_verified"):
+            raise ContractError(f"{path}: projected feedback lacks verified actual history")
+        return pd.DataFrame(projected["feedback_rows"])
 
     canonical_by_id: dict[str, dict[str, Any]] = {}
     for line_number, record in enumerate(decision_records, start=1):
@@ -4424,6 +4497,8 @@ def validate_frozen_policy_decisions(
     *,
     decisions: pd.DataFrame,
     expected_policy: str,
+    ingress_rows: Any = None,
+    runtime_history_path: Path | None = None,
 ) -> list[dict[str, Any]]:
     """Validate canonical native decision JSONL and its CSV identity projection."""
 
@@ -4470,6 +4545,10 @@ def validate_frozen_policy_decisions(
     sequence = [int(record["decision_seq"]) for record in records]
     if sorted(sequence) != list(range(1, len(records) + 1)):
         raise ContractError(f"{path}: canonical decision sequence is not contiguous")
+    _projected_native_policy_report(
+        path, records=records, decisions=decisions,
+        ingress_rows=ingress_rows, runtime_history_path=runtime_history_path,
+    )
     return records
 
 
@@ -6654,6 +6733,18 @@ def validate_required_sidecars(
         sidecars["resource_intervals"].attrs["full_resource_summary"] = full_resource[
             "summary"
         ]
+    frozen_decisions_path = run_dir / FROZEN_POLICY_DECISIONS_JSONL
+    if frozen_decisions_path.exists():
+        if len(decision_policies) != 1:
+            raise ContractError(f"{run_dir}: canonical policy evidence must belong to one policy")
+        validate_frozen_policy_decisions(
+            frozen_decisions_path,
+            decisions=sidecars["policy_decisions"],
+            expected_policy=next(iter(decision_policies)),
+            ingress_rows=sidecars.get("ingress_ledger"),
+        )
+    elif (run_dir / FROZEN_POLICY_RUNTIME_HISTORY_JSONL).exists():
+        raise ContractError(f"{run_dir}: runtime history lacks canonical policy decisions")
     return sidecars
 
 

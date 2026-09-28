@@ -1364,7 +1364,14 @@ def _validate_evidence_files(
 ) -> list[dict[str, Any]]:
     if type(value) is not list:
         _fail(f"{label} evidence descriptor set is invalid")
-    expected_names = set(accepted_arm_evidence_files(policy, full_resource=True)) | {
+    expected_names = set(accepted_arm_evidence_files(
+        policy, full_resource=True,
+        runtime_history=any(
+            type(descriptor) is dict
+            and Path(str(descriptor.get("relative_path", ""))).name == "publication_policy_runtime_history.jsonl"
+            for descriptor in value
+        ),
+    )) | {
         "checkpoint_publication_acceptance.json",
         "run_metadata.json",
     }

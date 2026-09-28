@@ -440,7 +440,9 @@ def _authority_coordinate(value: Any) -> dict[str, str]:
     }
 
 
-def qualification_launcher_evidence_files_v4(policy: str) -> tuple[str, ...]:
+def qualification_launcher_evidence_files_v4(
+    policy: str, *, runtime_history: bool = False,
+) -> tuple[str, ...]:
     """Return the policy-aware direct-child evidence namespace for Q4."""
 
     _require(
@@ -448,7 +450,7 @@ def qualification_launcher_evidence_files_v4(policy: str) -> tuple[str, ...]:
         "Q4 evidence policy is invalid",
     )
     values = (
-        *pre_finalization_acceptance_evidence_files(policy),
+        *pre_finalization_acceptance_evidence_files(policy, runtime_history=runtime_history),
         "resource_intervals.csv",
         "fanout_work_counters.csv",
         "checkpoint_publication_candidate.json",
@@ -575,7 +577,10 @@ def _runtime_template(
         f"{system} runtime must defer acceptance to physical Q4 replay",
     )
     evidence = checked.get("evidence_mapping")
-    expected_evidence = qualification_launcher_evidence_files_v4(policy)
+    expected_evidence = qualification_launcher_evidence_files_v4(
+        policy,
+        runtime_history=type(evidence) is dict and "publication_policy_runtime_history.jsonl" in evidence,
+    )
     _require(
         type(evidence) is dict
         and set(evidence) == set(expected_evidence)
@@ -871,7 +876,10 @@ def _material(
         ],
         "runtime_inputs_sha256": _canonical_sha(runtime_inputs),
         "launcher_evidence_files": list(
-            qualification_launcher_evidence_files_v4(cell["policy"])
+            qualification_launcher_evidence_files_v4(
+                cell["policy"],
+                runtime_history="publication_policy_runtime_history.jsonl" in snapshot["runtime_input_template"]["evidence_mapping"],
+            )
         ),
     }
     graph = {

@@ -7,6 +7,7 @@ from typing import Any
 
 FROZEN_POLICY_DECISIONS_JSONL = "publication_policy_decisions.jsonl"
 FROZEN_POLICY_FEEDBACK_JSONL = "publication_policy_feedback.jsonl"
+FROZEN_POLICY_RUNTIME_HISTORY_JSONL = "publication_policy_runtime_history.jsonl"
 FROZEN_PUBLICATION_FEEDBACK_POLICIES = frozenset({"adaptive_weights"})
 BASE_ACCEPTANCE_EVIDENCE_FILES = (
     "frames.csv",
@@ -33,12 +34,20 @@ def frozen_policy_requires_feedback(policy: Any) -> bool:
     return str(policy).strip().lower() in FROZEN_PUBLICATION_FEEDBACK_POLICIES
 
 
-def pre_finalization_acceptance_evidence_files(policy: Any) -> tuple[str, ...]:
+def pre_finalization_acceptance_evidence_files(
+    policy: Any, *, runtime_history: bool = False,
+) -> tuple[str, ...]:
     """Return the exact evidence committed before resource-v2 finalization."""
 
     files = [*BASE_ACCEPTANCE_EVIDENCE_FILES, FROZEN_POLICY_DECISIONS_JSONL]
     if frozen_policy_requires_feedback(policy):
         files.append(FROZEN_POLICY_FEEDBACK_JSONL)
+    if type(runtime_history) is not bool:
+        raise ValueError("runtime_history must be a boolean")
+    if runtime_history:
+        if not frozen_policy_requires_feedback(policy):
+            raise ValueError("runtime history is only valid for projected adaptive_weights")
+        files.append(FROZEN_POLICY_RUNTIME_HISTORY_JSONL)
     return tuple(files)
 
 
@@ -46,10 +55,13 @@ def accepted_arm_evidence_files(
     policy: Any,
     *,
     full_resource: bool,
+    runtime_history: bool = False,
 ) -> tuple[str, ...]:
     """Return the exact policy-aware accepted-arm evidence set."""
 
-    files = list(pre_finalization_acceptance_evidence_files(policy))
+    files = list(pre_finalization_acceptance_evidence_files(
+        policy, runtime_history=runtime_history,
+    ))
     if full_resource:
         files.extend(FULL_RESOURCE_EVIDENCE_FILES)
     return tuple(files)

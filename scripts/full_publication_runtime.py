@@ -638,9 +638,15 @@ class FullPublicationRuntime:
             accepted_arm_evidence_files(
                 expected_arm["policy"],
                 full_resource=True,
+                runtime_history=type(evidence) is dict and "publication_policy_runtime_history.jsonl" in evidence,
             )
         )
-        if type(evidence) is not dict or set(evidence) != expected_evidence:
+        if (
+            type(evidence) is not dict
+            or ("publication_policy_runtime_history.jsonl" in evidence)
+            != (acceptance_path.parent / "publication_policy_runtime_history.jsonl").is_file()
+            or set(evidence) != expected_evidence
+        ):
             raise ContractError("checkpoint arm evidence hash set drifted")
         for name, expected_sha in evidence.items():
             if (

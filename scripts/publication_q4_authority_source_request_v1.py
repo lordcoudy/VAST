@@ -1273,7 +1273,9 @@ def _patch_runtime_template(
     result["endpoint_sockets"] = _endpoint_template(result, service)
     result["scratch_root"] = scratch_root
     result["evidence_mapping"] = {
-        name: name for name in native_candidate_evidence_files_v1(policy)
+        name: name for name in native_candidate_evidence_files_v1(
+            policy, runtime_history=policy == "adaptive_weights",
+        )
     }
     for role, descriptor in (
         ("policy_capability_manifest", capability_descriptor),

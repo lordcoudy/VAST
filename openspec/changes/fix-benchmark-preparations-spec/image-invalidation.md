@@ -1,6 +1,53 @@
 # Affected evidence and renewal order
 
-This dependency map applies to the approved runtime baseline plus the payload, guardian and retry repairs. The source allowlists and producer-receipt checks remain the executable authority.
+This dependency map preserves the dated baseline/repair renewal history. The 2026-09-28 canonical projection/history amendment below supersedes f for current changed-source evidence: renewed tasks 5.2-5.4, 6.1 and 10.9 remain pending. The source allowlists and producer-receipt checks remain the executable authority; a passing source review does not establish rebuilt physical image contents.
+
+## 2026-09-28 canonical projection/history closure and fresh renewal
+
+Exact planning commit `a8361805f49a1afe24674ef2e84f327b7712af28`, approved by user-delegated [PR #2 COMMENT review 5333256156](https://github.com/lordcoudy/VAST/pull/2#pullrequestreview-5333256156) at `2026-09-28T02:03:23Z`, adds the reversible publication/history repair. The f original Savant invocation exited 0 but its cold audit exited 78 on all 3,604 decisions; immutable rejection SHA-256 is `3c4d49adc6c2496922e8341f4a3da5f9fd90ba9ec8da6a833e3e14ddcac9ad62`. Its guardian authenticated-stopped at `2026-09-28T01:47:29.965783Z` as `clean_stop_nonpublication`; stop record SHA-256 is `241c96d9dbc47334e1d00c29dac4a4d658a7d80fbd6af7d3596880391c9323af`. Those original bytes/receipts remain historical and cannot be rebound to this repair.
+
+Root's eight packaging edits add `scripts/publication_policy_frozen_replay_v1.py` and `scripts/publication_policy_projection_v1.py` after the existing policy contract in each runtime's Python COPY list and to each sorted LF source allowlist:
+
+- DeepStream: `deploy/deepstream/checkpoint/Dockerfile.runtime` and `runtime-source-allowlist.txt`.
+- Savant: `deploy/savant/publication/Dockerfile` and `runtime-source-allowlist.txt`.
+- OpenVINO GVA: `deploy/openvino_gva/publication/Dockerfile` and `runtime-source-allowlist.txt`.
+- GStreamer Custom: `deploy/gstreamer_custom/publication/Dockerfile` and `runtime-source-allowlist.txt`.
+
+The immutable all-nine read-only map is `artifacts/fix_benchmark_preparations_20260927f/qualification_control/canonical-policy-projection-packaging-review-evidence.v1.json`, 17,208 bytes, physical SHA-256 `fcecc7e24dd72d88864c23c5d530cd3407c0273d8ea3ba9e5268a476adc75989`, recorded `2026-09-28T02:58:26.838123Z`. Packaging baseline manifest SHA-256 `ddf7e18257e3c865681634513b8fedb14d8d0b4b1bce5ed60d27eddbec7c68e5` is unchanged. Stock source/registry checks passed, and runtime Docker Python COPY sets equal their reachable Python sets exactly. Helpers are stdlib-only; foundations, pinned wheels and runtime dependency bytes remain unchanged. This is an observation-time source snapshot, subject to rehash after any later source correction.
+
+At that packaging review, four runtime source digests differed from f and require rebuilt contents:
+
+- DeepStream: 69 total/57 Python sources, SHA-256 `9beaae905a1e3c42468e13be8acf33d1bfd1065ebc61bcd75c7395aaa328cc3b`.
+- Savant: 73/65, `ddbe1a390b150d2d536ba97233667d17d65d56f4fbcbd5744676f859371eb207`.
+- OpenVINO GVA: 62/52, `ab03f2eedc1e7baa0944254b54a3c4c7d67a00446acde5b05eefcb2575317a7b`.
+- GStreamer Custom: 63/52, `c2790415aa721dd402a16204f81b58c5c2f00c6f54960713f78344d0a430e942`.
+
+The remaining five image source and dependency digests were physically equal to their f receipts:
+
+- Native DeepStream: source `e3b58ba2100279b5cbc519134fff18036f2ac97d829db1fc9b721f75f7faa347`, dependencies `5c30c12b5616e84677b2e41b75e376343ad054331f4fc37013384583107ddd26`.
+- Native OpenVINO: source `a902001a6538fe82b59eb8a7112116dc17086e11320fda0b4134ac7fccf5c5d4`, dependencies `82fd616a980231cc98ffdd62e1d04536b9a0de845341b32287f94213a7679577`.
+- Native Savant: source `c82559189b544d144e25fb88339d2e91fe110cf3f3ba86551e491c5933a17c94`, dependencies `f5995289f8b3a4edd1b158b67665b4f26963489bf55a4de11b05f99be1edf13d`.
+- OpenVINO worker: source `d32933bb7791ee49f940d3abd1b82401a277cf27752ed2d5d93554a6123dbc2f`, dependencies `c01a855c63b7d8777cc9fd5b9fb7169250b2178218ffd6bdba7e6921b249ca76`.
+- TensorRT worker: source `f9932be124aba0f51ec973618e05f93a45c662a741805dc299df9177de7a5909`, dependencies `e2248adec3bb6c23e15c2744c86c342f2bf9d06e83f020d104ce44d683ab17cd`.
+
+Exactly four image content closures changed. A wholly fresh nine-image chain can reproduce/re-attest unchanged native-three/worker-two identities; this does not assert that all nine image bytes changed. Generic replay/projection/acceptance producer modules belong to the four runtime closures. Independent Q4 validator/runner, authority source/registry/materializer and backend host consumer changes also invalidate their pinned source requests and source-bound receipts; the isolated validator remains self-contained and no project helper is inserted into its verified-byte import closure.
+
+The later discovered acceptance test reproduced a candidate-history-hash omission (immutable red note SHA-256 `20a466e2420c047a0361304173161ee04d7ca9d128d7dc7028bbc0cd968ba154`). After the original consumer terminal, root's shared checkpoint guard passed all five affected acceptance methods, exit 0/0.648s; follow-up note SHA-256 is `e7e162dbddb9ed89d5137ee61247d5b4dab7bae4ebbd7f1567c4478bde470a66`. This shared-runtime correction changes the four runtime source digests again; the 02:58 packaging snapshot is not a final-source pin for those later bytes. Both full-publication and resume physical-history/hash-membership guards also passed their separate four-case regression module after reproduced omission failures. Rehash the source map before runtime builds without altering the immutable prior review or any f receipt.
+
+That final read-only rehash is now recorded at `2026-09-28T03:36:02.038457Z` in `qualification_control/canonical-policy-projection-packaging-review-evidence.v2.json`, 23,736 bytes, physical SHA-256 `83bded28770d4278db6ddd8381aa131a58ce7ea462f122591c75b2ee69672ec5`. Stock registry/four validators and exact Python COPY equality passed on frozen corrected source, with unchanged source counts, first-five source/dependency digests and runtime dependencies. Current runtime source digests supersede the historical v1 values:
+
+- DeepStream: `45b0ebbb1c3cbb7ad5f9abf9ea67ec797e9ee2bf6642432d7d843fcecda9769b`.
+- Savant: `e7f3ccc2171ea349c0d3dba93d5f560f70d1da87a4e3000c95c6150211c5a109`.
+- OpenVINO GVA: `2855cfabe17ef9b3e4338805a6a4f5a34f3e2fe51abe1cf57cc1b0b5dd2c46af`.
+- GStreamer Custom: `c8ddf1acd1abb5003556ce3260850a82f3b43ec12cc6509692a0d9eb1aa2a88b`.
+
+Host `scripts/full_publication_runtime.py` and `scripts/run_experiments.py` are absent from all four runtime source/COPY sets; their source descriptors are pinned separately in v2. Reader red/green note physical SHA-256 `46382f3d0e8fd253ac04b213950b072cdeb17e61b13e106dd2777cae1f8fa92c` records final four passed/0.818s and the original two omission failures. Final local closure review does not establish rebuilt image bytes, an ext4 suite, CI or fresh qualification.
+
+Renew final-source closure pins, four runtime A/B builds and embedded-byte/package checks, runtime manifests/aggregate identity patch, physical parity/identity fixtures and the final exact-byte ext4 suite. Then renew input/preprocessing/source/control/runtime receipts, one guardian/eight worker attestations, 32 bundles/four assets, all four original-successful nonpromoting native pre-checks, Savant diagnostic plus stock canonical/history cold audit, and qualification/Q4 acceptance. Existing acceptance 64-MiB/file and 256-MiB aggregate and tighter stage custody stay in force; adding history does not grant larger budgets. Local 25/19/8 producer checks, 39 Q4/acceptance checks, root's four namespace checks and the offline 3,604-copy fixture are neither packaged renewal nor recovered f acceptance. The fixture result SHA-256 `7a3b0a3e6fab49346f26227a4e3e74f197b0a4db1aa3be841e61646f36abfa3d` records unchanged originals/code and explicit fixture-only/no-acceptance flags.
+
+Fresh `artifacts/fix_benchmark_preparations_20260928g` seed/clearance began at `2026-09-28T02:59Z`: three wrappers passed syntax checks, unchanged 24-GiB `.wslconfig` and all 20-GiB reserves passed, with 27,602,825,216 bytes headroom beyond possible WSL growth. Original native-A session `78137` exited 0 with empty stderr and unchanged three image IDs; fresh receipt SHA-256 `901e5e3188fae6867b6dbb29b723cfccab1f9133e91715a7055afa30e284fce6` matches f. Root subsequently reported native-B and the two-image worker-group job (original session 97987) exit 0 with unchanged first-five receipt identities. Four runtime builds are unstarted pending the exact source commit. Local implementation/focused review is complete; renewed 5.2-5.4/6.1/10.9, CI/capacity and later physical readiness gates remain open. No fresh guardian/qualification/Q4/full-run arm started.
+
+Original consumer `99958` ended exit 1 (151 reported tests/1,434.195s, five errors, one Windows skip, no assertion failures); result SHA-256 is `4f10b39c5f7320ed257864d4dd587a1701b73b71dd97049e028300f9b19d87b0`. Targeted root-import recovery passed original exit 0/26 tests, no errors/failures/skips, result SHA-256 `7db6ce09111bc9372d597a43ab4b7d6aa41cdf1e1797c1a6d7d4ca9319d46087`; immutable combined recovery note SHA-256 is `04282c983c1a27cdc2a560d473390ac8546c5f3d0c6a478c721aa553a229dd7e`. The exact ext4 read-only mount case is deferred to the mandatory g suite. No complete renewed image/package/parity/suite or consumer gate is claimed.
 
 ## Images invalidated
 

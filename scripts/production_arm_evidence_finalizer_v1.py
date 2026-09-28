@@ -117,22 +117,26 @@ def _valid_sha(value: object) -> bool:
     )
 
 
-def native_candidate_evidence_files_v1(policy: object) -> tuple[str, ...]:
+def native_candidate_evidence_files_v1(
+    policy: object, *, runtime_history: bool = False,
+) -> tuple[str, ...]:
     """Return the exact native pending namespace consumed by the finalizer."""
 
     return (
-        *pre_finalization_acceptance_evidence_files(policy),
+        *pre_finalization_acceptance_evidence_files(policy, runtime_history=runtime_history),
         "resource_intervals.csv",
         "fanout_work_counters.csv",
         PENDING_ACCEPTANCE_FILENAME,
     )
 
 
-def finalized_production_evidence_files_v1(policy: object) -> tuple[str, ...]:
+def finalized_production_evidence_files_v1(
+    policy: object, *, runtime_history: bool = False,
+) -> tuple[str, ...]:
     """Return the exact child evidence namespace committed to ABI v3."""
 
     return (
-        *accepted_arm_evidence_files(policy, full_resource=True),
+        *accepted_arm_evidence_files(policy, full_resource=True, runtime_history=runtime_history),
         FINAL_ACCEPTANCE_FILENAME,
         RUN_METADATA_FILENAME,
     )
@@ -239,9 +243,12 @@ def _runtime_finalization_contract(
     dataset = runtime.get("dataset")
     contract = dataset.get(runtime_key) if isinstance(dataset, Mapping) else None
     policy = runtime.get("policy")
-    raw_names = native_candidate_evidence_files_v1(policy)
-    final_names = finalized_production_evidence_files_v1(policy)
     mapping = contract.get("evidence_mapping") if isinstance(contract, Mapping) else None
+    runtime_history = (
+        type(mapping) is dict and "publication_policy_runtime_history.jsonl" in mapping
+    )
+    raw_names = native_candidate_evidence_files_v1(policy, runtime_history=runtime_history)
+    final_names = finalized_production_evidence_files_v1(policy, runtime_history=runtime_history)
     if (
         runtime_key is None
         or type(contract) is not dict
@@ -627,7 +634,8 @@ def finalize_production_arm_evidence_v1(
             raise permanent("production_full_resource_promotion_failed") from error
 
         accepted_names = accepted_arm_evidence_files(
-            request.runtime_inputs["policy"], full_resource=True
+            request.runtime_inputs["policy"], full_resource=True,
+            runtime_history="publication_policy_runtime_history.jsonl" in raw_names,
         )
         if (
             set(acceptance.get("evidence_sha256", {})) != set(accepted_names)

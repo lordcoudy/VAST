@@ -683,6 +683,7 @@ def _default_pilot_validator(pilot: dict[str, Any], context: dict[str, Any]) -> 
         accepted_arm_evidence_files(
             expected_identity["policy"],
             full_resource=True,
+            runtime_history="publication_policy_runtime_history.jsonl" in evidence_hashes,
         )
     )
     if set(evidence_hashes) != required_acceptance_files:
@@ -810,7 +811,15 @@ def _default_pilot_validator(pilot: dict[str, Any], context: dict[str, Any]) -> 
         trace_id = str(record.get("trace_id", ""))
         branch = str(record.get("branch", ""))
         resource = str(record.get("selected_resource", ""))
-        assessment = policy.validate_decision_record(record, manifest)
+        if "publication_projection" in record:
+            from publication_policy_projection_v1 import reconstruct_original_decision_v1
+            try:
+                original_accepted, _original_issued = reconstruct_original_decision_v1(record)
+            except (ValueError, TypeError, KeyError) as exc:
+                raise QualificationError(f"native decision original reconstruction failed: {exc}") from exc
+            assessment = policy.validate_decision_record(original_accepted, manifest)
+        else:
+            assessment = policy.validate_decision_record(record, manifest)
         if not assessment.get("passed"):
             raise QualificationError("accepted native decision replay failed: " + ", ".join(assessment.get("blockers", [])[:6]))
         if record.get("system") != pilot["system"] or resource != pilot["resource"] or branch not in policy.ANALYTICS_BRANCHES:

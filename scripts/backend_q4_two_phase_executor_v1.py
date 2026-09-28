@@ -1001,7 +1001,10 @@ def materialize_backend_q4_production_v3_arm_v1(
         or selected.get("qualification_dataset_runtime_input")
         != runtime_authority.get("runtime_input_template")
         or selected.get("qualification_launcher_evidence_files")
-        != list(qualification_launcher_evidence_files_v4(cell.policy))
+        != list(qualification_launcher_evidence_files_v4(
+            cell.policy,
+            runtime_history="publication_policy_runtime_history.jsonl" in runtime_authority["runtime_input_template"]["evidence_mapping"],
+        ))
         or _SHA_RE.fullmatch(
             str(selected.get("launcher_input_wrapper_sha256", ""))
         ) is None
@@ -1557,7 +1560,9 @@ def run_backend_q4_native_runtime_v4_adapter(
         _fail("Q4 native runtime output was not created empty")
     graph = contract["native_graph_contract"]
     evidence_names = tuple(graph["launcher_evidence_files"])
-    if evidence_names != qualification_launcher_evidence_files_v4(cell.policy):
+    if evidence_names != qualification_launcher_evidence_files_v4(
+        cell.policy, runtime_history="publication_policy_runtime_history.jsonl" in evidence_names,
+    ):
         _fail("public Q4 runtime launcher evidence namespace drifted")
     request = NativePublicationRequestV3(
         system=cell.system,

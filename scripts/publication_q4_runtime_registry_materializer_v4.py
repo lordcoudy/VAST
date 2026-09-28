@@ -280,10 +280,12 @@ def _evidence_leaf(value: Any, label: str) -> str:
 
 
 def _projection_evidence_names(
-    *, role: str, policy: str,
+    *, role: str, policy: str, runtime_history: bool = False,
 ) -> tuple[str, ...]:
-    qualification = tuple(qualification_launcher_evidence_files_v4(policy))
-    native = tuple(native_candidate_evidence_files_v1(policy))
+    qualification = tuple(qualification_launcher_evidence_files_v4(
+        policy, runtime_history=runtime_history,
+    ))
+    native = tuple(native_candidate_evidence_files_v1(policy, runtime_history=runtime_history))
     _require(
         qualification == native,
         "qualification/native-candidate evidence namespace contract drifted",
@@ -294,7 +296,7 @@ def _projection_evidence_names(
         role == "production_finalized",
         "runtime launcher-input projection role drifted",
     )
-    finalized = tuple(finalized_production_evidence_files_v1(policy))
+    finalized = tuple(finalized_production_evidence_files_v1(policy, runtime_history=runtime_history))
     _require(
         len(finalized) == len(set(finalized))
         and all(_evidence_leaf(item, "production finalized") for item in finalized),
@@ -318,7 +320,9 @@ def _runtime_template_evidence_mapping(
         f"{label} runtime-input template ABI drifted",
     )
     mapping = value.get("evidence_mapping")
-    expected = tuple(native_candidate_evidence_files_v1(policy))
+    expected = tuple(native_candidate_evidence_files_v1(
+        policy, runtime_history=type(mapping) is dict and "publication_policy_runtime_history.jsonl" in mapping,
+    ))
     _require(
         type(mapping) is dict
         and set(mapping) == set(expected)
@@ -343,7 +347,10 @@ def _build_launcher_input_projection_v3(
     _runtime_template_evidence_mapping(
         template, policy=policy, label=role.replace("_", " ")
     )
-    evidence = list(_projection_evidence_names(role=role, policy=policy))
+    evidence = list(_projection_evidence_names(
+        role=role, policy=policy,
+        runtime_history="publication_policy_runtime_history.jsonl" in template["evidence_mapping"],
+    ))
     unsigned: dict[str, Any] = {
         "schema_version": LAUNCHER_INPUT_WRAPPER_SCHEMA_VERSION,
         "artifact_kind": LAUNCHER_INPUT_PROJECTION_KIND,
@@ -385,7 +392,10 @@ def _validate_launcher_input_projection_v3(
         f"{role} runtime-input template self-hash drifted",
     )
     evidence = value.get("launcher_evidence_files")
-    expected_evidence = list(_projection_evidence_names(role=role, policy=policy))
+    expected_evidence = list(_projection_evidence_names(
+        role=role, policy=policy,
+        runtime_history="publication_policy_runtime_history.jsonl" in template["evidence_mapping"],
+    ))
     _require(
         type(evidence) is list
         and evidence == expected_evidence

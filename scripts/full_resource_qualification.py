@@ -650,6 +650,7 @@ def _default_pilot_validator(
             arm_root / "publication_policy_decisions.jsonl",
             decisions=sidecars["policy_decisions"],
             expected_policy=expected_policy,
+            ingress_rows=sidecars["ingress_ledger"],
         )
     except FullResourceQualificationError:
         raise
