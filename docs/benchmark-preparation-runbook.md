@@ -20,7 +20,7 @@
 
 ## Контракт путей и переменных
 
-`PROJECT_ROOT` — canonical existing project directory без symlink alias. `runs/full_publication` в нём уже существует. `ATTEMPT_ID` — новый один компонент из строчных латинских букв, цифр, `.`, `_` или `-`, длиной 1–80; он не может ссылаться на прошлую попытку. Поэтому `RUN_ROOT` должен быть ровно `PROJECT_ROOT/runs/full_publication/ATTEMPT_ID`, а `STATE_PATH` — ровно `RUN_ROOT/full_publication_supervisor_state.v1.json`.
+`PROJECT_ROOT` — canonical existing project directory без symlink alias. `runs/full_publication` в нём уже существует. `ATTEMPT_ID` — новый один компонент, точно соответствующий stock grammar `[a-z0-9][a-z0-9._-]{0,79}`: первый символ — строчная латинская буква или цифра, остальные — такие же буквы, цифры, `.`, `_` или `-`; общая длина 1–80. Он не может ссылаться на прошлую попытку. Поэтому `RUN_ROOT` должен быть ровно `PROJECT_ROOT/runs/full_publication/ATTEMPT_ID`, а `STATE_PATH` — ровно `RUN_ROOT/full_publication_supervisor_state.v1.json`.
 
 `SERVICE_DIR` — свежий прямой child `PROJECT_ROOT/artifacts`; он не может быть symlink и не должен перезаписывать прежний bundle. `LINKS_FILE` должен указывать на существующий `PROJECT_ROOT/seafile.txt`, но его содержимое не выводится. `PYTHON` — проверенный frozen interpreter. Все остальные пути должны описывать принятые identity и capacity records.
 
@@ -73,7 +73,7 @@ ENTRY_ARGS=(
   --max-unexpected-retries 0
 ```
 
-The entrypoint parser accepts `plan` and `preflight`; both use the frozen matrix and policy SHA-256 values shown above. Its `run_root` must remain below the canonical project root. The service parser requires all materialize arguments shown above; it independently checks the exact run-root, state-file basename, direct artifacts child, `seafile.txt`, positive timeouts and non-negative retry budget. The explicit `--max-unexpected-retries 0` is mandatory for this package. An unexpected failure becomes permanent exit 78; supported transport or low-storage recovery remains exit 75 and resumes the same accepted checkpoint.
+The entrypoint parser accepts `plan` and `preflight`; both use the frozen matrix and policy SHA-256 values shown above. Its `run_root` must remain below the canonical project root. The materialize example explicitly supplies the canonical inputs, including options for which the parser provides defaults. The materializer checks the exact run-root, state-file basename, direct artifacts child, `seafile.txt`, positive timeouts and non-negative retry budget. The explicit `--max-unexpected-retries 0` is mandatory for this package. An unexpected failure becomes permanent exit 78; supported transport or low-storage recovery remains exit 75 and resumes the same accepted checkpoint.
 
 ## Validate only the returned receipt
 

@@ -47,7 +47,7 @@ The original f Savant diagnostic subsequently exited 0 under invocation `92cf9d4
 
 ## 6. Fresh qualification
 
-- [ ] 6.1 Produce fresh input/preprocessing receipts and canonical mount/identity checks; start one new guardian with eight authenticated workers and materialize 32 bundles/four assets, verifying their current receipt bindings after the projection/history repair.
+- [x] 6.1 Produce fresh input/preprocessing receipts and canonical mount/identity checks; start one new guardian with eight authenticated workers and materialize 32 bundles/four assets, verifying their current receipt bindings after the projection/history repair.
 - [ ] 6.2 Run the gated 180-second Savant video diagnostic for the new chain; verify its original successful terminal and physical evidence including stock canonical policy/history cold validation before qualification.
 - [ ] 6.3 Launch the single fresh 32-cell qualification under its supported owner and record invocation identity/checkpoint; verify no A269 cells or helpers are reused.
 - [ ] 6.4 Collect all 32 successful cells, authenticated stop/lifecycle/closure and policy/resource promotion; verify every physical descriptor and accepted validator result before Q4.
