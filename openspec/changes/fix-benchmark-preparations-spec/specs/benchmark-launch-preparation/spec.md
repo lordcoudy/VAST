@@ -1,19 +1,19 @@
 ## Purpose
 
-Make VAST ready for a reproducible full benchmark by verifying repairs, runtime identities, qualification, Q4, storage admission and launch configuration, while stopping before full-matrix execution.
+Make VAST executable and independently verifiable through bounded native diagnostics, complete operational accounting, qualification, Q4, factual storage admission, durable full-matrix execution and scientifically truthful finalized results.
 
 ## ADDED Requirements
 
-### Requirement: Preparation has an explicit stopping point
-Preparation SHALL include repairs, tests, fresh qualification, Q4, capacity attestation, live preflight and a validated unstarted service package. It SHALL NOT execute full-matrix arms, install/enable a full-run service that can start automatically, invoke its start/launch command, or claim completed publication. A readiness statement SHALL identify its observation time and become stale when a bound identity or prerequisite changes.
+### Requirement: Benchmark recovery has explicit execution and completion gates
+Recovery SHALL include reviewed repairs, genuine bounded native pair diagnostics, complete request-domain validation, fresh qualification, Q4, factual capacity attestation, current preflight and a validated service package before authorized full-matrix installation/start. A readiness statement SHALL identify its observation time and become stale when a bound identity or prerequisite changes. The user's standing authorization SHALL permit continuation through actual full-run verification, finalization, export and repository completion; it SHALL NOT substitute for any runtime, storage, scientific or review gate.
 
 #### Scenario: Preparation succeeds
 - **WHEN** every required preparation gate is accepted and current
-- **THEN** the handoff SHALL report preparation_ready=true, full_run_started=false and publication_ready=false, with zero full-matrix arms launched by this change.
+- **THEN** the evidence packet SHALL report preparation_ready=true and the actual launch/completion state; before authorized full-run launch it SHALL report full_run_started=false and publication_ready=false rather than claim completion from diagnostics or service materialization.
 
 #### Scenario: Readiness ages or inputs change
 - **WHEN** a guardian identity, source, configuration, image, capacity basis, or other bound prerequisite changes after handoff
-- **THEN** the affected readiness gates SHALL be invalidated and stock preflight SHALL be repeated before any later authorized launch.
+- **THEN** affected readiness gates SHALL be invalidated and stock preflight SHALL be repeated before dependent launch or supported resume, without silently rebinding historical receipts.
 
 ### Requirement: Native payload descriptors match immutable bytes
 A native producer SHALL validate its envelope and a payload size of 1 through 67,108,864 bytes before snapshot allocation, then bind the declared length and SHA-256 to the same immutable snapshot used for its sealed descriptor. A supplied digest that differs from the snapshot SHALL be rejected locally before sending, without silently replacing the contract digest. Caller storage SHALL remain valid and unmodified during capture.
@@ -175,6 +175,47 @@ Native policy publication SHALL project only the explicitly validated measuremen
 - **WHEN** an original diagnostic exits 0 but its physical policy artifacts fail cold canonical linkage, sequence or history validation
 - **THEN** process success and cold rejection SHALL be recorded separately, no qualification or Q4 stage SHALL start, and the attempt SHALL be preserved and its guardian authenticated-stopped as nonpublication before a reviewed repair and wholly fresh renewal chain.
 
+### Requirement: Qualification reconciles the complete operational request domain
+Fresh qualification SHALL bind complete original native execution evidence for every allowed original precheck, diagnostic and qualification invocation, including warmup, measurement and drain, separately from measurement and adaptive feedback/history evidence. It SHALL retain validated native input/stream/frame/PTS/worker, original decision and selected route/capability/model identities and the actual transport identity semantics. Every original issued execution SHALL have one validated completed terminal. Guardian evidence SHALL pair every actual attributed front request with exactly one terminal and retain its original authority/lifecycle/owner/source binding. The complete allowed request-identity multiset SHALL equal the guardian's started and completed multisets, lifetime count and all eight worker totals, with zero failed or unfinished requests. Measurement32 SHALL remain an independently validated exact subset/projection, preserving all existing native/policy/model/resource checks.
+
+Operational evidence SHALL be versioned, physically bound, immutable on success, bounded and nonauthorizing. Each original producer invocation SHALL retain its unchanged legacy stage group and every existing aggregate/file/count limit (including Savant's 64-MiB limit), plus a separately sealed operational group of at most 64 MiB with one canonical JSONL, header at most 64 KiB and completed occurrence at most 9,216 bytes. Both groups SHALL count within the enclosing 256-MiB retained-operation limit. Original accepted/request/path/terminal fields, numeric types, evaluator values and hashes SHALL remain lossless; issued reconstruction SHALL verify the original issued hash and unchanged native-binding roundtrip without duplicating full issued JSON or inventing missing source records. Guardian evidence SHALL use ordinary explicit JSON objects and independently validated immutable references for repeated constants, without a positional/arithmetic/numeric codec. Its complete lifetime group SHALL remain eight route journals plus final companion, at most 256 MiB/1,000,000 events, route/header at most 64 MiB/64 KiB, companion at most 1 MiB, begin/terminal at most 768/256 bytes and at most 128 pending terminal reservations. Each terminal SHALL reference its unique original begin and losslessly resolved identity. The qualification manifest SHALL contain exactly 37 distinct original producing entries and occupy at most 1 MiB; separately scoped two-arm diagnostics SHALL never satisfy this manifest by fabricated entries. Successful qualification pairing SHALL permit at most 500,000 requests. Before acceptance the source SHALL prove actual constructor field/number/string/state sizes, scaled CFR cadence and deadline/concurrency budgets; offered-fps labels, empirical file sizes and compression ratios SHALL NOT establish feasibility. A failed proof SHALL require reviewed design revision, not truncation, raised limits or silent constructor tightening. Additional capture/cold sorting SHALL obey the reviewed fixed memory/file/disk bounds with terminal capacity reserved at begin. Attribution SHALL NOT be claimed as front-client authentication, an access grant or independent full-wire-byte attestation. Historical strict validation SHALL remain readable, but aggregate-only evidence SHALL not satisfy this new gate. Counter reset/offset/inequality, caller phase tags and relaxed measurement checks SHALL NOT substitute for complete identities.
+
+#### Scenario: Allowed predecessor and pilot traffic completes
+- **WHEN** original prechecks, the diagnostic and all 32 cells complete with native executions across warmup, measurement and drain under one guardian
+- **THEN** their independently bound complete operational domains SHALL reconcile exactly to every guardian request/terminal and worker total, while source-proven zero-request setup probes and pre-entry drops SHALL contribute no invented calls.
+
+#### Scenario: Unknown traffic preserves aggregate totals
+- **WHEN** an extra, missing or substituted request changes run, wire arm, frame, PTS, worker, model, route or native identity even though lifetime and worker totals remain equal
+- **THEN** exact domain matching SHALL reject qualification rather than accept aggregate equality.
+
+#### Scenario: Separate invocations repeat a wire identity
+- **WHEN** physically distinct allowed original precheck and pilot invocations legitimately emit the same wire request identity
+- **THEN** reconciliation SHALL preserve their exact occurrence multiplicity; a duplicate inside one invocation, excess occurrence or reused invocation proof SHALL be rejected without inventing a globally unique client or PID identity.
+
+#### Scenario: A measurement request finishes during drain
+- **WHEN** a request belonging to validated measurement ingress completes after the measurement window
+- **THEN** its original terminal SHALL remain in the complete operational domain and its existing measurement subset without classification by terminal time or a caller phase label.
+
+#### Scenario: Request or terminal capture is incomplete
+- **WHEN** a begin has no terminal, a terminal has no begin, completions repeat, send fails, or concurrent completion order differs
+- **THEN** missing/duplicate/failing pairs SHALL block success; valid concurrent order SHALL retain exact pairs and multiplicities without comparing unrelated sequence order.
+
+#### Scenario: Operational evidence exceeds bounds or cannot persist
+- **WHEN** capture or cold reading exceeds a defined producer/guardian group/file/record/header/event/pending limit, a tighter existing stage bound, the 1-MiB domain limit or fixed append/sort/scratch bounds, source cadence/deadline/concurrency assumptions are unsupported, or a write/short-write/fsync fails
+- **THEN** the attempt SHALL fail within bounded allocation, preserve the original failure and partial evidence, and SHALL not truncate, raise limits, retry or claim successful closure.
+
+#### Scenario: Domain custody or schema is invalid
+- **WHEN** a descriptor or source/owner/guardian binding changes, an invocation is foreign/reused, files are missing/truncated/unsafe, or records have duplicate keys, nonfinite values or unsupported versions
+- **THEN** independent physical validation SHALL reject the domain and all dependent qualification or promotion.
+
+#### Scenario: Only legacy aggregate evidence exists
+- **WHEN** an original historical guardian has no complete operational journal or producer domain
+- **THEN** its historical validation SHALL preserve its original outcome without rewriting, but it SHALL remain ineligible for the new qualification accounting gate.
+
+#### Scenario: Source accounting defect is found before pilots
+- **WHEN** source review identifies an unsatisfied complete-domain gate before any pilot submission
+- **THEN** dependent pilots SHALL remain unstarted, original successful diagnostics SHALL remain truthful, and exact amended review plus the actual original guardian terminal/lifecycle and a wholly fresh affected chain SHALL precede implementation acceptance; an already failed guardian SHALL NOT be retrospectively given a clean retirement.
+
 ### Requirement: Qualification and Q4 are complete before launch readiness
 Preparation SHALL require all 32 qualification cells in one fresh valid attempt, authenticated guardian stop, successful lifecycle/closure and policy/resource promotion. It SHALL then require Q4 phase A with 560 runs, its identity/grant boundary, phase B with 560 runs and 280 sizing pairs derived from phase B, all bound to current authorities. Failed attempts and partial cells SHALL never be combined.
 
@@ -202,23 +243,75 @@ Capacity admission SHALL require a current explicit operator guarantee in bytes,
 - **THEN** cloud admission SHALL fail and full-run readiness SHALL remain false.
 
 ### Requirement: Launch handoff preserves the full experiment
-The handoff SHALL preserve 4 systems, 2 codecs, 2 topologies, 7 policies, 5 deadlines and 10 repeats, yielding 2,800 pairs/5,600 arms, six streams, seed 20260323, 30-second warmup and 180-second measurement. It SHALL preserve existing paired order, schedule/seed equality, fixed analysis and negative results. The package SHALL bind canonical run/state/output paths and current accepted identities, and SHALL require a new execution request and repeated current preflight before later installation/start.
+The validated package and subsequent run SHALL preserve 4 systems, 2 codecs, 2 topologies, 7 policies, 5 deadlines and 10 repeats, yielding 2,800 pairs/5,600 arms, six streams, seed 20260323, 30-second warmup and 180-second measurement. They SHALL preserve paired order, schedule/seed equality, frozen model/preprocessing identities, fixed analysis and valid negative results. Canonical run/state/output paths and current accepted identities SHALL be bound; current stock preflight SHALL precede installation/start under the user's standing authorization.
 
 #### Scenario: Unstarted package validates
 - **WHEN** materialization and non-starting validation pass after accepted live preflight
-- **THEN** the handoff SHALL include exact sanitized argv, receipt hashes, checkpoint/state paths, blockers and later install/start/verify/finalize/export instructions without executing them.
+- **THEN** the evidence packet SHALL include exact sanitized argv, receipt hashes, checkpoint/state paths and blockers; installation/start SHALL use that package only after all current gates pass, without claiming execution from materialization alone.
 
 #### Scenario: Altered matrix or malformed command
 - **WHEN** a candidate changes frozen counts/hashes/settings, uses corrupted variable names, wrong option order, or unsupported paths
 - **THEN** preparation verification SHALL reject it before workload execution.
 
 ### Requirement: Documentation and conformance are truthful
-One current runbook SHALL distinguish preparation from subsequent full execution, correct corrupted examples, preserve original PLAN obligations and label historical status. A conformance record SHALL map every requirement/scenario to code and tests or manual evidence, including unresolved gaps. OpenSpec format checks and historical local suites SHALL not be reported as current CI or real benchmark acceptance.
+One current runbook SHALL distinguish diagnostic, preparation, full execution and finalization stages, correct corrupted examples, preserve original obligations and label historical status. A conformance record SHALL map every requirement/scenario to implementation and actual tests/manual evidence, including unresolved gaps. Reviewed appropriate CI SHALL execute on the final commit and explicitly distinguish hosted checks from physical hardware evidence. OpenSpec format checks, skipped hardware jobs and historical local suites SHALL NOT be reported as current CI or real benchmark acceptance.
 
 #### Scenario: Documentation reviewed
 - **WHEN** the runbook is delivered
-- **THEN** shell examples SHALL pass syntax-only validation, supported flags/path constraints SHALL be checked against source, and no full-run start SHALL be part of its preparation steps.
+- **THEN** shell examples SHALL pass syntax-only validation, supported flags/path constraints SHALL be checked against source, and actual launch/finalization commands SHALL be gated by the current accepted predecessor receipts.
 
 #### Scenario: Required CI is unavailable
 - **WHEN** no required checks have run on the final commit
-- **THEN** merge readiness SHALL remain blocked and separately agreed CI setup SHALL be recorded as outstanding rather than claimed complete.
+- **THEN** merge readiness SHALL remain blocked and required CI setup/checks SHALL remain outstanding rather than being replaced by local tests or delegated review comments.
+
+### Requirement: Recovery first proves a bounded genuine native pair
+Recovery SHALL execute exactly one baseline/shared pair per bounded diagnostic context through the existing publication-v3 execution spine with real pinned analytics, six streams/four branches, paired input schedules, original process/cold evidence and the unchanged warmup/measurement/drop/censoring/resource rules. It SHALL use explicit two-arm operational activation and full all-phase identity equality separately from measured evidence. Model workers SHALL remain warm across that pair with symmetric readiness and existing warmup, while native source/graph reset rules remain unchanged. Forced CPU and GPU diagnostic pairs SHALL precede a static-hybrid diagnostic using the exact current physically bound calibration and exhaustive mixed-map result. Diagnostics SHALL remain nonpromoting and SHALL NOT count toward qualification, Q4 or full-run repeats. The first affected packaged runtime/real-boundary regression SHALL gate broad renewal. Stock all-four-runtime patch-bound authority and normal fresh parity SHALL precede the physical pair; a narrow two-entry nonpromoting adapter MAY select genuine materialized GStreamer v3 contracts without creating new aggregate authority or reusing old patch-bound acceptance. The physical pair SHALL precede qualification32/Q4/full.
+
+#### Scenario: Forced-resource diagnostic pair completes
+- **WHEN** both native topology arms execute a supported forced resource to original successful terminals
+- **THEN** success SHALL additionally require complete operational reconciliation, stock model/policy/resource/measurement cold validation, exact pair equality and an immutable nonpromoting receipt; identity/topology-only output SHALL be insufficient.
+
+#### Scenario: Static-hybrid inputs are not yet materialized
+- **WHEN** existing candidate inputs have no static map or only support forced policies
+- **THEN** the diagnostic SHALL wait for the reviewed nonpromoting static diagnostic context, explicitly scoped guardian preprocessing/runtime-input authority and exact current physically calibrated selector map. Existing forced receipts SHALL retain their scope and SHALL NOT be relabelled/rebound as static authority; caller-selected maps, stale calibration and manufactured qualification/production grants SHALL be rejected.
+
+#### Scenario: Diagnostic authority or accounting is incomplete
+- **WHEN** changed source/image/model dependencies, the two original operation receipts, all-phase requests or cold checks are incomplete
+- **THEN** diagnostic acceptance and dependent qualification32/Q4/full execution SHALL remain blocked without substituting smoke evidence or counterfeit 37-entry qualification evidence.
+
+### Requirement: Operations retain bounded ownership and worker termination facts
+Each bounded diagnostic and long-running benchmark stage SHALL have one persisted original owner, fresh output reservation, sanitized argv and actual process/unit identities, bounded lifecycle deadlines and immutable receipt-last outcome. A worker exit SHALL preserve original terminal status and available engine/cgroup/kernel/log evidence with source/time or explicit unavailable facts before disposable cleanup. Unknown causes SHALL remain unknown; exit 137 SHALL NOT alone be identified as OOM. Cleanup SHALL target only owned workers/sockets after preserving evidence, and worker replacement or silent measurement retry SHALL NOT produce acceptance.
+
+#### Scenario: Worker exits during a diagnostic
+- **WHEN** an owned worker dies or becomes unavailable
+- **THEN** the diagnostic SHALL fail nonpublication, retain bounded original process/container/log/resource facts, stop owned dependents and block acceptance without automatic replacement.
+
+#### Scenario: Historical guardian already failed
+- **WHEN** original failed g evidence is examined or a prior stage is terminal
+- **THEN** its actual terminal/lifecycle SHALL be retained without retroactive clean stop, duplicate owner or rewritten success; only a fresh valid context may execute changed bytes.
+
+### Requirement: Scientific interpretation matches the executed workload
+Final outputs SHALL describe the opaque ResNet workload as `topology_load_proxy_only` under common OpenVINO CPU/TensorRT CUDA workers and limit backend comparisons to observed topology/scheduling/transport/resource behaviour. They SHALL retain real deadline/drop/negative outcomes and distinguish additive work from nonadditive elapsed diagnostics. Real KPP accuracy, backend-native inference rankings, true NVDEC busy time and formal AW-HEFT equivalence SHALL NOT be claimed without independently accepted corresponding evidence.
+
+#### Scenario: Relative quality passes despite absolute deadline misses
+- **WHEN** a paired quality difference satisfies the frozen rule but both arms miss an absolute SLO
+- **THEN** outputs SHALL report those actual misses and may report only the supported relative result, without claiming absolute SLO compliance or changing deadlines.
+
+#### Scenario: Only proxy or partial resource evidence exists
+- **WHEN** accepted execution uses opaque models or lacks direct evidence for a resource quantity or formal scheduler equivalence
+- **THEN** analysis and claim state SHALL retain the exact proxy/coverage limitation without relabelling it as the missing scientific proof.
+
+### Requirement: Authorized full execution closes durable results and repository evidence
+After all current qualification/Q4/storage/preflight gates pass, recovery SHALL execute the preserved full experiment through one supported durable owner/checkpoint. Accepted pairs SHALL be uploaded, read back and durably receipted before raw cleanup; supported resume SHALL verify and reuse accepted pairs without remeasurement. Completion SHALL require 5,600 accepted arms, 2,800 accepted pairs and verified storage transactions, successful stock verify/finalize/finalized-only export and independently checked analysis. Required CI/conformance and reviewed warnings SHALL precede supported sync/archive in this same branch/PR; archive and main specs SHALL be committed/pushed, and required final-commit checks and delegated final review/authorization SHALL precede merge. Missing factual capacity or failed required checks SHALL remain real blockers, never inferred from general authorization.
+
+#### Scenario: Full benchmark finishes with valid negative results
+- **WHEN** every required arm/pair/storage transaction and stock verification/finalization/export succeeds
+- **THEN** completion SHALL report actual immutable counts/descriptors and scientifically valid positive, negative or inconclusive outcomes rather than requiring a favorable effect.
+
+#### Scenario: Accepted pairs exist when transient offload fails
+- **WHEN** supported transport/low-storage recovery resumes the same valid checkpoint
+- **THEN** existing accepted pairs SHALL be reverified and offloaded without new measurement, and raw cleanup SHALL wait for verified durable receipts.
+
+#### Scenario: Completion or final repository gate is missing
+- **WHEN** any full-run result, storage proof, required CI/conformance, pushed archive or applicable final review is missing
+- **THEN** its completion/merge state SHALL remain incomplete or blocked; no diagnostic, partial attempt, document check or delegated comment SHALL be substituted for that gate.

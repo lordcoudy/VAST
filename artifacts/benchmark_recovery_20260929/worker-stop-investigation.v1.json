@@ -1,0 +1,234 @@
+{
+  "accepted": false,
+  "artifact_kind": "vast_benchmark_recovery_worker_stop_investigation_v1",
+  "authorization_eligible": false,
+  "bulk_stop_observation": {
+    "api_path": "/containers/bulk/:action",
+    "bind_log_line": 2959,
+    "bound_container_ids": [
+      "e5e062173f24133810f38ec3b7cf2bf901564e8d0ac2ee50e0a7e8c3d615fbb6",
+      "dfc175a388775d6763922712d3ed27f421e76b87a88829129731ecdca71bf91f",
+      "9afddc5974d1d99c0c3019480fdceae42eab19448c3a10d3a057f76d2f8d5461",
+      "0fb0fb89c45dd5ab9ca9fdb4b5a26a7eccf03d377b4de8bc192f9335b6a9af2e",
+      "42b0ac1b2a9798ac67492232abb9514887166ad0a9a736669ea59ebf1377a4b5",
+      "fd91bf2bf4400663971130758f9b08c17f9ead9412b9dcc62c0e7273b9b7707d",
+      "e720084314f585d8186a34331cc9c156718dc7c429d02b67b60500d985faa30e",
+      "ebe819b5e5488502a2fc314435ea89c5f1ef9a3c25eaea3856866aafef4d69a3"
+    ],
+    "container_stop_usage_log_lines": [
+      2960,
+      2961,
+      2962,
+      2963,
+      2964,
+      2965,
+      2966,
+      2967
+    ],
+    "exact_original_worker_set_join": true,
+    "interpretation": "The retained backend logs establish a bulk container-stop API operation targeting exactly all eight original g analytics workers immediately before their attach/removed completions and the guardian service-lifecycle failure. No human identity, UI action attribution, motive, OOM cause, or memory leak is inferred.",
+    "method": "POST",
+    "request_log_line": 2958,
+    "request_utc": "2026-09-28T09:49:04.685593500Z",
+    "response_body": [],
+    "response_elapsed_s": 3.3924075,
+    "response_log_line": 3030,
+    "response_utc": "2026-09-28T09:49:08.078008800Z"
+  },
+  "container_routes": [
+    {
+      "attach_closed_log_line": 2968,
+      "branch": "damage",
+      "bulk_stop_log_line": 2959,
+      "container_id": "e720084314f585d8186a34331cc9c156718dc7c429d02b67b60500d985faa30e",
+      "container_name": "vast-gst-analytics-adb5e9b6dda94efc-damage-cpu",
+      "container_removed_wait_log_line": 3041,
+      "original_container_state_pid": 83152,
+      "resource": "cpu",
+      "startup_log_line": 299,
+      "startup_utc": "2026-09-28T06:35:12.610803400Z"
+    },
+    {
+      "attach_closed_log_line": 2996,
+      "branch": "damage",
+      "bulk_stop_log_line": 2959,
+      "container_id": "ebe819b5e5488502a2fc314435ea89c5f1ef9a3c25eaea3856866aafef4d69a3",
+      "container_name": "vast-gst-analytics-adb5e9b6dda94efc-damage-gpu",
+      "container_removed_wait_log_line": 3039,
+      "original_container_state_pid": 83184,
+      "resource": "gpu",
+      "startup_log_line": 341,
+      "startup_utc": "2026-09-28T06:35:12.615431400Z"
+    },
+    {
+      "attach_closed_log_line": 2980,
+      "branch": "foreign_object",
+      "bulk_stop_log_line": 2959,
+      "container_id": "42b0ac1b2a9798ac67492232abb9514887166ad0a9a736669ea59ebf1377a4b5",
+      "container_name": "vast-gst-analytics-adb5e9b6dda94efc-foreign-object-cpu",
+      "container_removed_wait_log_line": 3038,
+      "original_container_state_pid": 83195,
+      "resource": "cpu",
+      "startup_log_line": 353,
+      "startup_utc": "2026-09-28T06:35:12.617001300Z"
+    },
+    {
+      "attach_closed_log_line": 2998,
+      "branch": "foreign_object",
+      "bulk_stop_log_line": 2959,
+      "container_id": "fd91bf2bf4400663971130758f9b08c17f9ead9412b9dcc62c0e7273b9b7707d",
+      "container_name": "vast-gst-analytics-adb5e9b6dda94efc-foreign-object-gpu",
+      "container_removed_wait_log_line": 3046,
+      "original_container_state_pid": 83155,
+      "resource": "gpu",
+      "startup_log_line": 322,
+      "startup_utc": "2026-09-28T06:35:12.612926000Z"
+    },
+    {
+      "attach_closed_log_line": 2969,
+      "branch": "plate_number",
+      "bulk_stop_log_line": 2959,
+      "container_id": "e5e062173f24133810f38ec3b7cf2bf901564e8d0ac2ee50e0a7e8c3d615fbb6",
+      "container_name": "vast-gst-analytics-adb5e9b6dda94efc-plate-number-cpu",
+      "container_removed_wait_log_line": 3020,
+      "original_container_state_pid": 82872,
+      "resource": "cpu",
+      "startup_log_line": 31,
+      "startup_utc": "2026-09-28T06:35:12.470993000Z"
+    },
+    {
+      "attach_closed_log_line": 2999,
+      "branch": "plate_number",
+      "bulk_stop_log_line": 2959,
+      "container_id": "dfc175a388775d6763922712d3ed27f421e76b87a88829129731ecdca71bf91f",
+      "container_name": "vast-gst-analytics-adb5e9b6dda94efc-plate-number-gpu",
+      "container_removed_wait_log_line": 3040,
+      "original_container_state_pid": 82918,
+      "resource": "gpu",
+      "startup_log_line": 96,
+      "startup_utc": "2026-09-28T06:35:12.557808200Z"
+    },
+    {
+      "attach_closed_log_line": 2985,
+      "branch": "vehicle_type",
+      "bulk_stop_log_line": 2959,
+      "container_id": "9afddc5974d1d99c0c3019480fdceae42eab19448c3a10d3a057f76d2f8d5461",
+      "container_name": "vast-gst-analytics-adb5e9b6dda94efc-vehicle-type-cpu",
+      "container_removed_wait_log_line": 3031,
+      "original_container_state_pid": 83016,
+      "resource": "cpu",
+      "startup_log_line": 275,
+      "startup_utc": "2026-09-28T06:35:12.606685400Z"
+    },
+    {
+      "attach_closed_log_line": 2997,
+      "branch": "vehicle_type",
+      "bulk_stop_log_line": 2959,
+      "container_id": "0fb0fb89c45dd5ab9ca9fdb4b5a26a7eccf03d377b4de8bc192f9335b6a9af2e",
+      "container_name": "vast-gst-analytics-adb5e9b6dda94efc-vehicle-type-gpu",
+      "container_removed_wait_log_line": 3037,
+      "original_container_state_pid": 83143,
+      "resource": "gpu",
+      "startup_log_line": 332,
+      "startup_utc": "2026-09-28T06:35:12.613927100Z"
+    }
+  ],
+  "current_read_only_environment_observation": {
+    "containers": 0,
+    "daemon_id": "aa8f3d33-e1dc-4ed2-ad06-488b46b332d0",
+    "daemon_name": "docker-desktop",
+    "docker_cli_realpath": "/usr/bin/docker",
+    "docker_cli_sha256": "a429e235ef670ea83357a5c8c7451f0a69d485a6fee49f9032fd938a0ab4969d",
+    "docker_context": "default",
+    "docker_endpoint": "unix:///var/run/docker.sock",
+    "endpoint_realpath": "/run/docker.sock",
+    "g_cpu_worker_image_present": "sha256:ce138982695ea6d8218a9137bb858090a782e83e687be8fc252a32dc0bd9d5f9",
+    "g_gpu_worker_image_present": "sha256:e0af692307f5edebcfb768d6805cb2e76f32948e77144fbf5f10fcdac85b2870",
+    "images": 182,
+    "inspect_limitation": "Original docker run used --rm; container State.OOMKilled/ExitCode/Error no longer queryable.",
+    "original_cpu_container_inspect": "no such object",
+    "server_version": "29.7.2",
+    "ubuntu_uid": 1000
+  },
+  "limitations": [
+    "No retained original Docker State.OOMKilled or kernel/cgroup OOM evidence was found in the bounded reads; exit137 alone is not an OOM diagnosis.",
+    "Log client/system metadata does not identify who invoked the bulk operation.",
+    "Current environment observations are fresh facts, not retrospective proof of the daemon state at worker startup."
+  ],
+  "method": "Read physical retained original logs and artifacts; exact container-name/ID join; no workload, service start/stop, container mutation, or original artifact edit. Docker availability/image facts were observed with read-only CLI commands in the same investigation.",
+  "observed_at_utc": "2026-09-29T20:12:47.645295+00:00",
+  "original_guardian": {
+    "cleanup_errors": [
+      "guardian_stop_attestation_missing"
+    ],
+    "failure": {
+      "message": "analytics worker plate_number/cpu exited during production front service: 137; stdout_tail=\"\";stderr_tail=\"\"; protocol_diagnostic=protocol_failure_diagnostic.v1.json; sha256=0a3adaf2bf55ae49140ee0425bffe0f676091439d6d395717f5495e995c02e2e",
+      "type": "SidecarError"
+    },
+    "failure_attribution": "unavailable",
+    "failure_diagnostic_at_utc": "2026-09-28T09:49:08.123641+00:00",
+    "failure_stage": "service_lifecycle",
+    "guardian_stop_attestation": null,
+    "invocation_id": "4728ecc49e5e408ca09cfa1ecf1a81b4",
+    "lifecycle_id": "adb5e9b6dda94efc8d095da2914bddb2",
+    "original_owner_pid": 77089,
+    "request_counters": {
+      "aggregate_sha256": "f0a603b36dba7e743b41985a79a22e0077df4bd939254396e4f0d058f4ed8a83",
+      "connections_accepted": 146,
+      "connections_active": 0,
+      "connections_clean_eof": 146,
+      "connections_failed": 0,
+      "connections_shutdown_closed": 0,
+      "evidence_role": "operational_non_authorizing_aggregate",
+      "requests_by_worker": {
+        "damage:cpu": 3536,
+        "damage:gpu": 2519,
+        "foreign_object:cpu": 2002,
+        "foreign_object:gpu": 2517,
+        "plate_number:cpu": 3772,
+        "plate_number:gpu": 2516,
+        "vehicle_type:cpu": 3551,
+        "vehicle_type:gpu": 2519
+      },
+      "requests_completed": 22932,
+      "requests_failed": 0,
+      "requests_started": 22932
+    },
+    "status": "failed_stop_nonpublication"
+  },
+  "publication_ready": false,
+  "recommended_followup": [
+    "Preserve bounded container ID/name/image/daemon identity and start/exit state/event diagnostics in immutable per-session evidence before owned cleanup removes the container.",
+    "Keep real-worker sessions tightly owned around an executable diagnostic or pair; never hold successful diagnostic evidence dependent on unrelated future review/idle lifetime.",
+    "Add an external worker-stop regression that preserves the original nonpublication failure and completed-request counters without false OOM attribution or silent measurement retry."
+  ],
+  "schema_version": 1,
+  "sources": [
+    {
+      "path": "C:\\Users\\s-a-balashov\\AppData\\Local\\Docker\\log\\host\\com.docker.backend.exe.log.20260928-102704.541",
+      "sha256": "24f4b5afaf6fe772c79eb886c20408cff01f2cc85f19b1d76163fcf18986b61d",
+      "size_bytes": 1048551
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\AppData\\Local\\Docker\\log\\host\\com.docker.backend.exe.log.20260929-025517.674",
+      "sha256": "4d81297369411280ff1662a524dbe16af17b4590e17a749aa11ed39ccb95fcf3",
+      "size_bytes": 1048388
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\publication_guardian_evidence_v1_fix_benchmark_20260928g\\service_lifecycle.v1.json",
+      "sha256": "3add3b849e0b5a3e491a1bf51d583202f88862f4c3f0f8db32151c85ce2f56ae",
+      "size_bytes": 9441
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\publication_guardian_evidence_v1_fix_benchmark_20260928g\\protocol_failure_diagnostic.v1.json",
+      "sha256": "0a3adaf2bf55ae49140ee0425bffe0f676091439d6d395717f5495e995c02e2e",
+      "size_bytes": 679
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\publication_guardian_evidence_v1_fix_benchmark_20260928g\\service_authority.v1.json",
+      "sha256": "80dc8fe7f4707f4b263186eceed049fbe074c08e0ddd3b6bca3a8719c6ee686b",
+      "size_bytes": 16118
+    }
+  ],
+  "worktree": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec"
+}
