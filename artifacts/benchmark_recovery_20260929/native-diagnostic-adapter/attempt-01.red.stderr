@@ -1,0 +1,19 @@
+test_publication_benchmark_native_diagnostic_v1 (unittest.loader._FailedTest.test_publication_benchmark_native_diagnostic_v1) ... ERROR
+
+======================================================================
+ERROR: test_publication_benchmark_native_diagnostic_v1 (unittest.loader._FailedTest.test_publication_benchmark_native_diagnostic_v1)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_publication_benchmark_native_diagnostic_v1
+Traceback (most recent call last):
+  File "/usr/lib/python3.12/unittest/loader.py", line 137, in loadTestsFromName
+    module = __import__(module_name)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_benchmark_native_diagnostic_v1.py", line 11, in <module>
+    import publication_benchmark_native_diagnostic_v1 as diagnostic
+ModuleNotFoundError: No module named 'publication_benchmark_native_diagnostic_v1'
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+FAILED (errors=1)

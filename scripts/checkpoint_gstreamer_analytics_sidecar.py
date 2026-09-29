@@ -3656,6 +3656,49 @@ def wait_publication_sidecar_guardian_stop_v1(
     raise SidecarError("timed out waiting for analytics production guardian stop")
 
 
+def _bounded_engine_observation(command: Sequence[str], *, timeout: float = 2.0) -> subprocess.CompletedProcess[str]:
+    """Read an owned CLI's bounded facts; terminate only this observer on overflow."""
+    process = subprocess.Popen(list(command), stdin=subprocess.DEVNULL,
+                               stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    values = {"stdout": bytearray(), "stderr": bytearray()}
+    overflow = threading.Event()
+
+    def consume(name: str, stream: Any, limit: int) -> None:
+        try:
+            while True:
+                chunk = stream.read(1024)
+                if not chunk:
+                    break
+                remaining = limit - len(values[name])
+                values[name].extend(chunk[:max(0, remaining)])
+                if len(chunk) > remaining:
+                    overflow.set()
+                    if process.poll() is None:
+                        process.kill()
+                    break
+        finally:
+            stream.close()
+
+    threads = [threading.Thread(target=consume, args=(name, getattr(process, name), limit), daemon=True)
+               for name, limit in (("stdout", 8192), ("stderr", 1024))]
+    for thread in threads:
+        thread.start()
+    try:
+        status = process.wait(timeout=timeout)
+    except subprocess.TimeoutExpired:
+        process.kill()
+        process.wait(timeout=1.0)
+        raise
+    finally:
+        for thread in threads:
+            thread.join(timeout=1.0)
+    _require(not overflow.is_set() and not any(thread.is_alive() for thread in threads),
+             "engine observation exceeded its bounded capture")
+    return subprocess.CompletedProcess(command, status,
+        stdout=values["stdout"].decode("utf-8", errors="replace"),
+        stderr=values["stderr"].decode("utf-8", errors="replace"))
+
+
 class DockerWorkerHandle:
     """Foreground `docker run` handle with host PID attestation via inspect."""
 
@@ -3668,6 +3711,9 @@ class DockerWorkerHandle:
         platform_observer: Callable[[], Mapping[str, Any]],
         stdout_capture: Any,
         stderr_capture: Any,
+        worker_image_id: str | None = None,
+        route: tuple[str, str] | None = None,
+        launched_at_utc: str | None = None,
     ) -> None:
         self._process = process
         self.container_name = container_name
@@ -3676,6 +3722,16 @@ class DockerWorkerHandle:
         self._platform_observer = platform_observer
         self._stdout_capture = stdout_capture
         self._stderr_capture = stderr_capture
+        self._worker_image_id = worker_image_id
+        self._route = route
+        self._container_id: str | None = None
+        self._last_engine_state: dict[str, Any] | None = None
+        self._launched_at_utc = launched_at_utc or datetime.now(timezone.utc).isoformat()
+        self._engine_identity: dict[str, Any] | None = None
+        try:
+            self._frontend_start_ticks = _process_starttime_ticks(self.pid) if isinstance(process, subprocess.Popen) else None
+        except Exception:
+            self._frontend_start_ticks = None
 
     @staticmethod
     def _capture_tail(capture: Any, *, maximum_bytes: int = 2048) -> str:
@@ -3689,6 +3745,96 @@ class DockerWorkerHandle:
         if not isinstance(payload, bytes):
             payload = bytes(payload or b"")
         return payload.decode("utf-8", errors="replace")
+
+    def _observe(self, command: Sequence[str]) -> subprocess.CompletedProcess[str]:
+        if self._command_runner is subprocess.run:
+            return _bounded_engine_observation(command)
+        return self._command_runner(list(command), check=False, capture_output=True,
+                                    text=True, timeout=2.0)
+
+    def _observe_engine_state(self) -> dict[str, Any]:
+        formatter = '{"id":{{json .Id}},"image":{{json .Image}},"pid":{{.State.Pid}},"exit_code":{{.State.ExitCode}},"oom_killed":{{.State.OOMKilled}},"running":{{.State.Running}},"started_at":{{json .State.StartedAt}},"finished_at":{{json .State.FinishedAt}}}'
+        try:
+            completed = self._observe(["docker", "inspect", "--format", formatter,
+                                       self._container_id or self.container_name])
+            _require(completed.returncode == 0 and len(completed.stdout.encode("utf-8")) <= 8192,
+                     "engine state observation unavailable")
+            value = json.loads(completed.stdout)
+            _require(type(value) is dict and set(value) == {"id", "image", "pid", "exit_code", "oom_killed", "running", "started_at", "finished_at"},
+                     "engine state observation shape invalid")
+            _require(type(value["id"]) is str and re.fullmatch(r"[0-9a-f]{64}", value["id"])
+                     and (self._container_id is None or value["id"] == self._container_id),
+                     "engine container identity changed")
+            _require(self._worker_image_id is None or value["image"] == self._worker_image_id,
+                     "engine worker image changed")
+            _require(type(value["oom_killed"]) is bool and type(value["running"]) is bool
+                     and type(value["pid"]) is int and type(value["exit_code"]) is int
+                     and all(type(value[key]) is str and len(value[key]) <= 64 for key in ("started_at", "finished_at")),
+                     "engine state fact type invalid")
+            self._container_id = value["id"]
+            self._last_engine_state = dict(value)
+            return {"status": "observed", "facts": value}
+        except Exception as error:
+            return {"status": "unavailable", "reason": type(error).__name__, "facts": None}
+
+    def _capture_engine_identity(self) -> None:
+        if self._engine_identity is None:
+            identity = {}
+            for key, command in (("daemon_id", ["docker", "info", "--format", "{{.ID}}"]),
+                                 ("context", ["docker", "context", "show"])):
+                try:
+                    completed = self._observe(command)
+                    value = completed.stdout.strip()
+                    _require(completed.returncode == 0 and value.isascii() and 0 < len(value) <= 128
+                             and all(ord(character) >= 0x20 for character in value), "engine identity unavailable")
+                    identity[key] = {"status": "observed", "value": value}
+                except Exception as error:
+                    identity[key] = {"status": "unavailable", "reason": type(error).__name__, "value": None}
+            self._engine_identity = identity
+
+    def termination_facts(self) -> dict[str, Any]:
+        """Exit137 alone never authorizes an OOM attribution."""
+        observed_at = datetime.now(timezone.utc).isoformat()
+        state = self._observe_engine_state()
+        self._capture_engine_identity()
+        events: dict[str, Any] = {"status": "unavailable", "reason": "original_container_id_unavailable", "records": []}
+        if self._container_id is not None:
+            try:
+                completed = self._observe(["docker", "events", "--since", self._launched_at_utc,
+                    "--until", observed_at, "--filter", "container=" + self._container_id,
+                    "--format", '{"action":{{json .Action}},"id":{{json .Actor.ID}},"timeNano":{{.TimeNano}}}'])
+                _require(completed.returncode == 0 and len(completed.stdout.encode("utf-8")) <= 8192,
+                         "engine events unavailable")
+                records = []
+                for line in completed.stdout.splitlines():
+                    if not line.strip():
+                        continue
+                    _require(len(records) < 32, "engine event capture exceeded32records")
+                    event = json.loads(line)
+                    _require(type(event) is dict and set(event) == {"action", "id", "timeNano"}
+                             and event["id"] == self._container_id and type(event["action"]) is str
+                             and len(event["action"]) <= 64 and type(event["timeNano"]) is int,
+                             "engine event identity invalid")
+                    records.append(event)
+                events = {"status": "observed", "records": records}
+            except Exception as error:
+                events = {"status": "unavailable", "reason": type(error).__name__, "records": []}
+        facts = state["facts"]
+        oom = {"status": "observed", "value": facts["oom_killed"]} if facts is not None and not facts["running"] else {"status": "unavailable", "value": None, "reason": "no_original_terminal_engine_state"}
+        core = {"schema_version": 1, "artifact_kind": "vast_guardian_worker_termination_facts_v1",
+            "observed_at_utc": observed_at, "container_name": self.container_name,
+            "container_id": self._container_id, "worker_image_id": self._worker_image_id,
+            "route": None if self._route is None else {"branch": self._route[0], "resource": self._route[1]},
+            "frontend_process": {"pid": self.pid, "proc_stat_starttime_ticks": self._frontend_start_ticks, "exit_code": self.poll()},
+            "engine_identity": self._engine_identity, "engine_state": state,
+            "last_observed_engine_state": self._last_engine_state, "engine_events": events,
+            "oom_observation": oom,
+            "stdout_tail": self._capture_tail(self._stdout_capture, maximum_bytes=512),
+            "stderr_tail": self._capture_tail(self._stderr_capture, maximum_bytes=512),
+            "cgroup_observation": {"status": "unavailable", "reason": "original_cgroup_namespace_not_established"},
+            "kernel_observation": {"status": "unavailable", "reason": "kernel_log_authority_not_established"}}
+        _require(len(canonical_json_bytes(core)) <= 16384, "worker termination facts exceed bounded capture")
+        return {**core, "sha256": canonical_sha256(core)}
 
     def failure_diagnostic(self) -> str:
         return (
@@ -3735,6 +3881,10 @@ class DockerWorkerHandle:
                 )
                 raw = completed.stdout.strip()
                 if raw.isdigit() and int(raw) > 0:
+                    state = self._observe_engine_state()
+                    _require(state["status"] == "observed" and state["facts"]["pid"] == int(raw),
+                             "worker engine identity unavailable at original readiness")
+                    self._capture_engine_identity()
                     return int(raw)
             except (OSError, subprocess.SubprocessError):
                 pass
@@ -3980,6 +4130,7 @@ class DockerWorkerProcessFactory:
         stdout_capture = tempfile.TemporaryFile(mode="w+b")
         stderr_capture = tempfile.TemporaryFile(mode="w+b")
         try:
+            launched_at_utc = datetime.now(timezone.utc).isoformat()
             process = self._popen_factory(
                 command,
                 stdin=subprocess.DEVNULL,
@@ -3999,6 +4150,9 @@ class DockerWorkerProcessFactory:
             platform_observer=self._observe_peercred_platform,
             stdout_capture=stdout_capture,
             stderr_capture=stderr_capture,
+            worker_image_id=str(spec.worker_config["image_id"]),
+            route=(spec.branch, spec.resource),
+            launched_at_utc=launched_at_utc,
         )
 
 
@@ -4032,6 +4186,7 @@ class GStreamerAnalyticsSidecar:
         startup_timeout_s: float = 120.0,
         shutdown_timeout_s: float = 10.0,
         monitor_interval_s: float = 0.1,
+        operational_context: Mapping[str, Any] | None = None,
     ) -> None:
         self.execution_config = dict(
             _mapping(execution_config, "analytics execution config")
@@ -4141,6 +4296,16 @@ class GStreamerAnalyticsSidecar:
         )
         self.service_mode = service_mode
         self._production = service_mode == PRODUCTION_SERVICE_MODE
+        _require(operational_context is None or self._production,
+                 "operational request accounting requires explicit production activation")
+        if operational_context is not None:
+            _exact(operational_context, {"headers_by_route", "output_dir"},
+                   "operational request accounting context")
+        self._operational_context = operational_context
+        self._operational_recorder = None
+        self._operational_group = None
+        self._worker_termination_lock = threading.Lock()
+        self._worker_termination_descriptors = {}
         if self._production:
             _require(
                 self.preprocessing_contract is not None
@@ -4461,15 +4626,47 @@ class GStreamerAnalyticsSidecar:
         self._verify_runtime_directory_custody()
         return self.runtime_dir / f"worker-{branch}-{resource}.sock"
 
+    def _capture_worker_termination(self, key: tuple[str, str], handle: Any, *, phase: str) -> dict[str, Any] | None:
+        observer = getattr(handle, "termination_facts", None)
+        if not callable(observer):
+            return None
+        with self._worker_termination_lock:
+            if key in self._worker_termination_descriptors:
+                return self._worker_termination_descriptors[key]
+            value = dict(observer())
+            value["observed_service_phase"] = phase
+            materialized = self._production_materialized
+            value["worker_capability"] = None if materialized is None else dict(materialized.capabilities[key])
+            value["last_known_guardian_counters"] = None if self._production_counters is None else self._production_counters.snapshot()
+            value["resource_observation"] = {"status": "unavailable", "reason": "original_worker_resource_counter_namespace_not_established"}
+            value.pop("sha256", None)
+            value["sha256"] = canonical_sha256(value)
+            payload = canonical_json_bytes(value) + b"\n"
+            _require(len(payload) <= 16384, "worker termination evidence exceeded16KiB")
+            path = self.evidence.root / ("worker_termination-" + key[0] + "-" + key[1] + ".v1.json")
+            _require(not os.path.lexists(path), "worker termination evidence already exists")
+            _atomic_write_json(path, value, directory_custody=getattr(self.evidence, "_directory_custody", None))
+            descriptor = {"path": str(path), "size_bytes": len(payload), "sha256": hashlib.sha256(payload).hexdigest()}
+            self._worker_termination_descriptors[key] = descriptor
+            return descriptor
+
     def _assert_workers_live(self, *, phase: str) -> None:
         for key, handle in self._handles.items():
             status = handle.poll()
             if status is not None:
                 diagnostic = ""
+                for dead_key, dead_handle in self._handles.items():
+                    if dead_handle.poll() is not None:
+                        try:
+                            descriptor = self._capture_worker_termination(dead_key, dead_handle, phase=phase)
+                            if dead_key == key and descriptor is not None:
+                                diagnostic += "; termination_facts=" + str(descriptor["path"]) + ";sha256=" + descriptor["sha256"]
+                        except Exception:
+                            diagnostic += ";termination_facts_unavailable"
                 reporter = getattr(handle, "failure_diagnostic", None)
                 if callable(reporter):
                     try:
-                        diagnostic = f"; {reporter()}"
+                        diagnostic += f"; {reporter()}"
                     except BaseException:
                         diagnostic = "; diagnostic_capture_failed"
                 raise SidecarError(
@@ -4852,6 +5049,8 @@ class GStreamerAnalyticsSidecar:
                     self._production_failure_diagnostic = self.evidence.persist_protocol_failure(diagnostic)
                 except Exception:
                     self._production_failure_diagnostic_error = True
+        if self._operational_recorder is not None:
+            self._operational_recorder.fail("guardian service failure: " + type(error).__name__)
         self._stop.set()
 
     def _production_failure_message(self, error: BaseException) -> str:
@@ -4947,7 +5146,7 @@ class GStreamerAnalyticsSidecar:
                 self._production_counters.connection_opened()
                 thread = threading.Thread(
                     target=self._serve_connection,
-                    args=(endpoint, errors, errors_lock),
+                    args=(endpoint, errors, errors_lock, accepted),
                     name=f"vast-gst-production-front-{accepted}",
                     daemon=False,
                 )
@@ -5096,6 +5295,7 @@ class GStreamerAnalyticsSidecar:
         endpoint: socket.socket,
         errors: list[BaseException],
         errors_lock: threading.Lock,
+        connection_seq: int | None = None,
     ) -> None:
         clean_eof = False
         failed = False
@@ -5117,6 +5317,9 @@ class GStreamerAnalyticsSidecar:
                 request_completed = False
                 attributed_request: Mapping[str, Any] | None = None
                 failure_stage = "control_envelope"
+                operational_token: int | None = None
+                response = None
+                operational_send = "closed"
                 try:
                     message_type = str(message.get("message_type") or "")
                     _require(
@@ -5236,6 +5439,11 @@ class GStreamerAnalyticsSidecar:
                             request_id=str(message.get("request_id") or ""),
                         )
                         request_reserved = True
+                        if self._operational_recorder is not None:
+                            operational_token = self._operational_recorder.begin(
+                                message, request_route, protocol_mode,
+                                connection_seq, handled_requests + 1,
+                            )
                     failure_stage = "payload_integrity"
                     payload = verify_sealed_memfd(
                         descriptors[0],
@@ -5279,6 +5487,7 @@ class GStreamerAnalyticsSidecar:
                             lifecycle_id=self.lifecycle_id,
                         )
                         self._call_manifests.append(manifest)
+                    operational_send = "failed"
                     if protocol_mode == "worker":
                         _require(
                             output is not None,
@@ -5298,6 +5507,13 @@ class GStreamerAnalyticsSidecar:
                             close_fds((output_descriptor,))
                     else:
                         send_packet(endpoint, response)
+                    operational_send = "sent"
+                    if operational_token is not None:
+                        self._operational_recorder.terminal(
+                            operational_token, response,
+                            outcome="completed", send="sent",
+                        )
+                        operational_token = None
                     if self._production:
                         _require(
                             request_route is not None
@@ -5311,6 +5527,14 @@ class GStreamerAnalyticsSidecar:
                         request_completed = True
                     handled_requests += 1
                 except BaseException:
+                    if operational_token is not None:
+                        try:
+                            self._operational_recorder.terminal(
+                                operational_token, response,
+                                outcome="failed", send=operational_send,
+                            )
+                        except Exception as recorder_error:
+                            self._operational_recorder.fail(str(recorder_error))
                     if self._production:
                         try:
                             failure_diagnostic = self._protocol_failure_diagnostic(
@@ -5695,6 +5919,7 @@ class GStreamerAnalyticsProductionService(GStreamerAnalyticsSidecar):
         startup_timeout_s: float = 120.0,
         shutdown_timeout_s: float = 10.0,
         monitor_interval_s: float = 0.1,
+        operational_context: Mapping[str, Any] | None = None,
     ) -> None:
         _require(
             isinstance(preprocessing_contract, Mapping)
@@ -5720,6 +5945,7 @@ class GStreamerAnalyticsProductionService(GStreamerAnalyticsSidecar):
             startup_timeout_s=startup_timeout_s,
             shutdown_timeout_s=shutdown_timeout_s,
             monitor_interval_s=monitor_interval_s,
+            operational_context=operational_context,
         )
 
     def _execution_config_identity(self) -> str:
@@ -5879,6 +6105,29 @@ class GStreamerAnalyticsProductionService(GStreamerAnalyticsSidecar):
             self._owned_sockets.append(control)
             authority = self._build_authority(materialized)
             self._production_authority = authority
+            self.evidence.persist_authority(authority)
+            if self._operational_context is not None:
+                from publication_guardian_operational_recorder_v1 import GuardianOperationalRecorder
+                from publication_operational_request_domain_v1 import payload_with_sha256_v1
+                templates = self._operational_context["headers_by_route"]
+                _require(isinstance(templates, Mapping) and set(templates) == EXPECTED_KEYS,
+                         "operational request headers must cover exact eight routes")
+                authority_bytes = self.evidence.authority_path.read_bytes()
+                authority_descriptor = {"path": str(self.evidence.authority_path),
+                    "size_bytes": len(authority_bytes),
+                    "sha256": hashlib.sha256(authority_bytes).hexdigest()}
+                operational_headers = {}
+                for route, template in templates.items():
+                    header = _canonical_clone(template)
+                    header["lifecycle_id"] = self.lifecycle_id
+                    header["owner"] = dict(authority["owner_process"])
+                    header["descriptors"]["service_authority"] = dict(authority_descriptor)
+                    header["worker_capability"] = dict(materialized.capabilities[route])
+                    header.pop("sha256", None)
+                    operational_headers[route] = payload_with_sha256_v1(header)
+                self._operational_recorder = GuardianOperationalRecorder(
+                    self._operational_context["output_dir"], operational_headers,
+                )
             self._production_front_thread = threading.Thread(
                 target=self._production_front_loop,
                 args=(front,),
@@ -5894,7 +6143,6 @@ class GStreamerAnalyticsProductionService(GStreamerAnalyticsSidecar):
             self._production_front_thread.start()
             self._production_control_thread.start()
             self._assert_production_internal_live()
-            self.evidence.persist_authority(authority)
             self._production_state = "running"
             return _canonical_clone(authority)
         except BaseException as error:
@@ -5921,6 +6169,19 @@ class GStreamerAnalyticsProductionService(GStreamerAnalyticsSidecar):
             if isinstance(error, SidecarError):
                 raise
             raise SidecarError(str(error)) from error
+
+    @property
+    def operational_headers(self) -> dict[tuple[str, str], dict[str, Any]] | None:
+        return None if self._operational_recorder is None else self._operational_recorder.headers
+
+    @property
+    def operational_capture_context(self) -> dict[str, Any] | None:
+        descriptor = getattr(self, "_operational_capture_context_descriptor", None)
+        return None if descriptor is None else dict(descriptor)
+
+    @property
+    def operational_group(self) -> dict[str, Any] | None:
+        return None if self._operational_group is None else dict(self._operational_group)
 
     @property
     def authority(self) -> dict[str, Any]:
@@ -6065,6 +6326,12 @@ class GStreamerAnalyticsProductionService(GStreamerAnalyticsSidecar):
             "analytics production lifecycle counters are unavailable",
         )
         counter_snapshot = self._production_counters.snapshot()
+        if self._operational_recorder is not None:
+            try:
+                self._operational_group = self._operational_recorder.finish(counter_snapshot)
+            except Exception as recorder_error:
+                self._operational_group = self._operational_recorder.group_descriptor
+                all_cleanup_errors.append("operational_accounting:" + str(recorder_error))
         if counter_snapshot["connections_failed"]:
             all_cleanup_errors.append(
                 "connection_failures:"
@@ -6437,6 +6704,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--runtime-dir", type=Path)
     parser.add_argument("--front-socket", type=Path)
     parser.add_argument("--evidence-root", type=Path)
+    parser.add_argument("--operational-accounting-context", type=Path,
+        help="Explicit sealed qualification37 or two-arm diagnostic capture context; omitted for generic publication/Q4/full runs")
     parser.add_argument("--max-connections", type=int)
     parser.add_argument(
         "--max-requests-per-connection", type=int
@@ -6464,6 +6733,7 @@ def _validate_cli_mode_contract(args: argparse.Namespace) -> None:
         "runtime_dir",
         "front_socket",
         "evidence_root",
+        "operational_accounting_context",
         "max_connections",
         "max_requests_per_connection",
         "max_total_requests",
@@ -6498,6 +6768,7 @@ def _validate_cli_mode_contract(args: argparse.Namespace) -> None:
             for field in (
                 "preprocessing_contract",
                 "preprocessing_contract_receipt",
+                "operational_accounting_context",
                 "max_total_requests",
                 "startup_timeout_seconds",
                 "shutdown_timeout_seconds",
@@ -6517,9 +6788,52 @@ def _validate_cli_mode_contract(args: argparse.Namespace) -> None:
     else:
         _require(
             args.preprocessing_contract_receipt is None
+            and args.operational_accounting_context is None
             and args.max_total_requests is None,
             "engineering sidecar has incompatible production-only arguments",
         )
+
+
+def load_operational_capture_context_v1(path: Path | str) -> tuple[dict[str, Any], dict[str, Any]]:
+    """Read one explicitly selected immutable context; never infer activation."""
+    from publication_operational_request_domain_v1 import strict_json_object_v1
+    target = _absolute(path)
+    _require(target.resolve(strict=True) == target and not _is_reparse(target),
+             "operational accounting context path has aliases")
+    descriptor = os.open(target, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0))
+    with os.fdopen(descriptor, "rb") as source:
+        before = os.fstat(source.fileno())
+        _require(stat.S_ISREG(before.st_mode) and before.st_nlink == 1
+                 and 0 < before.st_size <= 1048576,
+                 "operational accounting context exceeds physical1MiB bound")
+        raw = source.read(1048577)
+        after = os.fstat(source.fileno())
+        _require(len(raw) == before.st_size and (before.st_dev, before.st_ino, before.st_size, before.st_mtime_ns, before.st_ctime_ns)
+                 == (after.st_dev, after.st_ino, after.st_size, after.st_mtime_ns, after.st_ctime_ns),
+                 "operational accounting context changed during custody")
+    current = target.stat()
+    _require((current.st_dev, current.st_ino, current.st_size, current.st_mtime_ns, current.st_ctime_ns)
+             == (before.st_dev, before.st_ino, before.st_size, before.st_mtime_ns, before.st_ctime_ns)
+             and not _is_reparse(target), "operational accounting context pathname custody changed")
+    value = strict_json_object_v1(raw, max_bytes=1048576)
+    _require(raw == canonical_json_bytes(value) + b"\n", "operational accounting context is not canonical JSON")
+    _exact(value, {"schema_version", "artifact_kind", "mode", "headers_by_route", "output_dir", "sha256"},
+           "operational capture context")
+    _require(type(value["schema_version"]) is int and value["schema_version"] == 1
+             and value["artifact_kind"] == "vast_guardian_operational_capture_context_v1"
+             and value["mode"] in {"complete_qualification_operational_identity_v1", "bounded_native_diagnostic_operational_v1"},
+             "unsupported operational capture context mode")
+    _require(_sha(value["sha256"], "operational capture context") == canonical_sha256({key: item for key, item in value.items() if key != "sha256"}),
+             "operational capture context SHA mismatch")
+    expected = {branch + ":" + resource: (branch, resource) for branch, resource in EXPECTED_KEYS}
+    _exact(value["headers_by_route"], set(expected), "operational capture context route headers")
+    output_dir = value["output_dir"]
+    _require(type(output_dir) is str and Path(output_dir).is_absolute()
+             and not os.path.lexists(output_dir), "operational capture output already exists or is not absolute")
+    context = {"headers_by_route": {route: value["headers_by_route"][name] for name, route in expected.items()},
+               "output_dir": output_dir}
+    physical = {"path": str(target), "size_bytes": len(raw), "sha256": hashlib.sha256(raw).hexdigest()}
+    return context, physical
 
 
 def main(argv: Sequence[str] | None = None) -> int:
@@ -6742,8 +7056,13 @@ def main(argv: Sequence[str] | None = None) -> int:
                 args.max_total_requests is None,
                 "engineering sidecar cannot claim production total requests",
             )
+        capture_context_descriptor = None
+        if args.operational_accounting_context is not None:
+            _require(args.production_guardian, "operational accounting context requires production guardian")
+            owner_values["operational_context"], capture_context_descriptor = load_operational_capture_context_v1(args.operational_accounting_context)
         if args.production_guardian:
             owner = GStreamerAnalyticsProductionService(**owner_values)
+            owner._operational_capture_context_descriptor = capture_context_descriptor
             _require(
                 type(owner) is GStreamerAnalyticsProductionService,
                 "analytics production guardian owner type drifted",

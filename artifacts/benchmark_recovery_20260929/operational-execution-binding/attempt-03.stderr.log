@@ -1,0 +1,29 @@
+setUpClass (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests) ... ERROR
+
+======================================================================
+ERROR: setUpClass (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_native_policy_runtime.py", line 588, in __init__
+    expected_static_map = select_static_hybrid_map(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_contract.py", line 460, in select_static_hybrid_map
+    raise PolicyContractError("calibration system does not match requested system")
+publication_policy_contract.PolicyContractError: calibration system does not match requested system
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_execution_binding_v1.py", line 310, in setUpClass
+    cls.fixture.execute()
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_execution_binding_v1.py", line 156, in execute
+    coordinator = NativePolicyRuntimeCoordinator(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_native_policy_runtime.py", line 594, in __init__
+    raise NativePolicyRuntimeError(f"publication policy calibration is blocked: {exc}") from exc
+checkpoint_native_policy_runtime.NativePolicyRuntimeError: publication policy calibration is blocked: calibration system does not match requested system
+
+----------------------------------------------------------------------
+Ran 0 tests in 0.625s
+
+FAILED (errors=1)

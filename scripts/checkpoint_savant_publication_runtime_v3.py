@@ -39,6 +39,16 @@ from publication_child_evidence_materializer_v1 import (
     PublicationChildEvidenceMaterializerV1Error,
     materialize_publication_child_evidence_group_v1,
 )
+from publication_operational_container_custody_v1 import measurement_container_custody_v1
+from publication_operational_process_custody_v1 import (
+    original_engine_phase_v1, engine_process_started_v1, engine_process_terminal_v1,
+)
+from publication_operational_runtime_context_v1 import (
+    CAPTURE_KEY, runtime_file_roles_v1, prepare_operational_child_dir_v1,
+    operational_mount_arguments_v1, operational_launch_arguments_v1,
+    copy_operational_child_v1, operational_runtime_scratch_v1,
+)
+
 RUNTIME_INPUT_KEY = "savant_publication_runtime_v3"
 RUNTIME_INPUT_KIND = "vast_savant_publication_runtime_inputs_v3"
 TERMINAL_STATUS_KIND = "vast_savant_publication_terminal_status_v3"
@@ -493,12 +503,16 @@ def _validate_contract(request: NativePublicationRequestV3) -> _Contract:
     value = dataset.get(RUNTIME_INPUT_KEY) if isinstance(dataset, Mapping) else None
     if type(value) is not dict:
         _fail("savant_runtime_input_contract_missing")
-    if set(value) != RUNTIME_FIELDS:
+    if set(value) not in (RUNTIME_FIELDS, RUNTIME_FIELDS | {CAPTURE_KEY}):
         _fail("savant_runtime_input_contract_fields_drifted")
     if value.get("schema_version") != 3 or value.get("artifact_kind") != RUNTIME_INPUT_KIND:
         _fail("savant_runtime_input_contract_identity_invalid")
+    try:
+        expected_file_roles = runtime_file_roles_v1(request, value, FILE_ROLES)
+    except (ValueError, TypeError, OSError):
+        _fail("savant_operational_capture_contract_invalid")
     files = value.get("files")
-    if type(files) is not dict or set(files) != FILE_ROLES:
+    if type(files) is not dict or set(files) != expected_file_roles:
         _fail("savant_runtime_file_role_set_drifted")
     if runtime.get("system") != request.system or request.system != "savant":
         _fail("savant_runtime_system_binding_invalid")
@@ -580,7 +594,7 @@ def _open_pins(request: NativePublicationRequestV3, contract: _Contract) -> _Pin
     support: tuple[_Pin, ...] = ()
     static_map: _Pin | None = None
     try:
-        for role in sorted(FILE_ROLES):
+        for role in sorted(raw["files"]):
             roles[role] = _open_pin(
                 root, role, raw["files"][role],
                 executable=role in EXECUTABLE_ROLES,
@@ -648,9 +662,12 @@ def _invoke_engine(
     argv: tuple[str, ...],
     timeout_s: float,
 ) -> _Completed:
-    """Run the held Docker CLI with bounded binary captures and no shell."""
+    """Run the held CLI, preserving original status and bounded captures."""
 
-    if not argv or any(type(value) is not str or "\x00" in value for value in argv):
+    if (
+        not argv or any(type(value) is not str or "\x00" in value for value in argv)
+        or not math.isfinite(timeout_s) or timeout_s <= 0
+    ):
         _fail("savant_container_engine_argv_invalid")
     environment = {
         "DOCKER_HOST": f"unix://{engine_socket['path']}",
@@ -669,45 +686,96 @@ def _invoke_engine(
         ) from error
     captures = {"stdout": bytearray(), "stderr": bytearray()}
     exceeded = threading.Event()
+    stop_readers = threading.Event()
+    reader_failed = threading.Event()
 
     def reader(name: str, stream: Any) -> None:
         observed = 0
-        while True:
-            chunk = stream.read(64 * 1024)
-            if not chunk:
-                return
-            observed += len(chunk)
-            if observed > MAX_CAPTURE_BYTES:
-                exceeded.set()
-            target = captures[name]
-            if len(target) < MAX_CAPTURE_BYTES:
-                target.extend(chunk[: MAX_CAPTURE_BYTES - len(target)])
+        try:
+            try:
+                descriptor = stream.fileno()
+                os.set_blocking(descriptor, False)
+            except (AttributeError, OSError, ValueError):
+                descriptor = None  # Only inactive in-memory fixtures lack a pipe.
+            while not stop_readers.is_set():
+                try:
+                    chunk = os.read(descriptor, 64 * 1024) if descriptor is not None else stream.read(64 * 1024)
+                except BlockingIOError:
+                    stop_readers.wait(0.01)
+                    continue
+                if not chunk:
+                    return
+                observed += len(chunk)
+                if observed > MAX_CAPTURE_BYTES:
+                    exceeded.set()
+                target = captures[name]
+                if len(target) < MAX_CAPTURE_BYTES:
+                    target.extend(chunk[: MAX_CAPTURE_BYTES - len(target)])
+        except (OSError, ValueError):
+            reader_failed.set()
 
     threads = [
-        threading.Thread(target=reader, args=("stdout", process.stdout), daemon=True),
-        threading.Thread(target=reader, args=("stderr", process.stderr), daemon=True),
+        threading.Thread(target=reader, args=(name, stream), daemon=True)
+        for name, stream in (("stdout", process.stdout), ("stderr", process.stderr))
     ]
-    for thread in threads:
-        thread.start()
-    deadline = time.monotonic() + timeout_s
+    started_threads = []
+    token = None
     timed_out = False
-    while process.poll() is None:
-        if exceeded.is_set() or time.monotonic() >= deadline:
-            timed_out = not exceeded.is_set()
-            try:
-                os.killpg(process.pid, signal.SIGKILL)
-            except OSError:
-                process.kill()
-            break
-        time.sleep(0.01)
+    drain_failed = False
+    body_error = None
     try:
-        process.wait(timeout=10)
-    except subprocess.TimeoutExpired:
-        process.kill()
-        process.wait()
-    for thread in threads:
-        thread.join(timeout=10)
-    if any(thread.is_alive() for thread in threads):
+        for thread in threads:
+            thread.start()
+            started_threads.append(thread)
+        # Persistence can fail after Popen; the original child is still ours.
+        token = engine_process_started_v1(process, engine, engine_socket, argv)
+        deadline = time.monotonic() + timeout_s
+        while process.poll() is None:
+            if exceeded.is_set() or time.monotonic() >= deadline:
+                timed_out = not exceeded.is_set()
+                break
+            time.sleep(0.01)
+    except BaseException as error:
+        body_error = error
+        raise
+    finally:
+        try:
+            try:
+                if process.poll() is None:
+                    try:
+                        os.killpg(process.pid, signal.SIGKILL)
+                    except OSError:
+                        process.kill()
+                try:
+                    process.wait(timeout=10)
+                except subprocess.TimeoutExpired:
+                    process.kill()
+                    process.wait(timeout=10)
+                for thread in started_threads:
+                    thread.join(timeout=10)
+            finally:
+                drain_failed = reader_failed.is_set() or any(thread.is_alive() for thread in started_threads)
+                stop_readers.set()
+                try:
+                    for thread in started_threads:
+                        thread.join(timeout=1)
+                    drain_failed = drain_failed or any(thread.is_alive() for thread in started_threads)
+                finally:
+                    for stream in (process.stdout, process.stderr):
+                        try:
+                            stream.close()
+                        except OSError:
+                            pass
+            if token is not None:
+                engine_process_terminal_v1(
+                    token, process, bytes(captures["stdout"]), bytes(captures["stderr"]),
+                    timed_out, exceeded.is_set(), drain_failed,
+                )
+        except BaseException as cleanup_error:
+            if body_error is None:
+                raise
+            body_error.add_note("Original engine child cleanup failed: " + str(cleanup_error))
+    if drain_failed:
         _fail("savant_container_capture_drain_failed")
     if exceeded.is_set():
         _fail("savant_container_capture_limit_exceeded")
@@ -721,10 +789,11 @@ def _invoke_engine(
 
 
 def _inspect_image(pins: _Pins, contract: _Contract) -> dict[str, Any]:
-    completed = _invoke_engine(
-        pins.roles["container_engine"], contract.engine_socket,
-        ("image", "inspect", str(contract.image["image_id"])), 60.0,
-    )
+    with original_engine_phase_v1("image_inspect"):
+        completed = _invoke_engine(
+            pins.roles["container_engine"], contract.engine_socket,
+            ("image", "inspect", str(contract.image["image_id"])), 60.0,
+        )
     if completed.returncode != 0 or completed.stderr:
         _fail("savant_container_image_inspect_failed")
     try:
@@ -820,6 +889,7 @@ def _container_argv(
         *deterministic_numeric_thread_environment_argv_v1(),
         *_mount(str(input_root), str(CONTAINER_INPUT_ROOT), readonly=True),
         *_mount(str(runtime_output), CONTAINER_OUTPUT_ROOT, readonly=False),
+        *operational_mount_arguments_v1(contract.raw, runtime_output, _mount),
     ]
     for endpoint in contract.endpoint_sockets:
         arguments.extend(
@@ -870,6 +940,7 @@ def _container_argv(
         arguments.extend(("--static-hybrid-map", pins.static_map.container_path))
     if contract.raw["defer_full_resource_acceptance"]:
         arguments.append("--defer-full-resource-acceptance")
+    arguments.extend(operational_launch_arguments_v1(contract.raw, files))
     return tuple(arguments)
 
 
@@ -975,7 +1046,7 @@ def run_checkpoint_savant_publication_runtime_v3(
         _inspect_image(pins, contract)
         _require_pins_unchanged(pins)
         _require_sockets_unchanged(contract)
-        with tempfile.TemporaryDirectory(
+        with operational_runtime_scratch_v1(contract.raw, request=request,
             prefix=f"vast-savant-v3-{request.arm_id}-",
             dir=str(contract.raw["scratch_root"]),
         ) as name:
@@ -986,15 +1057,20 @@ def run_checkpoint_savant_publication_runtime_v3(
             runtime_output = scratch / "output"
             _materialize_inputs(pins, inputs)
             runtime_output.mkdir(mode=0o700)
+            prepare_operational_child_dir_v1(contract.raw, runtime_output)
             arguments = _container_argv(
                 request, contract, pins, inputs, runtime_output
             )
             _require_pins_unchanged(pins)
             _require_sockets_unchanged(contract)
-            completed = _invoke_engine(
-                pins.roles["container_engine"], contract.engine_socket,
-                arguments, float(contract.raw["container_timeout_s"]),
-            )
+            with original_engine_phase_v1("measurement"), measurement_container_custody_v1(
+                pins.roles["container_engine"], contract.engine_socket, arguments,
+            ) as owned_container:
+                completed = _invoke_engine(
+                    pins.roles["container_engine"], contract.engine_socket,
+                    owned_container.argv, float(contract.raw["container_timeout_s"]),
+                )
+                owned_container.completed(completed.returncode)
             _require_pins_unchanged(pins)
             _require_sockets_unchanged(contract)
             _inspect_image(pins, contract)
@@ -1006,6 +1082,7 @@ def run_checkpoint_savant_publication_runtime_v3(
                 _fail_native_run(completed)
             _validate_status(completed.stdout, request, contract)
             _copy_evidence(runtime_output, request, contract.evidence_mapping)
+            copy_operational_child_v1(contract.raw, runtime_output, request)
         _require_pins_unchanged(pins)
         _require_sockets_unchanged(contract)
         return NativePublicationOutcomeV3(exit_code=0)

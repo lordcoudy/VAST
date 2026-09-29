@@ -5,7 +5,7 @@ import hashlib
 import json
 import re
 from dataclasses import asdict, dataclass
-from typing import Any, Iterable
+from typing import Any, Iterable, Mapping
 
 from benchmark_contract import ContractError
 from topology_contract import INDEPENDENT_PROCESSES, SHARED_VIDEO_DAG
@@ -155,6 +155,7 @@ class DirectAdmissionCoordinator:
         topology_kind: str,
         branches: Iterable[str],
         bindings: Iterable[SourceBinding],
+        operational_admission_limits: Mapping[str, Any] | None = None,
     ) -> None:
         self.run_id = _text(run_id, "run_id")
         _require(topology_kind in {INDEPENDENT_PROCESSES, SHARED_VIDEO_DAG}, "unsupported admission topology")
@@ -181,8 +182,35 @@ class DirectAdmissionCoordinator:
         self._last_source_cycle: dict[str, int] = {}
         self._admissions: dict[str, _AdmissionState] = {}
         self._input_keys: set[str] = set()
+        self._operational_limits = None
+        self._operational_error: str | None = None
+        if operational_admission_limits is not None:
+            limits = dict(operational_admission_limits)
+            _require(
+                set(limits) == {"max_admissions_per_stream", "min_schedule_step_ns"}
+                and type(limits["max_admissions_per_stream"]) is int
+                and limits["max_admissions_per_stream"] in {241, 281}
+                and type(limits["min_schedule_step_ns"]) is int
+                and limits["min_schedule_step_ns"] == 999_999_600,
+                "unsupported operational source admission limits",
+            )
+            self._operational_limits = limits
 
     def accept(self, line: str, *, observed_source_process_id: str, observed_pid: int) -> AdmissionMessage:
+        # The supported accounting mode checks the actual source pipe before
+        # allocating ledger state or returning the ACK that releases fanout.
+        # A rejected source never resumes with a repaired event in this attempt.
+        _require(self._operational_error is None,
+                 f"operational source gate has failed: {self._operational_error}")
+        try:
+            return self._accept(line, observed_source_process_id=observed_source_process_id,
+                                observed_pid=observed_pid)
+        except ContractError as error:
+            if self._operational_limits is not None:
+                self._operational_error = str(error)
+            raise
+
+    def _accept(self, line: str, *, observed_source_process_id: str, observed_pid: int) -> AdmissionMessage:
         message = AdmissionMessage.parse(line)
         binding = self.bindings.get(observed_source_process_id)
         _require(binding is not None, f"unregistered source coordinator: {observed_source_process_id}")
@@ -194,6 +222,17 @@ class DirectAdmissionCoordinator:
         _require(message.source_sha256 == binding.source_sha256, "admission source SHA-256 differs from binding")
         expected_sequence = self._sequences[observed_source_process_id] + 1
         _require(message.sequence == expected_sequence, "source admission sequence is not gap-free")
+        if self._operational_limits is not None:
+            _require(
+                message.sequence <= self._operational_limits["max_admissions_per_stream"],
+                "operational source admission count exceeds the supported bound",
+            )
+            previous_offset = self._last_schedule_offset[observed_source_process_id]
+            _require(
+                previous_offset < 0 or message.schedule_offset_ns - previous_offset
+                >= self._operational_limits["min_schedule_step_ns"],
+                "operational source admission cadence is below the supported bound",
+            )
         _require(
             message.schedule_offset_ns > self._last_schedule_offset[observed_source_process_id],
             "source admission schedule offsets must be strictly increasing",

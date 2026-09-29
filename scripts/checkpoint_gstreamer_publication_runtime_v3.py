@@ -37,6 +37,15 @@ from publication_child_evidence_materializer_v1 import (
     PublicationChildEvidenceMaterializerV1Error,
     materialize_publication_child_evidence_group_v1,
 )
+from publication_operational_container_custody_v1 import measurement_container_custody_v1
+from publication_operational_process_custody_v1 import (
+    original_engine_phase_v1, engine_process_started_v1, engine_process_terminal_v1,
+)
+from publication_operational_runtime_context_v1 import (
+    CAPTURE_KEY, runtime_file_roles_v1, prepare_operational_child_dir_v1,
+    operational_mount_arguments_v1, operational_launch_arguments_v1,
+    copy_operational_child_v1, operational_runtime_scratch_v1,
+)
 from publication_policy_contract import POLICIES as FROZEN_POLICIES
 
 RUNTIME_INPUT_KEY = "gstreamer_custom_publication_runtime_v3"
@@ -588,12 +597,16 @@ def _validate_contract(request: NativePublicationRequestV3) -> _Contract:
     value = dataset.get(RUNTIME_INPUT_KEY) if isinstance(dataset, Mapping) else None
     if type(value) is not dict:
         _fail("gstreamer_runtime_input_contract_missing")
-    if set(value) != RUNTIME_FIELDS:
+    if set(value) not in (RUNTIME_FIELDS, RUNTIME_FIELDS | {CAPTURE_KEY}):
         _fail("gstreamer_runtime_input_contract_fields_drifted")
     if value.get("schema_version") != 3 or value.get("artifact_kind") != RUNTIME_INPUT_KIND:
         _fail("gstreamer_runtime_input_contract_identity_invalid")
+    try:
+        expected_file_roles = runtime_file_roles_v1(request, value, FILE_ROLES)
+    except (ValueError, TypeError, OSError):
+        _fail("gstreamer_operational_capture_contract_invalid")
     files = value.get("files")
-    if type(files) is not dict or set(files) != FILE_ROLES:
+    if type(files) is not dict or set(files) != expected_file_roles:
         _fail("gstreamer_runtime_file_role_set_drifted")
     if runtime.get("system") != request.system or request.system != "gstreamer_custom":
         _fail("gstreamer_runtime_system_binding_invalid")
@@ -694,7 +707,7 @@ def _open_pins(request: NativePublicationRequestV3, contract: _Contract) -> _Pin
     )
     if any(type(value) is not list for value in descriptor_sets):
         _fail("gstreamer_runtime_descriptor_set_invalid")
-    declared_count = len(FILE_ROLES) + sum(len(value) for value in descriptor_sets)
+    declared_count = len(raw["files"]) + sum(len(value) for value in descriptor_sets)
     if raw["static_hybrid_map"] is not None:
         declared_count += 1
     if declared_count > MAX_FILES:
@@ -705,7 +718,7 @@ def _open_pins(request: NativePublicationRequestV3, contract: _Contract) -> _Pin
     support: tuple[_Pin, ...] = ()
     static_map: _Pin | None = None
     try:
-        for role in sorted(FILE_ROLES):
+        for role in sorted(raw["files"]):
             roles[role] = _open_pin(
                 root, role, raw["files"][role],
                 executable=role in EXECUTABLE_ROLES,
@@ -774,7 +787,7 @@ def _invoke_engine(
     argv: tuple[str, ...],
     timeout_s: float,
 ) -> _Completed:
-    """Execute the held Docker CLI with bounded captures and pass_fds."""
+    """Run the held CLI, preserving original status and bounded captures."""
 
     if (
         not argv or any(type(value) is not str or "\x00" in value for value in argv)
@@ -798,53 +811,96 @@ def _invoke_engine(
         ) from error
     captures = {"stdout": bytearray(), "stderr": bytearray()}
     exceeded = threading.Event()
+    stop_readers = threading.Event()
+    reader_failed = threading.Event()
 
     def reader(name: str, stream: Any) -> None:
         observed = 0
-        while True:
-            chunk = stream.read(64 * 1024)
-            if not chunk:
-                return
-            observed += len(chunk)
-            if observed > MAX_CAPTURE_BYTES:
-                exceeded.set()
-            if len(captures[name]) < MAX_CAPTURE_BYTES:
-                captures[name].extend(
-                    chunk[: MAX_CAPTURE_BYTES - len(captures[name])]
-                )
+        try:
+            try:
+                descriptor = stream.fileno()
+                os.set_blocking(descriptor, False)
+            except (AttributeError, OSError, ValueError):
+                descriptor = None  # Only inactive in-memory fixtures lack a pipe.
+            while not stop_readers.is_set():
+                try:
+                    chunk = os.read(descriptor, 64 * 1024) if descriptor is not None else stream.read(64 * 1024)
+                except BlockingIOError:
+                    stop_readers.wait(0.01)
+                    continue
+                if not chunk:
+                    return
+                observed += len(chunk)
+                if observed > MAX_CAPTURE_BYTES:
+                    exceeded.set()
+                target = captures[name]
+                if len(target) < MAX_CAPTURE_BYTES:
+                    target.extend(chunk[: MAX_CAPTURE_BYTES - len(target)])
+        except (OSError, ValueError):
+            reader_failed.set()
 
     threads = [
         threading.Thread(target=reader, args=(name, stream), daemon=True)
-        for name, stream in (
-            ("stdout", process.stdout), ("stderr", process.stderr),
-        )
+        for name, stream in (("stdout", process.stdout), ("stderr", process.stderr))
     ]
-    for thread in threads:
-        thread.start()
-    deadline = time.monotonic() + timeout_s
+    started_threads = []
+    token = None
     timed_out = False
-    while process.poll() is None:
-        if exceeded.is_set() or time.monotonic() >= deadline:
-            timed_out = not exceeded.is_set()
-            try:
-                os.killpg(process.pid, signal.SIGKILL)
-            except OSError:
-                process.kill()
-            break
-        time.sleep(0.01)
+    drain_failed = False
+    body_error = None
     try:
-        process.wait(timeout=10)
-    except subprocess.TimeoutExpired:
-        process.kill()
-        process.wait()
-    for thread in threads:
-        thread.join(timeout=10)
-    for stream in (process.stdout, process.stderr):
+        for thread in threads:
+            thread.start()
+            started_threads.append(thread)
+        # Persistence can fail after Popen; the original child is still ours.
+        token = engine_process_started_v1(process, engine, engine_socket, argv)
+        deadline = time.monotonic() + timeout_s
+        while process.poll() is None:
+            if exceeded.is_set() or time.monotonic() >= deadline:
+                timed_out = not exceeded.is_set()
+                break
+            time.sleep(0.01)
+    except BaseException as error:
+        body_error = error
+        raise
+    finally:
         try:
-            stream.close()
-        except OSError:
-            pass
-    if any(thread.is_alive() for thread in threads):
+            try:
+                if process.poll() is None:
+                    try:
+                        os.killpg(process.pid, signal.SIGKILL)
+                    except OSError:
+                        process.kill()
+                try:
+                    process.wait(timeout=10)
+                except subprocess.TimeoutExpired:
+                    process.kill()
+                    process.wait(timeout=10)
+                for thread in started_threads:
+                    thread.join(timeout=10)
+            finally:
+                drain_failed = reader_failed.is_set() or any(thread.is_alive() for thread in started_threads)
+                stop_readers.set()
+                try:
+                    for thread in started_threads:
+                        thread.join(timeout=1)
+                    drain_failed = drain_failed or any(thread.is_alive() for thread in started_threads)
+                finally:
+                    for stream in (process.stdout, process.stderr):
+                        try:
+                            stream.close()
+                        except OSError:
+                            pass
+            if token is not None:
+                engine_process_terminal_v1(
+                    token, process, bytes(captures["stdout"]), bytes(captures["stderr"]),
+                    timed_out, exceeded.is_set(), drain_failed,
+                )
+        except BaseException as cleanup_error:
+            if body_error is None:
+                raise
+            body_error.add_note("Original engine child cleanup failed: " + str(cleanup_error))
+    if drain_failed:
         _fail("gstreamer_container_capture_drain_failed")
     if exceeded.is_set():
         _fail("gstreamer_container_capture_limit_exceeded")
@@ -853,8 +909,7 @@ def _invoke_engine(
             "gstreamer_container_execution_timed_out"
         )
     return _Completed(
-        int(process.returncode), bytes(captures["stdout"]),
-        bytes(captures["stderr"]),
+        int(process.returncode), bytes(captures["stdout"]), bytes(captures["stderr"])
     )
 
 
@@ -880,10 +935,11 @@ def _image_projection(value: Mapping[str, Any]) -> dict[str, Any]:
 
 
 def _inspect_image(pins: _Pins, contract: _Contract) -> None:
-    completed = _invoke_engine(
-        pins.roles["container_engine"], contract.engine_socket,
-        ("image", "inspect", EXPECTED_IMAGE_REFERENCE), 60.0,
-    )
+    with original_engine_phase_v1("image_inspect"):
+        completed = _invoke_engine(
+            pins.roles["container_engine"], contract.engine_socket,
+            ("image", "inspect", EXPECTED_IMAGE_REFERENCE), 60.0,
+        )
     if completed.returncode != 0 or completed.stderr:
         _fail("gstreamer_container_image_inspect_failed")
     try:
@@ -1093,10 +1149,11 @@ def _probe_embedded_artifacts(pins: _Pins, contract: _Contract) -> None:
         *_security_argv(contract), "--entrypoint", "/usr/bin/sha256sum",
         EXPECTED_IMAGE_ID, *EXPECTED_EMBEDDED_ARTIFACTS,
     ]
-    completed = _invoke_engine(
-        pins.roles["container_engine"], contract.engine_socket,
-        tuple(arguments), 120.0,
-    )
+    with original_engine_phase_v1("embedded_artifact_probe"):
+        completed = _invoke_engine(
+            pins.roles["container_engine"], contract.engine_socket,
+            tuple(arguments), 120.0,
+        )
     if completed.returncode != 0 or completed.stderr:
         _fail("gstreamer_embedded_artifact_probe_failed")
     try:
@@ -1126,10 +1183,11 @@ def _probe_openvino_devices(
         "--entrypoint", "/usr/bin/python3", EXPECTED_IMAGE_ID,
         "-B", probe_path,
     ]
-    completed = _invoke_engine(
-        pins.roles["container_engine"], contract.engine_socket,
-        tuple(arguments), 180.0,
-    )
+    with original_engine_phase_v1("openvino_device_probe"):
+        completed = _invoke_engine(
+            pins.roles["container_engine"], contract.engine_socket,
+            tuple(arguments), 180.0,
+        )
     if completed.returncode != 0 or completed.stderr:
         _fail("gstreamer_device_probe_failed")
     try:
@@ -1166,10 +1224,11 @@ def _probe_nvidia_device(pins: _Pins, contract: _Contract) -> None:
         EXPECTED_IMAGE_ID, "--query-gpu=name,uuid,driver_version",
         "--format=csv,noheader,nounits",
     ]
-    completed = _invoke_engine(
-        pins.roles["container_engine"], contract.engine_socket,
-        tuple(arguments), 120.0,
-    )
+    with original_engine_phase_v1("nvidia_device_probe"):
+        completed = _invoke_engine(
+            pins.roles["container_engine"], contract.engine_socket,
+            tuple(arguments), 120.0,
+        )
     if completed.returncode != 0 or completed.stderr:
         _fail("gstreamer_nvidia_device_probe_failed")
     try:
@@ -1199,6 +1258,7 @@ def _container_argv(
         "--user", f"{os.getuid()}:{os.getgid()}",
         *_input_mounts(materialized),
         *_mount(runtime_output.as_posix(), CONTAINER_OUTPUT_ROOT, readonly=False),
+        *operational_mount_arguments_v1(contract.raw, runtime_output, _mount),
         *_mount(
             str(contract.analytics_socket["path"]), ANALYTICS_SOCKET_TARGET,
             readonly=True,
@@ -1247,6 +1307,7 @@ def _container_argv(
         ))
     if contract.raw["defer_full_resource_acceptance"]:
         arguments.append("--defer-full-resource-acceptance")
+    arguments.extend(operational_launch_arguments_v1(contract.raw, files))
     return tuple(arguments)
 
 
@@ -1332,7 +1393,7 @@ def run_checkpoint_gstreamer_publication_runtime_v3(
         _inspect_image(pins, contract)
         _require_pins_unchanged(pins)
         _require_sockets_unchanged(contract)
-        with tempfile.TemporaryDirectory(
+        with operational_runtime_scratch_v1(contract.raw, request=request,
             prefix=f"vast-gstreamer-v3-{request.arm_id}-",
             dir=str(contract.raw["scratch_root"]),
         ) as name:
@@ -1358,13 +1419,18 @@ def run_checkpoint_gstreamer_publication_runtime_v3(
                 _require_sockets_unchanged(contract)
                 runtime_output = scratch / "run"
                 runtime_output.mkdir(mode=0o700)
+                prepare_operational_child_dir_v1(contract.raw, runtime_output)
                 arguments = _container_argv(
                     request, contract, pins, materialized, runtime_output,
                 )
-                completed = _invoke_engine(
-                    pins.roles["container_engine"], contract.engine_socket,
-                    arguments, float(contract.raw["container_timeout_s"]),
-                )
+                with original_engine_phase_v1("measurement"), measurement_container_custody_v1(
+                    pins.roles["container_engine"], contract.engine_socket, arguments,
+                ) as owned_container:
+                    completed = _invoke_engine(
+                        pins.roles["container_engine"], contract.engine_socket,
+                        owned_container.argv, float(contract.raw["container_timeout_s"]),
+                    )
+                    owned_container.completed(completed.returncode)
                 _require_materialized_unchanged(materialized)
                 _require_pins_unchanged(pins)
                 _require_sockets_unchanged(contract)
@@ -1378,6 +1444,7 @@ def run_checkpoint_gstreamer_publication_runtime_v3(
                 _copy_evidence(
                     runtime_output, request, contract.evidence_mapping,
                 )
+                copy_operational_child_v1(contract.raw, runtime_output, request)
             finally:
                 materialized.close()
         _require_pins_unchanged(pins)

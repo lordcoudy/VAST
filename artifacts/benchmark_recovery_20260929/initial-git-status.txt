@@ -1,0 +1,542 @@
+ M configs/analytics_execution_layer.yaml
+ M configs/checkpoint_analytics_model_parity.accepted.acceptance_receipt.json
+ M configs/checkpoint_analytics_model_parity.accepted.assessment.json
+ M configs/checkpoint_analytics_model_parity.accepted.policy_calibration_v2.acceptance_receipt.json
+ M configs/checkpoint_analytics_model_parity.accepted.policy_calibration_v2.assessment.json
+ M configs/checkpoint_analytics_model_parity.accepted.policy_calibration_v2.transaction_bound.acceptance_receipt.json
+ M configs/checkpoint_analytics_model_parity.accepted.policy_calibration_v2.transaction_bound.assessment.json
+ M configs/checkpoint_analytics_model_parity.accepted.policy_calibration_v2.yaml
+ M configs/checkpoint_analytics_model_parity.accepted.yaml
+ M configs/checkpoint_analytics_model_parity.yaml
+ M configs/checkpoint_analytics_models_openvino.yaml
+ M configs/datasets.yaml
+ M configs/hosts.example.yaml
+ M configs/kpp_legacy_iss_v2_secondary_sensitivity_decision.json
+ M deploy/analytics_execution/README.md
+ M deploy/deepstream/checkpoint/README.md
+ M deploy/deepstream/checkpoint/deepstream_checkpoint_capability_probe.py
+ M deploy/deepstream/checkpoint/requirements.lock
+ M deploy/gstreamer_custom/publication/requirements.lock
+ M deploy/openvino/checkpoint/openvino_gva_gst_adapter.py
+ M deploy/savant/checkpoint/README.md
+ M deploy/savant/checkpoint/savant_checkpoint_capability_probe.py
+ M deploy/savant/native_probe.py
+ M deploy/savant/publication/savant_publication_runtime_v3.py
+ M deploy/windows_replay_broker/replay_broker_artifact_bytes_observation_v4.cpp
+ M deploy/windows_replay_broker/replay_broker_artifact_bytes_observation_v4.hpp
+ M deploy/windows_replay_broker/replay_broker_contract_v4.cpp
+ M deploy/windows_replay_broker/replay_broker_contract_v4.hpp
+ M deploy/windows_replay_broker/replay_broker_prepared_handles_observation_bridge_v4.hpp
+ M deploy/windows_replay_broker/replay_broker_prepared_handles_v4.cpp
+ M deploy/windows_replay_broker/replay_broker_prepared_handles_v4.hpp
+ M docs/benchmark-preparation-runbook.md
+ M openspec/changes/fix-benchmark-preparations-spec/conformance-progress.md
+ M openspec/changes/fix-benchmark-preparations-spec/design.md
+ M openspec/changes/fix-benchmark-preparations-spec/image-invalidation.md
+ M openspec/changes/fix-benchmark-preparations-spec/implementation-validation.md
+ M openspec/changes/fix-benchmark-preparations-spec/preparation-plan.md
+ M openspec/changes/fix-benchmark-preparations-spec/proposal.md
+ M openspec/changes/fix-benchmark-preparations-spec/specs/benchmark-launch-preparation/spec.md
+ M openspec/changes/fix-benchmark-preparations-spec/tasks.md
+ M openspec/changes/fix-benchmark-preparations-spec/verification-plan.md
+ M progress.md
+ M scripts/backend_runtime_qualification.py
+ M scripts/backend_runtime_qualification_v2.py
+ M scripts/backend_runtime_replay_runner_authority_v2.py
+ M scripts/backend_runtime_replay_runner_invocation_protocol_v3.py
+ M scripts/backend_runtime_replay_runner_invocation_protocol_v4.py
+ M scripts/backend_runtime_replay_runner_invocation_v2.py
+ M scripts/backend_runtime_validation_records.py
+ M scripts/checkpoint_deepstream_publication_launcher.py
+ M scripts/checkpoint_gstreamer_custom_publication_launcher.py
+ M scripts/checkpoint_gstreamer_publication_plan.py
+ M scripts/checkpoint_openvino_gva_container_smoke.py
+ M scripts/checkpoint_openvino_gva_launcher.py
+ M scripts/checkpoint_openvino_gva_publication_launcher.py
+ M scripts/checkpoint_openvino_runtime.py
+ M scripts/checkpoint_publication_launcher_guard.py
+ M scripts/checkpoint_savant_publication_launcher.py
+ M scripts/checkpoint_source_runtime_closure_authority_v1.py
+ M scripts/kpp_dataset_contract.py
+ M scripts/kpp_legacy_iss_v2_offline_image_intake.py
+ M scripts/kpp_legacy_iss_v2_secondary_sensitivity_decision.py
+ M scripts/kpp_legacy_iss_v2_secondary_sensitivity_executor.py
+ M scripts/kpp_legacy_iss_v2_secondary_sensitivity_pilot.py
+ M scripts/materialize_kpp_legacy_iss_v2.py
+ M scripts/materialize_kpp_legacy_iss_v2_model_corpus.py
+ M scripts/normalize_kpp_iss_metadata.py
+ M scripts/prepare_benchmark_dataset.py
+ M scripts/run_openvino_container_chunks.py
+ M scripts/seafile_destination_provision_v1.py
+ M scripts/validate_strict_telemetry_fix.py
+ M tests/cpp/checkpoint_gstreamer_analytics_frame_test.cpp
+ M tests/cpp/checkpoint_gstreamer_cuda_transfer_v3_test.cpp
+ M tests/cpp/checkpoint_resource_v2_emitter_test.cpp
+ M tests/cpp/replay_broker_artifact_bytes_observation_v4_test.cpp
+ M tests/cpp/replay_broker_contract_v4_test.cpp
+ M tests/cpp/replay_broker_prepared_handles_v4_test.cpp
+ M tests/test_analytics_execution_openvino_worker.py
+ M tests/test_analytics_model_contract.py
+ M tests/test_backend_runtime_identity_grant_v2.py
+ M tests/test_backend_runtime_qualification_v2.py
+ M tests/test_backend_runtime_replay_runner_authority_v2.py
+ M tests/test_backend_runtime_replay_runner_invocation_protocol_v3.py
+ M tests/test_backend_runtime_replay_runner_invocation_protocol_v4.py
+ M tests/test_backend_runtime_replay_runner_invocation_v2.py
+ M tests/test_backend_runtime_validation_records.py
+ M tests/test_checkpoint_acceptance_finalization.py
+ M tests/test_checkpoint_backend_capabilities.py
+ M tests/test_checkpoint_deepstream_launcher.py
+ M tests/test_checkpoint_deepstream_runtime.py
+ M tests/test_checkpoint_gstreamer_custom_runtime_source_closure_v3.py
+ M tests/test_checkpoint_gstreamer_publication_plan.py
+ M tests/test_checkpoint_openvino_gstreamer_publication_launchers.py
+ M tests/test_checkpoint_openvino_gva_container_coordinator_v3.py
+ M tests/test_checkpoint_openvino_gva_launcher.py
+ M tests/test_checkpoint_openvino_gva_runtime_source_closure_v3.py
+ M tests/test_checkpoint_openvino_runtime.py
+ M tests/test_checkpoint_publication_fail_closed_launchers.py
+ M tests/test_checkpoint_runtime_inherited_fds.py
+ M tests/test_checkpoint_savant_launcher.py
+ M tests/test_checkpoint_savant_qualification_fragment_v3.py
+ M tests/test_checkpoint_savant_runtime.py
+ M tests/test_checkpoint_source_build_hardening.py
+ M tests/test_checkpoint_source_runtime_closure_authority_v1.py
+ M tests/test_install_openvino_dlstreamer_guard.py
+ M tests/test_kpp_dataset_contract.py
+ M tests/test_kpp_frozen_reconstruction_v1_dataset_integration.py
+ M tests/test_kpp_iss_publication_v3_dataset_integration.py
+ M tests/test_kpp_legacy_iss_v2_manifest_integration.py
+ M tests/test_kpp_legacy_iss_v2_offline_image_intake.py
+ M tests/test_kpp_legacy_iss_v2_secondary_sensitivity_decision.py
+ M tests/test_kpp_legacy_iss_v2_secondary_sensitivity_pilot.py
+ M tests/test_kpp_v2_model_corpus_canonical_rejection.py
+ M tests/test_materialize_kpp_legacy_iss_v2.py
+ M tests/test_materialize_kpp_legacy_iss_v2_model_corpus.py
+ M tests/test_materialize_kpp_legacy_iss_v2_model_corpus_parsers.py
+ M tests/test_mount_publication_evidence_wsl.py
+ M tests/test_mount_publication_runtime_wsl.py
+ M tests/test_mount_publication_sockets_wsl.py
+ M tests/test_normalize_kpp_iss_metadata.py
+ M tests/test_policy_decision_jsonl_binding.py
+ M tests/test_prepare_benchmark_dataset.py
+ M tests/test_qualification_promotion_clis.py
+ M tests/test_replay_broker_artifact_bytes_observation_v4.py
+ M tests/test_replay_broker_contract_v4.py
+ M tests/test_replay_broker_prepared_handles_v4.py
+ M tests/test_repository_integrity.py
+ M tests/test_run_experiments_full_resource.py
+ M tests/test_run_experiments_project_root.py
+ M tests/test_run_experiments_security.py
+ M tests/test_runtime_build_context_v3.py
+ M tests/test_seafile_destination_provision_v1.py
+ M tests/test_setup_target_bootstrap.py
+ M tests/test_strict_validation.py
+?? .publication-atomic-staging-v1/
+?? .publication-child-evidence-intents-v1/
+?? .publication-child-evidence-receipts-v1/
+?? .publication-directory-journal-v1/
+?? .publication-guardian-materialization-intents-v1/
+?? BENCHMARK_RECOVERY_PLAN.md
+?? configs/.publication-atomic-staging-v1/
+?? configs/analytics_execution_layer.refreshed.v4.a11.json
+?? configs/analytics_execution_layer.refreshed.v4.a110.json
+?? configs/analytics_execution_layer.refreshed.v4.a118.json
+?? configs/analytics_execution_layer.refreshed.v4.a12.json
+?? configs/analytics_execution_layer.refreshed.v4.a13.json
+?? configs/analytics_execution_layer.refreshed.v4.a132.json
+?? configs/analytics_execution_layer.refreshed.v4.a142.json
+?? configs/analytics_execution_layer.refreshed.v4.a15.json
+?? configs/analytics_execution_layer.refreshed.v4.a150.json
+?? configs/analytics_execution_layer.refreshed.v4.a156.json
+?? configs/analytics_execution_layer.refreshed.v4.a16.json
+?? configs/analytics_execution_layer.refreshed.v4.a164.json
+?? configs/analytics_execution_layer.refreshed.v4.a17.json
+?? configs/analytics_execution_layer.refreshed.v4.a170.json
+?? configs/analytics_execution_layer.refreshed.v4.a179.json
+?? configs/analytics_execution_layer.refreshed.v4.a185.json
+?? configs/analytics_execution_layer.refreshed.v4.a19.json
+?? configs/analytics_execution_layer.refreshed.v4.a191.json
+?? configs/analytics_execution_layer.refreshed.v4.a197.json
+?? configs/analytics_execution_layer.refreshed.v4.a20.json
+?? configs/analytics_execution_layer.refreshed.v4.a203.json
+?? configs/analytics_execution_layer.refreshed.v4.a209.json
+?? configs/analytics_execution_layer.refreshed.v4.a21.json
+?? configs/analytics_execution_layer.refreshed.v4.a215.json
+?? configs/analytics_execution_layer.refreshed.v4.a22.json
+?? configs/analytics_execution_layer.refreshed.v4.a23.json
+?? configs/analytics_execution_layer.refreshed.v4.a236.json
+?? configs/analytics_execution_layer.refreshed.v4.a24.json
+?? configs/analytics_execution_layer.refreshed.v4.a244.json
+?? configs/analytics_execution_layer.refreshed.v4.a25.json
+?? configs/analytics_execution_layer.refreshed.v4.a26.json
+?? configs/analytics_execution_layer.refreshed.v4.a262.json
+?? configs/analytics_execution_layer.refreshed.v4.a27.json
+?? configs/analytics_execution_layer.refreshed.v4.a28.json
+?? configs/analytics_execution_layer.refreshed.v4.a29.json
+?? configs/analytics_execution_layer.refreshed.v4.a3.json
+?? configs/analytics_execution_layer.refreshed.v4.a30.json
+?? configs/analytics_execution_layer.refreshed.v4.a31.json
+?? configs/analytics_execution_layer.refreshed.v4.a32.json
+?? configs/analytics_execution_layer.refreshed.v4.a33.json
+?? configs/analytics_execution_layer.refreshed.v4.a34.json
+?? configs/analytics_execution_layer.refreshed.v4.a35.json
+?? configs/analytics_execution_layer.refreshed.v4.a36.json
+?? configs/analytics_execution_layer.refreshed.v4.a38.json
+?? configs/analytics_execution_layer.refreshed.v4.a39.json
+?? configs/analytics_execution_layer.refreshed.v4.a4.json
+?? configs/analytics_execution_layer.refreshed.v4.a40.json
+?? configs/analytics_execution_layer.refreshed.v4.a41.json
+?? configs/analytics_execution_layer.refreshed.v4.a42.json
+?? configs/analytics_execution_layer.refreshed.v4.a44.json
+?? configs/analytics_execution_layer.refreshed.v4.a45.json
+?? configs/analytics_execution_layer.refreshed.v4.a46.json
+?? configs/analytics_execution_layer.refreshed.v4.a47.json
+?? configs/analytics_execution_layer.refreshed.v4.a48.json
+?? configs/analytics_execution_layer.refreshed.v4.a49.json
+?? configs/analytics_execution_layer.refreshed.v4.a5.json
+?? configs/analytics_execution_layer.refreshed.v4.a50.json
+?? configs/analytics_execution_layer.refreshed.v4.a51.json
+?? configs/analytics_execution_layer.refreshed.v4.a52.json
+?? configs/analytics_execution_layer.refreshed.v4.a53.json
+?? configs/analytics_execution_layer.refreshed.v4.a55.json
+?? configs/analytics_execution_layer.refreshed.v4.a57.json
+?? configs/analytics_execution_layer.refreshed.v4.a59.json
+?? configs/analytics_execution_layer.refreshed.v4.a6.json
+?? configs/analytics_execution_layer.refreshed.v4.a60.json
+?? configs/analytics_execution_layer.refreshed.v4.a62.json
+?? configs/analytics_execution_layer.refreshed.v4.a64.json
+?? configs/analytics_execution_layer.refreshed.v4.a65.json
+?? configs/analytics_execution_layer.refreshed.v4.a66.json
+?? configs/analytics_execution_layer.refreshed.v4.a7.json
+?? configs/analytics_execution_layer.refreshed.v4.a73.json
+?? configs/analytics_execution_layer.refreshed.v4.a76.json
+?? configs/analytics_execution_layer.refreshed.v4.a8.json
+?? configs/analytics_execution_layer.refreshed.v4.a80.json
+?? configs/analytics_execution_layer.refreshed.v4.a81.json
+?? configs/analytics_execution_layer.refreshed.v4.a82.json
+?? configs/analytics_execution_layer.refreshed.v4.a83.json
+?? configs/analytics_execution_layer.refreshed.v4.a84.json
+?? configs/analytics_execution_layer.refreshed.v4.a88.json
+?? configs/analytics_execution_layer.refreshed.v4.a9.json
+?? configs/analytics_execution_layer.refreshed.v4.a93.json
+?? configs/analytics_execution_layer.refreshed.v4.fix-benchmark-20260921.json
+?? configs/analytics_execution_layer.refreshed.v4.fix-benchmark-20260923.json
+?? configs/analytics_execution_layer.refreshed.v4.fix-benchmark-20260926e.json
+?? configs/analytics_execution_layer.refreshed.v4.fix-benchmark-20260927.json
+?? configs/analytics_execution_layer.refreshed.v4.fix-benchmark-20260927c.json
+?? configs/analytics_execution_layer.refreshed.v4.fix-benchmark-20260927d.json
+?? configs/analytics_execution_layer.refreshed.v4.fix-benchmark-20260927e.json
+?? configs/analytics_execution_layer.refreshed.v4.fix-benchmark-20260927f.json
+?? configs/analytics_execution_layer.refreshed.v4.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a11.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a110.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a110.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a110.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a110.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a118.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a118.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a118.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a118.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a12.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a13.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a132.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a132.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a132.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a132.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a142.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a142.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a142.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a142.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a15.accepted.acceptance_binding.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a15.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a15.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a15.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a15.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a150.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a156.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a156.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a156.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a156.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a16.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a164.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a164.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a164.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a164.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a17.accepted.acceptance_binding.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a17.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a17.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a17.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a17.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a170.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a170.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a170.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a170.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a179.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a179.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a179.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a179.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a185.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a185.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a185.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a185.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a19.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a191.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a191.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a191.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a191.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a197.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a197.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a197.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a197.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a20.accepted.acceptance_binding.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a20.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a20.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a20.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a20.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a203.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a203.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a203.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a203.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a209.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a209.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a209.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a209.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a21.accepted.acceptance_binding.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a21.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a21.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a21.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a21.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a215.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a215.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a215.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a215.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a22.accepted.acceptance_binding.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a22.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a22.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a22.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a22.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a23.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a236.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a236.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a236.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a236.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a24.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a244.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a244.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a244.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a244.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a25.accepted.acceptance_binding.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a25.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a25.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a25.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a25.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a26.accepted.acceptance_binding.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a26.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a26.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a26.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a26.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a262.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a262.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a262.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a262.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a27.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a28.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a29.accepted.acceptance_binding.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a29.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a29.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a29.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a29.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a3.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a30.accepted.acceptance_binding.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a30.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a30.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a30.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a30.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a31.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a32.accepted.acceptance_binding.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a32.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a32.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a32.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a32.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a33.accepted.acceptance_binding.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a33.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a33.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a33.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a33.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a34.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a35.accepted.acceptance_binding.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a35.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a35.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a35.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a35.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a36.accepted.acceptance_binding.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a36.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a36.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a36.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a36.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a38.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a39.accepted.acceptance_binding.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a39.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a39.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a39.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a39.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a4.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a40.accepted.acceptance_binding.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a40.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a40.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a40.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a40.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a41.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a42.accepted.acceptance_binding.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a42.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a42.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a42.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a42.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a44.accepted.acceptance_binding.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a44.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a44.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a44.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a44.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a45.accepted.acceptance_binding.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a45.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a45.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a45.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a45.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a46.accepted.acceptance_binding.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a46.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a46.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a46.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a46.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a47.accepted.acceptance_binding.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a47.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a47.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a47.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a47.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a48.accepted.acceptance_binding.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a48.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a48.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a48.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a48.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a49.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a5.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a50.accepted.acceptance_binding.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a50.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a50.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a50.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a50.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a51.accepted.acceptance_binding.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a51.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a51.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a51.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a51.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a52.accepted.acceptance_binding.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a52.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a52.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a52.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a52.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a53.accepted.acceptance_binding.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a53.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a53.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a53.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a53.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a55.accepted.acceptance_binding.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a55.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a55.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a55.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a55.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a57.accepted.acceptance_binding.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a57.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a57.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a57.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a57.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a59.accepted.acceptance_binding.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a59.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a59.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a59.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a59.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a6.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a60.accepted.acceptance_binding.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a60.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a60.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a60.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a60.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a62.accepted.acceptance_binding.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a62.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a62.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a62.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a62.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a64.accepted.acceptance_binding.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a64.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a64.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a64.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a64.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a65.accepted.acceptance_binding.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a65.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a65.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a65.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a65.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a66.accepted.acceptance_binding.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a66.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a66.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a66.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a66.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a7.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a73.accepted.acceptance_binding.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a73.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a73.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a73.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a73.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a76.accepted.acceptance_binding.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a76.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a76.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a76.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a76.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a8.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a80.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a81.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a82.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a83.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a84.accepted.acceptance_binding.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a84.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a84.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a84.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a84.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a88.accepted.acceptance_binding.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a88.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a88.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a88.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a88.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a9.accepted.acceptance_binding.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a9.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a9.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a9.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a9.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a93.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a93.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a93.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.a93.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260921.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260921.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260923.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260923.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260923.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260923.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260926e.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260927.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260927.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260927.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260927.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260927c.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260927c.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260927c.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260927c.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260927d.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260927d.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260927d.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260927d.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260927e.accepted.acceptance_receipt.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260927e.accepted.assessment.json
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260927e.accepted.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260927e.yaml
+?? configs/checkpoint_analytics_model_parity.refreshed.v4.yaml

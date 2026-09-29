@@ -784,6 +784,20 @@ def execute_publication_arm(args: argparse.Namespace) -> dict[str, Any]:
         support_bindings=support_bindings,
         capability_manifest=capability_manifest,
     )
+    from publication_operational_runtime_context_v1 import (
+        load_native_operational_context_v1, require_operational_execution_window_v1,
+    )
+    operational_context, operational_limits = load_native_operational_context_v1(
+        getattr(args, "operational_request_context", None),
+        getattr(args, "operational_output_dir", None),
+        run_id=args.run_id, system=SYSTEM, scenario=args.scenario,
+        codec=args.codec, policy=args.policy, deadline_ms=args.deadline_ms,
+    )
+    require_operational_execution_window_v1(
+        operational_context, warmup_s=30.0, measurement_s=180.0,
+        drain_timeout_s=args.drain_timeout, streams=len(publication_plan["streams"]),
+        branches=len(BRANCHES),
+    )
     policy_runtime = NativePolicyRuntimeCoordinator(
         run_id=args.run_id,
         arm_id=args.arm_id,
@@ -796,6 +810,7 @@ def execute_publication_arm(args: argparse.Namespace) -> dict[str, Any]:
         capability_manifest=capability_manifest,
         calibration=calibration,
         static_hybrid_map=static_map,
+        operational_context=operational_context,
     )
 
     _require(WORKER_EXECUTABLE.is_file(), "DeepStream SDK worker executable is missing")
@@ -863,6 +878,7 @@ def execute_publication_arm(args: argparse.Namespace) -> dict[str, Any]:
                     publication_plan["source_playback"]["measurement_end_boundary_guard_ns"]
                 ),
                 policy_socket_handler=policy_runtime.serve_worker_socket,
+                operational_admission_limits=operational_limits,
             )
     native_stdio_audit = validate_deepstream_native_stdio(
         native_stdio_paths[0],
@@ -1116,6 +1132,8 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--model-binding", action="append", default=[])
     parser.add_argument("--support-binding", action="append", default=[])
     parser.add_argument("--static-hybrid-map", type=Path)
+    parser.add_argument("--operational-request-context", type=Path)
+    parser.add_argument("--operational-output-dir", type=Path)
     parser.add_argument("--defer-full-resource-acceptance", action="store_true")
     return parser
 

@@ -49,7 +49,11 @@ def execution_closure(
     path = root / "execution-closure/qualification_execution_closure.v1.receipt.json"
     write_json(path, {"fixture": "execution-closure-v1"})
 
-    def loader(*, project_root: Path, receipt_path: Path) -> dict:
+    def loader(*, project_root: Path, receipt_path: Path,
+               require_complete_operational_accounting: bool) -> dict:
+        # This fixture verifies delegation, not physical operational accounting.
+        if require_complete_operational_accounting is not True:
+            raise AssertionError("current qualification requires strict cold accounting")
         return {
             "receipt_descriptor": descriptor(project_root, Path(receipt_path)),
             "receipt": {

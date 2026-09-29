@@ -100,6 +100,7 @@ def _verify_execution_closure(root: Path, raw: Any) -> dict[str, Any]:
         loaded = _load_execution_closure(
             project_root=root,
             receipt_path=root / descriptor["path"],
+            require_complete_operational_accounting=True,
         )
     except QualificationError:
         raise

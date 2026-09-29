@@ -75,6 +75,9 @@ from publication_owned_staging_cleanup_v1 import (
     OwnedStagingDirectoryV1,
     OwnedStagingFileV1,
 )
+from publication_operational_runtime_context_v1 import (
+    CAPTURE_KEY, operational_output_dir_v1, _materialize_operational_file_v1,
+)
 from publication_policy_qualification_execution_code_closure_v1 import (
     ExecutionCodeClosureV1Error,
     assert_loaded_project_modules_covered_v1,
@@ -2238,6 +2241,24 @@ def _default_acceptance_finalizer(**kwargs: Any) -> dict[str, Any]:
     return finalize_checkpoint_qualification_pilot_acceptance_v1(**kwargs)
 
 
+def _qualification_finalizer_kwargs_v1(*, inputs, operational, cell, output_dir):
+    """Share the exact stock authority coordinates with the bounded adapter."""
+    return dict(project_root=inputs.root, output_dir=output_dir,
+        expected_run_id=cell.run_id, expected_arm_id=cell.arm_id, expected_system=cell.system,
+        expected_resource=cell.resource, expected_scenario=cell.scenario, expected_codec=cell.codec,
+        expected_policy=cell.policy, expected_deadline_ms=cell.deadline_ms,
+        topology_kind=cell.topology_kind, hardware_collector_stopped=True,
+        candidate_manifest_path=inputs.candidate_manifest.path, candidate_receipt_path=inputs.candidate_receipt.path,
+        qualification_index_path=inputs.candidate_index.path, bootstrap_mapping_path=inputs.bootstrap_mapping.path,
+        bootstrap_calibration_path=inputs.calibrations[cell.system].path, bootstrap_receipt_path=inputs.bootstrap_receipt.path,
+        qualification_transaction_receipt_path=inputs.transaction_receipt.path,
+        runtime_input_materialization_receipt_path=operational.runtime_materialization_receipt.path,
+        runtime_input_bundle_path=operational.runtime_bundles[cell.arm_id].path,
+        guardian_service_authority_path=operational.guardian_service_authority.path,
+        preprocessing_contract_path=operational.preprocessing_contract.path,
+        preprocessing_contract_receipt_path=operational.preprocessing_receipt.path)
+
+
 def _descriptor(root: Path, path: Path) -> dict[str, Any]:
     try:
         before = path.lstat()
@@ -3860,6 +3881,38 @@ def _adopt_untracked_completed_cells(
         raise
 
 
+def _commit_operational_capture_for_cell(*, request, contract, final: Path) -> None:
+    """Commit the original capture beside the stock final pilot namespace."""
+    if CAPTURE_KEY not in contract:
+        return
+    from publication_operational_request_domain_v1 import NATIVE_OPERATIONAL_JSONL
+
+    source = operational_output_dir_v1(request, contract)
+    target = Path(str(final) + ".operational")
+    try:
+        with PhysicalRootCustodyV1.open(
+            request.project_root, label="qualification operational project custody"
+        ) as custody:
+            _require(
+                custody.list_directory_names(source, label="original pilot capture")
+                == (NATIVE_OPERATIONAL_JSONL,),
+                "qualification capture namespace is incomplete or substituted",
+            )
+            custody.read_descriptor(source / NATIVE_OPERATIONAL_JSONL,
+                label="original pilot operational domain", maximum=64 * 1024 * 1024)
+            custody.verify()
+        with OwnedStagingDirectoryV1.capture(source, expected_parent=source.parent,
+            expected_prefix=source.name[:-1], label="original pilot operational staging") as anchor:
+            anchor.seal_tree()
+            _materialize_operational_file_v1(request.project_root, source, target)
+            anchor.assert_staging_unchanged()
+            anchor.retire_owned_tree()
+    except (ValueError, OSError, PublicationPhysicalIoV1Error, OwnedStagingCleanupV1Error) as error:
+        raise QualificationPilotExecutorV2Error(
+            f"separate original pilot capture commit failed: {error}"
+        ) from error
+
+
 def _run_one_cell(
     *,
     inputs: _QualificationInputs,
@@ -3884,6 +3937,9 @@ def _run_one_cell(
         not final.exists() and not os.path.lexists(final),
         f"immutable pilot output collision: {cell.arm_id}",
     )
+    operational_final = Path(str(final) + ".operational")
+    _require(not os.path.lexists(operational_final),
+             f"orphan original pilot capture blocks a new invocation: {cell.arm_id}")
     attempt = Path(
         tempfile.mkdtemp(prefix=f"{cell.arm_id}.", dir=staging_root)
     )
@@ -4008,40 +4064,8 @@ def _run_one_cell(
             and not (output_dir / PRODUCTION_ACCEPTANCE_FILENAME).exists(),
             f"acceptance existed before host finalization for {cell.arm_id}",
         )
-        acceptance = acceptance_finalizer(
-            project_root=inputs.root,
-            output_dir=output_dir,
-            expected_run_id=cell.run_id,
-            expected_arm_id=cell.arm_id,
-            expected_system=cell.system,
-            expected_resource=cell.resource,
-            expected_scenario=cell.scenario,
-            expected_codec=cell.codec,
-            expected_policy=cell.policy,
-            expected_deadline_ms=cell.deadline_ms,
-            topology_kind=cell.topology_kind,
-            hardware_collector_stopped=True,
-            candidate_manifest_path=inputs.candidate_manifest.path,
-            candidate_receipt_path=inputs.candidate_receipt.path,
-            qualification_index_path=inputs.candidate_index.path,
-            bootstrap_mapping_path=inputs.bootstrap_mapping.path,
-            bootstrap_calibration_path=inputs.calibrations[cell.system].path,
-            bootstrap_receipt_path=inputs.bootstrap_receipt.path,
-            qualification_transaction_receipt_path=transaction_receipt.path,
-            runtime_input_materialization_receipt_path=(
-                operational.runtime_materialization_receipt.path
-            ),
-            runtime_input_bundle_path=operational.runtime_bundles[
-                cell.arm_id
-            ].path,
-            guardian_service_authority_path=(
-                operational.guardian_service_authority.path
-            ),
-            preprocessing_contract_path=operational.preprocessing_contract.path,
-            preprocessing_contract_receipt_path=(
-                operational.preprocessing_receipt.path
-            ),
-        )
+        acceptance = acceptance_finalizer(**_qualification_finalizer_kwargs_v1(
+            inputs=inputs, operational=operational, cell=cell, output_dir=output_dir))
         _require(
             type(acceptance) is dict,
             f"qualification finalizer returned invalid data for {cell.arm_id}",
@@ -4059,6 +4083,7 @@ def _run_one_cell(
             not final.exists() and not os.path.lexists(final),
             f"immutable pilot output appeared during execution: {cell.arm_id}",
         )
+        _commit_operational_capture_for_cell(request=request, contract=contract, final=final)
         _durable_directory_tree(output_dir)
         if output_anchor is not None:
             output_anchor.seal_tree()
@@ -4085,7 +4110,7 @@ def _run_one_cell(
             expected_identity=attempt_identity,
         )
         return _CommittedPilotCellV2(final=final, anchor=output_anchor)
-    except BaseException:
+    except BaseException as error:
         if collector is not None and collector_started and not collector_stopped:
             try:
                 collector.stop()
@@ -4106,11 +4131,18 @@ def _run_one_cell(
             )
         except BaseException:
             pass
-        _safe_remove_attempt(
-            attempt,
-            staging_root=staging_root,
-            expected_identity=attempt_identity,
-        )
+        # A captured original failure must retain its evidence and block a
+        # silent retry. The stock cleanup intentionally rejects such extras.
+        if (os.path.lexists(operational_final) or
+            any(os.path.lexists(attempt / name) for name in
+                ("pilot.operational", "pilot.operational.failed"))):
+            error.add_note(f"Original qualification capture retained at {attempt}")
+        else:
+            _safe_remove_attempt(
+                attempt,
+                staging_root=staging_root,
+                expected_identity=attempt_identity,
+            )
         raise
 
 

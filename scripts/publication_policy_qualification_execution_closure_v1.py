@@ -9,6 +9,7 @@ full-publication run by itself.
 from __future__ import annotations
 
 import argparse
+import copy
 import hashlib
 import json
 import os
@@ -18,6 +19,7 @@ import struct
 import sys
 from collections.abc import Callable, Mapping, Sequence
 from dataclasses import asdict, dataclass
+from contextlib import contextmanager
 from pathlib import Path, PurePosixPath
 from typing import Any
 
@@ -25,6 +27,9 @@ from analytics_execution_protocol import BRANCHES, PROTOCOL_IDENTITY_SHA256
 from publication_physical_io_v1 import (
     PhysicalRootCustodyV1,
     PublicationPhysicalIoV1Error,
+)
+from publication_operational_request_reconciliation_v1 import (
+    reconcile_operational_request_domain_v1, load_operational_jsonl_header_v1,
 )
 
 
@@ -639,14 +644,15 @@ def _future_descriptor(root: Path, path: Path, payload: bytes) -> dict[str, Any]
     }
 
 
-def _descriptor_shape(value: object, *, label: str) -> dict[str, Any]:
+def _descriptor_shape(value: object, *, label: str, allow_empty: bool = False) -> dict[str, Any]:
     _require(
         type(value) is dict
         and set(value) == _DESCRIPTOR_FIELDS
         and type(value.get("path")) is str
         and bool(value["path"])
         and type(value.get("size_bytes")) is int
-        and value["size_bytes"] > 0
+        and type(allow_empty) is bool
+        and value["size_bytes"] >= (0 if allow_empty else 1)
         and _valid_sha(value.get("sha256")),
         f"{label} descriptor fields drifted",
     )
@@ -1876,6 +1882,403 @@ def _validate_guardian(
     )
 
 
+def reconcile_guardian_operational_workload_v1(
+    *, producer_domains, guardian_companion, measurement_descriptors,
+    expected_context, capability_manifest, lifecycle_counters, scratch_root,
+) -> dict[str, Any]:
+    """Join original complete domains after callers validate their custody.
+
+    This shared comparison is used by bounded diagnostics and the qualification
+    closure. The caller enforces its original-operation manifest cardinality;
+    this helper does not create an execution or publication grant.
+    """
+    from publication_policy_contract import validate_decision_record
+
+    def authority(occurrence):
+        assessment = validate_decision_record(occurrence["accepted_record"], capability_manifest)
+        _require(assessment["passed"] is True,
+                 "operational original native capability validation failed: "
+                 + ",".join(assessment["blockers"]))
+
+    try:
+        result = reconcile_operational_request_domain_v1(
+            producer_domains=producer_domains, guardian_companion=guardian_companion,
+            measurement_descriptors=measurement_descriptors, expected_context=expected_context,
+            authority_validator=authority, scratch_root=scratch_root,
+        )
+    except (ValueError, OSError, StopIteration) as error:
+        raise QualificationExecutionClosureV1Error(
+            f"complete original guardian request domain is blocked: {error}"
+        ) from error
+    _require(result["request_count"] == lifecycle_counters["requests_started"] ==
+             lifecycle_counters["requests_completed"] and
+             lifecycle_counters["requests_failed"] == 0 and
+             result["connections_accepted"] == lifecycle_counters["connections_accepted"] and
+             result["requests_by_worker"] == lifecycle_counters["requests_by_worker"],
+             "complete original operational identities differ from lifetime guardian counters")
+    return result
+
+
+def _operational_absolute_descriptor(root, descriptor):
+    value = dict(descriptor)
+    value["path"] = str(_under_root(root, value["path"], label="original operational descriptor"))
+    return value
+
+
+@contextmanager
+def _held_operational_cold_custody_v1(root):
+    """Hold metadata leaves through the full join, without retaining payloads."""
+    from publication_operational_request_reconciliation_v1 import _PinnedFile
+    pins = {}
+    with PhysicalRootCustodyV1.open(root, label="complete operational binding custody") as physical:
+        class Custody:
+            def hold_validated_inputs(self, result, *, engine_descriptor):
+                _require(type(result) is dict and type(result.get("validated_inputs")) is list,
+                         "original validator did not return physical leaf witnesses")
+                engine = _descriptor_shape(engine_descriptor, label="stock original engine authority")
+                engine_path = _physical_file(root, engine["path"],
+                    label="stock original engine authority", external=True)
+                _require(str(engine_path) == engine["path"], "stock original engine path is not canonical")
+                for witness in result["validated_inputs"]:
+                    _require(type(witness) is dict and set(witness) == {"descriptor", "epoch"} and
+                        type(witness["epoch"]) in {list, tuple} and len(witness["epoch"]) == 7 and
+                        all(type(value) is int for value in witness["epoch"]),
+                        "original validator physical leaf epoch is malformed")
+                    observed = _descriptor_shape(witness["descriptor"], label="original validator leaf", allow_empty=True)
+                    absolute = engine if observed == engine else _operational_absolute_descriptor(root, observed)
+                    key = absolute["path"]
+                    if key not in pins:
+                        pins[key] = (absolute, _PinnedFile(Path(key), absolute,
+                            limit=256 * 1024 * 1024, allow_empty=True))
+                    _require(pins[key][0] == absolute and tuple(witness["epoch"]) == pins[key][1].before,
+                             "original validator leaf changed before complete join")
+                    pins[key][1].check()
+
+            def read_descriptor(self, value, **kwargs):
+                descriptor, raw = physical.read_descriptor(value, **kwargs)
+                absolute = _operational_absolute_descriptor(root, descriptor)
+                key = absolute["path"]
+                if key not in pins:
+                    pins[key] = (absolute, _PinnedFile(Path(key), absolute, limit=kwargs["maximum"]))
+                else:
+                    _require(absolute == pins[key][0], "original operational metadata descriptor changed")
+                    pins[key][1].check()
+                return descriptor, raw
+
+            def verify(self):
+                for _descriptor, pin in pins.values():
+                    pin.check()
+                physical.verify()
+
+        custody = Custody()
+        try:
+            yield custody
+            custody.verify()
+        finally:
+            for _descriptor, pin in pins.values():
+                pin.close()
+
+
+def _held_operational_object(custody, root, descriptor, *, maximum=1024 * 1024, require_self_hash=True):
+    expected = _operational_absolute_descriptor(root, descriptor)
+    observed, raw = custody.read_descriptor(expected["path"],
+        label="original operational document", maximum=maximum, capture=True)
+    observed = _operational_absolute_descriptor(root, observed)
+    _require(observed == expected, "original operational document physical descriptor drifted")
+    value = _decode_canonical_json_payload(raw, label="original operational document")
+    if require_self_hash:
+        _self_hash(value, "sha256", label="original operational document")
+    return value
+
+
+def _operational_measured_ingress_v1(*, root, operation, directory, ingress_descriptor):
+    """Load a single stock-validated cohort; never retain 37 frame maps."""
+    from benchmark_contract import (canonicalize_frames_csv, validate_required_sidecars,
+                                   CHECKPOINT_FRAME_AGGREGATE_DETECTOR, validate_frame_events,
+                                   frozen_policy_requires_feedback)
+    from topology_contract import validate_topology_events
+    from checkpoint_runtime_plan import validate_checkpoint_runtime_plan
+    from publication_physical_io_v1 import PhysicalRootCustodyV1
+    directory = _physical_directory(root, directory, label="original measured output")
+    names = ("frames.csv", "ingress_ledger.csv", "frame_events.csv", "resource_events.csv",
+        "policy_decisions.csv", "drop_counters.csv", "topology_events.csv", "branch_terminals.csv",
+        "stage_contracts.csv", "reset_evidence.csv", "publication_policy_decisions.jsonl")
+    with PhysicalRootCustodyV1.open(root, label="original measured cohort custody") as custody:
+        before = {}
+        for name in names:
+            desc, _raw, identity = custody.read_descriptor_identity(directory / name,
+                label="original measured " + name, maximum=64 * 1024 * 1024)
+            before[name] = (desc, identity)
+        _require(_operational_absolute_descriptor(root, before["ingress_ledger.csv"][0]) ==
+                 _operational_absolute_descriptor(root, ingress_descriptor),
+                 "original measured ingress is substituted")
+        frames = canonicalize_frames_csv(directory / "frames.csv", mode="benchmark",
+            run_id=operation["run_id"], detector=CHECKPOINT_FRAME_AGGREGATE_DETECTOR,
+            backend=operation["system"])
+        source_plan = _held_operational_object(custody, root,
+            operation["descriptors"]["source_plan"], maximum=16 * 1024 * 1024,
+            require_self_hash=False)
+        validate_checkpoint_runtime_plan(source_plan)
+        _require(source_plan["scenario"] == operation["scenario"] and
+                 source_plan["system"] == operation["system"] and
+                 len(source_plan["streams"]) == operation["streams"] and
+                 source_plan["required_branches"] == list(BRANCHES),
+                 "original measured source plan differs from operation")
+        scenario = {"name": source_plan["scenario"], "topology": {
+            "contract_version": source_plan["topology_contract_version"],
+            "kind": source_plan["topology_kind"], "routing_mode": source_plan["routing_mode"],
+            "required_branches": source_plan["required_branches"]},
+            "workload": {"routing_mode": source_plan["routing_mode"],
+                         "analytics_function_types": len(source_plan["required_branches"])}}
+        topology = validate_topology_events(directory / "topology_events.csv",
+            frames=frames, frame_events=validate_frame_events(directory / "frame_events.csv"),
+            scenario=scenario)
+        sidecars = validate_required_sidecars(directory, frames=frames,
+            require_labeled_provenance=True, require_full_policy_trace=True,
+            require_causal_policy_trace=True,
+            require_online_policy_trace=frozen_policy_requires_feedback(operation["policy"]),
+            require_ingress_ledger=True, require_branch_terminals=True,
+            require_stage_contracts=True, require_reset_evidence=True,
+            required_branches=BRANCHES, expected_streams=6,
+            topology_kind=("shared_video_dag" if operation["scenario"] ==
+                "checkpoint_video_dag_shared" else "independent_processes"),
+            expected_run_id=operation["run_id"], topology_events=topology)
+        ingress = sidecars["ingress_ledger"]
+        _require(0 < len(ingress) <= 1686, "original measured ingress exceeds the source bound")
+        result = {str(row.input_frame_key): {"trace_id": str(row.trace_id),
+            "stream_id": int(row.stream_id), "frame_id": int(row.frame_id)}
+            for row in ingress.itertuples(index=False)}
+        _require(len(result) == len(ingress), "original ingress identity is duplicated")
+        for name, (expected, identity) in before.items():
+            observed, _raw, current_identity = custody.read_descriptor_identity(directory / name,
+                label="original measured reload " + name, maximum=64 * 1024 * 1024)
+            _require(observed == expected and current_identity == identity,
+                     "original measured evidence changed during validation")
+        custody.verify()
+        return result
+
+
+def _validate_operational_runtime_bundle_v1(*, custody, root, operation, original,
+        context_descriptor, runtime, runtime_bundles, expected_mode):
+    """Join selected capture back to the already validated stock 32-cell bundle."""
+    from publication_operational_runtime_context_v1 import CAPTURE_KEY, CAPTURE_ROLE, OUTPUT_PATH_RULE
+    record = runtime_bundles[operation["arm_id"]]
+    path = _under_root(root, runtime["receipt"]["path"], label="runtime receipt").parent / record["path"]
+    ref = {"path": str(path), "size_bytes": record["size_bytes"], "sha256": record["sha256"]}
+    bundle = _held_operational_object(custody, root, ref, require_self_hash=False)
+    _require(bundle["bundle_sha256"] == record["bundle_sha256"] == _self_hash(
+        bundle, "bundle_sha256", label="original capture runtime bundle"),
+        "original capture runtime bundle semantic identity drifted")
+    key = {"deepstream": "deepstream_publication_runtime_v3", "savant": "savant_publication_runtime_v3",
+           "gstreamer_custom": "gstreamer_custom_publication_runtime_v3",
+           "openvino_gva": "openvino_gva_publication_runtime_v3"}[operation["system"]]
+    contract = bundle["runtime_inputs"]["dataset"][key]
+    _require(contract.get(CAPTURE_KEY) == {"mode": expected_mode,
+        "output_dir": OUTPUT_PATH_RULE}, "stock runtime bundle lacks exact original capture activation")
+    if operation["phase"] in {"qualification_cell", "diagnostic"}:
+        context = {name: contract["files"][CAPTURE_ROLE][name] for name in _DESCRIPTOR_FIELDS}
+        _require(_operational_absolute_descriptor(root, context) == context_descriptor,
+                 "stock runtime bundle substituted the original capture context")
+    for role, name in (("capability_manifest", "policy_capability_manifest"),
+                       ("calibration", "policy_calibration")):
+        ref = {field: contract["files"][name][field] for field in _DESCRIPTOR_FIELDS}
+        _require(_operational_absolute_descriptor(root, ref) == operation["descriptors"][role],
+                 "stock runtime bundle original " + role + " differs from capture authority")
+    _require(contract["container_image"] == original["container_image"],
+             "stock runtime bundle image differs from original engine image")
+    engine = {field: contract["files"]["container_engine"][field] for field in _DESCRIPTOR_FIELDS}
+    engine["path"] = str(_physical_file(root, Path(engine["path"]) if Path(engine["path"]).is_absolute()
+        else root / engine["path"], label="stock original engine", external=True))
+    return _descriptor_shape(engine, label="stock original engine authority")
+
+
+def _reconcile_operational_capture_binding_v1(*, project_root, binding_path,
+        guardian_authority_path, preprocessing_receipt, lifecycle_counters,
+        scratch_root, expected_mode, pilot_execution=None, guardian_authority_binding_descriptor=None,
+        runtime=None, runtime_bundles=None):
+    """Cold-recompute original process, context, all-phase and measured custody."""
+    from functools import partial
+    from publication_operational_capture_plan_v1 import held_operational_capture_plan_v1
+    from publication_operational_process_custody_v1 import original_process_validator_v1
+    from publication_operational_container_custody_v1 import original_container_validator_v1
+    from checkpoint_gstreamer_analytics_sidecar import load_execution_config, load_materialized_binding_set
+    from publication_operational_request_domain_v1 import payload_with_sha256_v1
+
+    root = _physical_root(project_root)
+    _require(expected_mode in {"complete_qualification_operational_identity_v1",
+        "bounded_native_diagnostic_operational_v1"}, "original operational mode is unsupported")
+    _require(type(runtime) is dict and type(runtime_bundles) is dict and len(runtime_bundles) == 32,
+             "original operational accounting requires stock runtime bundles")
+    with _held_operational_cold_custody_v1(root) as custody:
+        binding_descriptor, binding_raw = custody.read_descriptor(binding_path,
+            label="original operational execution binding", maximum=1024 * 1024, capture=True)
+        binding = _decode_canonical_json_payload(binding_raw, label="original operational execution binding")
+        _self_hash(binding, "sha256", label="original operational execution binding")
+        _require(set(binding) == {"schema_version", "artifact_kind", "mode", "capture_plan",
+            "guardian_companion", "operation_outputs", "sha256"} and binding["schema_version"] == 1 and
+            binding["artifact_kind"] == "vast_original_operational_execution_binding_v1" and
+            binding["mode"] == expected_mode, "original operational binding schema/mode drifted")
+        authority_descriptor, authority_raw = custody.read_descriptor(guardian_authority_path,
+            label="original operational guardian authority", maximum=1024 * 1024, capture=True)
+        authority = _decode_canonical_json_payload(authority_raw, label="original operational guardian authority")
+        if guardian_authority_binding_descriptor is not None:
+            source_descriptor = guardian_authority_binding_descriptor
+            _require(source_descriptor["size_bytes"] == authority_descriptor["size_bytes"] and
+                     source_descriptor["sha256"] == authority_descriptor["sha256"],
+                     "original guardian source differs from stopped snapshot")
+            observed, _ = custody.read_descriptor(source_descriptor["path"],
+                label="original guardian authority source", maximum=1024 * 1024)
+            _require(observed == source_descriptor, "original guardian authority source drifted")
+            authority_descriptor = source_descriptor
+        refresh = preprocessing_receipt["model_parity_refresh_authority"]
+        config_ref = {key: refresh["execution_config"][key] for key in _DESCRIPTOR_FIELDS}
+        config_path = _under_root(root, config_ref["path"], label="operational worker config")
+        observed_config, _ = custody.read_descriptor(config_path,
+            label="operational worker config", maximum=1024 * 1024)
+        _require(observed_config == config_ref, "operational worker config differs from preprocessing authority")
+        probes = {}
+        for resource in RESOURCES:
+            probe_ref = refresh["runtime_probes"][resource]
+            if set(probe_ref) != _DESCRIPTOR_FIELDS:
+                probe_ref = {key: probe_ref[key] for key in _DESCRIPTOR_FIELDS}
+            observed, raw = custody.read_descriptor(probe_ref["path"],
+                label="original worker probe", maximum=1024 * 1024, capture=True)
+            _require(observed == probe_ref, "original worker probe descriptor drifted")
+            probes[resource] = _decode_canonical_json_payload(raw, label="original worker probe")
+        binding_set = refresh["binding_set"]
+        for descriptor in [binding_set["index"], *binding_set["bindings"].values()]:
+            observed, _ = custody.read_descriptor(descriptor["path"],
+                label="original analytics binding", maximum=1024 * 1024)
+            _require(observed == descriptor, "original analytics binding descriptor drifted")
+        materialized = load_materialized_binding_set(root / binding_set["index"]["path"].rsplit("/", 1)[0],
+            execution_config=load_execution_config(config_path), runtime_probes=probes)
+        with held_operational_capture_plan_v1(project_root=root,
+                index_path=_under_root(root, binding["capture_plan"]["path"], label="original capture plan"),
+                expected_descriptor=_operational_absolute_descriptor(root, binding["capture_plan"])) as plan:
+            _require(plan["index"]["mode"] == expected_mode, "capture plan mode differs from original execution")
+            operations = list(plan["operations_by_id"].values())
+            outputs = binding["operation_outputs"]
+            count = 37 if expected_mode == "complete_qualification_operational_identity_v1" else 2
+            _require(type(outputs) is list and len(outputs) == len(operations) == count,
+                     "original operational output cardinality drifted")
+            companion_ref = _operational_absolute_descriptor(root, binding["guardian_companion"])
+            _require(Path(companion_ref["path"]) == Path(plan["guardian_context"]["output_dir"]) /
+                     "operational_group.v1.json", "guardian group differs from reserved original output")
+            companion = _held_operational_object(custody, root, companion_ref)
+            expected_headers = {}
+            for journal in companion["journals"]:
+                entry = {"path": journal["path"], "descriptor": {key: journal[key] for key in _DESCRIPTOR_FIELDS}}
+                header = load_operational_jsonl_header_v1(entry)
+                template = copy.deepcopy(plan["guardian_context"]["headers_by_route"][journal["route"]])
+                template.update(lifecycle_id=authority["lifecycle_id"], owner=authority["owner_process"],
+                    worker_capability=dict(materialized.capabilities[tuple(journal["route"].split(":"))]))
+                template["descriptors"]["service_authority"] = _operational_absolute_descriptor(root, authority_descriptor)
+                template = payload_with_sha256_v1(template)
+                _require(header == template, "observed guardian constants differ from original source/authority")
+                expected_headers[journal["route"]] = template
+            domains, measured, qualified = [], [], []
+            seen_paths, seen_inodes = set(), set()
+            contexts = {ref["operation_id"]: ref["descriptor"] for ref in plan["index"]["native_contexts"]}
+            for ordinal, (operation, output) in enumerate(zip(operations, outputs, strict=True)):
+                _require(set(output) == {"operation_id", "native_domain", "measurement_decisions",
+                    "accepted_ingress", "process_receipt", "container_receipt"} and
+                    output["operation_id"] == operation["operation_id"],
+                    "original producing invocation is missing, duplicated or substituted")
+                original = _held_operational_object(custody, root, operation["original_operation"])
+                _require(set(original) == {"schema_version", "artifact_kind", "operation", "container_image", "outputs", "sha256"} and
+                    original["schema_version"] == 1 and original["artifact_kind"] == "vast_original_native_operation_input_v1" and
+                    original["operation"] == {key: value for key, value in operation.items() if key != "original_operation"},
+                    "original operation source document differs from its physical manifest")
+                engine_descriptor = _validate_operational_runtime_bundle_v1(custody=custody, root=root,
+                    operation=operation, original=original,
+                    context_descriptor=contexts[operation["operation_id"]],
+                    runtime=runtime, runtime_bundles=runtime_bundles, expected_mode=expected_mode)
+                reserved = original["outputs"]
+                _require(type(reserved) is dict and set(reserved) == {"measurement_dir", "native_domain", "process_receipt", "container_receipt"},
+                    "original output reservations are incomplete")
+                directory = _under_root(root, reserved["measurement_dir"], label="original measured reservation")
+                for role in ("native_domain", "process_receipt", "container_receipt"):
+                    _require(_operational_absolute_descriptor(root, output[role])["path"] == reserved[role],
+                             "original operational output escaped its reservation")
+                _require(_operational_absolute_descriptor(root, output["measurement_decisions"])["path"] ==
+                    str(directory / "publication_policy_decisions.jsonl") and
+                    _operational_absolute_descriptor(root, output["accepted_ingress"])["path"] == str(directory / "ingress_ledger.csv"),
+                    "original measurement outputs escaped their native namespace")
+                native_ref = _operational_absolute_descriptor(root, output["native_domain"])
+                path = Path(native_ref["path"])
+                info = path.lstat()
+                _require(str(path) not in seen_paths and (info.st_dev, info.st_ino) not in seen_inodes,
+                         "original native producing outputs physically alias")
+                seen_paths.add(str(path)); seen_inodes.add((info.st_dev, info.st_ino))
+                entry = {"path": path, "descriptor": native_ref}
+                header = load_operational_jsonl_header_v1(entry)
+                context = plan["native_contexts_by_id"][operation["operation_id"]]["native_header"]
+                immutable = set(context) - {"counts", "adaptive_history", "sha256"}
+                _require(all(header[key] == context[key] for key in immutable),
+                         "complete native header changed original context/reset/source")
+                process_summary = original_process_validator_v1(project_root=root, receipt_path=output["process_receipt"]["path"],
+                    expected_descriptor=_operational_absolute_descriptor(root, output["process_receipt"]),
+                    operation_id=operation["operation_id"], original_operation_descriptor=operation["original_operation"],
+                    native_context_descriptor=contexts[operation["operation_id"]], expected_container_image=original["container_image"])
+                observed_engine = {field: process_summary["measurement"]["launch"]["engine"][field]
+                    for field in _DESCRIPTOR_FIELDS}
+                _require(observed_engine == engine_descriptor,
+                         "original measurement executable differs from validated stock engine")
+                custody.hold_validated_inputs(process_summary, engine_descriptor=engine_descriptor)
+                container_summary = original_container_validator_v1(project_root=root, receipt_path=output["container_receipt"]["path"],
+                    expected_descriptor=_operational_absolute_descriptor(root, output["container_receipt"]),
+                    operation_id=operation["operation_id"], process_receipt_path=output["process_receipt"]["path"],
+                    expected_process_descriptor=_operational_absolute_descriptor(root, output["process_receipt"]),
+                    original_operation_descriptor=operation["original_operation"],
+                    native_context_descriptor=contexts[operation["operation_id"]],
+                    expected_container_image=original["container_image"])
+                custody.hold_validated_inputs(container_summary, engine_descriptor=engine_descriptor)
+                del process_summary, container_summary
+                domains.append({**entry, "expected_header": header})
+                measured.append({"path": directory / "publication_policy_decisions.jsonl",
+                    "descriptor": _operational_absolute_descriptor(root, output["measurement_decisions"]),
+                    "canonical_frames": partial(_operational_measured_ingress_v1, root=root,
+                        operation=operation, directory=directory, ingress_descriptor=output["accepted_ingress"])})
+                if operation["phase"] == "qualification_cell":
+                    qualified.append((ordinal, operation["arm_id"]))
+            manifest_ref = operations[0]["descriptors"]["capability_manifest"]
+            _require(all(operation["descriptors"]["capability_manifest"] == manifest_ref for operation in operations),
+                     "original producers do not share the original candidate capability authority")
+            _require(manifest_ref == _operational_absolute_descriptor(root, preprocessing_receipt["candidate_manifest"]),
+                     "original operational candidate differs from validated preprocessing authority")
+            manifest = _held_operational_object(custody, root, manifest_ref,
+                maximum=16 * 1024 * 1024, require_self_hash=False)
+            result = reconcile_guardian_operational_workload_v1(producer_domains=domains,
+                guardian_companion={"path": Path(companion_ref["path"]), "descriptor": companion_ref},
+                measurement_descriptors=measured, expected_context={"mode": expected_mode,
+                    "operation_count": count, "guardian_headers": expected_headers},
+                capability_manifest=manifest, lifecycle_counters=lifecycle_counters, scratch_root=scratch_root)
+            if expected_mode == "complete_qualification_operational_identity_v1":
+                _require(pilot_execution is not None and len(qualified) == 32,
+                         "complete accounting requires stock-validated 32 qualification cells")
+                cells = {row["arm_id"]: row for row in pilot_execution["guardian_request_workload"]["cells"]}
+                _require(set(cells) == {arm for _, arm in qualified} and all(
+                    result["operations"][ordinal]["measurement_request_count"] == cells[arm]["request_count"]
+                    for ordinal, arm in qualified), "complete accounting differs from exact 32-cell measured subset")
+            custody.verify()
+            unsigned = {"schema_version": 1, "artifact_kind": "vast_original_operational_accounting_v1",
+                "mode": expected_mode, "binding": binding_descriptor, "capture_plan": binding["capture_plan"],
+                "original_operation_count": count, "qualification_cell_count": len(qualified),
+                "reconciliation": result, "publication_authority": False}
+            return {**unsigned, "sha256": _semantic_sha(unsigned)}
+
+
+def reconcile_operational_capture_binding_v1(**kwargs):
+    """Expose a single fail-closed error for malformed or unsafe cold evidence."""
+    try:
+        return _reconcile_operational_capture_binding_v1(**kwargs)
+    except QualificationExecutionClosureV1Error:
+        raise
+    except (KeyError, IndexError, TypeError, ValueError, OSError, PublicationPhysicalIoV1Error) as error:
+        raise QualificationExecutionClosureV1Error(
+            "original operational execution binding validation failed: " + str(error)) from error
+
+
 def _scan_accepted_guardian_workload(
     *,
     path: Path,
@@ -2473,6 +2876,7 @@ def _validate_chain(
     checkpoint_path: Path | str,
     dependencies: ExecutionClosureDependenciesV1,
     guardian_authority_binding_descriptor: Mapping[str, Any] | None = None,
+    operational_accounting_binding_path: Path | str | None = None,
 ) -> tuple[dict[str, Any], bytes, bytes, Path, Path]:
     cells = qualification_pilot_cells_v2()
     transaction = _validate_transaction(root, qualification_transaction_receipt_path)
@@ -2519,15 +2923,22 @@ def _validate_chain(
     )
     observed_counters = guardian.pop("_request_counters")
     expected_workload = pilot_execution["guardian_request_workload"]
-    _require(
-        observed_counters["requests_started"]
-        == observed_counters["requests_completed"]
-        == expected_workload["request_count"]
-        and observed_counters["requests_failed"] == 0
-        and observed_counters["requests_by_worker"]
-        == expected_workload["requests_by_worker"],
-        "guardian request counters do not exactly match accepted 32-cell workload",
-    )
+    if operational_accounting_binding_path is None:
+        _require(
+            observed_counters["requests_started"] == observed_counters["requests_completed"]
+            == expected_workload["request_count"] and observed_counters["requests_failed"] == 0
+            and observed_counters["requests_by_worker"] == expected_workload["requests_by_worker"],
+            "guardian request counters do not exactly match accepted 32-cell workload",
+        )
+    else:
+        guardian["operational_accounting"] = reconcile_operational_capture_binding_v1(
+            project_root=root, binding_path=operational_accounting_binding_path,
+            guardian_authority_path=authority_path, preprocessing_receipt=preprocessing_receipt,
+            lifecycle_counters=observed_counters, scratch_root=root / ".operational-reconciliation-scratch-v1",
+            expected_mode="complete_qualification_operational_identity_v1", pilot_execution=pilot_execution,
+            guardian_authority_binding_descriptor=guardian_authority_binding_descriptor,
+            runtime=runtime, runtime_bundles=runtime_bundles,
+        )
     guardian.update(
         {
             "accepted_workload_request_count": expected_workload[
@@ -2609,6 +3020,7 @@ def materialize_publication_policy_qualification_execution_closure_v1(
     checkpoint_path: Path | str,
     output_dir: Path | str,
     dependencies: ExecutionClosureDependenciesV1 = DEFAULT_DEPENDENCIES,
+    operational_accounting_binding_path: Path | str | None = None,
 ) -> dict[str, Path | int | str]:
     """Validate the complete stopped execution and atomically publish its receipt."""
 
@@ -2632,6 +3044,7 @@ def materialize_publication_policy_qualification_execution_closure_v1(
             pilot_root=pilot_root,
             checkpoint_path=checkpoint_path,
             dependencies=dependencies,
+            operational_accounting_binding_path=operational_accounting_binding_path,
         )
     )
     authority_final = destination / AUTHORITY_SNAPSHOT_FILENAME
@@ -2754,6 +3167,7 @@ def load_publication_policy_qualification_execution_closure_v1(
     project_root: Path | str,
     receipt_path: Path | str,
     dependencies: ExecutionClosureDependenciesV1 = DEFAULT_DEPENDENCIES,
+    require_complete_operational_accounting: bool = False,
 ) -> dict[str, Any]:
     """Cold-load and revalidate one immutable execution-closure receipt."""
 
@@ -2843,6 +3257,24 @@ def load_publication_policy_qualification_execution_closure_v1(
     )
     guardian_record = receipt.get("guardian")
     _require(type(guardian_record) is dict, "execution closure guardian binding is missing")
+    _require(type(require_complete_operational_accounting) is bool,
+             "complete operational accounting requirement must be explicit Boolean")
+    accounting = guardian_record.get("operational_accounting")
+    if require_complete_operational_accounting:
+        _require(type(accounting) is dict,
+                 "current qualification requires complete original operational accounting")
+    accounting_binding = None
+    if accounting is not None:
+        _require(type(accounting) is dict and set(accounting) == {"schema_version", "artifact_kind",
+            "mode", "binding", "capture_plan", "original_operation_count", "qualification_cell_count",
+            "reconciliation", "publication_authority", "sha256"} and
+            accounting["schema_version"] == 1 and accounting["artifact_kind"] == "vast_original_operational_accounting_v1" and
+            accounting["mode"] == "complete_qualification_operational_identity_v1" and
+            accounting["original_operation_count"] == 37 and accounting["qualification_cell_count"] == 32 and
+            accounting["publication_authority"] is False,
+            "complete original operational accounting schema/scope drifted")
+        _self_hash(accounting, "sha256", label="complete original operational accounting")
+        accounting_binding = _descriptor_shape(accounting["binding"], label="original accounting binding")["path"]
     _require(
         guardian_record.get("service_authority_snapshot") == authority_descriptor
         and guardian_record.get("service_lifecycle_snapshot")
@@ -2885,6 +3317,7 @@ def load_publication_policy_qualification_execution_closure_v1(
             checkpoint_path=receipt["pilot_execution"]["checkpoint"]["path"],
             dependencies=dependencies,
             guardian_authority_binding_descriptor=authority_source,
+            operational_accounting_binding_path=accounting_binding,
         )
     )
     _require(
@@ -2923,6 +3356,7 @@ def _parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--pilot-root", type=Path, required=True)
     parser.add_argument("--checkpoint", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
+    parser.add_argument("--operational-accounting-binding", type=Path)
     return parser.parse_args(argv)
 
 
@@ -2946,6 +3380,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             pilot_root=args.pilot_root,
             checkpoint_path=args.checkpoint,
             output_dir=args.output_dir,
+            operational_accounting_binding_path=args.operational_accounting_binding,
         )
     except (OSError, QualificationExecutionClosureV1Error) as error:
         print(f"qualification execution closure blocked: {error}", file=sys.stderr)

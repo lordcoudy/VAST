@@ -23,6 +23,7 @@ import stat
 import subprocess
 import sys
 import tempfile
+from contextlib import ExitStack
 from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass
 from functools import wraps
@@ -2373,6 +2374,54 @@ def _runtime_contract_for_cell(
     return native
 
 
+def _bind_operational_context_for_cell(*, cell, inputs, contract, capture_plan):
+    """Select a physically held original context without widening its mode."""
+    if capture_plan is None:
+        return contract
+    mode = capture_plan["index"]["mode"]
+    row = capture_plan["runtime_contexts_by_arm"].get(cell.arm_id)
+    if row is None:
+        _require(mode == "bounded_native_diagnostic_operational_v1",
+                 f"complete capture lacks original qualification context: {cell.arm_id}")
+        return contract
+    operation = row["operation"]
+    phase = "qualification_cell" if mode == "complete_qualification_operational_identity_v1" else "diagnostic"
+    expected = {key: getattr(cell, key) for key in
+        ("arm_id", "run_id", "system", "scenario", "codec", "policy", "deadline_ms")}
+    expected.update(phase=phase, warmup_s=30.0, measurement_s=180.0,
+                    drain_timeout_s=10.0, streams=6, branches=4)
+    _require(all(operation.get(key) == value for key, value in expected.items()) and
+             row["context"]["mode"] == mode,
+             f"capture original operation differs from stock cell: {cell.arm_id}")
+    header_refs = row["context"]["native_header"]["descriptors"]
+    def project_descriptor(value):
+        result = dict(value)
+        path = Path(result["path"])
+        if path.is_absolute():
+            try:
+                result["path"] = path.relative_to(inputs.root).as_posix()
+            except ValueError as error:
+                raise QualificationRuntimeInputMaterializationV2Error(
+                    "original capture descriptor escaped project_root") from error
+        return result
+    for role, pin in (("capability_manifest", inputs.candidate_manifest),
+                      ("calibration", inputs.calibrations[cell.system])):
+        expected_ref = {"path": pin.path.relative_to(inputs.root).as_posix(),
+                        "size_bytes": pin.snapshot[4], "sha256": pin.sha256}
+        _require(project_descriptor(header_refs[role]) == expected_ref,
+                 f"capture original {role} differs from stock authority: {cell.arm_id}")
+    pin = _descriptor_pin(inputs.root, project_descriptor(row["descriptor"]),
+                          label=f"original native capture context {cell.arm_id}")
+    from publication_operational_runtime_context_v1 import CAPTURE_KEY, CAPTURE_ROLE, OUTPUT_PATH_RULE
+    result = copy.deepcopy(dict(contract))
+    result["files"][CAPTURE_ROLE] = _descriptor(
+        pin, container_path=("/opt/vast/input/operational/native-context.json"
+             if cell.system in {"deepstream", "savant"}
+             else _project_container_path(pin.relative)))
+    result[CAPTURE_KEY] = {"mode": mode, "output_dir": OUTPUT_PATH_RULE}
+    return result
+
+
 def _runtime_inputs_for_cell(
     cell: QualificationPilotCellV2,
     *,
@@ -2979,6 +3028,7 @@ def _materialize_publication_policy_qualification_runtime_inputs_v2_held(
     duration_s: int = 180,
     dependencies: RuntimeInputMaterializationDependenciesV2 = DEFAULT_DEPENDENCIES,
     after_directory_publish_step: Callable[[str, Path], None] | None = None,
+    operational_capture_plan: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Atomically publish all live, exact-input qualification bundles."""
 
@@ -3148,6 +3198,10 @@ def _materialize_publication_policy_qualification_runtime_inputs_v2_held(
                 runtime_files=(
                     runtime_files if cell.system == "openvino_gva" else ()
                 ),
+            )
+            contract = _bind_operational_context_for_cell(
+                cell=cell, inputs=inputs, contract=contract,
+                capture_plan=operational_capture_plan,
             )
             return _runtime_inputs_for_cell(
                 cell, dataset=datasets[cell.codec], contract=contract
@@ -3332,6 +3386,10 @@ def materialize_publication_policy_qualification_runtime_inputs_v2(
     """Materialize with held source custody and autonomous postcommit reload."""
 
     _require(not args, "runtime-input materializer accepts keyword arguments only")
+    _require("operational_capture_plan" not in kwargs,
+             "capture requires a physically held plan path, not an in-memory grant")
+    kwargs = dict(kwargs)
+    capture_plan_path = kwargs.pop("operational_capture_plan_path", None)
     root = _physical_root(kwargs.get("project_root"))
     bootstrap_root = _physical_directory(
         root, kwargs.get("bootstrap_dir"), label="qualification bootstrap directory"
@@ -3349,9 +3407,14 @@ def materialize_publication_policy_qualification_runtime_inputs_v2(
         ),
     ]
     try:
-        with PhysicalRootCustodyV1.open(
-            root, label="qualification runtime-input project_root"
-        ) as custody:
+        with ExitStack() as stack:
+            custody = stack.enter_context(PhysicalRootCustodyV1.open(
+                root, label="qualification runtime-input project_root"))
+            capture_plan = None
+            if capture_plan_path is not None:
+                from publication_operational_capture_plan_v1 import held_operational_capture_plan_v1
+                capture_plan = stack.enter_context(held_operational_capture_plan_v1(
+                    project_root=root, index_path=capture_plan_path))
             pinned: list[tuple[Path | str, dict[str, Any], tuple[int, int]]] = []
             for position, path in enumerate(source_paths):
                 descriptor, _payload, identity = custody.read_descriptor_identity(
@@ -3361,7 +3424,7 @@ def materialize_publication_policy_qualification_runtime_inputs_v2(
                 )
                 pinned.append((path, descriptor, identity))
             result = _materialize_publication_policy_qualification_runtime_inputs_v2_held(
-                **kwargs
+                **kwargs, operational_capture_plan=capture_plan
             )
             for position, (path, descriptor, identity) in enumerate(pinned):
                 observed, _payload, observed_identity = custody.read_descriptor_identity(
@@ -3421,6 +3484,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--scratch-root", type=Path, default=DEFAULT_SCRATCH_ROOT)
     parser.add_argument("--deadline-ms", type=float, default=100.0)
     parser.add_argument("--duration-s", type=int, default=180)
+    parser.add_argument("--operational-capture-plan", type=Path)
     args = parser.parse_args(argv)
     result = materialize_publication_policy_qualification_runtime_inputs_v2(
         project_root=args.project_root,
@@ -3437,6 +3501,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         scratch_root=args.scratch_root,
         deadline_ms=args.deadline_ms,
         duration_s=args.duration_s,
+        operational_capture_plan_path=args.operational_capture_plan,
     )
     print(
         json.dumps(

@@ -1,0 +1,42 @@
+test_actual_37_originals_join_32_selected_cells_and_all_three_phases (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests.test_actual_37_originals_join_32_selected_cells_and_all_three_phases) ... ERROR
+test_same_count_32_cell_workload_substitution_is_rejected (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests.test_same_count_32_cell_workload_substitution_is_rejected) ... ERROR
+test_same_count_foreign_preprocessing_candidate_cannot_supply_original_authority (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests.test_same_count_foreign_preprocessing_candidate_cannot_supply_original_authority) ... ERROR
+
+======================================================================
+ERROR: test_actual_37_originals_join_32_selected_cells_and_all_three_phases (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests.test_actual_37_originals_join_32_selected_cells_and_all_three_phases)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_execution_binding_v1.py", line 324, in test_actual_37_originals_join_32_selected_cells_and_all_three_phases
+    result, mapped, processes, containers = self.fixture.reconcile()
+                                            ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_execution_binding_v1.py", line 295, in reconcile
+    guardian_authority_path=self.boundary.service.authority_path,
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'GStreamerAnalyticsProductionService' object has no attribute 'authority_path'
+
+======================================================================
+ERROR: test_same_count_32_cell_workload_substitution_is_rejected (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests.test_same_count_32_cell_workload_substitution_is_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_execution_binding_v1.py", line 347, in test_same_count_32_cell_workload_substitution_is_rejected
+    self.fixture.reconcile(pilot_execution=pilot)
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_execution_binding_v1.py", line 295, in reconcile
+    guardian_authority_path=self.boundary.service.authority_path,
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'GStreamerAnalyticsProductionService' object has no attribute 'authority_path'
+
+======================================================================
+ERROR: test_same_count_foreign_preprocessing_candidate_cannot_supply_original_authority (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests.test_same_count_foreign_preprocessing_candidate_cannot_supply_original_authority)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_execution_binding_v1.py", line 340, in test_same_count_foreign_preprocessing_candidate_cannot_supply_original_authority
+    self.fixture.reconcile(preprocessing_receipt=foreign)
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_execution_binding_v1.py", line 295, in reconcile
+    guardian_authority_path=self.boundary.service.authority_path,
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'GStreamerAnalyticsProductionService' object has no attribute 'authority_path'
+
+----------------------------------------------------------------------
+Ran 3 tests in 3.910s
+
+FAILED (errors=3)

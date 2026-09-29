@@ -480,6 +480,7 @@ def _source_material(
         dependencies.load_execution_closure,
         project_root=root,
         receipt_path=closure_path,
+        require_complete_operational_accounting=True,
     )
     _require(
         type(closure) is dict

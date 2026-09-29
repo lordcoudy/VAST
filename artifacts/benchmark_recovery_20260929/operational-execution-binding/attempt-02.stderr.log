@@ -1,0 +1,23 @@
+setUpClass (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests) ... ERROR
+
+======================================================================
+ERROR: setUpClass (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_execution_binding_v1.py", line 309, in setUpClass
+    cls.fixture.execute()
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_execution_binding_v1.py", line 149, in execute
+    self.boundary.start()
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_boundary_v1.py", line 281, in start
+    self.authority = self.service.start()
+                     ^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_analytics_sidecar.py", line 6113, in start
+    _require(isinstance(templates, Mapping) and set(templates) == EXPECTED_KEYS,
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_analytics_sidecar.py", line 277, in _require
+    raise SidecarError(message)
+checkpoint_gstreamer_analytics_sidecar.SidecarError: operational request headers must cover exact eight routes
+
+----------------------------------------------------------------------
+Ran 0 tests in 0.593s
+
+FAILED (errors=1)

@@ -31,7 +31,11 @@ def _closure(
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text('{"fixture":"execution-closure-v1"}\n', encoding="ascii")
 
-    def loader(*, project_root: Path, receipt_path: Path) -> dict:
+    def loader(*, project_root: Path, receipt_path: Path,
+               require_complete_operational_accounting: bool) -> dict:
+        # This fixture verifies delegation, not physical operational accounting.
+        if require_complete_operational_accounting is not True:
+            raise AssertionError("current qualification requires strict cold accounting")
         payload = Path(receipt_path).read_bytes()
         return {
             "receipt_descriptor": {

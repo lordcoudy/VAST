@@ -2879,6 +2879,8 @@ def main(
     parser.add_argument("--policy-capability-manifest", type=Path)
     parser.add_argument("--policy-calibration", type=Path)
     parser.add_argument("--static-hybrid-map", type=Path)
+    parser.add_argument("--operational-request-context", type=Path)
+    parser.add_argument("--operational-output-dir", type=Path)
     parser.add_argument("--gst-registry-template", type=Path)
     parser.add_argument("--gst-plugin-path", type=Path)
     parser.add_argument(
@@ -3025,6 +3027,21 @@ def main(
             pinned_file_paths_by_sha256,
         )
     native_policy_runtime: NativePolicyRuntimeCoordinator | None = None
+    from publication_operational_runtime_context_v1 import (
+        load_native_operational_context_v1, require_operational_execution_window_v1,
+    )
+    operational_context, operational_limits = load_native_operational_context_v1(
+        args.operational_request_context, args.operational_output_dir,
+        run_id=args.run_id, system=args.system, scenario=args.scenario,
+        codec=str(args.codec), policy=str(args.policy), deadline_ms=float(args.deadline_ms),
+    )
+    _require(operational_context is None or publication_mode,
+             "operational capture requires the actual publication runtime")
+    require_operational_execution_window_v1(
+        operational_context, warmup_s=runtime_warmup_s, measurement_s=runtime_measurement_s,
+        drain_timeout_s=float(args.drain_timeout), streams=len(plan["streams"]),
+        branches=len(plan["required_branches"]),
+    )
     native_policy_capability_assessment: dict[str, Any] | None = None
     native_policy_identities: dict[str, str] | None = None
     if publication_mode:
@@ -3085,6 +3102,7 @@ def main(
             capability_manifest=capability_manifest,
             calibration=calibration,
             static_hybrid_map=static_hybrid_map,
+            operational_context=operational_context,
         )
     resolved_queue_max_buffers = _resolve_analytics_queue_max_buffers(
         plan=plan,
@@ -3271,6 +3289,7 @@ def main(
                 if native_policy_runtime is not None
                 else None
             ),
+            operational_admission_limits=operational_limits,
         )
     native_policy_promotion: dict[str, Any] | None = None
     if native_policy_runtime is not None:

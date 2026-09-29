@@ -1,0 +1,19 @@
+setUpClass (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests) ... ERROR
+
+======================================================================
+ERROR: setUpClass (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_execution_binding_v1.py", line 316, in setUpClass
+    cls.fixture.execute()
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_execution_binding_v1.py", line 162, in execute
+    coordinator = NativePolicyRuntimeCoordinator(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_native_policy_runtime.py", line 638, in __init__
+    raise NativePolicyRuntimeError(f"operational context {key} mismatch")
+checkpoint_native_policy_runtime.NativePolicyRuntimeError: operational context initial_state mismatch
+
+----------------------------------------------------------------------
+Ran 0 tests in 0.616s
+
+FAILED (errors=1)

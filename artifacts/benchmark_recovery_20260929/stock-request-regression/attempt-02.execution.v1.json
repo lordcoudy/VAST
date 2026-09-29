@@ -1,0 +1,120 @@
+{
+  "accepted": false,
+  "argv": [
+    "wsl.exe",
+    "-d",
+    "Ubuntu",
+    "-u",
+    "s-a-balashov",
+    "--",
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-m",
+    "unittest",
+    "tests.test_publication_operational_stock_request_v1",
+    "-v"
+  ],
+  "artifact_kind": "vast_local_held_stock_request_regression_v1",
+  "classification": "Actual stock request construction, validation, pinned context/bundle, live Unix sockets, finalizer arguments and barriers; expensive transaction/service/parity/code-authority loaders are explicit fixture-only replacements. No Docker/image/model/inference or publication acceptance.",
+  "exit_code": 0,
+  "outputs": [
+    {
+      "path": "artifacts/benchmark_recovery_20260929/stock-request-regression/attempt-02.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260929/stock-request-regression/attempt-02.stderr.log",
+      "sha256": "46a6cbfec4755198b7a9aaee8b0db08cc5322212ca49522760b4b9ddcb3f37bf",
+      "size_bytes": 1419
+    }
+  ],
+  "publication_ready": false,
+  "schema_version": 1,
+  "source_pins_after": [
+    {
+      "path": "tests/test_publication_operational_stock_request_v1.py",
+      "sha256": "8cfc829a415ac5e1d5cd1d2ab58d07a3a8e887538b6c9dd7f0ad45a29d77971d",
+      "size_bytes": 13576
+    },
+    {
+      "path": "scripts/publication_operational_stock_operations_v1.py",
+      "sha256": "1edcd2813f3bedbac4416d7e7d69b9e959ecc044aee710f248721b06e81f0689",
+      "size_bytes": 24380
+    },
+    {
+      "path": "scripts/publication_policy_qualification_pilot_executor_v2.py",
+      "sha256": "419074d4cb65c6170f3cb33922d769b3c781cb1f24609e762c955dca72d0a09a",
+      "size_bytes": 179864
+    },
+    {
+      "path": "scripts/publication_operational_capture_plan_v1.py",
+      "sha256": "1019d8ca5aae7ec23315e08bafef0c4842350e55fedfb209453785b793c4ac95",
+      "size_bytes": 25882
+    },
+    {
+      "path": "scripts/publication_operational_runtime_context_v1.py",
+      "sha256": "20a470135fef1d6fc37b76585623197f18b2b20e4f192ba61ace45fcac5bdb51",
+      "size_bytes": 11192
+    },
+    {
+      "path": "scripts/publication_policy_qualification_execution_closure_v1.py",
+      "sha256": "5a9039a86e1abb2ce84f189217cd77e0885f86cba71cc1d6aca09b89df638304",
+      "size_bytes": 147846
+    },
+    {
+      "path": "scripts/publication_policy_qualification_execution_code_closure_v1.py",
+      "sha256": "5487bbb6203c17d5adcf1697148685590c11017228942d225cbb32a945f730a7",
+      "size_bytes": 18967
+    },
+    {
+      "path": "scripts/publication_benchmark_native_diagnostic_v1.py",
+      "sha256": "4b308d6727168b211b4eca7917e18c7516247e77d41329856566e343b9bd9c53",
+      "size_bytes": 13329
+    }
+  ],
+  "source_pins_before": [
+    {
+      "path": "tests/test_publication_operational_stock_request_v1.py",
+      "sha256": "8cfc829a415ac5e1d5cd1d2ab58d07a3a8e887538b6c9dd7f0ad45a29d77971d",
+      "size_bytes": 13576
+    },
+    {
+      "path": "scripts/publication_operational_stock_operations_v1.py",
+      "sha256": "1edcd2813f3bedbac4416d7e7d69b9e959ecc044aee710f248721b06e81f0689",
+      "size_bytes": 24380
+    },
+    {
+      "path": "scripts/publication_policy_qualification_pilot_executor_v2.py",
+      "sha256": "419074d4cb65c6170f3cb33922d769b3c781cb1f24609e762c955dca72d0a09a",
+      "size_bytes": 179864
+    },
+    {
+      "path": "scripts/publication_operational_capture_plan_v1.py",
+      "sha256": "1019d8ca5aae7ec23315e08bafef0c4842350e55fedfb209453785b793c4ac95",
+      "size_bytes": 25882
+    },
+    {
+      "path": "scripts/publication_operational_runtime_context_v1.py",
+      "sha256": "20a470135fef1d6fc37b76585623197f18b2b20e4f192ba61ace45fcac5bdb51",
+      "size_bytes": 11192
+    },
+    {
+      "path": "scripts/publication_policy_qualification_execution_closure_v1.py",
+      "sha256": "5a9039a86e1abb2ce84f189217cd77e0885f86cba71cc1d6aca09b89df638304",
+      "size_bytes": 147846
+    },
+    {
+      "path": "scripts/publication_policy_qualification_execution_code_closure_v1.py",
+      "sha256": "5487bbb6203c17d5adcf1697148685590c11017228942d225cbb32a945f730a7",
+      "size_bytes": 18967
+    },
+    {
+      "path": "scripts/publication_benchmark_native_diagnostic_v1.py",
+      "sha256": "4b308d6727168b211b4eca7917e18c7516247e77d41329856566e343b9bd9c53",
+      "size_bytes": 13329
+    }
+  ],
+  "sources_stable": true,
+  "test_count": 5,
+  "wall_seconds": 1.9064152999781072
+}

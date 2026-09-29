@@ -374,6 +374,9 @@ class Fixture:
             }
 
         def load_closure(**kwargs: object) -> dict[str, object]:
+            # This fixture verifies delegation, not physical operational accounting.
+            if kwargs.get("require_complete_operational_accounting") is not True:
+                raise AssertionError("current qualification requires strict cold accounting")
             if Path(kwargs["receipt_path"]) != self.closure_path:
                 raise AssertionError(kwargs)
             return {
@@ -645,6 +648,7 @@ class AcceptedPolicyGuardianPreprocessingContractV1Tests(unittest.TestCase):
                 }
 
             def load_foreign_closure(**kwargs: object) -> dict[str, object]:
+                self.assertIs(kwargs.get("require_complete_operational_accounting"), True)
                 self.assertEqual(Path(kwargs["receipt_path"]), foreign_closure_path)
                 return {
                     "receipt": copy.deepcopy(foreign_closure),

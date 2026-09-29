@@ -162,8 +162,12 @@ def _fixture(root: Path) -> tuple[Path, dict]:
 
 
 def _fake_execution_closure_loader(
-    *, project_root: Path, receipt_path: Path
+    *, project_root: Path, receipt_path: Path,
+    require_complete_operational_accounting: bool,
 ) -> dict:
+    # Fixture delegation only; separate physical closure tests prove accounting.
+    if require_complete_operational_accounting is not True:
+        raise AssertionError("current qualification requires strict cold accounting")
     descriptor = _descriptor(project_root, Path(receipt_path))
     return {
         "receipt_descriptor": descriptor,

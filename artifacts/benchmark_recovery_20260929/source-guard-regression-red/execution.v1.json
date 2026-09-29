@@ -1,0 +1,41 @@
+{
+  "artifact_kind": "vast_test_first_source_guard_red_v1",
+  "command": [
+    "wsl",
+    "-d",
+    "Ubuntu",
+    "--cd",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec",
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-m",
+    "unittest",
+    "tests.test_checkpoint_operational_admission_guard_v1",
+    "-v"
+  ],
+  "exit_code": 1,
+  "finished_at": "2026-09-29T20:54:57.262342+00:00",
+  "interpretation": "Six discovered tests, nine expected TypeError feature-absence errors; no setup/import failure. Actual source-boundary RED is separately retained by adversarial reviewer.",
+  "not_publication_acceptance": true,
+  "outputs": {
+    "stderr.bin": {
+      "sha256": "91a98ce361cc0213fe9b88877dcb2630a08413c668394babaddb2f246d95ecce",
+      "size_bytes": 12419
+    },
+    "stdout.bin": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    }
+  },
+  "schema_version": 1,
+  "source_after": {
+    "scripts/checkpoint_admission.py": "046e195d36a64c1de37606790fa07a092b937e42e1291bf0f3455d7faaf6ee25",
+    "scripts/checkpoint_runtime.py": "3aa0d6c74337961c6b8be54f31abde05f15cc82335673f5e1a61a12d48d95330",
+    "tests/test_checkpoint_operational_admission_guard_v1.py": "344fd9c81f8a351a47eaba21b754e7d6d0ee91b631749b1a3f30ac3477ce0929"
+  },
+  "source_before": {
+    "scripts/checkpoint_admission.py": "046e195d36a64c1de37606790fa07a092b937e42e1291bf0f3455d7faaf6ee25",
+    "scripts/checkpoint_runtime.py": "3aa0d6c74337961c6b8be54f31abde05f15cc82335673f5e1a61a12d48d95330",
+    "tests/test_checkpoint_operational_admission_guard_v1.py": "344fd9c81f8a351a47eaba21b754e7d6d0ee91b631749b1a3f30ac3477ce0929"
+  },
+  "started_at": "2026-09-29T20:54:56.856510+00:00"
+}

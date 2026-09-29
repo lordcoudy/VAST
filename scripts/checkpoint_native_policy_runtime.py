@@ -51,8 +51,14 @@ from publication_policy_projection_v1 import (
     MAX_RUNTIME_HISTORY_LINE_BYTES_V1,
     RUNTIME_HISTORY_JSONL,
     project_accepted_decision_v1,
+    reconstruct_original_decision_v1,
     serialize_runtime_history_v1,
     validate_published_decisions_v1,
+)
+from publication_operational_request_domain_v1 import (
+    MAX_NATIVE_DECISIONS_V1, NATIVE_OPERATIONAL_JSONL, OperationalDomainError,
+    build_native_occurrence_v1, validate_native_header_v1,
+    validate_native_request_source_v1, write_native_domain_v1,
 )
 
 
@@ -526,6 +532,7 @@ class _DecisionState:
     feature_observed_timestamp_ms: float
     submitted_decision_time_ms: float
     record: dict[str, Any]
+    decision_request: dict[str, Any] | None = None
     path: dict[str, Any] | None = None
     terminal: dict[str, Any] | None = None
     accepted: dict[str, Any] | None = None
@@ -550,6 +557,7 @@ class NativePolicyRuntimeCoordinator:
         capability_manifest: Mapping[str, Any],
         calibration: Mapping[str, Any],
         static_hybrid_map: Mapping[str, Any] | None = None,
+        operational_context: Mapping[str, Any] | None = None,
     ) -> None:
         self.run_id = _text(run_id, "run_id")
         self.arm_id = _text(arm_id, "arm_id")
@@ -612,6 +620,24 @@ class NativePolicyRuntimeCoordinator:
         )
         self._engine.reset(self.arm_id)
         self._initial_policy_state = self._engine.state_snapshot()
+        self._operational_context = None
+        self._operational_error: str | None = None
+        if operational_context is not None:
+            if not isinstance(operational_context, Mapping) or set(operational_context) != {"header", "output_dir"}:
+                raise NativePolicyRuntimeError("operational context fields mismatch")
+            header = copy.deepcopy(dict(operational_context["header"]))
+            try:
+                validate_native_header_v1(header, require_sha="sha256" in header)
+            except ValueError as exc:
+                raise NativePolicyRuntimeError(f"operational context is blocked: {exc}") from exc
+            for key, expected in (("run_id", self.run_id), ("system", self.system),
+                                  ("scenario", self.scenario), ("codec", self.codec),
+                                  ("policy", self.policy), ("deadline_ms", self.deadline_ms),
+                                  ("initial_state", self._initial_policy_state)):
+                if canonical_json_v1(header[key]) != canonical_json_v1(expected):
+                    raise NativePolicyRuntimeError(f"operational context {key} mismatch")
+            self._operational_context = {"header": header,
+                                         "output_dir": Path(operational_context["output_dir"])}
         self._lock = threading.RLock()
         self._next_decision_seq = 1
         self._next_feedback_seq = 1
@@ -659,6 +685,14 @@ class NativePolicyRuntimeCoordinator:
 
     def _handle_request(self, worker_id: str, message: Mapping[str, Any]) -> dict[str, Any]:
         _require_exact_fields(message, _REQUEST_FIELDS)
+        if self._operational_context is not None:
+            try:
+                validate_native_request_source_v1(message)
+                if len(self._states) >= MAX_NATIVE_DECISIONS_V1:
+                    raise OperationalDomainError("native operational state exceeds 6744 decisions")
+            except ValueError as exc:
+                self._operational_error = str(exc)
+                raise NativePolicyRuntimeError(self._operational_error) from exc
         if message.get("message_type") != "decision_request":
             raise NativePolicyRuntimeError("expected decision_request")
         observed_worker = _text(message.get("worker_id"), "worker_id")
@@ -760,6 +794,8 @@ class NativePolicyRuntimeCoordinator:
             feature_observed_timestamp_ms=observed_ms,
             submitted_decision_time_ms=submitted_decision_time_ms,
             record=record,
+            decision_request=(copy.deepcopy(dict(message))
+                              if self._operational_context is not None else None),
         )
         self._states[decision_id] = state
         self._decision_by_execution[execution_key] = decision_id
@@ -991,6 +1027,8 @@ class NativePolicyRuntimeCoordinator:
         if not isinstance(message, Mapping):
             raise NativePolicyRuntimeError("native policy message must be a JSON object")
         with self._lock:
+            if self._operational_error is not None:
+                raise NativePolicyRuntimeError(self._operational_error)
             if self._history_error is not None:
                 raise NativePolicyRuntimeError(self._history_error)
             kind = message.get("message_type")
@@ -1148,6 +1186,8 @@ class NativePolicyRuntimeCoordinator:
 
         output_dir = Path(output_dir)
         with self._lock:
+            if self._operational_error is not None:
+                raise NativePolicyRuntimeError(self._operational_error)
             if not self._states:
                 raise NativePolicyRuntimeError("native policy runtime emitted no decisions")
             pending = [
@@ -1284,6 +1324,8 @@ class NativePolicyRuntimeCoordinator:
             output_dir.mkdir(parents=True, exist_ok=True)
             staging = Path(tempfile.mkdtemp(prefix=".native-policy-publication.", dir=output_dir))
             published = []
+            operational_descriptor = None
+            operational_counts = None
             try:
                 for name, payload in targets.items():
                     with (staging / name).open("xb") as stream:
@@ -1310,20 +1352,77 @@ class NativePolicyRuntimeCoordinator:
                         decision_records_path=staging / POLICY_DECISIONS_JSONL, require_complete=True,
                         ingress_rows=ingress_rows, runtime_history_path=history_path,
                     )
+                if self._operational_context is not None:
+                    operational_dir = self._operational_context["output_dir"]
+                    # This is a separate retained group, outside legacy stage custody.
+                    if operational_dir.resolve().is_relative_to(output_dir.resolve()):
+                        raise NativePolicyRuntimeError("operational group overlaps legacy stage output")
+                    header = copy.deepcopy(self._operational_context["header"])
+                    operational_counts = {
+                        "complete_decision_count": len(runtime_ordered),
+                        "measurement_decision_count": len(ordered),
+                        "excluded_decision_count": len(runtime_ordered) - len(ordered),
+                        "runtime_feedback_count": self._next_feedback_seq - 1,
+                        "measurement_feedback_count": len(feedback_records),
+                        "excluded_feedback_count": self._next_feedback_seq - 1 - len(feedback_records),
+                    }
+                    header["counts"] = operational_counts
+                    header["initial_state"] = copy.deepcopy(self._initial_policy_state)
+                    header["adaptive_history"] = ({
+                        "path": str((output_dir / RUNTIME_HISTORY_JSONL).resolve()),
+                        "size_bytes": len(targets[RUNTIME_HISTORY_JSONL]),
+                        "sha256": hashlib.sha256(targets[RUNTIME_HISTORY_JSONL]).hexdigest(),
+                    } if self.policy == "adaptive_weights" else None)
+                    header = payload_with_sha256_v1(header)
+                    def complete_operational_records():
+                        for state in runtime_ordered:
+                            if state.decision_request is None:
+                                raise NativePolicyRuntimeError("original native request was not captured")
+                            yield build_native_occurrence_v1(
+                                runtime_decision_seq=state.record["decision_seq"],
+                                measurement=state.input_frame_key in canonical_frames,
+                                decision_request=state.decision_request, accepted_record=state.accepted,
+                                path=state.path, terminal=state.terminal,
+                                issued_record_sha256=state.record["sha256"],
+                            )
+                    def original_authority(record):
+                        accepted = record["accepted_record"]
+                        projected = project_accepted_decision_v1(
+                            accepted, canonical_trace_id=accepted["trace_id"],
+                            publication_decision_seq=accepted["decision_seq"],
+                            issued_record_sha256=record["issued_record_sha256"],
+                        )
+                        original, issued = reconstruct_original_decision_v1(projected)
+                        if canonical_json_v1(original) != canonical_json_v1(accepted):
+                            raise NativePolicyRuntimeError("original accepted inverse mismatch")
+                        rebound = bind_native_decision_evidence(
+                            issued, accepted["native_decision_evidence"], self._capability_manifest,
+                        )
+                        if rebound["sha256"] != record["accepted_record_sha256"]:
+                            raise NativePolicyRuntimeError("original native-binding roundtrip mismatch")
+                    operational_dir.mkdir(parents=True, exist_ok=True)
+                    operational_descriptor = write_native_domain_v1(
+                        operational_dir / NATIVE_OPERATIONAL_JSONL, header,
+                        complete_operational_records(), original_authority_validator=original_authority,
+                    )
+                    if sum(len(payload) for payload in targets.values()) + operational_descriptor["size_bytes"] > MAX_ACCEPTANCE_AGGREGATE_BYTES_V1:
+                        raise NativePolicyRuntimeError("retained operation exceeds aggregate byte budget")
                 # Exclusive hard links publish validated bytes without an
                 # overwrite race. Roll back only our own links on any failure.
                 for name in targets:
                     target = output_dir / name
                     os.link(staging / name, target)
                     published.append((staging / name, target))
-            except BaseException:
+            except BaseException as exc:
+                if self._operational_context is not None:
+                    self._operational_error = f"native operational publication failed: {type(exc).__name__}: {exc}"
                 for candidate, target in reversed(published):
                     if target.exists() and os.path.samefile(candidate, target):
                         target.unlink()
                 raise
             finally:
                 shutil.rmtree(staging)
-            return {
+            result = {
                 "schema_version": 1,
                 "artifact_kind": "vast_checkpoint_native_policy_promotion",
                 "run_id": self.run_id,
@@ -1341,6 +1440,10 @@ class NativePolicyRuntimeCoordinator:
                 "feedback_count": len(feedback_records),
                 "status": "accepted",
             }
+            if operational_descriptor is not None:
+                result["operational_domain"] = operational_descriptor
+                result["operational_counts"] = operational_counts
+            return result
 
     def enrich_runtime_events(
         self,

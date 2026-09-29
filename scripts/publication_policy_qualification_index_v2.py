@@ -409,7 +409,11 @@ def _validated_execution_closure_descriptor(
     )
     pilot_directory = _physical_directory(root, pilot_root, "pilot_root")
     try:
-        loaded = loader(project_root=root, receipt_path=root / descriptor["path"])
+        loaded = loader(
+            project_root=root,
+            receipt_path=root / descriptor["path"],
+            require_complete_operational_accounting=True,
+        )
     except PolicyQualificationIndexV2Error:
         raise
     except Exception as exc:

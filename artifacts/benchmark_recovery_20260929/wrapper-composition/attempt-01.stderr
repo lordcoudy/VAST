@@ -1,0 +1,137 @@
+test_all_four_active_wrappers_copy_separately_and_leave_original_inputs_unchanged (test_publication_operational_wrapper_composition_v1.OperationalWrapperCompositionTests.test_all_four_active_wrappers_copy_separately_and_leave_original_inputs_unchanged) ... 
+  test_all_four_active_wrappers_copy_separately_and_leave_original_inputs_unchanged (test_publication_operational_wrapper_composition_v1.OperationalWrapperCompositionTests.test_all_four_active_wrappers_copy_separately_and_leave_original_inputs_unchanged) (system='openvino_gva') ... ERROR
+test_all_four_context_file_tampering_is_rejected_before_the_mocked_arm (test_publication_operational_wrapper_composition_v1.OperationalWrapperCompositionTests.test_all_four_context_file_tampering_is_rejected_before_the_mocked_arm) ... 
+  test_all_four_context_file_tampering_is_rejected_before_the_mocked_arm (test_publication_operational_wrapper_composition_v1.OperationalWrapperCompositionTests.test_all_four_context_file_tampering_is_rejected_before_the_mocked_arm) (system='openvino_gva') ... ERROR
+test_all_four_declared_alias_or_existing_symlink_outputs_fail_before_engine (test_publication_operational_wrapper_composition_v1.OperationalWrapperCompositionTests.test_all_four_declared_alias_or_existing_symlink_outputs_fail_before_engine) ... 
+  test_all_four_declared_alias_or_existing_symlink_outputs_fail_before_engine (test_publication_operational_wrapper_composition_v1.OperationalWrapperCompositionTests.test_all_four_declared_alias_or_existing_symlink_outputs_fail_before_engine) (system='openvino_gva', mode='alias') ... ERROR
+  test_all_four_declared_alias_or_existing_symlink_outputs_fail_before_engine (test_publication_operational_wrapper_composition_v1.OperationalWrapperCompositionTests.test_all_four_declared_alias_or_existing_symlink_outputs_fail_before_engine) (system='openvino_gva', mode='symlink') ... ERROR
+test_all_four_original_child_failures_keep_literal_capture_and_original_cause (test_publication_operational_wrapper_composition_v1.OperationalWrapperCompositionTests.test_all_four_original_child_failures_keep_literal_capture_and_original_cause) ... 
+  test_all_four_original_child_failures_keep_literal_capture_and_original_cause (test_publication_operational_wrapper_composition_v1.OperationalWrapperCompositionTests.test_all_four_original_child_failures_keep_literal_capture_and_original_cause) (system='openvino_gva') ... ERROR
+test_all_four_stock_legacy_namespace_checks_precede_operational_copy (test_publication_operational_wrapper_composition_v1.OperationalWrapperCompositionTests.test_all_four_stock_legacy_namespace_checks_precede_operational_copy) ... 
+  test_all_four_stock_legacy_namespace_checks_precede_operational_copy (test_publication_operational_wrapper_composition_v1.OperationalWrapperCompositionTests.test_all_four_stock_legacy_namespace_checks_precede_operational_copy) (system='openvino_gva') ... ERROR
+test_failed_retention_rejects_ancestor_alias_and_preserves_owned_private_stage (test_publication_operational_wrapper_composition_v1.OperationalWrapperCompositionTests.test_failed_retention_rejects_ancestor_alias_and_preserves_owned_private_stage) ... 
+  test_failed_retention_rejects_ancestor_alias_and_preserves_owned_private_stage (test_publication_operational_wrapper_composition_v1.OperationalWrapperCompositionTests.test_failed_retention_rejects_ancestor_alias_and_preserves_owned_private_stage) (system='openvino_gva') ... ERROR
+
+======================================================================
+ERROR: test_all_four_active_wrappers_copy_separately_and_leave_original_inputs_unchanged (test_publication_operational_wrapper_composition_v1.OperationalWrapperCompositionTests.test_all_four_active_wrappers_copy_separately_and_leave_original_inputs_unchanged) (system='openvino_gva')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_wrapper_composition_v1.py", line 161, in test_all_four_active_wrappers_copy_separately_and_leave_original_inputs_unchanged
+    fixture = self.fixture(system)
+              ^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_wrapper_composition_v1.py", line 73, in fixture
+    source.write_bytes(raw)
+  File "/usr/lib/python3.12/pathlib.py", line 1038, in write_bytes
+    with self.open(mode='wb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1015, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmpzpoojfvg/runtime/operational-context.json'
+
+======================================================================
+ERROR: test_all_four_context_file_tampering_is_rejected_before_the_mocked_arm (test_publication_operational_wrapper_composition_v1.OperationalWrapperCompositionTests.test_all_four_context_file_tampering_is_rejected_before_the_mocked_arm) (system='openvino_gva')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_wrapper_composition_v1.py", line 201, in test_all_four_context_file_tampering_is_rejected_before_the_mocked_arm
+    fixture = self.fixture(system)
+              ^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_wrapper_composition_v1.py", line 73, in fixture
+    source.write_bytes(raw)
+  File "/usr/lib/python3.12/pathlib.py", line 1038, in write_bytes
+    with self.open(mode='wb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1015, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmpg9x2yai7/runtime/operational-context.json'
+
+======================================================================
+ERROR: test_all_four_declared_alias_or_existing_symlink_outputs_fail_before_engine (test_publication_operational_wrapper_composition_v1.OperationalWrapperCompositionTests.test_all_four_declared_alias_or_existing_symlink_outputs_fail_before_engine) (system='openvino_gva', mode='alias')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_wrapper_composition_v1.py", line 218, in test_all_four_declared_alias_or_existing_symlink_outputs_fail_before_engine
+    fixture = self.fixture(system)
+              ^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_wrapper_composition_v1.py", line 73, in fixture
+    source.write_bytes(raw)
+  File "/usr/lib/python3.12/pathlib.py", line 1038, in write_bytes
+    with self.open(mode='wb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1015, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmpbs9n7yit/runtime/operational-context.json'
+
+======================================================================
+ERROR: test_all_four_declared_alias_or_existing_symlink_outputs_fail_before_engine (test_publication_operational_wrapper_composition_v1.OperationalWrapperCompositionTests.test_all_four_declared_alias_or_existing_symlink_outputs_fail_before_engine) (system='openvino_gva', mode='symlink')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_wrapper_composition_v1.py", line 218, in test_all_four_declared_alias_or_existing_symlink_outputs_fail_before_engine
+    fixture = self.fixture(system)
+              ^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_wrapper_composition_v1.py", line 73, in fixture
+    source.write_bytes(raw)
+  File "/usr/lib/python3.12/pathlib.py", line 1038, in write_bytes
+    with self.open(mode='wb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1015, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmpga7zuso1/runtime/operational-context.json'
+
+======================================================================
+ERROR: test_all_four_original_child_failures_keep_literal_capture_and_original_cause (test_publication_operational_wrapper_composition_v1.OperationalWrapperCompositionTests.test_all_four_original_child_failures_keep_literal_capture_and_original_cause) (system='openvino_gva')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_wrapper_composition_v1.py", line 177, in test_all_four_original_child_failures_keep_literal_capture_and_original_cause
+    fixture = self.fixture(system)
+              ^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_wrapper_composition_v1.py", line 73, in fixture
+    source.write_bytes(raw)
+  File "/usr/lib/python3.12/pathlib.py", line 1038, in write_bytes
+    with self.open(mode='wb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1015, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmpi3xxcyb6/runtime/operational-context.json'
+
+======================================================================
+ERROR: test_all_four_stock_legacy_namespace_checks_precede_operational_copy (test_publication_operational_wrapper_composition_v1.OperationalWrapperCompositionTests.test_all_four_stock_legacy_namespace_checks_precede_operational_copy) (system='openvino_gva')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_wrapper_composition_v1.py", line 191, in test_all_four_stock_legacy_namespace_checks_precede_operational_copy
+    fixture = self.fixture(system)
+              ^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_wrapper_composition_v1.py", line 73, in fixture
+    source.write_bytes(raw)
+  File "/usr/lib/python3.12/pathlib.py", line 1038, in write_bytes
+    with self.open(mode='wb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1015, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmp84bdvtua/runtime/operational-context.json'
+
+======================================================================
+ERROR: test_failed_retention_rejects_ancestor_alias_and_preserves_owned_private_stage (test_publication_operational_wrapper_composition_v1.OperationalWrapperCompositionTests.test_failed_retention_rejects_ancestor_alias_and_preserves_owned_private_stage) (system='openvino_gva')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_wrapper_composition_v1.py", line 232, in test_failed_retention_rejects_ancestor_alias_and_preserves_owned_private_stage
+    fixture = self.fixture(system)
+              ^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_wrapper_composition_v1.py", line 73, in fixture
+    source.write_bytes(raw)
+  File "/usr/lib/python3.12/pathlib.py", line 1038, in write_bytes
+    with self.open(mode='wb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1015, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmp66sofiis/runtime/operational-context.json'
+
+----------------------------------------------------------------------
+Ran 6 tests in 2.573s
+
+FAILED (errors=7)

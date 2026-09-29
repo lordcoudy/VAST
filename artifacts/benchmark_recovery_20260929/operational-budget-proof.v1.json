@@ -1,0 +1,1153 @@
+{
+  "artifact_kind": "vast_benchmark_recovery_operational_budget_proof_v1",
+  "change": "fix-benchmark-preparations-spec",
+  "do_not_change_worker_dependency_closure": {
+    "openvino": {
+      "deploy/analytics_execution/publication/openvino-dependency-allowlist.txt": [
+        "deploy/analytics_execution/Dockerfile.openvino"
+      ],
+      "deploy/analytics_execution/publication/openvino-source-allowlist.txt": [
+        "deploy/analytics_execution/openvino_worker.py",
+        "scripts/analytics_execution_protocol.py",
+        "scripts/analytics_execution_worker.py"
+      ]
+    },
+    "tensorrt": {
+      "deploy/analytics_execution/publication/tensorrt-dependency-allowlist.txt": [
+        "deploy/analytics_execution/Dockerfile.tensorrt"
+      ],
+      "deploy/analytics_execution/publication/tensorrt-source-allowlist.txt": [
+        "deploy/analytics_execution/tensorrt_backend.cpp",
+        "deploy/analytics_execution/tensorrt_worker.py",
+        "scripts/analytics_execution_protocol.py",
+        "scripts/analytics_execution_worker.py"
+      ]
+    }
+  },
+  "guardian": {
+    "begin_cap_bytes": 768,
+    "begin_fields": [
+      "type",
+      "seq",
+      "request_seq",
+      "connection",
+      "local_seq",
+      "binding",
+      "request_id",
+      "input_key",
+      "frame_id",
+      "pts_ns",
+      "decision_id",
+      "control_sha256",
+      "at_ns",
+      "sha256"
+    ],
+    "begin_margin_bytes": 26,
+    "begin_max_bytes_including_LF": 742,
+    "begin_type_literal": "begin",
+    "descriptor_fields": [
+      "path",
+      "size_bytes",
+      "sha256"
+    ],
+    "dynamic_token_bounds": {
+      "at_ns": 20,
+      "begin_event_seq": 6,
+      "begin_seq": 6,
+      "binding": 3,
+      "connection": 7,
+      "control_sha256": 64,
+      "decision_id": 157,
+      "frame_id": 3,
+      "input_key": 136,
+      "local_seq": 4,
+      "outcome_max_characters": 9,
+      "pts_ns": 20,
+      "request_id": 64,
+      "request_seq": 6,
+      "response_sha256": 64,
+      "send_max_characters": 6,
+      "seq": 7,
+      "sha256": 64
+    },
+    "header_artifact_kind": "vast_guardian_operational_request_journal_v1",
+    "header_binding_fields": [
+      "id",
+      "context",
+      "front_worker"
+    ],
+    "header_bounds": {
+      "binding_max_row_bytes": 43,
+      "binding_references_max": 222,
+      "bindings_max": 222,
+      "contexts_max": 37,
+      "contexts_max_row_bytes": 238,
+      "descriptor_ascii_path_characters": 512,
+      "descriptor_max_bytes": 633,
+      "descriptor_size_token_bytes": 20,
+      "front_worker_max_row_bytes": 199,
+      "front_workers_max": 24,
+      "header_cap_bytes": 65536,
+      "header_margin_bytes": 28847,
+      "header_max_bytes_including_LF": 36689,
+      "protocols_max": 2,
+      "reference_token_bytes": 3,
+      "worker_capability_field_count": 23,
+      "worker_capability_max_bytes": 6136
+    },
+    "header_budget_fields": [
+      "max_group_bytes",
+      "max_route_bytes",
+      "max_header_bytes",
+      "max_begin_bytes",
+      "max_terminal_bytes",
+      "max_events",
+      "max_requests",
+      "max_pending",
+      "max_append_bytes",
+      "terminal_reservation_bytes"
+    ],
+    "header_context_fields": [
+      "id",
+      "protocol",
+      "run_id",
+      "arm_id",
+      "system",
+      "policy"
+    ],
+    "header_descriptor_keys": [
+      "accounting_input",
+      "service_authority",
+      "capability_manifest",
+      "execution_config",
+      "execution_code_closure",
+      "model_authority",
+      "source_plan",
+      "native_protocol_source",
+      "proxy_protocol_source"
+    ],
+    "header_digest_algorithm": "sha256",
+    "header_field_count": 16,
+    "header_fields": [
+      "schema_version",
+      "artifact_kind",
+      "record_kind",
+      "digest_algorithm",
+      "descriptors",
+      "lifecycle_id",
+      "owner",
+      "route",
+      "protocols",
+      "contexts",
+      "front_workers",
+      "bindings",
+      "worker_capability",
+      "initial_counters",
+      "budgets",
+      "sha256"
+    ],
+    "header_front_worker_fields": [
+      "id",
+      "worker_id",
+      "stream_id"
+    ],
+    "header_initial_counter_fields": [
+      "requests_started",
+      "requests_completed",
+      "requests_failed",
+      "unfinished_requests",
+      "connections_accepted",
+      "event_count"
+    ],
+    "header_owner_fields": [
+      "uid",
+      "gid",
+      "pid",
+      "proc_stat_starttime_ticks"
+    ],
+    "header_protocol_fields": [
+      "id",
+      "schema_version",
+      "message_type",
+      "transport",
+      "source_descriptor"
+    ],
+    "header_record_kind": "header",
+    "header_route_fields": [
+      "branch",
+      "resource"
+    ],
+    "header_section_serialized_bytes": {
+      "artifact_kind": 46,
+      "bindings": 9769,
+      "budgets": 248,
+      "contexts": 8844,
+      "descriptors": 5893,
+      "digest_algorithm": 8,
+      "front_workers": 4801,
+      "initial_counters": 130,
+      "lifecycle_id": 34,
+      "owner": 101,
+      "protocols": 323,
+      "record_kind": 8,
+      "route": 44,
+      "schema_version": 1,
+      "sha256": 66,
+      "worker_capability": 6136
+    },
+    "header_source_conditions": [
+      "Descriptor ASCII path<=512 follows supported physically pinned qualification namespace and literal constructor paths; enumerate/check original descriptor byte lengths before launch, not a generic validator clamp.",
+      "Do not embed the full63455-byte capability manifest; retain its physical descriptor and independently resolve validated actual candidate entries.",
+      "Deduplicate exact wire constant tuples. Reused precheck/future-cell wire identities select the same header reference; observed requests are not attributed to a physical original invocation by this table.",
+      "Per fixed route at most one issuing front worker per logical stream per original invocation:37*6=222 candidate bindings before dedup. Native worker shapes baseline/shared*6=12, plus SDK capability-worker/stream shapes<=12, total<=24.",
+      "All references resolve independently validated actual constants only; full request/input/decision strings remain in events, with no substring, arithmetic, numeric or positional codec.",
+      "Root accepted exact ordinary header role/scalar shapes; independently enumerate/validate actual original prelaunch input descriptors and constants before construction, without substituting labels for source proof.",
+      "Begin selects and compares the independently validated exact observed worker+stream tuple. Never derive stream from input_key, worker suffix, position or original invocation phase. SDK observed wire worker is capability worker and decision_id:null; producer identity remains in producer evidence."
+    ],
+    "pending_concurrency": {
+      "begin_timing": "After exact host protocol/route/request validation, before payload integrity/inference and before per-route bridge lock.24front calls rather than8downstream workers is relevant expected concurrency.",
+      "native_reason": "One native analytics client for gstreamer_custom/openvino_gva per process: vast_native_gst_probe.cpp1340-1374,2850-2855. Client exchange mutex405-438 serializes foreground send/recv.24baseline or6shared processes.",
+      "native_source_supported_active_calls_max": 24,
+      "no_aggregate_capacity_change": true,
+      "owned_invocations": "Root must establish sequential launch and complete prior original producer shutdown/drain. Unexpected overlap still fails recorder cap rather than losing evidence.",
+      "pending_reservations_total_bytes": 524288,
+      "recorder_cap": 128,
+      "reservation_gate": "Check pending<128 before new token/reservation allocation. Exhaustion sets sticky recorder failure; do not drop,retry,or authorize publication.",
+      "sdk_reason": "DeepStream6streams*4branch executor threads, each synchronous before next take. Savant6streams*4branchqueue->identity handoff callbacks, each synchronous with custom branchqueue task. No extra asynchronous inference dispatcher.",
+      "sdk_source_supported_active_calls_max": 24,
+      "status": "source expectation<=24; cap128 must independently enforce sticky fail-closed rejection before pending allocation including foreign overlap",
+      "terminal_reservation_bytes_each": 4096
+    },
+    "proxy_caveat": "infer_request has no observed native decision ID or SDK front-worker ID. Store decision_id:null; observed wire worker_id is analytics capability worker. Do not fabricate those native-only facts.",
+    "seal_proposal": "SHA256(bytes.fromhex(previous_validated_sha256) + canonical_json(event_without_sha256)); first previous seal is independently validated header.sha256. No prev field required; global seq strictly increases within each route, gaps belong to other routes and full union must be complete.",
+    "sequence_convention": {
+      "begin_ordinal": "reserve a later terminal slot; valid begin seq<=999999",
+      "connection_ordinal": "accepted maximum1000000,seven digits",
+      "event_ordinal": "one-based global append ordinal,1..1000000",
+      "local_ordinal": "supported observed local_seq<=6744, checked before begin allocation; generic legacy limits do not establish this",
+      "request_ordinal": "request_seq<=500000,six digits",
+      "terminal_relation": "begin_seq<seq<=1000000; strictly earlier begin_seq at most six decimal bytes"
+    },
+    "status": "source_conditional_exact_standard_json_schema_feasible_root_accepted_pending_implementation_and_runtime_validation",
+    "terminal_cap_bytes": 256,
+    "terminal_fields": [
+      "seq",
+      "begin_seq",
+      "at_ns",
+      "response",
+      "outcome",
+      "send",
+      "sha256"
+    ],
+    "terminal_margin_bytes": 0,
+    "terminal_max_bytes_including_LF": 256,
+    "terminal_semantics": {
+      "byte_bound_note": "response:null is shorter than its64-character SHA form; send:failed/closed six chars. Last seven-digit terminal seq gives256B exactly; begin_seq remains six digits.",
+      "outcome": [
+        "completed",
+        "failed"
+      ],
+      "record_kind": "Exact seven-field terminal schema with begin_seq is distinct from exact fourteen-field begin schema; header supplies version/digest convention.",
+      "response": "canonical response-control SHA-256 or explicit null",
+      "send": [
+        "sent",
+        "failed",
+        "closed"
+      ]
+    },
+    "whole_group_budget": {
+      "begin_terminal_pair_cap_bytes": 1024,
+      "cap_bytes": 268435456,
+      "companion_bytes": 1048576,
+      "event_bytes": 235855872,
+      "events": 460656,
+      "headers_bytes": 524288,
+      "margin_bytes": 30482432,
+      "pending_reservations_bytes": 524288,
+      "requests": 230328,
+      "total_bytes": 237953024
+    }
+  },
+  "method": "read-only physical source/authority reads and ordinary canonical JSON byte arithmetic; no repository imports, tests, benchmark, build, service/container start/stop or source edits",
+  "native": {
+    "artifact_kind_literal": "vast_qualification_operational_native_domain_v1",
+    "constant_component_bytes": {
+      "decision_request": 746,
+      "outer_envelope_keys_seals_and_framing": 626,
+      "path": 1092,
+      "terminal": 998
+    },
+    "envelope_fields": [
+      "schema_version",
+      "artifact_kind",
+      "runtime_decision_seq",
+      "decision_id",
+      "measurement",
+      "decision_request",
+      "accepted_record",
+      "path",
+      "terminal",
+      "issued_record_sha256",
+      "accepted_record_sha256",
+      "sha256"
+    ],
+    "field_counts": {
+      "accepted_record": 23,
+      "decision_request": 14,
+      "envelope": 12,
+      "path": 14,
+      "terminal": 14
+    },
+    "header": {
+      "adaptive_history": "null or independent physical descriptor for actual input history; never embed history/manifest",
+      "artifact_kind": "vast_qualification_operational_native_domain_v1",
+      "conditions": [
+        "Actual ASCII descriptor paths<=512/size token<=20 from pinned constructor inputs validated before allocation; unsupported namespace fails explicitmode without truncation.",
+        "Actual initial reset arm<=137,weights1.0/1.0,emptyEWMA; arbitrary caller histories/arms outside proof.",
+        "Same frozen qualification coordinates and independently physically validated authority descriptors as occurrence proof.",
+        "Only descriptors; full63455Bcapability manifest omitted."
+      ],
+      "count_fields": [
+        "complete_decision_count",
+        "measurement_decision_count",
+        "excluded_decision_count",
+        "runtime_feedback_count",
+        "measurement_feedback_count",
+        "excluded_feedback_count"
+      ],
+      "count_max_integer": 13488,
+      "count_max_token_bytes": 5,
+      "counts_semantics": "Actual independent complete/measurement/excluded counts. Decisions<=6744; conservative path+terminal event counts<=13488. Actual values rather than maxima enter header.",
+      "descriptor_fields": [
+        "path",
+        "size_bytes",
+        "sha256"
+      ],
+      "descriptor_keys": [
+        "capability_manifest",
+        "source_plan",
+        "model_authority",
+        "calibration",
+        "policy_request_source",
+        "policy_coordinator_source",
+        "execution_code_closure"
+      ],
+      "digest_algorithm": "sha256",
+      "field_count": 18,
+      "fields": [
+        "schema_version",
+        "artifact_kind",
+        "record_kind",
+        "digest_algorithm",
+        "operation_input",
+        "run_id",
+        "context_arm_id",
+        "system",
+        "scenario",
+        "codec",
+        "policy",
+        "deadline_ms",
+        "protocol",
+        "descriptors",
+        "initial_state",
+        "counts",
+        "adaptive_history",
+        "sha256"
+      ],
+      "header_cap_bytes": 65536,
+      "header_margin_bytes": 58502,
+      "header_max_bytes_including_LF": 7034,
+      "initial_ewma": {},
+      "initial_state_fields": [
+        "arm_id",
+        "weights",
+        "service_ewma_ms"
+      ],
+      "initial_weights": {
+        "cpu": 1.0,
+        "gpu": 1.0
+      },
+      "protocol_fields": [
+        "schema_version",
+        "decision_request",
+        "path",
+        "terminal",
+        "source_descriptor"
+      ],
+      "protocol_literals": {
+        "decision_request": "decision_request",
+        "path": "path_enter",
+        "schema_version": 1,
+        "source_descriptor": "policy_request_source",
+        "terminal": "terminal"
+      },
+      "record_kind": "header",
+      "section_serialized_bytes": {
+        "adaptive_history": 633,
+        "artifact_kind": 49,
+        "codec": 6,
+        "context_arm_id": 70,
+        "counts": 198,
+        "deadline_ms": 24,
+        "descriptors": 4584,
+        "digest_algorithm": 8,
+        "initial_state": 203,
+        "operation_input": 633,
+        "policy": 21,
+        "protocol": 144,
+        "record_kind": 8,
+        "run_id": 66,
+        "scenario": 43,
+        "schema_version": 1,
+        "sha256": 66,
+        "system": 18
+      },
+      "status": "root_reviewed_proposal_pending_actual_prelaunch_descriptors_and_producer_counts"
+    },
+    "integer_width_inventory": {
+      "accepted": [
+        "schema1",
+        "outer_seq4",
+        "normalized_seq4",
+        "candidate_cpu_depth10",
+        "candidate_gpu_depth10",
+        "evaluation_cpu_depth10",
+        "evaluation_gpu_depth10",
+        "evidence_PTS20"
+      ],
+      "envelope": [
+        "schema1",
+        "runtime_seq4"
+      ],
+      "path": [
+        "schema1",
+        "PTS20"
+      ],
+      "raw": [
+        "schema1",
+        "stream1",
+        "frame3",
+        "PTS20",
+        "cpu_depth10",
+        "gpu_depth10"
+      ],
+      "terminal": [
+        "schema1",
+        "PTS20"
+      ]
+    },
+    "issued_reconstruction": "Deep-copy original accepted; remove own sha256, set record_status replayable_not_runtime_accepted, set native_decision_evidence null, canonical hash and compare independently retained issued seal. Bind exact retained native evidence through unchanged transformation and compare original accepted seal. No re-evaluation or duplicated full issued JSON.",
+    "largest_group": {
+      "group_cap_bytes": 67108864,
+      "header_budget_bytes": 65536,
+      "margin_bytes": 4890624,
+      "record_budget_bytes": 9216,
+      "records": 6744,
+      "total_bytes": 62218240
+    },
+    "margin_bytes": 105,
+    "maximum_completed_record_bytes": 9111,
+    "nested_field_counts": {
+      "adaptive_extra_per_resource": 3,
+      "candidate_per_resource": 6,
+      "evaluation_base_per_resource": 9,
+      "maximum_sparse_ewma_values": 8,
+      "native_decision_evidence": 18,
+      "normalized_request": 9,
+      "queue_aware_extra_per_resource": 1,
+      "state_before": 3,
+      "weights": 2
+    },
+    "number_tokens": {
+      "finite_binary64_conservative_max_ascii_bytes": 24,
+      "frame_id_max": 280,
+      "frame_id_token_bytes": 3,
+      "native_guint_queue_depth_max": 4294967295,
+      "queue_depth_token_bytes": 10,
+      "runtime_decision_seq_max": 6744,
+      "runtime_decision_seq_token_bytes": 4,
+      "schema_literal": 1,
+      "sdk_queue_depths": {
+        "cpu": 0,
+        "gpu": 0
+      },
+      "stream_id_max": 5,
+      "stream_id_token_bytes": 1,
+      "uint64_max": 18446744073709551615,
+      "uint64_token_bytes": 20
+    },
+    "numeric_inventory": {
+      "accepted_forced": {
+        "floats": 27,
+        "integers": 8
+      },
+      "adaptive_additional_floats": 14,
+      "decision_request": {
+        "floats": 3,
+        "integers": 6
+      },
+      "envelope_additional_integers": 2,
+      "path": {
+        "floats": 1,
+        "integers": 2
+      },
+      "queue_aware_additional_floats": 2,
+      "terminal": {
+        "floats": 2,
+        "integers": 2
+      }
+    },
+    "object_fields": {
+      "accepted_record": [
+        "schema_version",
+        "artifact_kind",
+        "policy_contract_sha256",
+        "engine_implementation_id",
+        "policy_scope",
+        "policy",
+        "system",
+        "arm_id",
+        "decision_id",
+        "decision_seq",
+        "trace_id",
+        "branch",
+        "request",
+        "state_before",
+        "static_hybrid_map_sha256",
+        "static_hybrid_placement",
+        "evaluations",
+        "selected_resource",
+        "selected_implementation_id",
+        "reason",
+        "record_status",
+        "native_decision_evidence",
+        "sha256"
+      ],
+      "decision_request": [
+        "schema_version",
+        "message_type",
+        "run_id",
+        "worker_id",
+        "input_frame_key",
+        "trace_id",
+        "stream_id",
+        "frame_id",
+        "transport_pts_ns",
+        "branch",
+        "arrival_ms",
+        "decision_time_ms",
+        "feature_observed_timestamp_ms",
+        "queue_depths"
+      ],
+      "path": [
+        "schema_version",
+        "message_type",
+        "run_id",
+        "worker_id",
+        "decision_id",
+        "input_frame_key",
+        "branch",
+        "transport_pts_ns",
+        "selected_resource",
+        "implementation_id",
+        "emitter_id",
+        "emitter_sha256",
+        "event_id",
+        "timestamp_ms"
+      ],
+      "terminal": [
+        "schema_version",
+        "message_type",
+        "run_id",
+        "worker_id",
+        "decision_id",
+        "input_frame_key",
+        "branch",
+        "transport_pts_ns",
+        "selected_resource",
+        "terminal_status",
+        "terminal_timestamp_ms",
+        "actual_service_ms",
+        "detector",
+        "backend"
+      ]
+    },
+    "policies": {
+      "adaptive_weights": {
+        "accepted_bytes": 5649,
+        "arm_characters": 134,
+        "float_tokens": 47,
+        "integer_tokens_before_envelope": 18,
+        "line_bytes": 9111
+      },
+      "cpu_only": {
+        "accepted_bytes": 5041,
+        "arm_characters": 126,
+        "float_tokens": 33,
+        "integer_tokens_before_envelope": 18,
+        "line_bytes": 8503
+      },
+      "deadline_aware_heft": {
+        "accepted_bytes": 5080,
+        "arm_characters": 137,
+        "float_tokens": 33,
+        "integer_tokens_before_envelope": 18,
+        "line_bytes": 8542
+      },
+      "gpu_only": {
+        "accepted_bytes": 5041,
+        "arm_characters": 126,
+        "float_tokens": 33,
+        "integer_tokens_before_envelope": 18,
+        "line_bytes": 8503
+      },
+      "heft": {
+        "accepted_bytes": 5035,
+        "arm_characters": 122,
+        "float_tokens": 33,
+        "integer_tokens_before_envelope": 18,
+        "line_bytes": 8497
+      },
+      "queue_aware_edf": {
+        "accepted_bytes": 5167,
+        "arm_characters": 133,
+        "float_tokens": 35,
+        "integer_tokens_before_envelope": 18,
+        "line_bytes": 8629
+      },
+      "static_hybrid": {
+        "accepted_bytes": 5200,
+        "arm_characters": 131,
+        "float_tokens": 33,
+        "integer_tokens_before_envelope": 18,
+        "line_bytes": 8662
+      }
+    },
+    "raw_numeric_type_preservation": "Raw int versus float types remain unchanged. The frozen producers emit bounded uint coordinates/depths and binary64 clock/service values; generic Python validation alone does not imply these bounds.",
+    "reviewed_cap_bytes": 9216,
+    "scope_conditions": [
+      "Qualification37 original operations only; generic Q4/full accounting remains inactive.",
+      "Supported two-arm diagnostic reuses frozen qualification-derived run/wire-arm and worker coordinates, run ID<=64 and deadline100.0; arbitrary diagnostic labels are not in this proof.",
+      "Explicit supported-mode gate before DirectAdmissionCoordinator.accept retained-state mutation and ACK validates exact source stream/sequence, adjacent schedule_offset delta>=999999600ns and count<=281 per stream. Frozen fps/ffprobe stream metadata does not prove actual GstBuffer AU duration. C++1ns fallback fails next delta check; hardcount bounds first/last/timeout corners; no worker/native dependency edit.",
+      "At most281 retained accepted admissions per stream follows explicit pre-allocation count gate, not timing labels/host900s timeout.6streams*4branches*281=6744 complete decisions. Native240s/SDK280s are internal controller budgets reset after READY.",
+      "No longer/new record fields or artifact-kind literal may consume the 105-byte margin without rechecking exact arithmetic.",
+      "Static map is81 bytes plus64-char map SHA only for static_hybrid; do not combine it with adaptive EWMA/evaluation state."
+    ],
+    "status": "constructor_feasible_subject_to_exact_scope_and_source_gates_not_runtime_acceptance",
+    "strings": {
+      "branch": 14,
+      "decision_id": {
+        "formula": "run64 + literal :native-policy:15 + seq4 + worker37 + PTS20 + branch14 + three colons3",
+        "max_ascii_characters": 157
+      },
+      "frozen_candidate_maxima": {
+        "backend": {
+          "branch": "damage",
+          "characters": 160,
+          "resource": "gpu",
+          "system": "deepstream",
+          "value": "analytics-execution:tensorrt_cuda;runtime=TensorRT;native_api=nvinfer1::IExecutionContext::enqueueV3;device=NVIDIA_CUDA:GPU-00bb784b-60f3-8bf6-bbd3-5a0c09805266"
+        },
+        "detector": {
+          "branch": "foreign_object",
+          "characters": 90,
+          "resource": "cpu",
+          "system": "deepstream",
+          "value": "opaque_rn101;model_sha256=760702f6ec0138f71ebac66f4e95d1c72dc9267a8544f4d4667a53075fd0497c"
+        },
+        "emitter_id": {
+          "branch": "foreign_object",
+          "characters": 125,
+          "resource": "cpu",
+          "system": "gstreamer_custom",
+          "value": "gstreamer_custom-native-policy-emitter-v2:foreign_object:cpu:f13445d77341943b84c4a18c7954ebc517c01b67ccb0211fa1390751f4357571"
+        },
+        "emitter_sha256": {
+          "branch": "damage",
+          "characters": 64,
+          "resource": "cpu",
+          "system": "deepstream",
+          "value": "dfbd5818520669a0a591744bf4b2aa87dc5f84dacbd1a92fe8c9c849c2a81384"
+        },
+        "implementation_id": {
+          "branch": "foreign_object",
+          "characters": 127,
+          "resource": "cpu",
+          "system": "gstreamer_custom",
+          "value": "gstreamer_custom-qualification-authority-v2:foreign_object:cpu:f13445d77341943b84c4a18c7954ebc517c01b67ccb0211fa1390751f4357571"
+        }
+      },
+      "input_frame_key": {
+        "formula": "dataset27 + four colons4 + stream1 + SHA64 + source_cycle20 + source_pts20",
+        "max_ascii_characters": 136
+      },
+      "path_event_id": 64,
+      "policy": 19,
+      "reason": 32,
+      "run_id": {
+        "derivation": "qualification-v2 + fixed system/resource/codec/topology constructors; longest gstreamer_custom independent-processes",
+        "max_ascii_characters": 64
+      },
+      "sha256": 64,
+      "system": 16,
+      "trace_id": {
+        "formula": "run64 + stream1 + frame3 + worker37 + three colons3; native trace omits worker suffix and is smaller",
+        "max_ascii_characters": 108
+      },
+      "worker_id": {
+        "derivation": "savant-stream-5-branch-foreign_object",
+        "max_ascii_characters": 37
+      }
+    }
+  },
+  "not_acceptance": true,
+  "remaining_checks": [
+    "Implement/test exact standard canonical header/event/reader and original observed wire binding expansion; no codec or fabricatedidentity.",
+    "Enumerate actual prelaunch descriptor inputs and independently validate supported ASCII constructor paths and source/model/candidate/calibration/code closures before allocation.",
+    "Implement explicit source cadence/count gate before retained admission allocation/ACK, pending/local ordinal/event/route/group cap gates before recorder allocation/append.",
+    "Validate sequential original operation launch and shutdown/drain; unexpectedoverlap causes stickyrecorderfailure.",
+    "Run authorized worstcase bytes/roundtrip/adversarial tests, original2-armdiagnostic/qualification37 cold accounting before acceptance."
+  ],
+  "reviewed_planning_commit": "0cf5f946100db8d3844ae1b6352058eada5f6f92",
+  "schema_version": 1,
+  "serializer": {
+    "allow_nan": false,
+    "canonical_seal_excludes_own_sha256_and_line_terminator": true,
+    "encoding": "ascii",
+    "ensure_ascii": true,
+    "line_terminator": "LF",
+    "separators": [
+      ",",
+      ":"
+    ],
+    "sort_keys": true
+  },
+  "sha256": "b6cc44c5d29557e9f8bf8687b9770b5ffab75c32ba4e81e9ff3383ae753a5e55",
+  "source_budget_gate": {
+    "api": "scripts/checkpoint_admission.py:DirectAdmissionCoordinator.accept",
+    "cxx_fallback": "Sourcecoordinator649-652 scaled duration else0;679max(duration,1);673-678writeevent/waitACK/thenenqueue. Nextoffset exposes precedingAUstep; lastduration not inferred, hardcount independent.",
+    "existing_lifecycle": {
+      "admission_window_end_seconds": 210,
+      "deadline_epoch": "checkpoint_runtime.py1704 afterallREADY;START1720-1738",
+      "deadline_poll_granularity_seconds": 0.005,
+      "drain_seconds": 10,
+      "host_timeouts_not_source_bounds": [
+        900,
+        300
+      ],
+      "measurement_seconds": 180,
+      "native_timeout_seconds": 240,
+      "sdk_timeout_seconds": 280,
+      "stop_poll_granularity_seconds": 0.005,
+      "wall_window_check": "source602-603/618-620;controllerSTOP1793-1801",
+      "warmup_seconds": 30
+    },
+    "implementation_owner": "root; guard not implemented by this arithmetic artifact",
+    "required_checks": [
+      "Explicitqualification37/2-arm supportedmode only.",
+      "Actual sequence<=281 and retainedsourcecount<281 before allocation.",
+      "Nonfirst schedule_offset-last>=999999600ns.",
+      "Unsupported cadence/count sends no ACK; propagates controllererror and failsoperation.",
+      "Retain complete actual admissions/decisions/paths/terminals; no silentdropping or genericwire tightening."
+    ],
+    "stream_receipt_limitation": "extract_kpp_legacy_iss.py381-425 returnsstreammetadata, not packet/AUdurations. dataset.py222-232600/1 labels insufficient to prove GstBufferduration; runtimeguard required.",
+    "validation_location": "After parse and existing exact pipe/PID/run/stream/source/sequence checks, before215-220 retained maps/sets/_AdmissionState allocation; checkpoint_runtime.py1573 accepts then1578 ACKs."
+  },
+  "sources": {
+    "artifacts/fix_benchmark_preparations_20260928g/qualification_control/savant-audit-source-review.operational-accounting-budget.v1.json": {
+      "absolute_path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/fix_benchmark_preparations_20260928g/qualification_control/savant-audit-source-review.operational-accounting-budget.v1.json",
+      "line_ranges": [],
+      "sha256": "59644c8c6e8b72c32f1c8a9377dea31a25666415960b63f95e8d6377b092457f",
+      "size_bytes": 13652
+    },
+    "artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g/candidate/checkpoint_policy_capability_candidate_manifest.json": {
+      "absolute_path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g/candidate/checkpoint_policy_capability_candidate_manifest.json",
+      "line_ranges": [],
+      "sha256": "3c921a062345d571c836eed6e40de6b3bf4b7be798e24b792c10c1d1df3c1494",
+      "size_bytes": 63455
+    },
+    "configs/datasets.yaml": {
+      "absolute_path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/configs/datasets.yaml",
+      "line_ranges": [
+        "1041-1242",
+        "1280-1481"
+      ],
+      "sha256": "6f16a46c6a92c6aecd51cf669e4c5731f182a58b6a0f40dac7eff9b26d9d6086",
+      "size_bytes": 74277
+    },
+    "configs/experiments.yaml": {
+      "absolute_path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/configs/experiments.yaml",
+      "line_ranges": [
+        "94-99",
+        "113-128"
+      ],
+      "sha256": "18b69285690cdb6ad2f8e9fa528122a05fd3e4abe647a776e60c8e5eed4344e0",
+      "size_bytes": 23078
+    },
+    "deploy/analytics_execution/publication/openvino-dependency-allowlist.txt": {
+      "absolute_path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/analytics_execution/publication/openvino-dependency-allowlist.txt",
+      "line_ranges": [],
+      "sha256": "c6de183e6bbb3d3cea16cfeea98d22d64d1e034ae87a568111284f474c002d1a",
+      "size_bytes": 47
+    },
+    "deploy/analytics_execution/publication/openvino-source-allowlist.txt": {
+      "absolute_path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/analytics_execution/publication/openvino-source-allowlist.txt",
+      "line_ranges": [],
+      "sha256": "b1a42fda639e43e61d1d3ab20161f9a294754d9157b0b54be23de02a5e62e3e4",
+      "size_bytes": 124
+    },
+    "deploy/analytics_execution/publication/tensorrt-dependency-allowlist.txt": {
+      "absolute_path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/analytics_execution/publication/tensorrt-dependency-allowlist.txt",
+      "line_ranges": [],
+      "sha256": "c05e67bd428175b99aa15e9325d1e7f6f6e5258e1857c0da15509ddda76383f6",
+      "size_bytes": 47
+    },
+    "deploy/analytics_execution/publication/tensorrt-source-allowlist.txt": {
+      "absolute_path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/analytics_execution/publication/tensorrt-source-allowlist.txt",
+      "line_ranges": [],
+      "sha256": "6fefe6f415200d4a10025e3efb9e28fc22737dee84ca7cb5e40be660b8667722",
+      "size_bytes": 172
+    },
+    "deploy/native_gst_probe/checkpoint_admission_transport.hpp": {
+      "absolute_path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/native_gst_probe/checkpoint_admission_transport.hpp",
+      "line_ranges": [
+        "18-29"
+      ],
+      "sha256": "54e9aa0a05b50aacd9372fa6a2a660fb7f31f37d68b76d349362dad34e87e48d",
+      "size_bytes": 9551
+    },
+    "deploy/native_gst_probe/checkpoint_analytics_execution_client.hpp": {
+      "absolute_path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/native_gst_probe/checkpoint_analytics_execution_client.hpp",
+      "line_ranges": [
+        "405-409",
+        "405-438"
+      ],
+      "sha256": "d531893e2586bb02432d69edfae7bb2ec08a04711c2c8e22353efda678ae461a",
+      "size_bytes": 41004
+    },
+    "deploy/native_gst_probe/checkpoint_native_policy_client.hpp": {
+      "absolute_path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/native_gst_probe/checkpoint_native_policy_client.hpp",
+      "line_ranges": [
+        "19-35",
+        "98-124",
+        "153-220",
+        "260-276",
+        "329-336"
+      ],
+      "sha256": "85d2b64ccc977a76b6a9c250fd77ea8f02029382cc6121c52ff7ec3bc57acc0c",
+      "size_bytes": 22257
+    },
+    "deploy/native_gst_probe/checkpoint_source_coordinator.cpp": {
+      "absolute_path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/native_gst_probe/checkpoint_source_coordinator.cpp",
+      "line_ranges": [
+        "600-683",
+        "609-611",
+        "629-656",
+        "676-683"
+      ],
+      "sha256": "03f69a8e1be20c03a9044d0a478e52b8721bed18b3f61170e35f899ff9708fc4",
+      "size_bytes": 27391
+    },
+    "deploy/native_gst_probe/publication/deepstream-dependency-allowlist.txt": {
+      "absolute_path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/native_gst_probe/publication/deepstream-dependency-allowlist.txt",
+      "line_ranges": [],
+      "sha256": "ea34504be944777a79047b36626552642921aa10ad0c8c2c6707fa50fda3f887",
+      "size_bytes": 46
+    },
+    "deploy/native_gst_probe/publication/deepstream-source-allowlist.txt": {
+      "absolute_path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/native_gst_probe/publication/deepstream-source-allowlist.txt",
+      "line_ranges": [],
+      "sha256": "9a25d25c340f7c0a5e920c8700bb75fbfbf891a6d7fecc3e68363e34ea9dca28",
+      "size_bytes": 562
+    },
+    "deploy/native_gst_probe/publication/openvino-dependency-allowlist.txt": {
+      "absolute_path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/native_gst_probe/publication/openvino-dependency-allowlist.txt",
+      "line_ranges": [],
+      "sha256": "56987dcbda19e589653eb5cceac8e482f0896b5cd89bd4bb92e6ba8d1aeffcff",
+      "size_bytes": 44
+    },
+    "deploy/native_gst_probe/publication/openvino-source-allowlist.txt": {
+      "absolute_path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/native_gst_probe/publication/openvino-source-allowlist.txt",
+      "line_ranges": [],
+      "sha256": "4fbb83d112fff52b8a8a85e3cd48decb4498705328c74b289eee834119b50f05",
+      "size_bytes": 894
+    },
+    "deploy/native_gst_probe/publication/savant-dependency-allowlist.txt": {
+      "absolute_path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/native_gst_probe/publication/savant-dependency-allowlist.txt",
+      "line_ranges": [],
+      "sha256": "24de33ad711ca197a08e9f6d527e36d406f18318dc2cd53d5420c3855691a86c",
+      "size_bytes": 89
+    },
+    "deploy/native_gst_probe/publication/savant-source-allowlist.txt": {
+      "absolute_path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/native_gst_probe/publication/savant-source-allowlist.txt",
+      "line_ranges": [],
+      "sha256": "78416b85bc9434312548da1d5dd14b008406813ea13b8a33b212d432d5bce5c0",
+      "size_bytes": 621
+    },
+    "deploy/native_gst_probe/vast_native_gst_probe.cpp": {
+      "absolute_path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/native_gst_probe/vast_native_gst_probe.cpp",
+      "line_ranges": [
+        "1340-1374",
+        "1544-1547",
+        "2261-2263",
+        "2746-2760",
+        "2785-2797",
+        "2818-2832",
+        "2830-2855",
+        "3419-3444",
+        "86-92"
+      ],
+      "sha256": "c0e3f80ec32bdf539815ca59b5eee1b121c87905240e28b14ab0ba4b360d4c6f",
+      "size_bytes": 167521
+    },
+    "scripts/analytics_execution_endpoint.py": {
+      "absolute_path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/analytics_execution_endpoint.py",
+      "line_ranges": [
+        "125-205"
+      ],
+      "sha256": "acf5861d59efac7026ea89f28e1b4d550bd1254e8cdbea4df41eb874c7b5466b",
+      "size_bytes": 6756
+    },
+    "scripts/analytics_execution_protocol.py": {
+      "absolute_path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/analytics_execution_protocol.py",
+      "line_ranges": [
+        "25-66",
+        "86-100",
+        "326-339",
+        "383-426"
+      ],
+      "sha256": "283fa34b91e4fbf5953f78509f7da3a38f92731c696878774104f193576831d9",
+      "size_bytes": 18555
+    },
+    "scripts/analytics_execution_worker.py": {
+      "absolute_path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/analytics_execution_worker.py",
+      "line_ranges": [
+        "185-242"
+      ],
+      "sha256": "04b59f3c5a1fa94d764f3b0e71fcb2cd0d7b0e2ad915573529019e2d2f32f00d",
+      "size_bytes": 38433
+    },
+    "scripts/checkpoint_admission.py": {
+      "absolute_path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_admission.py",
+      "line_ranges": [
+        "148-220"
+      ],
+      "sha256": "046e195d36a64c1de37606790fa07a092b937e42e1291bf0f3455d7faaf6ee25",
+      "size_bytes": 17725
+    },
+    "scripts/checkpoint_deepstream_container_runtime_v3.py": {
+      "absolute_path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_deepstream_container_runtime_v3.py",
+      "line_ranges": [
+        "845-865"
+      ],
+      "sha256": "8769173a9b879d609a53968ed12e08fb856e221f93d6ea45ae251c8c4ea9cceb",
+      "size_bytes": 45113
+    },
+    "scripts/checkpoint_deepstream_protocol_adapter.py": {
+      "absolute_path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_deepstream_protocol_adapter.py",
+      "line_ranges": [
+        "257-265"
+      ],
+      "sha256": "8cff10050e05ed554b386ec6648693eaa069823bd68cac15ac7b2211e0638cbf",
+      "size_bytes": 17745
+    },
+    "scripts/checkpoint_deepstream_protocol_bridge.py": {
+      "absolute_path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_deepstream_protocol_bridge.py",
+      "line_ranges": [
+        "424-425",
+        "635-643",
+        "915-950",
+        "1017-1031",
+        "1060-1073",
+        "1185-1202"
+      ],
+      "sha256": "356e9171fb772f217c785632d3f57e96430da7138a146fe8720c56b1decd68ae",
+      "size_bytes": 53754
+    },
+    "scripts/checkpoint_deepstream_sdk_runtime.py": {
+      "absolute_path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_deepstream_sdk_runtime.py",
+      "line_ranges": [
+        "1005-1023",
+        "1007-1020",
+        "1374-1391",
+        "1374-1393"
+      ],
+      "sha256": "1f2d7978433a8ef32654e823272e5b6a9b28bd38c19924ecfee7a6f449da0e85",
+      "size_bytes": 83859
+    },
+    "scripts/checkpoint_gstreamer_analytics_bridge.py": {
+      "absolute_path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_analytics_bridge.py",
+      "line_ranges": [
+        "45-56",
+        "413-456"
+      ],
+      "sha256": "d0ff1e5910e41815e116988757ad5eb3b6c9ea6bc1cc56219d00be0b23e2da43",
+      "size_bytes": 39243
+    },
+    "scripts/checkpoint_gstreamer_analytics_sidecar.py": {
+      "absolute_path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_analytics_sidecar.py",
+      "line_ranges": [
+        "3659-3777",
+        "3915-3998",
+        "4464-4478",
+        "4776-4855",
+        "5233-5262"
+      ],
+      "sha256": "d35c61248edf779efb6ab5ba7c5d88f7e37a3faffea9a6c0680344d27d41aec2",
+      "size_bytes": 266212
+    },
+    "scripts/checkpoint_gstreamer_runtime.py": {
+      "absolute_path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_runtime.py",
+      "line_ranges": [
+        "3074-3078",
+        "3247-3267",
+        "3254-3256"
+      ],
+      "sha256": "5cb5e273831286f333c3647633bc50c445103b8ee62f9e6b99db08f33884f4cc",
+      "size_bytes": 155027
+    },
+    "scripts/checkpoint_native_policy_runtime.py": {
+      "absolute_path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_native_policy_runtime.py",
+      "line_ranges": [
+        "61",
+        "75-122",
+        "467-493",
+        "522-533",
+        "660-790",
+        "816-970",
+        "1141-1171"
+      ],
+      "sha256": "f8edf74f74c1a9cde0e08d6abbc4bda733ff0345d579d7a28d45317da3b472db",
+      "size_bytes": 66243
+    },
+    "scripts/checkpoint_runtime.py": {
+      "absolute_path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_runtime.py",
+      "line_ranges": [
+        "1566-1583",
+        "1650-1704",
+        "1716-1738",
+        "1791-1845"
+      ],
+      "sha256": "3aa0d6c74337961c6b8be54f31abde05f15cc82335673f5e1a61a12d48d95330",
+      "size_bytes": 94245
+    },
+    "scripts/checkpoint_runtime_plan.py": {
+      "absolute_path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_runtime_plan.py",
+      "line_ranges": [
+        "40-59",
+        "225-242",
+        "255-293"
+      ],
+      "sha256": "1de5f88c0939f3d9c38744e8248e5c0268159909393a4712af0e25e6d8462890",
+      "size_bytes": 30727
+    },
+    "scripts/checkpoint_savant_container_runtime_v3.py": {
+      "absolute_path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_savant_container_runtime_v3.py",
+      "line_ranges": [
+        "849-865"
+      ],
+      "sha256": "8e4489598c1936ae60329704beca6b72fcc11f34e9d15e9086ac0c9fd68f9332",
+      "size_bytes": 45156
+    },
+    "scripts/checkpoint_savant_native_module.py": {
+      "absolute_path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_savant_native_module.py",
+      "line_ranges": [
+        "737-765",
+        "869-932"
+      ],
+      "sha256": "66acc570993ec071db8323fc2763744fb8ae5359b673aff2ba213ea9814ab68b",
+      "size_bytes": 47245
+    },
+    "scripts/checkpoint_savant_protocol_adapter_v3.py": {
+      "absolute_path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_savant_protocol_adapter_v3.py",
+      "line_ranges": [
+        "156-181"
+      ],
+      "sha256": "a82f3196a91c8ca27cb0a91c5923dc6b40ade18dde190111c89b1d5b86f0b61d",
+      "size_bytes": 6908
+    },
+    "scripts/checkpoint_savant_runtime.py": {
+      "absolute_path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_savant_runtime.py",
+      "line_ranges": [
+        "470-515"
+      ],
+      "sha256": "58cc0fab1411e1ab291e89b2fc4c53d8faa8766014e8bdbe279a0faa33bd4555",
+      "size_bytes": 61301
+    },
+    "scripts/checkpoint_savant_sdk_runtime_v3.py": {
+      "absolute_path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_savant_sdk_runtime_v3.py",
+      "line_ranges": [
+        "562-585",
+        "566-586",
+        "831-857"
+      ],
+      "sha256": "b336cbfcda7dcc5ac15f510706cc0de99e5ebe875183d404345f081a2c702b66",
+      "size_bytes": 47261
+    },
+    "scripts/extract_kpp_legacy_iss.py": {
+      "absolute_path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/extract_kpp_legacy_iss.py",
+      "line_ranges": [
+        "381-425"
+      ],
+      "sha256": "4a491283963629f6c3ed2f1649d62b1a2945241edeb1e735b90144eb3f41f6fe",
+      "size_bytes": 73654
+    },
+    "scripts/kpp_iss_publication_v3_dataset.py": {
+      "absolute_path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/kpp_iss_publication_v3_dataset.py",
+      "line_ranges": [
+        "217-237"
+      ],
+      "sha256": "6ad62418f36f5e0dcfee55d43c117a9faa7e82f82c3388f53b1e7bf85049909d",
+      "size_bytes": 23901
+    },
+    "scripts/publication_policy_contract.py": {
+      "absolute_path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_contract.py",
+      "line_ranges": [
+        "99-110",
+        "661-708",
+        "955-978"
+      ],
+      "sha256": "276c15284c46b99ae32ae99653cc10f9f65e09d49d69498322c906614d1ba8a1",
+      "size_bytes": 40143
+    },
+    "scripts/publication_policy_frozen_replay_v1.py": {
+      "absolute_path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_frozen_replay_v1.py",
+      "line_ranges": [
+        "14-30",
+        "41-49",
+        "188-215",
+        "232-304",
+        "306-425"
+      ],
+      "sha256": "df03b7706ec354aab21714c09c9d0d95e7aa5a7124aefac574637f07e3d5d051",
+      "size_bytes": 21538
+    },
+    "scripts/publication_policy_projection_v1.py": {
+      "absolute_path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_projection_v1.py",
+      "line_ranges": [
+        "105-163"
+      ],
+      "sha256": "449eb645a6014cabfeb0e016edb476454b61368cdefbc71543459facacfa0cb9",
+      "size_bytes": 29622
+    },
+    "scripts/publication_policy_qualification_execution_closure_v1.py": {
+      "absolute_path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_qualification_execution_closure_v1.py",
+      "line_ranges": [
+        "414-447"
+      ],
+      "sha256": "7c0a1388d144e6c59bfd8d4747890efbe3cdfe622ee084fbfe9acd55b323f456",
+      "size_bytes": 116151
+    }
+  },
+  "worker_diagnostic_hook": {
+    "finding": "Host DockerWorkerHandle.failure_diagnostic currently retains only bounded stdout/stderr tails; start uses docker run --rm so original container State is removed. Instrument immutable host-side CID/name/image/daemon/context/stop-die-oom state before owned cleanup without changing copied inference worker source/dependency allowlists.",
+    "lines": [
+      "3693-3699",
+      "3915-3998",
+      "4464-4478",
+      "4776-4855"
+    ],
+    "path": "scripts/checkpoint_gstreamer_analytics_sidecar.py"
+  },
+  "worktree": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec"
+}

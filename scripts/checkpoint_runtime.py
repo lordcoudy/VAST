@@ -10,7 +10,7 @@ import threading
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Callable, Iterable
+from typing import Any, Callable, Iterable, Mapping
 
 from benchmark_contract import (
     ContractError,
@@ -1214,11 +1214,14 @@ def run_worker_processes(
     require_decoder_placement_verification: bool = False,
     measurement_end_boundary_guard_ns: int = 0,
     policy_socket_handler: Callable[[str, socket.socket], None] | None = None,
+    operational_admission_limits: Mapping[str, Any] | None = None,
 ) -> RuntimeRunResult:
     _require(os.name == "posix", "direct checkpoint event pipes require a POSIX runtime")
     spec_values = list(specs)
     source_spec_values = list(source_specs)
     _require(bool(spec_values), "no checkpoint workers were configured")
+    _require(operational_admission_limits is None or bool(source_spec_values),
+             "operational source gate requires original direct source processes")
     if source_spec_values:
         _require(synchronized_lifecycle, "direct admission sources require synchronized lifecycle")
         source_by_stream = {spec.stream_id: spec for spec in source_spec_values}
@@ -1505,6 +1508,7 @@ def run_worker_processes(
             topology_kind=topology_kind,
             branches=branches,
             bindings=source_bindings,
+            operational_admission_limits=operational_admission_limits,
         )
         if source_bindings
         else None

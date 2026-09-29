@@ -1,0 +1,62 @@
+{
+  "argv": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-B",
+    "-m",
+    "unittest",
+    "-v",
+    "test_qualification_complete_operational_promotion_gate_v1",
+    "test_publication_policy_qualification",
+    "test_full_resource_qualification",
+    "test_publication_policy_qualification_index_v2",
+    "test_full_resource_qualification_index_v1",
+    "test_publication_guardian_accepted_policy_preprocessing_contract_v1"
+  ],
+  "artifact_kind": "vast_qualification_promotion_consumer_gate_execution_v1",
+  "exit_code": 0,
+  "explicit_environment": {
+    "PYTHONPATH": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests:/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts"
+  },
+  "finished_unix_ns": 1790719076800363538,
+  "outputs": {
+    "stderr": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260929/promotion-consumer-gate/attempt-02.focused.stderr.log",
+      "sha256": "5e548b1504a69d577b7be300c77f468fa0eb30a914767bb5c473b206d4caa4f4",
+      "size_bytes": 12337
+    },
+    "stdout": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260929/promotion-consumer-gate/attempt-02.focused.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    }
+  },
+  "purpose": "focused_strict_delegation_and_original_consumer_regressions",
+  "source_stable": true,
+  "sources_after": {
+    "scripts/full_resource_qualification.py": "6e2c4362c3946c256748c7051ef52fe22c00ec2100ca3213781518acbf58d2d5",
+    "scripts/full_resource_qualification_index_v1.py": "fcb104846d24dd766a0dd82025e6f31ae9770b81ee8fde6fa562149f7e8b3074",
+    "scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py": "e488da96ba0f52589c8c594fd1ac7f1a3e397bed09416bd9c4d63a556dc8bf5b",
+    "scripts/publication_policy_qualification.py": "529a5ed62e57dba014dd781fa8e2a6b1a24b63812cd5a53aefb8ae279d9948e3",
+    "scripts/publication_policy_qualification_index_v2.py": "16326c3b793b0535a34e6ee7995146388456011eabdb2454b5a1e2ed45a59a27",
+    "tests/test_full_resource_qualification.py": "bdc1e7eff08b8dcf33615d224d0ea128b977d3014e3d7d99a55f5c9e3ca1902f",
+    "tests/test_full_resource_qualification_index_v1.py": "a0a45026afceada140534b71312290887e33cac0c0cd18c43670339775e621d0",
+    "tests/test_publication_guardian_accepted_policy_preprocessing_contract_v1.py": "25ea601fc69e2ecd92ebb1f1e357ee32d0af4c2f573540ab0e13a17c863d00c8",
+    "tests/test_publication_policy_qualification.py": "5205da69009c0aef98b511ce28c7b24711c4fddf721a179f81db4b9b5067a5f2",
+    "tests/test_publication_policy_qualification_index_v2.py": "dd0ae8b1b239b28047dca03f3d7e2b9d01b1939ba34b355f7cf1c49dabbeaf30",
+    "tests/test_qualification_complete_operational_promotion_gate_v1.py": "bf382dd9729e7418173d3bb34cf11577d94c2f4ad2d8fe34c644700cdb5fd90b"
+  },
+  "sources_before": {
+    "scripts/full_resource_qualification.py": "6e2c4362c3946c256748c7051ef52fe22c00ec2100ca3213781518acbf58d2d5",
+    "scripts/full_resource_qualification_index_v1.py": "fcb104846d24dd766a0dd82025e6f31ae9770b81ee8fde6fa562149f7e8b3074",
+    "scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py": "e488da96ba0f52589c8c594fd1ac7f1a3e397bed09416bd9c4d63a556dc8bf5b",
+    "scripts/publication_policy_qualification.py": "529a5ed62e57dba014dd781fa8e2a6b1a24b63812cd5a53aefb8ae279d9948e3",
+    "scripts/publication_policy_qualification_index_v2.py": "16326c3b793b0535a34e6ee7995146388456011eabdb2454b5a1e2ed45a59a27",
+    "tests/test_full_resource_qualification.py": "bdc1e7eff08b8dcf33615d224d0ea128b977d3014e3d7d99a55f5c9e3ca1902f",
+    "tests/test_full_resource_qualification_index_v1.py": "a0a45026afceada140534b71312290887e33cac0c0cd18c43670339775e621d0",
+    "tests/test_publication_guardian_accepted_policy_preprocessing_contract_v1.py": "25ea601fc69e2ecd92ebb1f1e357ee32d0af4c2f573540ab0e13a17c863d00c8",
+    "tests/test_publication_policy_qualification.py": "5205da69009c0aef98b511ce28c7b24711c4fddf721a179f81db4b9b5067a5f2",
+    "tests/test_publication_policy_qualification_index_v2.py": "dd0ae8b1b239b28047dca03f3d7e2b9d01b1939ba34b355f7cf1c49dabbeaf30",
+    "tests/test_qualification_complete_operational_promotion_gate_v1.py": "bf382dd9729e7418173d3bb34cf11577d94c2f4ad2d8fe34c644700cdb5fd90b"
+  },
+  "started_unix_ns": 1790719066071922531
+}
