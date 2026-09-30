@@ -1,0 +1,80 @@
+{
+  "accepted": false,
+  "argv": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v1/test_research_protocol.py"
+  ],
+  "artifact_kind": "vast_decoder_research_synthetic_test_execution_v1",
+  "benchmark_arm_count": 0,
+  "child": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "pid": 12680,
+    "ppid": 12679,
+    "starttime_ticks": 21596295
+  },
+  "classification": "Synthetic parser/real pipes/bounds/pixel-layout/EOS/receipt-last-clock and genuine small Python child EOF/timeout fixtures only; no GI, original source, Docker or decoder execution; synthetic observer does not claim engine/socket ownership",
+  "model_or_parity_evidence": false,
+  "native_pair_count": 0,
+  "publication_ready": false,
+  "returncode": 0,
+  "schema_version": 1,
+  "source_after": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v1/controller.py",
+      "sha256": "2a40c3bc584dae92aa8be2295707dd02553242b64f4eec4fa4b8e33d7b3c0124",
+      "size_bytes": 29007
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v1/guest_consumer.py",
+      "sha256": "d826898fe9c03d6111c6c2725dee35a1061ee572fb7992f5b749f7fe97848a30",
+      "size_bytes": 43129
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v1/research_protocol.py",
+      "sha256": "fcb8a16bbb100fa13c3ff5584913d318f25f95a8205751107790be5086b02c63",
+      "size_bytes": 21298
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v1/test_research_protocol.py",
+      "sha256": "2dbcec646c9d641f93ccbac4b633ad3513f5e2eb37161f6f9abdb39717255a45",
+      "size_bytes": 17449
+    }
+  ],
+  "source_before": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v1/controller.py",
+      "sha256": "2a40c3bc584dae92aa8be2295707dd02553242b64f4eec4fa4b8e33d7b3c0124",
+      "size_bytes": 29007
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v1/guest_consumer.py",
+      "sha256": "d826898fe9c03d6111c6c2725dee35a1061ee572fb7992f5b749f7fe97848a30",
+      "size_bytes": 43129
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v1/research_protocol.py",
+      "sha256": "fcb8a16bbb100fa13c3ff5584913d318f25f95a8205751107790be5086b02c63",
+      "size_bytes": 21298
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v1/test_research_protocol.py",
+      "sha256": "2dbcec646c9d641f93ccbac4b633ad3513f5e2eb37161f6f9abdb39717255a45",
+      "size_bytes": 17449
+    }
+  ],
+  "source_stable": true,
+  "started_at_ns": 1790733652614558368,
+  "stderr": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-controller-tests/attempt-05/original.stderr",
+    "sha256": "06c916ca915355758a9e99348dc0f7f90eda5fe7c93adc75f4a4eedd3c493d50",
+    "size_bytes": 3289
+  },
+  "stdout": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-controller-tests/attempt-05/original.stdout",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size_bytes": 0
+  },
+  "terminal_at_ns": 1790733652988087214
+}

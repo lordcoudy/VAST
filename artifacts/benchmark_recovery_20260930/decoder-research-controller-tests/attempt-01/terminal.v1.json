@@ -1,0 +1,80 @@
+{
+  "accepted": false,
+  "argv": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v1/test_research_protocol.py"
+  ],
+  "artifact_kind": "vast_decoder_research_synthetic_test_execution_v1",
+  "benchmark_arm_count": 0,
+  "child": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "pid": 10671,
+    "ppid": 10670,
+    "starttime_ticks": 21329986
+  },
+  "classification": "Synthetic parser/pipe/bounds/pixel-layout only; no GI import, original source, Docker or decoder execution",
+  "model_or_parity_evidence": false,
+  "native_pair_count": 0,
+  "publication_ready": false,
+  "returncode": 1,
+  "schema_version": 1,
+  "source_after": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v1/controller.py",
+      "sha256": "7d9e1528bcd33c453edd9a1b848bac8b34055887ef4e2d356b36ee6d53b34b36",
+      "size_bytes": 22264
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v1/guest_consumer.py",
+      "sha256": "41aafb056406132f35ae4cbb3a9cbb491c62fd3bb372e38ec4e3c077a6388114",
+      "size_bytes": 39501
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v1/research_protocol.py",
+      "sha256": "c9ead1957daa0fdc874455d14fcba0a1cfe2540d7eb2980bb958c39f2c8d8123",
+      "size_bytes": 17240
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v1/test_research_protocol.py",
+      "sha256": "d302f2e4c547d005c4589e95f911c05bb83e675eda8568811edc108d89a4d71f",
+      "size_bytes": 10278
+    }
+  ],
+  "source_before": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v1/controller.py",
+      "sha256": "7d9e1528bcd33c453edd9a1b848bac8b34055887ef4e2d356b36ee6d53b34b36",
+      "size_bytes": 22264
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v1/guest_consumer.py",
+      "sha256": "41aafb056406132f35ae4cbb3a9cbb491c62fd3bb372e38ec4e3c077a6388114",
+      "size_bytes": 39501
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v1/research_protocol.py",
+      "sha256": "c9ead1957daa0fdc874455d14fcba0a1cfe2540d7eb2980bb958c39f2c8d8123",
+      "size_bytes": 17240
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v1/test_research_protocol.py",
+      "sha256": "d302f2e4c547d005c4589e95f911c05bb83e675eda8568811edc108d89a4d71f",
+      "size_bytes": 10278
+    }
+  ],
+  "source_stable": true,
+  "started_at_ns": 1790730989685161597,
+  "stderr": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-controller-tests/attempt-01/original.stderr",
+    "sha256": "879c21cb6821148499a5a0a2fc59db11b3ef20e2f1725e03abd4d8c636ffa34a",
+    "size_bytes": 2698
+  },
+  "stdout": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-controller-tests/attempt-01/original.stdout",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size_bytes": 0
+  },
+  "terminal_at_ns": 1790730989907321782
+}
