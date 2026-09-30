@@ -2,7 +2,24 @@
 
 Owner: this chat. Authorization: user carte-blanche, including necessary changes, review, implementation and benchmark execution. One change/branch/PR: `fix-benchmark-preparations-spec`, `codex/fix-benchmark-preparations-spec`, https://github.com/lordcoudy/VAST/pull/2 (Draft, unmerged). Authoritative checkout: `E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec`.
 
-## Current work checkpoint - 2026-09-30 07:03 UTC
+## Current work checkpoint - 2026-09-30 07:43 UTC
+
+HEAD/remote is9c514a60d644c8c3ecd637eb83185a59aa2a5e01. Decision22 planning is independently bound to that exact commit (review9b566203, committed binding6a756fc9) and authorized in PR comment5906191857 before dependent code. Its four core documents remain held for the fresh artifact-v5/attempt05; do not amend them while that original phase is live. V5's original focused55 tests passed in0.727s (terminal1ace10e9); exact final source/dispatcher review is now pending. There has been no actual attempt05. The broker author is implementing the source-demonstrated terminal repair; actual dependency audit9008ea83 found the supervisor outside frozen165/host78/all9 image allowlists, so renew its affected broker/CI closure without gratuitous model or image rebuilds.
+
+Hosted run36680835900 retains two-ID diagnostic SUCCESS; its full job109775696534 is still active at07:40 observation. Older53 full job109759965078 is now completed/cancelled, original decoded log retained in tool memory and original ZIP metadata reports940648 bytes/SHA9bf2259f; no cancellation cause inferred yet. The separate065 original139 failure stays preserved. None proves complete full CI. No active worker or check has been cancelled, restarted or duplicated.
+
+The selected-release proposal has independent reviewfdaa3ab3: the three authority seams are sound and its annex independently covers all16 historical requirements/79 scenarios/72 task IDs, preserving31 checked states and every unexecuted campaign obligation. Current Decision22 adds three scenarios, all retained for release. A new conclusion changes the critical path: unchanged frozen intake can support a descriptive real benchmark before the complete4x32 decoder investigation. Mechanism evidence gates changed intake or causal decoder claims, not basic execution. After the current v5 original terminal/custody audit releases its hold, amend the same change coherently to four real GStreamer arms with independently current selected workers/model/source evidence; register the legacy campaign as explicitly unexecuted. Do not check a mixed original task merely because its component slice passes.
+
+## Immediate executable plan
+
+1. Close exact v5/source05 review, commit/push the owned freeze and record authorization for ONE original attempt05. Observe its original terminal, retain first-error facts and independently audit owned cleanup. No automatic research retry; retire this phase before changing held core documents.
+2. Close broker focused source/journal/process regressions and independent review; commit the affected sources and require actual hosted failure facts and complete final checks. Keep600000/615000-ms bounds and production namespace policy unchanged unless actual evidence supports a separately reviewed remedy.
+3. Adopt the reviewed selected-release/campaign separation in this same branch/PR, with exact migration of requirements/scenarios/tasks and explicit old campaign status. Unchanged-intake pairs proceed independently of unfinished mechanism research; any changed intake still needs scientific review.
+4. Implement only selected host materialization, explicit component preprocessing/guardian dispatch and component cold result, reusing real native runtime/workers/recorders/validators. Keep full qualification/Q4/publication entrypoints strict; renew only changed physical closures and obtain missing selected calibration/model evidence.
+5. Execute one authentic CPU baseline/shared pair and one separately owned GPU pair, four arms with six streams/four branches,30s warmup/180s measurement/10s drain,100ms deadline and original source/policy semantics. Verify original CLI/container/guardian terminals and complete all-phase request identities, then cold-recompute paired descriptive results including deadline misses/drops/coverage.
+6. Deliver a reproducible working command and retained raw results/tables/plots with topology-load-proxy and sample-size limits. Complete applicable final native/ext4/CI checks, exact-commit conformance, another own-thought review and supported sync/archive in the same PR; commit/push final archive and require latest checks/final review before merge.
+
+## Historical work checkpoint - 2026-09-30 07:03 UTC
 
 HEAD/remote1f600aeb248a105d670010965051f5d9ba0cd7b4 records the reviewed Decision21 peer test after planning8a/PR5905513846; code review7e6faa02/original2GREEN9eb021ad committed. Actual hosted run36680835900 fastjob109775696125 completed SUCCESS: original model and portable peer units returned0; fulljob109775696534 remains active. Original ZIP166750B SHA2d52f35fd5319c1c937d85964b558e867291756dc62e0d1b280b5e9d10b20950/API are retained locally. This is two-ID diagnostic success, not full CI/hardware acceptance.
 
@@ -18,7 +35,7 @@ Exact source57164011ae9c1f6dc8269b7ee55b3198873dda18 and reviewed planninga84e0e
 
 Decision20 authorizes only a scoped mapped-library input identity correction and one reviewed fresh attempt04. CI acquisition/observability remains decision19 scope, with actual external observation output integration and original-inode publication checks. No new scientific regime, task completion, native pair, qualification/Q4/full result, current complete CI, archive or merge exists. Task progress remains31/72. The separate GStreamer operability-release proposal is still under review; the legacy full campaign is not silently shortened or complete.
 
-## Next executable steps
+## Historical executable steps - superseded by the immediate plan above
 
 1. Preserve reviewed planning21/core4 binding; close v4 and peer source reviews, commit/push exact owned sources/evidence and record the one-attempt authorization before execution. Keep tasks31/72 until actual behavior is verified.
 2. Obtain actual Ubuntu success for the portable two-ID diagnostic after its source review/push. Trace the original full-job broker wait and139 termination using retained logs; collect actual exceptions and final source-before/after/report on a complete later run. No blanket skips, broker timeout reduction, manufactured green CI or restart of existing workers/checks.
@@ -29,7 +46,7 @@ Decision20 authorizes only a scoped mapped-library input identity correction and
 7. Under currently approved scope, remaining all-four-runtime/parity, static pair, qualification32/Q4, factual remote capacity and5600-arm/2800-pair durable service/verify/finalize/export remain pending. A later explicitly reviewed release/campaign separation must state which claims and tasks remain future campaign scope. Do not silently shorten or rename campaign completion.
 8. Finish applicable final-source build/tests/CI and requirement-by-requirement conformance, resolve warnings, independently review own decisions against observed outputs, then supported sync/archive in this same branch/PR, commit/push archive, verify final CI and authorized final review before merge.
 
-## Current custody and continuation
+## Historical custody checkpoint and standing continuation rules
 
 Closed decoder source571/corea84 hold was released only by independent auditd695d234. V1/v2/v3 originals stay unchanged. CI asset files and driver files are held by their authors until concrete review findings; at the05:48 historical checkpoint no acquisition had run; the actual53 hosted acquisition above now closes that finite prerequisite. Hosted CI observations05:37 UTC: runs36665535698 and36667243331 completed/cancelled,36669685843 and36673568934 in progress; no cause inferred from status alone and no current full pass. Never relaunch an already active original operation after context loss. Use original process/unit/session/namespace and supported observation, preserving actual terminal before interpretation.
 
