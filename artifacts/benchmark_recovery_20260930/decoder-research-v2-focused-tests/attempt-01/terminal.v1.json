@@ -1,0 +1,109 @@
+{
+  "accepted": false,
+  "argv": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "-m",
+    "unittest",
+    "discover",
+    "-v",
+    "-s",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v2",
+    "-p",
+    "test*.py"
+  ],
+  "artifact_kind": "vast_decoder_research_v2_focused_test_execution_v1",
+  "benchmark_arm_count": 0,
+  "child": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "pid": 14193,
+    "ppid": 14192,
+    "starttime_ticks": 22014190
+  },
+  "classification": "Original20 synthetic cases plus real CID files/CPython original launcher and explicit engine/GI fixtures; no Docker daemon, installed GI, source/decoder or scientific acceptance",
+  "model_or_parity_evidence": false,
+  "native_pair_count": 0,
+  "planning_commit": "47e432f2b5c09f750a55f7eb0164d84cc4d7e658",
+  "publication_ready": false,
+  "returncode": 1,
+  "schema_version": 1,
+  "source_after": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v2/README.md",
+      "sha256": "f284540ea713be3851a656699c281b7b047259419cb063d4e13ec6d22872bd9e",
+      "size_bytes": 9284
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v2/controller.py",
+      "sha256": "626ebc42a44d0424025de947a945409d91cf4a72fb8470431f9ed1d106964a4a",
+      "size_bytes": 36312
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v2/guest_consumer.py",
+      "sha256": "3039a880a5e30fc92a1876367d0ea273c8f28d4344fce17b67e09bc1b1ba9adf",
+      "size_bytes": 46887
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v2/research_protocol.py",
+      "sha256": "fcb8a16bbb100fa13c3ff5584913d318f25f95a8205751107790be5086b02c63",
+      "size_bytes": 21298
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v2/test_research_protocol.py",
+      "sha256": "2dbcec646c9d641f93ccbac4b633ad3513f5e2eb37161f6f9abdb39717255a45",
+      "size_bytes": 17449
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v2/test_setup_v2.py",
+      "sha256": "b0b50c0bff44b2aa7899b9f24f389891f1cc960c017774d598a882dac97bda93",
+      "size_bytes": 13855
+    }
+  ],
+  "source_before": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v2/README.md",
+      "sha256": "f284540ea713be3851a656699c281b7b047259419cb063d4e13ec6d22872bd9e",
+      "size_bytes": 9284
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v2/controller.py",
+      "sha256": "626ebc42a44d0424025de947a945409d91cf4a72fb8470431f9ed1d106964a4a",
+      "size_bytes": 36312
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v2/guest_consumer.py",
+      "sha256": "3039a880a5e30fc92a1876367d0ea273c8f28d4344fce17b67e09bc1b1ba9adf",
+      "size_bytes": 46887
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v2/research_protocol.py",
+      "sha256": "fcb8a16bbb100fa13c3ff5584913d318f25f95a8205751107790be5086b02c63",
+      "size_bytes": 21298
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v2/test_research_protocol.py",
+      "sha256": "2dbcec646c9d641f93ccbac4b633ad3513f5e2eb37161f6f9abdb39717255a45",
+      "size_bytes": 17449
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v2/test_setup_v2.py",
+      "sha256": "b0b50c0bff44b2aa7899b9f24f389891f1cc960c017774d598a882dac97bda93",
+      "size_bytes": 13855
+    }
+  ],
+  "source_stable": true,
+  "started_at_ns": 1790737831302439118,
+  "stderr": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v2-focused-tests/attempt-01/original.stderr",
+    "sha256": "ea07b3625c2e1984e765892d4ea8150b3e94524af6aef97620e8b442e8bfe918",
+    "size_bytes": 6554
+  },
+  "stdout": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v2-focused-tests/attempt-01/original.stdout",
+    "sha256": "c0709ad26e51e05169887a3b68e7ada3b8f35d0a855323412033baadfc8a2955",
+    "size_bytes": 436
+  },
+  "terminal_at_ns": 1790737837409121959,
+  "timed_out": false
+}
