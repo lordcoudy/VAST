@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "vast_cpu05_postterminal_boundary_audit_preparation_v1",
+  "state": "prepared_unexecuted",
+  "helper": {
+    "path": "artifacts/benchmark_recovery_20260930/component-cpu05-postterminal-audit-preparation-v1/audit.py",
+    "size_bytes": 14872,
+    "sha256": "00896057c77dad21da13170094d8c0111b90084a06d774406aa837459cac09c7"
+  },
+  "source_basis": {
+    "path": "artifacts/benchmark_recovery_20260930/component-cpu04-postterminal-independent-review-v1/audit.py",
+    "size_bytes": 11553,
+    "sha256": "209eb8cfbcc2e42b75f6c73c67dccad94e5197cc3a19ffef6c382a1f86f14c25"
+  },
+  "known_original_commit": "8fefa4ba0c5b135c66f85a6eb7f4fd1aaebfdc21",
+  "known_original_owner": {
+    "pid": 35577,
+    "ppid": 35575,
+    "pgid": 35577,
+    "startticks": 27197366,
+    "uid": 1000,
+    "gid": 1000,
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b"
+  },
+  "dispatch_condition": "Root must first confirm original CPU05 outer/CLI terminal and closed outputs, supply actual original terminal SHA256/size, and explicitly grant this one read-only audit. No active output was read during preparation.",
+  "prepared_checks": [
+    "Simultaneously hold all95 original source/input/interpreter/controller bytes and full7epochs; compare originalbefore/after/current and preserve witness.",
+    "Join original outer/CLI/authenticated guardian lifecycle and reserve allocated/released/currentabsence; two actual /proc PID/group/session scans and exactHEAD/indexempty.",
+    "Read authentic present arm/process/container/cold receipt and command leaf descriptors without running any stock validator, model, engine or native workload. Keep failed prefixes and original first errors intact.",
+    "Native --rm originalCLI0 plus exactCID NotFound is distinct from a positively retained daemon ExitCode/Pid/OOM projection. Guardian closure is limited to authentic lifecycle/process facts.",
+    "New timingJSONL is at most24records/16KiB and explicitly nonauthorizing; no diagnostic phase creates acceptance."
+  ],
+  "finite_limits": {
+    "audit_seconds": 120,
+    "one_metadata_document_bytes": 1048576,
+    "one_held_file_bytes": 67108864,
+    "output_document_bytes": 1048576
+  },
+  "cleanup": "All reviewer FDs close in finally even if a metadata assertion fails. A failed audit creates no acceptance claim.",
+  "benchmark_status": "No result asserted: CPU05 was active when this helper was prepared."
+}

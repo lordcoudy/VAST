@@ -1,0 +1,23 @@
+{
+  "errors": [],
+  "exact_existing_skip_declarations": 88,
+  "failures": [
+    {
+      "test_id": "test_ci_test_selection_v1.SelectionContracts.test_all_original_platform_and_retired_skip_ids_remain_nonexecution",
+      "traceback": "Traceback (most recent call last):\n  File \"/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_test_selection_v1.py\", line 127, in test_all_original_platform_and_retired_skip_ids_remain_nonexecution\n    self.assertEqual(suite.countTestCases(),80)\nAssertionError: 88 != 80\n"
+    }
+  ],
+  "no_full_suite_or_hardware_claim": true,
+  "skips": [],
+  "successes": [
+    "test_checkpoint_openvino_gva_qualification_fragment_v3.OpenVINOGVAQualificationFragmentV3Tests.test_exact_worker_receipt_and_resource_v2_evidence_are_bound",
+    "test_checkpoint_openvino_gva_qualification_fragment_v3.OpenVINOGVAQualificationFragmentV3Tests.test_phase_one_materializes_exact_policy_and_resource_bindings",
+    "test_checkpoint_openvino_gva_qualification_fragment_v3.OpenVINOGVAQualificationFragmentV3Tests.test_policy_identity_is_the_external_worker_and_topology_v2_is_invariant",
+    "test_checkpoint_savant_qualification_fragment_v3.SavantQualificationFragmentV3Tests.test_phase_one_materializes_ten_physical_bindings_and_no_pilots",
+    "test_checkpoint_savant_qualification_fragment_v3.SavantQualificationFragmentV3Tests.test_refreeze_and_exact_runtime_identity_fields_are_bound",
+    "test_publication_operational_container_custody_v1.OriginalContainerCompositionTests.test_actual_retained_terminal_and_resealed_invalid_times_are_checked",
+    "test_publication_policy_qualification_fragments_from_authority_v2.QualificationFragmentsFromAuthorityV2Tests.test_dangling_system_collision_is_never_treated_as_absent"
+  ],
+  "successful": false,
+  "tests_run": 8
+}

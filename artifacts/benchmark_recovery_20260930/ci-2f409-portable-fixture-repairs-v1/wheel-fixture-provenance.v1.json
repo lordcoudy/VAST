@@ -1,0 +1,65 @@
+{
+  "artifact_kind": "bounded_existing_wheel_fixture_provenance",
+  "final_focused_before_after": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt04-final/source.before.json",
+    "sha256": "45596dd92177fe37b684b713b5c0612d962e50f932d40055fcdee918dadaeb86",
+    "size_bytes": 103716
+  },
+  "fresh_ci_source_bytes_already_tracked_at_original_commit": true,
+  "not_installed_or_acquired": true,
+  "original_commit": "2f40946589254b3698eebedadb4b9d578f297deb",
+  "original_zip": "artifacts/benchmark_recovery_20260930/ci-2f409-original-retention-v1/36735694943-cpu/original-artifact.zip",
+  "original_zip_recorded_sha256": "91dc59e7be790e0515259c424d5ae8ab956f6c931b7df383897a7f225ae36a33",
+  "schema_version": 1,
+  "temporary_copy_by_fixture_only": true,
+  "tracked_source_before_entry": {
+    "crc32": 1567913960,
+    "name": "tracked-source.before.json",
+    "sha256": "352a797b2c89b1be6384eb236dea2063734be0a96bbd689592285b00273ca1ba",
+    "size_bytes": 653143
+  },
+  "wheels": [
+    {
+      "original_2f_same_bytes": true,
+      "path": "deploy/deepstream/checkpoint/wheels/PyYAML-6.0.2-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "sha256": "ec031d5d2feb36d1d1a24380e4db6d43695f3748343d99434e6f5f9156aaa2ed",
+      "size_bytes": 751239
+    },
+    {
+      "original_2f_same_bytes": true,
+      "path": "deploy/deepstream/checkpoint/wheels/numpy-1.26.4-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "sha256": "ffa75af20b44f8dba823498024771d5ac50620e6915abac414251bd971b4529f",
+      "size_bytes": 18240889
+    },
+    {
+      "original_2f_same_bytes": true,
+      "path": "deploy/deepstream/checkpoint/wheels/pandas-2.2.3-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "sha256": "86976a1c5b25ae3f8ccae3a5306e443569ee3c3faf444dfd0f41cda24667ad57",
+      "size_bytes": 13064210
+    },
+    {
+      "original_2f_same_bytes": true,
+      "path": "deploy/deepstream/checkpoint/wheels/python_dateutil-2.9.0.post0-py2.py3-none-any.whl",
+      "sha256": "a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427",
+      "size_bytes": 229892
+    },
+    {
+      "original_2f_same_bytes": true,
+      "path": "deploy/deepstream/checkpoint/wheels/pytz-2026.3.post1-py2.py3-none-any.whl",
+      "sha256": "dd95840dd199baea12d9cc096a1d452caa6596a1c1e4b5f3dbd1541855d5e815",
+      "size_bytes": 508283
+    },
+    {
+      "original_2f_same_bytes": true,
+      "path": "deploy/deepstream/checkpoint/wheels/six-1.17.0-py2.py3-none-any.whl",
+      "sha256": "4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274",
+      "size_bytes": 11050
+    },
+    {
+      "original_2f_same_bytes": true,
+      "path": "deploy/deepstream/checkpoint/wheels/tzdata-2026.3-py2.py3-none-any.whl",
+      "sha256": "dc096730c87af6cab1b171c9d532be840741ff5d459015e7f6947bd7d7e54931",
+      "size_bytes": 348168
+    }
+  ]
+}

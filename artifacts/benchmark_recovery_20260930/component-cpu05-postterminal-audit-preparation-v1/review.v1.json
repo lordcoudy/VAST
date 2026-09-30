@@ -1,0 +1,488 @@
+{
+  "arms": [
+    {
+      "completed_by_stream": {
+        "0": 94,
+        "1": 90,
+        "2": 95,
+        "3": 96,
+        "4": 92,
+        "5": 95
+      },
+      "container_id": "9768d8b311221f4b752bccfaca6d1e2eea658fc1b3f68288b26d0237018e1097",
+      "container_receipt": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/original_container_custody.v1.json",
+        "sha256": "010f002d615bd8cba9b28067c14228f87f4bda9306a434e60ace751b788f9acb",
+        "size_bytes": 3904
+      },
+      "daemon_terminal_evidence": "not retained; original --rm CLI0 plus exactCID NotFound",
+      "measurement_ingress_count": 1080,
+      "native_cli_returncode": 0,
+      "operation_id": "component-gstreamer_custom-cpu-h264-independent-processes",
+      "result": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/component_arm_result.v1.json",
+        "sha256": "cbbfc222dd8c1938e467b868c4992bd9baf76a8c02ff07b5df6a2a76775f29d8",
+        "size_bytes": 15470
+      },
+      "schedule_fingerprint": "c1365bac6483c39143dd0a8a350f6b6eb66de91e9cfd18987475c7b12f63a5a5"
+    },
+    {
+      "completed_by_stream": {
+        "0": 124,
+        "1": 116,
+        "2": 113,
+        "3": 112,
+        "4": 115,
+        "5": 102
+      },
+      "container_id": "68f8c72897cd4ddb96611e1ab667b9a1773999efd798e2fa181e00f0e29165c4",
+      "container_receipt": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/original_container_custody.v1.json",
+        "sha256": "85468999c4bea7cc7dbb75c0eb36d9f6a46549c940e4d5b4eb090a9c8fc72c77",
+        "size_bytes": 3864
+      },
+      "daemon_terminal_evidence": "not retained; original --rm CLI0 plus exactCID NotFound",
+      "measurement_ingress_count": 1080,
+      "native_cli_returncode": 0,
+      "operation_id": "component-gstreamer_custom-cpu-h264-shared-video-dag",
+      "result": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/component_arm_result.v1.json",
+        "sha256": "203d74bb5871e2b35d36b399a2836a640406388410b31a87b85075c6e0314835",
+        "size_bytes": 14188
+      },
+      "schedule_fingerprint": "c1365bac6483c39143dd0a8a350f6b6eb66de91e9cfd18987475c7b12f63a5a5"
+    }
+  ],
+  "artifact_kind": "vast_cpu05_closed_boundary_independent_review_v1",
+  "benchmark_accepted": false,
+  "cli_terminal": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/component_cli_terminal.v1.json",
+    "sha256": "a8e544b8ab71a26d9cedb7cc7e092143b249ac1627904f0b68a05f6a57c3179c",
+    "size_bytes": 9333
+  },
+  "close_errors": [],
+  "cold_pair": {
+    "descriptive_csv": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/cold-pair/component_pair_metrics.csv",
+      "sha256": "c287d32199026a23cfd7941b20c30b34f55367df4745f6b887811217bfea7269",
+      "size_bytes": 616
+    },
+    "descriptor": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/cold-pair/component_pair_result.v1.json",
+      "sha256": "18a50fd2e857a5104ceb4b61ed38d11f730123cffc29130c2d718853d65e2946",
+      "size_bytes": 18525
+    },
+    "latency_ecdf_svg": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/cold-pair/component_pair_latency_ecdf.svg",
+      "sha256": "724243c855c8c13b6f2cc07a1d4eeebf986cf1f8db6637eae9383419052ea8d6",
+      "size_bytes": 88257
+    },
+    "reconciliation": {
+      "artifact_kind": "vast_complete_operational_reconciliation_v1",
+      "comparison_sha256": "f8513075164e602f7afb8139c5abda72f46d946e2319f92ab2180744d998d465",
+      "connections_accepted": 31,
+      "excluded_request_count": 1260,
+      "measurement_request_count": 7111,
+      "mode": "bounded_native_diagnostic_operational_v1",
+      "operations": [
+        {
+          "excluded_request_count": 647,
+          "measurement_request_count": 3657,
+          "ordinal": 0,
+          "request_count": 4304
+        },
+        {
+          "excluded_request_count": 613,
+          "measurement_request_count": 3454,
+          "ordinal": 1,
+          "request_count": 4067
+        }
+      ],
+      "original_operation_count": 2,
+      "publication_authority": false,
+      "request_count": 8371,
+      "requests_by_worker": {
+        "damage:cpu": 2191,
+        "damage:gpu": 0,
+        "foreign_object:cpu": 1653,
+        "foreign_object:gpu": 0,
+        "plate_number:cpu": 2307,
+        "plate_number:gpu": 0,
+        "vehicle_type:cpu": 2220,
+        "vehicle_type:gpu": 0
+      },
+      "schema_version": 1
+    },
+    "retained_cold_result_does_not_override_cli_failure": true
+  },
+  "disposition": "closed_failed_original",
+  "guardian_original": {
+    "argv": [
+      "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+      "-I",
+      "-B",
+      "-c",
+      "import runpy,sys;sys.path.insert(0,'/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts');runpy.run_path('/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_analytics_sidecar.py',run_name='__main__')",
+      "--production-guardian",
+      "--project-root",
+      "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec",
+      "--config",
+      "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/configs/analytics_execution_layer.refreshed.v4.fix-benchmark-20260928g.json",
+      "--binding-set",
+      "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/bindings",
+      "--policy-capability-manifest",
+      "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g/candidate/checkpoint_policy_capability_candidate_manifest.json",
+      "--preprocessing-contract",
+      "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/preprocessing/guardian-preprocessing-contract.v1.json",
+      "--preprocessing-contract-receipt",
+      "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/preprocessing/guardian-component-preprocessing-receipt.v1.json",
+      "--operational-accounting-context",
+      "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/capture-plan/guardian_capture_context.v1.json",
+      "--runtime-dir",
+      "/tmp/vast-component-2ab4db0bb822b038/guardian",
+      "--front-socket",
+      "/tmp/vast-component-2ab4db0bb822b038/guardian/analytics-execution.sock",
+      "--evidence-root",
+      "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/guardian",
+      "--max-connections",
+      "202560",
+      "--max-requests-per-connection",
+      "4320000",
+      "--max-total-requests",
+      "29168640000",
+      "--startup-timeout-seconds",
+      "120.0",
+      "--shutdown-timeout-seconds",
+      "10"
+    ],
+    "authenticated_stop": true,
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "cleanup_errors": [],
+    "container_cleanup_verified": true,
+    "original_child_pid": 35876,
+    "original_engine": {
+      "path": "/usr/bin/docker",
+      "sha256": "a429e235ef670ea83357a5c8c7451f0a69d485a6fee49f9032fd938a0ab4969d",
+      "size_bytes": 45570705
+    },
+    "original_engine_socket": "unix:///run/docker.sock",
+    "original_process_group": 35876,
+    "owner_process": {
+      "gid": 1000,
+      "pid": 35876,
+      "proc_stat_starttime_ticks": 27260378,
+      "uid": 1000
+    },
+    "process_quiescent": true,
+    "returncode": 0
+  },
+  "hold_release": true,
+  "limits": [
+    "This boundary audit joins retained authentic original receipts. It does not rerun the all-phase cold consumer or raw numeric/C_obs reducer.",
+    "Native daemon ExitCode/Pid/OOM fields are reported only when actually retained. Exact --rm CID absence plus originalCLI0 is stated separately.",
+    "Guardian cleanup is scoped to original authenticated lifecycle/CLI evidence and actual process absence. No daemon query or independent worker inspection.",
+    "No reviewer engine/model/native/guardian/namespace/test execution or historical failure reclassification."
+  ],
+  "original95_before_after_current_full7epochs_equal": true,
+  "original_cli_returncode": 78,
+  "original_first_error": {
+    "message": "component original pair deadline exceeded before terminal",
+    "type": "RuntimeError"
+  },
+  "original_phase_timing": [
+    {
+      "event": "start",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 271974331017932,
+      "nonauthority": true,
+      "phase": "reservation",
+      "schema_version": 1,
+      "status": "incomplete",
+      "terminal_ns": null,
+      "wall_ns": 1790789660777980660
+    },
+    {
+      "event": "start",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 271974373105048,
+      "nonauthority": true,
+      "phase": "source",
+      "schema_version": 1,
+      "status": "incomplete",
+      "terminal_ns": null,
+      "wall_ns": 1790789660820067834
+    },
+    {
+      "elapsed_ns": 297422604014,
+      "error_type": null,
+      "event": "terminal",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 272271795709062,
+      "nonauthority": true,
+      "phase": "source",
+      "schema_version": 1,
+      "status": "complete",
+      "wall_ns": 1790789958227647218
+    },
+    {
+      "event": "start",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 272271807916647,
+      "nonauthority": true,
+      "phase": "context",
+      "schema_version": 1,
+      "status": "incomplete",
+      "terminal_ns": null,
+      "wall_ns": 1790789958239852777
+    },
+    {
+      "elapsed_ns": 147328028705,
+      "error_type": null,
+      "event": "terminal",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 272419135945352,
+      "nonauthority": true,
+      "phase": "context",
+      "schema_version": 1,
+      "status": "complete",
+      "wall_ns": 1790790105560052202
+    },
+    {
+      "event": "start",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 272419148243154,
+      "nonauthority": true,
+      "phase": "capture",
+      "schema_version": 1,
+      "status": "incomplete",
+      "terminal_ns": null,
+      "wall_ns": 1790790105572349172
+    },
+    {
+      "elapsed_ns": 101417348356,
+      "error_type": null,
+      "event": "terminal",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 272520565591510,
+      "nonauthority": true,
+      "phase": "capture",
+      "schema_version": 1,
+      "status": "complete",
+      "wall_ns": 1790790206983518918
+    },
+    {
+      "event": "start",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 272520568238112,
+      "nonauthority": true,
+      "phase": "preprocessing",
+      "schema_version": 1,
+      "status": "incomplete",
+      "terminal_ns": null,
+      "wall_ns": 1790790206986165428
+    },
+    {
+      "elapsed_ns": 51509059508,
+      "error_type": null,
+      "event": "terminal",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 272572077297620,
+      "nonauthority": true,
+      "phase": "preprocessing",
+      "schema_version": 1,
+      "status": "complete",
+      "wall_ns": 1790790258493577849
+    },
+    {
+      "event": "start",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 272603715081247,
+      "nonauthority": true,
+      "phase": "guardian_start",
+      "schema_version": 1,
+      "status": "incomplete",
+      "terminal_ns": null,
+      "wall_ns": 1790790290130012085
+    },
+    {
+      "elapsed_ns": 52479093355,
+      "error_type": null,
+      "event": "terminal",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 272656194174602,
+      "nonauthority": true,
+      "phase": "guardian_start",
+      "schema_version": 1,
+      "status": "complete",
+      "wall_ns": 1790790342606284434
+    },
+    {
+      "event": "start",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 272656196386087,
+      "nonauthority": true,
+      "phase": "runtime",
+      "schema_version": 1,
+      "status": "incomplete",
+      "terminal_ns": null,
+      "wall_ns": 1790790342608495487
+    },
+    {
+      "elapsed_ns": 85161105763,
+      "error_type": null,
+      "event": "terminal",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 272741357491850,
+      "nonauthority": true,
+      "phase": "runtime",
+      "schema_version": 1,
+      "status": "complete",
+      "wall_ns": 1790790427764617205
+    },
+    {
+      "event": "start",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 272741370252044,
+      "nonauthority": true,
+      "phase": "arm_baseline",
+      "schema_version": 1,
+      "status": "incomplete",
+      "terminal_ns": null,
+      "wall_ns": 1790790427777377230
+    },
+    {
+      "elapsed_ns": 485759821064,
+      "error_type": null,
+      "event": "terminal",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 273227130073108,
+      "nonauthority": true,
+      "phase": "arm_baseline",
+      "schema_version": 1,
+      "status": "complete",
+      "wall_ns": 1790790913513419936
+    },
+    {
+      "event": "start",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 273227149849076,
+      "nonauthority": true,
+      "phase": "arm_shared",
+      "schema_version": 1,
+      "status": "incomplete",
+      "terminal_ns": null,
+      "wall_ns": 1790790913533195635
+    },
+    {
+      "elapsed_ns": 476979004642,
+      "error_type": null,
+      "event": "terminal",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 273704128853718,
+      "nonauthority": true,
+      "phase": "arm_shared",
+      "schema_version": 1,
+      "status": "complete",
+      "wall_ns": 1790791390489746298
+    },
+    {
+      "event": "start",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 273704140624677,
+      "nonauthority": true,
+      "phase": "guardian_stop",
+      "schema_version": 1,
+      "status": "incomplete",
+      "terminal_ns": null,
+      "wall_ns": 1790791390501517154
+    },
+    {
+      "elapsed_ns": 754246102,
+      "error_type": null,
+      "event": "terminal",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 273704894870779,
+      "nonauthority": true,
+      "phase": "guardian_stop",
+      "schema_version": 1,
+      "status": "complete",
+      "wall_ns": 1790791391255763302
+    },
+    {
+      "event": "start",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 273704897367477,
+      "nonauthority": true,
+      "phase": "cold",
+      "schema_version": 1,
+      "status": "incomplete",
+      "terminal_ns": null,
+      "wall_ns": 1790791391258260079
+    },
+    {
+      "elapsed_ns": 395169387680,
+      "error_type": null,
+      "event": "terminal",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 274100066755157,
+      "nonauthority": true,
+      "phase": "cold",
+      "schema_version": 1,
+      "status": "complete",
+      "wall_ns": 1790791786409667867
+    },
+    {
+      "event": "start",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 274100087677261,
+      "nonauthority": true,
+      "phase": "context_close",
+      "schema_version": 1,
+      "status": "incomplete",
+      "terminal_ns": null,
+      "wall_ns": 1790791786430589684
+    },
+    {
+      "elapsed_ns": 74281982,
+      "error_type": null,
+      "event": "terminal",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 274100161959243,
+      "nonauthority": true,
+      "phase": "context_close",
+      "schema_version": 1,
+      "status": "complete",
+      "wall_ns": 1790791786504871982
+    },
+    {
+      "elapsed_ns": 2125861229321,
+      "error_type": "RuntimeError",
+      "event": "terminal",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 274100192247253,
+      "nonauthority": true,
+      "phase": "reservation",
+      "schema_version": 1,
+      "status": "failed",
+      "wall_ns": 1790791786535160324
+    }
+  ],
+  "outer_elapsed_s": 2127.195132587978,
+  "outer_signals": [],
+  "outer_terminal": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05-original-controller/original.terminal.v1.json",
+    "sha256": "603df9b501dfcd578aac0570eed08983c5ef8fc72c36a7980c19c23b480e310c",
+    "size_bytes": 91708
+  },
+  "outer_timeout": false,
+  "reserve_released_and_absent": true,
+  "reviewer_held_fds_released": true,
+  "schema_version": 1,
+  "source_commit": "8fefa4ba0c5b135c66f85a6eb7f4fd1aaebfdc21",
+  "task_18_8_complete": false,
+  "witness": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu05-postterminal-audit-preparation-v1/held-inputs-and-processes.v1.json",
+    "sha256": "c8cb284e1d95ae24b1af73ea5a299428b6d2673ea2faf252ea80ad6bd804a298",
+    "size_bytes": 132467
+  }
+}

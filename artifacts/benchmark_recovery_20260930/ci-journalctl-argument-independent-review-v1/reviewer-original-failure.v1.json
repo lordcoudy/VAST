@@ -1,0 +1,10 @@
+{
+  "artifact_kind": "vast_readonly_reviewer_metadata_failure_v1",
+  "reviewer_source": "review.py",
+  "tool_chunk": "c32a83",
+  "returncode": 1,
+  "first_error": "KeyError gate_owner_executable_is_initial_python: reviewer expected augmented in-memory query flags in original raw capture instead of separately saved test-results",
+  "original_behavior_tests_rerun": false,
+  "raw_capture_and_test_results_remain_unchanged": true,
+  "fix": "Join raw capture fields verbatim to original test-results augmented capture; derive initial owner semantics from that explicit join."
+}

@@ -1,0 +1,3 @@
+operation_id,scenario,measurement_admitted,frames,measurement_dropped,measurement_censored,completed_deadline_misses,completion_coverage,latency_p50_ms,latency_p95_ms,latency_p99_ms,latency_max_ms,throughput_fps,latency_population
+component-gstreamer_custom-cpu-h264-independent-processes,checkpoint_independent_processes_baseline,1080,562,518,0,562,0.5203703703703704,5212.0,9422.8,9757.51,9999.0,3.122,completed_measurement_frames
+component-gstreamer_custom-cpu-h264-shared-video-dag,checkpoint_video_dag_shared,1080,682,398,0,682,0.6314814814814815,3611.5,7910.0,8103.46,8257.0,3.789,completed_measurement_frames

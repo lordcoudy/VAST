@@ -1,0 +1,761 @@
+{
+  "accepted": false,
+  "actionable_new_difference": "The same-PID gate obtained an original initial-Python owner and complete query channels, replacing the prior owner-observation EACCES. The intended journal command still failed rc1 on the rejected --kernel option; no actual kernel denial was obtained. Correct the finite command in separately reviewed source before any later evidence claim; no policy/credential/profile change is supported.",
+  "actual_external_observer": {
+    "absolute_deadline_ns": 5432698871332,
+    "argv": [
+      "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python3.12",
+      "-I",
+      "-B",
+      "/home/runner/work/VAST/VAST/scripts/run_ci_checks.py",
+      "--suite-child",
+      "--output-dir",
+      "/home/runner/work/_temp/vast-cpu-checks",
+      "--trace-fd",
+      "5",
+      "--event-fd",
+      "7",
+      "--stop-fd",
+      "8"
+    ],
+    "cleanup_deadline_ns": 1601074450634,
+    "clock": "same_kernel_monotonic_ns",
+    "descendant_quiescence": "not established by original-child status",
+    "failure": "original suite child did not exit zero",
+    "finished_monotonic_ns": 1586074744123,
+    "forced_sigkill": false,
+    "forced_sigterm": false,
+    "kind": "vast_external_ci_test_observer_v1",
+    "owner": {
+      "boot_id": "e4eca8aa-6fd7-4b28-b2eb-c69a79e7da02",
+      "executable_realpath": "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python3.12",
+      "executable_stat": {
+        "st_dev": 2049,
+        "st_gid": 1001,
+        "st_ino": 9189019,
+        "st_mode": 33261,
+        "st_nlink": 1,
+        "st_size": 17744,
+        "st_uid": 1001
+      },
+      "gid": 1001,
+      "pgid": 4022,
+      "pid": 4022,
+      "ppid": 3709,
+      "startticks": 13877,
+      "uid": 1001
+    },
+    "pidfd_acquisition_failed": false,
+    "pidfd_failure": null,
+    "pipe_eof": {
+      "control": true,
+      "trace": true
+    },
+    "ready": true,
+    "requests_sent": 24,
+    "requests_stopped_before_disposition_restore": true,
+    "response_channel_bytes": 4904,
+    "response_matching": "ordinary signals may coalesce; no one-to-one or timely claim",
+    "responses_completed": 24,
+    "responses_started": 24,
+    "returncode": 1,
+    "signal": null,
+    "started_monotonic_ns": 138770501456,
+    "successful": false,
+    "trace_bytes": 57311,
+    "unmatched_or_coalesced_requests_possible": 0
+  },
+  "all_eighteen_new_methods_original_successful": true,
+  "cause_limits": [
+    "The owner/executable observation at the gate is the initial Python process. Intended later exec argv is not a post-exec observation.",
+    "Namespace initial_ready label is a pre-setup observation; it does not establish the label at the later failed syscall.",
+    "Original errno and candidate PID/time/operation records are retained separately. Absent or unmatched denial supplies no profile authorization.",
+    "Independent namespace diagnostic errno is not proof of every failing broker test cause; original per-test journals are not synthesized.",
+    "No benchmark timing, hardware acceptance, earlier139 cause or pending fixture/selection repair is inferred."
+  ],
+  "comparison": {
+    "actual_elapsed_s": 1480.318969369,
+    "integration_declarations_identical": true,
+    "new_bad_method_ids": [],
+    "new_discovered_ids": [
+      "test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_kernel_query_explicitly_captures_capability_denials_without_claiming_cause",
+      "test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_namespace_denial_candidate_retains_original_pid_capability_and_case",
+      "test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_real_gated_exec_keeps_original_pid_and_truthful_initial_owner",
+      "test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_default_cli_owns_one_private_context_through_original_cold_and_stop",
+      "test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_failed_original_arm_timeline_does_not_invent_later_phases",
+      "test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_original_pair_retains_bounded_phase_starts_and_real_terminals",
+      "test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_timeline_has_exact_fixed_names_and_rejects_oversize_before_write",
+      "test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_timing_terminal_write_failure_keeps_start_and_performs_owned_cleanup",
+      "test_publication_gstreamer_component_inputs_v1.ComponentHeldSessionTests.test_engine_bytes_or_socket_identity_drift_rejects",
+      "test_publication_gstreamer_component_inputs_v1.ComponentHeldSessionTests.test_exception_closes_actual_input_fds_and_keeps_original_failure",
+      "test_publication_gstreamer_component_inputs_v1.ComponentHeldSessionTests.test_five_boundaries_share_one_full_assessment_but_observe_twenty_images",
+      "test_publication_gstreamer_component_inputs_v1.ComponentHeldSessionTests.test_original_socket_replacement_and_ancestor_alias_reject_before_inspect",
+      "test_publication_gstreamer_component_inputs_v1.ComponentHeldSessionTests.test_private_projection_collector_publishes_only_after_complete_assessment",
+      "test_publication_gstreamer_component_inputs_v1.ComponentHeldSessionTests.test_public_held_inputs_retains_independent_complete_validation",
+      "test_publication_gstreamer_component_inputs_v1.ComponentHeldSessionTests.test_raw_dict_foreign_pid_root_authority_and_closed_session_fail",
+      "test_publication_gstreamer_component_inputs_v1.ComponentHeldSessionTests.test_same_bytes_replacement_is_rejected_before_live_image_observation",
+      "test_publication_gstreamer_component_inputs_v1.ComponentHeldSessionTests.test_same_image_id_does_not_hide_projection_drift",
+      "test_publication_gstreamer_component_runtime_v1.ComponentRuntimeFixtureTests.test_private_session_keeps_real_factory_and_custody_at_all_five_boundaries"
+    ],
+    "no_elapsed_cause_claim": true,
+    "prior_bad_now_successful_ids": [],
+    "prior_elapsed_s": 1486.353939112,
+    "removed_discovered_ids": [],
+    "skip_id_reason_pairs_identical": true
+  },
+  "complete_review": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-8fefa-readonly-failure-diagnosis-v1/review.v1.json",
+    "sha256": "2504558067c0754acc08da14edb650fa431aa9ee6262851b615af567e81bfc86",
+    "size_bytes": 1940468
+  },
+  "diagnostic_source_anchors": [
+    {
+      "line": 317,
+      "text": "return operation[1] == 'capable' and re.search(r'\\bcapname=\"sys_admin\"(?=\\s|$)', message) is not None"
+    },
+    {
+      "line": 320,
+      "text": "def _gated_execv_argv(python, command):"
+    },
+    {
+      "line": 338,
+      "text": "'query_credential_transition': False}"
+    },
+    {
+      "line": 381,
+      "text": "journal = Path('/usr/bin/journalctl')"
+    },
+    {
+      "line": 386,
+      "text": "'--kernel', '--since', '@'+str(start), '--until', '@'+str(end), '--no-pager',"
+    },
+    {
+      "line": 388,
+      "text": "'--grep=apparmor=.*DENIED.*(userns|unshare|capable)']"
+    },
+    {
+      "line": 389,
+      "text": "log = capture_original_child(_gated_execv_argv(python, argv), Path(output_dir)/'kernel-query',"
+    },
+    {
+      "line": 393,
+      "text": "log['post_exec_executable_observed'] = False"
+    },
+    {
+      "line": 419,
+      "text": "'post_exec_executable_observed':False}"
+    }
+  ],
+  "download_original_terminals": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-8fefa-original-retention-v1/cpu-download-terminal.v1.json",
+      "sha256": "a1fc65429f4ad0efa7cb0bed09537afa9748d0e1835de6a15d8e0d021bee06a7",
+      "size_bytes": 314
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-8fefa-original-retention-v1/host-download-terminal.v1.json",
+      "sha256": "caf20a559e59e61403b41382e24334cd471bc94f0d51a94e867e2833c5a6c7dd",
+      "size_bytes": 314
+    }
+  ],
+  "exact_eight_undeclared_skips": [
+    {
+      "reason": "real KPP AVI files are not present",
+      "test_id": "test_benchmark_contract.BenchmarkContractTests.test_kpp_real_avi_manifest_validates_real_files_and_fps_policy"
+    },
+    {
+      "reason": "Windows custody route only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_each_unpublished_bootstrap_failure_leaves_no_random_orphan"
+    },
+    {
+      "reason": "Windows custody route only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_windows_bootstrap_failure_closes_every_locally_acquired_handle"
+    },
+    {
+      "reason": "Windows NtCreateFile route only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_windows_bootstrap_never_path_creates_a_destination_component"
+    },
+    {
+      "reason": "Windows custody route only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_windows_exact_rerun_holds_target_custody_without_creating"
+    },
+    {
+      "reason": "Windows ACL route only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_windows_rerun_rechecks_target_acl_after_long_verification"
+    },
+    {
+      "reason": "Windows ACL route only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_windows_rerun_rejects_permissive_target_acl_untouched"
+    },
+    {
+      "reason": "Windows custody route only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_windows_route_bootstraps_and_holds_full_destination_custody"
+    }
+  ],
+  "exact_native_three_success_ids": [
+    "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_client_regression",
+    "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_policy_topology_regression",
+    "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_reset_queue_level_regression"
+  ],
+  "failure_index": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-8fefa-readonly-failure-diagnosis-v1/failure-index.v1.json",
+    "sha256": "9229fcc19a1a44fa7caf435425fb28fb9fa69865b8d745d0f91bc42371b47454",
+    "size_bytes": 215648
+  },
+  "first_failed_syscall_derived_from_original_events": {
+    "errno": 13,
+    "error": "[Errno 13] Permission denied: '/proc/self/setgroups'",
+    "error_type": "PermissionError",
+    "event": "syscall_failed",
+    "flags": 655361,
+    "monotonic_ns": 138712657564,
+    "original_pid": 4020,
+    "path": "/proc/self/setgroups",
+    "pid": 4020,
+    "stock_tolerated_missing_setgroups": false,
+    "syscall": "open",
+    "terminal_monotonic_ns": 138712698310,
+    "terminal_wall_time_ns": 1790789112453425822,
+    "wall_time_ns": 1790789112453385116
+  },
+  "five_original_commit_snapshots_independently_joined": [
+    {
+      "original_commit": "8fefa4ba0c5b135c66f85a6eb7f4fd1aaebfdc21",
+      "path": "scripts/run_ci_checks.py",
+      "sha256": "6841581ae05ae7ea862752fb23f0999e48283d6dcad27c4634c94e626960eabc",
+      "size_bytes": 28237,
+      "snapshot": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-8fefa-readonly-failure-diagnosis-v1/committed-source/scripts/run_ci_checks.py",
+        "sha256": "6841581ae05ae7ea862752fb23f0999e48283d6dcad27c4634c94e626960eabc",
+        "size_bytes": 28237
+      }
+    },
+    {
+      "original_commit": "8fefa4ba0c5b135c66f85a6eb7f4fd1aaebfdc21",
+      "path": "scripts/ci_namespace_diagnostic_v1.py",
+      "sha256": "c27e5fde456c0448cee9e7ea20a5861e66e5f0636c56fe207995993549dbcff8",
+      "size_bytes": 22271,
+      "snapshot": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-8fefa-readonly-failure-diagnosis-v1/committed-source/scripts/ci_namespace_diagnostic_v1.py",
+        "sha256": "c27e5fde456c0448cee9e7ea20a5861e66e5f0636c56fe207995993549dbcff8",
+        "size_bytes": 22271
+      }
+    },
+    {
+      "original_commit": "8fefa4ba0c5b135c66f85a6eb7f4fd1aaebfdc21",
+      "path": "scripts/ci_test_selection_v1.py",
+      "sha256": "c911e1a566682094c4c9fc86177af84b696b9be35e7511039d944e8d75c65a9f",
+      "size_bytes": 9945,
+      "snapshot": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-8fefa-readonly-failure-diagnosis-v1/committed-source/scripts/ci_test_selection_v1.py",
+        "sha256": "c911e1a566682094c4c9fc86177af84b696b9be35e7511039d944e8d75c65a9f",
+        "size_bytes": 9945
+      }
+    },
+    {
+      "original_commit": "8fefa4ba0c5b135c66f85a6eb7f4fd1aaebfdc21",
+      "path": ".ci/integration-test-selection.v1.json",
+      "sha256": "a27ff9488d658637e16e81d0a6b6614ce9ac43716b7dd5b152060a2cb093c987",
+      "size_bytes": 31541,
+      "snapshot": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-8fefa-readonly-failure-diagnosis-v1/committed-source/.ci/integration-test-selection.v1.json",
+        "sha256": "a27ff9488d658637e16e81d0a6b6614ce9ac43716b7dd5b152060a2cb093c987",
+        "size_bytes": 31541
+      }
+    },
+    {
+      "original_commit": "8fefa4ba0c5b135c66f85a6eb7f4fd1aaebfdc21",
+      "path": "scripts/backend_publication_process_supervisor_v3.py",
+      "sha256": "acc40456cf93db8deb270f54d14b8f17555a268969e5bad0695372ddba12132d",
+      "size_bytes": 124499,
+      "snapshot": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-8fefa-readonly-failure-diagnosis-v1/committed-source/scripts/backend_publication_process_supervisor_v3.py",
+        "sha256": "acc40456cf93db8deb270f54d14b8f17555a268969e5bad0695372ddba12132d",
+        "size_bytes": 124499
+      }
+    }
+  ],
+  "host_cpu_before_after_source_manifests_equal": true,
+  "kernel_query_original_capture": {
+    "argv": [
+      "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python3.12",
+      "-I",
+      "-B",
+      "-c",
+      "import os,sys;position=sys.argv.index(\"--start-gate-fd\");fd=int(sys.argv[position+1]);command=sys.argv[1:position];assert os.read(fd,1)==b\"1\";os.close(fd);os.execv(command[0],command)",
+      "/usr/bin/journalctl",
+      "--kernel",
+      "--since",
+      "@1790789111",
+      "--until",
+      "@1790789113",
+      "--no-pager",
+      "--output=json",
+      "--lines=32",
+      "--case-sensitive=no",
+      "--grep=apparmor=.*DENIED.*(userns|unshare|capable)",
+      "--start-gate-fd",
+      "3"
+    ],
+    "capture_completed": true,
+    "capture_exceeded": false,
+    "cleanup_deadline_ns": 139754859973,
+    "elapsed_s": 0.031678604,
+    "eof": {
+      "stderr": true,
+      "stdout": true
+    },
+    "execution_deadline_ns": 140737840375,
+    "failure": null,
+    "original_group_absent": true,
+    "original_group_members": [],
+    "owner": {
+      "boot_id": "e4eca8aa-6fd7-4b28-b2eb-c69a79e7da02",
+      "executable_realpath": "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python3.12",
+      "executable_stat": {
+        "st_dev": 2049,
+        "st_gid": 1001,
+        "st_ino": 9189019,
+        "st_mode": 33261,
+        "st_nlink": 1,
+        "st_size": 17744,
+        "st_uid": 1001
+      },
+      "gid": 1001,
+      "pgid": 4021,
+      "pid": 4021,
+      "ppid": 3709,
+      "startticks": 13873,
+      "uid": 1001
+    },
+    "returncode": 1,
+    "started_monotonic_ns": 138737840375,
+    "started_wall_time_ns": 1790789112478568689,
+    "terminal_wall_time_ns": 1790789112510246091,
+    "timed_out": false
+  },
+  "kernel_query_original_stderr_utf8": "/usr/bin/journalctl: unrecognized option '--kernel'\n",
+  "kernel_query_original_stdout_size": 0,
+  "kind": "vast_ci8f_compact_original_review_v1",
+  "matching_failed_syscall_denial_proven": false,
+  "missing_required_successes": [],
+  "namespace_original_capture": {
+    "argv": [
+      "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python3.12",
+      "-I",
+      "-B",
+      "/home/runner/work/VAST/VAST/scripts/ci_namespace_diagnostic_v1.py",
+      "--worker",
+      "--start-gate-fd",
+      "3"
+    ],
+    "capture_completed": true,
+    "capture_exceeded": false,
+    "cleanup_deadline_ns": 148721819202,
+    "elapsed_s": 0.35162967,
+    "eof": {
+      "stderr": true,
+      "stdout": true
+    },
+    "execution_deadline_ns": 158385302317,
+    "failure": null,
+    "original_group_absent": true,
+    "original_group_members": [],
+    "owner": {
+      "boot_id": "e4eca8aa-6fd7-4b28-b2eb-c69a79e7da02",
+      "executable_realpath": "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python3.12",
+      "executable_stat": {
+        "st_dev": 2049,
+        "st_gid": 1001,
+        "st_ino": 9189019,
+        "st_mode": 33261,
+        "st_nlink": 1,
+        "st_size": 17744,
+        "st_uid": 1001
+      },
+      "gid": 1001,
+      "pgid": 4020,
+      "pid": 4020,
+      "ppid": 3709,
+      "startticks": 13838,
+      "uid": 1001
+    },
+    "returncode": 1,
+    "started_monotonic_ns": 138385302317,
+    "started_wall_time_ns": 1790789112126032254,
+    "terminal_wall_time_ns": 1790789112477658978,
+    "timed_out": false
+  },
+  "native_build_original": {
+    "argv": [
+      "cmake",
+      "--build",
+      "/home/runner/work/_temp/vast-cpu-checks/build",
+      "--parallel",
+      "2",
+      "--target",
+      "vast_native_gst_probe",
+      "vast_checkpoint_source",
+      "gstadaptivescheduler",
+      "gstvastanalyticsterminal",
+      "gstvastanalyticsqueue",
+      "gstvastcheckpointprefixqueue"
+    ],
+    "cleanup_error": null,
+    "elapsed_s": 15.498573705000013,
+    "returncode": 0,
+    "timed_out": false
+  },
+  "native_configure_original": {
+    "argv": [
+      "cmake",
+      "-S",
+      "/home/runner/work/VAST/VAST",
+      "-B",
+      "/home/runner/work/_temp/vast-cpu-checks/build",
+      "-DCMAKE_BUILD_TYPE=Release",
+      "-DVAST_BUILD_CUSTOM_CUDA_QT=OFF",
+      "-DCMAKE_RUNTIME_OUTPUT_DIRECTORY=/home/runner/work/_temp/vast-cpu-checks/build/bin",
+      "-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=/home/runner/work/_temp/vast-cpu-checks/build/lib"
+    ],
+    "cleanup_error": null,
+    "elapsed_s": 1.7740702629999987,
+    "returncode": 0,
+    "timed_out": false
+  },
+  "nine_unexecuted_integrations": [
+    {
+      "reason": "Verifies exact historical image, dependency bytes and real frozen fragment, rather than a unit schema predicate",
+      "required_capabilities": [
+        "exact original DeepStream physical image evidence/dependency source scope"
+      ],
+      "source": {
+        "line": 59,
+        "path": "tests/test_checkpoint_deepstream_runtime_image_evidence_v1.py"
+      },
+      "test_id": "test_checkpoint_deepstream_runtime_image_evidence_v1.DeepStreamRuntimeImageEvidenceV1Tests.test_exact_materialized_image_evidence_and_qualification_fragment"
+    },
+    {
+      "reason": "Actual historical all-system parity/model/image materialization chain",
+      "required_capabilities": [
+        "original physical full qualification/model/image inputs with matching source scope"
+      ],
+      "source": {
+        "line": 178,
+        "path": "tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py"
+      },
+      "test_id": "test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_exact_accepted_parity_preprocessing_and_runtime_images_are_bound"
+    },
+    {
+      "reason": "Actual historical all-system parity/model/image materialization chain",
+      "required_capabilities": [
+        "original physical full qualification/model/image inputs with matching source scope"
+      ],
+      "source": {
+        "line": 81,
+        "path": "tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py"
+      },
+      "test_id": "test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_phase_one_materializes_exact_physical_binding_fragment"
+    },
+    {
+      "reason": "Explicit actual Docker run over held inputs, with real exact image/GPU requirements",
+      "required_capabilities": [
+        "exact live pinned Docker/socket/image/GPU"
+      ],
+      "source": {
+        "line": 900,
+        "path": "tests/test_checkpoint_openvino_gva_publication_runtime_v3.py"
+      },
+      "test_id": "test_checkpoint_openvino_gva_publication_runtime_v3.OpenVINOGVAPublicationRuntimeV3Tests.test_live_daemon_reads_private_held_fd_copy"
+    },
+    {
+      "reason": "Actual require_files=True rehashes original complete media/receipt graph",
+      "required_capabilities": [
+        "exact original complete corpus and receipt graph"
+      ],
+      "source": {
+        "line": 65,
+        "path": "tests/test_kpp_frozen_reconstruction_v1_dataset_integration.py"
+      },
+      "test_id": "test_kpp_frozen_reconstruction_v1_dataset_integration.KppFrozenReconstructionV1DatasetIntegrationTests.test_full_on_disk_corpus_and_receipt_graph_validate"
+    },
+    {
+      "reason": "Actual require_files=True rehashes original complete media/receipt graph",
+      "required_capabilities": [
+        "exact original complete corpus and receipt graph"
+      ],
+      "source": {
+        "line": 126,
+        "path": "tests/test_kpp_iss_publication_v3_dataset_integration.py"
+      },
+      "test_id": "test_kpp_iss_publication_v3_dataset_integration.KppIssPublicationV3DatasetIntegrationTests.test_require_files_rehashes_the_complete_exact_corpus"
+    },
+    {
+      "reason": "Actual full patch/receipt/module equality; old g cannot become current selected equality by copying metadata",
+      "required_capabilities": [
+        "matching current full qualification source/receipt domain; live method additionally exact Docker/worker/model grant"
+      ],
+      "source": {
+        "line": 83,
+        "path": "tests/test_publication_runtime_frozen_identity_constants_v1.py"
+      },
+      "test_id": "test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_current_qualification_fragments_match_physical_receipts"
+    },
+    {
+      "reason": "Actual full patch/receipt/module equality; old g cannot become current selected equality by copying metadata",
+      "required_capabilities": [
+        "matching current full qualification source/receipt domain; live method additionally exact Docker/worker/model grant"
+      ],
+      "source": {
+        "line": 67,
+        "path": "tests/test_publication_runtime_frozen_identity_constants_v1.py"
+      },
+      "test_id": "test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_fix_benchmark_patch_matches_exact_runtime_constants"
+    },
+    {
+      "reason": "Actual full patch/receipt/module equality; old g cannot become current selected equality by copying metadata",
+      "required_capabilities": [
+        "matching current full qualification source/receipt domain; live method additionally exact Docker/worker/model grant"
+      ],
+      "source": {
+        "line": 406,
+        "path": "tests/test_publication_runtime_frozen_identity_constants_v1.py"
+      },
+      "test_id": "test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_live_fix_benchmark_preflight_matches_runtime_materializer"
+    }
+  ],
+  "observed_denial_candidates": [],
+  "observer_original_counts": {
+    "events": {
+      "pipe_eof": 2,
+      "request_sent": 24,
+      "requests_stop_acknowledged": 1,
+      "response_received": 51,
+      "response_timing": 24
+    },
+    "no_post_exec_or_descendant_quiescence_claim": true,
+    "responses": 51
+  },
+  "original_archives": {
+    "cpu": {
+      "path": "artifacts/benchmark_recovery_20260930/ci-8fefa-original-retention-v1/36751014399-cpu/original-artifact.zip",
+      "sha256": "8a8567ad9ed7488a21e0980a4975d5db1b8ce0a1674fdf1a2c6faaee02a29d98",
+      "size_bytes": 1915319
+    },
+    "host": {
+      "path": "artifacts/benchmark_recovery_20260930/ci-8fefa-original-retention-v1/36751014399-host/original-artifact.zip",
+      "sha256": "299348c4cabd58df8c57c8bde105080ca88418eb5f520ae558084229a54e9fc2",
+      "size_bytes": 294721
+    },
+    "prior_cpu": {
+      "path": "artifacts/benchmark_recovery_20260930/ci-6358-original-retention-v1/36743387786-cpu/original-artifact.zip",
+      "sha256": "8d2eef0bcdcf0dbfcf3dad801deb91c9c4c3ab525ebd0453d797f9e29fdcbf8f",
+      "size_bytes": 1902949
+    }
+  },
+  "original_child_failure": "ValueError: unapproved portable skip identity/reason: test_benchmark_contract.BenchmarkContractTests.test_kpp_real_avi_manifest_validates_real_files_and_fps_policy",
+  "original_counts": {
+    "allowed_skip_declarations": 80,
+    "discovered": 2943,
+    "distinct_error_methods": 38,
+    "error_rows": 40,
+    "failure_groups": {
+      "fixture_allowlist_not_rebound_to_current_physical_manifest": 1,
+      "missing_historical_binding_metadata_in_checkout": 9,
+      "missing_owned_temporary_parent_ROOT_staging": 6,
+      "namespace_broker_boundary_or_earlier_masked_expectation": 45,
+      "text_occurrence_mistaken_for_runtime_consumer": 3
+    },
+    "failure_rows": 24,
+    "portable": 2934,
+    "skip_rows": 88,
+    "successful_method_ids": 2784,
+    "tests_run": 2934,
+    "unapproved_skips": 8,
+    "unexecuted_integrations": 9
+  },
+  "original_host_report": {
+    "changed_tracked_paths": [],
+    "commit": "8fefa4ba0c5b135c66f85a6eb7f4fd1aaebfdc21",
+    "diagnostic_passed": true,
+    "diagnostic_tests_only": true,
+    "full_ci_successful": false,
+    "hardware_acceptance": false,
+    "kind": "vast_cpu_host_diagnostics_v1",
+    "original_process": {
+      "argv": [
+        "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python",
+        "-I",
+        "-B",
+        "-c",
+        "import sys,unittest; sys.path[:0]=sys.argv[1:3]; import run_ci_checks as checks; suite=unittest.defaultTestLoader.loadTestsFromNames(sys.argv[3:]); result=unittest.TextTestRunner(verbosity=2,resultclass=checks.RecordedResult).run(suite); sys.exit(0 if result.wasSuccessful() and result.testsRun==2 and set(sys.argv[3:])<=set(result.successes) else 1)",
+        "/home/runner/work/VAST/VAST/tests",
+        "/home/runner/work/VAST/VAST/scripts",
+        "test_analytics_model_contract.AnalyticsModelContractTests.test_repository_manifest_is_complete_and_hash_bound",
+        "test_analytics_peer_identity.AnalyticsPeerIdentityAuthorityTests.test_observer_reads_exact_proc_file_and_small_docker_projection"
+      ],
+      "cleanup_error": null,
+      "elapsed_s": 1.2677814609999984,
+      "returncode": 0,
+      "timed_out": false
+    },
+    "test_ids": [
+      "test_analytics_model_contract.AnalyticsModelContractTests.test_repository_manifest_is_complete_and_hash_bound",
+      "test_analytics_peer_identity.AnalyticsPeerIdentityAuthorityTests.test_observer_reads_exact_proc_file_and_small_docker_projection"
+    ]
+  },
+  "original_logs": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-8fefa-original-retention-v1/cpu-decoded-job.log",
+      "sha256": "d4bd7bbb5d388ab467b5adad72c9451b9def0b0553436f31f25d0178f0de46f7",
+      "size_bytes": 94789
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-8fefa-original-retention-v1/host-decoded-job.log",
+      "sha256": "3c4c095b297f2d3c9a570094a184858db78393225edf1e1414979ad44b071c1f",
+      "size_bytes": 33963
+    }
+  ],
+  "original_policy_denial": {
+    "original_kernel_query": {
+      "capture_completed": true,
+      "command_after_original_start_gate": [
+        "/usr/bin/journalctl",
+        "--kernel",
+        "--since",
+        "@1790789111",
+        "--until",
+        "@1790789113",
+        "--no-pager",
+        "--output=json",
+        "--lines=32",
+        "--case-sensitive=no",
+        "--grep=apparmor=.*DENIED.*(userns|unshare|capable)"
+      ],
+      "gate_owner_executable_is_initial_python": true,
+      "path": "kernel-query/capture.json",
+      "post_exec_executable_observed": false,
+      "returncode": 1,
+      "started_wall_time_ns": 1790789112478568689,
+      "terminal_wall_time_ns": 1790789112510246091
+    },
+    "path": "/dev/kmsg",
+    "policy_denial_proven": false,
+    "query_credential_transition": false,
+    "query_supplementary_groups": [
+      4,
+      100,
+      118,
+      999,
+      1001
+    ],
+    "query_uid": 1001,
+    "records": [],
+    "unavailable": "Original read-only kernel query failed or capture was incomplete; see original channels/status."
+  },
+  "original_runner_summary": {
+    "canonical_python": "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python3.12",
+    "changed_tracked_paths": [],
+    "commit": "8fefa4ba0c5b135c66f85a6eb7f4fd1aaebfdc21",
+    "elapsed_s": 1480.318969369,
+    "failure": "RuntimeError: original full-suite child/observer failed; see original lifecycle/trace",
+    "hardware_acceptance": false,
+    "python": "3.12.3 (main, Sep 26 2024, 18:18:55) [GCC 13.2.0]",
+    "raw_checkout_bytes_match_commit": true,
+    "successful": false
+  },
+  "original_tracked_source_count": 3174,
+  "profile_authorization": null,
+  "provider_metadata": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-8fefa-original-retention-v1/provider-metadata.final.v1.json",
+    "sha256": "40ccafb1b3ab45b9f4403987fda95155f0f2129de8dd0692752c510fe8def041",
+    "size_bytes": 7021
+  },
+  "run_id": 36751014399,
+  "schema_version": 1,
+  "scope": {
+    "engine_kernel_namespace_model_query": false,
+    "full_ci_success_claim": false,
+    "source_index_head_mutated": false,
+    "tests_or_project_imports_executed": false,
+    "workflow_retry_or_cancel": null
+  },
+  "setup_original_events": [
+    {
+      "event": "original_ready",
+      "executable": "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python3.12",
+      "label": {
+        "path": "/proc/self/attr/current",
+        "value": "unconfined"
+      },
+      "monotonic_ns": 138712497685,
+      "original_pid": 4020,
+      "wall_time_ns": 1790789112453223083
+    },
+    {
+      "event": "syscall_started",
+      "flags": 268435456,
+      "monotonic_ns": 138712565652,
+      "original_pid": 4020,
+      "pid": 4020,
+      "syscall": "unshare",
+      "wall_time_ns": 1790789112453293245
+    },
+    {
+      "event": "syscall_completed",
+      "flags": 268435456,
+      "monotonic_ns": 138712565652,
+      "original_pid": 4020,
+      "pid": 4020,
+      "syscall": "unshare",
+      "terminal_monotonic_ns": 138712634020,
+      "wall_time_ns": 1790789112453293245
+    },
+    {
+      "event": "syscall_started",
+      "flags": 655361,
+      "monotonic_ns": 138712657564,
+      "original_pid": 4020,
+      "path": "/proc/self/setgroups",
+      "pid": 4020,
+      "syscall": "open",
+      "wall_time_ns": 1790789112453385116
+    },
+    {
+      "errno": 13,
+      "error": "[Errno 13] Permission denied: '/proc/self/setgroups'",
+      "error_type": "PermissionError",
+      "event": "syscall_failed",
+      "flags": 655361,
+      "monotonic_ns": 138712657564,
+      "original_pid": 4020,
+      "path": "/proc/self/setgroups",
+      "pid": 4020,
+      "stock_tolerated_missing_setgroups": false,
+      "syscall": "open",
+      "terminal_monotonic_ns": 138712698310,
+      "terminal_wall_time_ns": 1790789112453425822,
+      "wall_time_ns": 1790789112453385116
+    },
+    {
+      "errno": 13,
+      "error": "backend publication Linux namespace mapping failed",
+      "error_type": "BackendPublicationProcessSupervisorV3Error",
+      "event": "namespace_setup_failed",
+      "monotonic_ns": 138712753944,
+      "original_pid": 4020
+    }
+  ],
+  "sha256": "7bf177d37c2fe3504840c2237c2f7a022f9cb2fd2ef23bac181630f3f6b8afc7",
+  "six_actual_built_targets": [
+    "vast_native_gst_probe",
+    "vast_checkpoint_source",
+    "gstadaptivescheduler",
+    "gstvastanalyticsterminal",
+    "gstvastanalyticsqueue",
+    "gstvastcheckpointprefixqueue"
+  ],
+  "source_commit": "8fefa4ba0c5b135c66f85a6eb7f4fd1aaebfdc21",
+  "tool_observation": "Complete review.v1.json conservatively retained the original runner body including its large tracked-source tables (1,940,468 bytes). This compact summary preserves its immutable physical descriptor; no original ZIP or review was overwritten.",
+  "unchanged_88_actual_skip_pairs_under_original_80_declarations": true
+}

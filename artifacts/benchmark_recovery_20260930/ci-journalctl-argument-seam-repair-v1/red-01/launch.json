@@ -1,0 +1,24 @@
+{
+  "argv": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "-c",
+    "import json,pathlib,shutil,sys,unittest\nroot=pathlib.Path(sys.argv[1]);out=pathlib.Path(sys.argv[2]);sys.path[:0]=[str(root/'tests'),str(root/'scripts'),str(root)]\nimport test_ci_namespace_diagnostic_v1 as module\noriginal_helper=module.NamespaceDiagnosticTests.helper\nparser=[]\ndef helper(self):\n loaded=original_helper(self);real=loaded.capture_original_child\n def capture(argv,output,deadline,**kwargs):\n  result=real(argv,output,deadline,**kwargs)\n  if '--help' in argv and any(pathlib.Path(arg).name=='journalctl' for arg in argv):\n   group=out/('actual-parser-%02d'%len(parser));group.mkdir()\n   for source in pathlib.Path(output).iterdir():\n    if source.is_file():\n     assert source.stat().st_size<=16*1024\n     shutil.copyfile(source,group/source.name)\n   parser.append({'capture':result,'snapshot':group.name})\n  return result\n loaded.capture_original_child=capture\n return loaded\nmodule.NamespaceDiagnosticTests.helper=helper\nname='test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_actual_journalctl_parser_accepts_original_query_options_without_reading_journals' if sys.argv[3]=='red' else 'test_ci_namespace_diagnostic_v1'\nsuite=unittest.defaultTestLoader.loadTestsFromName(name);result=unittest.TextTestRunner(verbosity=2).run(suite)\nvalue={'tests_run':result.testsRun,'errors':[{'test_id':t.id(),'traceback':e} for t,e in result.errors],'failures':[{'test_id':t.id(),'traceback':e} for t,e in result.failures],'skips':[{'test_id':t.id(),'reason':e} for t,e in result.skipped],'successful':result.wasSuccessful(),'real_parser_captures':parser,'no_namespace_or_journal_read':True}\n(out/'test-results.json').open('x').write(json.dumps(value,sort_keys=True,indent=2)+'\\n');sys.exit(0 if result.wasSuccessful() else 1)\n",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/red-01",
+    "red"
+  ],
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 40713,
+    "pid": 40713,
+    "startticks": 27420003,
+    "uid": 1000
+  },
+  "python": "3.12.3 (main, Jun 19 2026, 12:46:00) [GCC 13.3.0]",
+  "selection": "red",
+  "started_monotonic": 274200.031852437,
+  "test_controller_cap_seconds": 60
+}

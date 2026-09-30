@@ -506,3 +506,18 @@ A successful original selected CLI pair SHALL retain one private genuine held-se
 #### Scenario: Runtime improvement is assessed
 - **WHEN** the held-session implementation is reviewed or executed
 - **THEN** at most12 fixed phase start/terminal pairs and16KiB nonauthorizing timing metadata SHALL report actual clock domains/durations and incomplete phases honestly. Source counts/logical hash-reader bytes SHALL NOT be called measured storage I/O or a speedup; real current original CPU/GPU/cold results and unchanged deadlines SHALL remain required.
+### Requirement: Relocated selected execution preserves genuine physical validation
+
+A selected execution MAY use a fresh isolated canonical ext4 project root at the exact reviewed source commit. Relocation SHALL preserve every declared original model/numeric/corpus/authority byte and sealed association, independently enumerate the full current closure beyond the held subset, reject unowned paths/links/different-byte collisions, verify original and destination physical bytes/names/epochs, and preserve the original Windows and WSL primary checkouts. Current selected/native/worker source/dependency/image checks and all stock validators SHALL remain unchanged. Relocated source epochs SHALL be captured in a NEW stock host closure; selected/capture/preprocessing/runtime/guardian/arm/cold authorities SHALL be genuinely produced under fresh names. CPU05's failed CLI and historical receipts SHALL remain unchanged. Preparation SHALL NOT extend original2100/2250/15 benchmark limits or alter intake/scientific/acceptance/CI/campaign scope.
+
+#### Scenario: Genuine finite inputs are copied to a new root
+- **WHEN** setup copies the source-derived full numeric/corpus closure and exact source/control inputs to an exclusive ext4 checkout
+- **THEN** it SHALL retain original descriptor bytes and historical sealed observations, verify full current physical original/destination custody and exact model/source membership, record actual root/owner/space/Git identity and daemon bind-root reachability, and fail on missing/conflicting/unowned/link input or incomplete transfer. Setup alone SHALL NOT grant model/image/benchmark acceptance.
+
+#### Scenario: A historical closure or execution receipt is reused after relocation
+- **WHEN** a caller presents CPU05's source-epoch or execution authority as current at the new root
+- **THEN** relocation SHALL NOT authorize its reuse or rewrite; a fresh stock source closure and newly produced current execution authorities SHALL be required while original producer outcomes and evidence remain immutable.
+
+#### Scenario: A relocated pair completes or exceeds its original deadline
+- **WHEN** the unchanged original CPU or separately owned GPU CLI runs against the fresh physical root
+- **THEN** all original stock model/source/device/native/process/container/resource/guardian/all-phase cold and2100/2250/15 gates SHALL still decide acceptance; authentic raw/cold/CSV output with a late/nonzero original CLI SHALL remain failed, independent custody SHALL close before another grant, and no automatic retry, time reset, speedup inference or deferred campaign execution SHALL follow.

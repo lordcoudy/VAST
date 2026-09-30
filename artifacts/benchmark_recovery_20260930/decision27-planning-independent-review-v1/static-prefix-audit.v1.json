@@ -1,0 +1,100 @@
+{
+  "all_original_task_ID_text_state_lines_preserved": true,
+  "artifact_kind": "vast_decision27_planning_preservation_audit_v1",
+  "current_counts": {
+    "checked": 37,
+    "requirements": 20,
+    "scenarios": 112,
+    "tasks": 65
+  },
+  "original82_scenario72_task_register_byte_exact": true,
+  "original_counts": {
+    "checked": 37,
+    "requirements": 19,
+    "scenarios": 109,
+    "tasks": 62
+  },
+  "schema_version": 1,
+  "scope": "Pure original/current bytes and Markdown counts; no OpenSpec/producer/model/engine/copy/setup/test execution or acceptance.",
+  "six_documents": [
+    {
+      "after": {
+        "path": "openspec/changes/fix-benchmark-preparations-spec/proposal.md",
+        "sha256": "ade8c362eb81ec82539525c320b5c84b71bb4566aaaee1718600915c564e0317",
+        "size_bytes": 13480
+      },
+      "before": {
+        "path": "artifacts/benchmark_recovery_20260930/decision27-planning-originals-v1/openspec__changes__fix-benchmark-preparations-spec__proposal.md",
+        "sha256": "d02acc58bec1ad630143814ce10be5b81fdf83656e884379dd6fb05be47d7d15",
+        "size_bytes": 11415
+      },
+      "original_bytes_preserved_as_prefix": true
+    },
+    {
+      "after": {
+        "path": "openspec/changes/fix-benchmark-preparations-spec/specs/benchmark-launch-preparation/spec.md",
+        "sha256": "576821b3fd057becb7735b70affba8001e3e70a15308c4783928e7f9c5471be3",
+        "size_bytes": 71033
+      },
+      "before": {
+        "path": "artifacts/benchmark_recovery_20260930/decision27-planning-originals-v1/openspec__changes__fix-benchmark-preparations-spec__specs__benchmark-launch-preparation__spec.md",
+        "sha256": "45bcdca6d5dcc41b9f3a9768e13f5f474fa3287d0cf30502b253bae5264068c2",
+        "size_bytes": 68409
+      },
+      "original_bytes_preserved_as_prefix": true
+    },
+    {
+      "after": {
+        "path": "openspec/changes/fix-benchmark-preparations-spec/design.md",
+        "sha256": "15f2095eac16e3024be717f0a12d66552caf4751f0cb4d2cce75c47b9fc5ca6d",
+        "size_bytes": 35013
+      },
+      "before": {
+        "path": "artifacts/benchmark_recovery_20260930/decision27-planning-originals-v1/openspec__changes__fix-benchmark-preparations-spec__design.md",
+        "sha256": "a432da98753c1648b20f17ed5d3a59ee5ba0b85badf63adb7ab23585c553086a",
+        "size_bytes": 30785
+      },
+      "original_bytes_preserved_as_prefix": true
+    },
+    {
+      "after": {
+        "path": "openspec/changes/fix-benchmark-preparations-spec/tasks.md",
+        "sha256": "40db3b81948c0954f7fb46a557ffad0b02c1eb2a9c846a8b385a009dd0e3332e",
+        "size_bytes": 24286
+      },
+      "before": {
+        "path": "artifacts/benchmark_recovery_20260930/decision27-planning-originals-v1/openspec__changes__fix-benchmark-preparations-spec__tasks.md",
+        "sha256": "bd856399db3a81e8f2c9b260b2b0e344e0882f9bff0bf51ed4baf5711cb9d8c3",
+        "size_bytes": 22810
+      },
+      "original_bytes_preserved_as_prefix": true
+    },
+    {
+      "after": {
+        "path": "openspec/changes/fix-benchmark-preparations-spec/verification-plan.md",
+        "sha256": "b1e4c31b16f5107ff57f34be3b3c517bd71faa774c863dd31ddb79c40b3cdc72",
+        "size_bytes": 48495
+      },
+      "before": {
+        "path": "artifacts/benchmark_recovery_20260930/decision27-planning-originals-v1/openspec__changes__fix-benchmark-preparations-spec__verification-plan.md",
+        "sha256": "f61bc61e8116c92d5f0f5519f92b9638dc53516f2025db7c60696e6b649c1ad6",
+        "size_bytes": 46472
+      },
+      "original_bytes_preserved_as_prefix": true
+    },
+    {
+      "after": {
+        "path": "BENCHMARK_RECOVERY_PLAN.md",
+        "sha256": "9273a26f4dcd97b7fdc35565f107c95f38addd8406a4e1fbe0cd64459962853a",
+        "size_bytes": 51974
+      },
+      "before": {
+        "path": "artifacts/benchmark_recovery_20260930/decision27-planning-originals-v1/BENCHMARK_RECOVERY_PLAN.md",
+        "sha256": "21ce084da2f6f31f9cb36f5c38c8427820e01c67e58155b8192484ee68b15ea9",
+        "size_bytes": 50205
+      },
+      "original_bytes_preserved_as_prefix": true
+    }
+  ],
+  "three_new_22_tasks_unchecked": true
+}

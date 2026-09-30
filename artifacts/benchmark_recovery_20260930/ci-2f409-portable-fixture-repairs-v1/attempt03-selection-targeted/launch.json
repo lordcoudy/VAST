@@ -1,0 +1,23 @@
+{
+  "argv": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "-c",
+    "import json,pathlib,sys,unittest\nroot=pathlib.Path(sys.argv[1]);sys.path[:0]=[str(root/'tests'),str(root/'scripts'),str(root)]\nimport run_ci_checks as checks,ci_test_selection_v1 as selection\nmanifest=json.loads((root/'.ci/integration-test-selection.v1.json').read_bytes())\noriginal=json.loads((root/'artifacts/benchmark_recovery_20260930/ci-2f409-readonly-failure-diagnosis-v1/failure-index.v1.json').read_bytes())\nassert len(manifest['allowed_portable_skips'])==88\nselection.validate_portable_skips_v1(original['original_skips'],{'allowed_portable_skips':manifest['allowed_portable_skips']})\nsuite=unittest.defaultTestLoader.loadTestsFromNames(sys.argv[3:]);r=unittest.TextTestRunner(verbosity=2,resultclass=checks.RecordedResult).run(suite)\nvalue={'tests_run':r.testsRun,'successes':r.successes,'errors':[{'test_id':t.id(),'traceback':x} for t,x in r.errors],'failures':[{'test_id':t.id(),'traceback':x} for t,x in r.failures],'skips':[{'test_id':t.id(),'reason':x} for t,x in r.skipped],'successful':r.wasSuccessful(),'exact_existing_skip_declarations':88,'no_full_suite_or_hardware_claim':True}\npathlib.Path(sys.argv[2]).open('x').write(json.dumps(value,sort_keys=True,indent=2)+'\\n')\nsys.exit(0 if r.wasSuccessful() else 1)\n",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt03-selection-targeted/test-results.json",
+    "test_ci_test_selection_v1.SelectionContracts.test_all_original_platform_and_retired_skip_ids_remain_nonexecution"
+  ],
+  "deadline_seconds": 600,
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 35220,
+    "pid": 35220,
+    "startticks": 27157096,
+    "uid": 1000
+  },
+  "python": "3.12.3 (main, Jun 19 2026, 12:46:00) [GCC 13.3.0]",
+  "started_monotonic": 271570.958574123
+}

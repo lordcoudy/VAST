@@ -1,0 +1,76 @@
+--- before/scripts/ci_namespace_diagnostic_v1.py
++++ scripts/ci_namespace_diagnostic_v1.py
+@@ -383,7 +383,7 @@
+             start = result['started_wall_time_ns']//1_000_000_000-1
+             end = result['terminal_wall_time_ns']//1_000_000_000+1
+             argv = [str(journal.resolve(strict=True)),
+-                '--kernel', '--since', '@'+str(start), '--until', '@'+str(end), '--no-pager',
++                '--dmesg', '--since', '@'+str(start), '--until', '@'+str(end), '--no-pager',
+                 '--output=json', '--lines=32', '--case-sensitive=no',
+                 '--grep=apparmor=.*DENIED.*(userns|unshare|capable)']
+             log = capture_original_child(_gated_execv_argv(python, argv), Path(output_dir)/'kernel-query',
+
+--- before/tests/test_ci_namespace_diagnostic_v1.py
++++ tests/test_ci_namespace_diagnostic_v1.py
+@@ -99,6 +99,52 @@
+         self.assertTrue(query['gate_owner_executable_is_initial_python'])
+         self.assertFalse(query['post_exec_executable_observed'])
+ 
++    def test_actual_journalctl_parser_accepts_original_query_options_without_reading_journals(self):
++        helper = self.helper()
++        import json, sys, time
++        original_capture = helper.capture_original_child
++        calls = []
++        actual = []
++        def capture(argv, output, deadline, **kwargs):
++            calls.append((argv, kwargs))
++            if len(calls) == 1:
++                # No namespace child is launched; only the actual query parser runs.
++                output = Path(output); output.mkdir()
++                row = {'event': 'syscall_failed', 'syscall': 'fixture_only_namespace',
++                       'errno': 13, 'original_pid': 123}
++                (output/'stdout.raw').write_text(json.dumps(row) + '\n')
++                return {'owner': {'pid': 123}, 'capture_completed': True, 'returncode': 1,
++                        'failure': None, 'cleanup_deadline_ns': time.monotonic_ns()+5_000_000_000,
++                        'started_wall_time_ns': time.time_ns(), 'terminal_wall_time_ns': time.time_ns()}
++            self.assertEqual(kwargs, {'execution_s': 2, 'cleanup_s': 1, 'start_gate': True})
++            self.assertEqual(Path(argv[5]), Path('/usr/bin/journalctl').resolve(strict=True))
++            self.assertNotIn('sudo', argv)
++            # --help exits option parsing before journal opening or kernel reading.
++            result = original_capture([*argv, '--help'], output, deadline, **kwargs)
++            actual.append(result)
++            return result
++        real_open = os.open
++        def opened(path, *args, **kwargs):
++            if path == '/dev/kmsg':
++                raise PermissionError(13, 'explicit inaccessible kernel fixture')
++            return real_open(path, *args, **kwargs)
++        with tempfile.TemporaryDirectory() as directory:
++            with mock.patch.object(helper, 'capture_original_child', capture), mock.patch.object(os, 'open', opened):
++                result = helper.observe_namespace_setup_v1(output_dir=Path(directory)/'out',
++                    python=str(Path(sys.executable).resolve(strict=True)), absolute_deadline_ns=10**30)
++            self.assertEqual(len(calls), 2)
++            self.assertEqual(len(actual), 1)
++            self.assertTrue(actual[0]['capture_completed'], actual[0])
++            self.assertEqual(actual[0]['returncode'], 0)
++            self.assertEqual(actual[0]['eof'], {'stdout': True, 'stderr': True})
++            self.assertTrue(actual[0]['original_group_absent'])
++            self.assertFalse(actual[0]['timed_out'])
++            self.assertFalse(actual[0]['capture_exceeded'])
++            self.assertIn(b'--dmesg', (Path(directory)/'out/kernel-query/stdout.raw').read_bytes())
++            self.assertEqual((Path(directory)/'out/kernel-query/stderr.raw').read_bytes(), b'')
++            self.assertFalse(result['namespace_succeeded'])
++            self.assertFalse(result['policy_denial']['policy_denial_proven'])
++
+     def test_exact_first_unshare_failure_delegates_once_and_retains_original_errno(self):
+         helper = self.helper()
+         events = []
+@@ -284,7 +330,7 @@
+             self.assertEqual(len(calls),2)
+             self.assertEqual(Path(calls[1][5]).name, 'journalctl')
+             self.assertNotIn('sudo', ' '.join(calls[1]))
+-            self.assertIn('--kernel',calls[1])
++            self.assertIn('--dmesg',calls[1])
+             self.assertNotIn('apparmor_parser',' '.join(calls[1]))
+             self.assertEqual(len(result['policy_denial']['records']),1)
+             self.assertIn('pid=123 comm',result['policy_denial']['records'][0]['original_journal_record']['MESSAGE'])

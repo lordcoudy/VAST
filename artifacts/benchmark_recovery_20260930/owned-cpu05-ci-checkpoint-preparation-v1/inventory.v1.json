@@ -1,0 +1,3332 @@
+{
+  "artifact_kind": "vast_owned_cpu05_ci_checkpoint_preparation_v1",
+  "blocking_gates": [
+    "Exact final independent CI2 journalctl parser source/test review receipt pending; must be pinned and included before staging.",
+    "Updated current runbook and durable plan/tasks are snapshots only; final root document/source review required. Old runbook review is historical, not a required equality to current document."
+  ],
+  "excluded_bytes": 244723663,
+  "excluded_count": 48,
+  "excluded_files": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/deploy/deepstream/checkpoint/wheels/numpy-1.26.4-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "reason": "Generated cache or duplicate model/runtime wheel payload; original finite metadata/provenance retained.",
+      "size_bytes": 18240889
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/deploy/deepstream/checkpoint/wheels/pandas-2.2.3-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "reason": "Generated cache or duplicate model/runtime wheel payload; original finite metadata/provenance retained.",
+      "size_bytes": 13064210
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/deploy/deepstream/checkpoint/wheels/python_dateutil-2.9.0.post0-py2.py3-none-any.whl",
+      "reason": "Generated cache or duplicate model/runtime wheel payload; original finite metadata/provenance retained.",
+      "size_bytes": 229892
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/deploy/deepstream/checkpoint/wheels/pytz-2026.3.post1-py2.py3-none-any.whl",
+      "reason": "Generated cache or duplicate model/runtime wheel payload; original finite metadata/provenance retained.",
+      "size_bytes": 508283
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/deploy/deepstream/checkpoint/wheels/PyYAML-6.0.2-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "reason": "Generated cache or duplicate model/runtime wheel payload; original finite metadata/provenance retained.",
+      "size_bytes": 751239
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/deploy/deepstream/checkpoint/wheels/six-1.17.0-py2.py3-none-any.whl",
+      "reason": "Generated cache or duplicate model/runtime wheel payload; original finite metadata/provenance retained.",
+      "size_bytes": 11050
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/deploy/deepstream/checkpoint/wheels/tzdata-2026.3-py2.py3-none-any.whl",
+      "reason": "Generated cache or duplicate model/runtime wheel payload; original finite metadata/provenance retained.",
+      "size_bytes": 348168
+    },
+    {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/guardian-operational/damage-cpu.jsonl",
+      "reason": "Original large producer sidecars/native request data or pinned engine binary; retained locally, descriptor references retained in closed receipts.",
+      "size_bytes": 1990274
+    },
+    {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/guardian-operational/damage-gpu.jsonl",
+      "reason": "Original large producer sidecars/native request data or pinned engine binary; retained locally, descriptor references retained in closed receipts.",
+      "size_bytes": 6533
+    },
+    {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/guardian-operational/foreign_object-cpu.jsonl",
+      "reason": "Original large producer sidecars/native request data or pinned engine binary; retained locally, descriptor references retained in closed receipts.",
+      "size_bytes": 1522106
+    },
+    {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/guardian-operational/foreign_object-gpu.jsonl",
+      "reason": "Original large producer sidecars/native request data or pinned engine binary; retained locally, descriptor references retained in closed receipts.",
+      "size_bytes": 6606
+    },
+    {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/guardian-operational/plate_number-cpu.jsonl",
+      "reason": "Original large producer sidecars/native request data or pinned engine binary; retained locally, descriptor references retained in closed receipts.",
+      "size_bytes": 2116723
+    },
+    {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/guardian-operational/plate_number-gpu.jsonl",
+      "reason": "Original large producer sidecars/native request data or pinned engine binary; retained locally, descriptor references retained in closed receipts.",
+      "size_bytes": 6587
+    },
+    {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/guardian-operational/vehicle_type-cpu.jsonl",
+      "reason": "Original large producer sidecars/native request data or pinned engine binary; retained locally, descriptor references retained in closed receipts.",
+      "size_bytes": 2036939
+    },
+    {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/guardian-operational/vehicle_type-gpu.jsonl",
+      "reason": "Original large producer sidecars/native request data or pinned engine binary; retained locally, descriptor references retained in closed receipts.",
+      "size_bytes": 6587
+    },
+    {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/branch_terminals.csv",
+      "reason": "Original large producer sidecars/native request data or pinned engine binary; retained locally, descriptor references retained in closed receipts.",
+      "size_bytes": 2848958
+    },
+    {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/checkpoint_publication_candidate.json",
+      "reason": "Original large producer sidecars/native request data or pinned engine binary; retained locally, descriptor references retained in closed receipts.",
+      "size_bytes": 8163
+    },
+    {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/drop_counters.csv",
+      "reason": "Original large producer sidecars/native request data or pinned engine binary; retained locally, descriptor references retained in closed receipts.",
+      "size_bytes": 1356
+    },
+    {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/fanout_work_counters.csv",
+      "reason": "Original large producer sidecars/native request data or pinned engine binary; retained locally, descriptor references retained in closed receipts.",
+      "size_bytes": 206
+    },
+    {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/frame_events.csv",
+      "reason": "Original large producer sidecars/native request data or pinned engine binary; retained locally, descriptor references retained in closed receipts.",
+      "size_bytes": 5874981
+    },
+    {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/frames.csv",
+      "reason": "Original large producer sidecars/native request data or pinned engine binary; retained locally, descriptor references retained in closed receipts.",
+      "size_bytes": 148657
+    },
+    {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/hardware_resource_samples.csv",
+      "reason": "Original large producer sidecars/native request data or pinned engine binary; retained locally, descriptor references retained in closed receipts.",
+      "size_bytes": 1299876
+    },
+    {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/ingress_ledger.csv",
+      "reason": "Original large producer sidecars/native request data or pinned engine binary; retained locally, descriptor references retained in closed receipts.",
+      "size_bytes": 751155
+    },
+    {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/policy_decisions.csv",
+      "reason": "Original large producer sidecars/native request data or pinned engine binary; retained locally, descriptor references retained in closed receipts.",
+      "size_bytes": 6622148
+    },
+    {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/publication_policy_decisions.jsonl",
+      "reason": "Original large producer sidecars/native request data or pinned engine binary; retained locally, descriptor references retained in closed receipts.",
+      "size_bytes": 17521693
+    },
+    {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/reset_evidence.csv",
+      "reason": "Original large producer sidecars/native request data or pinned engine binary; retained locally, descriptor references retained in closed receipts.",
+      "size_bytes": 15250
+    },
+    {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/resource_events.csv",
+      "reason": "Original large producer sidecars/native request data or pinned engine binary; retained locally, descriptor references retained in closed receipts.",
+      "size_bytes": 5699821
+    },
+    {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/resource_intervals.csv",
+      "reason": "Original large producer sidecars/native request data or pinned engine binary; retained locally, descriptor references retained in closed receipts.",
+      "size_bytes": 1343162
+    },
+    {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/stage_contracts.csv",
+      "reason": "Original large producer sidecars/native request data or pinned engine binary; retained locally, descriptor references retained in closed receipts.",
+      "size_bytes": 79680
+    },
+    {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/topology_events.csv",
+      "reason": "Original large producer sidecars/native request data or pinned engine binary; retained locally, descriptor references retained in closed receipts.",
+      "size_bytes": 8416239
+    },
+    {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence.operational/native_operational_requests.v1.jsonl",
+      "reason": "Original large producer sidecars/native request data or pinned engine binary; retained locally, descriptor references retained in closed receipts.",
+      "size_bytes": 32358933
+    },
+    {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/branch_terminals.csv",
+      "reason": "Original large producer sidecars/native request data or pinned engine binary; retained locally, descriptor references retained in closed receipts.",
+      "size_bytes": 2764449
+    },
+    {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/checkpoint_publication_candidate.json",
+      "reason": "Original large producer sidecars/native request data or pinned engine binary; retained locally, descriptor references retained in closed receipts.",
+      "size_bytes": 6888
+    },
+    {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/drop_counters.csv",
+      "reason": "Original large producer sidecars/native request data or pinned engine binary; retained locally, descriptor references retained in closed receipts.",
+      "size_bytes": 1337
+    },
+    {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/fanout_work_counters.csv",
+      "reason": "Original large producer sidecars/native request data or pinned engine binary; retained locally, descriptor references retained in closed receipts.",
+      "size_bytes": 1136743
+    },
+    {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/frame_events.csv",
+      "reason": "Original large producer sidecars/native request data or pinned engine binary; retained locally, descriptor references retained in closed receipts.",
+      "size_bytes": 3535008
+    },
+    {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/frames.csv",
+      "reason": "Original large producer sidecars/native request data or pinned engine binary; retained locally, descriptor references retained in closed receipts.",
+      "size_bytes": 173515
+    },
+    {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/hardware_resource_samples.csv",
+      "reason": "Original large producer sidecars/native request data or pinned engine binary; retained locally, descriptor references retained in closed receipts.",
+      "size_bytes": 1235910
+    },
+    {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/ingress_ledger.csv",
+      "reason": "Original large producer sidecars/native request data or pinned engine binary; retained locally, descriptor references retained in closed receipts.",
+      "size_bytes": 734577
+    },
+    {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/policy_decisions.csv",
+      "reason": "Original large producer sidecars/native request data or pinned engine binary; retained locally, descriptor references retained in closed receipts.",
+      "size_bytes": 6130464
+    },
+    {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/publication_policy_decisions.jsonl",
+      "reason": "Original large producer sidecars/native request data or pinned engine binary; retained locally, descriptor references retained in closed receipts.",
+      "size_bytes": 16306798
+    },
+    {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/reset_evidence.csv",
+      "reason": "Original large producer sidecars/native request data or pinned engine binary; retained locally, descriptor references retained in closed receipts.",
+      "size_bytes": 6420
+    },
+    {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/resource_events.csv",
+      "reason": "Original large producer sidecars/native request data or pinned engine binary; retained locally, descriptor references retained in closed receipts.",
+      "size_bytes": 3333574
+    },
+    {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/resource_intervals.csv",
+      "reason": "Original large producer sidecars/native request data or pinned engine binary; retained locally, descriptor references retained in closed receipts.",
+      "size_bytes": 1915777
+    },
+    {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/stage_contracts.csv",
+      "reason": "Original large producer sidecars/native request data or pinned engine binary; retained locally, descriptor references retained in closed receipts.",
+      "size_bytes": 19770
+    },
+    {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/topology_events.csv",
+      "reason": "Original large producer sidecars/native request data or pinned engine binary; retained locally, descriptor references retained in closed receipts.",
+      "size_bytes": 7876677
+    },
+    {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence.operational/native_operational_requests.v1.jsonl",
+      "reason": "Original large producer sidecars/native request data or pinned engine binary; retained locally, descriptor references retained in closed receipts.",
+      "size_bytes": 30138687
+    },
+    {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/runtime/container-engine/docker",
+      "reason": "Original large producer sidecars/native request data or pinned engine binary; retained locally, descriptor references retained in closed receipts.",
+      "size_bytes": 45570705
+    }
+  ],
+  "file_count": 369,
+  "files": [
+    {
+      "groups": [
+        "reviewed_test10_and_manifest"
+      ],
+      "path": ".ci/integration-test-selection.v1.json",
+      "sha256": "09e9268069e88b957f9ae54a827960bc18ee13a00d4319994d108d3cb81a0805",
+      "size_bytes": 34014
+    },
+    {
+      "groups": [
+        "current_host_preparation_and_root_document_snapshot"
+      ],
+      "path": "BENCHMARK_RECOVERY_PLAN.md",
+      "sha256": "21ce084da2f6f31f9cb36f5c38c8427820e01c67e58155b8192484ee68b15ea9",
+      "size_bytes": 50205
+    },
+    {
+      "groups": [
+        "current_host_preparation_and_root_document_snapshot"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/capture_selected_host_closure_v6.py",
+      "sha256": "a05b1c72e6188dac057ea7104e2ffe2cc83cf8f596ab1b1675b10f70a09314db",
+      "size_bytes": 3049
+    },
+    {
+      "groups": [
+        "portable_fixture_independent_review"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-independent-review-v1/review.v1.json",
+      "sha256": "5294f169c4e29776e2fe7b1413ec6fc29c1a3ef78ddb8f042644aa3ce2854aba",
+      "size_bytes": 7406
+    },
+    {
+      "groups": [
+        "portable_fixture_independent_review"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-independent-review-v1/static-audit.v1.json",
+      "sha256": "4187a3b4ae3343c91f3b348b6d25947a5060c208b1eac7f5e37245591d071a82",
+      "size_bytes": 11039
+    },
+    {
+      "groups": [
+        "portable_fixture_independent_review"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-independent-review-v1/static_audit.py",
+      "sha256": "0b59d22add9c4798c81b6238ded5393b0b76c730389b2f56b455dad39e88e729",
+      "size_bytes": 7464
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/execution.json",
+      "sha256": "4dc7d66f66a7c1ae3078fdeff97472ac22c04004f33ca07c0ff1be81d44ae471",
+      "size_bytes": 588
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/launch.json",
+      "sha256": "d8aa37ff710387f0c0017c6078633c84ea4de951e72968fb6b404a70460ade3f",
+      "size_bytes": 2523
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/source.after.json",
+      "sha256": "a4e7fc5dcea7f37a4a43d901c9957c412f6106caca60c395455552e5afbbd894",
+      "size_bytes": 8416
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/source.before.json",
+      "sha256": "a4e7fc5dcea7f37a4a43d901c9957c412f6106caca60c395455552e5afbbd894",
+      "size_bytes": 8416
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/stderr.raw",
+      "sha256": "68e79cd307f86762386b2fbe250c51c4c76ec8d8081f403040d2af7859faba81",
+      "size_bytes": 108575
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/stdout.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/test-results.json",
+      "sha256": "1984a5a03d2d88d4adcb1e17b89da88754308a508b28276dc3d752b84d601a12",
+      "size_bytes": 33106
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/tested-source/.ci/fixtures/gstreamer_fragment_unit_v1/artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/bindings/damage.openvino_cpu.json",
+      "sha256": "19ed5674f8616ac9ca1ec9445837a2dbd31d83db7405445c4bede238a45533a5",
+      "size_bytes": 1141
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/tested-source/.ci/fixtures/gstreamer_fragment_unit_v1/artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/bindings/damage.tensorrt_cuda.json",
+      "sha256": "ca3de1c5dbe453a1ec3e2dfe54257513ad3978b6d6be23f0cbe2c8bb7c6069f4",
+      "size_bytes": 1041
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/tested-source/.ci/fixtures/gstreamer_fragment_unit_v1/artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/bindings/foreign_object.openvino_cpu.json",
+      "sha256": "9a5a020450e4b4450fdf2cddf88f96f5a1e0f9fc387114b97ba33cb4d39cf7bd",
+      "size_bytes": 1158
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/tested-source/.ci/fixtures/gstreamer_fragment_unit_v1/artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/bindings/foreign_object.tensorrt_cuda.json",
+      "sha256": "6037d0c483f4d6baeaca42b1f2808c28e34782af24950886a1f8b0df447c7186",
+      "size_bytes": 1058
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/tested-source/.ci/fixtures/gstreamer_fragment_unit_v1/artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/bindings/index.json",
+      "sha256": "5dcaa2eaa8b8faea94b07ef259c22fe74522615628ad5a2a156b5a9d89ad6388",
+      "size_bytes": 1877
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/tested-source/.ci/fixtures/gstreamer_fragment_unit_v1/artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/bindings/plate_number.openvino_cpu.json",
+      "sha256": "dc99c38444d1604fc4e37ec50b26443dc34ad3e609052a3c2d8906dc17cee3c1",
+      "size_bytes": 1150
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/tested-source/.ci/fixtures/gstreamer_fragment_unit_v1/artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/bindings/plate_number.tensorrt_cuda.json",
+      "sha256": "b8ac67d054ad07905f26f168dd2d902aa5e227dc7f434878f0f45230786a09a5",
+      "size_bytes": 1051
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/tested-source/.ci/fixtures/gstreamer_fragment_unit_v1/artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/bindings/vehicle_type.openvino_cpu.json",
+      "sha256": "e01cd9fcd2393deea23d37c4fb68a2bb764fc95955bcfd13f71d0d62b7e907e2",
+      "size_bytes": 1150
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/tested-source/.ci/fixtures/gstreamer_fragment_unit_v1/artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/bindings/vehicle_type.tensorrt_cuda.json",
+      "sha256": "3991657611ae22d20dc438a3b90bfcf4942dc29776870b7758d7e76ff47e2234",
+      "size_bytes": 1051
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/tested-source/.ci/fixtures/gstreamer_fragment_unit_v1/artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/runtime_probes/cpu_runtime_probe.json",
+      "sha256": "0b496134ac3fec04449072218ddb6e2767d21b782127ab0d57c81c3b0daac874",
+      "size_bytes": 659
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/tested-source/.ci/fixtures/gstreamer_fragment_unit_v1/artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/runtime_probes/gpu_runtime_probe.json",
+      "sha256": "b627a3790622cfb0e2334e7d3b31e6acf0b0fc5396f921d4552850056ba9b962",
+      "size_bytes": 654
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/tested-source/.ci/fixtures/publication_worker_manifest_v1/bindings/damage.openvino_cpu.json",
+      "sha256": "7f1b6e3f428497d381b2350a0d0faccc7722d82bcf54589fd17d5af75a828f0c",
+      "size_bytes": 1141
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/tested-source/.ci/fixtures/publication_worker_manifest_v1/bindings/damage.tensorrt_cuda.json",
+      "sha256": "e686a877f3f9e6162ddbf2e0d12dc2d8565d7da1c772bbc94304c719d9712ea3",
+      "size_bytes": 1041
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/tested-source/.ci/fixtures/publication_worker_manifest_v1/bindings/foreign_object.openvino_cpu.json",
+      "sha256": "1149880ddf9d75a725a0a94618130f8bbf019fe27214126ea40725b648d2ec3d",
+      "size_bytes": 1158
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/tested-source/.ci/fixtures/publication_worker_manifest_v1/bindings/foreign_object.tensorrt_cuda.json",
+      "sha256": "99d42bc819bd9db5716a3a4429c1c706b9631ed58510835fd49cb08f89b64f73",
+      "size_bytes": 1058
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/tested-source/.ci/fixtures/publication_worker_manifest_v1/bindings/index.json",
+      "sha256": "8ff3d495b80024eca2067a43239fc984961629465288d307d7f8f4de32c31e87",
+      "size_bytes": 1877
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/tested-source/.ci/fixtures/publication_worker_manifest_v1/bindings/plate_number.openvino_cpu.json",
+      "sha256": "dddd24afb8ff3740b04973145233f4a48250d7f64e1acf3e5f11d5a113b43b49",
+      "size_bytes": 1150
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/tested-source/.ci/fixtures/publication_worker_manifest_v1/bindings/plate_number.tensorrt_cuda.json",
+      "sha256": "34b8d578ac0b615ff79be2ae4ae7dc59f91f2320e54d91f703cc068dfc8b7acd",
+      "size_bytes": 1051
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/tested-source/.ci/fixtures/publication_worker_manifest_v1/bindings/vehicle_type.openvino_cpu.json",
+      "sha256": "1981a6ca515e0138b47153bdc0e60799eb65e1662963cac43dc6b53fe5377e0a",
+      "size_bytes": 1150
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/tested-source/.ci/fixtures/publication_worker_manifest_v1/bindings/vehicle_type.tensorrt_cuda.json",
+      "sha256": "670f1a97b51d9460915e468292c139c3b49d3a731e95c2391e2c7203ddb93417",
+      "size_bytes": 1051
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/tested-source/.ci/fixtures/publication_worker_manifest_v1/cpu_runtime_probe.json",
+      "sha256": "e6008e33e137d315f1672adb2e241004e2ea08f1220467dcbf089a566060ddfb",
+      "size_bytes": 659
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/tested-source/.ci/fixtures/publication_worker_manifest_v1/gpu_runtime_probe.json",
+      "sha256": "24986e7aadd93ab9bb72704c5a83d568bc0e4fd70154803e303b3bda5aa4a752",
+      "size_bytes": 654
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/tested-source/.ci/integration-test-selection.v1.json",
+      "sha256": "09e9268069e88b957f9ae54a827960bc18ee13a00d4319994d108d3cb81a0805",
+      "size_bytes": 34014
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/tested-source/scripts/checkpoint_deepstream_qualification_fragment_v1.py",
+      "sha256": "2e1a9778481288a6dc9f0b3fe881454e329a3d377758130086166a2923d8b9fe",
+      "size_bytes": 40419
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/tested-source/scripts/checkpoint_openvino_gva_qualification_fragment_v3.py",
+      "sha256": "a33d15175f56c34dd5b07912d3c56f758d5e84d77d9b000039f0d47c8053b309",
+      "size_bytes": 24165
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/tested-source/scripts/checkpoint_savant_qualification_fragment_v3.py",
+      "sha256": "79bf05a46af44b80c14e10b4964cfaf05344794cc4917068ce7a5b592f65eb02",
+      "size_bytes": 31911
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/tested-source/scripts/ci_test_selection_v1.py",
+      "sha256": "c911e1a566682094c4c9fc86177af84b696b9be35e7511039d944e8d75c65a9f",
+      "size_bytes": 9945
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/tested-source/scripts/publication_operational_container_custody_v1.py",
+      "sha256": "036805ad328ddc6c63377c942f86bf3e26a0bf6de2a83847c4bc9801d5d8d334",
+      "size_bytes": 38235
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/tested-source/scripts/publication_operational_process_custody_v1.py",
+      "sha256": "5ea8477e527bf57438ce81cea9b8b19fb628c555cb808711438e2036bcaee923",
+      "size_bytes": 47271
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/tested-source/scripts/publication_physical_io_v1.py",
+      "sha256": "bc8a28239d86f1913a66757a497d9d5398dd1b17757c6f17725ae72bc01961ed",
+      "size_bytes": 132238
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/tested-source/scripts/publication_policy_qualification_fragments_from_authority_v2.py",
+      "sha256": "ac2857c78d2069a5641b7ec73c4dbf5a9e067c069b3b22d7ebef205e169e45c4",
+      "size_bytes": 67876
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/tested-source/scripts/run_ci_checks.py",
+      "sha256": "6841581ae05ae7ea862752fb23f0999e48283d6dcad27c4634c94e626960eabc",
+      "size_bytes": 28237
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/tested-source/tests/test_backend_runtime_replay_runner_authority_v2.py",
+      "sha256": "20a903cb40910b6f4c2981798e1456f6932b80ce0e916c2576cd1afc6f7cc6dc",
+      "size_bytes": 30675
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/tested-source/tests/test_checkpoint_deepstream_qualification_fragment_v1.py",
+      "sha256": "0f82dcfa8525ae459d482ae672fd4fd779a1dfeec22d160aded9d3d0cee86f73",
+      "size_bytes": 17673
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/tested-source/tests/test_checkpoint_model_parity_materializer_v4.py",
+      "sha256": "2aa4d4e8aedde6ca30ad178e7ff7d2fec13ed1d840f122e851075afa77000ac4",
+      "size_bytes": 15690
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/tested-source/tests/test_checkpoint_openvino_gva_qualification_fragment_v3.py",
+      "sha256": "eb0f35ec2cb21449677a63e417e73249b1a556f3cc8c2b44f4c8cf5d8bdcbb61",
+      "size_bytes": 11353
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/tested-source/tests/test_checkpoint_savant_qualification_fragment_v3.py",
+      "sha256": "674299131fdfa07da6696e4ca7aa84b0af56c97422f26f702df192db223ca08b",
+      "size_bytes": 9910
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/tested-source/tests/test_checkpoint_source_runtime_closure_authority_v1.py",
+      "sha256": "7a3e36a1cb642a5e914b9483261cc95ad3861d7752b0d47019d338bbbb6cfd95",
+      "size_bytes": 88905
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/tested-source/tests/test_ci_test_selection_v1.py",
+      "sha256": "70ed46fc26c61f19dc584aba5aa9565c80838862e1332ba4ca927862da65c4ee",
+      "size_bytes": 11499
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/tested-source/tests/test_publication_operational_container_custody_v1.py",
+      "sha256": "b2b60e6f716f3d469102a7910c41554ea8f968569ade40e30cf6be6977ad37f8",
+      "size_bytes": 21707
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/tested-source/tests/test_publication_policy_qualification_fragments_from_authority_v2.py",
+      "sha256": "e04ab6252f9bf05e5b774910e645307b813910c0538b0a5f19258da0fb2133ec",
+      "size_bytes": 19284
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/tested-source/tests/test_replay_broker_artifact_bytes_observation_v4.py",
+      "sha256": "6203b580d5fa521c0a914bfcd102e74e2da592902a9f574296a7589b1014a3ce",
+      "size_bytes": 6454
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/execution.json",
+      "sha256": "e6c44039fd4b51f1e7362fa14ad8d6f94efca24167346a135239114801869b45",
+      "size_bytes": 587
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/launch.json",
+      "sha256": "7160d2226e2fc45e3ffe7b022d4f67adcd33ef3a4da17a1c1a8a4d7940afbb1c",
+      "size_bytes": 3231
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/source.after.json",
+      "sha256": "37c91bb81654a47cd4eb3b55028328c8b9019513d4e31d837c5229e9f22fe7f4",
+      "size_bytes": 10217
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/source.before.json",
+      "sha256": "37c91bb81654a47cd4eb3b55028328c8b9019513d4e31d837c5229e9f22fe7f4",
+      "size_bytes": 10217
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/stderr.raw",
+      "sha256": "019c9f1d49e05ff5a645615aef80083782cfeb6edccbf19a633c10769a47f0c3",
+      "size_bytes": 7076
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/stdout.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/test-results.json",
+      "sha256": "c9541e707712bddc83387598dcde392f379e212e13e8a64262913ec8f7fcf772",
+      "size_bytes": 1820
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/.ci/fixtures/gstreamer_fragment_unit_v1/artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/bindings/damage.openvino_cpu.json",
+      "sha256": "19ed5674f8616ac9ca1ec9445837a2dbd31d83db7405445c4bede238a45533a5",
+      "size_bytes": 1141
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/.ci/fixtures/gstreamer_fragment_unit_v1/artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/bindings/damage.tensorrt_cuda.json",
+      "sha256": "ca3de1c5dbe453a1ec3e2dfe54257513ad3978b6d6be23f0cbe2c8bb7c6069f4",
+      "size_bytes": 1041
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/.ci/fixtures/gstreamer_fragment_unit_v1/artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/bindings/foreign_object.openvino_cpu.json",
+      "sha256": "9a5a020450e4b4450fdf2cddf88f96f5a1e0f9fc387114b97ba33cb4d39cf7bd",
+      "size_bytes": 1158
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/.ci/fixtures/gstreamer_fragment_unit_v1/artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/bindings/foreign_object.tensorrt_cuda.json",
+      "sha256": "6037d0c483f4d6baeaca42b1f2808c28e34782af24950886a1f8b0df447c7186",
+      "size_bytes": 1058
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/.ci/fixtures/gstreamer_fragment_unit_v1/artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/bindings/index.json",
+      "sha256": "5dcaa2eaa8b8faea94b07ef259c22fe74522615628ad5a2a156b5a9d89ad6388",
+      "size_bytes": 1877
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/.ci/fixtures/gstreamer_fragment_unit_v1/artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/bindings/plate_number.openvino_cpu.json",
+      "sha256": "dc99c38444d1604fc4e37ec50b26443dc34ad3e609052a3c2d8906dc17cee3c1",
+      "size_bytes": 1150
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/.ci/fixtures/gstreamer_fragment_unit_v1/artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/bindings/plate_number.tensorrt_cuda.json",
+      "sha256": "b8ac67d054ad07905f26f168dd2d902aa5e227dc7f434878f0f45230786a09a5",
+      "size_bytes": 1051
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/.ci/fixtures/gstreamer_fragment_unit_v1/artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/bindings/vehicle_type.openvino_cpu.json",
+      "sha256": "e01cd9fcd2393deea23d37c4fb68a2bb764fc95955bcfd13f71d0d62b7e907e2",
+      "size_bytes": 1150
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/.ci/fixtures/gstreamer_fragment_unit_v1/artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/bindings/vehicle_type.tensorrt_cuda.json",
+      "sha256": "3991657611ae22d20dc438a3b90bfcf4942dc29776870b7758d7e76ff47e2234",
+      "size_bytes": 1051
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/.ci/fixtures/gstreamer_fragment_unit_v1/artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/runtime_probes/cpu_runtime_probe.json",
+      "sha256": "0b496134ac3fec04449072218ddb6e2767d21b782127ab0d57c81c3b0daac874",
+      "size_bytes": 659
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/.ci/fixtures/gstreamer_fragment_unit_v1/artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/runtime_probes/gpu_runtime_probe.json",
+      "sha256": "b627a3790622cfb0e2334e7d3b31e6acf0b0fc5396f921d4552850056ba9b962",
+      "size_bytes": 654
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/.ci/fixtures/publication_worker_manifest_v1/bindings/damage.openvino_cpu.json",
+      "sha256": "7f1b6e3f428497d381b2350a0d0faccc7722d82bcf54589fd17d5af75a828f0c",
+      "size_bytes": 1141
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/.ci/fixtures/publication_worker_manifest_v1/bindings/damage.tensorrt_cuda.json",
+      "sha256": "e686a877f3f9e6162ddbf2e0d12dc2d8565d7da1c772bbc94304c719d9712ea3",
+      "size_bytes": 1041
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/.ci/fixtures/publication_worker_manifest_v1/bindings/foreign_object.openvino_cpu.json",
+      "sha256": "1149880ddf9d75a725a0a94618130f8bbf019fe27214126ea40725b648d2ec3d",
+      "size_bytes": 1158
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/.ci/fixtures/publication_worker_manifest_v1/bindings/foreign_object.tensorrt_cuda.json",
+      "sha256": "99d42bc819bd9db5716a3a4429c1c706b9631ed58510835fd49cb08f89b64f73",
+      "size_bytes": 1058
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/.ci/fixtures/publication_worker_manifest_v1/bindings/index.json",
+      "sha256": "8ff3d495b80024eca2067a43239fc984961629465288d307d7f8f4de32c31e87",
+      "size_bytes": 1877
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/.ci/fixtures/publication_worker_manifest_v1/bindings/plate_number.openvino_cpu.json",
+      "sha256": "dddd24afb8ff3740b04973145233f4a48250d7f64e1acf3e5f11d5a113b43b49",
+      "size_bytes": 1150
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/.ci/fixtures/publication_worker_manifest_v1/bindings/plate_number.tensorrt_cuda.json",
+      "sha256": "34b8d578ac0b615ff79be2ae4ae7dc59f91f2320e54d91f703cc068dfc8b7acd",
+      "size_bytes": 1051
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/.ci/fixtures/publication_worker_manifest_v1/bindings/vehicle_type.openvino_cpu.json",
+      "sha256": "1981a6ca515e0138b47153bdc0e60799eb65e1662963cac43dc6b53fe5377e0a",
+      "size_bytes": 1150
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/.ci/fixtures/publication_worker_manifest_v1/bindings/vehicle_type.tensorrt_cuda.json",
+      "sha256": "670f1a97b51d9460915e468292c139c3b49d3a731e95c2391e2c7203ddb93417",
+      "size_bytes": 1051
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/.ci/fixtures/publication_worker_manifest_v1/cpu_runtime_probe.json",
+      "sha256": "e6008e33e137d315f1672adb2e241004e2ea08f1220467dcbf089a566060ddfb",
+      "size_bytes": 659
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/.ci/fixtures/publication_worker_manifest_v1/gpu_runtime_probe.json",
+      "sha256": "24986e7aadd93ab9bb72704c5a83d568bc0e4fd70154803e303b3bda5aa4a752",
+      "size_bytes": 654
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/.ci/integration-test-selection.v1.json",
+      "sha256": "09e9268069e88b957f9ae54a827960bc18ee13a00d4319994d108d3cb81a0805",
+      "size_bytes": 34014
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/deploy/deepstream/checkpoint/requirements.lock",
+      "sha256": "3a72778f6b2bbb4f81fc3fa63330d5da557e38a655da6f86f0daf5d8242ebdcb",
+      "size_bytes": 735
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/deploy/deepstream/checkpoint/runtime-dependency-allowlist.txt",
+      "sha256": "c63c495e89b109abca372f1b43047ed989f0e5a95779b9004e47ce657635f3c2",
+      "size_bytes": 670
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/scripts/checkpoint_deepstream_qualification_fragment_v1.py",
+      "sha256": "2e1a9778481288a6dc9f0b3fe881454e329a3d377758130086166a2923d8b9fe",
+      "size_bytes": 40419
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/scripts/checkpoint_openvino_gva_qualification_fragment_v3.py",
+      "sha256": "a33d15175f56c34dd5b07912d3c56f758d5e84d77d9b000039f0d47c8053b309",
+      "size_bytes": 24165
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/scripts/checkpoint_savant_qualification_fragment_v3.py",
+      "sha256": "79bf05a46af44b80c14e10b4964cfaf05344794cc4917068ce7a5b592f65eb02",
+      "size_bytes": 31911
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/scripts/ci_test_selection_v1.py",
+      "sha256": "c911e1a566682094c4c9fc86177af84b696b9be35e7511039d944e8d75c65a9f",
+      "size_bytes": 9945
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/scripts/publication_operational_container_custody_v1.py",
+      "sha256": "036805ad328ddc6c63377c942f86bf3e26a0bf6de2a83847c4bc9801d5d8d334",
+      "size_bytes": 38235
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/scripts/publication_operational_process_custody_v1.py",
+      "sha256": "5ea8477e527bf57438ce81cea9b8b19fb628c555cb808711438e2036bcaee923",
+      "size_bytes": 47271
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/scripts/publication_physical_io_v1.py",
+      "sha256": "bc8a28239d86f1913a66757a497d9d5398dd1b17757c6f17725ae72bc01961ed",
+      "size_bytes": 132238
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/scripts/publication_policy_qualification_fragments_from_authority_v2.py",
+      "sha256": "ac2857c78d2069a5641b7ec73c4dbf5a9e067c069b3b22d7ebef205e169e45c4",
+      "size_bytes": 67876
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/scripts/run_ci_checks.py",
+      "sha256": "6841581ae05ae7ea862752fb23f0999e48283d6dcad27c4634c94e626960eabc",
+      "size_bytes": 28237
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/tests/test_backend_runtime_replay_runner_authority_v2.py",
+      "sha256": "20a903cb40910b6f4c2981798e1456f6932b80ce0e916c2576cd1afc6f7cc6dc",
+      "size_bytes": 30675
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/tests/test_checkpoint_deepstream_qualification_fragment_v1.py",
+      "sha256": "0f82dcfa8525ae459d482ae672fd4fd779a1dfeec22d160aded9d3d0cee86f73",
+      "size_bytes": 17673
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/tests/test_checkpoint_model_parity_materializer_v4.py",
+      "sha256": "2aa4d4e8aedde6ca30ad178e7ff7d2fec13ed1d840f122e851075afa77000ac4",
+      "size_bytes": 15690
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/tests/test_checkpoint_openvino_gva_qualification_fragment_v3.py",
+      "sha256": "62f91b0a8480e11ae018bb31c53cbc167dca78fbe8fe7de23f6a6133723cb87f",
+      "size_bytes": 11502
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/tests/test_checkpoint_savant_qualification_fragment_v3.py",
+      "sha256": "75feb1788871e4f70f25b08d23020bf6fab9be250ce4b87034d262d42e9ce7fe",
+      "size_bytes": 10069
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/tests/test_checkpoint_source_runtime_closure_authority_v1.py",
+      "sha256": "7a3e36a1cb642a5e914b9483261cc95ad3861d7752b0d47019d338bbbb6cfd95",
+      "size_bytes": 88905
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/tests/test_ci_test_selection_v1.py",
+      "sha256": "c44e3b3397a6bae5f6a1f6f98606ca6362e2e17faf03680c972a1481cca79842",
+      "size_bytes": 11499
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/tests/test_publication_operational_container_custody_v1.py",
+      "sha256": "6fd45b43fe0a5acc0cc59951d9c4bafa0496780110f89b59950c3bbd420d9cee",
+      "size_bytes": 21792
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/tests/test_publication_policy_qualification_fragments_from_authority_v2.py",
+      "sha256": "cf7574d817dd416d0886a25b9f559975f39aa58c2fa32cfe9f6729f0ea48a72d",
+      "size_bytes": 19287
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/tested-source/tests/test_replay_broker_artifact_bytes_observation_v4.py",
+      "sha256": "2b484a675fb4808ccb8ab6340a7e53bad17a1d04c60cf2e35552036b2298314c",
+      "size_bytes": 6787
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt03-selection-targeted/execution.json",
+      "sha256": "a9dd96c51701e8f4be05a8e82e4527a546a85c231b496e677230845062cbbaa4",
+      "size_bytes": 586
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt03-selection-targeted/launch.json",
+      "sha256": "aa1cf3325d5cf748bfd76b51717323efb6b5b82ed9d25c22c4a1ab33d9f55f4d",
+      "size_bytes": 2100
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt03-selection-targeted/source.after.json",
+      "sha256": "abfb562a431d3c08763349339e923804a00cee092ffb63b3f4da52eb2d0e0096",
+      "size_bytes": 10217
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt03-selection-targeted/source.before.json",
+      "sha256": "abfb562a431d3c08763349339e923804a00cee092ffb63b3f4da52eb2d0e0096",
+      "size_bytes": 10217
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt03-selection-targeted/stderr.raw",
+      "sha256": "1ff4f513c0f90be5e207dd9b65d306acadd525893ef2903f68c93b7fb78f7e8e",
+      "size_bytes": 719
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt03-selection-targeted/stdout.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt03-selection-targeted/test-results.json",
+      "sha256": "e3f9059725b0054a95b456f2c2a4d913370851e7a251f1286afb600fdc4a0ccf",
+      "size_bytes": 318
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt04-final/execution.json",
+      "sha256": "db8167780b4e44c58d0dfae2e69060c7ae7eec4d60a9f783873ce0742e2f64d3",
+      "size_bytes": 587
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt04-final/launch.json",
+      "sha256": "47277e76490887de707850252a2fc97aea7e7fcc1f7ba57cc7b02be2b51f2119",
+      "size_bytes": 2530
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt04-final/source.after.json",
+      "sha256": "45596dd92177fe37b684b713b5c0612d962e50f932d40055fcdee918dadaeb86",
+      "size_bytes": 103716
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt04-final/source.before.json",
+      "sha256": "45596dd92177fe37b684b713b5c0612d962e50f932d40055fcdee918dadaeb86",
+      "size_bytes": 103716
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt04-final/stderr.raw",
+      "sha256": "b812928316dd956db77e6cd1319d61095a2d47a8af2d2dabf802146a7ce27748",
+      "size_bytes": 69112
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt04-final/stdout.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt04-final/test-results.json",
+      "sha256": "1d73e6f990c8263b9cff876aaeaa77a2f2ed476317e39c8ea11258a2b113d592",
+      "size_bytes": 15036
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt04-final/tested-owned-source/integration-test-selection.v1.json",
+      "sha256": "09e9268069e88b957f9ae54a827960bc18ee13a00d4319994d108d3cb81a0805",
+      "size_bytes": 34014
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt04-final/tested-owned-source/test_backend_runtime_replay_runner_authority_v2.py",
+      "sha256": "20a903cb40910b6f4c2981798e1456f6932b80ce0e916c2576cd1afc6f7cc6dc",
+      "size_bytes": 30675
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt04-final/tested-owned-source/test_checkpoint_deepstream_qualification_fragment_v1.py",
+      "sha256": "0f82dcfa8525ae459d482ae672fd4fd779a1dfeec22d160aded9d3d0cee86f73",
+      "size_bytes": 17673
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt04-final/tested-owned-source/test_checkpoint_model_parity_materializer_v4.py",
+      "sha256": "2aa4d4e8aedde6ca30ad178e7ff7d2fec13ed1d840f122e851075afa77000ac4",
+      "size_bytes": 15690
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt04-final/tested-owned-source/test_checkpoint_openvino_gva_qualification_fragment_v3.py",
+      "sha256": "62f91b0a8480e11ae018bb31c53cbc167dca78fbe8fe7de23f6a6133723cb87f",
+      "size_bytes": 11502
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt04-final/tested-owned-source/test_checkpoint_savant_qualification_fragment_v3.py",
+      "sha256": "75feb1788871e4f70f25b08d23020bf6fab9be250ce4b87034d262d42e9ce7fe",
+      "size_bytes": 10069
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt04-final/tested-owned-source/test_checkpoint_source_runtime_closure_authority_v1.py",
+      "sha256": "7a3e36a1cb642a5e914b9483261cc95ad3861d7752b0d47019d338bbbb6cfd95",
+      "size_bytes": 88905
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt04-final/tested-owned-source/test_ci_test_selection_v1.py",
+      "sha256": "3d35114149e44d50f6d762fd6c05d4a903bbd9f1b5afc01c0bae4278b1933024",
+      "size_bytes": 11499
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt04-final/tested-owned-source/test_publication_operational_container_custody_v1.py",
+      "sha256": "6fd45b43fe0a5acc0cc59951d9c4bafa0496780110f89b59950c3bbd420d9cee",
+      "size_bytes": 21792
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt04-final/tested-owned-source/test_publication_policy_qualification_fragments_from_authority_v2.py",
+      "sha256": "cf7574d817dd416d0886a25b9f559975f39aa58c2fa32cfe9f6729f0ea48a72d",
+      "size_bytes": 19287
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt04-final/tested-owned-source/test_replay_broker_artifact_bytes_observation_v4.py",
+      "sha256": "2b484a675fb4808ccb8ab6340a7e53bad17a1d04c60cf2e35552036b2298314c",
+      "size_bytes": 6787
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/author-review.v1.json",
+      "sha256": "d2472259e91df4571de8da0fa27195de5836f15f0fc7e810e2320bddfe29fdaf",
+      "size_bytes": 31669
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/before/integration-test-selection.v1.json",
+      "sha256": "a27ff9488d658637e16e81d0a6b6614ce9ac43716b7dd5b152060a2cb093c987",
+      "size_bytes": 31541
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/before/test_backend_runtime_replay_runner_authority_v2.py",
+      "sha256": "34c3ccb8db7c0f942cb800883115074e66c267ed344923d7793ba353ce956506",
+      "size_bytes": 30043
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/before/test_checkpoint_deepstream_qualification_fragment_v1.py",
+      "sha256": "753e59985503431a2e6822b4e5a56547faf27b1e26c79ac5d30c0c92f8b688ad",
+      "size_bytes": 16696
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/before/test_checkpoint_model_parity_materializer_v4.py",
+      "sha256": "032c8ea8a5a25e79208cd6acec826789dbaeffa5333660fb5f2a36cdbea2b5a1",
+      "size_bytes": 15682
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/before/test_checkpoint_openvino_gva_qualification_fragment_v3.py",
+      "sha256": "dee0a7e1418dba5ec4206b4f8f65646f13e9348fd4230beac8e3cde78d37013e",
+      "size_bytes": 10431
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/before/test_checkpoint_savant_qualification_fragment_v3.py",
+      "sha256": "03a9af86b0e03a3e8debf94a9a80c5d5febe649775f6f86c3fed92d82c59469d",
+      "size_bytes": 8929
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/before/test_checkpoint_source_runtime_closure_authority_v1.py",
+      "sha256": "e4c341a6523b30c941d8e9898d00c9382b6dc42b1bb259b62cb418285a8531ac",
+      "size_bytes": 88416
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/before/test_ci_test_selection_v1.py",
+      "sha256": "70ed46fc26c61f19dc584aba5aa9565c80838862e1332ba4ca927862da65c4ee",
+      "size_bytes": 11499
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/before/test_publication_operational_container_custody_v1.py",
+      "sha256": "9cb286476e38d7045c4d5e4537ebaa4efef2d508703c7f165e0350639794e4c0",
+      "size_bytes": 21620
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/before/test_publication_policy_qualification_fragments_from_authority_v2.py",
+      "sha256": "c28586d197fef2b64650b4a3b0e5d7efb5f701d33056d267ba1c5950114eb4cd",
+      "size_bytes": 18121
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/before/test_replay_broker_artifact_bytes_observation_v4.py",
+      "sha256": "9b6e7f0405680f82846c8ac122733a463d578ecd6e13a11013b64cd3228a23f9",
+      "size_bytes": 5916
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/dispatch.final.v2.py",
+      "sha256": "79a79757c8bb783727bdd9b024843709423e75b5c670b7eb7d4e9ca43cf437f2",
+      "size_bytes": 6936
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/dispatch.py",
+      "sha256": "8910d5d1acbf94adea4c15482a63180a8fcd2731c1226d0230e9f4b55d161734",
+      "size_bytes": 6441
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/dispatch.targeted.v2.py",
+      "sha256": "36f22707835d7dc3b6abbd500940266a1d6318d35c1363afd40e68cdc8771a05",
+      "size_bytes": 7921
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/dispatch.targeted.v3.py",
+      "sha256": "d735c36195c6c88edb7bb379ef6a23dc6260e130a1f97373f034db68148e2f98",
+      "size_bytes": 6808
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/owned-source.diff",
+      "sha256": "28e51e885d73294692ea3d467c421c45933ceef149d4b1563502c282ddcd86ec",
+      "size_bytes": 33932
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/preedit-inventory.v1.json",
+      "sha256": "97ac0302fc1d71559fa5cf889eb55e74b90f76e8aff3ddb7df0398fc1e56ba7a",
+      "size_bytes": 4632
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/skip-provenance.v1.json",
+      "sha256": "8ae7b1f595f317881cf73947b6547c2c6b4eabc946769be0b89de4731ad4e7bf",
+      "size_bytes": 4627
+    },
+    {
+      "groups": [
+        "portable_fixture_original_evidence"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/wheel-fixture-provenance.v1.json",
+      "sha256": "c1b3cca23a699aa15c89fbc0b51b0211ddf9f61356c885ba1b3f20ea83b0fc35",
+      "size_bytes": 2914
+    },
+    {
+      "groups": [
+        "original_ci_6358"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-6358-original-retention-v1/36743387786-cpu/original-artifact.zip",
+      "sha256": "8d2eef0bcdcf0dbfcf3dad801deb91c9c4c3ab525ebd0453d797f9e29fdcbf8f",
+      "size_bytes": 1902949
+    },
+    {
+      "groups": [
+        "original_ci_6358"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-6358-original-retention-v1/36743387786-cpu/zip-readonly-inventory.v1.json",
+      "sha256": "0180256bdcc249fdf1785020b10cf33118f8629f0873d4b6e6f6a8632296f994",
+      "size_bytes": 30560
+    },
+    {
+      "groups": [
+        "original_ci_6358"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-6358-original-retention-v1/36743387786-host/original-artifact.zip",
+      "sha256": "b5b2dd9b54a1e2974969bb8a53d449ced217f0f9703b2440ae9311a93f3d3c2e",
+      "size_bytes": 287778
+    },
+    {
+      "groups": [
+        "original_ci_6358"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-6358-original-retention-v1/36743387786-host/zip-readonly-inventory.v1.json",
+      "sha256": "4321ffef119f45433bcae806f58279f2fc62d8a8c978a4afd5a74c697d96693d",
+      "size_bytes": 8271
+    },
+    {
+      "groups": [
+        "original_ci_6358"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-6358-original-retention-v1/cpu-decoded-job.log",
+      "sha256": "c716b7c8dfa3ef159b683028183d2417b02358ad2c0db3fe00204b75b5a2d658",
+      "size_bytes": 91889
+    },
+    {
+      "groups": [
+        "original_ci_6358"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-6358-original-retention-v1/download-terminal.v1.json",
+      "sha256": "5d36d2486c184001ef935d157725980d41242e13bf623e3dcb808a487d8df321",
+      "size_bytes": 482
+    },
+    {
+      "groups": [
+        "original_ci_6358"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-6358-original-retention-v1/download_originals.py",
+      "sha256": "11b3499897a81bed4f84e7725b3398aead544408dd8d8e7ce462d69de8ff7670",
+      "size_bytes": 5465
+    },
+    {
+      "groups": [
+        "original_ci_6358"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-6358-original-retention-v1/host-decoded-job.log",
+      "sha256": "bfe0e49135eaac82abc447e99fdec3252fc0f6bd53b34477b4f8ec7d4b07205c",
+      "size_bytes": 33969
+    },
+    {
+      "groups": [
+        "original_ci_6358"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-6358-original-retention-v1/provider-metadata.v1.json",
+      "sha256": "680fdb098d15eb891b4ceab88c4b0d2e5deca9137d9a62ccf940068e0317e580",
+      "size_bytes": 7041
+    },
+    {
+      "groups": [
+        "closed_ci_6358_diagnosis"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-6358-readonly-failure-diagnosis-v1/committed-source/.ci/integration-test-selection.v1.json",
+      "sha256": "a27ff9488d658637e16e81d0a6b6614ce9ac43716b7dd5b152060a2cb093c987",
+      "size_bytes": 31541
+    },
+    {
+      "groups": [
+        "closed_ci_6358_diagnosis"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-6358-readonly-failure-diagnosis-v1/committed-source/scripts/backend_publication_process_supervisor_v3.py",
+      "sha256": "acc40456cf93db8deb270f54d14b8f17555a268969e5bad0695372ddba12132d",
+      "size_bytes": 124499
+    },
+    {
+      "groups": [
+        "closed_ci_6358_diagnosis"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-6358-readonly-failure-diagnosis-v1/committed-source/scripts/ci_namespace_diagnostic_v1.py",
+      "sha256": "a5533d76516844e308179f86f13a4326849fed8617b5f28fcfcf7ab7e1067ffa",
+      "size_bytes": 20708
+    },
+    {
+      "groups": [
+        "closed_ci_6358_diagnosis"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-6358-readonly-failure-diagnosis-v1/committed-source/scripts/ci_test_selection_v1.py",
+      "sha256": "c911e1a566682094c4c9fc86177af84b696b9be35e7511039d944e8d75c65a9f",
+      "size_bytes": 9945
+    },
+    {
+      "groups": [
+        "closed_ci_6358_diagnosis"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-6358-readonly-failure-diagnosis-v1/committed-source/scripts/run_ci_checks.py",
+      "sha256": "6841581ae05ae7ea862752fb23f0999e48283d6dcad27c4634c94e626960eabc",
+      "size_bytes": 28237
+    },
+    {
+      "groups": [
+        "closed_ci_6358_diagnosis"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-6358-readonly-failure-diagnosis-v1/committed-source/tests/test_publication_gstreamer_component_runtime_v1.py",
+      "sha256": "b71447895a9b4e9f50d3893242c3be4e1d5bbea9516813df0dd54d66bbeb96b3",
+      "size_bytes": 21225
+    },
+    {
+      "groups": [
+        "closed_ci_6358_diagnosis"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-6358-readonly-failure-diagnosis-v1/committed-source/tests/test_publication_operational_container_custody_v1.py",
+      "sha256": "9cb286476e38d7045c4d5e4537ebaa4efef2d508703c7f165e0350639794e4c0",
+      "size_bytes": 21620
+    },
+    {
+      "groups": [
+        "closed_ci_6358_diagnosis"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-6358-readonly-failure-diagnosis-v1/diagnose-originals-attempt01.failure.json",
+      "sha256": "54d8e9b709d174439c2122f783384a5f5301856279638e54a8ac276a72ede3ad",
+      "size_bytes": 578
+    },
+    {
+      "groups": [
+        "closed_ci_6358_diagnosis"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-6358-readonly-failure-diagnosis-v1/diagnose_originals.py",
+      "sha256": "853f349f50f2e6e44c72675dc85f5233a024cf40a8d21e1dd51a6be37808fd7a",
+      "size_bytes": 17478
+    },
+    {
+      "groups": [
+        "closed_ci_6358_diagnosis"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-6358-readonly-failure-diagnosis-v1/diagnose_originals_v2.py",
+      "sha256": "765c12b540b2c9c92cd600b4d69f51d280d4c4ebd0418c5148f43c26c6c39569",
+      "size_bytes": 17499
+    },
+    {
+      "groups": [
+        "closed_ci_6358_diagnosis"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-6358-readonly-failure-diagnosis-v1/failure-index.v1.json",
+      "sha256": "889f6a4e41a7070dec87f5ed1e67e44ac19576d9e47a609a834a82699a383c29",
+      "size_bytes": 228239
+    },
+    {
+      "groups": [
+        "closed_ci_6358_diagnosis"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-6358-readonly-failure-diagnosis-v1/review.v1.json",
+      "sha256": "b66d462e43ba1f8da8300106b12d599270dd845e504fce41f1a7d015bdf457d8",
+      "size_bytes": 45681
+    },
+    {
+      "groups": [
+        "original_ci_8f"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-8fefa-original-retention-v1/36751014399-cpu/original-artifact.zip",
+      "sha256": "8a8567ad9ed7488a21e0980a4975d5db1b8ce0a1674fdf1a2c6faaee02a29d98",
+      "size_bytes": 1915319
+    },
+    {
+      "groups": [
+        "original_ci_8f"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-8fefa-original-retention-v1/36751014399-cpu/zip-readonly-inventory.v1.json",
+      "sha256": "e1325c27f318c11d60125830a463ff8a506ce9a55c6a7839803af1806f72deac",
+      "size_bytes": 30573
+    },
+    {
+      "groups": [
+        "original_ci_8f"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-8fefa-original-retention-v1/36751014399-host/original-artifact.zip",
+      "sha256": "299348c4cabd58df8c57c8bde105080ca88418eb5f520ae558084229a54e9fc2",
+      "size_bytes": 294721
+    },
+    {
+      "groups": [
+        "original_ci_8f"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-8fefa-original-retention-v1/36751014399-host/zip-readonly-inventory.v1.json",
+      "sha256": "9c3979e1ce6c55985fe0d3916c6226e1acdf33a25975ec6672e9ceeedb47453a",
+      "size_bytes": 8275
+    },
+    {
+      "groups": [
+        "original_ci_8f"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-8fefa-original-retention-v1/committed-source/.ci/integration-test-selection.v1.json",
+      "sha256": "a27ff9488d658637e16e81d0a6b6614ce9ac43716b7dd5b152060a2cb093c987",
+      "size_bytes": 31541
+    },
+    {
+      "groups": [
+        "original_ci_8f"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-8fefa-original-retention-v1/committed-source/scripts/ci_namespace_diagnostic_v1.py",
+      "sha256": "c27e5fde456c0448cee9e7ea20a5861e66e5f0636c56fe207995993549dbcff8",
+      "size_bytes": 22271
+    },
+    {
+      "groups": [
+        "original_ci_8f"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-8fefa-original-retention-v1/committed-source/scripts/ci_test_selection_v1.py",
+      "sha256": "c911e1a566682094c4c9fc86177af84b696b9be35e7511039d944e8d75c65a9f",
+      "size_bytes": 9945
+    },
+    {
+      "groups": [
+        "original_ci_8f"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-8fefa-original-retention-v1/committed-source/scripts/run_ci_checks.py",
+      "sha256": "6841581ae05ae7ea862752fb23f0999e48283d6dcad27c4634c94e626960eabc",
+      "size_bytes": 28237
+    },
+    {
+      "groups": [
+        "original_ci_8f"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-8fefa-original-retention-v1/cpu-decoded-job.log",
+      "sha256": "d4bd7bbb5d388ab467b5adad72c9451b9def0b0553436f31f25d0178f0de46f7",
+      "size_bytes": 94789
+    },
+    {
+      "groups": [
+        "original_ci_8f"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-8fefa-original-retention-v1/cpu-download-terminal.v1.json",
+      "sha256": "a1fc65429f4ad0efa7cb0bed09537afa9748d0e1835de6a15d8e0d021bee06a7",
+      "size_bytes": 314
+    },
+    {
+      "groups": [
+        "original_ci_8f"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-8fefa-original-retention-v1/download_cpu_original.py",
+      "sha256": "24db91c27b080167c792454aa2ee084d8990d5b8bcead97adb404b113110e743",
+      "size_bytes": 5354
+    },
+    {
+      "groups": [
+        "original_ci_8f"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-8fefa-original-retention-v1/download_host_original.py",
+      "sha256": "d03aa27bfefcd5ffedfd6f0f9183794d789dadf923e7129d7753cc898e3e316d",
+      "size_bytes": 5355
+    },
+    {
+      "groups": [
+        "original_ci_8f"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-8fefa-original-retention-v1/host-decoded-job.log",
+      "sha256": "3c4c095b297f2d3c9a570094a184858db78393225edf1e1414979ad44b071c1f",
+      "size_bytes": 33963
+    },
+    {
+      "groups": [
+        "original_ci_8f"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-8fefa-original-retention-v1/host-download-terminal.v1.json",
+      "sha256": "caf20a559e59e61403b41382e24334cd471bc94f0d51a94e867e2833c5a6c7dd",
+      "size_bytes": 314
+    },
+    {
+      "groups": [
+        "original_ci_8f"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-8fefa-original-retention-v1/host-original-readonly-review.v1.json",
+      "sha256": "1855213bb577475de0c28564173fff6153fd7c141b56d7c4eda7d92abac35c45",
+      "size_bytes": 5456
+    },
+    {
+      "groups": [
+        "original_ci_8f"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-8fefa-original-retention-v1/inspect_host_original.py",
+      "sha256": "a585765eb31475059260b0257ecef2715fdb625b441e0fc1c1c6aae86bc79278",
+      "size_bytes": 3913
+    },
+    {
+      "groups": [
+        "original_ci_8f"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-8fefa-original-retention-v1/provider-metadata.final.v1.json",
+      "sha256": "40ccafb1b3ab45b9f4403987fda95155f0f2129de8dd0692752c510fe8def041",
+      "size_bytes": 7021
+    },
+    {
+      "groups": [
+        "original_ci_8f"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-8fefa-original-retention-v1/provider-metadata.snapshot01.json",
+      "sha256": "658456c2d98b7e3222b115b39ea4e3418b3b2cd8947f8979f425e71e10f50189",
+      "size_bytes": 6214
+    },
+    {
+      "groups": [
+        "original_ci_8f"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-8fefa-original-retention-v1/retention-scope.v1.txt",
+      "sha256": "0e26deaac5eb8b3da732f09521cfb7b51faae293b9cb87df05bf9531a6f8f831",
+      "size_bytes": 750
+    },
+    {
+      "groups": [
+        "closed_ci_8f_diagnosis"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-8fefa-readonly-failure-diagnosis-v1/committed-source/.ci/integration-test-selection.v1.json",
+      "sha256": "a27ff9488d658637e16e81d0a6b6614ce9ac43716b7dd5b152060a2cb093c987",
+      "size_bytes": 31541
+    },
+    {
+      "groups": [
+        "closed_ci_8f_diagnosis"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-8fefa-readonly-failure-diagnosis-v1/committed-source/scripts/backend_publication_process_supervisor_v3.py",
+      "sha256": "acc40456cf93db8deb270f54d14b8f17555a268969e5bad0695372ddba12132d",
+      "size_bytes": 124499
+    },
+    {
+      "groups": [
+        "closed_ci_8f_diagnosis"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-8fefa-readonly-failure-diagnosis-v1/committed-source/scripts/ci_namespace_diagnostic_v1.py",
+      "sha256": "c27e5fde456c0448cee9e7ea20a5861e66e5f0636c56fe207995993549dbcff8",
+      "size_bytes": 22271
+    },
+    {
+      "groups": [
+        "closed_ci_8f_diagnosis"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-8fefa-readonly-failure-diagnosis-v1/committed-source/scripts/ci_test_selection_v1.py",
+      "sha256": "c911e1a566682094c4c9fc86177af84b696b9be35e7511039d944e8d75c65a9f",
+      "size_bytes": 9945
+    },
+    {
+      "groups": [
+        "closed_ci_8f_diagnosis"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-8fefa-readonly-failure-diagnosis-v1/committed-source/scripts/run_ci_checks.py",
+      "sha256": "6841581ae05ae7ea862752fb23f0999e48283d6dcad27c4634c94e626960eabc",
+      "size_bytes": 28237
+    },
+    {
+      "groups": [
+        "closed_ci_8f_diagnosis"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-8fefa-readonly-failure-diagnosis-v1/diagnose_originals.py",
+      "sha256": "a5f321385e0ca69eadb1e30ce2d18b3cd4b9261efe55493600335bc3a2dab8ac",
+      "size_bytes": 14438
+    },
+    {
+      "groups": [
+        "closed_ci_8f_diagnosis"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-8fefa-readonly-failure-diagnosis-v1/failure-index.v1.json",
+      "sha256": "9229fcc19a1a44fa7caf435425fb28fb9fa69865b8d745d0f91bc42371b47454",
+      "size_bytes": 215648
+    },
+    {
+      "groups": [
+        "closed_ci_8f_diagnosis"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-8fefa-readonly-failure-diagnosis-v1/review.v1.json",
+      "sha256": "2504558067c0754acc08da14edb650fa431aa9ee6262851b615af567e81bfc86",
+      "size_bytes": 1940468
+    },
+    {
+      "groups": [
+        "closed_ci_8f_diagnosis"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-8fefa-readonly-failure-diagnosis-v1/summarize_closed_original.py",
+      "sha256": "65ac537b22d41b0129fb360113fb745cf2535523e41260d46e05cf14ebc82e1b",
+      "size_bytes": 4900
+    },
+    {
+      "groups": [
+        "closed_ci_8f_diagnosis"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-8fefa-readonly-failure-diagnosis-v1/summary.v1.json",
+      "sha256": "159d58814bd00d771a71230b05954fc5baa395694b2f54be2810661bf910bc44",
+      "size_bytes": 31824
+    },
+    {
+      "groups": [
+        "ci2_original_red_green_and_author"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/author-review.v1.json",
+      "sha256": "c6ec12d9947bd377a9972f6bc9b3cd6e57f74d085f1f3f6027c2383938f1a26d",
+      "size_bytes": 21353
+    },
+    {
+      "groups": [
+        "ci2_original_red_green_and_author"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/before/ci_namespace_diagnostic_v1.py",
+      "sha256": "c27e5fde456c0448cee9e7ea20a5861e66e5f0636c56fe207995993549dbcff8",
+      "size_bytes": 22271
+    },
+    {
+      "groups": [
+        "ci2_original_red_green_and_author"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/before/original-hosted-query/namespace-diagnostic/kernel-denial.json",
+      "sha256": "3d39c6af4077e23e2db39c453844a91e9dba55167c8f44e0e0424778f743e81c",
+      "size_bytes": 787
+    },
+    {
+      "groups": [
+        "ci2_original_red_green_and_author"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/before/original-hosted-query/namespace-diagnostic/kernel-query/capture.json",
+      "sha256": "2580fd5fee1d89d2d95066e6cacbcd76d79f79f48d8b70c9740d2c8499a6d881",
+      "size_bytes": 1239
+    },
+    {
+      "groups": [
+        "ci2_original_red_green_and_author"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/before/original-hosted-query/namespace-diagnostic/kernel-query/stderr.raw",
+      "sha256": "963927d51742f917c06dd2a466f3c19a3b4ab2f6485c76f1cb707d5ea3244db3",
+      "size_bytes": 52
+    },
+    {
+      "groups": [
+        "ci2_original_red_green_and_author"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/before/original-hosted-query/namespace-diagnostic/kernel-query/stdout.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "groups": [
+        "ci2_original_red_green_and_author"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/before/test_ci_namespace_diagnostic_v1.py",
+      "sha256": "fe07668ac4b3c2f1f7c1af8c668b0d86e1b74d3f0d1cfc085074050ab6010832",
+      "size_bytes": 17886
+    },
+    {
+      "groups": [
+        "ci2_original_red_green_and_author"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/dispatch.py",
+      "sha256": "b73fa3711ac80a8ed94f0f5d4c269f809139eb2a4dac60cc74d8377b96ac9e01",
+      "size_bytes": 5698
+    },
+    {
+      "groups": [
+        "ci2_original_red_green_and_author"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/green-01/actual-parser-00/capture.json",
+      "sha256": "38656d379a1fb56c70454fb7c2afaade72c2e60a45b72827afe59a8fb6f16193",
+      "size_bytes": 1342
+    },
+    {
+      "groups": [
+        "ci2_original_red_green_and_author"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/green-01/actual-parser-00/stderr.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "groups": [
+        "ci2_original_red_green_and_author"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/green-01/actual-parser-00/stdout.raw",
+      "sha256": "53c8bdb604840415ad3cc6680cdb09b46ecc7e99cc9d2a9c7c563fc87a5a89db",
+      "size_bytes": 4844
+    },
+    {
+      "groups": [
+        "ci2_original_red_green_and_author"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/green-01/execution.json",
+      "sha256": "4cb9bf54167c28e5a9d1a2984db7bfb87baf2d2c8e4e844b39066e7bacfb494e",
+      "size_bytes": 658
+    },
+    {
+      "groups": [
+        "ci2_original_red_green_and_author"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/green-01/launch.json",
+      "sha256": "af1df16ce7b10669dd60fedfe91b52c4625332abdbfe9ec49608e2a6c99ab195",
+      "size_bytes": 2514
+    },
+    {
+      "groups": [
+        "ci2_original_red_green_and_author"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/green-01/source.after.json",
+      "sha256": "3f331703f0ecb915f41f9c276d841cf62b96d594a0c366c0e180902ad33f5c03",
+      "size_bytes": 476
+    },
+    {
+      "groups": [
+        "ci2_original_red_green_and_author"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/green-01/source.before.json",
+      "sha256": "3f331703f0ecb915f41f9c276d841cf62b96d594a0c366c0e180902ad33f5c03",
+      "size_bytes": 476
+    },
+    {
+      "groups": [
+        "ci2_original_red_green_and_author"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/green-01/stderr.raw",
+      "sha256": "25ed94f7e0afce937f8f2f2d0e8943e2b56f91d358c86824819bfad8b037e258",
+      "size_bytes": 3441
+    },
+    {
+      "groups": [
+        "ci2_original_red_green_and_author"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/green-01/stdout.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "groups": [
+        "ci2_original_red_green_and_author"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/green-01/test-results.json",
+      "sha256": "ce3303871d8e0447b8188b3c2d2660444c532a49fb49b7cd600e8106f1d6dd5d",
+      "size_bytes": 2699
+    },
+    {
+      "groups": [
+        "ci2_original_red_green_and_author"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/green-01/tested-source/scripts/ci_external_test_observer_v1.py",
+      "sha256": "000ded0c9bd442983b54d224ce3041818af6e35e2e0d4f9c9b382b74db499c59",
+      "size_bytes": 20916
+    },
+    {
+      "groups": [
+        "ci2_original_red_green_and_author"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/green-01/tested-source/scripts/ci_namespace_diagnostic_v1.py",
+      "sha256": "7bb96d3dba712f8c47c2afc2984628ccee7cca03e827895e95f1461c3479bbe5",
+      "size_bytes": 22270
+    },
+    {
+      "groups": [
+        "ci2_original_red_green_and_author"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/green-01/tested-source/tests/test_ci_namespace_diagnostic_v1.py",
+      "sha256": "37d771d553a76cbbaf6d878ab10cc2a7f409bb054c41ada8f36daba16da91223",
+      "size_bytes": 20805
+    },
+    {
+      "groups": [
+        "ci2_original_red_green_and_author"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/owned-source.diff",
+      "sha256": "0db2a33816639b5fdc44a93456fa9256ceed9a95358725364810b78f7d609d56",
+      "size_bytes": 4658
+    },
+    {
+      "groups": [
+        "ci2_original_red_green_and_author"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/preedit-inventory.v1.json",
+      "sha256": "d5dc3ae7b30f394cb4a18f920a32a22b57896c738e4983b8c12e687b22c7d1ee",
+      "size_bytes": 2549
+    },
+    {
+      "groups": [
+        "ci2_original_red_green_and_author"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/red-01/actual-parser-00/capture.json",
+      "sha256": "077847251c88f4bc4770bb81d5d38de8f1e14290ec5bb1e5a4561961a17e6930",
+      "size_bytes": 1343
+    },
+    {
+      "groups": [
+        "ci2_original_red_green_and_author"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/red-01/actual-parser-00/stderr.raw",
+      "sha256": "963927d51742f917c06dd2a466f3c19a3b4ab2f6485c76f1cb707d5ea3244db3",
+      "size_bytes": 52
+    },
+    {
+      "groups": [
+        "ci2_original_red_green_and_author"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/red-01/actual-parser-00/stdout.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "groups": [
+        "ci2_original_red_green_and_author"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/red-01/execution.json",
+      "sha256": "c5884dd7e6ac435f9af9e6b91de9f6a453bf3f70ba48b8ce1148bec1bceeafb1",
+      "size_bytes": 660
+    },
+    {
+      "groups": [
+        "ci2_original_red_green_and_author"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/red-01/launch.json",
+      "sha256": "85fad26557b33a2327d408be5812011668a36d525aeaaa891f6c9bd7a8e266f3",
+      "size_bytes": 2508
+    },
+    {
+      "groups": [
+        "ci2_original_red_green_and_author"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/red-01/source.after.json",
+      "sha256": "076d2d25fb54e172ff399fcd16e84cdb81eb70be30123c8abeb417bd90c02bf7",
+      "size_bytes": 476
+    },
+    {
+      "groups": [
+        "ci2_original_red_green_and_author"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/red-01/source.before.json",
+      "sha256": "076d2d25fb54e172ff399fcd16e84cdb81eb70be30123c8abeb417bd90c02bf7",
+      "size_bytes": 476
+    },
+    {
+      "groups": [
+        "ci2_original_red_green_and_author"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/red-01/stderr.raw",
+      "sha256": "3573fbf948a9f775cab1f7168dd32dd6268d811084bde8a4ab91a2c39a3d638b",
+      "size_bytes": 1061
+    },
+    {
+      "groups": [
+        "ci2_original_red_green_and_author"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/red-01/stdout.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "groups": [
+        "ci2_original_red_green_and_author"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/red-01/test-results.json",
+      "sha256": "0acdf3c0c2f161a90dd446b4ad4aef817a1d5cc896140ed86e58cfa863185126",
+      "size_bytes": 3234
+    },
+    {
+      "groups": [
+        "ci2_original_red_green_and_author"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/red-01/tested-source/scripts/ci_external_test_observer_v1.py",
+      "sha256": "000ded0c9bd442983b54d224ce3041818af6e35e2e0d4f9c9b382b74db499c59",
+      "size_bytes": 20916
+    },
+    {
+      "groups": [
+        "ci2_original_red_green_and_author"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/red-01/tested-source/scripts/ci_namespace_diagnostic_v1.py",
+      "sha256": "c27e5fde456c0448cee9e7ea20a5861e66e5f0636c56fe207995993549dbcff8",
+      "size_bytes": 22271
+    },
+    {
+      "groups": [
+        "ci2_original_red_green_and_author"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/red-01/tested-source/tests/test_ci_namespace_diagnostic_v1.py",
+      "sha256": "55c5b687a88ef5ea68ecce35778e41a805f9cbf5b2484870976d638c89000ae8",
+      "size_bytes": 20806
+    },
+    {
+      "groups": [
+        "cpu05_independent_95_and_owner_audit"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu05-postterminal-audit-preparation-v1/audit.launch.v1.json",
+      "sha256": "ee43143eb425867628290b8240a799a5eb37f55de4ace7743a00cd6a0140171f",
+      "size_bytes": 824
+    },
+    {
+      "groups": [
+        "cpu05_independent_95_and_owner_audit"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu05-postterminal-audit-preparation-v1/audit.py",
+      "sha256": "00896057c77dad21da13170094d8c0111b90084a06d774406aa837459cac09c7",
+      "size_bytes": 14872
+    },
+    {
+      "groups": [
+        "cpu05_independent_95_and_owner_audit"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu05-postterminal-audit-preparation-v1/audit.stderr.v3.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "groups": [
+        "cpu05_independent_95_and_owner_audit"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu05-postterminal-audit-preparation-v1/audit.stdout.v3.raw",
+      "sha256": "bccb2001233c52b3088810253ab303870cd80f060859c120003dc373edc7c2d5",
+      "size_bytes": 284
+    },
+    {
+      "groups": [
+        "cpu05_independent_95_and_owner_audit"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu05-postterminal-audit-preparation-v1/audit_v2.py",
+      "sha256": "f427ad804ffaeeca941dc7e07d87bc4344ccad8f717c45742a0d65ab685dffef",
+      "size_bytes": 14934
+    },
+    {
+      "groups": [
+        "cpu05_independent_95_and_owner_audit"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu05-postterminal-audit-preparation-v1/audit_v3.py",
+      "sha256": "22a00a9bfdd7d016c2286001b2d31d183740a2eaff9e20b1d63c8558e22ab241",
+      "size_bytes": 15239
+    },
+    {
+      "groups": [
+        "cpu05_independent_95_and_owner_audit"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu05-postterminal-audit-preparation-v1/dispatch.launch.v3.json",
+      "sha256": "571a0b03882cbfeb1b67b72bb2d5a8534ac21e856c69b51f86d5bf6398172d8d",
+      "size_bytes": 1146
+    },
+    {
+      "groups": [
+        "cpu05_independent_95_and_owner_audit"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu05-postterminal-audit-preparation-v1/dispatch.terminal.v3.json",
+      "sha256": "30e95bdfc36607cd86643d07634ddcc813ee1cd541f108dcf043a09e9489c528",
+      "size_bytes": 1586
+    },
+    {
+      "groups": [
+        "cpu05_independent_95_and_owner_audit"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu05-postterminal-audit-preparation-v1/dispatch_v3.py",
+      "sha256": "81ccf6ca6451bdb9cbedca950b8070b64a06019c5500f075ea95d21612eca433",
+      "size_bytes": 1766
+    },
+    {
+      "groups": [
+        "cpu05_independent_95_and_owner_audit"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu05-postterminal-audit-preparation-v1/held-inputs-and-processes.v1.json",
+      "sha256": "c8cb284e1d95ae24b1af73ea5a299428b6d2673ea2faf252ea80ad6bd804a298",
+      "size_bytes": 132467
+    },
+    {
+      "groups": [
+        "cpu05_independent_95_and_owner_audit"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu05-postterminal-audit-preparation-v1/preparation.v1.json",
+      "sha256": "1d2cf24a0c22283a2e9b64fd75f138518a0e87ea4c1ef0024cee6409c0eaf375",
+      "size_bytes": 2471
+    },
+    {
+      "groups": [
+        "cpu05_independent_95_and_owner_audit"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu05-postterminal-audit-preparation-v1/preparation.v2.json",
+      "sha256": "aff6d21818a322e12c90c2455f06cb853d1aab4fa6b78b644fbfade72aa3e1ce",
+      "size_bytes": 1554
+    },
+    {
+      "groups": [
+        "cpu05_independent_95_and_owner_audit"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu05-postterminal-audit-preparation-v1/preparation.v3.json",
+      "sha256": "be330d37be8a8fa7973e5a7aa6787ff77304f9eecbdaa7056c4654fd7aa3b81f",
+      "size_bytes": 1074
+    },
+    {
+      "groups": [
+        "cpu05_independent_95_and_owner_audit"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu05-postterminal-audit-preparation-v1/review.v1.json",
+      "sha256": "d192102f51e1ab92652541c22ac7a532fcb9f656cd3ffb9af9f51d9ae4cadda8",
+      "size_bytes": 18217
+    },
+    {
+      "groups": [
+        "cpu05_actual_dispatch_source_review"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/component-held-session-dispatch-independent-review-v1/audit.py",
+      "sha256": "fcbced738110e1dae2cbb3301923dfbbd6ad6e96e167d38d451cce3e1ee5ecea",
+      "size_bytes": 8037
+    },
+    {
+      "groups": [
+        "cpu05_actual_dispatch_source_review"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/component-held-session-dispatch-independent-review-v1/execution.capture.v1.json",
+      "sha256": "87d889a4b124933ad91461153374771c26ccc444e8b453ff23768007c6bf470a",
+      "size_bytes": 1888
+    },
+    {
+      "groups": [
+        "cpu05_actual_dispatch_source_review"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/component-held-session-dispatch-independent-review-v1/review.v1.json",
+      "sha256": "71ed26a1f4d3003c89fc77dec32f31e3e9a238843e312115b2932ff8b1953fb5",
+      "size_bytes": 46415
+    },
+    {
+      "groups": [
+        "historical_runbook_review"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/component-runbook-independent-review-v1/review.v1.json",
+      "sha256": "09ebcef7a1ce399e6a50a97c27d57c91d93c4cab26d46f7e80bea76965a42cff",
+      "size_bytes": 4709
+    },
+    {
+      "groups": [
+        "historical_runbook_review"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/component-runbook-independent-review-v1/review.v2.json",
+      "sha256": "b8cf9c9a0bd1a2b6cf70aa9769b398c2540d391515a0df7c00ba21b015bf1b04",
+      "size_bytes": 4140
+    },
+    {
+      "groups": [
+        "original_host_v6_capture"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/component-selected-host-closure-v6-original/dispatch.v1.json",
+      "sha256": "16a0e2159246aa8f783751e7dd871c8265f93e4c778b1eeafd57757bcabe544f",
+      "size_bytes": 14500
+    },
+    {
+      "groups": [
+        "original_host_v6_capture"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/component-selected-host-closure-v6-original/execution.v1.json",
+      "sha256": "0669c5504827d9e8cdb6558b7a9b938ee28f7572eb23a85339e53d658b06b061",
+      "size_bytes": 26985
+    },
+    {
+      "groups": [
+        "original_host_v6_capture"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/component-selected-host-closure-v6-original/stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "groups": [
+        "original_host_v6_capture"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/component-selected-host-closure-v6-original/stdout.bin",
+      "sha256": "b7b999d9ede616c68ad3f43ea47d05733fa9efc89e6fd666e63d5d207a723d0a",
+      "size_bytes": 312
+    },
+    {
+      "groups": [
+        "nonaccepting_conformance_skeleton"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/final-conformance-mapping-skeleton-v1/mapping.v1.json",
+      "sha256": "67e0892052adbe59e4557043024db95c4e685144ab5641a697b90ffd46655b0d",
+      "size_bytes": 549649
+    },
+    {
+      "groups": [
+        "nonaccepting_conformance_skeleton"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/final-conformance-mapping-skeleton-v1/mapping.v2.json",
+      "sha256": "e875633e1f15b76b362fce502ce62f5c185c7a229691fc0d536578ccbcca0192",
+      "size_bytes": 372434
+    },
+    {
+      "groups": [
+        "nonaccepting_conformance_skeleton"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/final-conformance-mapping-skeleton-v1/mapping.v3.json",
+      "sha256": "f1db2751aa2750992229f7281adad3e8151dcfa2113faf86887358f2036cf043",
+      "size_bytes": 373598
+    },
+    {
+      "groups": [
+        "new_unexecuted_checkpoint_helper"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/owned-cpu05-ci-checkpoint-preparation-v1/stage_owned_checkpoint_v1.py",
+      "sha256": "b1986ca7c9c37260f7cef33d984bb81c676d0604199084c94bca709c2713b3cf",
+      "size_bytes": 4818
+    },
+    {
+      "groups": [
+        "current_host_preparation_and_root_document_snapshot"
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/selected-gstreamer-cpu05-controller-preparation-v1/run_original_cpu_component_pair_v1.py",
+      "sha256": "a6245ffaef0f197fa561dacdd173aa45a1a35b84e4beda1fbe063ddcb1d19c13",
+      "size_bytes": 15136
+    },
+    {
+      "groups": [
+        "cpu05_original_external_capture"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05-original-controller/original.launch.v1.json",
+      "sha256": "82552fead798fde21c7eb67cb522dfc6a425770b5badc2dc9737558b9f617fdd",
+      "size_bytes": 2793
+    },
+    {
+      "groups": [
+        "cpu05_original_external_capture"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05-original-controller/original.stderr.raw",
+      "sha256": "06f73ac33212aee720dc904c65fa411f66cf98863ba7c2d713c655b94745721f",
+      "size_bytes": 81
+    },
+    {
+      "groups": [
+        "cpu05_original_external_capture"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05-original-controller/original.stdout.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "groups": [
+        "cpu05_original_external_capture"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05-original-controller/original.terminal.v1.json",
+      "sha256": "603df9b501dfcd578aac0570eed08983c5ef8fc72c36a7980c19c23b480e310c",
+      "size_bytes": 91708
+    },
+    {
+      "groups": [
+        "cpu05_original_external_capture"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05-original-controller/prelaunch.v1.json",
+      "sha256": "79dcc89907e1437ef615e9c6f40fa48ffcde7bb84cd85a4560852881590eda77",
+      "size_bytes": 47513
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/cold-pair/component_pair_latency_ecdf.svg",
+      "sha256": "724243c855c8c13b6f2cc07a1d4eeebf986cf1f8db6637eae9383419052ea8d6",
+      "size_bytes": 88257
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/cold-pair/component_pair_metrics.csv",
+      "sha256": "c287d32199026a23cfd7941b20c30b34f55367df4745f6b887811217bfea7269",
+      "size_bytes": 616
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/cold-pair/component_pair_result.v1.json",
+      "sha256": "18a50fd2e857a5104ceb4b61ed38d11f730123cffc29130c2d718853d65e2946",
+      "size_bytes": 18525
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/component_cli_late_failure.v1.json",
+      "sha256": "aace3b00667620b2554a82e51d5219110f92f3f232c18d854eb3b76406c8086c",
+      "size_bytes": 386
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/component_cli_terminal.v1.json",
+      "sha256": "a8e544b8ab71a26d9cedb7cc7e092143b249ac1627904f0b68a05f6a57c3179c",
+      "size_bytes": 9333
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/component_pair_timing.v1.jsonl",
+      "sha256": "a8c9a99d56e3740d0bf814f271fb50082cfef2a813d77ab0a759129896886a0f",
+      "size_bytes": 5537
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/guardian-operational/operational_group.v1.json",
+      "sha256": "d02624ea2dd8679a60ad84e5bfbdf43c0bb1a7e94d99153b9a0214cc9184d7f8",
+      "size_bytes": 4759
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/guardian.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/guardian.stdout.log",
+      "sha256": "d4ca5a6b4c0b26aca01d7000b9eb86c11f3fa680fd03d19d6f11e7ba410bf905",
+      "size_bytes": 26381
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/guardian/service_authority.v1.json",
+      "sha256": "4578d6b3eb73204a0273971c1ee7b3860227d17cdf254ce39cc99cca8d1ac7e3",
+      "size_bytes": 16332
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/guardian/service_lifecycle.v1.json",
+      "sha256": "8d895dc0b1e500d2765cd421a7343acc38065443370759e4d9cad766d745ceed",
+      "size_bytes": 10049
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/component_arm_result.v1.json",
+      "sha256": "cbbfc222dd8c1938e467b868c4992bd9baf76a8c02ff07b5df6a2a76775f29d8",
+      "size_bytes": 15470
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/component_arm_result.v1.json",
+      "sha256": "203d74bb5871e2b35d36b399a2836a640406388410b31a87b85075c6e0314835",
+      "size_bytes": 14188
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/capture-plan/capture_plan_index.v1.json",
+      "sha256": "78c6a87e89e05fa7feb53fa403f393700a9a2b23bbb08c69e39b6dd65371b229",
+      "size_bytes": 2183
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/capture-plan/guardian_capture_context.v1.json",
+      "sha256": "464bb83c05ab0f4d848c3515d6fb6b84d28f5bba78be3a1cc5fffb9b8464e5e7",
+      "size_bytes": 40421
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/capture-plan/native_context_00.v1.json",
+      "sha256": "05d7fc7e8cbf35f1eb79efc6593f9019664642c31ce2882eef27523ec7010a60",
+      "size_bytes": 3920
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/capture-plan/native_context_01.v1.json",
+      "sha256": "0d6ac015cdbc60a1f7941e5592f43c9f03fd12bd39892ed3d2f74c94e53b8642",
+      "size_bytes": 3867
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/capture-plan/original_operations.v1.json",
+      "sha256": "eb5dcad658582f1f09455f78d43343c4ce1db578057c7d96847a1d5bec80fe70",
+      "size_bytes": 12080
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/capture-plan/source_plan_inventory.v1.json",
+      "sha256": "b594b93a54cde72e1a8339abf1eed58384a408e167687fc66b186cc7082cea35",
+      "size_bytes": 1137
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/original-operations/component-gstreamer_custom-cpu-h264-independent-processes.original.json",
+      "sha256": "e571ebcdda5add1040f35d37264bca068f5c1be0a5b1f1090cd7d7b63dca6578",
+      "size_bytes": 7326
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/original-operations/component-gstreamer_custom-cpu-h264-independent-processes.source-plan.json",
+      "sha256": "92be745b09933ad938da7302ec5ad3dc7aceae60b67df51f3d87dae4283573ac",
+      "size_bytes": 39843
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/original-operations/component-gstreamer_custom-cpu-h264-shared-video-dag.original.json",
+      "sha256": "6cef8be633d6ec6b0797e5e46d8898bb2ecb10bb40be13d4cbe0965a9cb30415",
+      "size_bytes": 7176
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/original-operations/component-gstreamer_custom-cpu-h264-shared-video-dag.source-plan.json",
+      "sha256": "1c14e9be8aadf91a3e53938e973e55bf1336c63509594b280d71d787f942f0f1",
+      "size_bytes": 28097
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_01.stderr",
+      "sha256": "17391b21be16e6e4578ffb4018f57f78f084422dec33b4c8747e65f90ef2afda",
+      "size_bytes": 269
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_01.stdout",
+      "sha256": "72318ad181fc0cb712d05507368d7b559d41302aa02f067ea632ff9a6e1cd55e",
+      "size_bytes": 312
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_01.v1.json",
+      "sha256": "84293b3cfcf1af167c7e7007fdd28214063b152387f15aed6dc408c363718293",
+      "size_bytes": 1943
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_02.stderr",
+      "sha256": "80b57e353a6600da77ca568bca30a8dfb80864316823f9f3d25d73f354d6cbfe",
+      "size_bytes": 359
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_02.stdout",
+      "sha256": "1e69d142793cf850c6d9affc1b6ee6db1283fa6ccaa35327db71b2d2ffa6ad8f",
+      "size_bytes": 271
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_02.v1.json",
+      "sha256": "7ec0f5a405fbbdb4f36ae8750c3ed3aac07e28c5be73aaacd551f65e0f6eb560",
+      "size_bytes": 2395
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_03.stderr",
+      "sha256": "cc6059a0b76be2e2184e2f23debb22bae9ab90a7c90fdf7ace52ba25c7ddc99b",
+      "size_bytes": 384
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_03.stdout",
+      "sha256": "1e69d142793cf850c6d9affc1b6ee6db1283fa6ccaa35327db71b2d2ffa6ad8f",
+      "size_bytes": 271
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_03.v1.json",
+      "sha256": "60891245ab3e57bdf8c8a99fa168b0e2ef1b9a0356f0de5653e0a047b18d068c",
+      "size_bytes": 2417
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_04.stderr",
+      "sha256": "17391b21be16e6e4578ffb4018f57f78f084422dec33b4c8747e65f90ef2afda",
+      "size_bytes": 269
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_04.stdout",
+      "sha256": "72318ad181fc0cb712d05507368d7b559d41302aa02f067ea632ff9a6e1cd55e",
+      "size_bytes": 312
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_04.v1.json",
+      "sha256": "b27cb8bb10bb977c7049a3ef6e535ddb532d672a23dd814fc6f9bb31d8446889",
+      "size_bytes": 1942
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/measurement.cid",
+      "sha256": "2d5204f56a758ae8bea18bada638ba3936ca5112c51876752595743f063c7103",
+      "size_bytes": 64
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/original_container_custody.v1.json",
+      "sha256": "010f002d615bd8cba9b28067c14228f87f4bda9306a434e60ace751b788f9acb",
+      "size_bytes": 3904
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/reservation.v1.json",
+      "sha256": "e4860e6ae8627031c7f827c7eb0b335211dff25c4139cc170d4659237c5ef2e2",
+      "size_bytes": 2479
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/engine_01.launch.v1.json",
+      "sha256": "562afb4e4227156f1fa17d46de74b6b9c259a37e31991bc0b0a6651b6b74f2b5",
+      "size_bytes": 1837
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/engine_01.terminal.v1.json",
+      "sha256": "6b6acb5c2891ce30166aa2f07d2d7ac38974f1c9e7990a3b0b2be4373953fe65",
+      "size_bytes": 949
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/engine_02.launch.v1.json",
+      "sha256": "316aa8f127619b6cca636086f841a25a94eaa60a39ca1635f04365848bb90837",
+      "size_bytes": 2754
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/engine_02.terminal.v1.json",
+      "sha256": "85df7466530ecdfced80ab57f73dc82ab7530a0ed8f96d98c47833eae028243c",
+      "size_bytes": 949
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/engine_03.launch.v1.json",
+      "sha256": "bdb071c0482efa555778e5c93f6e528bbe35452836cf55d5b5a73e2b0035744f",
+      "size_bytes": 2606
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/engine_03.terminal.v1.json",
+      "sha256": "afad031215809fd70bd85ec00c44839fd1255ba1d31e9e3d650130e8f87635df",
+      "size_bytes": 948
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/engine_04.launch.v1.json",
+      "sha256": "905c8b43b1a4bfa1146da8e305ddb86a0e0b4d9ffdf34d7db47e0e6170329fdf",
+      "size_bytes": 2237
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/engine_04.terminal.v1.json",
+      "sha256": "60f8b871830bc842a8095670bde2dba9a979ae545a4223528c04806ab7adbe4a",
+      "size_bytes": 947
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/engine_05.launch.v1.json",
+      "sha256": "729e9762fe7fe3a17325790c847ce5f3e86ff91bc0032bdedd1005aa38ed37e6",
+      "size_bytes": 8070
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/engine_05.terminal.v1.json",
+      "sha256": "b44c0fd5fb90a0ab7179d045e5ae9c8c48c97ce0c928024a90b29d8cf147b026",
+      "size_bytes": 950
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/original_engine_process_capture.v1.json",
+      "sha256": "e175247bcba8c27d619c39dbc05acfb761493bcfb6cfeb883d99e84c7eba53fd",
+      "size_bytes": 6661
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/command_01.stderr",
+      "sha256": "17391b21be16e6e4578ffb4018f57f78f084422dec33b4c8747e65f90ef2afda",
+      "size_bytes": 269
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/command_01.stdout",
+      "sha256": "72318ad181fc0cb712d05507368d7b559d41302aa02f067ea632ff9a6e1cd55e",
+      "size_bytes": 312
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/command_01.v1.json",
+      "sha256": "1f414b073043f3b7b1809d1b0054d66cafb63dade7d9cb88246003ff514d31e2",
+      "size_bytes": 1928
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/command_02.stderr",
+      "sha256": "6b03260401c99876c5a5731218f9a11c5dda3d59b7e9b9a0ca07455cedb414fa",
+      "size_bytes": 359
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/command_02.stdout",
+      "sha256": "1e69d142793cf850c6d9affc1b6ee6db1283fa6ccaa35327db71b2d2ffa6ad8f",
+      "size_bytes": 271
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/command_02.v1.json",
+      "sha256": "35617452f8e9767927d5587a3f04d52dc2f011a8659520b49b00b050e6603192",
+      "size_bytes": 2380
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/command_03.stderr",
+      "sha256": "488dcf5dea8db125bd53fd118d8f6a61ac0dacffd18aeacf4921e3f7acc10c4c",
+      "size_bytes": 384
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/command_03.stdout",
+      "sha256": "1e69d142793cf850c6d9affc1b6ee6db1283fa6ccaa35327db71b2d2ffa6ad8f",
+      "size_bytes": 271
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/command_03.v1.json",
+      "sha256": "09b612671f38320457ccd4c47bf88891bdf9f8d6f4399df587eb20b178c10182",
+      "size_bytes": 2402
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/command_04.stderr",
+      "sha256": "17391b21be16e6e4578ffb4018f57f78f084422dec33b4c8747e65f90ef2afda",
+      "size_bytes": 269
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/command_04.stdout",
+      "sha256": "72318ad181fc0cb712d05507368d7b559d41302aa02f067ea632ff9a6e1cd55e",
+      "size_bytes": 312
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/command_04.v1.json",
+      "sha256": "4482bcfb9d6b853c3f52d174b4ecb23b7036514029a89d716bdf94be202aebfb",
+      "size_bytes": 1927
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/measurement.cid",
+      "sha256": "7afa446511f424af5282dabf9528267d5370b76b8fb4b3d542e7e26a514dfa75",
+      "size_bytes": 64
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/original_container_custody.v1.json",
+      "sha256": "85468999c4bea7cc7dbb75c0eb36d9f6a46549c940e4d5b4eb090a9c8fc72c77",
+      "size_bytes": 3864
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/reservation.v1.json",
+      "sha256": "0daccec9d6babd995a461802ac1cbc66182974d560bbaf593f4450a3803423e8",
+      "size_bytes": 2464
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/engine_01.launch.v1.json",
+      "sha256": "fe619f183d39bb3f54cc9cda5c64425ca85ed883fd4b2c34fc4f1445dfd7f228",
+      "size_bytes": 1832
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/engine_01.terminal.v1.json",
+      "sha256": "65cc53246fef5378ad36a49b00dad6f71dcffcec2e45384b9e90d95b95dbdbde",
+      "size_bytes": 939
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/engine_02.launch.v1.json",
+      "sha256": "e09ac10daa7302b3f3ea6c858a6f5f9d2fdfb166dfd01a9c36520473f0b12ba5",
+      "size_bytes": 2749
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/engine_02.terminal.v1.json",
+      "sha256": "b6dfc6acc7a54f745d57511108e12ea94f31258012d46ab06d470f5f576c3da4",
+      "size_bytes": 939
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/engine_03.launch.v1.json",
+      "sha256": "8c8131e4aefe189a5a44a8533436f6d0c0d331cd48dbcc6de24240e9c5be682b",
+      "size_bytes": 2596
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/engine_03.terminal.v1.json",
+      "sha256": "d100d42cdaab50cd767dcc2902f2f3ac047046aa0c77c872048d891add363a90",
+      "size_bytes": 938
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/engine_04.launch.v1.json",
+      "sha256": "9346f2e5b09f699dca661d42d7576b220c95b7dd6af31f5350329d2036542749",
+      "size_bytes": 2232
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/engine_04.terminal.v1.json",
+      "sha256": "e67317aff05fc806f072e823244a8ea2366106b319a6d1097ae6b0799b96f41d",
+      "size_bytes": 937
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/engine_05.launch.v1.json",
+      "sha256": "79f972dd499d8ab25e9b628d5439b7671f801d32f3223e045d48260336d56743",
+      "size_bytes": 7996
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/engine_05.terminal.v1.json",
+      "sha256": "a8db16207371ac1b780b5942a8c1d9e2c7c4f6c50734c5cc1ac5018d1ae73cda",
+      "size_bytes": 940
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/original_engine_process_capture.v1.json",
+      "sha256": "83e0a76fab2916fc08d3bd3c9b6bc7dae4caedc426a5ad43038f43fe4838d4e1",
+      "size_bytes": 6591
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/preprocessing/guardian-component-preprocessing-receipt.v1.json",
+      "sha256": "16b4f2bb6431cafed545124a837a19f31546a5d2e75863ca8836bd05b10f1c87",
+      "size_bytes": 6525
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/preprocessing/guardian-preprocessing-contract.v1.json",
+      "sha256": "aba5e9ccd3ebfcc87e7bc1e71e4d693cee8bfc7ca3670cf09a9b78963241c052",
+      "size_bytes": 1078
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/runtime/_assets/gstreamer_custom/analytics-execution-manifest.json",
+      "sha256": "3ad361a7f2672a8e4e3240fbc98ce055bf4c97da346ea6144d0225a83b15467c",
+      "size_bytes": 10638
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/runtime/component_runtime_index.v1.json",
+      "sha256": "b379f41e3c6272d33ec791979ce81dd361379ca345a0ba940f34aa3c09d23a28",
+      "size_bytes": 2102
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/runtime/qualification-arm-v2-gstreamer_custom-cpu-h264-independent-processes.component.json",
+      "sha256": "95201e1521aa0933cf65e87785b1a2b0c9b3c2e4471373deb0413df22fc2ab55",
+      "size_bytes": 23635
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/runtime/qualification-arm-v2-gstreamer_custom-cpu-h264-shared-video-dag.component.json",
+      "sha256": "c6febe9ce2203a05ceae8bc704bc9916e19eb718abc8a02b7d00e6811c48e8bf",
+      "size_bytes": 23601
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/source/baseline.source-plan.json",
+      "sha256": "92be745b09933ad938da7302ec5ad3dc7aceae60b67df51f3d87dae4283573ac",
+      "size_bytes": 39843
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/source/gstreamer-component-authority.v1.json",
+      "sha256": "efd1dbce4527d67f4c6497c492700c6255bacb25a1c96a13b88e7a7c66262219",
+      "size_bytes": 128324
+    },
+    {
+      "groups": [
+        "cpu05_closed_small_metadata_custody_and_exports"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/source/shared.source-plan.json",
+      "sha256": "1c14e9be8aadf91a3e53938e973e55bf1336c63509594b280d71d787f942f0f1",
+      "size_bytes": 28097
+    },
+    {
+      "groups": [
+        "current_host_preparation_and_root_document_snapshot"
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/host/execution-code-closure.v6.json",
+      "sha256": "fedf5d8c85c5e435d4bfab21b4c8851db1e07fd9a982f428f91621314b3a8805",
+      "size_bytes": 30986
+    },
+    {
+      "groups": [
+        "current_host_preparation_and_root_document_snapshot"
+      ],
+      "path": "docs/gstreamer-component-benchmark-runbook.md",
+      "sha256": "8051aaaab0a6e52c09beafc0ad91cf39a80322269880fdd783d1e777db896361",
+      "size_bytes": 8802
+    },
+    {
+      "groups": [
+        "current_host_preparation_and_root_document_snapshot"
+      ],
+      "path": "openspec/changes/fix-benchmark-preparations-spec/tasks.md",
+      "sha256": "bd856399db3a81e8f2c9b260b2b0e344e0882f9bff0bf51ed4baf5711cb9d8c3",
+      "size_bytes": 22810
+    },
+    {
+      "groups": [
+        "ci2_parser_repair_review_pending"
+      ],
+      "path": "scripts/ci_namespace_diagnostic_v1.py",
+      "sha256": "7bb96d3dba712f8c47c2afc2984628ccee7cca03e827895e95f1461c3479bbe5",
+      "size_bytes": 22270
+    },
+    {
+      "groups": [
+        "reviewed_test10_and_manifest"
+      ],
+      "path": "tests/test_backend_runtime_replay_runner_authority_v2.py",
+      "sha256": "20a903cb40910b6f4c2981798e1456f6932b80ce0e916c2576cd1afc6f7cc6dc",
+      "size_bytes": 30675
+    },
+    {
+      "groups": [
+        "reviewed_test10_and_manifest"
+      ],
+      "path": "tests/test_checkpoint_deepstream_qualification_fragment_v1.py",
+      "sha256": "0f82dcfa8525ae459d482ae672fd4fd779a1dfeec22d160aded9d3d0cee86f73",
+      "size_bytes": 17673
+    },
+    {
+      "groups": [
+        "reviewed_test10_and_manifest"
+      ],
+      "path": "tests/test_checkpoint_model_parity_materializer_v4.py",
+      "sha256": "2aa4d4e8aedde6ca30ad178e7ff7d2fec13ed1d840f122e851075afa77000ac4",
+      "size_bytes": 15690
+    },
+    {
+      "groups": [
+        "reviewed_test10_and_manifest"
+      ],
+      "path": "tests/test_checkpoint_openvino_gva_qualification_fragment_v3.py",
+      "sha256": "62f91b0a8480e11ae018bb31c53cbc167dca78fbe8fe7de23f6a6133723cb87f",
+      "size_bytes": 11502
+    },
+    {
+      "groups": [
+        "reviewed_test10_and_manifest"
+      ],
+      "path": "tests/test_checkpoint_savant_qualification_fragment_v3.py",
+      "sha256": "75feb1788871e4f70f25b08d23020bf6fab9be250ce4b87034d262d42e9ce7fe",
+      "size_bytes": 10069
+    },
+    {
+      "groups": [
+        "reviewed_test10_and_manifest"
+      ],
+      "path": "tests/test_checkpoint_source_runtime_closure_authority_v1.py",
+      "sha256": "7a3e36a1cb642a5e914b9483261cc95ad3861d7752b0d47019d338bbbb6cfd95",
+      "size_bytes": 88905
+    },
+    {
+      "groups": [
+        "ci2_parser_repair_review_pending"
+      ],
+      "path": "tests/test_ci_namespace_diagnostic_v1.py",
+      "sha256": "37d771d553a76cbbaf6d878ab10cc2a7f409bb054c41ada8f36daba16da91223",
+      "size_bytes": 20805
+    },
+    {
+      "groups": [
+        "reviewed_test10_and_manifest"
+      ],
+      "path": "tests/test_ci_test_selection_v1.py",
+      "sha256": "3d35114149e44d50f6d762fd6c05d4a903bbd9f1b5afc01c0bae4278b1933024",
+      "size_bytes": 11499
+    },
+    {
+      "groups": [
+        "reviewed_test10_and_manifest"
+      ],
+      "path": "tests/test_publication_operational_container_custody_v1.py",
+      "sha256": "6fd45b43fe0a5acc0cc59951d9c4bafa0496780110f89b59950c3bbd420d9cee",
+      "size_bytes": 21792
+    },
+    {
+      "groups": [
+        "reviewed_test10_and_manifest"
+      ],
+      "path": "tests/test_publication_policy_qualification_fragments_from_authority_v2.py",
+      "sha256": "cf7574d817dd416d0886a25b9f559975f39aa58c2fa32cfe9f6729f0ea48a72d",
+      "size_bytes": 19287
+    },
+    {
+      "groups": [
+        "reviewed_test10_and_manifest"
+      ],
+      "path": "tests/test_replay_broker_artifact_bytes_observation_v4.py",
+      "sha256": "2b484a675fb4808ccb8ab6340a7e53bad17a1d04c60cf2e35552036b2298314c",
+      "size_bytes": 6787
+    }
+  ],
+  "group_summary": {
+    "ci2_original_red_green_and_author": {
+      "bytes": 230737,
+      "files": 36
+    },
+    "ci2_parser_repair_review_pending": {
+      "bytes": 43075,
+      "files": 2
+    },
+    "closed_ci_6358_diagnosis": {
+      "bytes": 567250,
+      "files": 12
+    },
+    "closed_ci_8f_diagnosis": {
+      "bytes": 2423771,
+      "files": 10
+    },
+    "cpu05_actual_dispatch_source_review": {
+      "bytes": 56340,
+      "files": 3
+    },
+    "cpu05_closed_small_metadata_custody_and_exports": {
+      "bytes": 712390,
+      "files": 84
+    },
+    "cpu05_independent_95_and_owner_audit": {
+      "bytes": 206434,
+      "files": 14
+    },
+    "cpu05_original_external_capture": {
+      "bytes": 142095,
+      "files": 5
+    },
+    "current_host_preparation_and_root_document_snapshot": {
+      "bytes": 130988,
+      "files": 6
+    },
+    "historical_runbook_review": {
+      "bytes": 8849,
+      "files": 2
+    },
+    "new_unexecuted_checkpoint_helper": {
+      "bytes": 4818,
+      "files": 1
+    },
+    "nonaccepting_conformance_skeleton": {
+      "bytes": 1295681,
+      "files": 3
+    },
+    "original_ci_6358": {
+      "bytes": 2368404,
+      "files": 9
+    },
+    "original_ci_8f": {
+      "bytes": 2504325,
+      "files": 19
+    },
+    "original_host_v6_capture": {
+      "bytes": 41797,
+      "files": 4
+    },
+    "portable_fixture_independent_review": {
+      "bytes": 25909,
+      "files": 3
+    },
+    "portable_fixture_original_evidence": {
+      "bytes": 2571309,
+      "files": 145
+    },
+    "reviewed_test10_and_manifest": {
+      "bytes": 267893,
+      "files": 11
+    }
+  },
+  "original_scope": {
+    "ci2_author_sha256": "c6ec12d9947bd377a9972f6bc9b3cd6e57f74d085f1f3f6027c2383938f1a26d",
+    "ci2_test_results": "16 successes =15 original +1 real journalctl --help parser regression; no kernel query or namespace.",
+    "cpu05_independent_hold_release_sha256": "d192102f51e1ab92652541c22ac7a532fcb9f656cd3ffb9af9f51d9ae4cadda8",
+    "host_v6": {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/host/execution-code-closure.v6.json",
+      "sha256": "fedf5d8c85c5e435d4bfab21b4c8851db1e07fd9a982f428f91621314b3a8805",
+      "size_bytes": 30986
+    },
+    "portable_author_sha256": "d2472259e91df4571de8da0fa27195de5836f15f0fc7e810e2320bddfe29fdaf",
+    "portable_independent_sha256": "5294f169c4e29776e2fe7b1413ec6fc29c1a3ef78ddb8f042644aa3ce2854aba",
+    "portable_test_results": "96 successes +3 existing Windows skips =99 executed method outcomes; no errors/failures."
+  },
+  "previous_head": "8fefa4ba0c5b135c66f85a6eb7f4fd1aaebfdc21",
+  "ready_for_staging": false,
+  "review_pins": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/author-review.v1.json",
+      "sha256": "d2472259e91df4571de8da0fa27195de5836f15f0fc7e810e2320bddfe29fdaf",
+      "size_bytes": 31669
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-independent-review-v1/review.v1.json",
+      "sha256": "5294f169c4e29776e2fe7b1413ec6fc29c1a3ef78ddb8f042644aa3ce2854aba",
+      "size_bytes": 7406
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/author-review.v1.json",
+      "sha256": "c6ec12d9947bd377a9972f6bc9b3cd6e57f74d085f1f3f6027c2383938f1a26d",
+      "size_bytes": 21353
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu05-postterminal-audit-preparation-v1/review.v1.json",
+      "sha256": "d192102f51e1ab92652541c22ac7a532fcb9f656cd3ffb9af9f51d9ae4cadda8",
+      "size_bytes": 18217
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-held-session-dispatch-independent-review-v1/review.v1.json",
+      "sha256": "71ed26a1f4d3003c89fc77dec32f31e3e9a238843e312115b2932ff8b1953fb5",
+      "size_bytes": 46415
+    }
+  ],
+  "schema_version": 1,
+  "scope_limits": [
+    "Explicit owned file list only; no baseline/unrelated409-file collection or git add-all.",
+    "Large original producer sidecars/models/runtime executable payloads/reservations excluded, not deleted. Retained descriptors are historical references; this checkpoint is not a self-contained cold replay bundle.",
+    "Raw unfiltered index carriers may be used ONLY for artifacts; tracked tests/manifest/CI source/docs must equal ordinary Git index bytes.",
+    "CPU05 original CLI failed despite retained cold exports; task18.8, GPU01, full CI, final conformance/archive remain unaccepted.",
+    "Current document review may require a new inventory revision; missing gates remain blocked rather than being inferred."
+  ],
+  "stage_or_commit_executed": false,
+  "total_bytes": 13602065
+}

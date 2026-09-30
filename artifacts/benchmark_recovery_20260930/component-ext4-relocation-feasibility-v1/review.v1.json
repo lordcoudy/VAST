@@ -1,0 +1,261 @@
+{
+  "accepted": false,
+  "artifact_kind": "vast_component_ext4_relocation_feasibility_review_v1",
+  "copy_scope": {
+    "all180_current_physical_raw_vs8f": "identical",
+    "all_declared_bytes": 4379009017,
+    "all_input_leaves": 2693,
+    "exclusive_copy_bytes": 4311301443,
+    "exclusive_copy_leaves": 2504,
+    "host_source_count": 87,
+    "model_namespace_counts": {
+      ".bin": 8,
+      ".engine": 4,
+      ".onnx": 4,
+      ".plan": 0,
+      ".xml": 8
+    },
+    "nine_additional_tracked_metadata_raw_checked": [
+      {
+        "path": "artifacts/benchmark_recovery_20260930/selected-gstreamer-build-a4e145b7-v1/gstreamer_custom.runtime.freeze.json",
+        "sha256": "61874c718d6140d0d5cf745988bc301b916077af8f80e96742184f80a0805db7",
+        "size_bytes": 7049
+      },
+      {
+        "path": "configs/analytics_execution_layer.refreshed.v4.fix-benchmark-20260928g.json",
+        "sha256": "9cd1b4e7fee54c97d81618862dc20bf3b8689efd2127c499262a3974f65be18c",
+        "size_bytes": 1508
+      },
+      {
+        "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260928g.accepted.acceptance_receipt.json",
+        "sha256": "6f50d92e74ab7750f262d2697b0fceeb979d4f221eda90a0223cce4d5ff7a169",
+        "size_bytes": 20686
+      },
+      {
+        "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260928g.accepted.assessment.json",
+        "sha256": "7b0faca95399f3317f893e52780a44aeeec151e1aae94639f931f28cbea9b421",
+        "size_bytes": 1698
+      },
+      {
+        "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260928g.accepted.yaml",
+        "sha256": "36511595d6c37685f97add9e51f9105e901aac36fa1ee1a141a623f02cfbb6b5",
+        "size_bytes": 30052
+      },
+      {
+        "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260928g.yaml",
+        "sha256": "e040cd816b46d6d98bd6bf18fa45b6d57d5f8326819fbbecfc38b7b1f61f9bca",
+        "size_bytes": 26084
+      },
+      {
+        "path": "configs/checkpoint_analytics_model_parity.yaml",
+        "sha256": "09b749d53c3a4842b3a376730f1403866962cba0ecd77e8f41f5a366bd7f009b",
+        "size_bytes": 18564
+      },
+      {
+        "path": "configs/datasets.yaml",
+        "sha256": "6f16a46c6a92c6aecd51cf669e4c5731f182a58b6a0f40dac7eff9b26d9d6086",
+        "size_bytes": 74277
+      },
+      {
+        "path": "configs/experiments.yaml",
+        "sha256": "18b69285690cdb6ad2f8e9fa528122a05fd3e4abe647a776e60c8e5eed4344e0",
+        "size_bytes": 23078
+      }
+    ],
+    "selected_dependency_count": 6,
+    "selected_source_count": 73,
+    "source_bytes": 67504578,
+    "source_dependent_controller_leaves": 180,
+    "tracked_byte_identical_leaves": 189
+  },
+  "daemon_reachability": {
+    "finding": "Original completed CPU05 native arm demonstrates daemon access to WSL /tmp scratch and analytics socket; it does not prove a future /home project bind or identify native-WSL versus Desktop daemon. New root requires bounded exact-image read-only bind verification before measurement. No Docker query was made by this review.",
+    "original_actual_mounts": [
+      "type=bind,src=/tmp/vast-component-2ab4db0bb822b038/vast-gstreamer-v3-qualification-arm-v2-gstreamer_custom-cpu-h264-independent-processes-mt73vjq8/input,dst=/workspace/project,readonly",
+      "type=bind,src=/tmp/vast-component-2ab4db0bb822b038/vast-gstreamer-v3-qualification-arm-v2-gstreamer_custom-cpu-h264-independent-processes-mt73vjq8/run,dst=/opt/vast/output",
+      "type=bind,src=/tmp/vast-component-2ab4db0bb822b038/vast-gstreamer-v3-qualification-arm-v2-gstreamer_custom-cpu-h264-independent-processes-mt73vjq8/operational,dst=/opt/vast/operational",
+      "type=bind,src=/tmp/vast-component-2ab4db0bb822b038/guardian/analytics-execution.sock,dst=/run/vast/analytics-execution.sock,readonly"
+    ],
+    "original_launch": {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/engine_05.launch.v1.json",
+      "sha256": "729e9762fe7fe3a17325790c847ce5f3e86ff91bc0032bdedd1005aa38ed37e6",
+      "size_bytes": 8070
+    }
+  },
+  "decision": "GO for reviewed new finite physical root using existing project_root APIs; no intrinsic production-code delta",
+  "git_input_classification": {
+    "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-feasibility-v1/git-input-classification.v1.json",
+    "sha256": "ed2858413c0dca784f05bff2ca4551b0d6f7879baf6624d07a54c1227a320e3c",
+    "size_bytes": 469891
+  },
+  "invariants": [
+    "Keep2100s stock pair/2250s outer and original cleanup/capture bounds.",
+    "All source/target regular leaf names, original expected raw digests and actual seven-field FD epochs must be validated during genuine transfer. No links/aliases/newline conversion/overwrite.",
+    "189 tracked clone targets may be retained only after physical expected-byte checks;2504 untracked inputs exclusively created.",
+    "Original accepted model manifests/receipt/binding/transaction, all480 outputs and original corpus/RGB/tensor bytes remain unchanged. Historical stable_stat in seven transaction source_inventory rows remains historical, not current target custody.",
+    "Fresh stock execution closure is mandatory: its source/interpreter snapshot body is physical and oldv6 cannot validate a new root.",
+    "New selected source authority, source plans, capture/preprocessing/runtime documents and operation receipts must be constructed in the new root. Never reuse CPU05 attempt authorities.",
+    "Image source/dependency/build-context identities are relative-path/raw-byte derived; unchanged selected73 and native3/worker2 inputs imply no image rebuild solely for relocation, subject to unchanged stock source/context and real current image predicates.",
+    "Actual24-model namespace count must match canonical assessor:4onnx/8xml/8bin/4engine/0plan.",
+    "Current original engine/socket/image observations, model numeric assessment, allraw full barriers, original wrappers, physical cold output checks and complete operational/measurement reconciliation remain mandatory."
+  ],
+  "inventory": {
+    "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-feasibility-v1/inventory.v1.json",
+    "sha256": "8a03751c4f3e18a2590d04874496559cc77dab7ffebc8184269c0b9bb81dc364",
+    "size_bytes": 2087679
+  },
+  "minimal_prototype": [
+    "After exact planning/source commit+PR authorization: exclusive --shared --no-checkout clone into approved fresh ext4 root, configure core.autocrlf=false before detached exact checkout; record shared-object alternate dependency.",
+    "Verify exact189 tracked inputs physically; stream copy exactly2504 declared original inputs exclusively with raw hash/current source+target FD/name/epoch/finalnamespace checks, separately bounded600s+10s cleanup. Check real free space for finite4.38GB scope, full tracked tree and unchanged20GiB reserve.",
+    "Run bounded exact-image read-only bind test of the new root with actual owned CID and terminal/nonrunning/absence cleanup proof. It grants no model/GPU/native acceptance.",
+    "Capture a NEW original stock host execution closure in the ext4 root after byte/permissions freeze (120s+10). Keep oldv6 historical.",
+    "Dispatch one genuine CPU pair then GPU pair using the existing CLI/new fresh namespaces with exact unchanged2100/2250/15 limits and original source input descriptors. Preserve original failure evidence and12-phase16KiB timing."
+  ],
+  "publication_ready": false,
+  "schema_version": 1,
+  "source_anchors": {
+    "actual_selected_current_model_source_and_images": "scripts/publication_gstreamer_component_inputs_v1.py:120,145,166,193,216,358,392",
+    "all_actual_corpus_payload_obligations": "scripts/checkpoint_model_parity.py:1315",
+    "all_declared_runtime_presence_controller": "scripts/publication_qualification_image_refreeze_v1.py:274,339",
+    "full_model_namespace_count": "scripts/checkpoint_model_parity.py:1777",
+    "historical_v4_original_descriptor_loader": "scripts/checkpoint_model_parity_acceptance_v4.py:541",
+    "physical_code_closure_snapshots_and_exact_body_equality": "scripts/publication_policy_qualification_execution_code_closure_v1.py:220,263,277,400",
+    "relative_project_descriptors_and_held_full_barriers": "scripts/publication_gstreamer_component_authority_v1.py:49,73,113,137,251,390"
+  },
+  "source_commit": "8fefa4ba0c5b135c66f85a6eb7f4fd1aaebfdc21",
+  "status": "planning feasibility only",
+  "target_proposal": {
+    "currently_occupied": false,
+    "filesystem": [
+      {
+        "filesystem": "ext4",
+        "mount_point": "/",
+        "source": "/dev/sdd"
+      },
+      {
+        "filesystem": "9p",
+        "mount_point": "/mnt/e",
+        "source": "E:\\134"
+      },
+      {
+        "filesystem": "9p",
+        "mount_point": "/mnt/e",
+        "source": "E:\\134"
+      }
+    ],
+    "parent_exists": true,
+    "parent_owner_gid": 1000,
+    "parent_owner_uid": 1000,
+    "parent_resolved": "/home/s-a-balashov/work",
+    "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+    "source_scope": "new isolated namespace; existing primary WSL worktree is not touched",
+    "space_observation": [
+      {
+        "available_bytes": 920335106048,
+        "epoch": [
+          2096,
+          688,
+          16872,
+          14,
+          4096,
+          1788334171723179824,
+          1788334171723179824
+        ],
+        "owner_gid": 1000,
+        "owner_uid": 1000,
+        "path": "/home/s-a-balashov"
+      },
+      {
+        "available_bytes": 920335106048,
+        "epoch": [
+          2096,
+          73729,
+          17407,
+          19,
+          32768,
+          1790794247159147498,
+          1790794247159147498
+        ],
+        "owner_gid": 0,
+        "owner_uid": 0,
+        "path": "/tmp"
+      }
+    ]
+  },
+  "timing_basis": {
+    "interpretation": "CPU05 original CLI remains failed after2100s; complete cold phase and real raw outputs are retained facts. Timing does not establish that filesystem choice caused any specific phase duration or that ext4 will meet the deadline.",
+    "original_late_failure": {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/component_cli_late_failure.v1.json",
+      "sha256": "aace3b00667620b2554a82e51d5219110f92f3f232c18d854eb3b76406c8086c",
+      "size_bytes": 386
+    },
+    "original_timeline": {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05/component_pair_timing.v1.jsonl",
+      "sha256": "a8c9a99d56e3740d0bf814f271fb50082cfef2a813d77ab0a759129896886a0f",
+      "size_bytes": 5537
+    },
+    "phases": [
+      {
+        "elapsed_ns": 297422604014,
+        "phase": "source",
+        "status": "complete"
+      },
+      {
+        "elapsed_ns": 147328028705,
+        "phase": "context",
+        "status": "complete"
+      },
+      {
+        "elapsed_ns": 101417348356,
+        "phase": "capture",
+        "status": "complete"
+      },
+      {
+        "elapsed_ns": 51509059508,
+        "phase": "preprocessing",
+        "status": "complete"
+      },
+      {
+        "elapsed_ns": 52479093355,
+        "phase": "guardian_start",
+        "status": "complete"
+      },
+      {
+        "elapsed_ns": 85161105763,
+        "phase": "runtime",
+        "status": "complete"
+      },
+      {
+        "elapsed_ns": 485759821064,
+        "phase": "arm_baseline",
+        "status": "complete"
+      },
+      {
+        "elapsed_ns": 476979004642,
+        "phase": "arm_shared",
+        "status": "complete"
+      },
+      {
+        "elapsed_ns": 754246102,
+        "phase": "guardian_stop",
+        "status": "complete"
+      },
+      {
+        "elapsed_ns": 395169387680,
+        "phase": "cold",
+        "status": "complete"
+      },
+      {
+        "elapsed_ns": 74281982,
+        "phase": "context_close",
+        "status": "complete"
+      },
+      {
+        "elapsed_ns": 2125861229321,
+        "phase": "reservation",
+        "status": "failed"
+      }
+    ]
+  },
+  "workloads_started_by_review": []
+}

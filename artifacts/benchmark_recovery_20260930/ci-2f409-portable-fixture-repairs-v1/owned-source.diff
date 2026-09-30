@@ -1,0 +1,679 @@
+--- before/tests/test_backend_runtime_replay_runner_authority_v2.py
++++ after/tests/test_backend_runtime_replay_runner_authority_v2.py
+@@ -636,13 +636,22 @@
+                           "grant", "benchmark", "open(\"w", "write_bytes"):
+             self.assertNotIn(forbidden, lowered)
+         self.assertFalse(any("replay_runner_authority_v2" in path.read_text(
+-            encoding="utf-8", errors="ignore") for path in
++            encoding="utf-8", errors="ignore").replace(
++                "test_backend_runtime_replay_runner_authority_v2", "") for path in
+             (ROOT / "scripts").glob("*.py") if path.name !=
+             "backend_runtime_replay_runner_authority_v2.py" and path.name !=
+             "backend_runtime_replay_runner_invocation_protocol_v3.py" and
+             path.name !=
+             "backend_runtime_replay_runner_invocation_protocol_v4.py"))
+ 
++    def test_selection_identity_does_not_hide_a_production_import(self):
++        def contains_reference(text):
++            return "replay_runner_authority_v2" in text.replace(
++                "test_backend_runtime_replay_runner_authority_v2", "")
++        self.assertFalse(contains_reference('"test_backend_runtime_replay_runner_authority_v2"'))
++        self.assertTrue(contains_reference('import backend_runtime_replay_runner_authority_v2'))
++        self.assertTrue(contains_reference('from backend_runtime_replay_runner_authority_v2 import assess'))
++
+ 
+ if __name__ == "__main__":
+     unittest.main()
+
+--- before/tests/test_checkpoint_deepstream_qualification_fragment_v1.py
++++ after/tests/test_checkpoint_deepstream_qualification_fragment_v1.py
+@@ -3,6 +3,7 @@
+ import hashlib
+ import json
+ import os
++import shutil
+ import sys
+ import tempfile
+ import unittest
+@@ -56,11 +57,29 @@
+     }
+ 
+ 
++def historical_worker_project(project_root: Path) -> Path:
++    """Copy original worker metadata for pure unit joins, without live acceptance."""
++    configs = project_root / "configs"
++    configs.mkdir(parents=True)
++    for source in (ROOT / "configs").iterdir():
++        if source.is_file():
++            shutil.copyfile(source, configs / source.name)
++    fixture = ROOT / ".ci/fixtures/publication_worker_manifest_v1"
++    shutil.copytree(fixture / "bindings", project_root / "artifacts/analytics_execution_bindings/publication_v3")
++    for resource, descriptor in target.RUNTIME_PROBES.items():
++        destination = project_root / descriptor[0]
++        destination.parent.mkdir(parents=True, exist_ok=True)
++        shutil.copyfile(fixture / f"{resource}_runtime_probe.json", destination)
++    return project_root
++
++
+ class DeepStreamQualificationFragmentV1Tests(unittest.TestCase):
+     def test_repository_refrozen_endpoint_materials_are_exactly_accepted(self) -> None:
+-        terminals, material = target._terminal_identities(
+-            ROOT, "GPU-00bb784b-60f3-8bf6-bbd3-5a0c09805266"
+-        )
++        with tempfile.TemporaryDirectory() as temporary:
++            project_root = historical_worker_project(Path(temporary))
++            terminals, material = target._terminal_identities(
++                project_root, "GPU-00bb784b-60f3-8bf6-bbd3-5a0c09805266"
++            )
+         self.assertEqual(len(terminals), 8)
+         self.assertEqual(
+             {value["worker_image_id"] for value in terminals.values()},
+
+--- before/tests/test_checkpoint_model_parity_materializer_v4.py
++++ after/tests/test_checkpoint_model_parity_materializer_v4.py
+@@ -80,7 +80,7 @@
+             self.assertIn("--capability", command)
+             return json.dumps(_probe(resource, implementations[resource]))
+ 
+-        with tempfile.TemporaryDirectory(prefix="model-parity-v4-test-", dir=ROOT / "staging") as temporary:
++        with tempfile.TemporaryDirectory(prefix="model-parity-v4-test-", dir=ROOT / "artifacts") as temporary:
+             work = Path(temporary)
+             probe_authority = self.module.capture_live_runtime_probes_v4(
+                 project_root=ROOT,
+@@ -131,7 +131,7 @@
+             return json.dumps(_probe(resource, implementations[resource]))
+ 
+         with tempfile.TemporaryDirectory(
+-            prefix="model-parity-v4-rebind-", dir=ROOT / "staging"
++            prefix="model-parity-v4-rebind-", dir=ROOT / "artifacts"
+         ) as temporary:
+             output = Path(temporary) / "probes"
+             expected = self.module.capture_live_runtime_probes_v4(
+@@ -205,7 +205,7 @@
+                 return json.dumps([{"Id": "sha256:" + "e" * 64, "Architecture": "amd64", "Os": "linux"}])
+             self.fail("capability probe must not run after image identity mismatch")
+ 
+-        with tempfile.TemporaryDirectory(prefix="model-parity-v4-test-", dir=ROOT / "staging") as temporary:
++        with tempfile.TemporaryDirectory(prefix="model-parity-v4-test-", dir=ROOT / "artifacts") as temporary:
+             output = Path(temporary) / "probes"
+             with self.assertRaisesRegex(self.module.ModelParityMaterializerV4Error, "image identity"):
+                 self.module.capture_live_runtime_probes_v4(
+@@ -311,7 +311,7 @@
+             "post_publish_pre_parent_fsync",
+         ):
+             with self.subTest(step=step), tempfile.TemporaryDirectory(
+-                prefix="model-parity-v4-leaf-", dir=ROOT / "staging"
++                prefix="model-parity-v4-leaf-", dir=ROOT / "artifacts"
+             ) as temporary:
+                 root = Path(temporary).resolve()
+                 output = root / "versioned.json"
+
+--- before/tests/test_checkpoint_openvino_gva_qualification_fragment_v3.py
++++ after/tests/test_checkpoint_openvino_gva_qualification_fragment_v3.py
+@@ -18,6 +18,7 @@
+     sys.path.insert(0, str(SCRIPTS))
+ 
+ import checkpoint_openvino_gva_qualification_fragment_v3 as target  # noqa: E402
++from test_checkpoint_gstreamer_custom_qualification_fragment_v3 import unit_fragment_project
+ from analytics_execution_endpoint import (  # noqa: E402
+     expected_capability_from_binding_and_probe,
+     terminal_detector_identity,
+@@ -91,6 +92,12 @@
+         )
+         source_pin.start()
+         self.addCleanup(source_pin.stop)
++        allowlist_pin = mock.patch.object(
++            target, "OPENVINO_GVA_SOURCE_ALLOWLIST_SHA256",
++            hashlib.sha256(self.allowlist.read_bytes()).hexdigest(),
++        )
++        allowlist_pin.start()
++        self.addCleanup(allowlist_pin.stop)
+ 
+     def test_physical_source_drift_is_rejected_after_fixture_is_pinned(self) -> None:
+         with tempfile.TemporaryDirectory() as temporary:
+@@ -107,9 +114,20 @@
+                 target._source_set_identity(root)
+ 
+     def _materialize(self, temporary: str) -> tuple[Path, dict[str, object]]:
+-        output = Path(temporary).resolve() / "qualification"
++        project_root = unit_fragment_project(Path(temporary).resolve() / "project")
++        output = project_root / "qualification"
++        fixture_sources = set(self.sources)
++        fixture_sources.update(row["path"] for row in target._runtime_sources(ROOT).values())
++        for relative in sorted(fixture_sources):
++            destination = project_root / relative
++            destination.parent.mkdir(parents=True, exist_ok=True)
++            shutil.copyfile(ROOT / relative, destination)
++        manifest = project_root / self.allowlist.relative_to(ROOT)
++        manifest.parent.mkdir(parents=True, exist_ok=True)
++        shutil.copyfile(self.allowlist, manifest)
++        self.project_root = project_root
+         result = target.materialize_qualification_fragment(
+-            project_root=ROOT,
++            project_root=project_root,
+             output_dir=output,
+         )
+         return output, result
+@@ -136,7 +154,7 @@
+             inodes: set[tuple[int, int]] = set()
+             for row in (*fragment["policy_bindings"], *fragment["resource_bindings"]):
+                 self.assertEqual(set(row), target.ROW_FIELDS)
+-                path = ROOT / row["path"]
++                path = self.project_root / row["path"]
+                 info = path.lstat()
+                 self.assertTrue(stat.S_ISREG(info.st_mode))
+                 self.assertFalse(path.is_symlink())
+@@ -146,7 +164,7 @@
+                 paths.add(row["path"])
+                 inodes.add((info.st_dev, info.st_ino))
+             assessment = target.assess_qualification_fragment(
+-                project_root=ROOT,
++                project_root=self.project_root,
+                 fragment_path=fragment_path,
+             )
+             self.assertTrue(assessment["passed"], assessment["blockers"])
+@@ -158,7 +176,7 @@
+                 (output / target.FRAGMENT_FILENAME).read_text(encoding="utf-8")
+             )
+             for row in fragment["policy_bindings"]:
+-                artifact = json.loads((ROOT / row["path"]).read_text(encoding="utf-8"))
++                artifact = json.loads((self.project_root / row["path"]).read_text(encoding="utf-8"))
+                 binding = artifact["analytics_execution_worker_binding_identity"]
+                 identity = row["runtime_identity"]
+                 self.assertEqual(set(identity), target.POLICY_RUNTIME_FIELDS)
+@@ -195,7 +213,7 @@
+                 (output / target.FRAGMENT_FILENAME).read_text(encoding="utf-8")
+             )
+             for row in fragment["policy_bindings"]:
+-                artifact = json.loads((ROOT / row["path"]).read_text(encoding="utf-8"))
++                artifact = json.loads((self.project_root / row["path"]).read_text(encoding="utf-8"))
+                 receipt = artifact["analytics_execution_resource_receipt_contract"]
+                 self.assertEqual(set(receipt["fields"]), RESOURCE_FIELDS)
+                 self.assertEqual(set(receipt["cuda_interval_fields"]), INTERVAL_FIELDS)
+@@ -208,7 +226,7 @@
+                         {"h2d": row["branch"], "d2h": f"postprocess_{row['branch']}"},
+                     )
+             for row in fragment["resource_bindings"]:
+-                artifact = json.loads((ROOT / row["path"]).read_text(encoding="utf-8"))
++                artifact = json.loads((self.project_root / row["path"]).read_text(encoding="utf-8"))
+                 evidence = artifact["resource_v2_evidence"]
+                 self.assertEqual(evidence["contract_version"], 2)
+                 self.assertEqual(evidence["decoder_device_api"], "NVIDIA_NVDEC")
+
+--- before/tests/test_checkpoint_savant_qualification_fragment_v3.py
++++ after/tests/test_checkpoint_savant_qualification_fragment_v3.py
+@@ -2,6 +2,7 @@
+ 
+ import hashlib
+ import json
++import shutil
+ import stat
+ import sys
+ import tempfile
+@@ -15,6 +16,7 @@
+     sys.path.insert(0, str(SCRIPTS))
+ 
+ import checkpoint_savant_qualification_fragment_v3 as target  # noqa: E402
++from test_checkpoint_deepstream_qualification_fragment_v1 import historical_worker_project
+ 
+ 
+ def sha256_file(path: Path) -> str:
+@@ -22,9 +24,24 @@
+ 
+ 
+ class SavantQualificationFragmentV3Tests(unittest.TestCase):
+-    def image_manifest(self, path: Path) -> Path:
+-        source_sha = target.runtime_source_sha256(ROOT)
+-        bundle_sha = target.runtime_bundle_sha256(ROOT)
++    def unit_project(self, project_root: Path) -> Path:
++        historical_worker_project(project_root)
++        relative = "deploy/savant/publication/runtime-source-allowlist.txt"
++        sources = set((ROOT / relative).read_text(encoding="ascii").splitlines())
++        sources.add(relative)
++        sources.update(row["path"] for row in target._runtime_sources(ROOT).values())
++        dependency_manifest = "deploy/deepstream/checkpoint/runtime-dependency-allowlist.txt"
++        sources.add(dependency_manifest)
++        sources.update((ROOT / dependency_manifest).read_text(encoding="ascii").splitlines())
++        for value in sorted(sources):
++            destination = project_root / value
++            destination.parent.mkdir(parents=True, exist_ok=True)
++            shutil.copyfile(ROOT / value, destination)
++        return project_root
++
++    def image_manifest(self, path: Path, project_root: Path = ROOT) -> Path:
++        source_sha = target.runtime_source_sha256(project_root)
++        bundle_sha = target.runtime_bundle_sha256(project_root)
+         value = {
+             "schema_version": 3,
+             "artifact_kind": "vast_savant_runtime_image_materialization_v3",
+@@ -50,12 +67,13 @@
+         return path
+ 
+     def test_phase_one_materializes_ten_physical_bindings_and_no_pilots(self) -> None:
+-        with tempfile.TemporaryDirectory(dir=ROOT / "artifacts") as temporary:
+-            base = Path(temporary).resolve()
+-            manifest = self.image_manifest(base / "runtime-image.json")
++        with tempfile.TemporaryDirectory() as temporary:
++            project_root = self.unit_project(Path(temporary))
++            base = project_root / "artifacts"
++            manifest = self.image_manifest(base / "runtime-image.json", project_root)
+             output = base / "qualification"
+             result = target.materialize_qualification_fragment(
+-                project_root=ROOT,
++                project_root=project_root,
+                 output_dir=output,
+                 runtime_image_manifest=manifest,
+             )
+@@ -94,7 +112,7 @@
+                 *fragment["resource_bindings"],
+             ):
+                 self.assertEqual(set(row), target.ROW_FIELDS)
+-                artifact = ROOT / row["path"]
++                artifact = project_root / row["path"]
+                 info = artifact.lstat()
+                 self.assertTrue(stat.S_ISREG(info.st_mode))
+                 self.assertFalse(artifact.is_symlink())
+@@ -109,7 +127,7 @@
+             self.assertEqual(len(inodes), 10)
+ 
+             assessment = target.assess_qualification_fragment(
+-                project_root=ROOT,
++                project_root=project_root,
+                 fragment_path=fragment_path,
+                 runtime_image_manifest=manifest,
+             )
+@@ -121,12 +139,13 @@
+             })
+ 
+     def test_refreeze_and_exact_runtime_identity_fields_are_bound(self) -> None:
+-        with tempfile.TemporaryDirectory(dir=ROOT / "artifacts") as temporary:
+-            base = Path(temporary).resolve()
+-            manifest = self.image_manifest(base / "runtime-image.json")
++        with tempfile.TemporaryDirectory() as temporary:
++            project_root = self.unit_project(Path(temporary))
++            base = project_root / "artifacts"
++            manifest = self.image_manifest(base / "runtime-image.json", project_root)
+             output = base / "qualification"
+             target.materialize_qualification_fragment(
+-                project_root=ROOT, output_dir=output,
++                project_root=project_root, output_dir=output,
+                 runtime_image_manifest=manifest,
+             )
+             fragment = json.loads(
+@@ -151,7 +170,7 @@
+                         "device=NVIDIA_CUDA:0",
+                         identity["terminal_backend"],
+                     )
+-                artifact = json.loads((ROOT / row["path"]).read_text())
++                artifact = json.loads((project_root / row["path"]).read_text())
+                 self.assertEqual(
+                     artifact["protocol_identity_sha256"],
+                     target.PROTOCOL_IDENTITY_SHA256,
+
+--- before/tests/test_checkpoint_source_runtime_closure_authority_v1.py
++++ after/tests/test_checkpoint_source_runtime_closure_authority_v1.py
+@@ -1689,7 +1689,7 @@
+             directory for directory in ROOT.iterdir()
+             if directory.is_dir() and directory.name not in {
+                 ".git", "build", "data", "models", "registration", "runs",
+-                "tests", "__pycache__",
++                "tests", "__pycache__", "artifacts", "openspec", ".ci",
+             }
+         )
+         text_suffixes = {
+@@ -1713,7 +1713,7 @@
+                     content = candidate.read_text(encoding="utf-8")
+                 except (UnicodeError, OSError):
+                     continue
+-                if path.stem in content:
++                if path.stem in content.replace("test_" + path.stem, ""):
+                     consumers.append(candidate.relative_to(ROOT).as_posix())
+         for candidate in ROOT.iterdir():
+             if (not candidate.is_file() or candidate == path
+@@ -1725,10 +1725,16 @@
+                 content = candidate.read_text(encoding="utf-8")
+             except (UnicodeError, OSError):
+                 continue
+-            if path.stem in content:
++            if path.stem in content.replace("test_" + path.stem, ""):
+                 consumers.append(candidate.relative_to(ROOT).as_posix())
+         self.assertEqual(consumers, [])
+ 
++    def test_selection_identity_does_not_hide_a_production_import(self):
++        name = "checkpoint_source_runtime_closure_authority_v1"
++        self.assertNotIn(name, ('"test_' + name + '"').replace("test_" + name, ""))
++        self.assertIn(name, ("import " + name).replace("test_" + name, ""))
++        self.assertIn(name, ("from " + name + " import assess").replace("test_" + name, ""))
++
+ 
+ if __name__ == "__main__":
+     unittest.main()
+
+--- before/tests/test_ci_test_selection_v1.py
++++ after/tests/test_ci_test_selection_v1.py
+@@ -115,7 +115,7 @@
+ 
+     def test_all_original_platform_and_retired_skip_ids_remain_nonexecution(self):
+         rows=json.loads((ROOT/self.api.MANIFEST).read_bytes())['allowed_portable_skips']
+-        self.assertEqual(len(rows),80)
++        self.assertEqual(len(rows),88)
+         cases=[]
+         for row in rows:
+             case=self._case(row['test_id'])
+@@ -124,7 +124,7 @@
+             cases.append(case)
+         self.manifest(skips=rows)
+         suite,report=self.api.select_portable_suite_v1(unittest.TestSuite(cases),project_root=self.root)
+-        self.assertEqual(suite.countTestCases(),80)
++        self.assertEqual(suite.countTestCases(),88)
+         self.assertEqual(report['counts']['integration'],0)
+         audit=self.api.validate_portable_skips_v1(rows,report)
+         self.assertEqual(audit,sorted(rows,key=lambda row:row['test_id']))
+
+--- before/tests/test_publication_operational_container_custody_v1.py
++++ after/tests/test_publication_operational_container_custody_v1.py
+@@ -127,7 +127,10 @@
+         self.root = Path(self.temp.name).resolve()
+         self.operational = self.root / "operational"
+         self.operational.mkdir(mode=0o700)
+-        self.state = self.root / "fixture.state"
++        # Mutable daemon state must not mutate the held input parent directory.
++        daemon_state = self.root / "daemon-state"
++        daemon_state.mkdir(mode=0o700)
++        self.state = daemon_state / "fixture.state"
+         source = self.root / "fixture-engine.c"
+         source.write_text(ENGINE_SOURCE)
+         executable = self.root / "fixture-engine"
+
+--- before/tests/test_publication_policy_qualification_fragments_from_authority_v2.py
++++ after/tests/test_publication_policy_qualification_fragments_from_authority_v2.py
+@@ -3,6 +3,7 @@
+ import copy
+ import importlib.util
+ import json
++import shutil
+ import sys
+ import tempfile
+ import unittest
+@@ -25,6 +26,7 @@
+ target = importlib.util.module_from_spec(SPEC)
+ sys.modules[SPEC.name] = target
+ SPEC.loader.exec_module(target)
++from test_checkpoint_deepstream_qualification_fragment_v1 import historical_worker_project
+ 
+ 
+ ACCEPTED_MANIFEST = ROOT / "configs/checkpoint_analytics_model_parity.accepted.yaml"
+@@ -43,7 +45,18 @@
+ class Fixture:
+     def __init__(self, directory: Path) -> None:
+         self.directory = directory
+-        self.patch_path = directory / "qualification_image_identity_patch.v1.json"
++        self.project_root = historical_worker_project(directory / "project")
++        self.accepted_manifest = self.project_root / ACCEPTED_MANIFEST.relative_to(ROOT)
++        self.accepted_assessment = self.project_root / ACCEPTED_ASSESSMENT.relative_to(ROOT)
++        self.accepted_receipt = self.project_root / ACCEPTED_RECEIPT.relative_to(ROOT)
++        sources = [target.POLICY_CONTRACT]
++        omz = target._omz_bindings(ROOT)
++        sources.extend(row[role]["path"] for row in omz.values() for role in ("model", "weights"))
++        for relative in sources:
++            destination = self.project_root / relative
++            destination.parent.mkdir(parents=True, exist_ok=True)
++            shutil.copyfile(ROOT / relative, destination)
++        self.patch_path = self.project_root / "qualification_image_identity_patch.v1.json"
+         manifest = yaml.safe_load(ACCEPTED_MANIFEST.read_text(encoding="utf-8"))
+         workers = manifest["worker_runtime_registry"]
+         worker_ids = {
+@@ -139,9 +152,9 @@
+             return {
+                 "schema_version": 2,
+                 "artifact_kind": target.V3_BINDING_KIND,
+-                "receipt": target.file_descriptor(ROOT, ACCEPTED_RECEIPT),
+-                "accepted_manifest": target.file_descriptor(ROOT, ACCEPTED_MANIFEST),
+-                "accepted_assessment": target.file_descriptor(ROOT, ACCEPTED_ASSESSMENT),
++                "receipt": target.file_descriptor(self.project_root, self.accepted_receipt),
++                "accepted_manifest": target.file_descriptor(self.project_root, self.accepted_manifest),
++                "accepted_assessment": target.file_descriptor(self.project_root, self.accepted_assessment),
+                 "binding_sha256": "8" * 64,
+             }
+ 
+@@ -159,16 +172,16 @@
+         )
+ 
+     def materialize(self):
+-        fragments_root = self.directory / "fragments"
++        fragments_root = self.project_root / "fragments"
+         fragments_root.mkdir()
+         dependencies = self.dependencies()
+         result = target.materialize_publication_policy_qualification_fragments_from_authority_v2(
+-            project_root=ROOT,
++            project_root=self.project_root,
+             fragments_root=fragments_root,
+             identity_patch_path=self.patch_path,
+-            accepted_model_parity_manifest_path=ACCEPTED_MANIFEST,
+-            accepted_model_parity_assessment_path=ACCEPTED_ASSESSMENT,
+-            accepted_model_parity_receipt_path=ACCEPTED_RECEIPT,
++            accepted_model_parity_manifest_path=self.accepted_manifest,
++            accepted_model_parity_assessment_path=self.accepted_assessment,
++            accepted_model_parity_receipt_path=self.accepted_receipt,
+             docker="docker",
+             dependencies=dependencies,
+         )
+@@ -267,7 +280,7 @@
+                 self.assertEqual(len(fragment["resource_bindings"]), 2)
+                 self.assertEqual(fragment["pilots"], [])
+                 binding_paths.extend(
+-                    ROOT / row["path"]
++                    fixture.project_root / row["path"]
+                     for row in (
+                         *fragment["policy_bindings"],
+                         *fragment["resource_bindings"],
+@@ -278,20 +291,20 @@
+             self.assertTrue(all(path.is_file() for path in binding_paths))
+ 
+             verified = target.validate_publication_policy_qualification_fragments_from_authority_v2(
+-                project_root=ROOT,
++                project_root=fixture.project_root,
+                 fragment_paths=result,
+                 identity_patch=fixture.patch,
+                 identity_patch_path=fixture.patch_path,
+-                accepted_model_parity_manifest_path=ACCEPTED_MANIFEST,
+-                accepted_model_parity_assessment_path=ACCEPTED_ASSESSMENT,
+-                accepted_model_parity_receipt_path=ACCEPTED_RECEIPT,
++                accepted_model_parity_manifest_path=fixture.accepted_manifest,
++                accepted_model_parity_assessment_path=fixture.accepted_assessment,
++                accepted_model_parity_receipt_path=fixture.accepted_receipt,
+                 dependencies=dependencies,
+             )
+             self.assertEqual(set(verified), set(target.SYSTEMS))
+ 
+             openvino = json.loads(
+                 next(
+-                    ROOT / row["path"]
++                    fixture.project_root / row["path"]
+                     for row in json.loads(result["openvino_gva"].read_bytes())["policy_bindings"]
+                     if row["branch"] == "plate_number" and row["resource"] == "cpu"
+                 ).read_bytes()
+@@ -320,7 +333,7 @@
+             openvino_fragment = json.loads(result["openvino_gva"].read_bytes())
+             openvino_gpu = json.loads(
+                 next(
+-                    ROOT / row["path"]
++                    fixture.project_root / row["path"]
+                     for row in openvino_fragment["policy_bindings"]
+                     if row["branch"] == "plate_number" and row["resource"] == "gpu"
+                 ).read_bytes()
+@@ -340,7 +353,7 @@
+             fixture = Fixture(Path(raw))
+             result, dependencies = fixture.materialize()
+             fragment = json.loads(result["deepstream"].read_bytes())
+-            binding = ROOT / fragment["policy_bindings"][0]["path"]
++            binding = fixture.project_root / fragment["policy_bindings"][0]["path"]
+             binding.chmod(0o600)
+             binding.write_bytes(binding.read_bytes().replace(b'"role":"policy"', b'"role":"tampered"'))
+             with self.assertRaisesRegex(
+@@ -348,13 +361,13 @@
+                 "descriptor drifted|coordinate/self-identity",
+             ):
+                 target.validate_publication_policy_qualification_fragments_from_authority_v2(
+-                    project_root=ROOT,
++                    project_root=fixture.project_root,
+                     fragment_paths=result,
+                     identity_patch=fixture.patch,
+                     identity_patch_path=fixture.patch_path,
+-                    accepted_model_parity_manifest_path=ACCEPTED_MANIFEST,
+-                    accepted_model_parity_assessment_path=ACCEPTED_ASSESSMENT,
+-                    accepted_model_parity_receipt_path=ACCEPTED_RECEIPT,
++                    accepted_model_parity_manifest_path=fixture.accepted_manifest,
++                    accepted_model_parity_assessment_path=fixture.accepted_assessment,
++                    accepted_model_parity_receipt_path=fixture.accepted_receipt,
+                     dependencies=dependencies,
+                 )
+ 
+@@ -368,13 +381,13 @@
+                 "stale or cross-bound|differs from physical authority",
+             ):
+                 target.validate_publication_policy_qualification_fragments_from_authority_v2(
+-                    project_root=ROOT,
++                    project_root=fixture.project_root,
+                     fragment_paths=result,
+                     identity_patch=fixture.patch,
+                     identity_patch_path=fixture.patch_path,
+-                    accepted_model_parity_manifest_path=ACCEPTED_MANIFEST,
+-                    accepted_model_parity_assessment_path=ACCEPTED_ASSESSMENT,
+-                    accepted_model_parity_receipt_path=ACCEPTED_RECEIPT,
++                    accepted_model_parity_manifest_path=fixture.accepted_manifest,
++                    accepted_model_parity_assessment_path=fixture.accepted_assessment,
++                    accepted_model_parity_receipt_path=fixture.accepted_receipt,
+                     dependencies=dependencies,
+                 )
+ 
+@@ -397,7 +410,7 @@
+     def test_dangling_system_collision_is_never_treated_as_absent(self) -> None:
+         with tempfile.TemporaryDirectory(prefix="fragment-v2-", dir=ROOT / "artifacts") as raw:
+             fixture = Fixture(Path(raw))
+-            fragments_root = fixture.directory / "fragments"
++            fragments_root = fixture.project_root / "fragments"
+             fragments_root.mkdir()
+             collision = fragments_root / "deepstream"
+             collision.symlink_to(fragments_root / "missing", target_is_directory=True)
+@@ -406,12 +419,12 @@
+                 "already exists",
+             ):
+                 target.materialize_publication_policy_qualification_fragments_from_authority_v2(
+-                    project_root=ROOT,
++                    project_root=fixture.project_root,
+                     fragments_root=fragments_root,
+                     identity_patch_path=fixture.patch_path,
+-                    accepted_model_parity_manifest_path=ACCEPTED_MANIFEST,
+-                    accepted_model_parity_assessment_path=ACCEPTED_ASSESSMENT,
+-                    accepted_model_parity_receipt_path=ACCEPTED_RECEIPT,
++                    accepted_model_parity_manifest_path=fixture.accepted_manifest,
++                    accepted_model_parity_assessment_path=fixture.accepted_assessment,
++                    accepted_model_parity_receipt_path=fixture.accepted_receipt,
+                     dependencies=fixture.dependencies(),
+                 )
+             self.assertTrue(collision.is_symlink())
+
+--- before/tests/test_replay_broker_artifact_bytes_observation_v4.py
++++ after/tests/test_replay_broker_artifact_bytes_observation_v4.py
+@@ -142,20 +142,33 @@
+             "observe_artifact_bytes",
+         )
+         unexpected: list[str] = []
+-        for candidate in ROOT.rglob("*"):
++        excluded = {".git", "build", "__pycache__", ".pytest_cache",
++                    "artifacts", "openspec", ".ci"}
++        roots = [path for path in ROOT.iterdir() if path.name not in excluded]
++        candidates = (candidate for path in roots
++                      for candidate in (path.rglob("*") if path.is_dir() else (path,)))
++        for candidate in candidates:
+             if not candidate.is_file() or candidate.resolve() in allowed:
+                 continue
+-            if any(part in {".git", "build", "__pycache__", ".pytest_cache"}
++            if any(part in {".git", "build", "__pycache__", ".pytest_cache",
++                            "artifacts", "openspec", ".ci"}
+                    for part in candidate.parts):
+                 continue
+             try:
+                 content = candidate.read_text(encoding="utf-8")
+             except (UnicodeDecodeError, OSError):
+                 continue
++            content = content.replace("test_replay_broker_artifact_bytes_observation_v4", "")
+             if any(needle in content for needle in needles):
+                 unexpected.append(str(candidate.relative_to(ROOT)))
+         self.assertEqual(unexpected, [])
+ 
++    def test_selection_identity_does_not_hide_a_production_import(self) -> None:
++        name = "replay_broker_artifact_bytes_observation_v4"
++        self.assertNotIn(name, ('"test_' + name + '"').replace("test_" + name, ""))
++        self.assertIn(name, ("import " + name).replace("test_" + name, ""))
++        self.assertIn("observe_artifact_bytes", "observe_artifact_bytes(input)")
++
+ 
+ if __name__ == "__main__":
+     unittest.main()
+
+--- before/.ci/integration-test-selection.v1.json
++++ after/.ci/integration-test-selection.v1.json
+@@ -86,6 +86,12 @@
+     },
+     {
+       "acceptance_claim": false,
++      "classification": "platform_or_explicit_physical_prerequisite",
++      "reason": "real KPP AVI files are not present",
++      "test_id": "test_benchmark_contract.BenchmarkContractTests.test_kpp_real_avi_manifest_validates_real_files_and_fps_policy"
++    },
++    {
++      "acceptance_claim": false,
+       "classification": "existing_retired_schema_migration",
+       "reason": "schema-v1 fixture retained only as migration history",
+       "test_id": "test_checkpoint_model_parity.AssessmentTests.test_calibration_and_evaluation_sample_ids_must_be_disjoint"
+@@ -263,6 +269,48 @@
+       "classification": "platform_or_explicit_physical_prerequisite",
+       "reason": "Windows rename custody attack",
+       "test_id": "test_kpp_legacy_iss_v2_secondary_sensitivity_pilot.KppLegacyIssV2SecondarySensitivityPilotTests.test_windows_candidate_rename_out_back_metadata_restore_is_denied"
++    },
++    {
++      "acceptance_claim": false,
++      "classification": "platform_or_explicit_physical_prerequisite",
++      "reason": "Windows custody route only",
++      "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_each_unpublished_bootstrap_failure_leaves_no_random_orphan"
++    },
++    {
++      "acceptance_claim": false,
++      "classification": "platform_or_explicit_physical_prerequisite",
++      "reason": "Windows custody route only",
++      "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_windows_bootstrap_failure_closes_every_locally_acquired_handle"
++    },
++    {
++      "acceptance_claim": false,
++      "classification": "platform_or_explicit_physical_prerequisite",
++      "reason": "Windows NtCreateFile route only",
++      "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_windows_bootstrap_never_path_creates_a_destination_component"
++    },
++    {
++      "acceptance_claim": false,
++      "classification": "platform_or_explicit_physical_prerequisite",
++      "reason": "Windows custody route only",
++      "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_windows_exact_rerun_holds_target_custody_without_creating"
++    },
++    {
++      "acceptance_claim": false,
++      "classification": "platform_or_explicit_physical_prerequisite",
++      "reason": "Windows ACL route only",
++      "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_windows_rerun_rechecks_target_acl_after_long_verification"
++    },
++    {
++      "acceptance_claim": false,
++      "classification": "platform_or_explicit_physical_prerequisite",
++      "reason": "Windows ACL route only",
++      "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_windows_rerun_rejects_permissive_target_acl_untouched"
++    },
++    {
++      "acceptance_claim": false,
++      "classification": "platform_or_explicit_physical_prerequisite",
++      "reason": "Windows custody route only",
++      "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_windows_route_bootstraps_and_holds_full_destination_custody"
+     },
+     {
+       "acceptance_claim": false,
