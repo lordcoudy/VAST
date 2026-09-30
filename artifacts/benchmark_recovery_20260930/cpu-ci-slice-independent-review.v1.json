@@ -1,0 +1,60 @@
+{
+  "accepted": false,
+  "artifact_kind": "vast_cpu_ci_slice_independent_source_review_v1",
+  "changes_by_reviewer": "This review writes only its nonaccepted artifact receipt; no four-path implementation edits, staging, commit, workflow launch, host install or workload.",
+  "checks": [
+    "Workflow uses actual PR head/push SHA, pinned official actions, contents:read, pull_request rather than pull_request_target, persist-credentials:false and ephemeral hosted Ubuntu runner. No secret or publication/deployment step is present. PR code is untrusted but receives no elevated repository mutation permission.",
+    "Raw Git blob identity verification covers every tracked path before CPU compilation; final independently streamed size/SHA inventory rejects changes/additions/removals. No source-byte normalization is performed by the runner. Finite165 attributes and Linux initial checkout remain the source-byte contract; clean checkout must pass raw verification.",
+    "Missing build prerequisites, six explicit target build failures and actual unittest failures propagate nonzero. All three explicitly required Linux native regression IDs must be recorded successes; absence or skip is not accepted as a pass. Other hardware/data skips are fully listed.",
+    "AST parsing and Bash syntax checks are explicit limited checks, not invented type/linter/behavior conformance. OpenSpec strict/all/archived validation is separate structure validation. specification_inventory reports behavior_conformance as requiring a reviewed evidence map; it does not infer scenario implementation coverage.",
+    "Original command output files and test runner log, command returncodes/timeouts, before/after inventories and a successful:false report remain available on ordinary failures. always() artifact upload retains available logs; a job cancellation/90min timeout or early installation failure may leave no complete script report and must never be counted as successful CI.",
+    "Dependency pins are copied from the observed frozen host and installed only on the ephemeral CI runner. pip --no-deps plus pip check rejects unresolved dependency consistency; actual version availability and complete hosted execution remain unproven until an original run passes. System apt packages and hosted runner are not benchmark runtime/package authority."
+  ],
+  "disposition": "approved_narrow_CPU_CI_slice_no_blocking_findings_actual_hosted_run_and_final_conformance_pending",
+  "planning_PR_COMMENT": 5901895914,
+  "primary_action_commit_sources": [
+    "https://github.com/actions/checkout/commit/d23441a48e516b6c34aea4fa41551a30e30af803",
+    "https://github.com/actions/setup-python/commit/ece7cb06caefa5fff74198d8649806c4678c61a1",
+    "https://github.com/actions/setup-node/commit/249970729cb0ef3589644e2896645e5dc5ba9c38",
+    "https://github.com/actions/upload-artifact/commit/b7c566a772e6b6bfb58ed0dc250532a479d7789f"
+  ],
+  "publication_ready": false,
+  "residual_gates": [
+    "No hosted workflow was launched or inspected by this review. The parent-reported five Windows report-helper tests are not the Ubuntu CPU build/discovery result.",
+    "Ninety-minute hosted capacity, available17 dependency versions and actual all-discovery behavior must be demonstrated on the final exact commit; do not pre-mark task16.1 complete.",
+    "A green CPU status cannot close final requirement/scenario conformance, GPU/model parity, native pairs, qualification/Q4/full scientific results, storage admission or archive/final approval. The mandatory final conformance evidence map and latest-commit checks remain separate open gates."
+  ],
+  "reviewed_at_utc": "2026-09-30T01:38:43.230684+00:00",
+  "reviewed_files": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/.github/workflows/ci.yml",
+      "relative_path": ".github/workflows/ci.yml",
+      "sha256": "d0b4ef041f76acdb91417b5a93c7bd82f27e87eeb5bc4d0cb91675bc9147bafc",
+      "size_bytes": 2407
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/.ci/requirements.txt",
+      "relative_path": ".ci/requirements.txt",
+      "sha256": "9972a44ffd57d27ff351d2ffc168043d688af6042a4c4a59f4f6c21a77adecef",
+      "size_bytes": 454
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/run_ci_checks.py",
+      "relative_path": "scripts/run_ci_checks.py",
+      "sha256": "4e9c786d7f324a2a90e5a612597eaabf7350f44cb58ad9a367b71f6e55e317e7",
+      "size_bytes": 11765
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_run_ci_checks.py",
+      "relative_path": "tests/test_run_ci_checks.py",
+      "sha256": "4e9c589af87985c2ced011690714c036d13183d0daacb486a6d913d321b0887c",
+      "size_bytes": 2666
+    }
+  ],
+  "reviewed_planning_commit": "b1ad01c09b4e21f542f971b9dc794548245719b0",
+  "reviewer": "/root/adversarial_review",
+  "schema_version": 1,
+  "sha256": "3899a255f03f9dd2a42e00b1c7a593e9b15fa22b7bb323291bf0dba210908c29",
+  "source_parent": "79ff17832cf7293f3ff3321af537f687072a1d52",
+  "tests_workflows_installs_or_builds_run_by_reviewer": []
+}
