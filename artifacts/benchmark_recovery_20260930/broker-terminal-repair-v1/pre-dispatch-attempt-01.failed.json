@@ -1,0 +1,10 @@
+{
+  "repair": "New immutable v2 streams bounded64KiB against each exact original registry size; owned new code remains under16MiB; no source/evidence acceptance limit is raised",
+  "original_script": "capture_focused_v1.py",
+  "classification": "pre-dispatch artifact-capture failure; no tests/workloads launched",
+  "original_output_directory": "attempt-01-red",
+  "tool_chunk": "d1ac58",
+  "error": "A frozen source165 wheel exceeds the invented16MiB per-source metadata ceiling",
+  "exit_code": 1,
+  "source_unchanged": true
+}

@@ -2481,6 +2481,88 @@ def _wait_linux_namespace_init_v3(
         os.close(parent_liveness_descriptor)
 
 
+def _broker_setup_failure_message_v3(stage: str, error: BaseException) -> str:
+    if stage not in {
+        "request_read", "request_validation", "owner_commit", "authorization",
+        "held_invocation", "namespace",
+    }:
+        raise BackendPublicationProcessSupervisorV3Error(
+            "backend publication broker setup stage is invalid"
+        )
+    error_type = type(error).__name__
+    if (
+        not error_type.isascii()
+        or not error_type.isidentifier()
+        or len(error_type) > 96
+    ):
+        raise BackendPublicationProcessSupervisorV3Error(
+            "backend publication broker setup error type is invalid"
+        )
+    errno_value: int | None = None
+    current: BaseException | None = error
+    visited: set[int] = set()
+    for _ in range(8):
+        if current is None or id(current) in visited:
+            break
+        visited.add(id(current))
+        if isinstance(current, OSError) and type(current.errno) is int:
+            if not -(2**31) <= current.errno < 2**31:
+                raise BackendPublicationProcessSupervisorV3Error(
+                    "backend publication broker setup errno is invalid"
+                )
+            errno_value = current.errno
+            break
+        current = current.__cause__ or current.__context__
+    return (
+        "backend publication POSIX broker setup failed: "
+        f"stage={stage}; type={error_type}; errno={errno_value}"
+    )
+
+
+def _emit_broker_terminal_response_v3(
+    frame: bytes, durable_journal: _DurableJournalSpec | None,
+) -> int:
+    try:
+        if durable_journal is None:
+            _write_descriptor_all(1, frame)
+        else:
+            terminal_core = {
+                "schema_version": 1,
+                "artifact_kind": (
+                    "vast_backend_publication_process_terminal_intent_v1"
+                ),
+                "session_sha256": durable_journal.session_sha256,
+                "response_size_bytes": len(frame),
+                "response_sha256": _sha256(frame),
+            }
+            terminal_payload = _canonical_json(
+                {
+                    **terminal_core,
+                    "terminal_intent_sha256": _sha256(
+                        _DURABLE_JOURNAL_DOMAIN
+                        + _canonical_json(terminal_core)
+                    ),
+                }
+            ) + b"\n"
+            _commit_durable_journal_leaf(
+                durable_journal,
+                _DURABLE_JOURNAL_TERMINAL_FILENAME,
+                terminal_payload,
+                label="backend publication durable terminal intent",
+            )
+            # Preserve the separately durable causal barrier and sole writer.
+            time.sleep(_DURABLE_TERMINAL_SETTLE_SECONDS)
+            _commit_durable_journal_leaf(
+                durable_journal,
+                _DURABLE_JOURNAL_RESPONSE_FILENAME,
+                frame,
+                label="backend publication durable terminal response",
+            )
+    except BaseException:
+        return 74
+    return 0
+
+
 def _run_linux_namespace_init_broker_v3(
     command: tuple[str, ...],
     cwd: Path,
@@ -2541,74 +2623,39 @@ def _run_linux_namespace_init_broker_v3(
             )
         except BaseException:
             return 74
-    try:
-        if durable_journal is None:
-            _write_descriptor_all(1, frame)
-        else:
-            terminal_core = {
-                "schema_version": 1,
-                "artifact_kind": (
-                    "vast_backend_publication_process_terminal_intent_v1"
-                ),
-                "session_sha256": durable_journal.session_sha256,
-                "response_size_bytes": len(frame),
-                "response_sha256": _sha256(frame),
-            }
-            terminal_payload = _canonical_json(
-                {
-                    **terminal_core,
-                    "terminal_intent_sha256": _sha256(
-                        _DURABLE_JOURNAL_DOMAIN
-                        + _canonical_json(terminal_core)
-                    ),
-                }
-            ) + b"\n"
-            _commit_durable_journal_leaf(
-                durable_journal,
-                _DURABLE_JOURNAL_TERMINAL_FILENAME,
-                terminal_payload,
-                label="backend publication durable terminal intent",
-            )
-            # Keep the terminal intent as a separately durable causal barrier;
-            # a replacement coordinator can observe it before the response
-            # frame is published, while the broker remains its sole writer.
-            time.sleep(_DURABLE_TERMINAL_SETTLE_SECONDS)
-            _commit_durable_journal_leaf(
-                durable_journal,
-                _DURABLE_JOURNAL_RESPONSE_FILENAME,
-                frame,
-                label="backend publication durable terminal response",
-            )
-    except BaseException:
-        return 74
-    return 0
+    return _emit_broker_terminal_response_v3(frame, durable_journal)
 
 
 def _posix_broker_entry_v3() -> int:
     if os.name == "nt":
         return 78
+    durable_journal: _DurableJournalSpec | None = None
+    stage = "request_read"
     try:
         request = _read_broker_request_frame_v3(0)
+        stage = "request_validation"
         command, cwd, durable_journal = _validate_broker_request(request)
         if durable_journal is not None:
+            stage = "owner_commit"
             _commit_durable_owner(durable_journal)
+            stage = "authorization"
             _wait_for_durable_authorization(durable_journal)
+        stage = "namespace"
         namespace_init_pid, parent_liveness_descriptor = (
             _enter_linux_pid_namespace_v3()
         )
-    except BaseException:
+    except BaseException as error:
         try:
             frame = _broker_response_frame(
                 outcome="failed",
-                message="backend publication POSIX broker setup failed",
+                message=_broker_setup_failure_message_v3(stage, error),
                 observation=None,
                 stdout=b"",
                 stderr=b"",
             )
-            _write_descriptor_all(1, frame)
         except BaseException:
             return 74
-        return 0
+        return _emit_broker_terminal_response_v3(frame, durable_journal)
     if namespace_init_pid != 0:
         return _wait_linux_namespace_init_v3(
             namespace_init_pid,
@@ -2683,31 +2730,37 @@ def _posix_held_broker_entry_production_v3(
 ) -> int:
     if os.name == "nt":
         return 78
+    durable_journal: _DurableJournalSpec | None = None
+    stage = "request_read"
     try:
         request = _read_broker_request_frame_v3(0)
+        stage = "request_validation"
         command, cwd, durable_journal = _validate_broker_request(request)
         if durable_journal is not None:
+            stage = "owner_commit"
             _commit_durable_owner(durable_journal)
+            stage = "authorization"
             _wait_for_durable_authorization(durable_journal)
+        stage = "held_invocation"
         physical_command, physical_cwd, inherited_descriptors = (
             _held_physical_invocation_v3(command, cwd, descriptors)
         )
+        stage = "namespace"
         namespace_init_pid, parent_liveness_descriptor = (
             _enter_linux_pid_namespace_v3()
         )
-    except BaseException:
+    except BaseException as error:
         try:
             frame = _broker_response_frame(
                 outcome="failed",
-                message="backend publication POSIX broker setup failed",
+                message=_broker_setup_failure_message_v3(stage, error),
                 observation=None,
                 stdout=b"",
                 stderr=b"",
             )
-            _write_descriptor_all(1, frame)
         except BaseException:
             return 74
-        return 0
+        return _emit_broker_terminal_response_v3(frame, durable_journal)
     if namespace_init_pid != 0:
         return _wait_linux_namespace_init_v3(
             namespace_init_pid,
@@ -3275,7 +3328,31 @@ def _run_backend_publication_posix_broker_v3(
                 "backend publication POSIX broker did not reach quiescence"
             )
         if durable_journal is not None:
-            return wait_journal_result()
+            result = journal_result_if_present()
+            if result is None:
+                states = []
+                for label, name in (
+                    ("request", _DURABLE_JOURNAL_REQUEST_FILENAME),
+                    ("owner", _DURABLE_JOURNAL_OWNER_FILENAME),
+                    ("intent", _DURABLE_JOURNAL_TERMINAL_FILENAME),
+                    ("response", _DURABLE_JOURNAL_RESPONSE_FILENAME),
+                ):
+                    try:
+                        (durable_journal.directory / name).lstat()
+                    except FileNotFoundError:
+                        state = "missing"
+                    except OSError:
+                        state = "unavailable"
+                    else:
+                        state = "present"
+                    states.append(f"{label}={state}")
+                raise BackendPublicationProcessSupervisorV3Error(
+                    "durable broker exited quiescent without a terminal response: "
+                    + "; ".join(states),
+                    stdout=readers[0].payload(),
+                    stderr=readers[1].payload(),
+                )
+            return result
         return _parse_broker_response_frame(
             readers[0].payload(), command=command, cwd=cwd
         )

@@ -1,0 +1,64 @@
+{
+  "all9_allowlists": {
+    "deploy/analytics_execution/publication/openvino-source-allowlist.txt": {
+      "contains_owned_module": false,
+      "sha256": "b1a42fda639e43e61d1d3ab20161f9a294754d9157b0b54be23de02a5e62e3e4",
+      "size_bytes": 124
+    },
+    "deploy/analytics_execution/publication/tensorrt-source-allowlist.txt": {
+      "contains_owned_module": false,
+      "sha256": "6fefe6f415200d4a10025e3efb9e28fc22737dee84ca7cb5e40be660b8667722",
+      "size_bytes": 172
+    },
+    "deploy/deepstream/checkpoint/runtime-source-allowlist.txt": {
+      "contains_owned_module": false,
+      "sha256": "f67847932047a8668af196732b626ebb15c02291f0896db190846791c48e2616",
+      "size_bytes": 3656
+    },
+    "deploy/gstreamer_custom/publication/runtime-source-allowlist.txt": {
+      "contains_owned_module": false,
+      "sha256": "691ea8a474fe1ce2653cf40246f3bd9ea3c0c2d9ea62c1f86c18825364f9e538",
+      "size_bytes": 3414
+    },
+    "deploy/native_gst_probe/publication/deepstream-source-allowlist.txt": {
+      "contains_owned_module": false,
+      "sha256": "9a25d25c340f7c0a5e920c8700bb75fbfbf891a6d7fecc3e68363e34ea9dca28",
+      "size_bytes": 562
+    },
+    "deploy/native_gst_probe/publication/openvino-source-allowlist.txt": {
+      "contains_owned_module": false,
+      "sha256": "4fbb83d112fff52b8a8a85e3cd48decb4498705328c74b289eee834119b50f05",
+      "size_bytes": 894
+    },
+    "deploy/native_gst_probe/publication/savant-source-allowlist.txt": {
+      "contains_owned_module": false,
+      "sha256": "78416b85bc9434312548da1d5dd14b008406813ea13b8a33b212d432d5bce5c0",
+      "size_bytes": 621
+    },
+    "deploy/openvino_gva/publication/runtime-source-allowlist.txt": {
+      "contains_owned_module": false,
+      "sha256": "e042a9423a8e28b3caaba0bd18a6e6e2dfeea367a293dff6edb4704f9f97e590",
+      "size_bytes": 3333
+    },
+    "deploy/savant/publication/runtime-source-allowlist.txt": {
+      "contains_owned_module": false,
+      "sha256": "7bcd8019d027682d1b8040aa5257aa8e476d6a629e943c628deb7b460b2d9bc6",
+      "size_bytes": 3717
+    }
+  },
+  "dependent_source": "backend_publication_output_transaction_production_v3 imports owned module; actual full production source/broker descriptors and CI source manifest must be renewed after repair",
+  "host78_member": false,
+  "owned_module": {
+    "CRLF": 0,
+    "path": "scripts/backend_publication_process_supervisor_v3.py",
+    "sha256": "57c1391feda3c21ff31d4408b6fa60a7643ad6aa844bd65422aa8d0ef85bbef5",
+    "size_bytes": 121414
+  },
+  "registry_sha256": "6199d98a4496a7c54d5a45ff80687786f5bf7ad43c90f0d2a1129cf2ba007c31",
+  "review_reference": "https://github.com/lordcoudy/VAST/pull/2#issuecomment-5906191857",
+  "reviewed_planning_commit": "9c514a60d644c8c3ecd637eb83185a59aa2a5e01",
+  "schema_version": 1,
+  "scope": "pre-edit membership audit only; no grant or image inspection",
+  "source165_member": false,
+  "source_image_scope": "No owned module occurs in current165/host78 or nine runtime/native/worker source allowlists. Historical scoped image receipts cannot grant repaired full production broker authority."
+}

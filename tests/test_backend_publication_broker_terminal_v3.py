@@ -1,0 +1,297 @@
+"""Real journal/child regressions; injected errno is a unit fixture, not host policy."""
+from __future__ import annotations
+
+import hashlib
+import json
+import os
+from pathlib import Path
+import signal
+import subprocess
+import sys
+import tempfile
+import time
+import unittest
+
+ROOT = Path(__file__).resolve().parents[1]
+for directory in (ROOT / "scripts", ROOT / "tests"):
+    if str(directory) not in sys.path:
+        sys.path.insert(0, str(directory))
+import backend_publication_process_supervisor_v3 as supervisor
+import test_backend_publication_process_supervisor_v3 as existing_fixture
+
+# Set only by the bounded focused evidence driver; ordinary discovery is temporary.
+EVIDENCE_DIR: Path | None = None
+
+
+@unittest.skipUnless(sys.platform.startswith("linux"), "real Linux proc/FD broker protocol")
+class BackendPublicationBrokerTerminalV3Tests(unittest.TestCase):
+    def setUp(self):
+        self.assertEqual(supervisor._PROCESS_TIMEOUT_MS, 600_000)
+        self.assertEqual(supervisor._POSIX_BROKER_CLEANUP_MARGIN_MS, 15_000)
+        if EVIDENCE_DIR is None:
+            temporary = tempfile.TemporaryDirectory()
+            self.addCleanup(temporary.cleanup)
+            self.root = Path(temporary.name).resolve(strict=True)
+        else:
+            self.root = EVIDENCE_DIR / self._testMethodName
+            self.root.mkdir(mode=0o700)
+        self.command, self.cwd, self.output = existing_fixture.BackendPublicationProcessSupervisorV3Tests()._invocation(
+            self.root, {"synthetic_process_fixture_mode": "success"}
+        )
+        self.journal = self.root / "journal"
+        self.journal.mkdir()
+        (self.root / "authorization").mkdir()
+        self.authorization = self.root / "authorization" / "authorization.bin"
+        self.authorization_bytes = b"unit-fixture-original-authorization\n"
+        self.spec = supervisor._DurableJournalSpec(
+            self.journal, self.authorization,
+            hashlib.sha256(self.authorization_bytes).hexdigest(), "a" * 64,
+        )
+
+    def _child(self, code, *, stdin=b"", timeout=8):
+        argv = [str(Path(sys.executable).resolve(strict=True)), "-I", "-B", "-c", code]
+        begun = time.monotonic()
+        process = subprocess.Popen(argv, cwd=self.root, stdin=subprocess.PIPE,
+                                   stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                   start_new_session=True)
+        try:
+            original_stat = Path(f"/proc/{process.pid}/stat").read_text()
+            original_session = os.getsid(process.pid)
+        except ProcessLookupError:
+            original_stat, original_session = None, None
+        timed_out = False
+        try:
+            stdout, stderr = process.communicate(stdin, timeout=timeout)
+        except subprocess.TimeoutExpired:
+            timed_out = True
+            os.killpg(process.pid, signal.SIGKILL)
+            stdout, stderr = process.communicate(timeout=5)
+        self.assertLessEqual(len(stdout), 64 * 1024)
+        self.assertLessEqual(len(stderr), 64 * 1024)
+        (self.root / "child.stdout").write_bytes(stdout)
+        (self.root / "child.stderr").write_bytes(stderr)
+        terminal = {
+            "classification": "original isolated unit-fixture child; no model/hardware acceptance",
+            "argv": argv, "pid": process.pid, "original_proc_stat": original_stat,
+            "original_session": original_session, "returncode": process.returncode,
+            "timed_out": timed_out, "elapsed_s": time.monotonic() - begun,
+            "original_process_absent": not Path(f"/proc/{process.pid}").exists(),
+            "stdout_size_bytes": len(stdout), "stdout_sha256": hashlib.sha256(stdout).hexdigest(),
+            "stderr_size_bytes": len(stderr), "stderr_sha256": hashlib.sha256(stderr).hexdigest(),
+        }
+        (self.root / "child-terminal.json").write_text(json.dumps(terminal, sort_keys=True) + "\n")
+        self.assertTrue(terminal["original_process_absent"])
+        return process.returncode, stdout, stderr, timed_out
+
+    def _entry(self, *, held=False, fault=True, malformed=False,
+               authorization_bytes=None, invalid_held=False, invalid_request=False):
+        self.authorization.write_bytes(
+            self.authorization_bytes if authorization_bytes is None else authorization_bytes
+        )
+        request = b"bad" if malformed else supervisor._broker_request_bytes(
+            self.command, self.cwd, durable_journal=self.spec
+        )
+        if invalid_request:
+            # Keep original framing, but invalidate the actual request's hash.
+            request = request.replace(self.spec.session_sha256.encode(), b"b" * 64, 1)
+        (self.root / "original-request.frame").write_bytes(request)
+        code = f"""
+import errno,json,os,pathlib,sys,time
+sys.path.insert(0,{str(ROOT / 'scripts')!r})
+import backend_publication_process_supervisor_v3 as s
+root=pathlib.Path({str(self.root)!r})
+real_commit=s._commit_durable_journal_leaf
+real_sleep=s.time.sleep
+def event(value):
+ with (root/'emission-events.jsonl').open('ab') as f:
+  f.write((json.dumps(value,sort_keys=True)+'\\n').encode())
+def commit(*args,**kwargs):
+ event({{'event':'commit_started','name':args[1]}})
+ result=real_commit(*args,**kwargs)
+ event({{'event':'commit_completed','name':args[1]}})
+ return result
+def sleep(seconds):
+ if seconds==s._DURABLE_TERMINAL_SETTLE_SECONDS:event({{'event':'settle','seconds':seconds}})
+ real_sleep(seconds)
+s._commit_durable_journal_leaf=commit
+s.time.sleep=sleep
+if {fault!r}:
+ def denied():raise PermissionError(errno.EPERM,'explicit injected unit-fixture errno')
+ s._enter_linux_pid_namespace_v3=denied
+ def deny_external(event,args):
+  if event in {{'subprocess.Popen','os.fork','os.unshare','socket.connect'}}:raise AssertionError('setup failure launched external work')
+ sys.addaudithook(deny_external)
+fds=[]
+try:
+ if {held!r}:
+  for path in ({self.command[0]!r},{self.command[1]!r},{str(self.cwd)!r}):fds.append(os.open(path,os.O_RDONLY|os.O_CLOEXEC))
+  if {invalid_held!r}:fds[1],fds[2]=fds[2],fds[1]
+  result=s._posix_held_broker_entry_production_v3(tuple(fds))
+ else:result=s._posix_broker_entry_v3()
+finally:
+ for fd in fds:os.close(fd)
+raise SystemExit(result)
+"""
+        return self._child(code, stdin=request)
+
+    def _failed_durable_response(self):
+        response = supervisor._load_durable_journal_leaf(
+            self.spec, supervisor._DURABLE_JOURNAL_RESPONSE_FILENAME,
+            limit=64 * 1024, required=True,
+        )
+        intent_raw, _ = supervisor._load_durable_journal_leaf(
+            self.spec, supervisor._DURABLE_JOURNAL_TERMINAL_FILENAME,
+            limit=64 * 1024, required=True,
+        )
+        intent = json.loads(intent_raw)
+        self.assertEqual(intent["session_sha256"], self.spec.session_sha256)
+        self.assertEqual(intent["response_sha256"], hashlib.sha256(response[0]).hexdigest())
+        self.assertEqual(intent["response_size_bytes"], len(response[0]))
+        unsigned = {k: v for k, v in intent.items() if k != "terminal_intent_sha256"}
+        self.assertEqual(intent["terminal_intent_sha256"], supervisor._sha256(
+            supervisor._DURABLE_JOURNAL_DOMAIN + supervisor._canonical_json(unsigned)))
+        with self.assertRaises(supervisor.BackendPublicationProcessSupervisorV3Error) as raised:
+            supervisor._parse_broker_response_frame(response[0], command=self.command, cwd=self.cwd)
+        self.assertIsNone(raised.exception.observation)
+        self.assertIn("stage=namespace", str(raised.exception))
+        self.assertIn("type=PermissionError", str(raised.exception))
+        self.assertIn("errno=1", str(raised.exception))
+        events = [json.loads(line) for line in (self.root / "emission-events.jsonl").read_text().splitlines()]
+        relevant = [e for e in events if e.get("name") in {
+            supervisor._DURABLE_JOURNAL_TERMINAL_FILENAME, supervisor._DURABLE_JOURNAL_RESPONSE_FILENAME
+        } or e["event"] == "settle"]
+        self.assertEqual([e["event"] for e in relevant],
+                         ["commit_started", "commit_completed", "settle", "commit_started", "commit_completed"])
+        self.assertEqual(relevant[2]["seconds"], 0.2)
+        owner_pid, _, owner_session = supervisor._validate_durable_owner(self.spec)
+        child = json.loads((self.root / "child-terminal.json").read_text())
+        self.assertEqual(owner_pid, child["pid"])
+        self.assertEqual(owner_session, child["original_session"])
+        self.assertEqual(self.authorization.read_bytes(), self.authorization_bytes)
+        self.assertFalse((self.output / "latency_samples.json").exists())
+
+    def test_normal_early_setup_failure_commits_original_failed_terminal(self):
+        rc, stdout, stderr, timed_out = self._entry()
+        self.assertFalse(timed_out)
+        self.assertEqual((rc, stdout, stderr), (0, b"", b""))
+        self._failed_durable_response()
+
+    def test_held_early_setup_failure_commits_original_failed_terminal(self):
+        rc, stdout, stderr, timed_out = self._entry(held=True)
+        self.assertFalse(timed_out)
+        self.assertEqual((rc, stdout, stderr), (0, b"", b""))
+        self._failed_durable_response()
+
+    def test_invalid_request_remains_failed_stdout_without_durable_authority(self):
+        rc, stdout, stderr, timed_out = self._entry(malformed=True)
+        self.assertEqual((rc, stderr, timed_out), (0, b"", False))
+        self.assertEqual(list(self.journal.iterdir()), [])
+        with self.assertRaisesRegex(supervisor.BackendPublicationProcessSupervisorV3Error, "stage=request_read"):
+            supervisor._parse_broker_response_frame(stdout, command=self.command, cwd=self.cwd)
+
+    def test_hash_invalid_request_cannot_create_durable_authority(self):
+        rc, stdout, stderr, timed_out = self._entry(invalid_request=True)
+        self.assertEqual((rc, stderr, timed_out), (0, b"", False))
+        self.assertEqual(list(self.journal.iterdir()), [])
+        with self.assertRaisesRegex(supervisor.BackendPublicationProcessSupervisorV3Error,
+                                    "stage=request_validation"):
+            supervisor._parse_broker_response_frame(stdout, command=self.command, cwd=self.cwd)
+
+    def test_actual_authorization_drift_is_failed_terminal_and_launches_no_child(self):
+        wrong = b"foreign-unit-authorization\n"
+        rc, stdout, stderr, timed_out = self._entry(authorization_bytes=wrong)
+        self.assertEqual((rc, stdout, stderr, timed_out), (0, b"", b"", False))
+        raw = (self.journal / supervisor._DURABLE_JOURNAL_RESPONSE_FILENAME).read_bytes()
+        with self.assertRaisesRegex(supervisor.BackendPublicationProcessSupervisorV3Error,
+                                    "stage=authorization") as raised:
+            supervisor._parse_broker_response_frame(raw, command=self.command, cwd=self.cwd)
+        self.assertIsNone(raised.exception.observation)
+        self.assertEqual(self.authorization.read_bytes(), wrong)
+        self.assertFalse((self.output / "latency_samples.json").exists())
+
+    def test_actual_held_descriptor_mismatch_retains_failed_custody(self):
+        rc, stdout, stderr, timed_out = self._entry(held=True, invalid_held=True)
+        self.assertEqual((rc, stdout, stderr, timed_out), (0, b"", b"", False))
+        raw = (self.journal / supervisor._DURABLE_JOURNAL_RESPONSE_FILENAME).read_bytes()
+        with self.assertRaisesRegex(supervisor.BackendPublicationProcessSupervisorV3Error,
+                                    "stage=held_invocation") as raised:
+            supervisor._parse_broker_response_frame(raw, command=self.command, cwd=self.cwd)
+        self.assertIsNone(raised.exception.observation)
+        self.assertFalse((self.output / "latency_samples.json").exists())
+
+    def test_conflicting_terminal_intent_returns74_without_overwrite(self):
+        target = self.journal / supervisor._DURABLE_JOURNAL_TERMINAL_FILENAME
+        target.write_bytes(b"original-conflict\n")
+        rc, stdout, stderr, timed_out = self._entry()
+        self.assertEqual((rc, stdout, stderr, timed_out), (74, b"", b"", False))
+        self.assertEqual(target.read_bytes(), b"original-conflict\n")
+        self.assertFalse((self.journal / supervisor._DURABLE_JOURNAL_RESPONSE_FILENAME).exists())
+
+    def test_conflicting_response_preserves_actual_terminal_prefix_and_returns74(self):
+        target = self.journal / supervisor._DURABLE_JOURNAL_RESPONSE_FILENAME
+        target.write_bytes(b"original-response-conflict\n")
+        rc, stdout, stderr, timed_out = self._entry(held=True)
+        self.assertEqual((rc, stdout, stderr, timed_out), (74, b"", b"", False))
+        self.assertEqual(target.read_bytes(), b"original-response-conflict\n")
+        intent = json.loads((self.journal / supervisor._DURABLE_JOURNAL_TERMINAL_FILENAME).read_bytes())
+        self.assertNotEqual(intent["response_sha256"], hashlib.sha256(target.read_bytes()).hexdigest())
+
+    def test_original_namespace_completion_still_emits_valid_durable_result(self):
+        rc, stdout, stderr, timed_out = self._entry(fault=False)
+        self.assertEqual((rc, stdout, stderr, timed_out), (0, b"", b"", False))
+        raw = (self.journal / supervisor._DURABLE_JOURNAL_RESPONSE_FILENAME).read_bytes()
+        result = supervisor._parse_broker_response_frame(raw, command=self.command, cwd=self.cwd)
+        self.assertEqual(result.observation["status"], "succeeded")
+        self.assertIs(result.observation["publication_execution_authorized"], False)
+        self.assertTrue((self.output / "latency_samples.json").exists())
+
+    def test_quiescent_failed_stdout_is_not_durable_authority_and_fails_promptly(self):
+        code = f"""
+import hashlib,json,pathlib,subprocess,sys
+sys.path.insert(0,{str(ROOT / 'scripts')!r})
+import backend_publication_process_supervisor_v3 as s
+root=pathlib.Path({str(self.root)!r})
+real_popen=s.subprocess.Popen
+legacy='''import pathlib,sys,traceback\nsys.excepthook=lambda t,e,b:(pathlib.Path({str(self.root)!r})/'legacy-child.error').write_text(''.join(traceback.format_exception(t,e,b)))\nsys.path.insert(0,{str(ROOT / 'scripts')!r})\nimport backend_publication_process_supervisor_v3 as s\nrequest=s._read_broker_request_frame_v3(0)\ncommand,cwd,journal=s._validate_broker_request(request)\ns._commit_durable_owner(journal)\ns._wait_for_durable_authorization(journal)\nframe=s._broker_response_frame(outcome='failed',message='explicit legacy stdout-only unit fixture',observation=None,stdout=b'',stderr=b'')\n(pathlib.Path({str(self.root)!r})/'legacy-original.stdout.frame').write_bytes(frame)\ns._write_descriptor_all(1,frame)\n'''
+def redirect(args,**kwargs):
+ assert args[2]==s._POSIX_BROKER_MODE
+ return real_popen([args[0],'-I','-B','-c',legacy],**kwargs)
+s.subprocess.Popen=redirect
+def barrier():
+ with pathlib.Path({str(self.authorization)!r}).open('xb') as f:f.write({self.authorization_bytes!r})
+try:
+ s._run_backend_publication_posix_broker_v3({self.command!r},pathlib.Path({str(self.cwd)!r}),
+  durable_journal_directory=root/'journal',launch_authorization_path=pathlib.Path({str(self.authorization)!r}),
+  launch_authorization_sha256={self.spec.authorization_sha256!r},launch_barrier=barrier)
+except s.BackendPublicationProcessSupervisorV3Error as error:
+ (root/'parent-error.stdout').write_bytes(error.stdout)
+ (root/'parent-error.stderr').write_bytes(error.stderr)
+ (root/'parent-error.json').write_text(json.dumps({{'message':str(error),'observation':error.observation}}))
+else:raise AssertionError('stdout-only broker was accepted')
+"""
+        rc, stdout, stderr, timed_out = self._child(code)
+        self.assertEqual((rc, stdout, stderr, timed_out), (0, b"", b"", False))
+        error = json.loads((self.root / "parent-error.json").read_text())
+        self.assertIn("quiescent", error["message"])
+        self.assertIn("response=missing", error["message"])
+        self.assertIsNone(error["observation"])
+        self.assertEqual((self.root / "parent-error.stdout").read_bytes(),
+                         (self.root / "legacy-original.stdout.frame").read_bytes())
+        self.assertFalse((self.journal / supervisor._DURABLE_JOURNAL_RESPONSE_FILENAME).exists())
+
+    def test_setup_diagnostic_is_bounded_and_uses_actual_cause_errno(self):
+        try:
+            raise PermissionError(1, "fixture-secret" * 1000)
+        except PermissionError as cause:
+            try:
+                raise supervisor.BackendPublicationProcessSupervisorV3Error("wrapped") from cause
+            except supervisor.BackendPublicationProcessSupervisorV3Error as error:
+                text = supervisor._broker_setup_failure_message_v3("namespace", error)
+        self.assertLessEqual(len(text), 256)
+        self.assertIn("errno=1", text)
+        self.assertNotIn("fixture-secret", text)
+        self.assertIn("type=BackendPublicationProcessSupervisorV3Error", text)
+
+
+if __name__ == "__main__":
+    unittest.main()
