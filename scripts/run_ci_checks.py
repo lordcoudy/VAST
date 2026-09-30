@@ -3,10 +3,12 @@ from __future__ import annotations
 
 import argparse
 import ast
+import faulthandler
 import hashlib
 import importlib.metadata
 import json
 import os
+import platform
 from pathlib import Path
 import signal
 import subprocess
@@ -111,10 +113,118 @@ class RecordedResult(unittest.TextTestResult):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.successes: list[str] = []
+        self.started: dict[str, float] = {}
+        self.outcomes: dict[str, str] = {}
+
+    def event(self, name, test, **facts):
+        self.stream.writeln("\n" + json.dumps({"event": name, "test_id": test.id(),
+                                              "monotonic_ns": time.monotonic_ns(), **facts},
+                                             sort_keys=True))
+        self.stream.flush()
+
+    def startTest(self, test):
+        self.started[test.id()] = time.monotonic()
+        self.event("test_started", test)
+        super().startTest(test)
+        self.stream.flush()
+
+    def stopTest(self, test):
+        super().stopTest(test)
+        self.event("test_terminal", test, outcome=self.outcomes.get(test.id(), "unknown"),
+                   elapsed_s=time.monotonic() - self.started.pop(test.id()))
+
+    def immediate_trace(self, event, test, trace):
+        self.event(event, test)
+        self.stream.writeln(trace)
+        self.stream.flush()
 
     def addSuccess(self, test):
         self.successes.append(test.id())
+        self.outcomes.setdefault(test.id(), "success")
         super().addSuccess(test)
+
+    def addFailure(self, test, err):
+        super().addFailure(test, err)
+        self.outcomes.setdefault(test.id(), "failure")
+        self.immediate_trace("test_failure", test, self.failures[-1][1])
+
+    def addError(self, test, err):
+        super().addError(test, err)
+        self.outcomes[test.id()] = "error"
+        self.immediate_trace("test_error", test, self.errors[-1][1])
+
+    def addSubTest(self, test, subtest, err):
+        super().addSubTest(test, subtest, err)
+        if err is not None:
+            failure = issubclass(err[0], test.failureException)
+            if failure:
+                self.outcomes.setdefault(test.id(), "failure")
+            else:
+                self.outcomes[test.id()] = "error"
+            trace = (self.failures if failure else self.errors)[-1][1]
+            self.immediate_trace("subtest_failure" if failure else "subtest_error", subtest, trace)
+
+    def addSkip(self, test, reason):
+        self.outcomes.setdefault(test.id(), "skip")
+        super().addSkip(test, reason)
+
+    def addExpectedFailure(self, test, err):
+        super().addExpectedFailure(test, err)
+        self.outcomes.setdefault(test.id(), "expected_failure")
+        self.immediate_trace("test_expected_failure", test, self.expectedFailures[-1][1])
+
+    def addUnexpectedSuccess(self, test):
+        self.outcomes[test.id()] = "unexpected_success"
+        super().addUnexpectedSuccess(test)
+
+
+def host_facts() -> dict:
+    """Diagnostic observation only; no environment dump or namespace probe."""
+    executable = Path(sys.executable).resolve(strict=True)
+    info = executable.stat()
+    facts = {
+        "python": sys.version, "executable": sys.executable,
+        "executable_realpath": str(executable),
+        "executable_stat": {name: getattr(info, name) for name in
+                            ("st_dev", "st_ino", "st_mode", "st_nlink", "st_size", "st_uid", "st_gid")},
+        "uid": os.getuid() if hasattr(os, "getuid") else None,
+        "gid": os.getgid() if hasattr(os, "getgid") else None,
+        "kernel_release": platform.release(),
+        "api_available": {name: hasattr(os, name) for name in
+                          ("unshare", "fork", "pidfd_open", "CLONE_NEWUSER", "CLONE_NEWNS", "CLONE_NEWPID")},
+        "process_status": {}, "namespace_sysctls": {},
+    }
+    try:
+        with Path("/proc/self/status").open("rb") as stream:
+            raw = stream.read(16 * 1024 + 1)
+        if len(raw) > 16 * 1024:
+            raise ValueError("process status diagnostic exceeds 16KiB")
+        selected = {"CapInh", "CapPrm", "CapEff", "CapBnd", "CapAmb", "NoNewPrivs", "Seccomp"}
+        facts["process_status"] = {key: value.strip() for line in raw.decode("ascii").splitlines()
+                                   if ":" in line for key, value in [line.split(":", 1)] if key in selected}
+    except (OSError, ValueError) as exc:
+        facts["process_status"] = {"unavailable": f"{type(exc).__name__}: {exc}"}
+    for name in ("unprivileged_userns_clone", "apparmor_restrict_unprivileged_userns", "max_user_namespaces"):
+        path = Path("/proc/sys") / ("user" if name == "max_user_namespaces" else "kernel") / name
+        try:
+            with path.open("rb") as stream:
+                raw = stream.read(129)
+            if len(raw) > 128 or not raw.strip().isdigit():
+                raise ValueError("namespace sysctl diagnostic is not a bounded integer")
+            facts["namespace_sysctls"][name] = {"path": str(path), "value": raw.decode("ascii").strip()}
+        except (OSError, ValueError) as exc:
+            facts["namespace_sysctls"][name] = {"path": str(path), "unavailable": f"{type(exc).__name__}: {exc}"}
+    if len((json.dumps(facts, indent=2, sort_keys=True) + "\n").encode("utf8")) > 16 * 1024:
+        raise RuntimeError("host facts diagnostic exceeds 16KiB")
+    return facts
+
+
+def run_test_suite(suite, stream, stacks, stack_interval=60):
+    faulthandler.dump_traceback_later(stack_interval, repeat=True, file=stacks)
+    try:
+        return unittest.TextTestRunner(stream=stream, verbosity=2, resultclass=RecordedResult).run(suite)
+    finally:
+        faulthandler.cancel_dump_traceback_later()
 
 
 def suite_report(result: RecordedResult) -> dict:
@@ -220,6 +330,9 @@ def main() -> int:
                 checked_bash.append(relative)
         report["python_syntax"] = checked_python
         report["bash_syntax"] = checked_bash
+        command([sys.executable, "-I", "-B", str(ROOT / "scripts/prepare_ci_model_assets.py"),
+                 "--output-dir", str(output / "model-acquisition")],
+                output, "model-assets", 590)
         build = output / "build"
         command(["cmake", "-S", str(ROOT), "-B", str(build),
                  "-DCMAKE_BUILD_TYPE=Release", "-DVAST_BUILD_CUSTOM_CUDA_QT=OFF",
@@ -229,10 +342,12 @@ def main() -> int:
         command(["cmake", "--build", str(build), "--parallel", "2", "--target", *TARGETS],
                 output, "native-build", 600)
         report["built_targets"] = TARGETS
+        write_json(output / "host-facts.original.json", host_facts())
         suite = unittest.defaultTestLoader.discover(str(ROOT / "tests"), pattern="test_*.py")
-        with (output / "unittest.original.log").open("w", encoding="utf-8") as stream:
-            result = unittest.TextTestRunner(stream=stream, verbosity=2,
-                                            resultclass=RecordedResult).run(suite)
+        with (output / "unittest.original.log").open("w", encoding="utf-8") as stream, (
+            output / "unittest-stacks.original.log"
+        ).open("w", encoding="utf-8") as stacks:
+            result = run_test_suite(suite, stream, stacks)
         report["unittest"] = suite_report(result)
         if not report["unittest"]["successful"]:
             raise RuntimeError("test discovery failed or a required native regression did not pass")

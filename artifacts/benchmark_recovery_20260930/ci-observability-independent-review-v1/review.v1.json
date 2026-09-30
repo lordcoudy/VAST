@@ -1,0 +1,81 @@
+{
+  "accepted": false,
+  "artifact_kind": "vast_independent_ci_observability_review_v1",
+  "closure_scope": {
+    "audit": {
+      "path": "artifacts/benchmark_recovery_20260930/packaging-source-rollforward.v4.json",
+      "sha256": "6199d98a4496a7c54d5a45ff80687786f5bf7ad43c90f0d2a1129cf2ba007c31",
+      "size_bytes": 281341
+    },
+    "both_reviewed_paths_absent_from_both_exact_inventories": true,
+    "host_source_count": 78,
+    "manifest_source_count": 165,
+    "scope_limit": "Membership check does not certify current entire closures or future CI helper wiring."
+  },
+  "disposition": "Original logging production source has no additional blocker; original in-process timer regression is blocked pending isolated-child repair and fresh stable owner receipt.",
+  "evidence_limits": {
+    "full_suite_run_by_reviewer": false,
+    "hardware_model_benchmark_acceptance": false,
+    "host_wsl_launcher_pid": 57556,
+    "hosted_ci_green": false,
+    "linux_test_pid": "not_observed",
+    "original_elapsed_s": 0.3210582999745384,
+    "original_returncode": 0,
+    "reported_focused_tests": 11,
+    "stderr": "Original mixed UTF16 WSL warning and UTF8 test log hashed unchanged; no normalization."
+  },
+  "findings": [
+    {
+      "finding": "Original periodic-stack regression invokes run_test_suite in the enclosing full CI process. The process-wide faulthandler timer replaces the outer 60-second timer and its finally cancels it, leaving later full-suite tests without periodic stacks. The focused eleven-test run cannot demonstrate outer-run continuation.",
+      "line": 137,
+      "minimal_repair": "Isolate this genuine timer regression in a bounded original child process; retain the full suite selection and success criteria.",
+      "path": "tests/test_run_ci_checks.py",
+      "priority": "blocking",
+      "repair_observed": "Owner saved subprocess-only regression after finding. Later evolving source not frozen or approved by this receipt."
+    }
+  ],
+  "observed_at_utc": "2026-09-30T04:55:34.070408+00:00",
+  "original_focused_evidence": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-observability-focused-tests-v1/dispatch.v1.json",
+      "sha256": "8804047ce481e1098d5661b99126629271680670ef60a347a02426fe298b9643",
+      "size_bytes": 667
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-observability-focused-tests-v1/terminal.v1.json",
+      "sha256": "e9b60789301c8f8a6763af4e09799d22c62e069f769b9236fb9ce4ea6015a35c",
+      "size_bytes": 846
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-observability-focused-tests-v1/stdout.original.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-observability-focused-tests-v1/stderr.original.log",
+      "sha256": "7c563bf5e510f28139d21ad582d626dd67f9fbf16fe595b3fa2d035f00b05b4a",
+      "size_bytes": 2084
+    }
+  ],
+  "original_source_pins_verified_before_owner_repair": {
+    "scripts/run_ci_checks.py": {
+      "sha256": "c401be3eff6a8adf74be6584faf2c6ad9add41a167922152350ce8a43c6d123d",
+      "size_bytes": 17064
+    },
+    "tests/test_run_ci_checks.py": {
+      "sha256": "9a1b22cdd2eac64268861a3f5e5de10f8414d19c66cc55ddb5eb1db5b0954b67",
+      "size_bytes": 6874
+    }
+  },
+  "planning_commit": "a84e0e734678aa9ecc9e0a4f16dcc3036c5c8f02",
+  "publication_ready": false,
+  "review_scope": "Original two-file logging slice only; actual source/diff and saved focused evidence read, no tests or workload launched by reviewer. Owner edited these files during review; later asset/job wiring is expressly outside this receipt.",
+  "reviewed_behavior": [
+    "Immediate original test/subtest failure and error traces are flushed; actual callback start/terminal outcomes remain distinct.",
+    "Expected failure, unexpected success and skip report criteria retain original unittest meaning; three required native successes and full discovery selection remain mandatory.",
+    "Host facts are fixed whitelisted interpreter/kernel/UID/GID/proc capability/sysctl observations with a 16-KiB serialized gate, without environment dump or namespace operation.",
+    "Main original stack timer is 60 seconds; discovery imports occur before this timer, so this slice does not claim periodic import/discovery stacks."
+  ],
+  "reviewer": "adversarial_review",
+  "schema_version": 1
+}

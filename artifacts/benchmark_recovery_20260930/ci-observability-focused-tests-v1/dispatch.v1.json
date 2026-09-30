@@ -1,0 +1,25 @@
+{
+  "argv": [
+    "wsl.exe",
+    "-d",
+    "Ubuntu",
+    "--exec",
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests",
+    "-p",
+    "test_run_ci_checks.py",
+    "-v"
+  ],
+  "fixture_tests_only": true,
+  "hardware_acceptance": false,
+  "source_before": {
+    "scripts/run_ci_checks.py": "c401be3eff6a8adf74be6584faf2c6ad9add41a167922152350ce8a43c6d123d",
+    "tests/test_run_ci_checks.py": "9a1b22cdd2eac64268861a3f5e5de10f8414d19c66cc55ddb5eb1db5b0954b67"
+  }
+}

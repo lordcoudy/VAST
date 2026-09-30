@@ -1,0 +1,24 @@
+{
+  "accepted": false,
+  "elapsed_s": 0.3691596999997273,
+  "hardware_acceptance": false,
+  "host_wsl_launcher_pid": 30268,
+  "linux_test_pid": "not_observed",
+  "returncode": 0,
+  "source_after": {
+    ".github/workflows/ci.yml": "ca182d794d66a14091cf64d95474e3359efa0d8490692086505bfa11a258aba2",
+    "scripts/run_ci_checks.py": "61c356c6bfae8d808ff4db1becee7385cd5ccebc9505b9a482e691c1a89d56ea",
+    "scripts/run_ci_host_diagnostics.py": "26e7eb57d77ad9c09417ea0cf11fbfa87bfec9decac465a527fcaf06a200f797",
+    "tests/test_run_ci_checks.py": "c96381a8ceea61844d403104d68cc17192ba1007b2ee9a04503195bdae4b05e2"
+  },
+  "source_before": {
+    ".github/workflows/ci.yml": "ca182d794d66a14091cf64d95474e3359efa0d8490692086505bfa11a258aba2",
+    "scripts/run_ci_checks.py": "61c356c6bfae8d808ff4db1becee7385cd5ccebc9505b9a482e691c1a89d56ea",
+    "scripts/run_ci_host_diagnostics.py": "26e7eb57d77ad9c09417ea0cf11fbfa87bfec9decac465a527fcaf06a200f797",
+    "tests/test_run_ci_checks.py": "c96381a8ceea61844d403104d68cc17192ba1007b2ee9a04503195bdae4b05e2"
+  },
+  "stderr_sha256": "5f3fa4be58710862a74eaa2ceb9350ec28ab1b2f3ff1529bb232c85a6d93b4b4",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "tests": 11,
+  "timed_out": false
+}

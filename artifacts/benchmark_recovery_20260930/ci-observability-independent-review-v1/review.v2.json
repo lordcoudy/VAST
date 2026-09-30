@@ -1,0 +1,110 @@
+{
+  "accepted": false,
+  "artifact_kind": "vast_independent_ci_observability_review_v1",
+  "closed_findings": [
+    {
+      "finding": "Original nested faulthandler regression replaced and cancelled enclosing full-suite process-wide timer.",
+      "historical_review": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-observability-independent-review-v1/review.v1.json",
+        "sha256": "471444b96e5244c28a2584c0bd8301b19175a2bc5ea7a1ae4b317d72fb671605",
+        "size_bytes": 4431
+      },
+      "original_tests_sha256": "9a1b22cdd2eac64268861a3f5e5de10f8414d19c66cc55ddb5eb1db5b0954b67",
+      "repair": "Real short timer regression now executes only inside a bounded original child interpreter, preserving outer60s timer."
+    },
+    {
+      "finding": "Original fast diagnostic condition permitted skips to label diagnostic_passed true.",
+      "former_sha256": "26e7eb57d77ad9c09417ea0cf11fbfa87bfec9decac465a527fcaf06a200f797",
+      "path": "scripts/run_ci_host_diagnostics.py",
+      "repair": "Exact two selected IDs must now appear in result.successes, in addition to wasSuccessful and testsRun==2. Actual minimal condition reread; no focused rerun falsely attributed to new helper gate."
+    }
+  ],
+  "disposition": "Approved exact four-file scoped implementation review; no remaining blocking finding. Separate asset-helper review and actual hosted execution remain pending.",
+  "limits": {
+    "full_suite_run": false,
+    "hardware_benchmark_acceptance": false,
+    "hosted_ci_success": false,
+    "merge_or_scientific_grant": false,
+    "model_asset_acquisition_reviewed": false,
+    "reviewer_tests_run": 0
+  },
+  "observed_at_utc": "2026-09-30T05:01:13.983531+00:00",
+  "owner_focused_evidence": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-observability-focused-tests-v2/dispatch.v1.json",
+      "sha256": "0de874881ebcde7913fc04d2727607da0c308953bc1db243904f222aa2677003",
+      "size_bytes": 988
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-observability-focused-tests-v2/terminal.v1.json",
+      "sha256": "f712d8e5db4a081166dadaf5fb56e97cb2d074301b588636e5756639e62fd0a9",
+      "size_bytes": 1266
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-observability-focused-tests-v2/stdout.original.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-observability-focused-tests-v2/stderr.original.log",
+      "sha256": "5f3fa4be58710862a74eaa2ceb9350ec28ab1b2f3ff1529bb232c85a6d93b4b4",
+      "size_bytes": 2084
+    }
+  ],
+  "owner_focused_observation": {
+    "elapsed_s": 0.3691596999997273,
+    "host_wsl_launcher_pid": 30268,
+    "linux_test_pid": "not_observed",
+    "raw_stderr": "Original mixed UTF16 WSL warning and UTF8 test log hashed unchanged; no normalization.",
+    "reported_test_count": 11,
+    "returncode": 0,
+    "scope": "Focused logging tests only. Stable four-file hashes before the final fast-helper condition; fast helper/workflow not executed by these tests."
+  },
+  "planning_commit": "a84e0e734678aa9ecc9e0a4f16dcc3036c5c8f02",
+  "planning_review_comment_id": 5904141981,
+  "publication_ready": false,
+  "review_method": "Actual four files and diff versus a84 read; owner focused evidence and raw hashes joined; no tests, model downloads, CI launch, Docker/GI/source/benchmark workload or owner-source edits by reviewer.",
+  "reviewer": "adversarial_review",
+  "schema_version": 1,
+  "source_closure_membership": {
+    "all_four_paths_absent": true,
+    "audit": {
+      "path": "artifacts/benchmark_recovery_20260930/packaging-source-rollforward.v4.json",
+      "sha256": "6199d98a4496a7c54d5a45ff80687786f5bf7ad43c90f0d2a1129cf2ba007c31",
+      "size_bytes": 281341
+    },
+    "host_count": 78,
+    "manifest_count": 165,
+    "scope_limit": "Exact membership check only, not fresh entire closure acceptance or future helper inclusion."
+  },
+  "source_pins": [
+    {
+      "path": "scripts/run_ci_checks.py",
+      "sha256": "61c356c6bfae8d808ff4db1becee7385cd5ccebc9505b9a482e691c1a89d56ea",
+      "size_bytes": 17273
+    },
+    {
+      "path": "tests/test_run_ci_checks.py",
+      "sha256": "c96381a8ceea61844d403104d68cc17192ba1007b2ee9a04503195bdae4b05e2",
+      "size_bytes": 7769
+    },
+    {
+      "path": "scripts/run_ci_host_diagnostics.py",
+      "sha256": "d71dc7dbed53be1a10db8a27af5cce43158c2114f95670fe1d0b4c6a3aa99875",
+      "size_bytes": 3588
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "ca182d794d66a14091cf64d95474e3359efa0d8490692086505bfa11a258aba2",
+      "size_bytes": 3969
+    }
+  ],
+  "verified_source_behavior": [
+    "Immediate original failure/error/subtest traces and actual start/terminal elapsed callbacks are flushed; required three native successes and complete full discovery selection remain mandatory.",
+    "Original60s stack timer covers suite execution; discovery imports precede timer and are not claimed periodically captured.",
+    "Host facts use fixed interpreter/kernel/UID/GID/proc capability/sysctl whitelist and16KiB serialization gate without environment dump or namespace operation.",
+    "Full runner delegates separate asset helper before build through original590s child plus up-to10s reap. Asset-helper implementation is outside this receipt.",
+    "Fast Ubuntu diagnostic has no needs/condition linking it to full CPU job, retains exact two original IDs/model prerequisite, original20s child plus up-to10s reap, and full_ci_successful/hardware_acceptance alwaysfalse.",
+    "Workflow preserves full90-minute job, contents:read, exact head checkout, persist-credentials:false, pinned action identities and always-upload steps."
+  ]
+}
