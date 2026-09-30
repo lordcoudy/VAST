@@ -1,0 +1,29 @@
+Original tool session22355 returned exit1. The original v4 checkouts invocation
+reached the first Git clone's unchanged300-second command/capture guard:
+
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/verify_checkout_byte_freeze_v4.py", line 527, in checkouts
+    command(["git", "clone", "--no-checkout", "--no-hardlinks", "--", str(common), str(clone_root)],
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/verify_checkout_byte_freeze_v4.py", line 167, in command
+    require(not timed_out and len(stdout) <= CHUNK and len(stderr) <= CHUNK, "command time/capture bound")
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/verify_checkout_byte_freeze_v4.py", line 40, in require
+    raise ValueError(message)
+ValueError: command time/capture bound
+
+The original observed controller11263 and clone child11275 were present during
+copying. Subsequent actual /proc observations found both absent, and an actual
+full ps inventory had no command referring to the failed clone namespace.
+The original group ID/child terminal code were not durably captured; do not
+invent them or bind current PID facts to an unavailable old startticks witness.
+
+Failed namespace retained unchanged:
+/var/tmp/vast-byte-freeze-79ff17832cf7-false-5183156493a1
+No checkout or autocrlf config had begun. The retained largest partial pack was
+8,983,896,064bytes, showing the cost of copying unrelated9.84GiB history.
+The exact source165/index/commit/closure preflight remains independently closed
+at byte-freeze-fresh-checkouts.v3.source.json. No source/cache/configuration
+change is used to conceal the original stat-status discrepancy or clone failure.
+
+Parent authorized a new shallow Git-transport clone recipe from the common
+Gitdir, into distinct new namespaces, with the same300s command bound. It does
+not resume, delete, promote or relabel this failed clone. V5 records actual
+exclusive command group IDs/terminal observations and persists failure facts.

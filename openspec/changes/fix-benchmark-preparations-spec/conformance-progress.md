@@ -1,6 +1,10 @@
 # Conformance progress — implementation in progress
 
-## Current conformance checkpoint — 2026-09-30
+## Current conformance checkpoint — 2026-09-30, after failed research setup
+
+This amendment adds three scenarios under existing requirements: Stock build controller requires canonical LF metadata; Original launcher terminates during container ID publication; Research fails before source or decoder admission. Their behavior remains pending implementation/physical verification. Original165 raw freeze79ff is unchanged, but combined165+ten LF fresh checkout/stock proof is incomplete. Failed attempt01 is independently retained as failed setup with no decoder cohort; audit a33f1ae3 and cleanup9af05fba establish the original scoped facts, not corrected-setup success. Artifact-v1 stays immutable; artifact-v2/fresh attempt02 require exact amended planning review, focused checks and independent final-code review/PR record. Actual CPU CI is configured and two hosted runs are in progress; complete CPU/GPU/conformance evidence is not inferred.28/72 historical tasks remain checked, with no new scientific regime, qualified pair or full-run result.
+
+## Previous conformance checkpoint — 2026-09-30, before source freeze and research
 
 Pushed a5b3812457cc2eddfd19eaf7687a4e868a7d085b has33 focused custody-test passes and10 actual-front packaged socket/memfd passes. These are scoped implementation evidence, not complete requirement conformance or model acceptance. New decisions16/17 add exact checkout-byte proof, isolated decoder research and policy/metric interpretation; their new tasks remain unchecked pending exact-commit planning review and physical execution. verification-plan.md maps all new named scenarios. Remaining images/parity, real model pairs, qualification/Q4/full results, factual storage, configured CI, final conformance and archive remain open. BENCHMARK_RECOVERY_PLAN.md retains the current evidence pointers; historical counts below remain dated facts.
 

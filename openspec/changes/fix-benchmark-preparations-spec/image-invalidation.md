@@ -1,6 +1,10 @@
 # Affected evidence and renewal order
 
-## Current affected-source checkpoint — 2026-09-30
+## Current affected-source checkpoint — 2026-09-30, after source freeze and failed research setup
+
+79ff preserved all165 executable/build dependency bytes and their native3/worker2/four-runtime/78-host closures. The ten-controller LF correction changes only exact checkout attributes, with no manifest normalization/staging and no image-source invalidation. Verify both new stock fresh checkout contexts before reproducibility is complete. New artifact-v2 setup code is external research code mounted read-only into the existing70696f05 GStreamer image; it does not change packaged production bytes. Its failed predecessor/v1, original attempt01, late observer, actual owned cleanup and independent failed audit stay immutable. Updated planning/CI/artifact commits do not by themselves invalidate unchanged package closures. Remaining three runtime image builds, current aggregate/fresh480/32 parity and dependent real model-pair/qualification/Q4/full receipts are still required. No scientific pipeline/corpus/regime change is adopted; such a future amendment must map its actual invalidation graph separately.
+
+## Previous affected-source checkpoint — 2026-09-30, before source freeze and research
 
 Pushed a5b3812457cc2eddfd19eaf7687a4e868a7d085b repairs the observed Docker NotFound newline and exact stock GVA three-field image contract. The rebuilt GStreamer image70696f057232acd382f60beaaf12cd9279b317b0ba9a7ade29f0b955ce90481a passes its10 actual-front packaged tests. Source audit v4 binds165 members and complete four-runtime/native-three/worker-two/host78 closures; remaining three runtime images and current aggregate/parity renewal remain pending. Decision16 will preserve these physical bytes across Git checkouts; decision17 research has not yet run and adopts no scientific change. See BENCHMARK_RECOVERY_PLAN.md and artifacts/benchmark_recovery_20260930/. Historical records below are not current-source acceptance.
 

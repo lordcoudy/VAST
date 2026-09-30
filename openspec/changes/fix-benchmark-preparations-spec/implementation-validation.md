@@ -1,6 +1,10 @@
 # Implementation validation — in progress
 
-## Current implementation checkpoint — 2026-09-30
+## Current implementation checkpoint — 2026-09-30, after failed research setup
+
+HEAD a045 contains the frozen artifact-v1 experiment and configured CPU CI. Both original hosted CI runs36656805742/36658359728 remain in progress at this planning observation; no complete build/test success is asserted. Source79ff preserves165 physical/index/commit descriptors. The original true checkout exposed ten separate controller LF inputs; corrected attributes/fresh proof remain pending. Research attempt01 exited1 with zero source/decoder runs. Its independent read-only failed audit a33f1ae341521e15042a3f3471201522c813a0c1a6e493a5b67ca842c73a491e held/rechecked76 files and released b1 planning custody. Exact owned cleanup9af05fba0e32cdad28580f28c5bbbb02135b9b73a4666099c15062e429f4b9bf confirms actual nonforce removal and subsequent CID/name absence. Original unknown failure-time CID/GI facts remain unknown. This amendment authorizes reviewed artifact-v2 setup work and one fresh unchanged experiment; it claims no research/model/benchmark acceptance and checks no task.
+
+## Previous implementation checkpoint — 2026-09-30, before source freeze and research
 
 Pushed implementation a5b3812457cc2eddfd19eaf7687a4e868a7d085b passes33 focused custody tests and the rebuilt GStreamer package passes10 actual socket/memfd tests with no skips/host runtime imports. Their original receipts, source165 audit and independent reviews are under artifacts/benchmark_recovery_20260930/ and summarized in BENCHMARK_RECOVERY_PLAN.md. GPU-aware inspection establishes available decoder controls only. Decisions16/17 are a new pending planning amendment; clean-checkout proof, isolated decoding, remaining affected images/parity, real model pairs, qualification/Q4/full execution and final CI/conformance/archive remain pending. Dated observations below retain their original-byte scope.
 
