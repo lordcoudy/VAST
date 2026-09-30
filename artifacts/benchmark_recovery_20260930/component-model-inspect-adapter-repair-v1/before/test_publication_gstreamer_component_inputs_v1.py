@@ -448,54 +448,7 @@ class ComponentHostPredicatesTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             _calibration(manifest, reference, changed_profile, material)
 
-    def test_model_observer_accepts_actual_stock_formatted_inspect_contract(self):
-        import checkpoint_model_parity as parity
-        import publication_gstreamer_component_inputs_v1 as component
-        with tempfile.TemporaryDirectory() as directory:
-            root = Path(directory).resolve()
-            socket_path = root / "engine.sock"
-            with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as listener:
-                listener.bind(str(socket_path))
-                engine = stock._external_executable_pin(Path("/usr/bin/true"), label="genuine fixture ELF")
-                socket_pin = stock._socket_record(socket_path, label="genuine fixture socket")
-                (root / "receipt.json").write_bytes(canonical_json_bytes({
-                    "accepted_manifest": {"path": "manifest"},
-                    "accepted_assessment": {"path": "assessment"}}) + b"\n")
-                images = ["sha256:" + char * 64 for char in "abcd"]
-                runners = []
-                def model_validator(**kwargs):
-                    return kwargs["acceptance_loader"](project_root=root, receipt_path=root / "receipt.json")
-                def accepted_loader(**kwargs):
-                    runners.append(kwargs["command_runner"])
-                    # Keep both original native-base and both worker inspect
-                    # roles; these are explicit local image metadata fixtures.
-                    return [parity._inspect_image(image, runners[-1]) for image in images]
-                def formatted_object(argv, **kwargs):
-                    return {"Id": argv[-1], "RepoDigests": [], "Architecture": "amd64", "Os": "linux"}
-                dependency = component.ComponentInputDependenciesV1(model_validator=model_validator)
-                with patch("checkpoint_model_parity_acceptance_v4.load_verified_model_parity_acceptance_v4", side_effect=accepted_loader), \
-                     patch.object(stock, "_run_json", side_effect=formatted_object) as observed:
-                    result = component._model_material(root, "receipt.json", dependency, engine=engine, engine_socket=socket_pin)
-                    self.assertEqual(result, [{"reference": image, "image_id": image, "repo_digests": [],
-                        "architecture": "amd64", "os": "linux"} for image in images])
-                    self.assertEqual([call.args[0] for call in observed.call_args_list], [
-                        (str(engine.path), "--host=unix://" + str(socket_path), *parity.build_image_inspect_command(image)[1:])
-                        for image in images])
-                    before = observed.call_count
-                    for command in (["docker", "image", "inspect", images[0]],
-                                    ["docker", "container", "inspect", "--format", "{{json .}}", images[0]],
-                                    ["docker", "image", "inspect", "--format", "{{json .Id}}", images[0]],
-                                    [*parity.build_image_inspect_command(images[0]), "foreign"],
-                                    ["docker", "image", "inspect", "--format", "{{json .}}", None]):
-                        with self.subTest(command=command), self.assertRaises(ValueError):
-                            runners[0](command)
-                    self.assertEqual(observed.call_count, before)
-                with patch.object(stock, "_run_json", return_value=[{"Id": images[0]}]):
-                    with self.assertRaisesRegex(ValueError, "object"):
-                        runners[0](parity.build_image_inspect_command(images[0]))
-
     def test_model_observer_routes_only_inspect_to_original_pinned_engine_socket(self):
-        import checkpoint_model_parity as parity
         import publication_gstreamer_component_inputs_v1 as component
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory).resolve()
@@ -512,14 +465,14 @@ class ComponentHostPredicatesTests(unittest.TestCase):
                 def accepted_loader(**kwargs):
                     runner = kwargs["command_runner"]
                     runners.append(runner)
-                    return runner(parity.build_image_inspect_command("sha256:" + "a" * 64))
+                    return runner(["docker", "image", "inspect", "sha256:" + "a" * 64])
                 dependency = component.ComponentInputDependenciesV1(model_validator=model_validator)
                 with patch("checkpoint_model_parity_acceptance_v4.load_verified_model_parity_acceptance_v4", side_effect=accepted_loader), \
-                     patch.object(stock, "_run_json", return_value={"Id": "sha256:" + "a" * 64}) as observed:
+                     patch.object(stock, "_run_json", return_value=[{"Id": "sha256:" + "a" * 64}]) as observed:
                     value = component._model_material(root, "receipt.json", dependency, engine=engine, engine_socket=socket_pin)
-                self.assertEqual(json.loads(value)["Id"], "sha256:" + "a" * 64)
+                self.assertEqual(json.loads(value)[0]["Id"], "sha256:" + "a" * 64)
                 self.assertEqual(observed.call_args.args[0], (str(engine.path), "--host=unix://" + str(socket_path),
-                                                             "image", "inspect", "--format", "{{json .}}", "sha256:" + "a" * 64))
+                                                             "image", "inspect", "sha256:" + "a" * 64))
                 with self.assertRaises(ValueError):
                     runners[0](["docker", "run", "--rm", "foreign"])
 

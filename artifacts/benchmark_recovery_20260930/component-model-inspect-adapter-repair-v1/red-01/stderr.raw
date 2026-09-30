@@ -1,0 +1,20 @@
+test_model_observer_accepts_actual_stock_formatted_inspect_contract (test_publication_gstreamer_component_inputs_v1.ComponentHostPredicatesTests.test_model_observer_accepts_actual_stock_formatted_inspect_contract) ... FAIL
+
+======================================================================
+FAIL: test_model_observer_accepts_actual_stock_formatted_inspect_contract (test_publication_gstreamer_component_inputs_v1.ComponentHostPredicatesTests.test_model_observer_accepts_actual_stock_formatted_inspect_contract)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_gstreamer_component_inputs_v1.py", line 479, in test_model_observer_accepts_actual_stock_formatted_inspect_contract
+    self.assertEqual(result, [{"reference": image, "image_id": image, "repo_digests": [],
+AssertionError: Lists differ: [None, None, None, None] != [{'reference': 'sha256:aaaaaaaaaaaaaaaaaaa[901 chars]ux'}]
+
+First differing element 0:
+None
+{'reference': 'sha256:aaaaaaaaaaaaaaaaaaa[189 chars]nux'}
+
+Diff is 1051 characters long. Set self.maxDiff to None to see it.
+
+----------------------------------------------------------------------
+Ran 1 test in 0.053s
+
+FAILED (failures=1)

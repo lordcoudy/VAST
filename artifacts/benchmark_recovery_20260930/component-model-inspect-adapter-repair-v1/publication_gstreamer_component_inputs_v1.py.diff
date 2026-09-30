@@ -1,0 +1,24 @@
+--- before/scripts/publication_gstreamer_component_inputs_v1.py
++++ after/scripts/publication_gstreamer_component_inputs_v1.py
+@@ -191,16 +191,18 @@
+     receipt = stock._load_json_pin(_pin(root, receipt_path), label="original accepted model receipt")
+     from checkpoint_model_parity_acceptance_v4 import load_verified_model_parity_acceptance_v4
+     def runner(command):
+-        _require(type(command) is list and len(command) == 4 and command[:3] == ["docker", "image", "inspect"]
+-            and type(command[3]) is str and bool(command[3]), "selected model assessor may only inspect an original image")
++        _require(type(command) is list and len(command) == 6
++            and command[:5] == ["docker", "image", "inspect", "--format", "{{json .}}"]
++            and type(command[5]) is str and bool(command[5]), "selected model assessor may only inspect an original image")
+         stock._require_file_pin_unchanged(engine, label="selected model image observer engine")
+         _require(stock._socket_record(Path(engine_socket["path"]), label="selected model image observer socket") == engine_socket,
+                  "selected model observer socket drifted")
+-        value = stock._run_json((str(engine.path), "--host=unix://" + engine_socket["path"], "image", "inspect", command[3]),
++        value = stock._run_json((str(engine.path), "--host=unix://" + engine_socket["path"], *command[1:]),
+                                timeout=60.0, label="selected original model image inspect")
+         stock._require_file_pin_unchanged(engine, label="selected model image observer engine after inspect")
+         _require(stock._socket_record(Path(engine_socket["path"]), label="selected model observer socket after inspect") == engine_socket,
+                  "selected model observer socket changed during inspect")
++        _require(type(value) is dict, "selected formatted model image inspect must return one JSON object")
+         return json.dumps(value, sort_keys=True, separators=(",", ":"))
+     def acceptance_loader(**arguments):
+         return load_verified_model_parity_acceptance_v4(command_runner=runner, **arguments)
