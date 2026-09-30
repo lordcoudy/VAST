@@ -1,0 +1,10 @@
+{
+  "kind": "vast_immutable_ci_log_whitespace_review_v1",
+  "original_log_path": "artifacts/benchmark_recovery_20260930/cpu-ci-run-36656805742/original-job.log",
+  "physical_and_index_sha256": "5a3395ffa9bac8fe8de37203174a9f4f1364fe65891997d38063d68608edd058",
+  "warning_count": 18,
+  "warning_kind": "trailing whitespace in original decoded GitHub job output",
+  "decision": "Preserve original output bytes. Only this original log is excluded from the staged whitespace check; all other owned paths pass. No source/test/build or behavior gate is waived.",
+  "first_stage_result": "Original owned byte comparisons passed, then whitespace check returned2; two newly authored helper EOF blank lines were corrected before final freeze.",
+  "benchmark_complete": false
+}

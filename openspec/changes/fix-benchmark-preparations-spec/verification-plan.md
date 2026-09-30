@@ -2,6 +2,10 @@
 
 This is a planned verification map, not a passing test report. During apply, record each requirement and every named scenario below with implementation file/line, exact test ID or physical evidence descriptor, invocation/exit status, observation time and any gap. A format check proves document structure only. Historical A268/A269 evidence cannot substitute for fresh acceptance.
 
+## Executed finite checkout scope - 2026-09-30 03:34 UTC
+
+Requirement Baselines and affected evidence are reproducible, scenarios Exact source identity depends on inherited line endings and Stock build controller requires canonical LF metadata: implementation .gitattributes at original79ff and corrected caea5419, exact ten rules at lines173-182; actual fresh false/true proof3c27a97f and independent review a76d985d pass both groups and unchanged stock9/78 contexts. Independent unchanged native3/worker2 metadata review1bd3c09e validates live identity scope without a workload. Tasks17.1-17.3 are complete. Original failed true checkouts remain failed; full current-runtime/parity and final-source test conformance are pending. New initializer/CID/cleanup scenarios require the independently reviewed final artifact-v2 and actual attempt02;35 passing focused fixtures grant no physical research or benchmark acceptance.
+
 ## 1. Benchmark recovery has explicit execution and completion gates
 
 Scenarios: Preparation succeeds; Readiness ages or inputs change.

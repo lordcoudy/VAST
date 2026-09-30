@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "vast_independent_unchanged_image_metadata_review_v1",
+  "created_at_utc": "2026-09-30T03:33:39.838661+00:00",
+  "reviewer": "/root/adversarial_review",
+  "disposition": "pass_finite_task17_3_metadata_scope",
+  "planning_commit": "47e432f2b5c09f750a55f7eb0164d84cc4d7e658",
+  "source_commit": "caea5419c0302fc60183544de86f4e879346b7d0",
+  "review_reference": "https://github.com/lordcoudy/VAST/pull/2#issuecomment-5903081964",
+  "original_inspection_sha256": "34219c6a5e226b0e1b18c3242f559e49694afdd1970ccf56902490f95c19b1be",
+  "closed_terminal_sha256": "16ccee7ad55b672523adfdbf5ae8eb98a1cd7d1bc11368ffbf6c002788035df7",
+  "prior_source_checkout_review_sha256": "a76d985d0d0bbf1c2e9c100209bf4c950841b3099d3e65b229586ca776fbc3c3",
+  "images": [
+    {
+      "name": "native_probe_deepstream",
+      "image_id": "sha256:0d2934336b5e8756b2c43a7a0b95501cd96017343110a372afd27c6516f7f984",
+      "projection_sha256": "2bd4bd211f489caff121eb9f4c778de3625f905a8a97f44973ab2b760558c946",
+      "original_digests_labels_and_current_context_match": true
+    },
+    {
+      "name": "native_probe_openvino",
+      "image_id": "sha256:b102aafc0f88f8cfad92349e6a55d0f9755a3f5bff109a70ebdb8936d4a8e84c",
+      "projection_sha256": "7ec62fdf69bd8484adcaf133e182bd9373d2f822177a9eedf60eec1487f2fd5d",
+      "original_digests_labels_and_current_context_match": true
+    },
+    {
+      "name": "native_probe_savant",
+      "image_id": "sha256:1db529d2d35a875b35d36e9a764a52a8f41a3ed419e4341f096ac7c2aeaf6185",
+      "projection_sha256": "89dfef2d19e831a753cfe79f96acf8a8ead53aaf752b4a4793c59eda53f946e2",
+      "original_digests_labels_and_current_context_match": true
+    },
+    {
+      "name": "analytics_worker_openvino",
+      "image_id": "sha256:ce138982695ea6d8218a9137bb858090a782e83e687be8fc252a32dc0bd9d5f9",
+      "projection_sha256": "40feed9a0066af2d66c95edb0386da4c942c110d6e25538fec04d56d20e471ab",
+      "original_digests_labels_and_current_context_match": true
+    },
+    {
+      "name": "analytics_worker_tensorrt",
+      "image_id": "sha256:e0af692307f5edebcfb768d6805cb2e76f32948e77144fbf5f10fcdac85b2870",
+      "projection_sha256": "82d7b83cf11c165108b4646097afc23116007cd1e26ee77f49d9e59cde4ffcb1",
+      "original_digests_labels_and_current_context_match": true
+    }
+  ],
+  "recorded_original_command_returncodes": [
+    0,
+    0,
+    0
+  ],
+  "same_engine_socket_daemon": true,
+  "closed_original_processes": 4,
+  "closed_original_groups_empty": true,
+  "held_unchanged_leaves": 63,
+  "elapsed_s": 0.18733313799020834,
+  "checks": "Stream-hashed closed witness bytes/epochs; recomputed all five raw inspect stock projections/receipt seals and pure label/context validation; exact caea source/dependency/context join. No additional engine query/build/pull/run/tag, source, model or decoder execution.",
+  "reviewer_correction": "Initial path adapter treated external descriptor usr/bin/docker as project-relative and stopped before completion; corrected only the exact original engine descriptor to /usr/bin/docker. No producer/input mutation or fabricated original log.",
+  "accepted": false,
+  "publication_ready": false,
+  "scope_limits": [
+    "Only unchanged native3/worker2 metadata scope closes; remaining affected runtime images/current aggregate/parity remain pending.",
+    "No model correctness, pair/qualification, scientific result or full benchmark acceptance."
+  ],
+  "blocking_findings": [],
+  "sha256": "5abd1e2eb88c7b30ff31eb1a1c8c48f147e554c1ad02afcd8aa6496fcf9ad18c"
+}
