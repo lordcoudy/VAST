@@ -1,0 +1,103 @@
+{
+  "actual_namespace_or_full_suite_run_by_this_review": false,
+  "approved_source_scope": [
+    {
+      "path": "scripts/run_ci_checks.py",
+      "sha256": "6841581ae05ae7ea862752fb23f0999e48283d6dcad27c4634c94e626960eabc",
+      "size_bytes": 28237
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "0ec268a98e6f61e1db860c1455d1970f714d1abe7d0dd8da483ca13fbcb8d95a",
+      "size_bytes": 4251
+    },
+    {
+      "path": "tests/test_run_ci_checks.py",
+      "sha256": "fdfff7c66e0d50e51b4cc616a5f660dc19eafdeabf0cfe0f88583689e91b3925",
+      "size_bytes": 15786
+    },
+    {
+      "path": "scripts/ci_namespace_diagnostic_v1.py",
+      "sha256": "a5533d76516844e308179f86f13a4326849fed8617b5f28fcfcf7ab7e1067ffa",
+      "size_bytes": 20708
+    },
+    {
+      "path": "tests/test_ci_namespace_diagnostic_v1.py",
+      "sha256": "0125f209d9556c54badcbb6654c9c2c86b3980c3bf47495c1f7446306ec08fe5",
+      "size_bytes": 12692
+    },
+    {
+      "path": "scripts/ci_test_selection_v1.py",
+      "sha256": "c911e1a566682094c4c9fc86177af84b696b9be35e7511039d944e8d75c65a9f",
+      "size_bytes": 9945
+    },
+    {
+      "path": "tests/test_ci_test_selection_v1.py",
+      "sha256": "70ed46fc26c61f19dc584aba5aa9565c80838862e1332ba4ca927862da65c4ee",
+      "size_bytes": 11499
+    }
+  ],
+  "artifact_kind": "vast_decision25_ci_parent_source_review_v1",
+  "decision25_planning_commit": "bec47b794ef9183fe9e3ce4cb1ec15541070f96f",
+  "full_ci_pass_claimed": false,
+  "hardware_acceptance": false,
+  "independent_reviewer": "root reviewing child-authored CI prerequisites and selector safeguards",
+  "manifest": {
+    "path": ".ci/integration-test-selection.v1.json",
+    "sha256": "a27ff9488d658637e16e81d0a6b6614ce9ac43716b7dd5b152060a2cb093c987",
+    "size_bytes": 31541
+  },
+  "original_green_references": [
+    {
+      "actual_current_pid_absent": true,
+      "channels": [
+        {
+          "path": "artifacts/benchmark_recovery_20260930/decision25-ci-prerequisites-v1/aggregate-bound-green-01/stdout.raw",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "path": "artifacts/benchmark_recovery_20260930/decision25-ci-prerequisites-v1/aggregate-bound-green-01/stderr.raw",
+          "sha256": "16c6cc01f7a7a8408dc804f5792e9bba2cf8270b27eaf37c2577ca01339c2e86",
+          "size_bytes": 5187
+        }
+      ],
+      "elapsed_s": 0.9698483470128849,
+      "path": "artifacts/benchmark_recovery_20260930/decision25-ci-prerequisites-v1/aggregate-bound-green-01/terminal.json",
+      "pid": 27377,
+      "returncode": 0,
+      "sha256": "6db1e1c1c642cbb49b32c9dbf40a1b22a320a20abc355d46db0005aeef07a378",
+      "size_bytes": 3529,
+      "source_before_after_equal": true,
+      "tests": 28
+    },
+    {
+      "capture_elapsed_s": 0.11682823899900541,
+      "original_group_members": [],
+      "original_returncode": 0,
+      "path": "artifacts/benchmark_recovery_20260930/decision25-ci-selection-v1/safeguards-green-02/terminal.v1.json",
+      "raw_stderr": {
+        "path": "artifacts/benchmark_recovery_20260930/decision25-ci-selection-v1/safeguards-green-02/stderr.raw",
+        "sha256": "359be0f3dc52452fc7f77ddcd3597ddb83006a2d71542cfcd19c3ae7b6514b4b",
+        "size_bytes": 3507
+      },
+      "sha256": "eb22e2bcea1150c7b0eb1320a2800d5757c1eca79b94081917f7b8c3b3717ede",
+      "size_bytes": 3118,
+      "source3_before_after_equal": true,
+      "tests": 20
+    }
+  ],
+  "remaining_obligations": [
+    "Actual hosted full portable discovery/build/native/source report and exact skip audit",
+    "Actual namespace denial facts and only then independently reviewed exact-executable temporary policy remedy if proven necessary",
+    "Final ext4 and raw checkout byte proof after reviewed source commit",
+    "Explicit retired10 replacement coverage and final requirement/scenario conformance"
+  ],
+  "schema_version": 1,
+  "source_review": [
+    "Read full runner, namespace diagnostic, selector, workflow and behavioral test changes. Canonical original CPython3.12.3 and fixed contained project origins; full default inventory before finite9-method partition; same original child and external observer.",
+    "Six build targets and three required native successes, strict stock namespace/source/broker budgets and 90m deadline unchanged. Actual loaded appsrc/queue/videoconvert metadata/physical library evidence replaces missing host prerequisites.",
+    "One actual namespace invocation observes unchanged delegated calls. Conservative two-capture aggregate61440B below64KiB; sticky caps/deadline/EOF/reap/pidfd/start-gate behavior covered by original28GREEN. No policy bypass or profile is applied.",
+    "35 explicit current safety modules reject both integration deferral and new skip declarations. Original80 IDs/reasons remain nonexecution; retired classification bound to exact10 historical methods and actual decorator. New tests remain mandatory; malformed/absent/duplicate declarations fail. Original20GREEN and preceding RED retained."
+  ]
+}

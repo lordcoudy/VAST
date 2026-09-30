@@ -1,0 +1,1973 @@
+{
+  "artifact_kind": "vast_ci_hermetic_fixture_slice_author_review_v1",
+  "component_accepted": false,
+  "considered_source_head": "effbb5265ca724c00b5b5278827cced2a750ade4",
+  "fixture_counts": {
+    "historical_docker_metadata": 14,
+    "origin_manifest": 1,
+    "worker_metadata": 11
+  },
+  "fixture_only": true,
+  "fixture_total_raw_bytes": 127445,
+  "full_ci_acceptance": false,
+  "integration_classification_reference": {
+    "epoch": [
+      69,
+      1688849862686183,
+      33279,
+      1,
+      90689,
+      1790770592095262300,
+      1790770592095262300
+    ],
+    "path": "artifacts/benchmark_recovery_20260930/ci-hermetic-fixture-audit-v1/fixture-and-method-map.v1.json",
+    "sha256": "6715e71ffd138c713bb9a45919547bd3b3e7696b5bf86a0731ba1e0f4c849331",
+    "size_bytes": 90689
+  },
+  "live_hardware_observation": false,
+  "membership": {
+    "host_closure": {
+      "epoch": [
+        69,
+        1407374885975794,
+        33133,
+        1,
+        30986,
+        1790772369776232800,
+        1790772369811728800
+      ],
+      "path": "artifacts/gstreamer_component_release_20260930_a3e976d0/host/execution-code-closure.v3.json",
+      "sha256": "74f24b71ba53aed538cdc4a1c7e21868b4a2b410162ecf5ad79897ca4e92ce13",
+      "size_bytes": 30986
+    },
+    "host_count": 87,
+    "host_drift_paths": [],
+    "owned_host_intersection": [],
+    "owned_selected_image_intersection": [],
+    "selected_allowlist": {
+      "epoch": [
+        69,
+        8444249303172687,
+        33279,
+        1,
+        3538,
+        1790763172054951400,
+        1790763172054951400
+      ],
+      "path": "deploy/gstreamer_custom/publication/runtime-source-allowlist.txt",
+      "sha256": "111c8d3a517a4ab350fbb2753a3c01965e6645eeaad72c24f1b9f1266659e600",
+      "size_bytes": 3538
+    },
+    "selected_count": 73,
+    "selected_original_source_inventory": {
+      "epoch": [
+        69,
+        2251799816104818,
+        33279,
+        1,
+        32837,
+        1790765326404905500,
+        1790765326404905500
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/root-seam3-author-review-v2/review.v1.json",
+      "sha256": "358e9710c1dbc02fb3cb29cfaddab30effbbb353d88f6c9a8ce7b78282e7b25e",
+      "size_bytes": 32837
+    },
+    "selected_source_drift_paths": []
+  },
+  "method_preservation": [
+    {
+      "added_method_ids": [
+        "ExternalExecutionManifestTests.test_worker_fixture_needs_no_ignored_runtime_artifacts",
+        "ExternalExecutionManifestTests.test_worker_fixture_rejects_missing_and_foreign_metadata"
+      ],
+      "changed_original_method_ids": [],
+      "current_method_count": 5,
+      "original_blob_sha256": "26ad57f83bed678437be98e67221933ce9b62debeda0327758caa8daa1873b70",
+      "original_commit": "effbb5265ca724c00b5b5278827cced2a750ade4",
+      "original_git_blob": "0d3318e95c3530ed541778032c8400be154a60e0",
+      "original_method_count": 3,
+      "path": "tests/test_checkpoint_external_execution_manifest.py",
+      "removed_method_ids": []
+    },
+    {
+      "added_method_ids": [],
+      "changed_original_method_ids": [
+        "KppLegacyIssV2SecondarySensitivityExecutorTests.test_peercred_pid0_platform_observer_is_nofollow_bounded_and_exact_on_wsl",
+        "KppLegacyIssV2SecondarySensitivityExecutorTests.test_same_v2_existing_run_recovers_exact_four_docker29_workers_before_block"
+      ],
+      "current_method_count": 91,
+      "original_blob_sha256": "c41716ac2d6402cb4742ede5203656be85c0ad9e37c66c42f8e34a868024a854",
+      "original_commit": "effbb5265ca724c00b5b5278827cced2a750ade4",
+      "original_git_blob": "bf84c67c38d06973a93bfaa9a05d9a828411c2b4",
+      "original_method_count": 91,
+      "path": "tests/test_kpp_legacy_iss_v2_secondary_sensitivity_executor.py",
+      "removed_method_ids": []
+    },
+    {
+      "added_method_ids": [],
+      "changed_original_method_ids": [
+        "PublicationImmutableDirectoryV1Tests.test_foreign_target_and_aba_restore_are_rejected",
+        "PublicationImmutableDirectoryV1Tests.test_three_crash_windows_exact_adoption_and_inode_preservation"
+      ],
+      "current_method_count": 2,
+      "original_blob_sha256": "c4654b8e53670eb273a0be60f38707cf70e1d6f661c97d9fa87cbfe96f4c4644",
+      "original_commit": "effbb5265ca724c00b5b5278827cced2a750ade4",
+      "original_git_blob": "9b59a4f427e9d6f9ce2d51d4a4fa2a2b3ec41b61",
+      "original_method_count": 2,
+      "path": "tests/test_publication_immutable_directory_v1.py",
+      "removed_method_ids": []
+    },
+    {
+      "added_method_ids": [],
+      "changed_original_method_ids": [
+        "QualificationRuntimeInputsV2Tests.test_versioned_analytics_authority_selects_bound_paths_not_v3_constants"
+      ],
+      "current_method_count": 23,
+      "original_blob_sha256": "82594fcd356f3573c56a94b77398d1e9e85a15c3c082fd9db1726eb7bdb60366",
+      "original_commit": "effbb5265ca724c00b5b5278827cced2a750ade4",
+      "original_git_blob": "86241e98bde5da2ab2c6c8b99a3fc60caa98402f",
+      "original_method_count": 23,
+      "path": "tests/test_publication_policy_qualification_runtime_inputs_v2.py",
+      "removed_method_ids": []
+    },
+    {
+      "added_method_ids": [],
+      "changed_original_method_ids": [
+        "PublicationRuntimeFrozenIdentityConstantsV1Tests.test_gstreamer_current_runtime_is_exactly_refrozen"
+      ],
+      "current_method_count": 9,
+      "original_blob_sha256": "2bec3e52eb6d597f908271da90351ac339bf00ed1df7c044a03db82ccaa52c0c",
+      "original_commit": "effbb5265ca724c00b5b5278827cced2a750ade4",
+      "original_git_blob": "ef2ae1d1fe3b7afaf77cc6b8398a835a0ea044ed",
+      "original_method_count": 9,
+      "path": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+      "removed_method_ids": []
+    }
+  ],
+  "original_fixture_byte_equality": [
+    {
+      "fixture": {
+        "epoch": [
+          69,
+          2251799816107661,
+          33279,
+          1,
+          659,
+          1790771842023088300,
+          1790771842023088300
+        ],
+        "path": ".ci/fixtures/publication_worker_manifest_v1/cpu_runtime_probe.json",
+        "sha256": "e6008e33e137d315f1672adb2e241004e2ea08f1220467dcbf089a566060ddfb",
+        "size_bytes": 659
+      },
+      "original": {
+        "epoch": [
+          69,
+          1407374885800685,
+          33279,
+          1,
+          659,
+          1787586586839695800,
+          1787586586839695800
+        ],
+        "path": "artifacts/analytics_runtime_probes/publication_v3/cpu_runtime_probe.json",
+        "sha256": "e6008e33e137d315f1672adb2e241004e2ea08f1220467dcbf089a566060ddfb",
+        "size_bytes": 659
+      }
+    },
+    {
+      "fixture": {
+        "epoch": [
+          69,
+          1407374885975694,
+          33279,
+          1,
+          654,
+          1790771842036295700,
+          1790771842036295700
+        ],
+        "path": ".ci/fixtures/publication_worker_manifest_v1/gpu_runtime_probe.json",
+        "sha256": "24986e7aadd93ab9bb72704c5a83d568bc0e4fd70154803e303b3bda5aa4a752",
+        "size_bytes": 654
+      },
+      "original": {
+        "epoch": [
+          69,
+          1407374885800686,
+          33279,
+          1,
+          654,
+          1787586586839695800,
+          1787586586839695800
+        ],
+        "path": "artifacts/analytics_runtime_probes/publication_v3/gpu_runtime_probe.json",
+        "sha256": "24986e7aadd93ab9bb72704c5a83d568bc0e4fd70154803e303b3bda5aa4a752",
+        "size_bytes": 654
+      }
+    },
+    {
+      "fixture": {
+        "epoch": [
+          69,
+          1407374885975696,
+          33279,
+          1,
+          1141,
+          1790771842040298400,
+          1790771842040298400
+        ],
+        "path": ".ci/fixtures/publication_worker_manifest_v1/bindings/damage.openvino_cpu.json",
+        "sha256": "7f1b6e3f428497d381b2350a0d0faccc7722d82bcf54589fd17d5af75a828f0c",
+        "size_bytes": 1141
+      },
+      "original": {
+        "epoch": [
+          69,
+          1688849862511330,
+          33279,
+          1,
+          1141,
+          1787586626599558400,
+          1787586626599558400
+        ],
+        "path": "artifacts/analytics_execution_bindings/publication_v3/damage.openvino_cpu.json",
+        "sha256": "7f1b6e3f428497d381b2350a0d0faccc7722d82bcf54589fd17d5af75a828f0c",
+        "size_bytes": 1141
+      }
+    },
+    {
+      "fixture": {
+        "epoch": [
+          69,
+          2251799816107665,
+          33279,
+          1,
+          1041,
+          1790771842045299400,
+          1790771842045299400
+        ],
+        "path": ".ci/fixtures/publication_worker_manifest_v1/bindings/damage.tensorrt_cuda.json",
+        "sha256": "e686a877f3f9e6162ddbf2e0d12dc2d8565d7da1c772bbc94304c719d9712ea3",
+        "size_bytes": 1041
+      },
+      "original": {
+        "epoch": [
+          69,
+          1407374885800675,
+          33279,
+          1,
+          1041,
+          1787586626602937600,
+          1787586626602937600
+        ],
+        "path": "artifacts/analytics_execution_bindings/publication_v3/damage.tensorrt_cuda.json",
+        "sha256": "e686a877f3f9e6162ddbf2e0d12dc2d8565d7da1c772bbc94304c719d9712ea3",
+        "size_bytes": 1041
+      }
+    },
+    {
+      "fixture": {
+        "epoch": [
+          69,
+          1407374885975698,
+          33279,
+          1,
+          1158,
+          1790771842050312200,
+          1790771842050312200
+        ],
+        "path": ".ci/fixtures/publication_worker_manifest_v1/bindings/foreign_object.openvino_cpu.json",
+        "sha256": "1149880ddf9d75a725a0a94618130f8bbf019fe27214126ea40725b648d2ec3d",
+        "size_bytes": 1158
+      },
+      "original": {
+        "epoch": [
+          69,
+          1407374885800676,
+          33279,
+          1,
+          1158,
+          1787586626607044300,
+          1787586626607044300
+        ],
+        "path": "artifacts/analytics_execution_bindings/publication_v3/foreign_object.openvino_cpu.json",
+        "sha256": "1149880ddf9d75a725a0a94618130f8bbf019fe27214126ea40725b648d2ec3d",
+        "size_bytes": 1158
+      }
+    },
+    {
+      "fixture": {
+        "epoch": [
+          69,
+          1407374885975699,
+          33279,
+          1,
+          1058,
+          1790771842055312600,
+          1790771842055312600
+        ],
+        "path": ".ci/fixtures/publication_worker_manifest_v1/bindings/foreign_object.tensorrt_cuda.json",
+        "sha256": "99d42bc819bd9db5716a3a4429c1c706b9631ed58510835fd49cb08f89b64f73",
+        "size_bytes": 1058
+      },
+      "original": {
+        "epoch": [
+          69,
+          1407374885800677,
+          33279,
+          1,
+          1058,
+          1787586626610178500,
+          1787586626610178500
+        ],
+        "path": "artifacts/analytics_execution_bindings/publication_v3/foreign_object.tensorrt_cuda.json",
+        "sha256": "99d42bc819bd9db5716a3a4429c1c706b9631ed58510835fd49cb08f89b64f73",
+        "size_bytes": 1058
+      }
+    },
+    {
+      "fixture": {
+        "epoch": [
+          69,
+          1407374885975700,
+          33279,
+          1,
+          1150,
+          1790771842059314700,
+          1790771842059314700
+        ],
+        "path": ".ci/fixtures/publication_worker_manifest_v1/bindings/plate_number.openvino_cpu.json",
+        "sha256": "dddd24afb8ff3740b04973145233f4a48250d7f64e1acf3e5f11d5a113b43b49",
+        "size_bytes": 1150
+      },
+      "original": {
+        "epoch": [
+          69,
+          1407374885800679,
+          33279,
+          1,
+          1150,
+          1787586626583378700,
+          1787586626583378700
+        ],
+        "path": "artifacts/analytics_execution_bindings/publication_v3/plate_number.openvino_cpu.json",
+        "sha256": "dddd24afb8ff3740b04973145233f4a48250d7f64e1acf3e5f11d5a113b43b49",
+        "size_bytes": 1150
+      }
+    },
+    {
+      "fixture": {
+        "epoch": [
+          69,
+          1688849862686357,
+          33279,
+          1,
+          1051,
+          1790771842063976800,
+          1790771842063976800
+        ],
+        "path": ".ci/fixtures/publication_worker_manifest_v1/bindings/plate_number.tensorrt_cuda.json",
+        "sha256": "34b8d578ac0b615ff79be2ae4ae7dc59f91f2320e54d91f703cc068dfc8b7acd",
+        "size_bytes": 1051
+      },
+      "original": {
+        "epoch": [
+          69,
+          1407374885800680,
+          33279,
+          1,
+          1051,
+          1787586626587382300,
+          1787586626587382300
+        ],
+        "path": "artifacts/analytics_execution_bindings/publication_v3/plate_number.tensorrt_cuda.json",
+        "sha256": "34b8d578ac0b615ff79be2ae4ae7dc59f91f2320e54d91f703cc068dfc8b7acd",
+        "size_bytes": 1051
+      }
+    },
+    {
+      "fixture": {
+        "epoch": [
+          69,
+          1407374885975702,
+          33279,
+          1,
+          1150,
+          1790771842069809900,
+          1790771842069809900
+        ],
+        "path": ".ci/fixtures/publication_worker_manifest_v1/bindings/vehicle_type.openvino_cpu.json",
+        "sha256": "1981a6ca515e0138b47153bdc0e60799eb65e1662963cac43dc6b53fe5377e0a",
+        "size_bytes": 1150
+      },
+      "original": {
+        "epoch": [
+          69,
+          1407374885800681,
+          33279,
+          1,
+          1150,
+          1787586626590832800,
+          1787586626590832800
+        ],
+        "path": "artifacts/analytics_execution_bindings/publication_v3/vehicle_type.openvino_cpu.json",
+        "sha256": "1981a6ca515e0138b47153bdc0e60799eb65e1662963cac43dc6b53fe5377e0a",
+        "size_bytes": 1150
+      }
+    },
+    {
+      "fixture": {
+        "epoch": [
+          69,
+          2251799816107671,
+          33279,
+          1,
+          1051,
+          1790771842073804300,
+          1790771842073804300
+        ],
+        "path": ".ci/fixtures/publication_worker_manifest_v1/bindings/vehicle_type.tensorrt_cuda.json",
+        "sha256": "670f1a97b51d9460915e468292c139c3b49d3a731e95c2391e2c7203ddb93417",
+        "size_bytes": 1051
+      },
+      "original": {
+        "epoch": [
+          69,
+          1688849862511338,
+          33279,
+          1,
+          1051,
+          1787586626595594400,
+          1787586626595594400
+        ],
+        "path": "artifacts/analytics_execution_bindings/publication_v3/vehicle_type.tensorrt_cuda.json",
+        "sha256": "670f1a97b51d9460915e468292c139c3b49d3a731e95c2391e2c7203ddb93417",
+        "size_bytes": 1051
+      }
+    },
+    {
+      "fixture": {
+        "epoch": [
+          69,
+          1407374885975704,
+          33279,
+          1,
+          1877,
+          1790771842077804500,
+          1790771842077804500
+        ],
+        "path": ".ci/fixtures/publication_worker_manifest_v1/bindings/index.json",
+        "sha256": "8ff3d495b80024eca2067a43239fc984961629465288d307d7f8f4de32c31e87",
+        "size_bytes": 1877
+      },
+      "original": {
+        "epoch": [
+          69,
+          1407374885800678,
+          33279,
+          1,
+          1877,
+          1787586626615040200,
+          1787586626615040200
+        ],
+        "path": "artifacts/analytics_execution_bindings/publication_v3/index.json",
+        "sha256": "8ff3d495b80024eca2067a43239fc984961629465288d307d7f8f4de32c31e87",
+        "size_bytes": 1877
+      }
+    },
+    {
+      "fixture": {
+        "epoch": [
+          69,
+          2251799816107675,
+          33279,
+          1,
+          9266,
+          1790771842084411800,
+          1790771842084411800
+        ],
+        "path": ".ci/fixtures/kpp_docker29_replay_v1/v2_mount/damage.inspect.stdout.bin",
+        "sha256": "26bd6480b2d42b5763da880673f9dfdcf82fcba21a2b786ec85d02582dbd5e6a",
+        "size_bytes": 9266
+      },
+      "original": {
+        "epoch": [
+          69,
+          1407374885802408,
+          33133,
+          1,
+          9266,
+          1787411162194401600,
+          1787411162195940400
+        ],
+        "path": "runs/nonpublication/runtime_environments/kpp-v2-cp312-pandas3.0.1-20260822-v1/secondary_v2_mount_mode_failure_forensic/damage.inspect.stdout.bin",
+        "sha256": "26bd6480b2d42b5763da880673f9dfdcf82fcba21a2b786ec85d02582dbd5e6a",
+        "size_bytes": 9266
+      }
+    },
+    {
+      "fixture": {
+        "epoch": [
+          69,
+          1407374885975708,
+          33279,
+          1,
+          9346,
+          1790771842088637800,
+          1790771842088637800
+        ],
+        "path": ".ci/fixtures/kpp_docker29_replay_v1/v2_mount/foreign_object.inspect.stdout.bin",
+        "sha256": "9d078a307fc5f2f5685794782de654c595ddbd824e51bf7d55280f9a1e10d613",
+        "size_bytes": 9346
+      },
+      "original": {
+        "epoch": [
+          69,
+          1970324839223722,
+          33133,
+          1,
+          9346,
+          1787411162217609000,
+          1787411162219214300
+        ],
+        "path": "runs/nonpublication/runtime_environments/kpp-v2-cp312-pandas3.0.1-20260822-v1/secondary_v2_mount_mode_failure_forensic/foreign_object.inspect.stdout.bin",
+        "sha256": "9d078a307fc5f2f5685794782de654c595ddbd824e51bf7d55280f9a1e10d613",
+        "size_bytes": 9346
+      }
+    },
+    {
+      "fixture": {
+        "epoch": [
+          69,
+          1407374885975709,
+          33279,
+          1,
+          9318,
+          1790771842094334000,
+          1790771842094334000
+        ],
+        "path": ".ci/fixtures/kpp_docker29_replay_v1/v2_mount/plate_number.inspect.stdout.bin",
+        "sha256": "e8ff8e3fe8700c9315b083ba85426aa8b69c37663f11fea3d63973a57ca7314b",
+        "size_bytes": 9318
+      },
+      "original": {
+        "epoch": [
+          69,
+          1407374885802413,
+          33133,
+          1,
+          9318,
+          1787411162241853600,
+          1787411162243406800
+        ],
+        "path": "runs/nonpublication/runtime_environments/kpp-v2-cp312-pandas3.0.1-20260822-v1/secondary_v2_mount_mode_failure_forensic/plate_number.inspect.stdout.bin",
+        "sha256": "e8ff8e3fe8700c9315b083ba85426aa8b69c37663f11fea3d63973a57ca7314b",
+        "size_bytes": 9318
+      }
+    },
+    {
+      "fixture": {
+        "epoch": [
+          69,
+          1407374885975710,
+          33279,
+          1,
+          9318,
+          1790771842099897100,
+          1790771842099897100
+        ],
+        "path": ".ci/fixtures/kpp_docker29_replay_v1/v2_mount/vehicle_type.inspect.stdout.bin",
+        "sha256": "744d152b32db1544a1c982572d6ec5188f880f9038811d17fbc030590d3745aa",
+        "size_bytes": 9318
+      },
+      "original": {
+        "epoch": [
+          69,
+          1970324839223727,
+          33133,
+          1,
+          9318,
+          1787411162264949000,
+          1787411162266489000
+        ],
+        "path": "runs/nonpublication/runtime_environments/kpp-v2-cp312-pandas3.0.1-20260822-v1/secondary_v2_mount_mode_failure_forensic/vehicle_type.inspect.stdout.bin",
+        "sha256": "744d152b32db1544a1c982572d6ec5188f880f9038811d17fbc030590d3745aa",
+        "size_bytes": 9318
+      }
+    },
+    {
+      "fixture": {
+        "epoch": [
+          69,
+          1407374885975712,
+          33279,
+          1,
+          7422,
+          1790771842104296200,
+          1790771842104296200
+        ],
+        "path": ".ci/fixtures/kpp_docker29_replay_v1/zero_mount/probe.inspect.stdout.bin",
+        "sha256": "310d38ce48f77f9bbcbdb94a30f7d951dd97b7640db6c22d0d5dc82cfb59fc69",
+        "size_bytes": 7422
+      },
+      "original": {
+        "epoch": [
+          69,
+          1407374885802554,
+          33133,
+          1,
+          7422,
+          1787415196723340700,
+          1787415196724825900
+        ],
+        "path": "runs/nonpublication/runtime_environments/kpp-v2-cp312-pandas3.0.1-20260822-v1/secondary_v3_zero_mount_failure_forensic/probe.inspect.stdout.bin",
+        "sha256": "310d38ce48f77f9bbcbdb94a30f7d951dd97b7640db6c22d0d5dc82cfb59fc69",
+        "size_bytes": 7422
+      }
+    },
+    {
+      "fixture": {
+        "epoch": [
+          69,
+          1407374885975714,
+          33279,
+          1,
+          15770,
+          1790771842110563800,
+          1790771842110563800
+        ],
+        "path": ".ci/fixtures/kpp_docker29_replay_v1/peercred/daemon.info.stdout.bin",
+        "sha256": "4fc97e33301bc90e11b8560974d7de8a4348f3056a69730ef4823f883893fb88",
+        "size_bytes": 15770
+      },
+      "original": {
+        "epoch": [
+          69,
+          1688849862513076,
+          33133,
+          1,
+          15770,
+          1787417615969803300,
+          1787417615971268900
+        ],
+        "path": "runs/nonpublication/runtime_environments/kpp-v2-cp312-pandas3.0.1-20260822-v1/secondary_v3_retry1_peercred_failure_forensic/daemon.info.stdout.bin",
+        "sha256": "4fc97e33301bc90e11b8560974d7de8a4348f3056a69730ef4823f883893fb88",
+        "size_bytes": 15770
+      }
+    },
+    {
+      "fixture": {
+        "epoch": [
+          69,
+          1688849862686371,
+          33279,
+          1,
+          3646,
+          1790771842114728600,
+          1790771842114728600
+        ],
+        "path": ".ci/fixtures/kpp_docker29_replay_v1/peercred/so_peercred_diagnostic.damage.json",
+        "sha256": "b9687d94bd84081d01d887a988d02c5d2315a78050cc595a4ff31582d895e75b",
+        "size_bytes": 3646
+      },
+      "original": {
+        "epoch": [
+          69,
+          1407374885802172,
+          33133,
+          1,
+          3646,
+          1787425260288233300,
+          1787425260288233300
+        ],
+        "path": "runs/nonpublication/kpp-v2-secondary-peercred-diagnostic-20260822-v1/so_peercred_diagnostic.damage.json",
+        "sha256": "b9687d94bd84081d01d887a988d02c5d2315a78050cc595a4ff31582d895e75b",
+        "size_bytes": 3646
+      }
+    },
+    {
+      "fixture": {
+        "epoch": [
+          69,
+          1407374885975716,
+          33279,
+          1,
+          10052,
+          1790771842120567900,
+          1790771842120567900
+        ],
+        "path": ".ci/fixtures/kpp_docker29_replay_v1/peercred/damage.running_inspect.json",
+        "sha256": "e2b93751a3c003edcaf5093fdb1cdd5f3a879923f88e13bdd7382cc11bb5d6c6",
+        "size_bytes": 10052
+      },
+      "original": {
+        "epoch": [
+          69,
+          1407374885802394,
+          33133,
+          1,
+          10052,
+          1787425261675749700,
+          1787425261677268600
+        ],
+        "path": "runs/nonpublication/runtime_environments/kpp-v2-cp312-pandas3.0.1-20260822-v1/secondary_peercred_diagnostic_invocation_capture_v1/damage.running_inspect.json",
+        "sha256": "e2b93751a3c003edcaf5093fdb1cdd5f3a879923f88e13bdd7382cc11bb5d6c6",
+        "size_bytes": 10052
+      }
+    },
+    {
+      "fixture": {
+        "epoch": [
+          69,
+          1688849862686373,
+          33279,
+          1,
+          3662,
+          1790771842124081300,
+          1790771842124081300
+        ],
+        "path": ".ci/fixtures/kpp_docker29_replay_v1/peercred/so_peercred_diagnostic.foreign_object.json",
+        "sha256": "17918e28385b3a7f463fc34f2f26b9bb13d12a8cd7b226f17c2e5de6c6cd03ad",
+        "size_bytes": 3662
+      },
+      "original": {
+        "epoch": [
+          69,
+          1407374885802173,
+          33133,
+          1,
+          3662,
+          1787425261173641300,
+          1787425261173641300
+        ],
+        "path": "runs/nonpublication/kpp-v2-secondary-peercred-diagnostic-20260822-v1/so_peercred_diagnostic.foreign_object.json",
+        "sha256": "17918e28385b3a7f463fc34f2f26b9bb13d12a8cd7b226f17c2e5de6c6cd03ad",
+        "size_bytes": 3662
+      }
+    },
+    {
+      "fixture": {
+        "epoch": [
+          69,
+          2533274792818342,
+          33279,
+          1,
+          10132,
+          1790771842129329800,
+          1790771842129329800
+        ],
+        "path": ".ci/fixtures/kpp_docker29_replay_v1/peercred/foreign_object.running_inspect.json",
+        "sha256": "5db2e25859569177302077c278de00b0637cedc67e0d15160ff921743d587d9f",
+        "size_bytes": 10132
+      },
+      "original": {
+        "epoch": [
+          69,
+          1407374885802397,
+          33133,
+          1,
+          10132,
+          1787425261678268100,
+          1787425261680765400
+        ],
+        "path": "runs/nonpublication/runtime_environments/kpp-v2-cp312-pandas3.0.1-20260822-v1/secondary_peercred_diagnostic_invocation_capture_v1/foreign_object.running_inspect.json",
+        "sha256": "5db2e25859569177302077c278de00b0637cedc67e0d15160ff921743d587d9f",
+        "size_bytes": 10132
+      }
+    },
+    {
+      "fixture": {
+        "epoch": [
+          69,
+          1407374885975719,
+          33279,
+          1,
+          3658,
+          1790771842134509700,
+          1790771842134509700
+        ],
+        "path": ".ci/fixtures/kpp_docker29_replay_v1/peercred/so_peercred_diagnostic.plate_number.json",
+        "sha256": "657212b2fef54650e664994c66d26005df514dd9cd7d7d3f637ce2b8d085146d",
+        "size_bytes": 3658
+      },
+      "original": {
+        "epoch": [
+          69,
+          1407374885802174,
+          33133,
+          1,
+          3658,
+          1787425259724634600,
+          1787425259724634600
+        ],
+        "path": "runs/nonpublication/kpp-v2-secondary-peercred-diagnostic-20260822-v1/so_peercred_diagnostic.plate_number.json",
+        "sha256": "657212b2fef54650e664994c66d26005df514dd9cd7d7d3f637ce2b8d085146d",
+        "size_bytes": 3658
+      }
+    },
+    {
+      "fixture": {
+        "epoch": [
+          69,
+          1407374885975720,
+          33279,
+          1,
+          10104,
+          1790771842140266700,
+          1790771842140266700
+        ],
+        "path": ".ci/fixtures/kpp_docker29_replay_v1/peercred/plate_number.running_inspect.json",
+        "sha256": "5913a4d12b268001523d471ab48ea597ea109229db00c22fa0943d92c8cfdb9b",
+        "size_bytes": 10104
+      },
+      "original": {
+        "epoch": [
+          69,
+          1688849862513055,
+          33133,
+          1,
+          10104,
+          1787425261668734300,
+          1787425261669735300
+        ],
+        "path": "runs/nonpublication/runtime_environments/kpp-v2-cp312-pandas3.0.1-20260822-v1/secondary_peercred_diagnostic_invocation_capture_v1/plate_number.running_inspect.json",
+        "sha256": "5913a4d12b268001523d471ab48ea597ea109229db00c22fa0943d92c8cfdb9b",
+        "size_bytes": 10104
+      }
+    },
+    {
+      "fixture": {
+        "epoch": [
+          69,
+          1407374885975721,
+          33279,
+          1,
+          3658,
+          1790771842144885800,
+          1790771842144885800
+        ],
+        "path": ".ci/fixtures/kpp_docker29_replay_v1/peercred/so_peercred_diagnostic.vehicle_type.json",
+        "sha256": "b5ceb31b11c89802275e018a260b6994a8d7ad7743c77c34c062af40097345d8",
+        "size_bytes": 3658
+      },
+      "original": {
+        "epoch": [
+          69,
+          1407374885802175,
+          33133,
+          1,
+          3658,
+          1787425260266363700,
+          1787425260266363700
+        ],
+        "path": "runs/nonpublication/kpp-v2-secondary-peercred-diagnostic-20260822-v1/so_peercred_diagnostic.vehicle_type.json",
+        "sha256": "b5ceb31b11c89802275e018a260b6994a8d7ad7743c77c34c062af40097345d8",
+        "size_bytes": 3658
+      }
+    },
+    {
+      "fixture": {
+        "epoch": [
+          69,
+          1407374885975722,
+          33279,
+          1,
+          10103,
+          1790771842149173600,
+          1790771842149173600
+        ],
+        "path": ".ci/fixtures/kpp_docker29_replay_v1/peercred/vehicle_type.running_inspect.json",
+        "sha256": "4dd5b6c8e868b33b046e8d16ad297d5b862481e47eb97420f7289ad3b174d4cd",
+        "size_bytes": 10103
+      },
+      "original": {
+        "epoch": [
+          69,
+          1407374885802402,
+          33133,
+          1,
+          10103,
+          1787425261672734600,
+          1787425261673172800
+        ],
+        "path": "runs/nonpublication/runtime_environments/kpp-v2-cp312-pandas3.0.1-20260822-v1/secondary_peercred_diagnostic_invocation_capture_v1/vehicle_type.running_inspect.json",
+        "sha256": "4dd5b6c8e868b33b046e8d16ad297d5b862481e47eb97420f7289ad3b174d4cd",
+        "size_bytes": 10103
+      }
+    }
+  ],
+  "owned_paths": [
+    "tests/test_checkpoint_external_execution_manifest.py",
+    "tests/test_kpp_legacy_iss_v2_secondary_sensitivity_executor.py",
+    "tests/test_publication_immutable_directory_v1.py",
+    "tests/test_publication_policy_qualification_runtime_inputs_v2.py",
+    "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+    ".ci/fixtures/publication_worker_manifest_v1/cpu_runtime_probe.json",
+    ".ci/fixtures/publication_worker_manifest_v1/gpu_runtime_probe.json",
+    ".ci/fixtures/publication_worker_manifest_v1/bindings/damage.openvino_cpu.json",
+    ".ci/fixtures/publication_worker_manifest_v1/bindings/damage.tensorrt_cuda.json",
+    ".ci/fixtures/publication_worker_manifest_v1/bindings/foreign_object.openvino_cpu.json",
+    ".ci/fixtures/publication_worker_manifest_v1/bindings/foreign_object.tensorrt_cuda.json",
+    ".ci/fixtures/publication_worker_manifest_v1/bindings/plate_number.openvino_cpu.json",
+    ".ci/fixtures/publication_worker_manifest_v1/bindings/plate_number.tensorrt_cuda.json",
+    ".ci/fixtures/publication_worker_manifest_v1/bindings/vehicle_type.openvino_cpu.json",
+    ".ci/fixtures/publication_worker_manifest_v1/bindings/vehicle_type.tensorrt_cuda.json",
+    ".ci/fixtures/publication_worker_manifest_v1/bindings/index.json",
+    ".ci/fixtures/kpp_docker29_replay_v1/v2_mount/damage.inspect.stdout.bin",
+    ".ci/fixtures/kpp_docker29_replay_v1/v2_mount/foreign_object.inspect.stdout.bin",
+    ".ci/fixtures/kpp_docker29_replay_v1/v2_mount/plate_number.inspect.stdout.bin",
+    ".ci/fixtures/kpp_docker29_replay_v1/v2_mount/vehicle_type.inspect.stdout.bin",
+    ".ci/fixtures/kpp_docker29_replay_v1/zero_mount/probe.inspect.stdout.bin",
+    ".ci/fixtures/kpp_docker29_replay_v1/peercred/daemon.info.stdout.bin",
+    ".ci/fixtures/kpp_docker29_replay_v1/peercred/so_peercred_diagnostic.damage.json",
+    ".ci/fixtures/kpp_docker29_replay_v1/peercred/damage.running_inspect.json",
+    ".ci/fixtures/kpp_docker29_replay_v1/peercred/so_peercred_diagnostic.foreign_object.json",
+    ".ci/fixtures/kpp_docker29_replay_v1/peercred/foreign_object.running_inspect.json",
+    ".ci/fixtures/kpp_docker29_replay_v1/peercred/so_peercred_diagnostic.plate_number.json",
+    ".ci/fixtures/kpp_docker29_replay_v1/peercred/plate_number.running_inspect.json",
+    ".ci/fixtures/kpp_docker29_replay_v1/peercred/so_peercred_diagnostic.vehicle_type.json",
+    ".ci/fixtures/kpp_docker29_replay_v1/peercred/vehicle_type.running_inspect.json",
+    ".ci/fixtures/origin-manifest.v1.json"
+  ],
+  "owned_pins": [
+    {
+      "epoch": [
+        69,
+        13510798883981813,
+        33279,
+        1,
+        10149,
+        1790771994212750700,
+        1790771994212750700
+      ],
+      "path": "tests/test_checkpoint_external_execution_manifest.py",
+      "sha256": "90a48b1343fd6f5b1dbeca2aa424458ebe9cffb64055da0e581736c3add6a628",
+      "size_bytes": 10149
+    },
+    {
+      "epoch": [
+        69,
+        3659174699106094,
+        33279,
+        1,
+        456217,
+        1790771994224830100,
+        1790771994224830100
+      ],
+      "path": "tests/test_kpp_legacy_iss_v2_secondary_sensitivity_executor.py",
+      "sha256": "965195e425d13d6c2047127d807db1f3c973624ad1d063bb78f8f169ba150ba8",
+      "size_bytes": 456217
+    },
+    {
+      "epoch": [
+        69,
+        7318349396347399,
+        33279,
+        1,
+        4059,
+        1790772603484094800,
+        1790772603484094800
+      ],
+      "path": "tests/test_publication_immutable_directory_v1.py",
+      "sha256": "04a242d248925b719d7f815beea6cfb77fe55e6e2eca57892acc7acbdb536f16",
+      "size_bytes": 4059
+    },
+    {
+      "epoch": [
+        69,
+        8725724279900686,
+        33279,
+        1,
+        50111,
+        1790771994227830600,
+        1790771994227830600
+      ],
+      "path": "tests/test_publication_policy_qualification_runtime_inputs_v2.py",
+      "sha256": "2e240c78d4ed46d9ed42c5b28dc058bd2210be6292856c6a16732ffb1a9c5b47",
+      "size_bytes": 50111
+    },
+    {
+      "epoch": [
+        69,
+        1125899909260136,
+        33279,
+        1,
+        23561,
+        1790772102190366000,
+        1790772102190366000
+      ],
+      "path": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+      "sha256": "36efd64447ca81180085d67de352936bf31ad295e3ab557056b58662f8f99720",
+      "size_bytes": 23561
+    },
+    {
+      "epoch": [
+        69,
+        2251799816107661,
+        33279,
+        1,
+        659,
+        1790771842023088300,
+        1790771842023088300
+      ],
+      "path": ".ci/fixtures/publication_worker_manifest_v1/cpu_runtime_probe.json",
+      "sha256": "e6008e33e137d315f1672adb2e241004e2ea08f1220467dcbf089a566060ddfb",
+      "size_bytes": 659
+    },
+    {
+      "epoch": [
+        69,
+        1407374885975694,
+        33279,
+        1,
+        654,
+        1790771842036295700,
+        1790771842036295700
+      ],
+      "path": ".ci/fixtures/publication_worker_manifest_v1/gpu_runtime_probe.json",
+      "sha256": "24986e7aadd93ab9bb72704c5a83d568bc0e4fd70154803e303b3bda5aa4a752",
+      "size_bytes": 654
+    },
+    {
+      "epoch": [
+        69,
+        1407374885975696,
+        33279,
+        1,
+        1141,
+        1790771842040298400,
+        1790771842040298400
+      ],
+      "path": ".ci/fixtures/publication_worker_manifest_v1/bindings/damage.openvino_cpu.json",
+      "sha256": "7f1b6e3f428497d381b2350a0d0faccc7722d82bcf54589fd17d5af75a828f0c",
+      "size_bytes": 1141
+    },
+    {
+      "epoch": [
+        69,
+        2251799816107665,
+        33279,
+        1,
+        1041,
+        1790771842045299400,
+        1790771842045299400
+      ],
+      "path": ".ci/fixtures/publication_worker_manifest_v1/bindings/damage.tensorrt_cuda.json",
+      "sha256": "e686a877f3f9e6162ddbf2e0d12dc2d8565d7da1c772bbc94304c719d9712ea3",
+      "size_bytes": 1041
+    },
+    {
+      "epoch": [
+        69,
+        1407374885975698,
+        33279,
+        1,
+        1158,
+        1790771842050312200,
+        1790771842050312200
+      ],
+      "path": ".ci/fixtures/publication_worker_manifest_v1/bindings/foreign_object.openvino_cpu.json",
+      "sha256": "1149880ddf9d75a725a0a94618130f8bbf019fe27214126ea40725b648d2ec3d",
+      "size_bytes": 1158
+    },
+    {
+      "epoch": [
+        69,
+        1407374885975699,
+        33279,
+        1,
+        1058,
+        1790771842055312600,
+        1790771842055312600
+      ],
+      "path": ".ci/fixtures/publication_worker_manifest_v1/bindings/foreign_object.tensorrt_cuda.json",
+      "sha256": "99d42bc819bd9db5716a3a4429c1c706b9631ed58510835fd49cb08f89b64f73",
+      "size_bytes": 1058
+    },
+    {
+      "epoch": [
+        69,
+        1407374885975700,
+        33279,
+        1,
+        1150,
+        1790771842059314700,
+        1790771842059314700
+      ],
+      "path": ".ci/fixtures/publication_worker_manifest_v1/bindings/plate_number.openvino_cpu.json",
+      "sha256": "dddd24afb8ff3740b04973145233f4a48250d7f64e1acf3e5f11d5a113b43b49",
+      "size_bytes": 1150
+    },
+    {
+      "epoch": [
+        69,
+        1688849862686357,
+        33279,
+        1,
+        1051,
+        1790771842063976800,
+        1790771842063976800
+      ],
+      "path": ".ci/fixtures/publication_worker_manifest_v1/bindings/plate_number.tensorrt_cuda.json",
+      "sha256": "34b8d578ac0b615ff79be2ae4ae7dc59f91f2320e54d91f703cc068dfc8b7acd",
+      "size_bytes": 1051
+    },
+    {
+      "epoch": [
+        69,
+        1407374885975702,
+        33279,
+        1,
+        1150,
+        1790771842069809900,
+        1790771842069809900
+      ],
+      "path": ".ci/fixtures/publication_worker_manifest_v1/bindings/vehicle_type.openvino_cpu.json",
+      "sha256": "1981a6ca515e0138b47153bdc0e60799eb65e1662963cac43dc6b53fe5377e0a",
+      "size_bytes": 1150
+    },
+    {
+      "epoch": [
+        69,
+        2251799816107671,
+        33279,
+        1,
+        1051,
+        1790771842073804300,
+        1790771842073804300
+      ],
+      "path": ".ci/fixtures/publication_worker_manifest_v1/bindings/vehicle_type.tensorrt_cuda.json",
+      "sha256": "670f1a97b51d9460915e468292c139c3b49d3a731e95c2391e2c7203ddb93417",
+      "size_bytes": 1051
+    },
+    {
+      "epoch": [
+        69,
+        1407374885975704,
+        33279,
+        1,
+        1877,
+        1790771842077804500,
+        1790771842077804500
+      ],
+      "path": ".ci/fixtures/publication_worker_manifest_v1/bindings/index.json",
+      "sha256": "8ff3d495b80024eca2067a43239fc984961629465288d307d7f8f4de32c31e87",
+      "size_bytes": 1877
+    },
+    {
+      "epoch": [
+        69,
+        2251799816107675,
+        33279,
+        1,
+        9266,
+        1790771842084411800,
+        1790771842084411800
+      ],
+      "path": ".ci/fixtures/kpp_docker29_replay_v1/v2_mount/damage.inspect.stdout.bin",
+      "sha256": "26bd6480b2d42b5763da880673f9dfdcf82fcba21a2b786ec85d02582dbd5e6a",
+      "size_bytes": 9266
+    },
+    {
+      "epoch": [
+        69,
+        1407374885975708,
+        33279,
+        1,
+        9346,
+        1790771842088637800,
+        1790771842088637800
+      ],
+      "path": ".ci/fixtures/kpp_docker29_replay_v1/v2_mount/foreign_object.inspect.stdout.bin",
+      "sha256": "9d078a307fc5f2f5685794782de654c595ddbd824e51bf7d55280f9a1e10d613",
+      "size_bytes": 9346
+    },
+    {
+      "epoch": [
+        69,
+        1407374885975709,
+        33279,
+        1,
+        9318,
+        1790771842094334000,
+        1790771842094334000
+      ],
+      "path": ".ci/fixtures/kpp_docker29_replay_v1/v2_mount/plate_number.inspect.stdout.bin",
+      "sha256": "e8ff8e3fe8700c9315b083ba85426aa8b69c37663f11fea3d63973a57ca7314b",
+      "size_bytes": 9318
+    },
+    {
+      "epoch": [
+        69,
+        1407374885975710,
+        33279,
+        1,
+        9318,
+        1790771842099897100,
+        1790771842099897100
+      ],
+      "path": ".ci/fixtures/kpp_docker29_replay_v1/v2_mount/vehicle_type.inspect.stdout.bin",
+      "sha256": "744d152b32db1544a1c982572d6ec5188f880f9038811d17fbc030590d3745aa",
+      "size_bytes": 9318
+    },
+    {
+      "epoch": [
+        69,
+        1407374885975712,
+        33279,
+        1,
+        7422,
+        1790771842104296200,
+        1790771842104296200
+      ],
+      "path": ".ci/fixtures/kpp_docker29_replay_v1/zero_mount/probe.inspect.stdout.bin",
+      "sha256": "310d38ce48f77f9bbcbdb94a30f7d951dd97b7640db6c22d0d5dc82cfb59fc69",
+      "size_bytes": 7422
+    },
+    {
+      "epoch": [
+        69,
+        1407374885975714,
+        33279,
+        1,
+        15770,
+        1790771842110563800,
+        1790771842110563800
+      ],
+      "path": ".ci/fixtures/kpp_docker29_replay_v1/peercred/daemon.info.stdout.bin",
+      "sha256": "4fc97e33301bc90e11b8560974d7de8a4348f3056a69730ef4823f883893fb88",
+      "size_bytes": 15770
+    },
+    {
+      "epoch": [
+        69,
+        1688849862686371,
+        33279,
+        1,
+        3646,
+        1790771842114728600,
+        1790771842114728600
+      ],
+      "path": ".ci/fixtures/kpp_docker29_replay_v1/peercred/so_peercred_diagnostic.damage.json",
+      "sha256": "b9687d94bd84081d01d887a988d02c5d2315a78050cc595a4ff31582d895e75b",
+      "size_bytes": 3646
+    },
+    {
+      "epoch": [
+        69,
+        1407374885975716,
+        33279,
+        1,
+        10052,
+        1790771842120567900,
+        1790771842120567900
+      ],
+      "path": ".ci/fixtures/kpp_docker29_replay_v1/peercred/damage.running_inspect.json",
+      "sha256": "e2b93751a3c003edcaf5093fdb1cdd5f3a879923f88e13bdd7382cc11bb5d6c6",
+      "size_bytes": 10052
+    },
+    {
+      "epoch": [
+        69,
+        1688849862686373,
+        33279,
+        1,
+        3662,
+        1790771842124081300,
+        1790771842124081300
+      ],
+      "path": ".ci/fixtures/kpp_docker29_replay_v1/peercred/so_peercred_diagnostic.foreign_object.json",
+      "sha256": "17918e28385b3a7f463fc34f2f26b9bb13d12a8cd7b226f17c2e5de6c6cd03ad",
+      "size_bytes": 3662
+    },
+    {
+      "epoch": [
+        69,
+        2533274792818342,
+        33279,
+        1,
+        10132,
+        1790771842129329800,
+        1790771842129329800
+      ],
+      "path": ".ci/fixtures/kpp_docker29_replay_v1/peercred/foreign_object.running_inspect.json",
+      "sha256": "5db2e25859569177302077c278de00b0637cedc67e0d15160ff921743d587d9f",
+      "size_bytes": 10132
+    },
+    {
+      "epoch": [
+        69,
+        1407374885975719,
+        33279,
+        1,
+        3658,
+        1790771842134509700,
+        1790771842134509700
+      ],
+      "path": ".ci/fixtures/kpp_docker29_replay_v1/peercred/so_peercred_diagnostic.plate_number.json",
+      "sha256": "657212b2fef54650e664994c66d26005df514dd9cd7d7d3f637ce2b8d085146d",
+      "size_bytes": 3658
+    },
+    {
+      "epoch": [
+        69,
+        1407374885975720,
+        33279,
+        1,
+        10104,
+        1790771842140266700,
+        1790771842140266700
+      ],
+      "path": ".ci/fixtures/kpp_docker29_replay_v1/peercred/plate_number.running_inspect.json",
+      "sha256": "5913a4d12b268001523d471ab48ea597ea109229db00c22fa0943d92c8cfdb9b",
+      "size_bytes": 10104
+    },
+    {
+      "epoch": [
+        69,
+        1407374885975721,
+        33279,
+        1,
+        3658,
+        1790771842144885800,
+        1790771842144885800
+      ],
+      "path": ".ci/fixtures/kpp_docker29_replay_v1/peercred/so_peercred_diagnostic.vehicle_type.json",
+      "sha256": "b5ceb31b11c89802275e018a260b6994a8d7ad7743c77c34c062af40097345d8",
+      "size_bytes": 3658
+    },
+    {
+      "epoch": [
+        69,
+        1407374885975722,
+        33279,
+        1,
+        10103,
+        1790771842149173600,
+        1790771842149173600
+      ],
+      "path": ".ci/fixtures/kpp_docker29_replay_v1/peercred/vehicle_type.running_inspect.json",
+      "sha256": "4dd5b6c8e868b33b046e8d16ad297d5b862481e47eb97420f7289ad3b174d4cd",
+      "size_bytes": 10103
+    },
+    {
+      "epoch": [
+        69,
+        2251799816107691,
+        33279,
+        1,
+        10581,
+        1790771842150642000,
+        1790771842150642000
+      ],
+      "path": ".ci/fixtures/origin-manifest.v1.json",
+      "sha256": "6e14bd04cc172000858ec9dce213520cd01f62575ece7f7e3340d83d3077a28c",
+      "size_bytes": 10581
+    }
+  ],
+  "planning_commit": "bec47b794ef9183fe9e3ce4cb1ec15541070f96f",
+  "planning_peer_review_sha256": "5bf757a4cadfb1016e6e59a8abe9adb0457340dd7b1ef6d1cd28063575862bf3",
+  "pr_authorization": "https://github.com/lordcoudy/VAST/pull/2#issuecomment-5911177634",
+  "protected_original_sources": [
+    {
+      "path": "scripts/analytics_execution_endpoint.py",
+      "sha256": "acf5861d59efac7026ea89f28e1b4d550bd1254e8cdbea4df41eb874c7b5466b",
+      "size_bytes": 6756
+    },
+    {
+      "path": "scripts/analytics_execution_worker.py",
+      "sha256": "04b59f3c5a1fa94d764f3b0e71fcb2cd0d7b0e2ad915573529019e2d2f32f00d",
+      "size_bytes": 38433
+    },
+    {
+      "path": "tests/test_backend_q4_two_phase_source_registry_v1.py",
+      "sha256": "6262f9167e990c4e3300f2949d0ecd620b4ee3e69cbe6677c079f4413009fdeb",
+      "size_bytes": 42320
+    },
+    {
+      "path": "tests/test_publication_q4_authority_plan_pipeline_v1.py",
+      "sha256": "5c9ec95b13ab2ba8c6fabcda585dea01e7c563537b83ee3d16c87591a6916827",
+      "size_bytes": 86923
+    },
+    {
+      "path": "tests/test_publication_q4_authority_source_request_v1.py",
+      "sha256": "2833ffd08ce196fa409e320df022440d10eb740b6ce2b076b78dbbfc01310a05",
+      "size_bytes": 62612
+    },
+    {
+      "path": "tests/test_publication_q4_authority_source_material_v1.py",
+      "sha256": "bc49335717f4cc19ba30b438637e15ac8d4459ee6d7f6827cd7868bdcef811d0",
+      "size_bytes": 19403
+    },
+    {
+      "path": "tests/test_publication_q4_runtime_registry_materializer_v4.py",
+      "sha256": "79852f1e3061b6a75e1698d40f98db03bdb009765482a2d8a7aaf81811873b16",
+      "size_bytes": 44452
+    },
+    {
+      "path": "tests/test_kpp_frozen_reconstruction_v1_dataset_integration.py",
+      "sha256": "d3795cb4a3c20bb6e9a12f55a08c71fcfd153baf462f46e31c47763933650873",
+      "size_bytes": 4811
+    },
+    {
+      "path": "tests/test_kpp_iss_publication_v3_dataset_integration.py",
+      "sha256": "d933ae7f2cb2029e956f44aed2a0cdb9d6346cb5318dd55ab0b152014470ef63",
+      "size_bytes": 8919
+    },
+    {
+      "path": "tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+      "sha256": "e7c195735cf7a095dc7886b37dd52bd8f30660fbceb025a9a79aeb46cca94a67",
+      "size_bytes": 12198
+    },
+    {
+      "path": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+      "sha256": "67f175282df9b26bbfb7a9fe4340edccf5f14ff2d82ac74c8dbfdb5cd402c301",
+      "size_bytes": 39251
+    },
+    {
+      "path": "tests/test_checkpoint_deepstream_runtime_image_evidence_v1.py",
+      "sha256": "98ac3bbe89158b2aa58cb6c12bccd60385a1e1e7821104f2b1a797de0d3791d7",
+      "size_bytes": 7027
+    },
+    {
+      "path": "tests/test_checkpoint_openvino_gva_qualification_fragment_v3.py",
+      "sha256": "dee0a7e1418dba5ec4206b4f8f65646f13e9348fd4230beac8e3cde78d37013e",
+      "size_bytes": 10431
+    },
+    {
+      "path": "tests/test_checkpoint_openvino_gva_publication_runtime_v3.py",
+      "sha256": "eb54f104016b6fb46cc887d70ece0dcba122ed6258e67919eb946ace4ceab00f",
+      "size_bytes": 43456
+    }
+  ],
+  "publication_eligible": false,
+  "schema_version": 1,
+  "self_review": {
+    "historical_forensics": "Raw14 snapshots match original hashes/sizes. Original methods/assertions unchanged except captured mount source rewritten to an owned existing-run temp root.",
+    "immutable_fixture": "All three TempDirectory calls use owned standard temporary roots; original crash/tamper/ABA assertions unchanged.",
+    "limits": "All dispatch channels capped1MiB; captures real child groups, exact wait/kill terminal and source/fixture38before-after pins. No Docker/model/source/inference/GPU or fullsuite run.",
+    "proc_fixture": "Positive uses genuine /proc open/fstat/name/read/close, wrapper captures flags/256+223/sameFD/oneclose/EBADF. Returned WSL bytes are fixture-only; direct nonWSL marker negative retained; production observer unchanged.",
+    "remaining": "Actual hosted portable/default-all CI and separately provisioned integration lane remain required; this fixture slice alone does not complete task20.5 or Decision25.",
+    "selected_identity": "Current static Gst image constants compare against exact tracked7807 receipt; old full-g authority methods remain verbatim and are not rebound.",
+    "timeout_truth": "Original red, remaining ignored-dir error and two120s combined timeouts retained. Only unfinished/not-started methods continued; exhaustive original case passed standalone under authorized600s bound without changing assertions or production600/615 ABI.",
+    "worker_helper": "Eleven committed declared metadata snapshots; real cross-binding/schema validators unchanged. Empty original ROOT positive and missing/foreign metadata negatives pass."
+  },
+  "source_grant": false,
+  "tests": {
+    "executions": [
+      {
+        "capture_exceeded": false,
+        "channels": {
+          "stderr.bin": {
+            "sha256": "ddea33df4a47e48b8367e3c4ac1a8938de34d4efaf37b72d4cc5c843d75f6c10",
+            "size_bytes": 1911
+          },
+          "stdout.bin": {
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "size_bytes": 0
+          }
+        },
+        "completed_ok_ids": [],
+        "dispatch": {
+          "epoch": [
+            69,
+            1407374885975684,
+            33279,
+            1,
+            997,
+            1790771671736181800,
+            1790771671736181800
+          ],
+          "path": "artifacts/benchmark_recovery_20260930/ci-hermetic-fixtures-focused-v1/attempt01-red/dispatch.json",
+          "sha256": "f5c82173a6c34db3683a2a4bd5adff986c82ccde414619d037eec8dd7a1a3ad9",
+          "size_bytes": 997
+        },
+        "elapsed_seconds": 0.622780450998107,
+        "execution": {
+          "epoch": [
+            69,
+            1407374885975688,
+            33279,
+            1,
+            633,
+            1790771672361730100,
+            1790771672361730100
+          ],
+          "path": "artifacts/benchmark_recovery_20260930/ci-hermetic-fixtures-focused-v1/attempt01-red/execution.json",
+          "sha256": "596ffbc80b2e5de3f88163b61345a93f8f45297a8905389ae1af86dd9e6cb517",
+          "size_bytes": 633
+        },
+        "group_absent": true,
+        "name": "attempt01-red",
+        "original_pid": 25946,
+        "pid_absent": true,
+        "returncode": 1,
+        "started": {
+          "epoch": [
+            69,
+            1688849862686343,
+            33279,
+            1,
+            323,
+            1790771671748523100,
+            1790771671748523100
+          ],
+          "path": "artifacts/benchmark_recovery_20260930/ci-hermetic-fixtures-focused-v1/attempt01-red/started.json",
+          "sha256": "359a1c8e5d6009b0d836cbc884f1259933480aacbfdc21952f5a167a2c9a6b02",
+          "size_bytes": 323
+        },
+        "timed_out": false
+      },
+      {
+        "capture_exceeded": false,
+        "channels": {
+          "stderr.bin": {
+            "sha256": "fe305a62dc6cc91e95e2274d9478335993852873682310a09789d87205b21003",
+            "size_bytes": 6013
+          },
+          "stdout.bin": {
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "size_bytes": 0
+          }
+        },
+        "completed_ok_ids": [
+          "test_checkpoint_external_execution_manifest.ExternalExecutionManifestTests.test_external_manifest_rejects_real_identity_and_coverage_drift",
+          "test_checkpoint_external_execution_manifest.ExternalExecutionManifestTests.test_native_policy_import_does_not_require_sdk_bridge",
+          "test_checkpoint_external_execution_manifest.ExternalExecutionManifestTests.test_producer_manifest_passes_real_coordinator_startup_for_both_systems",
+          "test_kpp_legacy_iss_v2_secondary_sensitivity_executor.KppLegacyIssV2SecondarySensitivityExecutorTests.test_nonzero_create_capture_remains_dispatch_ambiguous_without_terminal_marker",
+          "test_kpp_legacy_iss_v2_secondary_sensitivity_executor.KppLegacyIssV2SecondarySensitivityExecutorTests.test_nonzero_create_with_real_guardian_detaches_retained_owner",
+          "test_kpp_legacy_iss_v2_secondary_sensitivity_executor.KppLegacyIssV2SecondarySensitivityExecutorTests.test_peer_identity_modes_are_explicit_disjoint_and_sealed_pid0_evidence_passes",
+          "test_kpp_legacy_iss_v2_secondary_sensitivity_executor.KppLegacyIssV2SecondarySensitivityExecutorTests.test_real_docker29_four_worker_fixtures_pass_parent_cleanup",
+          "test_kpp_legacy_iss_v2_secondary_sensitivity_executor.KppLegacyIssV2SecondarySensitivityExecutorTests.test_real_docker29_four_worker_fixtures_pass_watchdog_recovery",
+          "test_kpp_legacy_iss_v2_secondary_sensitivity_executor.KppLegacyIssV2SecondarySensitivityExecutorTests.test_real_docker29_four_worker_readonly_mount_projection_is_closed_and_cross_bound",
+          "test_kpp_legacy_iss_v2_secondary_sensitivity_executor.KppLegacyIssV2SecondarySensitivityExecutorTests.test_real_docker29_zero_mount_probe_passes_postcreate_and_parent_cleanup",
+          "test_kpp_legacy_iss_v2_secondary_sensitivity_executor.KppLegacyIssV2SecondarySensitivityExecutorTests.test_real_docker29_zero_mount_probe_passes_stale_reaper",
+          "test_kpp_legacy_iss_v2_secondary_sensitivity_executor.KppLegacyIssV2SecondarySensitivityExecutorTests.test_real_docker29_zero_mount_probe_passes_watchdog_recovery",
+          "test_kpp_legacy_iss_v2_secondary_sensitivity_executor.KppLegacyIssV2SecondarySensitivityExecutorTests.test_real_docker29_zero_mount_probe_projection_is_closed",
+          "test_kpp_legacy_iss_v2_secondary_sensitivity_executor.KppLegacyIssV2SecondarySensitivityExecutorTests.test_same_v2_existing_run_recovers_exact_four_docker29_workers_before_block",
+          "test_checkpoint_external_execution_manifest.ExternalExecutionManifestTests.test_worker_fixture_needs_no_ignored_runtime_artifacts",
+          "test_checkpoint_external_execution_manifest.ExternalExecutionManifestTests.test_worker_fixture_rejects_missing_and_foreign_metadata",
+          "test_kpp_legacy_iss_v2_secondary_sensitivity_executor.KppLegacyIssV2SecondarySensitivityExecutorTests.test_peercred_pid0_platform_observer_is_nofollow_bounded_and_exact_on_wsl",
+          "test_publication_immutable_directory_v1.PublicationImmutableDirectoryV1Tests.test_three_crash_windows_exact_adoption_and_inode_preservation",
+          "test_publication_policy_qualification_runtime_inputs_v2.QualificationRuntimeInputsV2Tests.test_versioned_analytics_authority_selects_bound_paths_not_v3_constants",
+          "test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_gstreamer_current_runtime_is_exactly_refrozen"
+        ],
+        "dispatch": {
+          "epoch": [
+            69,
+            1407374885975834,
+            33279,
+            1,
+            17811,
+            1790772572059461300,
+            1790772572059461300
+          ],
+          "path": "artifacts/benchmark_recovery_20260930/ci-hermetic-fixtures-focused-v1/attempt02-focused-green/dispatch.json",
+          "sha256": "b4c55a4318d8681384c7d30f6d5dd931e7d28e43c3ff35ea079068f8727746cc",
+          "size_bytes": 17811
+        },
+        "elapsed_seconds": 3.633308124000905,
+        "execution": {
+          "epoch": [
+            69,
+            1407374885975838,
+            33279,
+            1,
+            10873,
+            1790772575704343600,
+            1790772575704343600
+          ],
+          "path": "artifacts/benchmark_recovery_20260930/ci-hermetic-fixtures-focused-v1/attempt02-focused-green/execution.json",
+          "sha256": "c7efc528360cb0ff6809daffbf9237e118185481a19d18003fc8dc63ef504fe9",
+          "size_bytes": 10873
+        },
+        "group_absent": true,
+        "name": "attempt02-focused-green",
+        "original_pid": 26175,
+        "pid_absent": true,
+        "returncode": 1,
+        "started": {
+          "epoch": [
+            69,
+            1407374885975835,
+            33279,
+            1,
+            131,
+            1790772572063223400,
+            1790772572063223400
+          ],
+          "path": "artifacts/benchmark_recovery_20260930/ci-hermetic-fixtures-focused-v1/attempt02-focused-green/started.json",
+          "sha256": "1e65acc36d396bcfa7c3e5ae8fb199faedae26d537039ae56fcfc5224b8dc40b",
+          "size_bytes": 131
+        },
+        "timed_out": false
+      },
+      {
+        "capture_exceeded": false,
+        "channels": {
+          "stderr.bin": {
+            "sha256": "2b53c1daf4b01a39545dae860eef136d8b3570ed26fea14d15c2700288d78e48",
+            "size_bytes": 5470
+          },
+          "stdout.bin": {
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "size_bytes": 0
+          }
+        },
+        "completed_ok_ids": [
+          "test_backend_q4_two_phase_source_registry_v1.BackendQ4TwoPhaseSourceRegistryV1Tests.test_cli_exact_hashes_canonical_stdout_and_rejects_extra_argv",
+          "test_backend_q4_two_phase_source_registry_v1.BackendQ4TwoPhaseSourceRegistryV1Tests.test_default_service_loader_supplies_only_independent_expected_authority",
+          "test_backend_q4_two_phase_source_registry_v1.BackendQ4TwoPhaseSourceRegistryV1Tests.test_materializes_exact_registry_and_ready_identity_inputs",
+          "test_backend_q4_two_phase_source_registry_v1.BackendQ4TwoPhaseSourceRegistryV1Tests.test_native_execution_manifest_rejects_repinned_authority_drift",
+          "test_backend_q4_two_phase_source_registry_v1.BackendQ4TwoPhaseSourceRegistryV1Tests.test_runtime_calibration_projection_must_equal_accepted_mapping",
+          "test_backend_q4_two_phase_source_registry_v1.BackendQ4TwoPhaseSourceRegistryV1Tests.test_runtime_file_roles_are_exact_for_each_real_abi",
+          "test_backend_q4_two_phase_source_registry_v1.BackendQ4TwoPhaseSourceRegistryV1Tests.test_socket_and_patch_image_drift_fail_closed",
+          "test_backend_q4_two_phase_source_registry_v1.BackendQ4TwoPhaseSourceRegistryV1Tests.test_tamper_and_stale_upstream_fail_closed_after_commit",
+          "test_backend_q4_two_phase_source_registry_v1.BackendQ4TwoPhaseSourceRegistryV1Tests.test_two_leaf_materializer_recovers_every_commit_and_lost_response",
+          "test_backend_q4_two_phase_source_registry_v1.BackendQ4TwoPhaseSourceRegistryV1Tests.test_two_leaf_materializer_rejects_same_invocation_aba",
+          "test_backend_q4_two_phase_source_registry_v1.BackendQ4TwoPhaseSourceRegistryV1Tests.test_two_leaf_resume_rejects_tamper_foreign_result_and_redirect",
+          "test_publication_q4_authority_plan_pipeline_v1.PublicationQ4AuthorityPlanPipelineV1Tests.test_cold_loader_rejects_exact_copy_inode_swap_restored_after_read",
+          "test_publication_q4_authority_plan_pipeline_v1.PublicationQ4AuthorityPlanPipelineV1Tests.test_phase1_and_phase2_form_one_materializable_receipt_chain",
+          "test_publication_q4_authority_plan_pipeline_v1.PublicationQ4AuthorityPlanPipelineV1Tests.test_phase1_cold_loader_rejects_output_parent_replacement",
+          "test_publication_q4_authority_plan_pipeline_v1.PublicationQ4AuthorityPlanPipelineV1Tests.test_phase2_cold_loader_holds_parent_across_lineage_loads",
+          "test_publication_q4_authority_plan_pipeline_v1.PublicationQ4AuthorityPlanPipelineV1Tests.test_real_phase1_and_phase2_resume_receipt_last_crash_windows",
+          "test_publication_q4_authority_plan_pipeline_v1.PublicationQ4AuthorityPlanPipelineV1Tests.test_recomputed_foreign_runtime_result_cannot_cross_phase1_run",
+          "test_publication_q4_authority_plan_pipeline_v1.PublicationQ4AuthorityPlanPipelineV1Tests.test_same_plan_forged_registry_and_result_cannot_cross_phase1",
+          "test_publication_q4_authority_plan_pipeline_v1.PublicationQ4AuthorityPlanPipelineV1Tests.test_source_spec_builder_materializer_and_cli_are_physically_pinned",
+          "test_publication_q4_authority_plan_pipeline_v1.PublicationQ4AuthorityPlanPipelineV1Tests.test_source_spec_materializer_recovers_physical_crash_and_lost_response",
+          "test_publication_q4_authority_source_material_v1.PublicationQ4AuthoritySourceMaterialV1Tests.test_every_commit_boundary_resumes_same_path_without_overwrite",
+          "test_publication_q4_authority_source_material_v1.PublicationQ4AuthoritySourceMaterialV1Tests.test_mutated_upstream_descriptor_fails_closed_before_commit",
+          "test_publication_q4_authority_source_material_v1.PublicationQ4AuthoritySourceMaterialV1Tests.test_nonempty_output_namespace_is_never_overwritten",
+          "test_publication_q4_authority_source_material_v1.PublicationQ4AuthoritySourceMaterialV1Tests.test_partial_tamper_foreign_entry_and_redirect_never_resume"
+        ],
+        "dispatch": {
+          "epoch": [
+            69,
+            1688849862686507,
+            33279,
+            1,
+            23995,
+            1790772672579628400,
+            1790772672579628400
+          ],
+          "path": "artifacts/benchmark_recovery_20260930/ci-hermetic-fixtures-focused-v1/attempt03-worker-consumers-green/dispatch.json",
+          "sha256": "df2589685ce0c8cacbd3de2af91e6b57e7e975ef87de5c3c5b6d1016533f993e",
+          "size_bytes": 23995
+        },
+        "elapsed_seconds": 120.10184909700183,
+        "execution": {
+          "epoch": [
+            69,
+            1407374885975855,
+            33279,
+            1,
+            10874,
+            1790772792678300900,
+            1790772792678300900
+          ],
+          "path": "artifacts/benchmark_recovery_20260930/ci-hermetic-fixtures-focused-v1/attempt03-worker-consumers-green/execution.json",
+          "sha256": "426e3f87ce9340cb88425ddad1adf143b128bf2ab7acbbec0fefd9c10b286739",
+          "size_bytes": 10874
+        },
+        "group_absent": true,
+        "name": "attempt03-worker-consumers-green",
+        "original_pid": 26325,
+        "pid_absent": true,
+        "returncode": -9,
+        "started": {
+          "epoch": [
+            69,
+            1407374885975854,
+            33279,
+            1,
+            131,
+            1790772672584499600,
+            1790772672584499600
+          ],
+          "path": "artifacts/benchmark_recovery_20260930/ci-hermetic-fixtures-focused-v1/attempt03-worker-consumers-green/started.json",
+          "sha256": "24022a69598f84534bd55493bd08e65b619663d56172b0b8bb6aa51efea2af54",
+          "size_bytes": 131
+        },
+        "timed_out": true
+      },
+      {
+        "capture_exceeded": false,
+        "channels": {
+          "stderr.bin": {
+            "sha256": "6926539401a1fbcbb03a54d44c0b805f1488b1992309985eb57730273b35e756",
+            "size_bytes": 1103
+          },
+          "stdout.bin": {
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "size_bytes": 0
+          }
+        },
+        "completed_ok_ids": [
+          "test_publication_q4_authority_source_material_v1.PublicationQ4AuthoritySourceMaterialV1Tests.test_producer_source_spec_and_phase1_roundtrip_without_mocks",
+          "test_publication_q4_authority_source_material_v1.PublicationQ4AuthoritySourceMaterialV1Tests.test_request_rejects_authorization_claim_and_incomplete_matrix",
+          "test_publication_q4_authority_source_material_v1.PublicationQ4AuthoritySourceMaterialV1Tests.test_same_bytes_symlinked_upstream_is_rejected",
+          "test_publication_q4_authority_source_material_v1.PublicationQ4AuthoritySourceMaterialV1Tests.test_same_invocation_exact_copy_inode_swap_is_rejected"
+        ],
+        "dispatch": {
+          "epoch": [
+            69,
+            2251799816107832,
+            33279,
+            1,
+            20601,
+            1790772944202050400,
+            1790772944202050400
+          ],
+          "path": "artifacts/benchmark_recovery_20260930/ci-hermetic-fixtures-focused-v1/attempt04-remaining-contracts/dispatch.json",
+          "sha256": "7513f53a89b9c05320e153d256b5a2c3b8426d8a61d023caa54d7227b3608f2a",
+          "size_bytes": 20601
+        },
+        "elapsed_seconds": 120.09302742802538,
+        "execution": {
+          "epoch": [
+            69,
+            1688849862686533,
+            33279,
+            1,
+            10874,
+            1790773064301061300,
+            1790773064301061300
+          ],
+          "path": "artifacts/benchmark_recovery_20260930/ci-hermetic-fixtures-focused-v1/attempt04-remaining-contracts/execution.json",
+          "sha256": "6814191553eb81f8fa2c7566ab936700e86ebdc1eb5f0e217d8b8f4257c93922",
+          "size_bytes": 10874
+        },
+        "group_absent": true,
+        "name": "attempt04-remaining-contracts",
+        "original_pid": 26399,
+        "pid_absent": true,
+        "returncode": -9,
+        "started": {
+          "epoch": [
+            69,
+            1407374885975867,
+            33279,
+            1,
+            131,
+            1790772944216402500,
+            1790772944216402500
+          ],
+          "path": "artifacts/benchmark_recovery_20260930/ci-hermetic-fixtures-focused-v1/attempt04-remaining-contracts/started.json",
+          "sha256": "f55e2eeca2553e1695a8dfcf12c1f2b7ca793015607f02a7c6a04c34b31f1ffa",
+          "size_bytes": 131
+        },
+        "timed_out": true
+      },
+      {
+        "capture_exceeded": false,
+        "channels": {
+          "stderr.bin": {
+            "sha256": "f2bf447c8e991da1d57e3c727791346e1f4f890eae1dbca69c93f26bec6d579a",
+            "size_bytes": 3069
+          },
+          "stdout.bin": {
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "size_bytes": 0
+          }
+        },
+        "completed_ok_ids": [
+          "test_publication_q4_authority_source_request_v1.PublicationQ4AuthoritySourceRequestV1Tests.test_default_production_inputs_reach_cold_accepted_source_registry",
+          "test_publication_q4_authority_source_request_v1.PublicationQ4AuthoritySourceRequestV1Tests.test_default_production_recovers_every_atomic_physical_window",
+          "test_publication_q4_authority_source_request_v1.PublicationQ4AuthoritySourceRequestV1Tests.test_default_resume_rejects_tampered_partial_without_overwrite",
+          "test_publication_q4_authority_source_request_v1.PublicationQ4AuthoritySourceRequestV1Tests.test_directory_rebind_during_owned_commit_is_rejected_without_cleanup",
+          "test_publication_q4_authority_source_request_v1.PublicationQ4AuthoritySourceRequestV1Tests.test_fault_after_every_owned_commit_rolls_back_and_same_path_retries",
+          "test_publication_q4_authority_source_request_v1.PublicationQ4AuthoritySourceRequestV1Tests.test_incomplete_111_authority_coverage_fails_before_commit",
+          "test_publication_q4_authority_source_request_v1.PublicationQ4AuthoritySourceRequestV1Tests.test_post_preflight_tamper_rolls_back_request_without_receipt",
+          "test_publication_q4_authority_source_request_v1.PublicationQ4AuthoritySourceRequestV1Tests.test_public_request_reaches_accepted_source_registry_through_public_apis",
+          "test_publication_q4_authority_source_request_v1.PublicationQ4AuthoritySourceRequestV1Tests.test_receipt_last_roundtrip_uses_public_112_authority_preflight",
+          "test_publication_q4_authority_source_request_v1.PublicationQ4AuthoritySourceRequestV1Tests.test_same_prepared_inputs_produce_identical_canonical_request_bytes",
+          "test_publication_q4_runtime_registry_materializer_v4.PublicationQ4RuntimeRegistryNoMockRoundtripTests.test_source_spec_phase1_registry_roundtrips_into_real_production_selector",
+          "test_publication_immutable_directory_v1.PublicationImmutableDirectoryV1Tests.test_three_crash_windows_exact_adoption_and_inode_preservation",
+          "test_publication_immutable_directory_v1.PublicationImmutableDirectoryV1Tests.test_foreign_target_and_aba_restore_are_rejected"
+        ],
+        "dispatch": {
+          "epoch": [
+            69,
+            1407374885975891,
+            33279,
+            1,
+            16228,
+            1790773184895952200,
+            1790773184895952200
+          ],
+          "path": "artifacts/benchmark_recovery_20260930/ci-hermetic-fixtures-focused-v1/attempt05-not-started-contracts/dispatch.json",
+          "sha256": "35df9c029f5e5fbf769be1d487851006f21b2bed7e526c382c4eb3c3713b0557",
+          "size_bytes": 16228
+        },
+        "elapsed_seconds": 69.83295884798281,
+        "execution": {
+          "epoch": [
+            69,
+            1407374885975905,
+            33279,
+            1,
+            10873,
+            1790773254729093900,
+            1790773254729093900
+          ],
+          "path": "artifacts/benchmark_recovery_20260930/ci-hermetic-fixtures-focused-v1/attempt05-not-started-contracts/execution.json",
+          "sha256": "b24f1b8fe38c8c7c627d26a612ca7fd3ac94a83fcfa5009e99ba35e12ec43465",
+          "size_bytes": 10873
+        },
+        "group_absent": true,
+        "name": "attempt05-not-started-contracts",
+        "original_pid": 26534,
+        "pid_absent": true,
+        "returncode": 0,
+        "started": {
+          "epoch": [
+            69,
+            1407374885975894,
+            33279,
+            1,
+            131,
+            1790773184900250700,
+            1790773184900250700
+          ],
+          "path": "artifacts/benchmark_recovery_20260930/ci-hermetic-fixtures-focused-v1/attempt05-not-started-contracts/started.json",
+          "sha256": "15ea0f063bdbfdf54e46907305e49b54550c3b57ab941bfd6cd97518279e8f28",
+          "size_bytes": 131
+        },
+        "timed_out": false
+      },
+      {
+        "capture_exceeded": false,
+        "channels": {
+          "stderr.bin": {
+            "sha256": "c2be10d89877c49eeeec72c41bbf1e0edc6f5c862f6ef49416944c4618e42aec",
+            "size_bytes": 345
+          },
+          "stdout.bin": {
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "size_bytes": 0
+          }
+        },
+        "completed_ok_ids": [
+          "test_publication_q4_authority_source_request_v1.PublicationQ4AuthoritySourceRequestV1Tests.test_default_production_crash_after_every_commit_resumes_exact_namespace"
+        ],
+        "dispatch": {
+          "epoch": [
+            69,
+            1407374885975915,
+            33279,
+            1,
+            11653,
+            1790773340747499500,
+            1790773340747499500
+          ],
+          "path": "artifacts/benchmark_recovery_20260930/ci-hermetic-fixtures-focused-v1/attempt06-one-exhaustive-crash-unit/dispatch.json",
+          "sha256": "d12a9c1c62d51ddeb8f8a58f63d73d8787f75a884e369e1b551fde16eac9a5b5",
+          "size_bytes": 11653
+        },
+        "elapsed_seconds": 115.27024752699072,
+        "execution": {
+          "epoch": [
+            69,
+            1688849862686580,
+            33279,
+            1,
+            10873,
+            1790773456015531800,
+            1790773456015531800
+          ],
+          "path": "artifacts/benchmark_recovery_20260930/ci-hermetic-fixtures-focused-v1/attempt06-one-exhaustive-crash-unit/execution.json",
+          "sha256": "26bcd1757d43c2dd5a39853f30a03beb95ed4d77e17ec8dea04e39c8288571b8",
+          "size_bytes": 10873
+        },
+        "group_absent": true,
+        "name": "attempt06-one-exhaustive-crash-unit",
+        "original_pid": 26618,
+        "pid_absent": true,
+        "returncode": 0,
+        "started": {
+          "epoch": [
+            69,
+            1407374885975918,
+            33279,
+            1,
+            131,
+            1790773340753506500,
+            1790773340753506500
+          ],
+          "path": "artifacts/benchmark_recovery_20260930/ci-hermetic-fixtures-focused-v1/attempt06-one-exhaustive-crash-unit/started.json",
+          "sha256": "42b98555e337891fde50cc5d4b7a2175a78ad8352d518881f2c9974643c0473d",
+          "size_bytes": 131
+        },
+        "timed_out": false
+      }
+    ],
+    "full_ci_acceptance": false,
+    "full_discovery_executed": false,
+    "original54_family_methods_all_completed": true,
+    "unique_completed_count": 61,
+    "unique_completed_ok_ids": [
+      "test_backend_q4_two_phase_source_registry_v1.BackendQ4TwoPhaseSourceRegistryV1Tests.test_cli_exact_hashes_canonical_stdout_and_rejects_extra_argv",
+      "test_backend_q4_two_phase_source_registry_v1.BackendQ4TwoPhaseSourceRegistryV1Tests.test_default_service_loader_supplies_only_independent_expected_authority",
+      "test_backend_q4_two_phase_source_registry_v1.BackendQ4TwoPhaseSourceRegistryV1Tests.test_materializes_exact_registry_and_ready_identity_inputs",
+      "test_backend_q4_two_phase_source_registry_v1.BackendQ4TwoPhaseSourceRegistryV1Tests.test_native_execution_manifest_rejects_repinned_authority_drift",
+      "test_backend_q4_two_phase_source_registry_v1.BackendQ4TwoPhaseSourceRegistryV1Tests.test_runtime_calibration_projection_must_equal_accepted_mapping",
+      "test_backend_q4_two_phase_source_registry_v1.BackendQ4TwoPhaseSourceRegistryV1Tests.test_runtime_file_roles_are_exact_for_each_real_abi",
+      "test_backend_q4_two_phase_source_registry_v1.BackendQ4TwoPhaseSourceRegistryV1Tests.test_socket_and_patch_image_drift_fail_closed",
+      "test_backend_q4_two_phase_source_registry_v1.BackendQ4TwoPhaseSourceRegistryV1Tests.test_tamper_and_stale_upstream_fail_closed_after_commit",
+      "test_backend_q4_two_phase_source_registry_v1.BackendQ4TwoPhaseSourceRegistryV1Tests.test_two_leaf_materializer_recovers_every_commit_and_lost_response",
+      "test_backend_q4_two_phase_source_registry_v1.BackendQ4TwoPhaseSourceRegistryV1Tests.test_two_leaf_materializer_rejects_same_invocation_aba",
+      "test_backend_q4_two_phase_source_registry_v1.BackendQ4TwoPhaseSourceRegistryV1Tests.test_two_leaf_resume_rejects_tamper_foreign_result_and_redirect",
+      "test_checkpoint_external_execution_manifest.ExternalExecutionManifestTests.test_external_manifest_rejects_real_identity_and_coverage_drift",
+      "test_checkpoint_external_execution_manifest.ExternalExecutionManifestTests.test_native_policy_import_does_not_require_sdk_bridge",
+      "test_checkpoint_external_execution_manifest.ExternalExecutionManifestTests.test_producer_manifest_passes_real_coordinator_startup_for_both_systems",
+      "test_checkpoint_external_execution_manifest.ExternalExecutionManifestTests.test_worker_fixture_needs_no_ignored_runtime_artifacts",
+      "test_checkpoint_external_execution_manifest.ExternalExecutionManifestTests.test_worker_fixture_rejects_missing_and_foreign_metadata",
+      "test_kpp_legacy_iss_v2_secondary_sensitivity_executor.KppLegacyIssV2SecondarySensitivityExecutorTests.test_nonzero_create_capture_remains_dispatch_ambiguous_without_terminal_marker",
+      "test_kpp_legacy_iss_v2_secondary_sensitivity_executor.KppLegacyIssV2SecondarySensitivityExecutorTests.test_nonzero_create_with_real_guardian_detaches_retained_owner",
+      "test_kpp_legacy_iss_v2_secondary_sensitivity_executor.KppLegacyIssV2SecondarySensitivityExecutorTests.test_peer_identity_modes_are_explicit_disjoint_and_sealed_pid0_evidence_passes",
+      "test_kpp_legacy_iss_v2_secondary_sensitivity_executor.KppLegacyIssV2SecondarySensitivityExecutorTests.test_peercred_pid0_platform_observer_is_nofollow_bounded_and_exact_on_wsl",
+      "test_kpp_legacy_iss_v2_secondary_sensitivity_executor.KppLegacyIssV2SecondarySensitivityExecutorTests.test_real_docker29_four_worker_fixtures_pass_parent_cleanup",
+      "test_kpp_legacy_iss_v2_secondary_sensitivity_executor.KppLegacyIssV2SecondarySensitivityExecutorTests.test_real_docker29_four_worker_fixtures_pass_watchdog_recovery",
+      "test_kpp_legacy_iss_v2_secondary_sensitivity_executor.KppLegacyIssV2SecondarySensitivityExecutorTests.test_real_docker29_four_worker_readonly_mount_projection_is_closed_and_cross_bound",
+      "test_kpp_legacy_iss_v2_secondary_sensitivity_executor.KppLegacyIssV2SecondarySensitivityExecutorTests.test_real_docker29_zero_mount_probe_passes_postcreate_and_parent_cleanup",
+      "test_kpp_legacy_iss_v2_secondary_sensitivity_executor.KppLegacyIssV2SecondarySensitivityExecutorTests.test_real_docker29_zero_mount_probe_passes_stale_reaper",
+      "test_kpp_legacy_iss_v2_secondary_sensitivity_executor.KppLegacyIssV2SecondarySensitivityExecutorTests.test_real_docker29_zero_mount_probe_passes_watchdog_recovery",
+      "test_kpp_legacy_iss_v2_secondary_sensitivity_executor.KppLegacyIssV2SecondarySensitivityExecutorTests.test_real_docker29_zero_mount_probe_projection_is_closed",
+      "test_kpp_legacy_iss_v2_secondary_sensitivity_executor.KppLegacyIssV2SecondarySensitivityExecutorTests.test_same_v2_existing_run_recovers_exact_four_docker29_workers_before_block",
+      "test_publication_immutable_directory_v1.PublicationImmutableDirectoryV1Tests.test_foreign_target_and_aba_restore_are_rejected",
+      "test_publication_immutable_directory_v1.PublicationImmutableDirectoryV1Tests.test_three_crash_windows_exact_adoption_and_inode_preservation",
+      "test_publication_policy_qualification_runtime_inputs_v2.QualificationRuntimeInputsV2Tests.test_versioned_analytics_authority_selects_bound_paths_not_v3_constants",
+      "test_publication_q4_authority_plan_pipeline_v1.PublicationQ4AuthorityPlanPipelineV1Tests.test_cold_loader_rejects_exact_copy_inode_swap_restored_after_read",
+      "test_publication_q4_authority_plan_pipeline_v1.PublicationQ4AuthorityPlanPipelineV1Tests.test_phase1_and_phase2_form_one_materializable_receipt_chain",
+      "test_publication_q4_authority_plan_pipeline_v1.PublicationQ4AuthorityPlanPipelineV1Tests.test_phase1_cold_loader_rejects_output_parent_replacement",
+      "test_publication_q4_authority_plan_pipeline_v1.PublicationQ4AuthorityPlanPipelineV1Tests.test_phase2_cold_loader_holds_parent_across_lineage_loads",
+      "test_publication_q4_authority_plan_pipeline_v1.PublicationQ4AuthorityPlanPipelineV1Tests.test_real_phase1_and_phase2_resume_receipt_last_crash_windows",
+      "test_publication_q4_authority_plan_pipeline_v1.PublicationQ4AuthorityPlanPipelineV1Tests.test_recomputed_foreign_runtime_result_cannot_cross_phase1_run",
+      "test_publication_q4_authority_plan_pipeline_v1.PublicationQ4AuthorityPlanPipelineV1Tests.test_same_plan_forged_registry_and_result_cannot_cross_phase1",
+      "test_publication_q4_authority_plan_pipeline_v1.PublicationQ4AuthorityPlanPipelineV1Tests.test_source_spec_builder_materializer_and_cli_are_physically_pinned",
+      "test_publication_q4_authority_plan_pipeline_v1.PublicationQ4AuthorityPlanPipelineV1Tests.test_source_spec_materializer_recovers_physical_crash_and_lost_response",
+      "test_publication_q4_authority_source_material_v1.PublicationQ4AuthoritySourceMaterialV1Tests.test_every_commit_boundary_resumes_same_path_without_overwrite",
+      "test_publication_q4_authority_source_material_v1.PublicationQ4AuthoritySourceMaterialV1Tests.test_mutated_upstream_descriptor_fails_closed_before_commit",
+      "test_publication_q4_authority_source_material_v1.PublicationQ4AuthoritySourceMaterialV1Tests.test_nonempty_output_namespace_is_never_overwritten",
+      "test_publication_q4_authority_source_material_v1.PublicationQ4AuthoritySourceMaterialV1Tests.test_partial_tamper_foreign_entry_and_redirect_never_resume",
+      "test_publication_q4_authority_source_material_v1.PublicationQ4AuthoritySourceMaterialV1Tests.test_producer_source_spec_and_phase1_roundtrip_without_mocks",
+      "test_publication_q4_authority_source_material_v1.PublicationQ4AuthoritySourceMaterialV1Tests.test_request_rejects_authorization_claim_and_incomplete_matrix",
+      "test_publication_q4_authority_source_material_v1.PublicationQ4AuthoritySourceMaterialV1Tests.test_same_bytes_symlinked_upstream_is_rejected",
+      "test_publication_q4_authority_source_material_v1.PublicationQ4AuthoritySourceMaterialV1Tests.test_same_invocation_exact_copy_inode_swap_is_rejected",
+      "test_publication_q4_authority_source_request_v1.PublicationQ4AuthoritySourceRequestV1Tests.test_default_production_crash_after_every_commit_resumes_exact_namespace",
+      "test_publication_q4_authority_source_request_v1.PublicationQ4AuthoritySourceRequestV1Tests.test_default_production_inputs_reach_cold_accepted_source_registry",
+      "test_publication_q4_authority_source_request_v1.PublicationQ4AuthoritySourceRequestV1Tests.test_default_production_recovers_every_atomic_physical_window",
+      "test_publication_q4_authority_source_request_v1.PublicationQ4AuthoritySourceRequestV1Tests.test_default_resume_rejects_tampered_partial_without_overwrite",
+      "test_publication_q4_authority_source_request_v1.PublicationQ4AuthoritySourceRequestV1Tests.test_directory_rebind_during_owned_commit_is_rejected_without_cleanup",
+      "test_publication_q4_authority_source_request_v1.PublicationQ4AuthoritySourceRequestV1Tests.test_fault_after_every_owned_commit_rolls_back_and_same_path_retries",
+      "test_publication_q4_authority_source_request_v1.PublicationQ4AuthoritySourceRequestV1Tests.test_incomplete_111_authority_coverage_fails_before_commit",
+      "test_publication_q4_authority_source_request_v1.PublicationQ4AuthoritySourceRequestV1Tests.test_post_preflight_tamper_rolls_back_request_without_receipt",
+      "test_publication_q4_authority_source_request_v1.PublicationQ4AuthoritySourceRequestV1Tests.test_public_request_reaches_accepted_source_registry_through_public_apis",
+      "test_publication_q4_authority_source_request_v1.PublicationQ4AuthoritySourceRequestV1Tests.test_receipt_last_roundtrip_uses_public_112_authority_preflight",
+      "test_publication_q4_authority_source_request_v1.PublicationQ4AuthoritySourceRequestV1Tests.test_same_prepared_inputs_produce_identical_canonical_request_bytes",
+      "test_publication_q4_runtime_registry_materializer_v4.PublicationQ4RuntimeRegistryNoMockRoundtripTests.test_source_spec_phase1_registry_roundtrips_into_real_production_selector",
+      "test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_gstreamer_current_runtime_is_exactly_refrozen"
+    ]
+  }
+}

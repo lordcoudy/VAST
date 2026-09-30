@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+import gzip
 import hashlib
 import json
 import sys
@@ -13,6 +14,8 @@ import yaml
 
 
 ROOT = Path(__file__).resolve().parents[1]
+# Declared documents do not establish physical corpus availability.
+CORPUS_METADATA_FIXTURES = ROOT / ".ci/fixtures/corpus_metadata_v1"
 SCRIPTS = ROOT / "scripts"
 if str(SCRIPTS) not in sys.path:
     sys.path.insert(0, str(SCRIPTS))
@@ -59,7 +62,19 @@ def sha(value: object) -> str:
 
 
 def read_json(relative: str) -> dict[str, object]:
-    return json.loads((ROOT / relative).read_text(encoding="ascii"))
+    path = CORPUS_METADATA_FIXTURES / relative
+    if path.name == "iss_v2_underbody_metadata.json":
+        # Preserve the complete original receipt and hash; only its committed
+        # transport encoding is compressed. No media is installed.
+        with gzip.open(path.with_suffix(".json.gz"), "rb") as source:
+            payload = source.read(12_731_946)
+        if len(payload) != 12_731_945 or hashlib.sha256(payload).hexdigest() != (
+            "d23872d4b4706ef7d804f917a72407f82326eb3cdd5d39d347913f20cc65b0d4"
+        ):
+            raise ValueError("declared metadata fixture pin drifted")
+    else:
+        payload = path.read_bytes()
+    return json.loads(payload)
 
 
 class KppIssPublicationV3DatasetIntegrationTests(unittest.TestCase):
@@ -105,7 +120,7 @@ class KppIssPublicationV3DatasetIntegrationTests(unittest.TestCase):
         descriptor = self.datasets[DATASET_IDS[0]]["provenance"][
             "publication_manifest"
         ]
-        payload = (ROOT / MANIFEST_PATH).read_bytes()
+        payload = (CORPUS_METADATA_FIXTURES / MANIFEST_PATH).read_bytes()
         self.assertEqual(descriptor, gate.EXPECTED_MANIFEST_DESCRIPTOR)
         self.assertEqual(descriptor["path"], MANIFEST_PATH)
         self.assertEqual(descriptor["size_bytes"], len(payload))

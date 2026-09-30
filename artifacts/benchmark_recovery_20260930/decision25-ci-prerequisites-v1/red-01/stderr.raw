@@ -1,0 +1,64 @@
+test_changed_added_and_removed_sources_are_reported (test_run_ci_checks.RunCiChecksTests.test_changed_added_and_removed_sources_are_reported) ... ok
+test_empty_discovery_fails (test_run_ci_checks.RunCiChecksTests.test_empty_discovery_fails) ... ok
+test_expected_failure_and_unexpected_success_keep_original_outcomes (test_run_ci_checks.RunCiChecksTests.test_expected_failure_and_unexpected_success_keep_original_outcomes) ... ok
+test_failure_traceback_is_flushed_before_the_suite_returns (test_run_ci_checks.RunCiChecksTests.test_failure_traceback_is_flushed_before_the_suite_returns) ... ok
+test_foreign_namespace_origin_is_rejected_before_discovery (test_run_ci_checks.RunCiChecksTests.test_foreign_namespace_origin_is_rejected_before_discovery) ... ERROR
+test_host_facts_are_bounded_and_exclude_environment_secrets (test_run_ci_checks.RunCiChecksTests.test_host_facts_are_bounded_and_exclude_environment_secrets) ... ok
+test_interrupted_test_start_does_not_invent_a_terminal (test_run_ci_checks.RunCiChecksTests.test_interrupted_test_start_does_not_invent_a_terminal) ... ok
+test_isolated_default_discovery_imports_contained_namespaces_and_preserves_ids (test_run_ci_checks.RunCiChecksTests.test_isolated_default_discovery_imports_contained_namespaces_and_preserves_ids) ... FAIL
+test_loaded_factory_facts_bind_original_metadata_and_plugin_bytes (test_run_ci_checks.RunCiChecksTests.test_loaded_factory_facts_bind_original_metadata_and_plugin_bytes) ... ERROR
+test_manifest_detects_equal_size_source_replacement (test_run_ci_checks.RunCiChecksTests.test_manifest_detects_equal_size_source_replacement) ... ok
+test_missing_runtime_factory_remains_a_failed_prerequisite (test_run_ci_checks.RunCiChecksTests.test_missing_runtime_factory_remains_a_failed_prerequisite) ... ERROR
+test_real_alias_launcher_uses_canonical_interpreter_for_suite_and_assets (test_run_ci_checks.RunCiChecksTests.test_real_alias_launcher_uses_canonical_interpreter_for_suite_and_assets) ... FAIL
+test_real_periodic_stack_capture_keeps_the_active_test_and_result (test_run_ci_checks.RunCiChecksTests.test_real_periodic_stack_capture_keeps_the_active_test_and_result) ... ok
+test_required_native_skip_does_not_become_a_pass (test_run_ci_checks.RunCiChecksTests.test_required_native_skip_does_not_become_a_pass) ... ok
+test_required_native_successes_allow_other_explicit_skips (test_run_ci_checks.RunCiChecksTests.test_required_native_successes_allow_other_explicit_skips) ... ok
+test_subtest_error_traceback_is_flushed_and_parent_terminal_is_error (test_run_ci_checks.RunCiChecksTests.test_subtest_error_traceback_is_flushed_and_parent_terminal_is_error) ... ok
+
+======================================================================
+ERROR: test_foreign_namespace_origin_is_rejected_before_discovery (test_run_ci_checks.RunCiChecksTests.test_foreign_namespace_origin_is_rejected_before_discovery)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_run_ci_checks.py", line 106, in test_foreign_namespace_origin_is_rejected_before_discovery
+    ci.validate_repository_import_origins()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'vast_ci_checks' has no attribute 'validate_repository_import_origins'
+
+======================================================================
+ERROR: test_loaded_factory_facts_bind_original_metadata_and_plugin_bytes (test_run_ci_checks.RunCiChecksTests.test_loaded_factory_facts_bind_original_metadata_and_plugin_bytes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_run_ci_checks.py", line 127, in test_loaded_factory_facts_bind_original_metadata_and_plugin_bytes
+    facts = ci.gstreamer_factory_facts(output, 10**30)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'vast_ci_checks' has no attribute 'gstreamer_factory_facts'
+
+======================================================================
+ERROR: test_missing_runtime_factory_remains_a_failed_prerequisite (test_run_ci_checks.RunCiChecksTests.test_missing_runtime_factory_remains_a_failed_prerequisite)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_run_ci_checks.py", line 112, in test_missing_runtime_factory_remains_a_failed_prerequisite
+    ci.gstreamer_factory_facts(Path(directory), 10**30)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'vast_ci_checks' has no attribute 'gstreamer_factory_facts'
+
+======================================================================
+FAIL: test_isolated_default_discovery_imports_contained_namespaces_and_preserves_ids (test_run_ci_checks.RunCiChecksTests.test_isolated_default_discovery_imports_contained_namespaces_and_preserves_ids)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_run_ci_checks.py", line 97, in test_isolated_default_discovery_imports_contained_namespaces_and_preserves_ids
+    self.assertEqual(child.returncode, 0, report)
+AssertionError: 1 != 0 : {'errors': [{'test_id': 'unittest.loader._FailedTest.test_contract', 'traceback': 'ImportError: Failed to import test module: test_contract\nTraceback (most recent call last):\n  File "/usr/lib/python3.12/unittest/loader.py", line 394, in _find_test_path\n    module = self._get_module_from_name(name)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/usr/lib/python3.12/unittest/loader.py", line 337, in _get_module_from_name\n    __import__(name)\n  File "/tmp/tmp4eth0evq/repo/tests/test_contract.py", line 2, in <module>\n    from tests.peer import VALUE\nModuleNotFoundError: No module named \'tests\'\n\n'}], 'expected_failures': [], 'failures': [], 'missing_required_successes': ['test_contract.Contract.test_values'], 'skips': [], 'successful': False, 'successful_test_ids': [], 'tests_run': 1, 'unexpected_successes': []}
+
+======================================================================
+FAIL: test_real_alias_launcher_uses_canonical_interpreter_for_suite_and_assets (test_run_ci_checks.RunCiChecksTests.test_real_alias_launcher_uses_canonical_interpreter_for_suite_and_assets)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_run_ci_checks.py", line 62, in test_real_alias_launcher_uses_canonical_interpreter_for_suite_and_assets
+    self.assertEqual(child.returncode, 0, child.stderr)
+AssertionError: 1 != 0 : 
+
+----------------------------------------------------------------------
+Ran 16 tests in 0.350s
+
+FAILED (failures=2, errors=3)

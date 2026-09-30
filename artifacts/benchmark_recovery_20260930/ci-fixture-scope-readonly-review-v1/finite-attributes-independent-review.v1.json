@@ -1,0 +1,186 @@
+{
+  "actual_git_check_attr_argv": [
+    "C:/Program Files/Git/cmd/git.exe",
+    "-c",
+    "core.longpaths=true",
+    "--git-dir=E:/STUDY/VAST/.git/worktrees/fix-benchmark-preparations-spec",
+    "--work-tree=E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec",
+    "check-attr",
+    "text",
+    "eol",
+    "--",
+    "scripts/ci_namespace_diagnostic_v1.py",
+    "tests/test_ci_namespace_diagnostic_v1.py",
+    ".ci/fixtures/corpus_metadata_v1/data/videos/kpp/kpp_iss_publication_v3/receipts/iss_v2_underbody_metadata.json.gz",
+    "tests/test_checkpoint_external_execution_manifest.py",
+    "tests/test_kpp_legacy_iss_v2_secondary_sensitivity_executor.py",
+    "tests/test_publication_immutable_directory_v1.py",
+    "tests/test_publication_policy_qualification_runtime_inputs_v2.py",
+    "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+    "tests/test_kpp_frozen_reconstruction_v1_dataset_integration.py",
+    "tests/test_kpp_iss_publication_v3_dataset_integration.py",
+    "tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py"
+  ],
+  "actual_git_check_attr_stdout": "scripts/ci_namespace_diagnostic_v1.py: text: set\nscripts/ci_namespace_diagnostic_v1.py: eol: lf\ntests/test_ci_namespace_diagnostic_v1.py: text: set\ntests/test_ci_namespace_diagnostic_v1.py: eol: lf\n.ci/fixtures/corpus_metadata_v1/data/videos/kpp/kpp_iss_publication_v3/receipts/iss_v2_underbody_metadata.json.gz: text: unset\n.ci/fixtures/corpus_metadata_v1/data/videos/kpp/kpp_iss_publication_v3/receipts/iss_v2_underbody_metadata.json.gz: eol: unspecified\ntests/test_checkpoint_external_execution_manifest.py: text: set\ntests/test_checkpoint_external_execution_manifest.py: eol: lf\ntests/test_kpp_legacy_iss_v2_secondary_sensitivity_executor.py: text: set\ntests/test_kpp_legacy_iss_v2_secondary_sensitivity_executor.py: eol: lf\ntests/test_publication_immutable_directory_v1.py: text: set\ntests/test_publication_immutable_directory_v1.py: eol: lf\ntests/test_publication_policy_qualification_runtime_inputs_v2.py: text: set\ntests/test_publication_policy_qualification_runtime_inputs_v2.py: eol: lf\ntests/test_publication_runtime_frozen_identity_constants_v1.py: text: set\ntests/test_publication_runtime_frozen_identity_constants_v1.py: eol: lf\ntests/test_kpp_frozen_reconstruction_v1_dataset_integration.py: text: set\ntests/test_kpp_frozen_reconstruction_v1_dataset_integration.py: eol: lf\ntests/test_kpp_iss_publication_v3_dataset_integration.py: text: set\ntests/test_kpp_iss_publication_v3_dataset_integration.py: eol: lf\ntests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py: text: set\ntests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py: eol: lf\n",
+  "all_new_paths_exist": true,
+  "all_new_rules_have_literal_paths": true,
+  "appended_total_finite_rules": 33,
+  "artifact_kind": "vast_finite_ci_fixture_attributes_readonly_review_v1",
+  "before": {
+    "path": "artifacts/benchmark_recovery_20260930/decision25-finite-attributes-v1/before.gitattributes.raw",
+    "sha256": "79e42213435848c0819abaa92e7c3a429621205b5dc7c180bc34f85cbb0c791e",
+    "size_bytes": 11867
+  },
+  "clones": false,
+  "current": {
+    "path": ".gitattributes",
+    "sha256": "77481d872c88a645984de5e1f5751e93ee0435361d223579f93426b4022cde6d",
+    "size_bytes": 14272
+  },
+  "current_physical_LF_source_bytes_unchanged_by_attribute_declarations": true,
+  "engine_queries": false,
+  "executed_tests": false,
+  "files": [
+    {
+      "CR_count": 0,
+      "descriptor": {
+        "path": "scripts/ci_namespace_diagnostic_v1.py",
+        "sha256": "a5533d76516844e308179f86f13a4326849fed8617b5f28fcfcf7ab7e1067ffa",
+        "size_bytes": 20708
+      },
+      "final_LF": true,
+      "rule": "/scripts/ci_namespace_diagnostic_v1.py text eol=lf"
+    },
+    {
+      "CR_count": 0,
+      "descriptor": {
+        "path": "tests/test_ci_namespace_diagnostic_v1.py",
+        "sha256": "0125f209d9556c54badcbb6654c9c2c86b3980c3bf47495c1f7446306ec08fe5",
+        "size_bytes": 12692
+      },
+      "final_LF": true,
+      "rule": "/tests/test_ci_namespace_diagnostic_v1.py text eol=lf"
+    },
+    {
+      "CR_count": null,
+      "descriptor": {
+        "path": ".ci/fixtures/corpus_metadata_v1/data/videos/kpp/kpp_iss_publication_v3/receipts/iss_v2_underbody_metadata.json.gz",
+        "sha256": "62e833612264253f59ec3b87b9593da69a0fd83aa297ac5e8f6ed989a222c0ff",
+        "size_bytes": 2294972
+      },
+      "final_LF": null,
+      "rule": "/.ci/fixtures/corpus_metadata_v1/data/videos/kpp/kpp_iss_publication_v3/receipts/iss_v2_underbody_metadata.json.gz -text !eol"
+    },
+    {
+      "CR_count": 0,
+      "descriptor": {
+        "path": "tests/test_checkpoint_external_execution_manifest.py",
+        "sha256": "90a48b1343fd6f5b1dbeca2aa424458ebe9cffb64055da0e581736c3add6a628",
+        "size_bytes": 10149
+      },
+      "final_LF": true,
+      "rule": "/tests/test_checkpoint_external_execution_manifest.py text eol=lf"
+    },
+    {
+      "CR_count": 0,
+      "descriptor": {
+        "path": "tests/test_kpp_legacy_iss_v2_secondary_sensitivity_executor.py",
+        "sha256": "965195e425d13d6c2047127d807db1f3c973624ad1d063bb78f8f169ba150ba8",
+        "size_bytes": 456217
+      },
+      "final_LF": true,
+      "rule": "/tests/test_kpp_legacy_iss_v2_secondary_sensitivity_executor.py text eol=lf"
+    },
+    {
+      "CR_count": 0,
+      "descriptor": {
+        "path": "tests/test_publication_immutable_directory_v1.py",
+        "sha256": "04a242d248925b719d7f815beea6cfb77fe55e6e2eca57892acc7acbdb536f16",
+        "size_bytes": 4059
+      },
+      "final_LF": true,
+      "rule": "/tests/test_publication_immutable_directory_v1.py text eol=lf"
+    },
+    {
+      "CR_count": 0,
+      "descriptor": {
+        "path": "tests/test_publication_policy_qualification_runtime_inputs_v2.py",
+        "sha256": "2e240c78d4ed46d9ed42c5b28dc058bd2210be6292856c6a16732ffb1a9c5b47",
+        "size_bytes": 50111
+      },
+      "final_LF": true,
+      "rule": "/tests/test_publication_policy_qualification_runtime_inputs_v2.py text eol=lf"
+    },
+    {
+      "CR_count": 0,
+      "descriptor": {
+        "path": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+        "sha256": "ba158ae63c8e8c3fea9ff65c36d11d2dbe0d82046eef2e9407a4364e4bc5db8a",
+        "size_bytes": 23561
+      },
+      "final_LF": true,
+      "rule": "/tests/test_publication_runtime_frozen_identity_constants_v1.py text eol=lf"
+    },
+    {
+      "CR_count": 0,
+      "descriptor": {
+        "path": "tests/test_kpp_frozen_reconstruction_v1_dataset_integration.py",
+        "sha256": "1625dcceffc785a911d1dc49ba8c277d42d2942812ca5833a150adc9075f3222",
+        "size_bytes": 4973
+      },
+      "final_LF": true,
+      "rule": "/tests/test_kpp_frozen_reconstruction_v1_dataset_integration.py text eol=lf"
+    },
+    {
+      "CR_count": 0,
+      "descriptor": {
+        "path": "tests/test_kpp_iss_publication_v3_dataset_integration.py",
+        "sha256": "1c560990ce629f5d718582d9157804d1e991ee48b2e141db395b4db49264b20c",
+        "size_bytes": 9699
+      },
+      "final_LF": true,
+      "rule": "/tests/test_kpp_iss_publication_v3_dataset_integration.py text eol=lf"
+    },
+    {
+      "CR_count": 0,
+      "descriptor": {
+        "path": "tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+        "sha256": "9b336052aa1717cf43e42dc2f44b2938b66bd3e8537e824089c9aa83ac91a715",
+        "size_bytes": 14751
+      },
+      "final_LF": true,
+      "rule": "/tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py text eol=lf"
+    }
+  ],
+  "fresh_checkout_proof_pending": true,
+  "hardware_acceptance": false,
+  "limitations": [
+    "Read-only current source/attribute classification; no claim of Git fresh-checkout byte equality or hostedCI completion.",
+    "Existing original global policy and prior22 finite additions remain byte-identical. Explicitraw gz and prior6bin plus1CRLF-wrapper rules preserve binary/original bytes."
+  ],
+  "new_exact_rules": [
+    "/scripts/ci_namespace_diagnostic_v1.py text eol=lf",
+    "/tests/test_ci_namespace_diagnostic_v1.py text eol=lf",
+    "/.ci/fixtures/corpus_metadata_v1/data/videos/kpp/kpp_iss_publication_v3/receipts/iss_v2_underbody_metadata.json.gz -text !eol",
+    "/tests/test_checkpoint_external_execution_manifest.py text eol=lf",
+    "/tests/test_kpp_legacy_iss_v2_secondary_sensitivity_executor.py text eol=lf",
+    "/tests/test_publication_immutable_directory_v1.py text eol=lf",
+    "/tests/test_publication_policy_qualification_runtime_inputs_v2.py text eol=lf",
+    "/tests/test_publication_runtime_frozen_identity_constants_v1.py text eol=lf",
+    "/tests/test_kpp_frozen_reconstruction_v1_dataset_integration.py text eol=lf",
+    "/tests/test_kpp_iss_publication_v3_dataset_integration.py text eol=lf",
+    "/tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py text eol=lf"
+  ],
+  "new_rule_counts": {
+    "diagnostic_source_tests_LF": 2,
+    "existing_fixture_tests_LF": 8,
+    "raw_gzip_preserve": 1
+  },
+  "original_prefix_byte_identical": true,
+  "prior_reviewed_22_rule_prefix_byte_identical": true,
+  "prior_reviewed_prefix_sha256": "4bae413de383da6ac2371e643b5b4e1d975378b2f8b8f83444055447ffab632a",
+  "prior_reviewed_prefix_size_bytes": 13456,
+  "schema_version": 1,
+  "source_namespace_calls": false,
+  "verdict": "No blocker in new finite3+8 declarations."
+}

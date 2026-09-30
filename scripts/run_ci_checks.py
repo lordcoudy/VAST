@@ -9,7 +9,10 @@ import json
 import os
 import platform
 from pathlib import Path
+import re
+import shutil
 import signal
+import stat
 import subprocess
 import sys
 import time
@@ -21,6 +24,10 @@ _observer_spec = importlib.util.spec_from_file_location(
     "vast_ci_external_observer", Path(__file__).with_name("ci_external_test_observer_v1.py"))
 _observer = importlib.util.module_from_spec(_observer_spec)
 _observer_spec.loader.exec_module(_observer)
+_selection_spec = importlib.util.spec_from_file_location(
+    'vast_ci_selection', Path(__file__).with_name('ci_test_selection_v1.py'))
+_selection = importlib.util.module_from_spec(_selection_spec)
+_selection_spec.loader.exec_module(_selection)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -47,6 +54,85 @@ HARDWARE_GAPS = (
 
 def write_json(path: Path, value: object) -> None:
     path.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def canonical_python() -> str:
+    """Keep the actual interpreter version; remove only launcher path aliases."""
+    if sys.version_info[:3] != (3, 12, 3) or sys.implementation.name != "cpython":
+        raise RuntimeError("CI requires the original CPython3.12.3")
+    path = Path(sys.executable).resolve(strict=True)
+    info = path.stat()
+    if not stat.S_ISREG(info.st_mode) or info.st_nlink != 1 or not os.access(path, os.X_OK):
+        raise RuntimeError("canonical CI executable is not a single-link regular executable")
+    return str(path)
+
+
+def validate_repository_import_origins() -> None:
+    """Reject foreign project modules even when a package was already imported."""
+    project_names = {p.stem for p in (ROOT / "scripts").glob("*.py")}
+    for name, module in tuple(sys.modules.items()):
+        if module is None:
+            continue
+        top = name.split(".", 1)[0]
+        if not (top in {"tests", "deploy"} or top.startswith("test_") or top in project_names):
+            continue
+        origins = []
+        if getattr(module, "__file__", None):
+            origins.append(module.__file__)
+        origins.extend(getattr(module, "__path__", ()))
+        try:
+            contained = origins and all(Path(p).resolve(strict=True).is_relative_to(ROOT) for p in origins)
+        except OSError:
+            contained = False
+        if not contained:
+            raise RuntimeError(f"imported project module outside fixed repository: {name}")
+
+
+def gstreamer_factory_facts(output: Path, absolute_deadline_ns: int) -> dict:
+    """gst-inspect loads each original required factory; retain its raw metadata."""
+    executable = shutil.which("gst-inspect-1.0")
+    if executable is None:
+        raise RuntimeError("gstreamer1.0-tools is required for loaded-factory facts")
+    facts = {}
+    for factory in ("appsrc", "queue", "videoconvert"):
+        name = "factory-" + factory
+        observed = command([str(Path(executable).resolve(strict=True)), factory], output, name, 10,
+                           absolute_deadline_ns)
+        with (output / (name + ".stdout")).open('rb') as stream:
+            raw = stream.read(64*1024+1)
+        if len(raw) > 64 * 1024 or b"Factory Details:" not in raw or b"Plugin Details:" not in raw:
+            raise RuntimeError(f"missing or oversized loaded-factory metadata: {factory}")
+        match = re.search(rb"^\s+Filename\s+(.+)$", raw, re.MULTILINE)
+        if match is None:
+            raise RuntimeError(f"loaded factory has no physical plugin filename: {factory}")
+        plugin = Path(os.fsdecode(match.group(1).strip())).resolve(strict=True)
+        before = plugin.stat()
+        if not stat.S_ISREG(before.st_mode) or before.st_size > 16 * 1024 * 1024:
+            raise RuntimeError("loaded plugin is not a bounded regular file")
+        digest = hashlib.sha256()
+        with plugin.open("rb") as stream:
+            for block in iter(lambda: stream.read(1024 * 1024), b""):
+                if time.monotonic_ns() >= absolute_deadline_ns:
+                    raise RuntimeError("original job deadline reached during plugin hashing")
+                digest.update(block)
+        after = plugin.stat()
+        epoch_fields = ('st_dev','st_ino','st_mode','st_nlink','st_size','st_uid','st_gid','st_mtime_ns','st_ctime_ns')
+        if any(getattr(before, key) != getattr(after, key) for key in epoch_fields):
+            raise RuntimeError("loaded plugin changed during observation")
+        facts[factory] = {"command": observed, "stdout_sha256": hashlib.sha256(raw).hexdigest(),
+                          "stdout_size_bytes": len(raw), "plugin": {
+                              "path": str(plugin), "size_bytes": before.st_size,
+                              "sha256": digest.hexdigest(), "device": before.st_dev,
+                              "inode": before.st_ino}}
+    return facts
+
+
+def namespace_diagnostic(output, python, absolute_deadline_ns):
+    spec = importlib.util.spec_from_file_location('ci_namespace', ROOT/'scripts/ci_namespace_diagnostic_v1.py')
+    helper = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(helper)
+    return helper.observe_namespace_setup_v1(output_dir=output, python=python,
+                                            absolute_deadline_ns=absolute_deadline_ns)
 
 
 def tracked_paths(root: Path) -> list[str]:
@@ -237,15 +323,35 @@ def run_test_suite(suite, stream):
     return unittest.TextTestRunner(stream=stream, verbosity=2, resultclass=RecordedResult).run(suite)
 
 
+def discovered_test_ids(suite):
+    ids = []
+    for case in suite:
+        if isinstance(case, unittest.TestSuite):
+            ids.extend(discovered_test_ids(case))
+        else:
+            ids.append(case.id())
+    return sorted(ids)
+
+
 def suite_child(output: Path, trace_fd: int, event_fd: int, stop_fd: int) -> int:
     """Exactly one fresh child discovers the unchanged complete suite."""
     report = {"successful": False}
     try:
         with _observer.child_trace_handler(trace_fd, event_fd, stop_fd) as observation:
+            sys.path.insert(0, str(ROOT))
+            validate_repository_import_origins()
             suite = unittest.defaultTestLoader.discover(str(ROOT / "tests"), pattern="test_*.py")
+            report['discovered_ids'] = discovered_test_ids(suite)
+            discovered = report['discovered_ids']
+            validate_repository_import_origins()
+            suite, selection_report = _selection.select_portable_suite_v1(suite, project_root=ROOT)
             with (output / "unittest.original.log").open("w", encoding="utf-8") as stream:
                 result = run_test_suite(suite, stream)
             report = suite_report(result)
+            report['discovered_ids'] = discovered
+            report['selection'] = selection_report
+            report['portable_skip_audit'] = _selection.validate_portable_skips_v1(result.skipped, selection_report)
+            validate_repository_import_origins()
         if observation["failure"]:
             report["successful"] = False
             report["observer_failure"] = observation["failure"]
@@ -356,6 +462,8 @@ def main() -> int:
     before = None
     paths = []
     try:
+        python = canonical_python()
+        report["canonical_python"] = python
         commit = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT,
                                 check=True, capture_output=True, text=True, timeout=10).stdout.strip()
         report["commit"] = commit
@@ -388,7 +496,7 @@ def main() -> int:
                 checked_bash.append(relative)
         report["python_syntax"] = checked_python
         report["bash_syntax"] = checked_bash
-        command([sys.executable, "-I", "-B", str(ROOT / "scripts/prepare_ci_model_assets.py"),
+        command([python, "-I", "-B", str(ROOT / "scripts/prepare_ci_model_assets.py"),
                  "--output-dir", str(output / "model-acquisition")],
                 output, "model-assets", 590, absolute_deadline_ns)
         build = output / "build"
@@ -400,9 +508,17 @@ def main() -> int:
         command(["cmake", "--build", str(build), "--parallel", "2", "--target", *TARGETS],
                 output, "native-build", 600, absolute_deadline_ns)
         report["built_targets"] = TARGETS
+        report["gstreamer_factories"] = gstreamer_factory_facts(output, absolute_deadline_ns)
+        report["gstreamer_packages"] = command(
+            ['dpkg-query', '-W', '-f=${Package}=${Version}\n', 'gstreamer1.0-plugins-base',
+             'gstreamer1.0-tools'], output, 'gstreamer-packages', 10, absolute_deadline_ns)
         write_json(output / "host-facts.original.json", host_facts())
+        report['namespace_diagnostic'] = namespace_diagnostic(output/'namespace-diagnostic', python,
+                                                              absolute_deadline_ns)
+        if not report['namespace_diagnostic']['capture_completed']:
+            raise RuntimeError('original namespace diagnostic capture/cleanup failed')
         report["observer"] = _observer.observe_test_child(
-            lambda trace_fd, event_fd, stop_fd: [sys.executable, "-I", "-B", str(Path(__file__).resolve()),
+            lambda trace_fd, event_fd, stop_fd: [python, "-I", "-B", str(Path(__file__).resolve()),
                 "--suite-child", "--output-dir", str(output), "--trace-fd", str(trace_fd),
                 "--event-fd", str(event_fd), "--stop-fd", str(stop_fd)],
             output_dir=output / "external-test-observer", absolute_deadline_ns=absolute_deadline_ns)

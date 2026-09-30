@@ -1,0 +1,96 @@
+test_absent_declared_method_is_rejected (test_ci_test_selection_v1.SelectionContracts.test_absent_declared_method_is_rejected) ... ok
+test_all_original_platform_and_retired_skip_ids_remain_nonexecution (test_ci_test_selection_v1.SelectionContracts.test_all_original_platform_and_retired_skip_ids_remain_nonexecution) ... ok
+test_current_broker_and_operational_custody_cannot_be_deferred (test_ci_test_selection_v1.SelectionContracts.test_current_broker_and_operational_custody_cannot_be_deferred) ... 
+  test_current_broker_and_operational_custody_cannot_be_deferred (test_ci_test_selection_v1.SelectionContracts.test_current_broker_and_operational_custody_cannot_be_deferred) (name='test_backend_publication_broker_terminal_v3.BackendPublicationBrokerTerminalV3Tests.test_normal_early_setup_failure_commits_original_failed_terminal') ... FAIL
+  test_current_broker_and_operational_custody_cannot_be_deferred (test_ci_test_selection_v1.SelectionContracts.test_current_broker_and_operational_custody_cannot_be_deferred) (name='test_publication_operational_container_custody_v1.OriginalContainerCompositionTests.test_resealed_foreign_absence_cannot_grant_quiescence') ... FAIL
+  test_current_broker_and_operational_custody_cannot_be_deferred (test_ci_test_selection_v1.SelectionContracts.test_current_broker_and_operational_custody_cannot_be_deferred) (name='test_publication_operational_request_domain_v1.OperationalRequestDomainTests.test_complete_native_occurrences_preserve_all_three_phases_and_original_hashes') ... FAIL
+  test_current_broker_and_operational_custody_cannot_be_deferred (test_ci_test_selection_v1.SelectionContracts.test_current_broker_and_operational_custody_cannot_be_deferred) (name='test_publication_gstreamer_component_runtime_v1.ComponentRuntimeFixtureTests.test_execution_cannot_opt_out_of_live_guardian') ... FAIL
+test_duplicate_discovery_identity_is_rejected (test_ci_test_selection_v1.SelectionContracts.test_duplicate_discovery_identity_is_rejected) ... ok
+test_duplicate_integration_declarations_are_rejected (test_ci_test_selection_v1.SelectionContracts.test_duplicate_integration_declarations_are_rejected) ... ok
+test_exact_skip_identity_and_reason_are_audited_without_success_claim (test_ci_test_selection_v1.SelectionContracts.test_exact_skip_identity_and_reason_are_audited_without_success_claim) ... ok
+test_existing_retired_source_decorator_is_inventory_nonexecution_only (test_ci_test_selection_v1.SelectionContracts.test_existing_retired_source_decorator_is_inventory_nonexecution_only) ... ok
+test_foreign_decorated_class_cannot_invent_a_retired_migration (test_ci_test_selection_v1.SelectionContracts.test_foreign_decorated_class_cannot_invent_a_retired_migration) ... FAIL
+test_manifest_unknown_version_or_default_lane_fails_closed (test_ci_test_selection_v1.SelectionContracts.test_manifest_unknown_version_or_default_lane_fails_closed) ... ok
+test_missing_reason_or_real_capability_is_rejected (test_ci_test_selection_v1.SelectionContracts.test_missing_reason_or_real_capability_is_rejected) ... ok
+test_native_namespace_interpreter_broker_source_safety_deferral_is_rejected (test_ci_test_selection_v1.SelectionContracts.test_native_namespace_interpreter_broker_source_safety_deferral_is_rejected) ... ok
+test_nested_default_discovery_is_flattened_without_reloading_tests (test_ci_test_selection_v1.SelectionContracts.test_nested_default_discovery_is_flattened_without_reloading_tests) ... ok
+test_new_broker_and_raw_custody_skip_declarations_are_rejected (test_ci_test_selection_v1.SelectionContracts.test_new_broker_and_raw_custody_skip_declarations_are_rejected) ... 
+  test_new_broker_and_raw_custody_skip_declarations_are_rejected (test_ci_test_selection_v1.SelectionContracts.test_new_broker_and_raw_custody_skip_declarations_are_rejected) (name='test_backend_publication_broker_terminal_v3.BackendPublicationBrokerTerminalV3Tests.test_normal_early_setup_failure_commits_original_failed_terminal') ... FAIL
+  test_new_broker_and_raw_custody_skip_declarations_are_rejected (test_ci_test_selection_v1.SelectionContracts.test_new_broker_and_raw_custody_skip_declarations_are_rejected) (name='test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_complete_cold_workload_includes_warmup_measurement_and_drain') ... FAIL
+  test_new_broker_and_raw_custody_skip_declarations_are_rejected (test_ci_test_selection_v1.SelectionContracts.test_new_broker_and_raw_custody_skip_declarations_are_rejected) (name='test_publication_guardian_component_preprocessing_contract_v1.ComponentPreprocessingTests.test_physically_resealed_foreign_front_workers_cannot_activate') ... FAIL
+test_new_skip_or_changed_reason_is_rejected (test_ci_test_selection_v1.SelectionContracts.test_new_skip_or_changed_reason_is_rejected) ... ok
+test_new_tests_remain_mandatory_and_original_cases_order_are_preserved (test_ci_test_selection_v1.SelectionContracts.test_new_tests_remain_mandatory_and_original_cases_order_are_preserved) ... ok
+test_original_failed_import_remains_portable_failure (test_ci_test_selection_v1.SelectionContracts.test_original_failed_import_remains_portable_failure) ... ok
+test_patterns_and_module_exceptions_are_rejected (test_ci_test_selection_v1.SelectionContracts.test_patterns_and_module_exceptions_are_rejected) ... ok
+test_retired_schema_declaration_cannot_create_a_new_skip (test_ci_test_selection_v1.SelectionContracts.test_retired_schema_declaration_cannot_create_a_new_skip) ... ok
+test_skip_cannot_hide_deferred_native_contract (test_ci_test_selection_v1.SelectionContracts.test_skip_cannot_hide_deferred_native_contract) ... ok
+test_stale_or_duplicate_skip_declaration_fails_closed (test_ci_test_selection_v1.SelectionContracts.test_stale_or_duplicate_skip_declaration_fails_closed) ... ok
+
+======================================================================
+FAIL: test_current_broker_and_operational_custody_cannot_be_deferred (test_ci_test_selection_v1.SelectionContracts.test_current_broker_and_operational_custody_cannot_be_deferred) (name='test_backend_publication_broker_terminal_v3.BackendPublicationBrokerTerminalV3Tests.test_normal_early_setup_failure_commits_original_failed_terminal')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_test_selection_v1.py", line 89, in test_current_broker_and_operational_custody_cannot_be_deferred
+    with self.assertRaisesRegex(ValueError, 'mandatory contract'):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_current_broker_and_operational_custody_cannot_be_deferred (test_ci_test_selection_v1.SelectionContracts.test_current_broker_and_operational_custody_cannot_be_deferred) (name='test_publication_operational_container_custody_v1.OriginalContainerCompositionTests.test_resealed_foreign_absence_cannot_grant_quiescence')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_test_selection_v1.py", line 89, in test_current_broker_and_operational_custody_cannot_be_deferred
+    with self.assertRaisesRegex(ValueError, 'mandatory contract'):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_current_broker_and_operational_custody_cannot_be_deferred (test_ci_test_selection_v1.SelectionContracts.test_current_broker_and_operational_custody_cannot_be_deferred) (name='test_publication_operational_request_domain_v1.OperationalRequestDomainTests.test_complete_native_occurrences_preserve_all_three_phases_and_original_hashes')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_test_selection_v1.py", line 89, in test_current_broker_and_operational_custody_cannot_be_deferred
+    with self.assertRaisesRegex(ValueError, 'mandatory contract'):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_current_broker_and_operational_custody_cannot_be_deferred (test_ci_test_selection_v1.SelectionContracts.test_current_broker_and_operational_custody_cannot_be_deferred) (name='test_publication_gstreamer_component_runtime_v1.ComponentRuntimeFixtureTests.test_execution_cannot_opt_out_of_live_guardian')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_test_selection_v1.py", line 89, in test_current_broker_and_operational_custody_cannot_be_deferred
+    with self.assertRaisesRegex(ValueError, 'mandatory contract'):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_foreign_decorated_class_cannot_invent_a_retired_migration (test_ci_test_selection_v1.SelectionContracts.test_foreign_decorated_class_cannot_invent_a_retired_migration)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_test_selection_v1.py", line 111, in test_foreign_decorated_class_cannot_invent_a_retired_migration
+    with self.assertRaisesRegex(ValueError, 'existing source migration tombstone'):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_new_broker_and_raw_custody_skip_declarations_are_rejected (test_ci_test_selection_v1.SelectionContracts.test_new_broker_and_raw_custody_skip_declarations_are_rejected) (name='test_backend_publication_broker_terminal_v3.BackendPublicationBrokerTerminalV3Tests.test_normal_early_setup_failure_commits_original_failed_terminal')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_test_selection_v1.py", line 102, in test_new_broker_and_raw_custody_skip_declarations_are_rejected
+    with self.assertRaisesRegex(ValueError, 'mandatory contract'):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_new_broker_and_raw_custody_skip_declarations_are_rejected (test_ci_test_selection_v1.SelectionContracts.test_new_broker_and_raw_custody_skip_declarations_are_rejected) (name='test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_complete_cold_workload_includes_warmup_measurement_and_drain')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_test_selection_v1.py", line 102, in test_new_broker_and_raw_custody_skip_declarations_are_rejected
+    with self.assertRaisesRegex(ValueError, 'mandatory contract'):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_new_broker_and_raw_custody_skip_declarations_are_rejected (test_ci_test_selection_v1.SelectionContracts.test_new_broker_and_raw_custody_skip_declarations_are_rejected) (name='test_publication_guardian_component_preprocessing_contract_v1.ComponentPreprocessingTests.test_physically_resealed_foreign_front_workers_cannot_activate')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_test_selection_v1.py", line 102, in test_new_broker_and_raw_custody_skip_declarations_are_rejected
+    with self.assertRaisesRegex(ValueError, 'mandatory contract'):
+AssertionError: ValueError not raised
+
+----------------------------------------------------------------------
+Ran 20 tests in 0.073s
+
+FAILED (failures=8)

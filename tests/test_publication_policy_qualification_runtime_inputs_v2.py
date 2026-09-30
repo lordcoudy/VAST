@@ -892,7 +892,7 @@ class QualificationRuntimeInputsV2Tests(unittest.TestCase):
             index_path.parent.mkdir(parents=True)
             shutil.copyfile(ROOT / "configs/analytics_execution_layer.yaml", config_path)
             source_binding_root = (
-                ROOT / "artifacts/analytics_execution_bindings/publication_v3"
+                ROOT / ".ci/fixtures/publication_worker_manifest_v1/bindings"
             )
             shutil.copyfile(source_binding_root / "index.json", index_path)
             for branch in branches:
@@ -905,7 +905,7 @@ class QualificationRuntimeInputsV2Tests(unittest.TestCase):
                 target_probe.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copyfile(
                     ROOT
-                    / "artifacts/analytics_runtime_probes/publication_v3"
+                    / ".ci/fixtures/publication_worker_manifest_v1"
                     / f"{resource}_runtime_probe.json",
                     target_probe,
                 )

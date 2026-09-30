@@ -1,0 +1,63 @@
+--- before/test_ci_test_selection_v1.py
++++ tests/test_ci_test_selection_v1.py
+@@ -74,5 +74,59 @@
+         row={"test_id":"new.C.test_x","reason":"schema-v1 fixture retained only as migration history","classification":"existing_retired_schema_migration","acceptance_claim":False};self.manifest(skips=[row])
+         with self.assertRaisesRegex(ValueError,"existing source migration tombstone"):self.select([row["test_id"]])
+     def test_existing_retired_source_decorator_is_inventory_nonexecution_only(self):
+-        reason="schema-v1 fixture retained only as migration history";row={"test_id":"legacy.C.test_x","reason":reason,"classification":"existing_retired_schema_migration","acceptance_claim":False};self.manifest(skips=[row]);case=self._case(row["test_id"]);unittest.skip(reason)(type(case));suite,report=self.api.select_portable_suite_v1(unittest.TestSuite([case]),project_root=self.root);self.assertEqual(suite.countTestCases(),1);self.assertEqual(report["counts"]["integration"],0);self.assertFalse(self.api.validate_portable_skips_v1([{"test_id":case.id(),"reason":reason}],report)[0]["acceptance_claim"])
++        reason="schema-v1 fixture retained only as migration history";row={"test_id":"test_checkpoint_model_parity.AssessmentTests.test_complete_common_source_contract_passes","reason":reason,"classification":"existing_retired_schema_migration","acceptance_claim":False};self.manifest(skips=[row]);case=self._case(row["test_id"]);unittest.skip(reason)(type(case));suite,report=self.api.select_portable_suite_v1(unittest.TestSuite([case]),project_root=self.root);self.assertEqual(suite.countTestCases(),1);self.assertEqual(report["counts"]["integration"],0);self.assertFalse(self.api.validate_portable_skips_v1([{"test_id":case.id(),"reason":reason}],report)[0]["acceptance_claim"])
++
++    def test_current_broker_and_operational_custody_cannot_be_deferred(self):
++        names = (
++            'test_backend_publication_broker_terminal_v3.BackendPublicationBrokerTerminalV3Tests.test_normal_early_setup_failure_commits_original_failed_terminal',
++            'test_publication_operational_container_custody_v1.OriginalContainerCompositionTests.test_resealed_foreign_absence_cannot_grant_quiescence',
++            'test_publication_operational_request_domain_v1.OperationalRequestDomainTests.test_complete_native_occurrences_preserve_all_three_phases_and_original_hashes',
++            'test_publication_gstreamer_component_runtime_v1.ComponentRuntimeFixtureTests.test_execution_cannot_opt_out_of_live_guardian',
++            'test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_exact_first_unshare_failure_delegates_once_and_retains_original_errno',
++        )
++        for name in names:
++            with self.subTest(name=name):
++                self.manifest([self.row(name)])
++                with self.assertRaisesRegex(ValueError, 'mandatory contract'):
++                    self.select([name])
++
++    def test_new_broker_and_raw_custody_skip_declarations_are_rejected(self):
++        for name in (
++            'test_backend_publication_broker_terminal_v3.BackendPublicationBrokerTerminalV3Tests.test_normal_early_setup_failure_commits_original_failed_terminal',
++            'test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_complete_cold_workload_includes_warmup_measurement_and_drain',
++            'test_publication_guardian_component_preprocessing_contract_v1.ComponentPreprocessingTests.test_physically_resealed_foreign_front_workers_cannot_activate',
++            'test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_exact_first_unshare_failure_delegates_once_and_retains_original_errno',
++        ):
++            with self.subTest(name=name):
++                row={'test_id':name,'reason':'invented missing prerequisite',
++                     'classification':'platform_or_explicit_physical_prerequisite','acceptance_claim':False}
++                self.manifest(skips=[row])
++                with self.assertRaisesRegex(ValueError, 'mandatory contract'):
++                    self.select([name])
++
++    def test_foreign_decorated_class_cannot_invent_a_retired_migration(self):
++        reason='schema-v1 fixture retained only as migration history'
++        row={'test_id':'foreign.AssessmentTests.test_complete_common_source_contract_passes',
++             'reason':reason,'classification':'existing_retired_schema_migration','acceptance_claim':False}
++        self.manifest(skips=[row])
++        case=self._case(row['test_id']);unittest.skip(reason)(type(case))
++        with self.assertRaisesRegex(ValueError, 'existing source migration tombstone'):
++            self.api.select_portable_suite_v1(unittest.TestSuite([case]),project_root=self.root)
++
++    def test_all_original_platform_and_retired_skip_ids_remain_nonexecution(self):
++        rows=json.loads((ROOT/self.api.MANIFEST).read_bytes())['allowed_portable_skips']
++        self.assertEqual(len(rows),80)
++        cases=[]
++        for row in rows:
++            case=self._case(row['test_id'])
++            if row['classification']=='existing_retired_schema_migration':
++                unittest.skip(row['reason'])(type(case))
++            cases.append(case)
++        self.manifest(skips=rows)
++        suite,report=self.api.select_portable_suite_v1(unittest.TestSuite(cases),project_root=self.root)
++        self.assertEqual(suite.countTestCases(),80)
++        self.assertEqual(report['counts']['integration'],0)
++        audit=self.api.validate_portable_skips_v1(rows,report)
++        self.assertEqual(audit,sorted(rows,key=lambda row:row['test_id']))
++        self.assertTrue(all(row['acceptance_claim'] is False for row in audit))
+ if __name__=="__main__":unittest.main()

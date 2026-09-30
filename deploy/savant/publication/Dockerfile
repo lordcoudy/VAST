@@ -103,7 +103,9 @@ COPY \
   scripts/model_parity_grant.py \
   scripts/publication_acceptance_evidence.py \
   scripts/publication_child_evidence_materializer_v1.py \
+  scripts/publication_gstreamer_component_authority_v1.py \
   scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py \
+  scripts/publication_guardian_component_preprocessing_contract_v1.py \
   scripts/publication_guardian_operational_recorder_v1.py \
   scripts/publication_guardian_preprocessing_contract_v1.py \
   scripts/publication_guardian_runtime_expectations_v1.py \

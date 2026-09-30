@@ -1,0 +1,114 @@
+{
+  "aggregate_bound": {
+    "captures_max": 2,
+    "conservative_bytes": 61440,
+    "denial_leaf_bytes": 4096,
+    "direct_kernel_read_bytes": 4096,
+    "failure_behavior": "Original consumed prefixes retained; overflow and late closure stay failed. No refreshed deadline or policy change.",
+    "formula": "2*(16384+12032+256)+4096",
+    "per_capture_raw_bytes": 16384,
+    "per_capture_report_bytes": 12032,
+    "per_capture_reserved_late_leaf_bytes": 256,
+    "reviewed_max_bytes": 65536,
+    "worker_emission_bytes": 12288
+  },
+  "artifact_kind": "vast_decision25_ci_prerequisites_author_review_v2",
+  "independent_review": false,
+  "limitations": [
+    "First observed syscall can only be claimed for the declared unshare/proc-map/mount/pipe/fork wrappers. Other stock preconditions and prctl failures remain original generic failures; no fabricated syscall attribution.",
+    "Tool metadata fixtures prove parsing/refusal; they do not prove hosted factory availability or native runtime success.",
+    "Kernel log unavailability and generic errno never authorize a profile. Retained records require later independent PID/executable/label/window analysis.",
+    "The final fixture kernel query test was added after query preparation; it is not represented as an earlier RED. Existing behavioral regressions preserve actual preceding RED evidence.",
+    "No original namespace, sudo query, Docker/model/native workload, full suite or hosted job was launched by this implementation turn. Tasks20.3 and19.4 retain actual-host verification obligations."
+  ],
+  "no_actual_namespace_or_kernel_query": true,
+  "normalized_ast_unchanged_except_declared_caps_and_failure_text": true,
+  "original_before": {
+    "path": "artifacts/benchmark_recovery_20260930/decision25-ci-prerequisites-v1/aggregate-bound-before/inventory.json",
+    "sha256": "fe09f8bd0decfa699b7d3e32b0f22642ddab741f190f62593ee55ea090829959",
+    "size_bytes": 288
+  },
+  "original_green": {
+    "actual_current_pid_absent": true,
+    "channels": [
+      {
+        "path": "artifacts/benchmark_recovery_20260930/decision25-ci-prerequisites-v1/aggregate-bound-green-01/stdout.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      {
+        "path": "artifacts/benchmark_recovery_20260930/decision25-ci-prerequisites-v1/aggregate-bound-green-01/stderr.raw",
+        "sha256": "16c6cc01f7a7a8408dc804f5792e9bba2cf8270b27eaf37c2577ca01339c2e86",
+        "size_bytes": 5187
+      }
+    ],
+    "elapsed_s": 0.9698483470128849,
+    "path": "artifacts/benchmark_recovery_20260930/decision25-ci-prerequisites-v1/aggregate-bound-green-01/terminal.json",
+    "pid": 27377,
+    "returncode": 0,
+    "sha256": "6db1e1c1c642cbb49b32c9dbf40a1b22a320a20abc355d46db0005aeef07a378",
+    "size_bytes": 3529,
+    "source_before_after_equal": true,
+    "tests": 28
+  },
+  "original_red": {
+    "path": "artifacts/benchmark_recovery_20260930/decision25-ci-prerequisites-v1/aggregate-bound-red-01/terminal.json",
+    "sha256": "3b6c2586a13f14129dba90c873f962dd3e81d8eb90902c2033a5c7d77e4efedd",
+    "size_bytes": 3529
+  },
+  "other_three_owned_sources_unchanged": true,
+  "owned_sources": [
+    {
+      "path": "scripts/run_ci_checks.py",
+      "sha256": "6841581ae05ae7ea862752fb23f0999e48283d6dcad27c4634c94e626960eabc",
+      "size_bytes": 28237
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "0ec268a98e6f61e1db860c1455d1970f714d1abe7d0dd8da483ca13fbcb8d95a",
+      "size_bytes": 4251
+    },
+    {
+      "path": "tests/test_run_ci_checks.py",
+      "sha256": "fdfff7c66e0d50e51b4cc616a5f660dc19eafdeabf0cfe0f88583689e91b3925",
+      "size_bytes": 15786
+    },
+    {
+      "path": "scripts/ci_namespace_diagnostic_v1.py",
+      "sha256": "a5533d76516844e308179f86f13a4326849fed8617b5f28fcfcf7ab7e1067ffa",
+      "size_bytes": 20708
+    },
+    {
+      "path": "tests/test_ci_namespace_diagnostic_v1.py",
+      "sha256": "0125f209d9556c54badcbb6654c9c2c86b3980c3bf47495c1f7446306ec08fe5",
+      "size_bytes": 12692
+    }
+  ],
+  "reason": "Peer review rejected the earlier broad-domain122880-byte bound. All prepared namespace evidence now has one conservative61440-byte bound below65536.",
+  "reviewable": true,
+  "schema_version": 1,
+  "source_scope": {
+    "path": "artifacts/benchmark_recovery_20260930/decision25-ci-prerequisites-v1/source-scope.v1.json",
+    "sha256": "00832150f834b230c5bb4d619c2f33c62656125f327a1e7d5162286b64b99b5c",
+    "size_bytes": 29369
+  },
+  "supersedes": {
+    "path": "artifacts/benchmark_recovery_20260930/decision25-ci-prerequisites-v1/author-review.v1.json",
+    "sha256": "cd804daf85fce509c569a949b147440ec768e3255607c79891d25c6edba319e2",
+    "size_bytes": 7644
+  },
+  "unchanged_constraints": {
+    "full_ci_success_claimed": false,
+    "full_job_minutes": 90,
+    "hardware_acceptance": false,
+    "policy_profile_loaded": false,
+    "production_budgets_ms": [
+      600000,
+      615000
+    ],
+    "production_namespace_source_changed": false,
+    "single_full_test_child": true,
+    "tests_skipped_by_author": false,
+    "watchdog_in_test_child_added": false
+  }
+}

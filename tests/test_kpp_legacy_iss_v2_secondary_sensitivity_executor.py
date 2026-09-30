@@ -34,11 +34,9 @@ import kpp_legacy_iss_v2_secondary_sensitivity_executor as executor
 import kpp_legacy_iss_v2_secondary_sensitivity_pilot as pilot
 
 
-V2_MOUNT_FORENSIC = ROOT / (
-    "runs/nonpublication/runtime_environments/"
-    "kpp-v2-cp312-pandas3.0.1-20260822-v1/"
-    "secondary_v2_mount_mode_failure_forensic"
-)
+# Raw historical replay fixtures confer no current Docker/model authority.
+DOCKER_REPLAY_FIXTURES = ROOT / ".ci/fixtures/kpp_docker29_replay_v1"
+V2_MOUNT_FORENSIC = DOCKER_REPLAY_FIXTURES / "v2_mount"
 V2_RUN_ID = "kpp-v2-secondary-pilot-20260822-v2"
 V2_RUN_IDENTITY = "9086fffb159ecd95363e4ca4a5ee8c8d57f7ff6582632284e478272215d92b13"
 V2_CONTAINER_FIXTURES = {
@@ -63,11 +61,7 @@ V2_CONTAINER_FIXTURES = {
         9_318,
     ),
 }
-V3_ZERO_MOUNT_FORENSIC = ROOT / (
-    "runs/nonpublication/runtime_environments/"
-    "kpp-v2-cp312-pandas3.0.1-20260822-v1/"
-    "secondary_v3_zero_mount_failure_forensic"
-)
+V3_ZERO_MOUNT_FORENSIC = DOCKER_REPLAY_FIXTURES / "zero_mount"
 V3_RUN_ID = "kpp-v2-secondary-pilot-20260822-v3"
 V3_RUN_IDENTITY = "33466eb7218caae775c703f538a6367962e7d9c81a69c8ee736b00b9c2fde165"
 V3_PROBE_FIXTURE = (
@@ -75,20 +69,9 @@ V3_PROBE_FIXTURE = (
     "310d38ce48f77f9bbcbdb94a30f7d951dd97b7640db6c22d0d5dc82cfb59fc69",
     7_422,
 )
-PEERCRED_DIAGNOSTIC_RUN_ROOT = ROOT / (
-    "runs/nonpublication/"
-    "kpp-v2-secondary-peercred-diagnostic-20260822-v1"
-)
-PEERCRED_DIAGNOSTIC_CAPTURE_ROOT = ROOT / (
-    "runs/nonpublication/runtime_environments/"
-    "kpp-v2-cp312-pandas3.0.1-20260822-v1/"
-    "secondary_peercred_diagnostic_invocation_capture_v1"
-)
-PEERCRED_DAEMON_INFO_FIXTURE = ROOT / (
-    "runs/nonpublication/runtime_environments/"
-    "kpp-v2-cp312-pandas3.0.1-20260822-v1/"
-    "secondary_v3_retry1_peercred_failure_forensic/daemon.info.stdout.bin"
-)
+PEERCRED_DIAGNOSTIC_RUN_ROOT = DOCKER_REPLAY_FIXTURES / "peercred"
+PEERCRED_DIAGNOSTIC_CAPTURE_ROOT = DOCKER_REPLAY_FIXTURES / "peercred"
+PEERCRED_DAEMON_INFO_FIXTURE = DOCKER_REPLAY_FIXTURES / "peercred/daemon.info.stdout.bin"
 PEERCRED_DAEMON_INFO_FIXTURE_SHA256 = (
     "4fc97e33301bc90e11b8560974d7de8a4348f3056a69730ef4823f883893fb88"
 )
@@ -7618,7 +7601,33 @@ time.sleep(600)
         self,
     ) -> None:
         daemon = self._peercred_daemon()
-        observed = executor._observe_peercred_pid0_platform(daemon)
+        real_open, real_read, real_close = os.open, os.read, os.close
+        fixture_chunks = iter((b"6.6.87.2-microsoft-standard-WSL2\n", b""))
+
+        def fixture_read(descriptor: int, size: int) -> bytes:
+            # Read the genuine proc fd before returning declared unit bytes.
+            # The returned fixture is not actual-host WSL attestation.
+            self.assertLessEqual(len(real_read(descriptor, size)), size)
+            chunk = next(fixture_chunks)
+            self.assertLessEqual(len(chunk), size)
+            return chunk
+
+        with mock.patch.object(executor.os, "open", wraps=real_open) as opened, \
+                mock.patch.object(executor.os, "read", side_effect=fixture_read) as read, \
+                mock.patch.object(executor.os, "close", wraps=real_close) as closed:
+            observed = executor._observe_peercred_pid0_platform(daemon)
+        descriptor = read.call_args_list[0].args[0]
+        self.assertIs(type(descriptor), int)
+        opened.assert_called_once_with(
+            Path("/proc/sys/kernel/osrelease"), os.O_RDONLY | os.O_NOFOLLOW | os.O_CLOEXEC
+        )
+        self.assertEqual(read.call_args_list, [mock.call(descriptor, 256), mock.call(descriptor, 223)])
+        closed.assert_called_once_with(descriptor)
+        with self.assertRaises(OSError) as closure:
+            os.fstat(descriptor)
+        self.assertEqual(closure.exception.errno, errno.EBADF)
+        with self.assertRaisesRegex(executor.ExecutorContractError, "WSL2 osrelease marker drifted"):
+            executor._build_peercred_pid0_platform_observation(b"6.8.0-linux-generic\n", daemon)
         self.assertEqual(
             observed,
             executor._validate_peercred_pid0_platform_observation(observed),
@@ -9355,6 +9364,10 @@ time.sleep(600)
     def test_same_v2_existing_run_recovers_exact_four_docker29_workers_before_block(
         self,
     ) -> None:
+        temporary = tempfile.TemporaryDirectory(prefix="vast-kpp-stale-fixture-")
+        self.addCleanup(temporary.cleanup)
+        fixture_root = Path(temporary.name).resolve()
+        (fixture_root / "runs/nonpublication" / V2_RUN_ID).mkdir(parents=True)
         documents: dict[str, dict[str, object]] = {}
         expected_image_labels: dict[str, str] | None = None
         bindings: dict[str, dict[str, object]] = {}
@@ -9364,7 +9377,7 @@ time.sleep(600)
         for branch in pilot.BRANCHES:
             document, mounts, image_labels = self._v2_mount_fixture(branch)
             captured_prefix = "/mnt/e/STUDY/VAST/"
-            replacement = ROOT.resolve().as_posix() + "/"
+            replacement = fixture_root.as_posix() + "/"
             document = copy.deepcopy(document)
             for collection in (
                 document["HostConfig"]["Mounts"],
@@ -9494,7 +9507,7 @@ time.sleep(600)
             cli=executor.FileIdentity(44_986_088, "3" * 64),
             run_identity=V2_RUN_IDENTITY,
             role="secondary",
-            project_root=ROOT,
+            project_root=fixture_root,
             run_id=V2_RUN_ID,
             plan={},
             requests=attempt_requests,

@@ -1,0 +1,28 @@
+{
+  "after": {
+    "path": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+    "sha256": "ba158ae63c8e8c3fea9ff65c36d11d2dbe0d82046eef2e9407a4364e4bc5db8a",
+    "size_bytes": 23561
+  },
+  "artifact_kind": "vast_selected_current_identity_test_literal_renewal_v1",
+  "assertions_unchanged": true,
+  "before": {
+    "path": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+    "sha256": "36efd64447ca81180085d67de352936bf31ad295e3ab557056b58662f8f99720",
+    "size_bytes": 23561
+  },
+  "changed_method": "PublicationRuntimeFrozenIdentityConstantsV1Tests.test_gstreamer_current_runtime_is_exactly_refrozen",
+  "component_accepted": false,
+  "full_ci_acceptance": false,
+  "only_changes": [
+    "one receipt path literal",
+    "one actual physical receipt SHA literal"
+  ],
+  "original_full_patch_methods_unchanged": true,
+  "receipt": {
+    "path": "artifacts/benchmark_recovery_20260930/selected-gstreamer-build-a4e145b7-v1/gstreamer_custom.runtime.freeze.json",
+    "sha256": "61874c718d6140d0d5cf745988bc301b916077af8f80e96742184f80a0805db7",
+    "size_bytes": 7049
+  },
+  "tests_executed_by_this_renewal": false
+}

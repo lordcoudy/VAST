@@ -1,0 +1,162 @@
+{
+  "approved_planning_commit": "bec47b794ef9183fe9e3ce4cb1ec15541070f96f",
+  "artifact_kind": "vast_decision25_ci_prerequisites_author_review_v1",
+  "behavior": [
+    "Canonical original CPython3.12.3 argv without changing sys.executable; fixed ROOT isolated imports and containment before/after complete original-ID discovery/run.",
+    "Root-owned selection API retains default discovered IDs on failure and explicit portable/integration/skip dispositions; required native criteria stay strict.",
+    "Ephemeral plugins-base/tools installation; original loaded appsrc/queue/videoconvert stdout/status and bounded physical plugin hashes; six original CPU targets retained.",
+    "One actual stock namespace call prepared behind original owner/pidfd start gate; bounded first instrumented syscall/type/errno/flags/path/PID/label/time and original channels.",
+    "Immutable 20s execution plus 10s-or-remaining cleanup includes reap, EOF/group checks and evidence close; pidfd failure, overflow, write/close failure, retained descendants and late closure stay failed.",
+    "At most one optional noninteractive read-only sudo journalctl query in the same remaining cleanup interval; exact original PID userns record filter, explicit unavailable facts, no policy mutation or automatic causal claim."
+  ],
+  "budgets": {
+    "cleanup_s_max": 10,
+    "direct_kernel_consumed_bytes_max": 8192,
+    "execution_s": 20,
+    "kernel_acquisition_plus_relevant_bytes_max": 57344,
+    "kernel_query_channel_total_bytes": 40960,
+    "namespace_channel_total_bytes": 40960,
+    "per_capture_metadata_bytes_max": 16384,
+    "relevant_denial_leaf_bytes_max": 8192,
+    "supplemental_namespace_bytes_conservative_max": 122880
+  },
+  "change": "fix-benchmark-preparations-spec",
+  "closed_at_monotonic_ns": 257123308388023,
+  "dependencies": [
+    {
+      "path": ".ci/integration-test-selection.v1.json",
+      "sha256": "a27ff9488d658637e16e81d0a6b6614ce9ac43716b7dd5b152060a2cb093c987",
+      "size_bytes": 31541
+    },
+    {
+      "path": "scripts/backend_publication_process_supervisor_v3.py",
+      "sha256": "acc40456cf93db8deb270f54d14b8f17555a268969e5bad0695372ddba12132d",
+      "size_bytes": 124499
+    },
+    {
+      "path": "scripts/ci_external_test_observer_v1.py",
+      "sha256": "000ded0c9bd442983b54d224ce3041818af6e35e2e0d4f9c9b382b74db499c59",
+      "size_bytes": 20916
+    },
+    {
+      "path": "scripts/ci_test_selection_v1.py",
+      "sha256": "649d7618d02d1cd77a5e241ca1e89f9e5f10b9e907215322ac5ccd2c572a69c6",
+      "size_bytes": 6826
+    }
+  ],
+  "independent_review": false,
+  "original_final_test": {
+    "actual_current_group_members": [],
+    "actual_current_pid_absent": true,
+    "count": 27,
+    "elapsed_s": 0.96858428302221,
+    "interpreter": "original CPython3.12.3 -I -B",
+    "original_pid": 27078,
+    "path": "artifacts/benchmark_recovery_20260930/decision25-ci-prerequisites-v1/final-green-03/terminal.json",
+    "raw_channels": [
+      {
+        "path": "artifacts/benchmark_recovery_20260930/decision25-ci-prerequisites-v1/final-green-03/stdout.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      {
+        "path": "artifacts/benchmark_recovery_20260930/decision25-ci-prerequisites-v1/final-green-03/stderr.raw",
+        "sha256": "8f4d985cf17ee679e2f66a2505a389b41bf1f2dc16c5392cc7829f55198a11e1",
+        "size_bytes": 4971
+      }
+    ],
+    "returncode": 0,
+    "sha256": "af62bb86e7202c805436a019cbf025c37b115121e711d1745092d2fd6aaea826",
+    "size_bytes": 3527
+  },
+  "owned_sources": [
+    {
+      "path": "scripts/run_ci_checks.py",
+      "sha256": "6841581ae05ae7ea862752fb23f0999e48283d6dcad27c4634c94e626960eabc",
+      "size_bytes": 28237
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "0ec268a98e6f61e1db860c1455d1970f714d1abe7d0dd8da483ca13fbcb8d95a",
+      "size_bytes": 4251
+    },
+    {
+      "path": "tests/test_run_ci_checks.py",
+      "sha256": "fdfff7c66e0d50e51b4cc616a5f660dc19eafdeabf0cfe0f88583689e91b3925",
+      "size_bytes": 15786
+    },
+    {
+      "path": "scripts/ci_namespace_diagnostic_v1.py",
+      "sha256": "51c9a179d85c8a753224637b0eeca62729ba057321ecc56f0a942f1b25443351",
+      "size_bytes": 20668
+    },
+    {
+      "path": "tests/test_ci_namespace_diagnostic_v1.py",
+      "sha256": "91b53522397c7e6e6b37a361a4d6341ec2b8e6bbd3737a56d6664471eb367100",
+      "size_bytes": 11395
+    }
+  ],
+  "planning_pr_comments": [
+    "5911169971",
+    "5911177634"
+  ],
+  "pre_edit_inventory": {
+    "path": "artifacts/benchmark_recovery_20260930/decision25-ci-prerequisites-v1/pre-edit.v1.json",
+    "sha256": "41cfe4bbd6c3712590500cb51259e3ea79eb1573638139d62c9ab30f28b20fba",
+    "size_bytes": 942
+  },
+  "preserved_constraints": {
+    "full_ci_success_claimed": false,
+    "full_job_minutes": 90,
+    "hardware_acceptance": false,
+    "policy_profile_loaded": false,
+    "production_budgets_ms": [
+      600000,
+      615000
+    ],
+    "production_namespace_source_changed": false,
+    "single_full_test_child": true,
+    "tests_skipped_by_author": false,
+    "watchdog_in_test_child_added": false
+  },
+  "retained_meaningful_red_receipts": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision25-ci-prerequisites-v1/red-02/terminal.json",
+      "sha256": "b5b89877bb29b1f50953e1a7f372b94978f8cee5633c0c799165491f638ce2f1",
+      "size_bytes": 1734
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision25-ci-prerequisites-v1/namespace-close-red-01/terminal.json",
+      "sha256": "4d3ced2031af3d09e562a187a5c5f0411df2e4e2d9770a36eb75949fd64c9728",
+      "size_bytes": 2367
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision25-ci-prerequisites-v1/discovery-inventory-red-01/terminal.json",
+      "sha256": "ee8cbf949544c08217e3f41d39caf1b8487f37e46b27312b5ecf648a5d24851a",
+      "size_bytes": 2366
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision25-ci-prerequisites-v1/descendant-cleanup-red-01/terminal.json",
+      "sha256": "68637bc771c51f45a9ace67c344e4dee2485fd3dca7b21cff71dfffd614cafbc",
+      "size_bytes": 2366
+    }
+  ],
+  "reviewable": true,
+  "schema_version": 1,
+  "scope_proof": {
+    "host_count": 87,
+    "note": "The source proof preceded one comment-only diagnostic edit. Final 27-test receipt pins the final source; stock membership and code behavior are unaffected.",
+    "owned_intersections_empty": true,
+    "path": "artifacts/benchmark_recovery_20260930/decision25-ci-prerequisites-v1/source-scope.v1.json",
+    "selected_count": 73,
+    "sha256": "00832150f834b230c5bb4d619c2f33c62656125f327a1e7d5162286b64b99b5c",
+    "size_bytes": 29369
+  },
+  "self_review": [
+    "First observed syscall can only be claimed for the declared unshare/proc-map/mount/pipe/fork wrappers. Other stock preconditions and prctl failures remain original generic failures; no fabricated syscall attribution.",
+    "Tool metadata fixtures prove parsing/refusal; they do not prove hosted factory availability or native runtime success.",
+    "Kernel log unavailability and generic errno never authorize a profile. Retained records require later independent PID/executable/label/window analysis.",
+    "The final fixture kernel query test was added after query preparation; it is not represented as an earlier RED. Existing behavioral regressions preserve actual preceding RED evidence.",
+    "No original namespace, sudo query, Docker/model/native workload, full suite or hosted job was launched by this implementation turn. Tasks20.3 and19.4 retain actual-host verification obligations."
+  ]
+}

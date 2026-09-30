@@ -40,7 +40,7 @@ class PublicationImmutableDirectoryV1Tests(unittest.TestCase):
             "post_publish_pre_parent_fsync",
         ):
             with self.subTest(step=step), tempfile.TemporaryDirectory(
-                prefix=".immutable-dir-test-", dir=ROOT / ".test-tmp"
+                prefix=".immutable-dir-test-"
             ) as temporary:
                 root = Path(temporary).resolve()
                 staging = _stage(root)
@@ -76,7 +76,7 @@ class PublicationImmutableDirectoryV1Tests(unittest.TestCase):
 
     def test_foreign_target_and_aba_restore_are_rejected(self) -> None:
         with tempfile.TemporaryDirectory(
-            prefix=".immutable-dir-foreign-", dir=ROOT / ".test-tmp"
+            prefix=".immutable-dir-foreign-"
         ) as temporary:
             root = Path(temporary).resolve()
             staging = _stage(root)
@@ -88,7 +88,7 @@ class PublicationImmutableDirectoryV1Tests(unittest.TestCase):
                 )
 
         with tempfile.TemporaryDirectory(
-            prefix=".immutable-dir-aba-", dir=ROOT / ".test-tmp"
+            prefix=".immutable-dir-aba-"
         ) as temporary:
             root = Path(temporary).resolve()
             staging = _stage(root)

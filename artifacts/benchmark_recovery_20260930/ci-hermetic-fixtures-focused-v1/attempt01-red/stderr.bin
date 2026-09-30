@@ -1,0 +1,24 @@
+test_worker_fixture_needs_no_ignored_runtime_artifacts (test_checkpoint_external_execution_manifest.ExternalExecutionManifestTests.test_worker_fixture_needs_no_ignored_runtime_artifacts) ... ERROR
+
+======================================================================
+ERROR: test_worker_fixture_needs_no_ignored_runtime_artifacts (test_checkpoint_external_execution_manifest.ExternalExecutionManifestTests.test_worker_fixture_needs_no_ignored_runtime_artifacts)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_checkpoint_external_execution_manifest.py", line 73, in test_worker_fixture_needs_no_ignored_runtime_artifacts
+    fixture = worker_manifest_fixture()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_checkpoint_external_execution_manifest.py", line 36, in worker_manifest_fixture
+    fixture.probes[resource] = json.loads((ROOT / "artifacts/analytics_runtime_probes/publication_v3" / f"{resource}_runtime_probe.json").read_bytes())
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1021, in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1015, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmpp2j1jw6a/artifacts/analytics_runtime_probes/publication_v3/cpu_runtime_probe.json'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.017s
+
+FAILED (errors=1)

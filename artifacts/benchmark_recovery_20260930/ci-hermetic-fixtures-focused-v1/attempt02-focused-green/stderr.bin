@@ -1,0 +1,40 @@
+test_external_manifest_rejects_real_identity_and_coverage_drift (test_checkpoint_external_execution_manifest.ExternalExecutionManifestTests.test_external_manifest_rejects_real_identity_and_coverage_drift) ... ok
+test_native_policy_import_does_not_require_sdk_bridge (test_checkpoint_external_execution_manifest.ExternalExecutionManifestTests.test_native_policy_import_does_not_require_sdk_bridge) ... ok
+test_producer_manifest_passes_real_coordinator_startup_for_both_systems (test_checkpoint_external_execution_manifest.ExternalExecutionManifestTests.test_producer_manifest_passes_real_coordinator_startup_for_both_systems) ... ok
+test_nonzero_create_capture_remains_dispatch_ambiguous_without_terminal_marker (test_kpp_legacy_iss_v2_secondary_sensitivity_executor.KppLegacyIssV2SecondarySensitivityExecutorTests.test_nonzero_create_capture_remains_dispatch_ambiguous_without_terminal_marker) ... ok
+test_nonzero_create_with_real_guardian_detaches_retained_owner (test_kpp_legacy_iss_v2_secondary_sensitivity_executor.KppLegacyIssV2SecondarySensitivityExecutorTests.test_nonzero_create_with_real_guardian_detaches_retained_owner) ... ok
+test_peer_identity_modes_are_explicit_disjoint_and_sealed_pid0_evidence_passes (test_kpp_legacy_iss_v2_secondary_sensitivity_executor.KppLegacyIssV2SecondarySensitivityExecutorTests.test_peer_identity_modes_are_explicit_disjoint_and_sealed_pid0_evidence_passes) ... ok
+test_real_docker29_four_worker_fixtures_pass_parent_cleanup (test_kpp_legacy_iss_v2_secondary_sensitivity_executor.KppLegacyIssV2SecondarySensitivityExecutorTests.test_real_docker29_four_worker_fixtures_pass_parent_cleanup) ... ok
+test_real_docker29_four_worker_fixtures_pass_watchdog_recovery (test_kpp_legacy_iss_v2_secondary_sensitivity_executor.KppLegacyIssV2SecondarySensitivityExecutorTests.test_real_docker29_four_worker_fixtures_pass_watchdog_recovery) ... ok
+test_real_docker29_four_worker_readonly_mount_projection_is_closed_and_cross_bound (test_kpp_legacy_iss_v2_secondary_sensitivity_executor.KppLegacyIssV2SecondarySensitivityExecutorTests.test_real_docker29_four_worker_readonly_mount_projection_is_closed_and_cross_bound) ... ok
+test_real_docker29_zero_mount_probe_passes_postcreate_and_parent_cleanup (test_kpp_legacy_iss_v2_secondary_sensitivity_executor.KppLegacyIssV2SecondarySensitivityExecutorTests.test_real_docker29_zero_mount_probe_passes_postcreate_and_parent_cleanup) ... ok
+test_real_docker29_zero_mount_probe_passes_stale_reaper (test_kpp_legacy_iss_v2_secondary_sensitivity_executor.KppLegacyIssV2SecondarySensitivityExecutorTests.test_real_docker29_zero_mount_probe_passes_stale_reaper) ... ok
+test_real_docker29_zero_mount_probe_passes_watchdog_recovery (test_kpp_legacy_iss_v2_secondary_sensitivity_executor.KppLegacyIssV2SecondarySensitivityExecutorTests.test_real_docker29_zero_mount_probe_passes_watchdog_recovery) ... ok
+test_real_docker29_zero_mount_probe_projection_is_closed (test_kpp_legacy_iss_v2_secondary_sensitivity_executor.KppLegacyIssV2SecondarySensitivityExecutorTests.test_real_docker29_zero_mount_probe_projection_is_closed) ... ok
+test_same_v2_existing_run_recovers_exact_four_docker29_workers_before_block (test_kpp_legacy_iss_v2_secondary_sensitivity_executor.KppLegacyIssV2SecondarySensitivityExecutorTests.test_same_v2_existing_run_recovers_exact_four_docker29_workers_before_block) ... ok
+test_worker_fixture_needs_no_ignored_runtime_artifacts (test_checkpoint_external_execution_manifest.ExternalExecutionManifestTests.test_worker_fixture_needs_no_ignored_runtime_artifacts) ... ok
+test_worker_fixture_rejects_missing_and_foreign_metadata (test_checkpoint_external_execution_manifest.ExternalExecutionManifestTests.test_worker_fixture_rejects_missing_and_foreign_metadata) ... ok
+test_peercred_pid0_platform_observer_is_nofollow_bounded_and_exact_on_wsl (test_kpp_legacy_iss_v2_secondary_sensitivity_executor.KppLegacyIssV2SecondarySensitivityExecutorTests.test_peercred_pid0_platform_observer_is_nofollow_bounded_and_exact_on_wsl) ... ok
+test_three_crash_windows_exact_adoption_and_inode_preservation (test_publication_immutable_directory_v1.PublicationImmutableDirectoryV1Tests.test_three_crash_windows_exact_adoption_and_inode_preservation) ... ok
+test_foreign_target_and_aba_restore_are_rejected (test_publication_immutable_directory_v1.PublicationImmutableDirectoryV1Tests.test_foreign_target_and_aba_restore_are_rejected) ... ERROR
+test_versioned_analytics_authority_selects_bound_paths_not_v3_constants (test_publication_policy_qualification_runtime_inputs_v2.QualificationRuntimeInputsV2Tests.test_versioned_analytics_authority_selects_bound_paths_not_v3_constants) ... ok
+test_gstreamer_current_runtime_is_exactly_refrozen (test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_gstreamer_current_runtime_is_exactly_refrozen) ... ok
+
+======================================================================
+ERROR: test_foreign_target_and_aba_restore_are_rejected (test_publication_immutable_directory_v1.PublicationImmutableDirectoryV1Tests.test_foreign_target_and_aba_restore_are_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_immutable_directory_v1.py", line 90, in test_foreign_target_and_aba_restore_are_rejected
+    with tempfile.TemporaryDirectory(
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/tempfile.py", line 1021, in __init__
+    self.name = mkdtemp(suffix, prefix, dir)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/tempfile.py", line 523, in mkdtemp
+    _os.mkdir(file, 0o700)
+FileNotFoundError: [Errno 2] No such file or directory: '/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/.test-tmp/.immutable-dir-aba-6aq14m0_'
+
+----------------------------------------------------------------------
+Ran 21 tests in 2.587s
+
+FAILED (errors=1)

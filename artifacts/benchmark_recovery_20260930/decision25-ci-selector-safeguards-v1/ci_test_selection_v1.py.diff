@@ -1,0 +1,91 @@
+--- before/ci_test_selection_v1.py
++++ scripts/ci_test_selection_v1.py
+@@ -7,6 +7,45 @@
+ import unittest
+ 
+ MANIFEST = ".ci/integration-test-selection.v1.json"
++# Current portable operation/ownership boundaries have no optional prerequisites.
++# Keep this finite inventory explicit; newly discovered tests remain portable by default.
++RUNTIME_SAFETY_MODULES = frozenset((
++    "test_ci_namespace_diagnostic_v1",
++    "test_backend_publication_broker_terminal_v3",
++    "test_backend_runtime_replay_handle_abi_authority_v1",
++    "test_backend_runtime_replay_runner_authority_v2",
++    "test_backend_runtime_replay_runner_authority_v3",
++    "test_backend_runtime_replay_runner_invocation_v2",
++    "test_backend_runtime_replay_runner_invocation_protocol_v3",
++    "test_backend_runtime_replay_runner_invocation_protocol_v4",
++    "test_checkpoint_native_policy_runtime",
++    "test_checkpoint_native_policy_publication_projection_v1",
++    "test_checkpoint_operational_admission_guard_v1",
++    "test_qualification_operational_closure_cold_gate_v1",
++    "test_qualification_complete_operational_promotion_gate_v1",
++    "test_publication_runtime_source_closure_guardian_v1",
++    "test_publication_operational_boundary_v1",
++    "test_publication_operational_capture_plan_v1",
++    "test_publication_operational_container_custody_v1",
++    "test_publication_operational_execution_binding_v1",
++    "test_publication_operational_pilot_custody_v1",
++    "test_publication_operational_process_custody_v1",
++    "test_publication_operational_request_domain_v1",
++    "test_publication_operational_runtime_context_v1",
++    "test_publication_operational_runtime_input_binding_v1",
++    "test_publication_operational_stock_operations_v1",
++    "test_publication_operational_stock_request_v1",
++    "test_publication_operational_wrapper_composition_v1",
++    "test_publication_guardian_accepted_policy_preprocessing_contract_v1",
++    "test_publication_guardian_capture_context_v1",
++    "test_publication_guardian_component_preprocessing_contract_v1",
++    "test_publication_guardian_operational_recorder_v1",
++    "test_publication_guardian_preprocessing_contract_v1",
++    "test_publication_guardian_runtime_expectations_v1",
++    "test_publication_gstreamer_component_cli_v1",
++    "test_publication_gstreamer_component_inputs_v1",
++    "test_publication_gstreamer_component_runtime_v1",
++))
+ # These production boundaries are always exercised by the portable lane.
+ MANDATORY_MODULES = frozenset((
+     "test_checkpoint_analytics_execution_client_cpp",
+@@ -18,7 +57,22 @@
+     "test_ci_external_test_observer_v1", "test_run_ci_checks", "test_ci_test_selection_v1",
+     "test_replay_broker_contract_v4", "test_replay_broker_prepared_handles_v4",
+     "test_replay_broker_artifact_bytes_observation_v4",
+-))
++)) | RUNTIME_SAFETY_MODULES
++# Only these original schema-v1 methods can retain the existing migration skip.
++RETIRED_MIGRATION_IDS = frozenset(
++    "test_checkpoint_model_parity.AssessmentTests." + method for method in (
++        "test_calibration_and_evaluation_sample_ids_must_be_disjoint",
++        "test_calibration_minimum_and_numeric_tolerances_are_enforced",
++        "test_complete_common_source_contract_passes",
++        "test_image_command_cannot_pull_or_run",
++        "test_lineage_preprocessing_and_toolchain_drift_fail_closed",
++        "test_non_finite_tolerance_is_rejected",
++        "test_openvino_gpu_execution_evidence_is_not_cuda",
++        "test_repository_state_is_honestly_blocked",
++        "test_symlinked_model_artifact_is_not_accepted",
++        "test_verified_equivalent_derivations_can_replace_a_local_source",
++    )
++)
+ EXACT_ID = re.compile(r"[A-Za-z_][A-Za-z_0-9]*\.[A-Za-z_][A-Za-z_0-9]*\.test_[A-Za-z_0-9]+\Z")
+ 
+ def _cases(suite):
+@@ -78,7 +132,7 @@
+             raise ValueError("portable skip declaration absent from discovery/portable lane: " + name)
+         # Platform-specific Windows custody methods remain discoverable on Linux.
+         # Native execution and actual namespace/isolation tests never become optional.
+-        if name.split(".", 1)[0] in {"test_checkpoint_analytics_execution_client_cpp", "test_backend_publication_process_supervisor_v3", "test_ci_external_test_observer_v1", "test_run_ci_checks", "test_ci_test_selection_v1"}:
++        if name.split(".", 1)[0] in ({"test_checkpoint_analytics_execution_client_cpp", "test_backend_publication_process_supervisor_v3", "test_ci_external_test_observer_v1", "test_run_ci_checks", "test_ci_test_selection_v1"} | RUNTIME_SAFETY_MODULES):
+             raise ValueError("mandatory contract cannot be skipped: " + name)
+         if (not isinstance(row.get("reason"), str) or not row["reason"].strip()
+                         or row.get("acceptance_claim") is not False
+@@ -86,7 +140,8 @@
+             raise ValueError("invalid explicit portable skip declaration: " + name)
+         if row["classification"] == "existing_retired_schema_migration":
+             case = next(case for case in cases if case.id() == name)
+-            if (not getattr(type(case), "__unittest_skip__", False)
++            if (name not in RETIRED_MIGRATION_IDS
++                            or not getattr(type(case), "__unittest_skip__", False)
+                             or getattr(type(case), "__unittest_skip_why__", None) != row["reason"]
+                             or row["reason"] != "schema-v1 fixture retained only as migration history"):
+                 raise ValueError("retired declaration is not an existing source migration tombstone: " + name)

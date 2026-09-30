@@ -1,0 +1,18 @@
+test_new_tests_remain_mandatory_and_original_cases_order_are_preserved (test_ci_test_selection_v1.SelectionContracts.test_new_tests_remain_mandatory_and_original_cases_order_are_preserved) ... ERROR
+
+======================================================================
+ERROR: test_new_tests_remain_mandatory_and_original_cases_order_are_preserved (test_ci_test_selection_v1.SelectionContracts.test_new_tests_remain_mandatory_and_original_cases_order_are_preserved)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_test_selection_v1.py", line 13, in setUp
+    self.api=importlib.util.module_from_spec(spec);spec.loader.exec_module(self.api)
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 991, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 1128, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1186, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: '/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/ci_test_selection_v1.py'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.002s
+
+FAILED (errors=1)

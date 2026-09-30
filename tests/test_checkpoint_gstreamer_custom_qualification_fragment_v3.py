@@ -4,6 +4,7 @@ import hashlib
 import importlib.util
 import json
 import os
+import shutil
 import stat
 import sys
 import tempfile
@@ -68,6 +69,40 @@ def current_runtime_source_sha256() -> str:
         digest = hashlib.sha256((ROOT / relative).read_bytes()).hexdigest()
         rows.extend(f"{digest}  {relative}\n".encode("ascii"))
     return hashlib.sha256(rows).hexdigest()
+
+
+def unit_fragment_project(project_root: Path) -> Path:
+    """Physical byte-contract fixture; full-grant methods never use this root.
+
+    Historical declared worker/parity metadata remain exact snapshots. Current
+    copied sources and canonical CI model bytes are checked by the original
+    materializer and assessor, with no live image claim.
+    """
+    fixtures = ROOT / ".ci/fixtures/gstreamer_fragment_unit_v1"
+    for source in sorted(fixtures.rglob("*")):
+        if source.is_file():
+            destination = project_root / source.relative_to(fixtures)
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(source, destination)
+
+    allowlist = ROOT / "deploy/gstreamer_custom/publication/runtime-source-allowlist.txt"
+    sources = set(allowlist.read_text(encoding="ascii").splitlines())
+    sources.update(value["path"] for value in target._runtime_sources(ROOT).values())
+    model_manifest, bindings = target._openvino_bindings(ROOT)
+    model_files = [bindings[branch][role] for branch in target.BRANCHES
+                   for role in ("model", "weights")]
+    if len({value["path"] for value in model_files}) != 8 or sum(
+        value["size_bytes"] for value in model_files
+    ) > 24 * 1024 * 1024:
+        raise ValueError("canonical CI model fixture domain/budget drifted")
+    sources.update(value["path"] for value in model_files)
+    sources.update((model_manifest["path"], target.ACCEPTED_PARITY[0],
+                    "scripts/publication_policy_contract.py"))
+    for relative in sorted(sources):
+        destination = project_root / relative
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(ROOT / relative, destination)
+    return project_root
 
 
 class GstreamerCustomQualificationFragmentV3Tests(unittest.TestCase):
@@ -243,56 +278,66 @@ class GstreamerCustomQualificationFragmentV3Tests(unittest.TestCase):
                 )
 
     def test_materialization_is_idempotent_and_collision_or_fragment_drift_fails_closed(self) -> None:
-        with tempfile.TemporaryDirectory(dir=ROOT / "artifacts") as temporary:
-            output = Path(temporary).resolve() / "qualification"
-            first = target.materialize_qualification_fragment(
-                project_root=ROOT,
-                output_dir=output,
-            )
-            second = target.materialize_qualification_fragment(
-                project_root=ROOT,
-                output_dir=output,
-            )
-            self.assertEqual(first, second)
-
-            fragment_path = output / target.FRAGMENT_FILENAME
-            fragment = json.loads(fragment_path.read_text(encoding="utf-8"))
-            fragment["unexpected"] = True
-            fragment_path.write_text(
-                json.dumps(fragment, sort_keys=True, separators=(",", ":")) + "\n",
-                encoding="utf-8",
-            )
-            assessment = target.assess_qualification_fragment(
-                project_root=ROOT,
-                fragment_path=fragment_path,
-            )
-            self.assertFalse(assessment["passed"])
-            self.assertIn("fields", " ".join(assessment["blockers"]))
-            with self.assertRaises(target.QualificationFragmentError):
-                target.materialize_qualification_fragment(
-                    project_root=ROOT,
+        with tempfile.TemporaryDirectory() as temporary:
+            project_root = unit_fragment_project(Path(temporary).resolve())
+            with mock.patch.object(
+                target, "GSTREAMER_SOURCE_ALLOWLIST_SHA256",
+                sha256_file(project_root / "deploy/gstreamer_custom/publication/runtime-source-allowlist.txt"),
+            ):
+                output = Path(temporary).resolve() / "qualification"
+                first = target.materialize_qualification_fragment(
+                    project_root=project_root,
                     output_dir=output,
                 )
+                second = target.materialize_qualification_fragment(
+                    project_root=project_root,
+                    output_dir=output,
+                )
+                self.assertEqual(first, second)
+
+                fragment_path = output / target.FRAGMENT_FILENAME
+                fragment = json.loads(fragment_path.read_text(encoding="utf-8"))
+                fragment["unexpected"] = True
+                fragment_path.write_text(
+                    json.dumps(fragment, sort_keys=True, separators=(",", ":")) + "\n",
+                    encoding="utf-8",
+                )
+                assessment = target.assess_qualification_fragment(
+                    project_root=project_root,
+                    fragment_path=fragment_path,
+                )
+                self.assertFalse(assessment["passed"])
+                self.assertIn("fields", " ".join(assessment["blockers"]))
+                with self.assertRaises(target.QualificationFragmentError):
+                    target.materialize_qualification_fragment(
+                        project_root=project_root,
+                        output_dir=output,
+                    )
 
     def test_assessment_recomputes_and_rejects_stale_runtime_source_closure(self) -> None:
-        with tempfile.TemporaryDirectory(dir=ROOT / "artifacts") as temporary:
-            output = Path(temporary).resolve() / "qualification"
-            target.materialize_qualification_fragment(
-                project_root=ROOT,
-                output_dir=output,
-            )
+        with tempfile.TemporaryDirectory() as temporary:
+            project_root = unit_fragment_project(Path(temporary).resolve())
             with mock.patch.object(
-                target, "GSTREAMER_RUNTIME_SOURCE_SHA256", "0" * 64,
+                target, "GSTREAMER_SOURCE_ALLOWLIST_SHA256",
+                sha256_file(project_root / "deploy/gstreamer_custom/publication/runtime-source-allowlist.txt"),
             ):
-                assessment = target.assess_qualification_fragment(
-                    project_root=ROOT,
-                    fragment_path=output / target.FRAGMENT_FILENAME,
+                output = Path(temporary).resolve() / "qualification"
+                target.materialize_qualification_fragment(
+                    project_root=project_root,
+                    output_dir=output,
                 )
-            self.assertFalse(assessment["passed"])
-            self.assertIn(
-                "transitive runtime source identity drifted",
-                " ".join(assessment["blockers"]),
-            )
+                with mock.patch.object(
+                    target, "GSTREAMER_RUNTIME_SOURCE_SHA256", "0" * 64,
+                ):
+                    assessment = target.assess_qualification_fragment(
+                        project_root=project_root,
+                        fragment_path=output / target.FRAGMENT_FILENAME,
+                    )
+                self.assertFalse(assessment["passed"])
+                self.assertIn(
+                    "transitive runtime source identity drifted",
+                    " ".join(assessment["blockers"]),
+                )
 
 
 if __name__ == "__main__":

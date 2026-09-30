@@ -3,6 +3,7 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import shutil
 import sys
 import subprocess
 import tempfile
@@ -17,21 +18,27 @@ import checkpoint_gstreamer_runtime as coordinator
 import checkpoint_native_policy_runtime as policy_runtime
 import publication_policy_qualification_runtime_inputs_v2 as producer
 from analytics_execution_endpoint import expected_capability_from_binding_and_probe
+from analytics_execution_protocol import ProtocolError
 from checkpoint_deepstream_protocol_bridge import analytics_backend_identity
 from test_checkpoint_native_policy_runtime import capability_manifest, calibration
 
 
-def worker_manifest_fixture(execution_descriptor=None):
+WORKER_FIXTURE_ROOT = ROOT / ".ci/fixtures/publication_worker_manifest_v1"
+
+
+def worker_manifest_fixture(execution_descriptor=None, *, fixture_root=None):
+    # Declared historical unit metadata; never a live worker/model authority.
+    fixture_root = Path(fixture_root) if fixture_root is not None else WORKER_FIXTURE_ROOT
     fixture = SimpleNamespace()
     fixture.policy = capability_manifest()
     fixture.bindings = {}
     fixture.probes = {}
     engines = {"cpu": "openvino_cpu", "gpu": "tensorrt_cuda"}
     for resource in producer.RESOURCES:
-        fixture.probes[resource] = json.loads((ROOT / "artifacts/analytics_runtime_probes/publication_v3" / f"{resource}_runtime_probe.json").read_bytes())
+        fixture.probes[resource] = json.loads((fixture_root / f"{resource}_runtime_probe.json").read_bytes())
     for branch in producer.BRANCHES:
         for resource, engine in engines.items():
-            binding = json.loads((ROOT / "artifacts/analytics_execution_bindings/publication_v3" / f"{branch}.{engine}.json").read_bytes())
+            binding = json.loads((fixture_root / "bindings" / f"{branch}.{engine}.json").read_bytes())
             fixture.bindings[(branch, resource)] = binding
             cap = expected_capability_from_binding_and_probe(binding=binding, runtime_probe=fixture.probes[resource], resource=resource)
             for system in producer.SYSTEMS:
@@ -60,6 +67,36 @@ class ExternalExecutionManifestTests(unittest.TestCase):
 
     def assess(self, value, system, policy=None):
         return policy_runtime.assess_gstreamer_native_policy_execution_manifest(value, system=system, capability_manifest=policy or self.policy, preprocessing_contract_sha256=self.preprocessing)
+
+    def test_worker_fixture_needs_no_ignored_runtime_artifacts(self):
+        with tempfile.TemporaryDirectory() as directory, mock.patch.object(
+            sys.modules[__name__], "ROOT", Path(directory)
+        ):
+            fixture = worker_manifest_fixture()
+        self.assertEqual(set(fixture.probes), {"cpu", "gpu"})
+        self.assertEqual(len(fixture.bindings), 8)
+        self.assertEqual(set(fixture.policy["systems"]), set(producer.SYSTEMS))
+
+    def test_worker_fixture_rejects_missing_and_foreign_metadata(self):
+        with tempfile.TemporaryDirectory() as directory:
+            missing = Path(directory) / "missing"
+            with self.assertRaises(FileNotFoundError):
+                worker_manifest_fixture(fixture_root=missing)
+            mutations = (
+                ("cpu_runtime_probe.json", "protocol_identity_sha256", "0" * 64),
+                ("bindings/damage.openvino_cpu.json", "artifact_kind", "foreign"),
+                ("bindings/damage.tensorrt_cuda.json", "gpu_uuid", "GPU-foreign"),
+            )
+            for number, (relative, field, value) in enumerate(mutations):
+                with self.subTest(relative=relative, field=field):
+                    fixture_root = Path(directory) / str(number)
+                    shutil.copytree(WORKER_FIXTURE_ROOT, fixture_root)
+                    path = fixture_root / relative
+                    document = json.loads(path.read_bytes())
+                    document[field] = value
+                    path.write_text(json.dumps(document), encoding="ascii")
+                    with self.assertRaises(ProtocolError):
+                        worker_manifest_fixture(fixture_root=fixture_root)
 
     def test_native_policy_import_does_not_require_sdk_bridge(self):
         # Native final images deliberately omit this SDK-only module.
