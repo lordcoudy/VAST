@@ -1,0 +1,38 @@
+{
+  "argv": [
+    "/proc/self/fd/94",
+    "image",
+    "inspect",
+    "vast/openvino-native-probe:dlstreamer-2026.1"
+  ],
+  "capture_exceeded": false,
+  "cleanup_error": null,
+  "elapsed_s": 0.045481845998438075,
+  "engine_backend_quiescence": "not inferred from original CLI status",
+  "failure": null,
+  "finished_at_ns": 1790777113314086190,
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "executable_realpath": "/usr/bin/docker",
+    "gid": 1000,
+    "pgid": 27784,
+    "pid": 27784,
+    "ppid": 27606,
+    "startticks": 25942615,
+    "uid": 1000
+  },
+  "process_group_members_at_terminal": [],
+  "returncode": 0,
+  "started_at_ns": 1790777113268605392,
+  "stderr": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/selected-gstreamer-build-a4e145b7-v1/base-before.stderr.raw",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size_bytes": 0
+  },
+  "stdout": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/selected-gstreamer-build-a4e145b7-v1/base-before.stdout.raw",
+    "sha256": "2009f1976196e4183b86563d702c3a88257ac0026c751abdccf54687573dda32",
+    "size_bytes": 7371
+  },
+  "timed_out": false
+}

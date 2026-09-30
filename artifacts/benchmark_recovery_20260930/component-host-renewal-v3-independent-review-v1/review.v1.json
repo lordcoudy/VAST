@@ -1,0 +1,78 @@
+{
+  "artifact_kind": "vast_independent_selected_host_renewal_review_v1",
+  "audit_source": {
+    "path": "artifacts/benchmark_recovery_20260930/component-host-renewal-v3-independent-review-v1/audit.py",
+    "sha256": "447e7eb1217234fa9e4cb2cdb0232afc96757e12836198cdae70a80eaea3e72e",
+    "size_bytes": 9922
+  },
+  "checks": [
+    "six static assignments match original rebuilt image receipt; all other AST and inverse raw bytes unchanged",
+    "three test literals only; inverse raw bytes preserve CRLF and every assertion",
+    "retained final/A/B inspect exact image ID, single RepoDigest, stock projection digest, nine labels and eleven embedded bindings",
+    "original23 local tests exit0, twenty source witnesses stable and original process/group quiescence retained",
+    "original19 packaged fixture gate exit0; stopped0/Pid0/OOMfalse, exact owned removal then CID/name absence",
+    "CPU04 inverse raw equals CPU03 after exact binding literals only; original2250/2100/15 deadlines and1MiB channels unchanged; output namespaces absent"
+  ],
+  "disposition": "approved_scoped_source_renewal_and_unexecuted_cpu04_preparation",
+  "evidence_pins": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/selected-gstreamer-build-a4e145b7-v1/operation.terminal.v1.json",
+      "sha256": "fa1a2e4b58a0ebe686a43437c8c8500e7d073f1743e5dd2ec1fb4a26865947d7",
+      "size_bytes": 3663
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/selected-gstreamer-packaged-a4e145b7-v1/operation.terminal.v1.json",
+      "sha256": "093702f92948c5c595b622cded0f663ec399546226a54658adeaca948eb88eb6",
+      "size_bytes": 4020
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/selected-gstreamer-build-a4e145b7-v1/gstreamer_custom.runtime.freeze.json",
+      "sha256": "61874c718d6140d0d5cf745988bc301b916077af8f80e96742184f80a0805db7",
+      "size_bytes": 7049
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-host-image-binding-renewal-focused-v1/attempt03-new-schema-image/execution.json",
+      "sha256": "c6a6b2a8f3892527a3d5df78b60b6c7ec343f6624f2950ffeccf352b41eac235",
+      "size_bytes": 8198
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/selected-gstreamer-cpu03-controller-preparation-v1/run_original_cpu_component_pair_v1.py",
+      "sha256": "91cd9faf62e099d576bef010daaeb4bcbed48a00d62f95119c3f598e436ec292",
+      "size_bytes": 15136
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/selected-gstreamer-cpu04-controller-preparation-v1/run_original_cpu_component_pair_v1.py",
+      "sha256": "f5c60a937c87353621d614060f1471646a4349969a87af4c157d32a0fde080ea",
+      "size_bytes": 15136
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/capture_selected_host_closure_v5.py",
+      "sha256": "9125b99e073e5aece320dfca144249fe136aa5d6c7a90eb4c515ef19959da652",
+      "size_bytes": 3049
+    }
+  ],
+  "held_input_count": 89,
+  "independent_review": true,
+  "limits": [
+    "No reviewer test, engine query or workload executed.",
+    "The first read-only audit exited1 at projection equality because it used the generic builder projection rather than the runtime/refreeze projection; original audit bytes preserved, original tool traceback not saved as a physical log.",
+    "New actual stock host closure v5 must be captured and joined before the one CPU04 dispatch; historical v4 supplies path inventory only.",
+    "The host wrapper is excluded from selected runtime allowlist; renewal alone does not invalidate the rebuilt image.",
+    "This review grants no aggregate model parity rebinding, benchmark or scientific acceptance."
+  ],
+  "reviewable": true,
+  "reviewed_at_ns": 1790778303712168839,
+  "schema_version": 1,
+  "source_pins": [
+    {
+      "path": "scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+      "sha256": "ee0476b574e012b213bdc603a7a930234c0bb27d929859ef03acfdb99eb7a241",
+      "size_bytes": 59640
+    },
+    {
+      "path": "tests/test_checkpoint_gstreamer_custom_publication_runtime_v3.py",
+      "sha256": "5013163d54512a48702198b4778bf9d7eaf047a6f3d94a5d3f4cb1091d8c5910",
+      "size_bytes": 25082
+    }
+  ]
+}

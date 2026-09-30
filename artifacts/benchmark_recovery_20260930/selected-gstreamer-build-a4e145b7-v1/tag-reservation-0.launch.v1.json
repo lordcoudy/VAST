@@ -1,0 +1,23 @@
+{
+  "argv": [
+    "/proc/self/fd/94",
+    "image",
+    "ls",
+    "--filter",
+    "reference=vast/gstreamer-custom-publication-runtime-v3:component-release-20260930-a4e145b7",
+    "--format",
+    "{{json .}}"
+  ],
+  "commit": "a4e145b7bf32e0c870b114e303e9adb6a559d0ef",
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "executable_realpath": "/usr/bin/docker",
+    "gid": 1000,
+    "pgid": 27798,
+    "pid": 27798,
+    "ppid": 27606,
+    "startticks": 25942662,
+    "uid": 1000
+  },
+  "started_at_ns": 1790777113741597554
+}
