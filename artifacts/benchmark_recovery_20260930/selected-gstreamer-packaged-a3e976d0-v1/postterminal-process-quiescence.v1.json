@@ -1,0 +1,185 @@
+{
+  "accepted": false,
+  "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+  "container_observation": {
+    "not_requeried": true,
+    "original_cid_absence": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/selected-gstreamer-packaged-a3e976d0-v1/cid-absence.terminal.v1.json",
+      "sha256": "9376d767f31923d951c6be5baa5aa9f2aa695c2d0172ccee3119ae6a8d64cbc5",
+      "size_bytes": 1770
+    },
+    "original_name_absence": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/selected-gstreamer-packaged-a3e976d0-v1/name-absence.terminal.v1.json",
+      "sha256": "70fa11675f331ee72d43810dd53f48203fdb1bc14a4b0e6e046e70bed31e3844",
+      "size_bytes": 1764
+    },
+    "original_remove": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/selected-gstreamer-packaged-a3e976d0-v1/original-container-remove.terminal.v1.json",
+      "sha256": "a335a0016e5459ca6eec5f9e2b439753849fe2a47676a4f9a38eea73baa8e3e6",
+      "size_bytes": 1367
+    },
+    "original_terminal_state": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/selected-gstreamer-packaged-a3e976d0-v1/original-container-terminal.stdout.raw",
+      "sha256": "d8381eb33e06d132c6d417216376521fa55efc0d62de27ed93eeae6da9ae6eda",
+      "size_bytes": 491
+    }
+  },
+  "observation_finished_at_ns": 1790768207391683659,
+  "observation_started_at_ns": 1790768207381769173,
+  "observer_pid": 25402,
+  "original_group_members": [],
+  "original_prelaunch": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/selected-gstreamer-packaged-a3e976d0-v1/prelaunch.v1.json",
+    "sha256": "1bd17bad52464e44013f81a87fecfabd36db2e751f88b5eb1bda1ddb99be3029",
+    "size_bytes": 43829
+  },
+  "original_terminal": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/selected-gstreamer-packaged-a3e976d0-v1/operation.terminal.v1.json",
+    "sha256": "9b96e03e82978451340f00382a600d8184e753763a619f23351cac7fa11b0e3a",
+    "size_bytes": 4020
+  },
+  "publication_ready": false,
+  "source_commit": "a3e976d02e19e714232bc78a4da3e72c99bb8cde",
+  "subjects": [
+    {
+      "actual_pid_path": "absent",
+      "original_identity_still_present": false,
+      "original_owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "executable_realpath": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+        "gid": 1000,
+        "pgid": 24902,
+        "pid": 24902,
+        "ppid": 24899,
+        "startticks": 25039283,
+        "uid": 1000
+      }
+    },
+    {
+      "actual_pid_path": "absent",
+      "original_identity_still_present": false,
+      "original_owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "executable_realpath": "/usr/bin/docker",
+        "gid": 1000,
+        "pgid": 24904,
+        "pid": 24904,
+        "ppid": 24902,
+        "startticks": 25039340,
+        "uid": 1000
+      }
+    },
+    {
+      "actual_pid_path": "absent",
+      "original_identity_still_present": false,
+      "original_owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "executable_realpath": "/usr/bin/docker",
+        "gid": 1000,
+        "pgid": 25089,
+        "pid": 25089,
+        "ppid": 24902,
+        "startticks": 25039520,
+        "uid": 1000
+      }
+    },
+    {
+      "actual_pid_path": "absent",
+      "original_identity_still_present": false,
+      "original_owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "executable_realpath": "/usr/bin/docker",
+        "gid": 1000,
+        "pgid": 25102,
+        "pid": 25102,
+        "ppid": 24902,
+        "startticks": 25039553,
+        "uid": 1000
+      }
+    },
+    {
+      "actual_pid_path": "absent",
+      "original_identity_still_present": false,
+      "original_owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "executable_realpath": "/usr/bin/docker",
+        "gid": 1000,
+        "pgid": 25116,
+        "pid": 25116,
+        "ppid": 24902,
+        "startticks": 25039585,
+        "uid": 1000
+      }
+    },
+    {
+      "actual_pid_path": "absent",
+      "original_identity_still_present": false,
+      "original_owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "executable_realpath": "/usr/bin/docker",
+        "gid": 1000,
+        "pgid": 25130,
+        "pid": 25130,
+        "ppid": 24902,
+        "startticks": 25040109,
+        "uid": 1000
+      }
+    },
+    {
+      "actual_pid_path": "absent",
+      "original_identity_still_present": false,
+      "original_owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "executable_realpath": "/usr/bin/docker",
+        "gid": 1000,
+        "pgid": 25143,
+        "pid": 25143,
+        "ppid": 24902,
+        "startticks": 25040136,
+        "uid": 1000
+      }
+    },
+    {
+      "actual_pid_path": "absent",
+      "original_identity_still_present": false,
+      "original_owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "executable_realpath": "/usr/bin/docker",
+        "gid": 1000,
+        "pgid": 25157,
+        "pid": 25157,
+        "ppid": 24902,
+        "startticks": 25040172,
+        "uid": 1000
+      }
+    },
+    {
+      "actual_pid_path": "absent",
+      "original_identity_still_present": false,
+      "original_owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "executable_realpath": "/usr/bin/docker",
+        "gid": 1000,
+        "pgid": 25170,
+        "pid": 25170,
+        "ppid": 24902,
+        "startticks": 25040198,
+        "uid": 1000
+      }
+    },
+    {
+      "actual_pid_path": "absent",
+      "original_identity_still_present": false,
+      "original_owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "executable_realpath": "/usr/bin/docker",
+        "gid": 1000,
+        "pgid": 25184,
+        "pid": 25184,
+        "ppid": 24902,
+        "startticks": 25040227,
+        "uid": 1000
+      }
+    }
+  ]
+}

@@ -1,0 +1,154 @@
+{
+  "accepted": false,
+  "blockers_to_check_actually": [
+    "Reviewed source commit and root dispatch authorization.",
+    "Actual original engine/socket/base image and disk prerequisites before launch.",
+    "Canonical repository digest observed and stock receipt candidate_binding_eligible=true/blockers=[]; tags/build stdout do not grant this.",
+    "Fresh current selected host execution code closure and original model physical/raw calibration validation, never rebinding aggregate acceptance."
+  ],
+  "candidate_tag_status": "recommended explicit unique tag, subject to root selection; stock capture supports it; no tag/image operation occurred",
+  "environment": {
+    "DOCKER_HOST": "unix:///run/docker.sock",
+    "LANG": "C",
+    "LC_ALL": "C",
+    "PATH": "/usr/bin:/bin",
+    "VAST_GSTREAMER_RUNTIME_IMAGE": "vast/gstreamer-custom-publication-runtime-v3:component-release-20260930",
+    "VAST_OPENVINO_NATIVE_PROBE_IMAGE": "vast/openvino-native-probe:dlstreamer-2026.1",
+    "VAST_OPENVINO_NATIVE_PROBE_IMAGE_ID": "sha256:b102aafc0f88f8cfad92349e6a55d0f9755a3f5bff109a70ebdb8936d4a8e84c"
+  },
+  "forbidden": [
+    "all-four runtime build/assemble",
+    "unselected runtime renewal",
+    "worker/native source rebuild without drift proof",
+    "campaign06/research retry",
+    "model transaction or measurement before root grant"
+  ],
+  "inputs": [
+    {
+      "path": "scripts/build_gstreamer_custom_publication_runtime_v3.sh",
+      "sha256": "dfd5412560adeb9002cd137f64d2e98a99fee9ec25f9d00ef2247b5d22dfa73c",
+      "size_bytes": 8668
+    },
+    {
+      "path": "scripts/build_publication_runtime_images_after_refreeze_v1.py",
+      "sha256": "78cba98af399779f49cc840f87d9591aa70784b88f2f3f366d746870eeed903f",
+      "size_bytes": 13089
+    },
+    {
+      "path": "scripts/publication_qualification_image_refreeze_v1.py",
+      "sha256": "38757bd592fed2c137325f0f4b320812145ac64a2a78550a85e549bf0a0cbb8a",
+      "size_bytes": 65676
+    },
+    {
+      "path": "deploy/gstreamer_custom/publication/Dockerfile",
+      "sha256": "5d10aec4076e67218905b2c71ae32553e6843810d6d176b8e31c0c3be9dffe78",
+      "size_bytes": 8169
+    },
+    {
+      "path": "deploy/gstreamer_custom/publication/runtime-source-allowlist.txt",
+      "sha256": "111c8d3a517a4ab350fbb2753a3c01965e6645eeaad72c24f1b9f1266659e600",
+      "size_bytes": 3538
+    },
+    {
+      "path": "deploy/gstreamer_custom/publication/runtime-dependency-allowlist.txt",
+      "sha256": "f4655c4dbd7eee1da21267a9e3f08cbddc4a18d8e69fda2a8a0fcc4898119072",
+      "size_bytes": 589
+    },
+    {
+      "path": "deploy/gstreamer_custom/publication/runtime-build-context-allowlist.txt",
+      "sha256": "c90fd7e4b347fdf086924d1bf419d0e03c3335a1e901bcd402b628a5379872bc",
+      "size_bytes": 320
+    },
+    {
+      "path": "configs/publication_image_build_v1.json",
+      "sha256": "c13f12001048471e20400e5a0bb37df5efa01e6c936772ae9aaea5de548a6b22",
+      "size_bytes": 4953
+    },
+    {
+      "path": "configs/publication_qualification_image_refreeze_v1.json",
+      "sha256": "63890245c248bae1afae453b404bcd7ef60b586d4c5fb4f44ed8b5beabf88fb7",
+      "size_bytes": 12401
+    },
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/native-a/native_probe.freeze.json",
+      "sha256": "901e5e3188fae6867b6dbb29b723cfccab1f9133e91715a7055afa30e284fce6",
+      "size_bytes": 6094
+    },
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/worker_images/analytics-worker.freeze.json",
+      "sha256": "ff7dca7f25ffa9856cf0afdf97569e9ced3292866251e2523db00aa23875ef96",
+      "size_bytes": 3963
+    },
+    {
+      "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260928g.accepted.acceptance_receipt.json",
+      "sha256": "6f50d92e74ab7750f262d2697b0fceeb979d4f221eda90a0223cce4d5ff7a169",
+      "size_bytes": 20686
+    },
+    {
+      "path": "artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g/candidate/checkpoint_policy_capability_candidate_manifest.json",
+      "sha256": "3c921a062345d571c836eed6e40de6b3bf4b7be798e24b792c10c1d1df3c1494",
+      "size_bytes": 63455
+    },
+    {
+      "path": "artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g/bootstrap/checkpoint_policy_qualification_bootstrap_calibration.gstreamer_custom.v2.json",
+      "sha256": "8f984df897f12f6269e68a2a1dda6ffe5fc112c5729f5f46fd9f7079bde96b15",
+      "size_bytes": 2512
+    }
+  ],
+  "kind": "vast_readonly_selected_gstreamer_image_recipe_v1",
+  "originals_preserved": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/gstreamer-first-build/original-terminal.v1.json",
+      "sha256": "8dae9a8257995b2db63ecb987772719025ac0bb4eee76792f85523aeb194d3d6",
+      "size_bytes": 47299
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/gstreamer-refrozen-build/original-terminal.v1.json",
+      "sha256": "822e811a3a8e0bf11b4ba6d95e19aa720e02b8dcae2e20d2847e5e12cba3b349",
+      "size_bytes": 47311
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/gstreamer-packaged-regression-02/original-terminal.v1.json",
+      "sha256": "b804ff722cb5ddf236e3ef270ccf45a8ba63df120f1cf459ad2e2f1becc0d0d5",
+      "size_bytes": 6147
+    }
+  ],
+  "publication_ready": false,
+  "required_original_capture": [
+    "One actual stock subprocess only, sourcecommit checked before Popen, fresh owned namespace, exact argv/env and controller/child PID/startticks/boot/UID/GID/PGID facts.",
+    "Original stdout/stderr retained; source/manifest/registry/native-receipt byte descriptors and actual engine/socket before+after; actual original returncode/timeout/failure, no replacement.",
+    "A+B/final image IDs, actual current base/image inspection, same selected stock image projection/source identity, embedded source/library/probe hashes and smoke original terminals.",
+    "Packaged regression original CLI/CID exact owned cleanup, actual packaged module hashes, real front transport/local fixture limitation; no worker/model/campaign claim."
+  ],
+  "source_closure_validation": {
+    "path": "artifacts/benchmark_recovery_20260930/selected-gstreamer-image-preparation-v1/validator.terminal.v1.json",
+    "sha256": "cff0bfae0bc67ec2a29ef979163f1ff415dced2e60a3f44917b2f5fe1de0e8bf",
+    "size_bytes": 863
+  },
+  "state": "sourcecommit grant pending; no build/image/container/model/measurement operation started",
+  "stock_build_command": [
+    "/usr/bin/bash",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/build_gstreamer_custom_publication_runtime_v3.sh"
+  ],
+  "stock_capture_command": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_qualification_image_refreeze_v1.py",
+    "capture",
+    "--project-root",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec",
+    "--registry",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/configs/publication_qualification_image_refreeze_v1.json",
+    "--system",
+    "gstreamer_custom",
+    "--native-receipt",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/fix_benchmark_preparations_20260928g/native-a/native_probe.freeze.json",
+    "--candidate-final-reference",
+    "vast/gstreamer-custom-publication-runtime-v3:component-release-20260930",
+    "--receipt-output",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/selected-gstreamer-image-capture-v1/gstreamer_custom.runtime.freeze.json",
+    "--docker",
+    "/usr/bin/docker"
+  ]
+}

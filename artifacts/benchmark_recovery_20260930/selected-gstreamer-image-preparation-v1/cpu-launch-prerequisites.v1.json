@@ -1,0 +1,100 @@
+{
+  "accepted": false,
+  "current_cli_source": {
+    "path": "scripts/publication_gstreamer_component_cli_v1.py",
+    "sha256": "7602c041f76a46b0854efee69ec49c447ffec981180fa4bfb8e2b7280225abbc",
+    "size_bytes": 33159
+  },
+  "existing_original_file_inputs": {
+    "calibration_path": {
+      "path": "artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g/bootstrap/checkpoint_policy_qualification_bootstrap_calibration.gstreamer_custom.v2.json",
+      "sha256": "8f984df897f12f6269e68a2a1dda6ffe5fc112c5729f5f46fd9f7079bde96b15",
+      "size_bytes": 2512
+    },
+    "capability_manifest_path": {
+      "path": "artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g/candidate/checkpoint_policy_capability_candidate_manifest.json",
+      "sha256": "3c921a062345d571c836eed6e40de6b3bf4b7be798e24b792c10c1d1df3c1494",
+      "size_bytes": 63455
+    },
+    "model_parity_receipt_path": {
+      "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260928g.accepted.acceptance_receipt.json",
+      "sha256": "6f50d92e74ab7750f262d2697b0fceeb979d4f221eda90a0223cce4d5ff7a169",
+      "size_bytes": 20686
+    },
+    "runtime_image_receipt_path": {
+      "path": "artifacts/benchmark_recovery_20260930/selected-gstreamer-build-a3e976d0-v1/gstreamer_custom.runtime.freeze.json",
+      "sha256": "7807fc43cf4f706d2756baefcbdd4887798b04168db06f7acbdbea4a8541cc8c",
+      "size_bytes": 7049
+    },
+    "worker_freeze_receipt_path": {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/worker_images/analytics-worker.freeze.json",
+      "sha256": "ff7dca7f25ffa9856cf0afdf97569e9ced3292866251e2523db00aa23875ef96",
+      "size_bytes": 3963
+    }
+  },
+  "host_closure": {
+    "exists_at_recipe_read": false,
+    "path": "artifacts/gstreamer_component_release_20260930_a3e976d0/host/execution-code-closure.v2.json",
+    "requirement": "fresh receipt after actual six host EXPECTED constants renewal; original v1 is historical"
+  },
+  "model_or_worker_or_device_executed_for_recipe": false,
+  "original_packaged_gate": {
+    "path": "artifacts/benchmark_recovery_20260930/selected-gstreamer-packaged-a3e976d0-v1/operation.terminal.v1.json",
+    "sha256": "9b96e03e82978451340f00382a600d8184e753763a619f23351cac7fa11b0e3a",
+    "size_bytes": 4020
+  },
+  "pair_executed": false,
+  "post_reservation_free_floor_bytes": 21474836480,
+  "preflight_obligations": [
+    "actual current eight worker/image/source/model association validations",
+    "actual current selected runtime image inspect and OpenVINO/device/elements probe",
+    "held frozen media/model/engine/socket/code inputs",
+    "fresh output and scratch namespaces with actual allocation and remaining free floor"
+  ],
+  "proposed_argv_unexecuted": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "-c",
+    "import runpy,sys;sys.path.insert(0,'/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts');runpy.run_path('/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_gstreamer_component_cli_v1.py',run_name='__main__')",
+    "--project-root",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec",
+    "--resource",
+    "cpu",
+    "--output-dir",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/gstreamer_component_release_20260930_a3e976d0/cpu-pair-01",
+    "--scratch-root",
+    "/var/tmp",
+    "--container-engine",
+    "/usr/bin/docker",
+    "--container-engine-socket",
+    "/var/run/docker.sock",
+    "--capability-manifest-path",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g/candidate/checkpoint_policy_capability_candidate_manifest.json",
+    "--calibration-path",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g/bootstrap/checkpoint_policy_qualification_bootstrap_calibration.gstreamer_custom.v2.json",
+    "--model-parity-receipt-path",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260928g.accepted.acceptance_receipt.json",
+    "--runtime-image-receipt-path",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/selected-gstreamer-build-a3e976d0-v1/gstreamer_custom.runtime.freeze.json",
+    "--worker-freeze-receipt-path",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/fix_benchmark_preparations_20260928g/worker_images/analytics-worker.freeze.json",
+    "--execution-code-closure-path",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/gstreamer_component_release_20260930_a3e976d0/host/execution-code-closure.v2.json"
+  ],
+  "proposed_scratch_is_only_parent": "original CLI creates its unique owned namespace under physical existing scratch base",
+  "publication_ready": false,
+  "renewed_host_wrapper_source": {
+    "path": "scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+    "sha256": "c81e40d04871854a0ca49c1124543cedc5c877a12e045f4149ba922abe29750e",
+    "size_bytes": 59640
+  },
+  "reserve_bytes": 21474836480,
+  "scope": "file presence/hash and reviewed CLI source recipe only; root owns final source/host-closure freeze and actual pair grant",
+  "selected_runtime_receipt": {
+    "path": "artifacts/benchmark_recovery_20260930/selected-gstreamer-build-a3e976d0-v1/gstreamer_custom.runtime.freeze.json",
+    "sha256": "7807fc43cf4f706d2756baefcbdd4887798b04168db06f7acbdbea4a8541cc8c",
+    "size_bytes": 7049
+  },
+  "source_commit_of_selected_image": "a3e976d02e19e714232bc78a4da3e72c99bb8cde"
+}

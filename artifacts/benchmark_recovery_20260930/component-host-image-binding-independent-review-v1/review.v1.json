@@ -1,0 +1,101 @@
+{
+  "actual_image_receipt": {
+    "path": "artifacts/benchmark_recovery_20260930/selected-gstreamer-build-a3e976d0-v1/gstreamer_custom.runtime.freeze.json",
+    "sha256": "7807fc43cf4f706d2756baefcbdd4887798b04168db06f7acbdbea4a8541cc8c",
+    "size_bytes": 7049
+  },
+  "actual_retained_image_inspection": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/selected-gstreamer-build-a3e976d0-v1/image-after.stdout.raw",
+      "sha256": "31beea9f738ec7b7a848e524bb87e4e9c07d1f98debb9b78fa66a8ec2f0f00f8",
+      "size_bytes": 21003
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/selected-gstreamer-build-a3e976d0-v1/image-after.stderr.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/selected-gstreamer-build-a3e976d0-v1/image-after.terminal.v1.json",
+      "sha256": "e90f6a7880ef1aacec79495030053da21b4ee43baa530292c36b02308f4d92ce",
+      "size_bytes": 1557
+    }
+  ],
+  "artifact_kind": "vast_component_host_image_binding_independent_review_v1",
+  "author_before": {
+    "path": "artifacts/benchmark_recovery_20260930/component-host-image-binding-renewal-v2/before-edit.v1.json",
+    "sha256": "58f2c9a62c689b41de68129536b87bf09425c5a256d659d3b964a13c5352848f",
+    "size_bytes": 6051
+  },
+  "author_renewal": {
+    "path": "artifacts/benchmark_recovery_20260930/component-host-image-binding-renewal-v2/renewal.v1.json",
+    "sha256": "ddb5d6f5d88bd941da0de5007a975587b67aae45251362423747a381906b3d4c",
+    "size_bytes": 3520
+  },
+  "dependency_scope": {
+    "fresh_host_closure_v2_required_before_component_authority": true,
+    "host_closure_v1_now_historical": true,
+    "host_wrapper_is_member_of_selected_source_or_COPY": false,
+    "native3_worker2_changes_caused_by_this_delta": false,
+    "selected_Dockerfile": {
+      "path": "deploy/gstreamer_custom/publication/Dockerfile",
+      "sha256": "5d10aec4076e67218905b2c71ae32553e6843810d6d176b8e31c0c3be9dffe78",
+      "size_bytes": 8169
+    },
+    "selected_allowlist": {
+      "path": "deploy/gstreamer_custom/publication/runtime-source-allowlist.txt",
+      "sha256": "111c8d3a517a4ab350fbb2753a3c01965e6645eeaad72c24f1b9f1266659e600",
+      "size_bytes": 3538
+    },
+    "selected_image_rebuild_caused_by_this_delta": false
+  },
+  "hardware_acceptance": false,
+  "limits": [
+    "Reviewer performed source/literal/retained-artifact comparisons only; no unit test, Docker/image query, build, model, guardian or benchmark run.",
+    "Original parent23 wrapper/closure/component tests are parent-owned and are not claimed by this source-only receipt.",
+    "Actual physical selected preflight and CPU/GPU pairs, full CI and final release acceptance remain separate gates.",
+    "Old original accepted v4 model/raw evidence association and legacy full publication/Q4 eligibility are not rebound or renewed by host static constants."
+  ],
+  "literal_change_names": [
+    "EXPECTED_EMBEDDED_ARTIFACTS",
+    "EXPECTED_IMAGE_ID",
+    "EXPECTED_IMAGE_INSPECT_PROJECTION_SHA256",
+    "EXPECTED_IMAGE_LABELS",
+    "EXPECTED_IMAGE_REFERENCE",
+    "EXPECTED_REPOSITORY_DIGEST"
+  ],
+  "original_snapshot": {
+    "path": "artifacts/benchmark_recovery_20260930/component-host-image-binding-renewal-v2/original-host-wrapper.raw",
+    "sha256": "7fcbb1767cecdd9b9555df29d511c2b95a0c36a021f8fe574b383472d6a6df83",
+    "size_bytes": 59617
+  },
+  "planning_commit": "9ad1a52b38cd5028de6b04bcc08192309ef192cf",
+  "proofs": {
+    "actual_three_final_A_B_inspects_equal_projection": true,
+    "base_entrypoint_user_platform_created_match_unchanged_predicates": true,
+    "changed_literal_count": 6,
+    "embedded_count": 11,
+    "inspect_projection_sha256": "68ce24371c674a936c82b0ef183b34103f1904f237d162cf1f99e31730fd559d",
+    "label_and_embedded_key_sets_unchanged": true,
+    "label_count": 9,
+    "masked_source_sha256": "305743346a3da3488272f1e51f99d47be7acc088f219c268aca2271c31cb7e2f",
+    "nonbinding_ast_equal": true,
+    "nonbinding_ast_sha256": "7bc1c941271025b460d3a727bb502b0052698be03f0cfd32f5e6c0217e647ed8",
+    "observed_repository_digest_count": 1,
+    "outside_literal_source_bytes_exactly_equal": true,
+    "six_values_equal_actual_receipt": true
+  },
+  "publication_ready": false,
+  "qualification_ready": false,
+  "review_authorization": "https://github.com/lordcoudy/VAST/pull/2#issuecomment-5907711751",
+  "reviewer": "architecture_review (not renewal author)",
+  "schema_version": 1,
+  "sha256": "c3dd1286190b479c6b02760525b9ba4c87fdab1233d91deeb576678b889392b4",
+  "source": {
+    "path": "scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+    "sha256": "c81e40d04871854a0ca49c1124543cedc5c877a12e045f4149ba922abe29750e",
+    "size_bytes": 59640
+  },
+  "status": "approved_only_six_static_binding_literals_no_remaining_source_blocker",
+  "strictness": "_validate_image:486, exact image inspect:937, embedded probe:1140 and immutable-ID device/measurement argv retain original predicates and APIs. No permissive override, runtime global monkeypatch, fabricated native identity or full aggregate rebind was added."
+}

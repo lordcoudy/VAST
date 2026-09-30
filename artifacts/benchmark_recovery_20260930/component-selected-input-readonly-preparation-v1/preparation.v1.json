@@ -1,0 +1,415 @@
+{
+  "artifact_kind": "vast_selected_gstreamer_input_readonly_preparation_v1",
+  "files_or_git_or_engine_mutated": false,
+  "fresh_host_closure": {
+    "captured_by": "root closure-attempt02",
+    "descriptor": {
+      "path": "artifacts/gstreamer_component_release_20260930_a3e976d0/host/execution-code-closure.v1.json",
+      "sha256": "938c49afbc1c06984e73d39d46bac828dd9a7d69e9180808f6ac42f80778a66e",
+      "size_bytes": 30986
+    },
+    "isolated_script_note": "Direct -I removes sibling scripts imports; root original -I failure was retained. Direct stock command uses -B; equivalent isolated dispatch must explicitly supply scripts path.",
+    "project_sources": 87,
+    "repeated_by_this_review": false,
+    "semantic_sha256": "03922cff3fec1187aa17f22a3baf5bb77b4be47cdf3e3b2184b8c4a5ae45e410",
+    "stock_cli_argv": [
+      "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+      "-B",
+      "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_qualification_execution_code_closure_v1.py",
+      "--project-root",
+      "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec",
+      "--receipt",
+      "artifacts/gstreamer_component_release_20260930_a3e976d0/host/execution-code-closure.v1.json"
+    ]
+  },
+  "hardware_acceptance": false,
+  "inputs": [
+    {
+      "path": "artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g/candidate/checkpoint_policy_capability_candidate_manifest.json",
+      "sha256": "3c921a062345d571c836eed6e40de6b3bf4b7be798e24b792c10c1d1df3c1494",
+      "size_bytes": 63455
+    },
+    {
+      "path": "artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g/bootstrap/checkpoint_policy_qualification_bootstrap_calibration.gstreamer_custom.v2.json",
+      "sha256": "8f984df897f12f6269e68a2a1dda6ffe5fc112c5729f5f46fd9f7079bde96b15",
+      "size_bytes": 2512
+    },
+    {
+      "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260928g.accepted.acceptance_receipt.json",
+      "sha256": "6f50d92e74ab7750f262d2697b0fceeb979d4f221eda90a0223cce4d5ff7a169",
+      "size_bytes": 20686
+    },
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/worker_images/analytics-worker.freeze.json",
+      "sha256": "ff7dca7f25ffa9856cf0afdf97569e9ced3292866251e2523db00aa23875ef96",
+      "size_bytes": 3963
+    },
+    {
+      "path": "artifacts/gstreamer_component_release_20260930_a3e976d0/host/execution-code-closure.v1.json",
+      "sha256": "938c49afbc1c06984e73d39d46bac828dd9a7d69e9180808f6ac42f80778a66e",
+      "size_bytes": 30986
+    },
+    {
+      "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260928g.accepted.yaml",
+      "sha256": "36511595d6c37685f97add9e51f9105e901aac36fa1ee1a141a623f02cfbb6b5",
+      "size_bytes": 30052
+    },
+    {
+      "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260928g.accepted.assessment.json",
+      "sha256": "7b0faca95399f3317f893e52780a44aeeec151e1aae94639f931f28cbea9b421",
+      "size_bytes": 1698
+    },
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/acceptance_binding.v4.json",
+      "sha256": "c1dcb29d71430a105bb3f6c4e1e8d019a3729a14985fb70636e35ecfe5a46a89",
+      "size_bytes": 18956
+    },
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/materialization/transaction_index.json",
+      "sha256": "e8442a3756dd5576276c4da2ea9724a657554a20647fceb749254a6aba1de498",
+      "size_bytes": 1461681
+    },
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/qualification_image_identity_patch.json",
+      "sha256": "7e94d4d361e340e40fbfd76b2a0e54a052b6d650e6a8716ccd4bed2d485ecf6d",
+      "size_bytes": 29989
+    },
+    {
+      "path": "configs/analytics_execution_layer.refreshed.v4.fix-benchmark-20260928g.json",
+      "sha256": "9cd1b4e7fee54c97d81618862dc20bf3b8689efd2127c499262a3974f65be18c",
+      "size_bytes": 1508
+    },
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/bindings/index.json",
+      "sha256": "5dcaa2eaa8b8faea94b07ef259c22fe74522615628ad5a2a156b5a9d89ad6388",
+      "size_bytes": 1877
+    },
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/runtime_probes/cpu_runtime_probe.json",
+      "sha256": "0b496134ac3fec04449072218ddb6e2767d21b782127ab0d57c81c3b0daac874",
+      "size_bytes": 659
+    },
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/runtime_probes/gpu_runtime_probe.json",
+      "sha256": "b627a3790622cfb0e2334e7d3b31e6acf0b0fc5396f921d4552850056ba9b962",
+      "size_bytes": 654
+    }
+  ],
+  "manifest_model_assets": {
+    "count": 16,
+    "descriptors": [
+      {
+        "path": "models/parity/sources/resnet101-v1-7.onnx",
+        "sha256": "760702f6ec0138f71ebac66f4e95d1c72dc9267a8544f4d4667a53075fd0497c",
+        "size_bytes": 178914043
+      },
+      {
+        "path": "models/parity/sources/resnet18-v1-7.onnx",
+        "sha256": "4e8f8653e7a2222b3904cc3fe8e304cd8b339ce1d05fd24688162f86fb6df52c",
+        "size_bytes": 46820737
+      },
+      {
+        "path": "models/parity/sources/resnet34-v1-7.onnx",
+        "sha256": "883a41b2e30ddc2e422c108b091b5e70b92d37dc5c345a2c563dcae27971e2cc",
+        "size_bytes": 87302588
+      },
+      {
+        "path": "models/parity/sources/resnet50-v1-12.onnx",
+        "sha256": "3f03fdef724b22947eed826f1eef1dc5c34151bb4c37d634f1db89dfa2dd1526",
+        "size_bytes": 102576593
+      },
+      {
+        "path": "models/parity/derived/openvino-2026.1.0-fp32-static-b1/resnet50-v1-12.xml",
+        "sha256": "8ddf516c52c140d33277aaaa9b2d7ed80b038f1940de30ac5e27c43d54f1e5c9",
+        "size_bytes": 151074
+      },
+      {
+        "path": "models/parity/derived/openvino-2026.1.0-fp32-static-b1/resnet50-v1-12.bin",
+        "sha256": "703fbee2cc2684970b1748115589ce51c1e788099a995faba0f6a30801b3ad64",
+        "size_bytes": 102121920
+      },
+      {
+        "path": "models/parity/derived/tensorrt-8.6.1.6-cuda12.2.2-cc86-fp32-static-b1/resnet50-v1-12.engine",
+        "sha256": "ecd41a7f7037a233da5629f87ff8d51e455b582c996963815a085cd139c3a7a5",
+        "size_bytes": 118354276
+      },
+      {
+        "path": "models/parity/derived/openvino-2026.1.0-fp32-static-b1/resnet101-v1-7.xml",
+        "sha256": "c1b9fc3d0c56f9574dd195f10461f4c640167523764a4470225ef2be9cc74124",
+        "size_bytes": 295738
+      },
+      {
+        "path": "models/parity/derived/openvino-2026.1.0-fp32-static-b1/resnet101-v1-7.bin",
+        "sha256": "788c9ab3de09c18b234314adb6eddf212754a93e579e1396d9aee2cd2255c4ba",
+        "size_bytes": 177985984
+      },
+      {
+        "path": "models/parity/derived/tensorrt-8.6.1.6-cuda12.2.2-cc86-fp32-static-b1/resnet101-v1-7.engine",
+        "sha256": "f981e1da75813ae30d18b03d422c37d6047245962d2b5552eb54c4deedb48f97",
+        "size_bytes": 225698788
+      },
+      {
+        "path": "models/parity/derived/openvino-2026.1.0-fp32-static-b1/resnet18-v1-7.xml",
+        "sha256": "c77b4b18c61da5a7c66b9b0b1be940afa81de1bd419b608cd4c8c3e1d4cbb579",
+        "size_bytes": 60599
+      },
+      {
+        "path": "models/parity/derived/openvino-2026.1.0-fp32-static-b1/resnet18-v1-7.bin",
+        "sha256": "5495508a114ecb2fb6abd4c2fa1cc523fc2181459f108aa60d6d02bc05d17d0b",
+        "size_bytes": 46738880
+      },
+      {
+        "path": "models/parity/derived/tensorrt-8.6.1.6-cuda12.2.2-cc86-fp32-static-b1/resnet18-v1-7.engine",
+        "sha256": "07031b0493b5f1d9e27beffd51e622b74cc204505536f8a1618bde3e904d8fbe",
+        "size_bytes": 62258620
+      },
+      {
+        "path": "models/parity/derived/openvino-2026.1.0-fp32-static-b1/resnet34-v1-7.xml",
+        "sha256": "0f22a937abe289a5278c7e628145a6545e98c4857e2b196eb0a983eec1c07147",
+        "size_bytes": 107535
+      },
+      {
+        "path": "models/parity/derived/openvino-2026.1.0-fp32-static-b1/resnet34-v1-7.bin",
+        "sha256": "957e1783c07a712c12bc61a22d359ee8fddf7b6e34bdd4bf2a5c09a6f8f212cf",
+        "size_bytes": 87156672
+      },
+      {
+        "path": "models/parity/derived/tensorrt-8.6.1.6-cuda12.2.2-cc86-fp32-static-b1/resnet34-v1-7.engine",
+        "sha256": "bfa8303f89639d4033ee71389e77c009bf3bf1ab7e526e91949e0e0870f885d9",
+        "size_bytes": 126793356
+      }
+    ],
+    "method": "Actual held O_NOFOLLOW regular/nlink1 descriptors streamed <=declared size with before/after and named-leaf equality; no model execution or install.",
+    "observed_hash_equal_count": 16,
+    "total_bytes": 1363337403
+  },
+  "next_supported_dispatch": {
+    "argv": [
+      "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+      "-B",
+      "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_gstreamer_component_cli_v1.py",
+      "--project-root",
+      "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec",
+      "--resource",
+      "cpu",
+      "--capability-manifest-path",
+      "artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g/candidate/checkpoint_policy_capability_candidate_manifest.json",
+      "--calibration-path",
+      "artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g/bootstrap/checkpoint_policy_qualification_bootstrap_calibration.gstreamer_custom.v2.json",
+      "--model-parity-receipt-path",
+      "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260928g.accepted.acceptance_receipt.json",
+      "--runtime-image-receipt-path",
+      "artifacts/benchmark_recovery_20260930/selected-gstreamer-build-a3e976d0-v1/gstreamer_custom.runtime.freeze.json",
+      "--worker-freeze-receipt-path",
+      "artifacts/fix_benchmark_preparations_20260928g/worker_images/analytics-worker.freeze.json",
+      "--execution-code-closure-path",
+      "artifacts/gstreamer_component_release_20260930_a3e976d0/host/execution-code-closure.v1.json",
+      "--output-dir",
+      "artifacts/gstreamer_component_release_20260930_a3e976d0/cpu-attempt01",
+      "--scratch-root",
+      "/var/tmp",
+      "--container-engine",
+      "/usr/bin/docker",
+      "--container-engine-socket",
+      "/var/run/docker.sock"
+    ],
+    "expected_new_runtime_receipt": "artifacts/benchmark_recovery_20260930/selected-gstreamer-build-a3e976d0-v1/gstreamer_custom.runtime.freeze.json",
+    "gpu_variant": "After original CPU terminal/cold audit, change explicit resource to gpu and choose a fresh gpu-attempt01 output. Never reuse occupied attempt.",
+    "new_runtime_receipt_is_not_yet_available": true,
+    "proposed_not_invoked": true,
+    "scratch_root_must_be_existing_canonical_directory": true
+  },
+  "numeric_evidence_refs": [
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/materialization/documents/damage/cpu_raw_output_bundle.json",
+      "sha256": "7044237cadf89d73d539617393df4e77c7ee2f4b81772f386733e58075a42d20",
+      "size_bytes": 588685
+    },
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/materialization/documents/damage/cuda_raw_output_bundle.json",
+      "sha256": "78109f48da3f600e5ee266dffac9639d4004da773ac168344dead4fc88950a6b",
+      "size_bytes": 588634
+    },
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/materialization/documents/foreign_object/cpu_raw_output_bundle.json",
+      "sha256": "5e125376dce862c4a9376685f5c885c54bd9130646d0e8083be4145bc386a6a2",
+      "size_bytes": 591433
+    },
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/materialization/documents/foreign_object/cuda_raw_output_bundle.json",
+      "sha256": "934c107ede7f69f66b6ff53a4569aec9c3d1133f7601221aef98c3ee0ab3998d",
+      "size_bytes": 591382
+    },
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/materialization/documents/plate_number/cpu_raw_output_bundle.json",
+      "sha256": "b2420d53f7d116f456e8884cae8ec4231ced10387d4b0a59ff87e3f6da93841a",
+      "size_bytes": 588669
+    },
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/materialization/documents/plate_number/cuda_raw_output_bundle.json",
+      "sha256": "158ce9ec6d46800bfe752e7c8c190f3f02be021d5a4fcb00e98d95a35226b9c1",
+      "size_bytes": 588614
+    },
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/materialization/documents/vehicle_type/cpu_raw_output_bundle.json",
+      "sha256": "0d7334d6d3d78168ec3ed8fe2429cc7fe150e836731de4ac67f77c0b16b8531e",
+      "size_bytes": 589787
+    },
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/materialization/documents/vehicle_type/cuda_raw_output_bundle.json",
+      "sha256": "52a06b93c73febfd7cd0746fd556e703c316a835d4b831979bbc6dbf484c5cc8",
+      "size_bytes": 589587
+    }
+  ],
+  "offline_validation": {
+    "actual_returncode": 0,
+    "actual_tool_session": 87987,
+    "call_scope": "original files, execution bundles and response intervals only; no acceptance loader, live engine, numeric assessor or inference",
+    "durable_raw_process_receipt": null,
+    "eight_calibration_cells": [
+      {
+        "branch": "damage",
+        "evidence": {
+          "path": "artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/materialization/documents/damage/cpu_policy_calibration.json",
+          "sha256": "6bd11ccb8e0fe41140f636d3b06f182bdcab7253acdde0c12f958001751baed8",
+          "size_bytes": 2946
+        },
+        "offline_exact_sample_ids_and_medians_match": true,
+        "resource": "cpu",
+        "samples": 30,
+        "service_ms": 46.125084,
+        "transfer_ms": 0.0
+      },
+      {
+        "branch": "damage",
+        "evidence": {
+          "path": "artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/materialization/documents/damage/cuda_policy_calibration.json",
+          "sha256": "2664d569336c4cb1eec23aa243d5dc42129d92d3270a199c2df0af97f422b3e1",
+          "size_bytes": 2883
+        },
+        "offline_exact_sample_ids_and_medians_match": true,
+        "resource": "gpu",
+        "samples": 30,
+        "service_ms": 24.62355,
+        "transfer_ms": 0.316512
+      },
+      {
+        "branch": "foreign_object",
+        "evidence": {
+          "path": "artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/materialization/documents/foreign_object/cpu_policy_calibration.json",
+          "sha256": "796f0a4278e307947d53e51376f1a558f5449b1866db80c2540eefe8b6424c27",
+          "size_bytes": 3193
+        },
+        "offline_exact_sample_ids_and_medians_match": true,
+        "resource": "cpu",
+        "samples": 30,
+        "service_ms": 91.18826050000001,
+        "transfer_ms": 0.0
+      },
+      {
+        "branch": "foreign_object",
+        "evidence": {
+          "path": "artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/materialization/documents/foreign_object/cuda_policy_calibration.json",
+          "sha256": "e8243a74de041154b185673280ca94802cd52eae00e4b4fbae998e00c9b57ff2",
+          "size_bytes": 3135
+        },
+        "offline_exact_sample_ids_and_medians_match": true,
+        "resource": "gpu",
+        "samples": 30,
+        "service_ms": 42.9978625,
+        "transfer_ms": 0.323664
+      },
+      {
+        "branch": "plate_number",
+        "evidence": {
+          "path": "artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/materialization/documents/plate_number/cpu_policy_calibration.json",
+          "sha256": "137b8c2d45b2b19b8943cfcdfa80f9e43925f683aec9bee65dbdad407fb670b3",
+          "size_bytes": 3131
+        },
+        "offline_exact_sample_ids_and_medians_match": true,
+        "resource": "cpu",
+        "samples": 30,
+        "service_ms": 23.944901,
+        "transfer_ms": 0.0
+      },
+      {
+        "branch": "plate_number",
+        "evidence": {
+          "path": "artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/materialization/documents/plate_number/cuda_policy_calibration.json",
+          "sha256": "9f15d34d06af1b551fd5d65c0cea831cfd3ad1b470948c4a65b62d46b936526c",
+          "size_bytes": 3060
+        },
+        "offline_exact_sample_ids_and_medians_match": true,
+        "resource": "gpu",
+        "samples": 30,
+        "service_ms": 10.783085499999999,
+        "transfer_ms": 0.28902399999999995
+      },
+      {
+        "branch": "vehicle_type",
+        "evidence": {
+          "path": "artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/materialization/documents/vehicle_type/cpu_policy_calibration.json",
+          "sha256": "e8ca6596d3a5ce263aa9cd6e498fc38f02f7d2306faf319f827ee0cbb8bc6da8",
+          "size_bytes": 3131
+        },
+        "offline_exact_sample_ids_and_medians_match": true,
+        "resource": "cpu",
+        "samples": 30,
+        "service_ms": 45.4546505,
+        "transfer_ms": 0.0
+      },
+      {
+        "branch": "vehicle_type",
+        "evidence": {
+          "path": "artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/materialization/documents/vehicle_type/cuda_policy_calibration.json",
+          "sha256": "e6eafb7bfa73eea46e07cc09619bc254370fc1ee36e7e9ce7f6c720a87223fa3",
+          "size_bytes": 3071
+        },
+        "offline_exact_sample_ids_and_medians_match": true,
+        "resource": "gpu",
+        "samples": 30,
+        "service_ms": 18.4484055,
+        "transfer_ms": 0.2944
+      }
+    ],
+    "original_binding_files_hashed_equal": 50,
+    "original_execution_bundles": 480,
+    "physical_calibration_responses": 240,
+    "raw_custody_limit": "Original stdout and exit were tool-observed; this note is a factual summary, not a retroactive original process/acceptance receipt.",
+    "source": {
+      "path": "scripts/publication_policy_qualification_bootstrap_v2.py",
+      "sha256": "1f248748d16ead95def536bf7d2815e7b79a8754696c8a37aba51018ba8a75f6",
+      "size_bytes": 82531
+    },
+    "stock_function": "publication_policy_qualification_bootstrap_v2._transaction_material"
+  },
+  "original_association": {
+    "acceptance_binding_sha256": "4c8986b07e82a895033a8e2d1b1c49fd9d9a7806722b87f80161ac6a9f8ed4b7",
+    "accepted_receipt_sha256": "08e280c971c74334d1ea85589c65b7f2d95a974e50478679f4f728715101ccf6",
+    "candidate_sha256": "3c921a062345d571c836eed6e40de6b3bf4b7be798e24b792c10c1d1df3c1494",
+    "old_full_runtime_images_association_preserved": true,
+    "old_image_patch_physical_sha256": "7e94d4d361e340e40fbfd76b2a0e54a052b6d650e6a8716ccd4bed2d485ecf6d",
+    "old_image_patch_semantic_sha256": "47c830c093d942b143274a36e1f0faaca03c9862085d4a93327e3760038608ad",
+    "physical_response_evidence_sha256": "d802dac7bc428ef8b76cb554a87150b9a1fb51a2665c38a41c265a6b3be0d8ce",
+    "worker_receipt_sha256": "44b96ce7f8407ba550357c4d592c94758f1ba7b4ccd72b248421a98b3b738a39"
+  },
+  "publication_ready": false,
+  "qualification_ready": false,
+  "required_fresh_facts": [
+    "New unique selected runtime receipt must be candidate_binding_eligible, current source/registry/deterministic/image-bound, with actual inspect/probe; old g runtime receipts are invalidated and cannot substitute.",
+    "Actual selected materializer still executes original v4 accepted numeric assessor over exact original raw outputs, and current held engine/socket image observations. Original association is not rebound to selected image.",
+    "Two current worker identities/source/dependency/build-contexts, model/proxy/source assets and >=30 selected calibration equality are checked by the real materializer and held runtime, not granted by this note.",
+    "Controller requires actual20GiB reservation+20GiB free floor, genuine one guardian/eight workers, two original180s measurement arms and authenticated stop before cold validation.",
+    "Legacy g guardian lifecycle failed; old g operational results/preprocessing/transaction authority and old host closure do not confer current component execution authority."
+  ],
+  "schema_version": 1,
+  "sha256": "8a3a7812519f1a5a5c41304baaa7ddb5b1d5631bfda15532c0753ef828f77bf4",
+  "source_anchors": [
+    "scripts/publication_gstreamer_component_inputs_v1.py:190",
+    "scripts/publication_gstreamer_component_inputs_v1.py:232",
+    "scripts/publication_gstreamer_component_cli_v1.py:390",
+    "scripts/publication_policy_qualification_bootstrap_v2.py:1058"
+  ],
+  "source_commit_prefix": "a3e976d0",
+  "status": "historical_bytes_and_offline_calibration_checked_fresh_preflight_pending"
+}
