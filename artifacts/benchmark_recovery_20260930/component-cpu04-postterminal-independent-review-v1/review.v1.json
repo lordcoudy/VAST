@@ -1,0 +1,127 @@
+{
+  "arms": [
+    {
+      "completed_by_stream": {
+        "0": 96,
+        "1": 97,
+        "2": 96,
+        "3": 92,
+        "4": 99,
+        "5": 98
+      },
+      "container_id": "accf62872b596520f3674c6f98015d4fae20b5862774c75fe4ceda092bc5d0f4",
+      "container_receipt": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-04/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/original_container_custody.v1.json",
+        "sha256": "29ccb828adebaae5a868d732716610fbb10719e32128fcc67208d03d4d8136eb",
+        "size_bytes": 3904
+      },
+      "daemon_terminal_state": "not retained; original --rm CLI completed0 and exact CID NotFound observed",
+      "measurement_ingress_count": 1080,
+      "native_cli_returncode": 0,
+      "operation_id": "component-gstreamer_custom-cpu-h264-independent-processes",
+      "original_exact_cid_absence_command": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-04/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_03.stdout",
+        "sha256": "1e69d142793cf850c6d9affc1b6ee6db1283fa6ccaa35327db71b2d2ffa6ad8f",
+        "size_bytes": 271
+      },
+      "result": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-04/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/component_arm_result.v1.json",
+        "sha256": "62e598b0d220bf350fe0c620c0d1f035f8f138ed928033605f746ce7a1e0cf0f",
+        "size_bytes": 15470
+      },
+      "schedule_fingerprint": "c1365bac6483c39143dd0a8a350f6b6eb66de91e9cfd18987475c7b12f63a5a5"
+    },
+    {
+      "completed_by_stream": {
+        "0": 110,
+        "1": 118,
+        "2": 120,
+        "3": 114,
+        "4": 122,
+        "5": 102
+      },
+      "container_id": "9c0f82b8b0bb7329e2e452065312301fcec7c688940815854efa8d8b552d30ce",
+      "container_receipt": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-04/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/original_container_custody.v1.json",
+        "sha256": "68732cc054af6adaf356654ed6694ac74abd44a1845c5e203580f941cb876bf4",
+        "size_bytes": 3864
+      },
+      "daemon_terminal_state": "not retained; original --rm CLI completed0 and exact CID NotFound observed",
+      "measurement_ingress_count": 1080,
+      "native_cli_returncode": 0,
+      "operation_id": "component-gstreamer_custom-cpu-h264-shared-video-dag",
+      "original_exact_cid_absence_command": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-04/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/command_03.stdout",
+        "sha256": "1e69d142793cf850c6d9affc1b6ee6db1283fa6ccaa35327db71b2d2ffa6ad8f",
+        "size_bytes": 271
+      },
+      "result": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-04/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/component_arm_result.v1.json",
+        "sha256": "7f211044688ca4b4c686b205b463172f60b7fb14371a9ff233c99d6efcd2257d",
+        "size_bytes": 14188
+      },
+      "schedule_fingerprint": "c1365bac6483c39143dd0a8a350f6b6eb66de91e9cfd18987475c7b12f63a5a5"
+    }
+  ],
+  "artifact_kind": "vast_independent_cpu04_closed_boundary_review_v1",
+  "blocker": {
+    "correct_existing_definition": "scripts/publication_operational_request_reconciliation_v1.py:266",
+    "file": "scripts/publication_gstreamer_component_runtime_v1.py",
+    "line": 650,
+    "original_error": {
+      "message": "cannot import name 'load_operational_jsonl_header_v1' from 'publication_operational_request_domain_v1' (/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_request_domain_v1.py)",
+      "type": "ImportError"
+    }
+  },
+  "cli_terminal": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-04/component_cli_terminal.v1.json",
+    "sha256": "f214c7c513881660b16fc84316c2c8425f0545bfb43af4270b0c6219f8ad14b6",
+    "size_bytes": 9103
+  },
+  "disposition": "closed_failed_original_with_real_two_arm_outputs",
+  "guardian": {
+    "authenticated_stop": true,
+    "cleanup_basis": "retained authenticated lifecycle and original CLI observation; no reviewer daemon query",
+    "lifecycle_status": "clean_stop_nonpublication",
+    "original_returncode": 0,
+    "owner_process": {
+      "gid": 1000,
+      "pid": 29403,
+      "proc_stat_starttime_ticks": 26132149,
+      "uid": 1000
+    },
+    "process_and_group_absence_two_actual_scans": true,
+    "requests_completed": 8398,
+    "requests_failed": 0,
+    "requests_started": 8398
+  },
+  "hold_release": true,
+  "independent_review": true,
+  "limits": [
+    "Both original native CLI measurements completed0 with nonzero retained six-stream results; final cold pair failed before reconciliation.",
+    "No complete all-phase cold identity join, scientific metric re-reduction, component pair acceptance, full qualification/Q4/full-run grant claimed.",
+    "Native --rm exact CID absence is retained; no positive native daemon ExitCode/Pid/OOM terminal projection is invented.",
+    "Guardian worker-container cleanup remains scoped to retained original authenticated lifecycle/CLI facts; no new daemon query or independent worker CID inspection.",
+    "No reviewer tests, model/source/decoder/worker operations."
+  ],
+  "original95_before_after_current_full7epochs_equal": true,
+  "original_cli_returncode": 1,
+  "outer_elapsed_s": 2002.9016359279922,
+  "outer_signals": [],
+  "outer_terminal": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-04-original-controller/original.terminal.v1.json",
+    "sha256": "88b9c117f75b45454b8facc781e1bb291750de388b85f03c31fe7135b1496b0e",
+    "size_bytes": 91709
+  },
+  "outer_timeout": false,
+  "reserve_allocated_bytes": 21474840576,
+  "reserve_released_and_absent": true,
+  "reviewer_held_fds_released": true,
+  "schema_version": 1,
+  "source_commit": "78f50184362c1bd77f9dc5eadd8cd69d6ab3c5ac",
+  "witness": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu04-postterminal-independent-review-v1/held-inputs-and-processes.v1.json",
+    "sha256": "abc1799ac95ef1deb574719d485197ebf17d3011d380874375f7221562a1a0a3",
+    "size_bytes": 89367
+  }
+}

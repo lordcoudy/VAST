@@ -647,7 +647,7 @@ def _cold_component_pair_from_held_v1(*, selected, project_root, component_autho
     )
     from publication_guardian_component_preprocessing_contract_v1 import load_component_guardian_preprocessing_contract_v1
     from publication_guardian_runtime_expectations_v1 import runtime_expectations_from_preprocessing_receipt_v1
-    from publication_operational_request_reconciliation_v1 import load_operational_jsonl_header_v1
+    from publication_operational_request_domain_v1 import load_operational_jsonl_header_v1
     root = Path(project_root)
     _require(type(runtime_bundle_paths) is list and type(arm_result_paths) is list and
              len(runtime_bundle_paths) == len(arm_result_paths) == 2,

@@ -301,35 +301,5 @@ class ComponentCustodyTests(unittest.TestCase):
         self.assertIn("completed_measurement_frames", (destination / "component_pair_metrics.csv").read_text())
 
 
-class ColdProviderBoundaryTests(unittest.TestCase):
-    def test_real_cold_provider_resolves_before_two_arm_cardinality_guard(self):
-        with tempfile.TemporaryDirectory(prefix="cold-provider-") as temporary:
-            root = Path(temporary).resolve()
-            with self.assertRaisesRegex(ValueError, "exactly its two original arms"):
-                target._cold_component_pair_from_held_v1(selected={}, project_root=root,
-                    component_authority_path=root / "authority.json", capture_plan_path=root / "plan.json",
-                    runtime_bundle_paths=[], arm_result_paths=[], guardian_authority_path=root / "guardian.json",
-                    guardian_lifecycle_path=root / "lifecycle.json", preprocessing_contract_path=root / "contract.json",
-                    preprocessing_receipt_path=root / "receipt.json", analytics_socket_path=root / "front.sock",
-                    scratch_root=root / "scratch", output_dir=root / "output")
-
-    def test_actual_operational_header_reader_binds_physical_bytes(self):
-        from publication_operational_request_reconciliation_v1 import load_operational_jsonl_header_v1
-        with tempfile.TemporaryDirectory(prefix="cold-header-") as temporary:
-            path = Path(temporary).resolve() / "header.jsonl"
-            header = payload_with_sha256_v1({"fixture_header_only": True, "schema_version": 1})
-            raw = canonical_json_v1(header) + b"\n"
-            with path.open("xb") as stream:
-                stream.write(raw)
-            entry = {"path": path, "descriptor": {"path": str(path), "size_bytes": len(raw),
-                     "sha256": hashlib.sha256(raw).hexdigest()}}
-            self.assertEqual(load_operational_jsonl_header_v1(entry), header)
-            changed = bytearray(raw)
-            changed[1] = ord("x")
-            path.write_bytes(changed)
-            with self.assertRaisesRegex(ValueError, "physical hash drift"):
-                load_operational_jsonl_header_v1(entry)
-
-
 if __name__ == "__main__":
     unittest.main()

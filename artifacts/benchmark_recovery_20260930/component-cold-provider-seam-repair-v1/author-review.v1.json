@@ -1,0 +1,36 @@
+{
+  "added_tests": [
+    "ColdProviderBoundaryTests.test_actual_operational_header_reader_binds_physical_bytes",
+    "ColdProviderBoundaryTests.test_real_cold_provider_resolves_before_two_arm_cardinality_guard"
+  ],
+  "all_original_method_asts_retained": true,
+  "artifact_kind": "vast_component_cold_provider_repair_author_review_v1",
+  "complete_cold_pair_accepted": false,
+  "exact_one_import_provider_change": true,
+  "green": {
+    "path": "artifacts\\benchmark_recovery_20260930\\component-cold-provider-seam-repair-v1\\green-01\\terminal.v1.json",
+    "sha256": "073a8187022343baf7f7381d3adfe45f026291fdeb9881b99ef7ecc8cc4de891",
+    "size_bytes": 4047
+  },
+  "green_actual_tests": 14,
+  "next_gate": "Separately reviewed corrected reader against unchanged physical v5 sources before new native measurement; fresh production source closure required after source changes.",
+  "no_workload_or_engine_call": true,
+  "original_cpu04_cli_status": "failed_immutable",
+  "red": {
+    "path": "artifacts\\benchmark_recovery_20260930\\component-cold-provider-seam-repair-v1\\red-01\\terminal.v1.json",
+    "sha256": "4c0c7103afd6dd803d4743cfeeffa704b5d8655ef183b38bda5a3cb9571b0094",
+    "size_bytes": 4068
+  },
+  "source": [
+    {
+      "path": "scripts\\publication_gstreamer_component_runtime_v1.py",
+      "sha256": "23202bc466cd53f60cc0b78eb7902b5cdb1be4c6242c04e5ed81d13609a0d49e",
+      "size_bytes": 65291
+    },
+    {
+      "path": "tests\\test_publication_gstreamer_component_runtime_v1.py",
+      "sha256": "b71447895a9b4e9f50d3893242c3be4e1d5bbea9516813df0dd54d66bbeb96b3",
+      "size_bytes": 21225
+    }
+  ]
+}

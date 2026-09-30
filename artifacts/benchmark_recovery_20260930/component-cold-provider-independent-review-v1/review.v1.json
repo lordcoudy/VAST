@@ -1,0 +1,95 @@
+{
+  "added_tests": [
+    "ColdProviderBoundaryTests.test_actual_operational_header_reader_binds_physical_bytes",
+    "ColdProviderBoundaryTests.test_real_cold_provider_resolves_before_two_arm_cardinality_guard"
+  ],
+  "all_original_method_asts_retained": true,
+  "artifact_kind": "vast_component_cold_provider_independent_review_v1",
+  "disposition": "approved_import_only_repair",
+  "evidence": {
+    "green-01": {
+      "capture_elapsed_s": 3.9694675210048445,
+      "outputs": {
+        "stderr": {
+          "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cold-provider-seam-repair-v1/green-01/stderr.raw",
+          "sha256": "36f17eaf58a8af6bc96dd507247df9ff2f7867394cb571cec5a79f5c603cd999",
+          "size_bytes": 3085
+        },
+        "stdout": {
+          "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cold-provider-seam-repair-v1/green-01/stdout.raw",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        }
+      },
+      "returncode": 0,
+      "terminal": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cold-provider-seam-repair-v1/green-01/terminal.v1.json",
+        "sha256": "073a8187022343baf7f7381d3adfe45f026291fdeb9881b99ef7ecc8cc4de891",
+        "size_bytes": 4047
+      }
+    },
+    "red-01": {
+      "capture_elapsed_s": 0.880271990026813,
+      "outputs": {
+        "stderr": {
+          "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cold-provider-seam-repair-v1/red-01/stderr.raw",
+          "sha256": "ca13f22dfb31d5b1e3a98d059ec2fec10a279aa1d8e440dfead1e66b3757a35d",
+          "size_bytes": 1731
+        },
+        "stdout": {
+          "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cold-provider-seam-repair-v1/red-01/stdout.raw",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        }
+      },
+      "returncode": 1,
+      "terminal": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cold-provider-seam-repair-v1/red-01/terminal.v1.json",
+        "sha256": "4c0c7103afd6dd803d4743cfeeffa704b5d8655ef183b38bda5a3cb9571b0094",
+        "size_bytes": 4068
+      }
+    }
+  },
+  "exact_raw_inverse_import_only": true,
+  "green_tests": 14,
+  "green_unittest_elapsed_s": 3.215,
+  "original_cpu04_cli_status": "failed_immutable",
+  "original_source": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cold-provider-seam-repair-v1/before/publication_gstreamer_component_runtime_v1.py",
+      "sha256": "a77d70f6b35718c596cdf8d0a79a2275296c20562e10688047a16e70bde6a597",
+      "size_bytes": 65283
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cold-provider-seam-repair-v1/before/test_publication_gstreamer_component_runtime_v1.py",
+      "sha256": "86f334eb962620f106d20163af1696dd16a48a50ce982a5f9e6d401023fbb6e6",
+      "size_bytes": 19234
+    }
+  ],
+  "red_import_errors": 1,
+  "red_successes": 1,
+  "red_tests": 2,
+  "review_script": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cold-provider-independent-review-v1/audit.py",
+    "sha256": "f394dc71e383b834501f9534f4cee96812a4f5ab585422e66bc1c30db3c27116",
+    "size_bytes": 4564
+  },
+  "reviewer_engine_or_workload_operations": false,
+  "reviewer_executed_tests": false,
+  "schema_version": 1,
+  "scope": "Actual cold provider/cardinality entry and physical header reader; existing fixtures retain their scope. No complete cold-pair acceptance is established.",
+  "self_review": "My earlier adjacent handoff review stopped before this local cold import. These regressions now cover that concrete seam; full retained-output cold validation remains necessary.",
+  "separate_reader_execution_approved_by_this_receipt": false,
+  "source": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_gstreamer_component_runtime_v1.py",
+      "sha256": "23202bc466cd53f60cc0b78eb7902b5cdb1be4c6242c04e5ed81d13609a0d49e",
+      "size_bytes": 65291
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_gstreamer_component_runtime_v1.py",
+      "sha256": "b71447895a9b4e9f50d3893242c3be4e1d5bbea9516813df0dd54d66bbeb96b3",
+      "size_bytes": 21225
+    }
+  ]
+}
