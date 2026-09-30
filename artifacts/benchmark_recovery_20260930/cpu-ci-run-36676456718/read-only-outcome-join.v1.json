@@ -1,0 +1,38 @@
+{
+  "actual_job_conclusion": "failure",
+  "actual_process_returncode": 139,
+  "artifact_kind": "read_only_original_cpu_ci_outcome_join",
+  "cause_of_segmentation_fault": "unidentified; wait stack establishes location, not native crash causality",
+  "commit": "065fb8dbb9df914d8a6e50300533dfc55d99b892",
+  "complete_test_report_present": false,
+  "decoded_job_log": {
+    "representation": "original connector-decoded UTF-8 with BOM, not raw service bytes",
+    "sha256": "0b07ff9ad00f362d0709fbe58901cc18f745859d6595f1dc03771e885c478a30",
+    "size_bytes": 77270
+  },
+  "full_ci_successful": false,
+  "hardware_acceptance": false,
+  "job_id": 109762366332,
+  "original_stack_log_bytes": 14407,
+  "original_zip": {
+    "crc_check": null,
+    "members": 152,
+    "sha256": "ec02be0dd68e1ac5876278d06c8edf5484b4941a280495f673fb195fc21bae3e",
+    "size_bytes": 938427
+  },
+  "repeated_original_stack_location": "backend_publication_process_supervisor_v3.wait_journal_result; time.sleep(0.02), line3045",
+  "run_id": 36676456718,
+  "schema_version": 1,
+  "terminal_outcomes": {
+    "error": 1,
+    "skip": 2,
+    "success": 117
+  },
+  "test_started_count": 121,
+  "test_terminal_count": 120,
+  "tracked_source_after_present": false,
+  "unfinished_test_ids": [
+    "test_backend_publication_output_transaction_production_v3.BackendPublicationOutputTransactionProductionV3Tests.test_child_cannot_precreate_parent_owned_receipt"
+  ],
+  "workload_started_by_this_join": false
+}

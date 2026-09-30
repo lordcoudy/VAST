@@ -1,0 +1,43 @@
+--- v4-prebinding/controller.py
++++ v4-finalbinding/controller.py
+@@ -20,7 +20,7 @@
+ from research_protocol import (CHANNEL_MAX, Evidence, METADATA_MAX, Pin, ResearchError,
+     canonical, epoch, owner, physical_descriptor, post_receipt_deadline, require, strict_object, verify_seal)
+ 
+-PLANNING_COMMIT = '065fb8dbb9df914d8a6e50300533dfc55d99b892'
++PLANNING_COMMIT = '8a0bdb4b4ed1a09593ab054537766c0970d722df'
+ IMAGE_ID = 'sha256:70696f057232acd382f60beaaf12cd9279b317b0ba9a7ade29f0b955ce90481a'
+ DAEMON_ID = 'aa8f3d33-e1dc-4ed2-ad06-488b46b332d0'
+ ENGINE_SHA = 'a429e235ef670ea83357a5c8c7451f0a69d485a6fee49f9032fd938a0ab4969d'
+--- v4-prebinding/guest_consumer.py
++++ v4-finalbinding/guest_consumer.py
+@@ -58,7 +58,7 @@
+         self.plan_pin = Pin(plan_path, maximum=METADATA_MAX, deadline=self.phase_deadline)
+         self.plan = verify_seal(strict_object(os.pread(self.plan_pin.fd, METADATA_MAX, 0), METADATA_MAX))
+         require(self.plan['artifact_kind'] == 'vast_decoder_research_plan_v1' and
+-            self.plan['planning_commit'] == '065fb8dbb9df914d8a6e50300533dfc55d99b892', 'unreviewed research plan')
++            self.plan['planning_commit'] == '8a0bdb4b4ed1a09593ab054537766c0970d722df', 'unreviewed research plan')
+         require(self.plan['fixed_order'] == [list(x) for x in FIXED_ORDER], 'fixed four-run order differs')
+         require(type(self.plan['guest_prelaunch_budget_s']) in (float,int) and
+             0 < self.plan['guest_prelaunch_budget_s'] <= 120, 'guest shared-prelaunch budget invalid')
+--- v4-prebinding/README.md
++++ v4-finalbinding/README.md
+@@ -1,5 +1,7 @@
+-Artifact-v4 applies reviewed decision20 at planning065fb8dbb9df914d8a6e50300533dfc55d99b892,
+-PR comment5905180454. Immutable v1-v3 and failed original attempts01-03 stay unchanged.
++Artifact-v4 applies reviewed decision20 at planning8a0bdb4b4ed1a09593ab054537766c0970d722df,
++PR comment5905513846. Decision21 is a CI-only planning amendment; the mapped-input
++behavior remains reviewed decision20. The47-test behavioral receipt records the
++prebinding065 snapshot, with no functional rerun required for these literals. Immutable v1-v3 and failed original attempts01-03 stay unchanged.
+ No launch authorization is implied by these files. Future attempt04 requires exact final
+ source/dispatcher review, commit/PR record and explicit once-only root dispatch.
+ 
+@@ -51,7 +53,7 @@
+ two real15s outer-boundary tests are not repeated merely for this diagnostic change.
+ 
+ Artifact-only decoder mechanism experiment for reviewed planning commit
+-`065fb8dbb9df914d8a6e50300533dfc55d99b892` (PR comment5905180454).
++`8a0bdb4b4ed1a09593ab054537766c0970d722df` (PR comment5905513846).
+ No production runtime source, image, model, guardian or benchmark authority is changed.
+ Original attempts01-03 failed during setup and retained no source/decoder cohort. V4
+ attempt04 has not been started. Root and independent controller review, then a separate
