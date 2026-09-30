@@ -1,0 +1,118 @@
+{
+  "early_direct_test_gap": "First direct tool-only observer run failed on a genuine post-handler signal race and an overbroad libc padding equality assertion. Original tool output remains in task history; no raw-file capture claim is made for that direct run. All subsequent focused dispatch originals are physically retained, and final acceptance uses only named25-test source-stable receipts.",
+  "full_suite_acceptance": false,
+  "hardware_acceptance": false,
+  "kind": "vast_decision24_external_ci_observer_author_review_v1",
+  "native139_cause": "unproven",
+  "observations": {
+    "child": "main-thread synchronous Python safe-GIL handler; genuine READY native-task=1 fixture; no watchdog/thread/register",
+    "cleanup": "one absolute original-job budget; <=15s-or-remaining original-child reap/drain/receipt-close; later failure companion if crossed",
+    "namespace_diagnosis": "not run; no profile/sysctl/privilege/test skip or Python update",
+    "original_parent": "one fresh full-suite child only; pidfd requests and stop ACK prevent signals after disposition restoration",
+    "stdout_stderr": "original child CI console inherited; original unittest event/result log remains separate and unchanged",
+    "storage": "trace1MiB/control1MiB/new namespace8MiB before-write guards; child nonblocking control and sticky failure",
+    "timing": "actual scheduled/send/handler/arrival times, candidate matching ambiguity and coalescing; no timely dump guarantee"
+  },
+  "owned_sources_frozen": true,
+  "planning_commit": "ded811a8043575e7a93cf0bbc28696ac53667d3c",
+  "pr_comment": 5908873975,
+  "pre_edit_inventory": {
+    "path": "artifacts/benchmark_recovery_20260930/decision24-ci-pre-edit-v1/inventory.v1.json",
+    "sha256": "a9a915ce5a3dea0387d0bc82be2cb2c471faf3f6e63391c6ede42d42270c2321",
+    "size_bytes": 1824
+  },
+  "repair": {
+    "authorization": "Parent explicitly granted narrow repair after independent review finding.",
+    "behavior": "Only acquisition-failed exact original unreaped Popen handle uses signal fallback. No other process selection, retry or replacement. First pidfd failure retained before fallible launch persistence; actual failed pidfd/owner/CLI status and unobserved EOF retained.",
+    "finding": "pidfd_open failure after actual Popen left signal path inactive",
+    "regression": "Genuine live original child plus injected original pidfd_open failure: failed original launch, observed negative CLI status, SIGTERM fallback, original PID absence and parent FD table unchanged."
+  },
+  "source_files": [
+    {
+      "path": "scripts/run_ci_checks.py",
+      "sha256": "a501d9a8a07979e6657fcb129fe12b54e43d91693dbde0ab24a5b40c1cdbdb96",
+      "size_bytes": 22068
+    },
+    {
+      "path": "scripts/ci_external_test_observer_v1.py",
+      "sha256": "000ded0c9bd442983b54d224ce3041818af6e35e2e0d4f9c9b382b74db499c59",
+      "size_bytes": 20916
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "974160678fc6c68a1fc12e2ac277850466c9e507a850d8a1401ac93ac0e7e959",
+      "size_bytes": 4206
+    },
+    {
+      "path": "tests/test_run_ci_checks.py",
+      "sha256": "41a088e2be50d5707bdbe82291b1902c3b0e5d0b28aa07f6558c0829d6b02626",
+      "size_bytes": 8261
+    },
+    {
+      "path": "tests/test_ci_external_test_observer_v1.py",
+      "sha256": "cbd9be309e2092d66e68403432a7162ca00d77ca1408d6c7b600fa77458be9c4",
+      "size_bytes": 12475
+    }
+  ],
+  "supersedes": {
+    "path": "artifacts/benchmark_recovery_20260930/decision24-ci-author-review-v1/review.v1.json",
+    "sha256": "1619b78d85f1398943a76ceeda9dbe9bfd873c5e6de2edcc2f00accef27f5f26",
+    "size_bytes": 4757
+  },
+  "test_count": 26,
+  "test_scope": "Focused CPython local fixtures only; source-before/after stable. No full CI/native build/hosted/hardware execution.",
+  "tests": [
+    {
+      "stderr": {
+        "path": "artifacts/benchmark_recovery_20260930/decision24-ci-focused-v1/observer-04/stderr.raw",
+        "sha256": "7dacca97c593a18165baf97b91cd749b1d7d73610e5d51386178c290e1311e59",
+        "size_bytes": 3797
+      },
+      "stdout": {
+        "path": "artifacts/benchmark_recovery_20260930/decision24-ci-focused-v1/observer-04/stdout.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "terminal": {
+        "path": "artifacts/benchmark_recovery_20260930/decision24-ci-focused-v1/observer-04/terminal.v1.json",
+        "sha256": "b351fd496bdb63d78ccccd7a9544dcd01140ac112c2a9c2f2c4cc6c5e7faa924",
+        "size_bytes": 1325
+      },
+      "test_count": 15
+    },
+    {
+      "stderr": {
+        "path": "artifacts/benchmark_recovery_20260930/decision24-ci-focused-v1/runner-04/stderr.raw",
+        "sha256": "4bcddc07dee6dc255ecff8b7502ba96ce01e619a81bfc7c682ccacd0ef9fc985",
+        "size_bytes": 1824
+      },
+      "stdout": {
+        "path": "artifacts/benchmark_recovery_20260930/decision24-ci-focused-v1/runner-04/stdout.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "terminal": {
+        "path": "artifacts/benchmark_recovery_20260930/decision24-ci-focused-v1/runner-04/terminal.v1.json",
+        "sha256": "e69018e0bd1e9755a07a04d496052999ec2319b261e95b28a1f4cc28b90ca6a3",
+        "size_bytes": 1324
+      },
+      "test_count": 11
+    }
+  ],
+  "unchanged_ast": [
+    "RecordedResult",
+    "suite_report",
+    "host_facts"
+  ],
+  "workflow_preserved": {
+    "full_pattern": "test_*.py",
+    "job_timeout_minutes": 90,
+    "production_bounds_ms": [
+      600000,
+      615000
+    ],
+    "python": "3.12.3",
+    "required_native_successes": 3,
+    "targets": 6
+  }
+}

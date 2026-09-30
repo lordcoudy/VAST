@@ -2105,9 +2105,18 @@ def _device_binding(
     probe: Mapping[str, Any],
     capability_hashes: Mapping[str, str],
 ) -> dict[str, Any]:
+    return _device_binding_from_material_v1(
+        nvidia=inventory.nvidia, probe=probe, capability_hashes=capability_hashes,
+    )
+
+
+def _device_binding_from_material_v1(
+    *, nvidia: Mapping[str, str], probe: Mapping[str, Any],
+    capability_hashes: Mapping[str, str],
+) -> dict[str, Any]:
     return {
-        "nvidia_decoder_gpu": dict(inventory.nvidia),
-        "docker_gpus_request": f"device={inventory.nvidia['uuid']}",
+        "nvidia_decoder_gpu": dict(nvidia),
+        "docker_gpus_request": f"device={nvidia['uuid']}",
         # Native runtime identity hashes include the canonical trailing newline.
         "openvino_device_probe_sha256": _sha_bytes(_canonical_bytes(probe["value"])),
         "required_openvino_device_ids": ["CPU"],
@@ -2120,7 +2129,7 @@ def _device_binding(
             },
             "gpu": {
                 "runtime": "tensorrt_cuda",
-                "device": inventory.nvidia["uuid"],
+                "device": nvidia["uuid"],
                 "capability_sha256": capability_hashes["gpu"],
             },
         },
@@ -2171,8 +2180,24 @@ def _system_file_descriptors(
     engine_pin: _FilePin,
     adapter_descriptor: Mapping[str, Any] | None,
 ) -> dict[str, dict[str, Any]]:
+    return _system_file_descriptors_from_pins_v1(
+        root=inventory.root, dataset_pin=inventory.dataset_pin,
+        parity_pin=inventory.parity_pin, candidate_pin=inputs.candidate_manifest,
+        calibration_pin=inputs.calibrations[system], system=system, fixed=fixed,
+        engine_asset_path=engine_asset_path, engine_pin=engine_pin,
+        adapter_descriptor=adapter_descriptor,
+    )
+
+
+def _system_file_descriptors_from_pins_v1(
+    *, root: Path, dataset_pin: _FilePin, parity_pin: _FilePin,
+    candidate_pin: Any, calibration_pin: Any, system: str,
+    fixed: Mapping[str, _FilePin], engine_asset_path: Path, engine_pin: _FilePin,
+    adapter_descriptor: Mapping[str, Any] | None,
+) -> dict[str, dict[str, Any]]:
+    """Build original file roles from explicit pins, without a domain grant."""
     engine = _future_pin_descriptor(
-        inventory.root,
+        root,
         engine_asset_path,
         size=engine_pin.size,
         sha256=engine_pin.sha256,
@@ -2183,23 +2208,22 @@ def _system_file_descriptors(
         ),
     )
     candidate = _json_descriptor(
-        inventory.root,
-        inputs.candidate_manifest,
+        root,
+        candidate_pin,
         container_path=(
             _sdk_container_path(
                 "runtime",
-                inputs.candidate_manifest.path.relative_to(inventory.root).as_posix(),
+                candidate_pin.path.relative_to(root).as_posix(),
             )
             if system in {"deepstream", "savant"}
             else _project_container_path(
-                inputs.candidate_manifest.path.relative_to(inventory.root).as_posix()
+                candidate_pin.path.relative_to(root).as_posix()
             )
         ),
     )
-    calibration_pin = inputs.calibrations[system]
-    calibration_relative = calibration_pin.path.relative_to(inventory.root).as_posix()
+    calibration_relative = calibration_pin.path.relative_to(root).as_posix()
     calibration = _json_descriptor(
-        inventory.root,
+        root,
         calibration_pin,
         container_path=(
             _sdk_container_path("runtime", calibration_relative)
@@ -2218,16 +2242,16 @@ def _system_file_descriptors(
                 ),
             ),
             "datasets_config": _descriptor(
-                inventory.dataset_pin,
+                dataset_pin,
                 container_path=_sdk_container_path(
-                    "runtime", inventory.dataset_pin.relative
+                    "runtime", dataset_pin.relative
                 ),
             ),
             "adapter_config": dict(adapter_descriptor),
             "analytics_model_manifest": _descriptor(
-                inventory.parity_pin,
+                parity_pin,
                 container_path=_sdk_container_path(
-                    "runtime", inventory.parity_pin.relative
+                    "runtime", parity_pin.relative
                 ),
             ),
             "policy_capability_manifest": candidate,
@@ -2247,8 +2271,8 @@ def _system_file_descriptors(
             ),
         ),
         "datasets_config": _descriptor(
-            inventory.dataset_pin,
-            container_path=_project_container_path(inventory.dataset_pin.relative),
+            dataset_pin,
+            container_path=_project_container_path(dataset_pin.relative),
         ),
         "analytics_model_manifest": _descriptor(
             fixed["analytics_model_manifest"],
@@ -2317,6 +2341,25 @@ def _runtime_contract_for_cell(
     capability_hashes: Mapping[str, str],
     runtime_files: Sequence[Mapping[str, Any]] = (),
 ) -> dict[str, Any]:
+    return _runtime_contract_from_material_v1(
+        cell, nvidia=inventory.nvidia, preprocessing_sha256=inventory.preprocessing_sha256,
+        files=files, source_files=source_files, model_files=model_files,
+        support_files=support_files, image=image, engine_socket=engine_socket,
+        analytics_socket=analytics_socket, scratch_root=scratch_root, probe=probe,
+        capability_hashes=capability_hashes, runtime_files=runtime_files,
+    )
+
+
+def _runtime_contract_from_material_v1(
+    cell: QualificationPilotCellV2, *, nvidia: Mapping[str, str],
+    preprocessing_sha256: str, files: Mapping[str, Mapping[str, Any]],
+    source_files: Sequence[Mapping[str, Any]], model_files: Sequence[Mapping[str, Any]],
+    support_files: Sequence[Mapping[str, Any]], image: Mapping[str, Any],
+    engine_socket: Mapping[str, Any], analytics_socket: Mapping[str, Any],
+    scratch_root: Path, probe: Mapping[str, Any] | None,
+    capability_hashes: Mapping[str, str], runtime_files: Sequence[Mapping[str, Any]] = (),
+) -> dict[str, Any]:
+    """Original ABI-v3 factory; authority validation belongs to its caller."""
     common = {
         "schema_version": 3,
         "files": copy.deepcopy(dict(files)),
@@ -2360,12 +2403,12 @@ def _runtime_contract_for_cell(
             if cell.system == "openvino_gva"
             else gstreamer_runtime.EXPECTED_EMBEDDED_ARTIFACTS
         ),
-        "device_binding": _device_binding(
-            inventory,
+        "device_binding": _device_binding_from_material_v1(
+            nvidia=nvidia,
             probe=probe,
             capability_hashes=capability_hashes,
         ),
-        "preprocessing_contract_sha256": inventory.preprocessing_sha256,
+        "preprocessing_contract_sha256": preprocessing_sha256,
         "detect_bin": DETECT_BIN,
         "analytics_queue_max_buffers": 1,
     }

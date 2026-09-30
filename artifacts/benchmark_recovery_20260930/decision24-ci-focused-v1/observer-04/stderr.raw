@@ -1,0 +1,37 @@
+test_capture_failure_and_cancellation_reap_original_and_retire_fds (test_ci_external_test_observer_v1.ExternalObserverTests.test_capture_failure_and_cancellation_reap_original_and_retire_fds) ... ok
+test_control_truncated_and_oversized_prefixes_fail (test_ci_external_test_observer_v1.ExternalObserverTests.test_control_truncated_and_oversized_prefixes_fail) ... ok
+test_existing_handler_is_rejected_without_ready_or_replacement (test_ci_external_test_observer_v1.ExternalObserverTests.test_existing_handler_is_rejected_without_ready_or_replacement) ... Traceback (most recent call last):
+  File "<string>", line 5, in <module>
+  File "/usr/lib/python3.12/contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/ci_external_test_observer_v1.py", line 50, in child_trace_handler
+    raise RuntimeError("existing SIGUSR1 disposition conflicts with CI observation")
+RuntimeError: existing SIGUSR1 disposition conflicts with CI observation
+ok
+test_long_native_call_records_delay_and_possible_coalescing (test_ci_external_test_observer_v1.ExternalObserverTests.test_long_native_call_records_delay_and_possible_coalescing) ... ok
+test_missing_stop_ack_and_live_pipe_eof_are_failed (test_ci_external_test_observer_v1.ExternalObserverTests.test_missing_stop_ack_and_live_pipe_eof_are_failed) ... Traceback (most recent call last):
+  File "<string>", line 4, in <module>
+  File "/usr/lib/python3.12/contextlib.py", line 144, in __exit__
+    next(self.gen)
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/ci_external_test_observer_v1.py", line 99, in child_trace_handler
+ok
+test_new_namespace_overflow_is_sticky_and_retires_original_fds (test_ci_external_test_observer_v1.ExternalObserverTests.test_new_namespace_overflow_is_sticky_and_retires_original_fds) ... ok
+test_nonblocking_child_control_failure_does_not_raise_into_test (test_ci_external_test_observer_v1.ExternalObserverTests.test_nonblocking_child_control_failure_does_not_raise_into_test) ... Traceback (most recent call last):
+  File "<string>", line 4, in <module>
+  File "/usr/lib/python3.12/contextlib.py", line 144, in __exit__
+    next(self.gen)
+ok
+test_original_nonzero_and_signal_are_not_success (test_ci_external_test_observer_v1.ExternalObserverTests.test_original_nonzero_and_signal_are_not_success) ... ok
+test_pidfd_open_failure_reaps_exact_live_original_child (test_ci_external_test_observer_v1.ExternalObserverTests.test_pidfd_open_failure_reaps_exact_live_original_child) ... ok
+test_ready_missing_stops_only_original_child (test_ci_external_test_observer_v1.ExternalObserverTests.test_ready_missing_stops_only_original_child) ... ok
+test_real_pipe_drain_deadline_is_failed_and_not_quiescence (test_ci_external_test_observer_v1.ExternalObserverTests.test_real_pipe_drain_deadline_is_failed_and_not_quiescence) ... ok
+test_real_signal_dump_has_one_native_task_and_actual_response (test_ci_external_test_observer_v1.ExternalObserverTests.test_real_signal_dump_has_one_native_task_and_actual_response) ... ok
+test_receipt_close_crossing_original_cleanup_deadline_is_failed (test_ci_external_test_observer_v1.ExternalObserverTests.test_receipt_close_crossing_original_cleanup_deadline_is_failed) ... ok
+test_sigaction_disposition_and_restart_snapshot_are_restored (test_ci_external_test_observer_v1.ExternalObserverTests.test_sigaction_disposition_and_restart_snapshot_are_restored) ... ok
+test_trace_overflow_retains_exact_prefix_and_sticky_failure (test_ci_external_test_observer_v1.ExternalObserverTests.test_trace_overflow_retains_exact_prefix_and_sticky_failure) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 1.525s
+
+OK

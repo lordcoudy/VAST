@@ -1,0 +1,69 @@
+test_exact_two_original_operations_one_guardian_stop_before_cold (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_exact_two_original_operations_one_guardian_stop_before_cold) ... ERROR
+test_occupied_output_rejects_before_reserve_or_source (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_occupied_output_rejects_before_reserve_or_source) ... ok
+test_original_failure_no_second_operation_and_authenticated_stop (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_original_failure_no_second_operation_and_authenticated_stop) ... ERROR
+test_real_bounded_reserve_release_checks_original_inode (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_real_bounded_reserve_release_checks_original_inode) ... ok
+test_reserve_replacement_is_preserved_and_fails (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_reserve_replacement_is_preserved_and_fails) ... ok
+test_source_mutation_before_receipt_last_is_failure (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_source_mutation_before_receipt_last_is_failure) ... ERROR
+test_stop_failure_preserves_original_body_cause_and_is_not_clean (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_stop_failure_preserves_original_body_cause_and_is_not_clean) ... ERROR
+test_symlink_input_rejects_before_source (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_symlink_input_rejects_before_source) ... ERROR
+
+======================================================================
+ERROR: test_exact_two_original_operations_one_guardian_stop_before_cold (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_exact_two_original_operations_one_guardian_stop_before_cold)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_gstreamer_component_cli_v1.py", line 141, in test_exact_two_original_operations_one_guardian_stop_before_cold
+    result = self.cli.run_component_pair_v1(**self.arguments, _dependencies=self.dependencies())
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_gstreamer_component_cli_v1.py", line 329, in run_component_pair_v1
+    descriptor["path"] = str(path)
+    ~~~~~~~~~~^^^^^^^^
+TypeError: 'tuple' object does not support item assignment
+
+======================================================================
+ERROR: test_original_failure_no_second_operation_and_authenticated_stop (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_original_failure_no_second_operation_and_authenticated_stop)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_gstreamer_component_cli_v1.py", line 154, in test_original_failure_no_second_operation_and_authenticated_stop
+    self.cli.run_component_pair_v1(**self.arguments, _dependencies=self.dependencies(fail_operation="baseline"))
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_gstreamer_component_cli_v1.py", line 329, in run_component_pair_v1
+    descriptor["path"] = str(path)
+    ~~~~~~~~~~^^^^^^^^
+TypeError: 'tuple' object does not support item assignment
+
+======================================================================
+ERROR: test_source_mutation_before_receipt_last_is_failure (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_source_mutation_before_receipt_last_is_failure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_gstreamer_component_cli_v1.py", line 196, in test_source_mutation_before_receipt_last_is_failure
+    self.cli.run_component_pair_v1(**self.arguments, _dependencies=dependencies)
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_gstreamer_component_cli_v1.py", line 329, in run_component_pair_v1
+    descriptor["path"] = str(path)
+    ~~~~~~~~~~^^^^^^^^
+TypeError: 'tuple' object does not support item assignment
+
+======================================================================
+ERROR: test_stop_failure_preserves_original_body_cause_and_is_not_clean (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_stop_failure_preserves_original_body_cause_and_is_not_clean)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_gstreamer_component_cli_v1.py", line 166, in test_stop_failure_preserves_original_body_cause_and_is_not_clean
+    self.cli.run_component_pair_v1(**self.arguments, _dependencies=self.dependencies(fail_operation="baseline"))
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_gstreamer_component_cli_v1.py", line 329, in run_component_pair_v1
+    descriptor["path"] = str(path)
+    ~~~~~~~~~~^^^^^^^^
+TypeError: 'tuple' object does not support item assignment
+
+======================================================================
+ERROR: test_symlink_input_rejects_before_source (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_symlink_input_rejects_before_source)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_gstreamer_component_cli_v1.py", line 184, in test_symlink_input_rejects_before_source
+    self.cli.run_component_pair_v1(**self.arguments, _dependencies=self.dependencies())
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_gstreamer_component_cli_v1.py", line 329, in run_component_pair_v1
+    descriptor["path"] = str(path)
+    ~~~~~~~~~~^^^^^^^^
+TypeError: 'tuple' object does not support item assignment
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.060s
+
+FAILED (errors=5)

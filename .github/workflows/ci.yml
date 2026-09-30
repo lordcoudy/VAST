@@ -19,6 +19,8 @@ jobs:
       MPLBACKEND: Agg
       OPENSPEC_TELEMETRY: '0'
     steps:
+      - name: Record the original CPU job clock
+        run: echo "VAST_CI_JOB_STARTED_MONOTONIC_NS=$(python3 -c 'import time; print(time.monotonic_ns())')" >> "$GITHUB_ENV"
       - name: Check out the actual PR head or push commit
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
@@ -47,7 +49,7 @@ jobs:
       - name: Verify installed dependency consistency
         run: python -m pip check
       - name: Check source, build six CPU targets and execute test discovery
-        run: python -B scripts/run_ci_checks.py --expected-commit "${{ github.event.pull_request.head.sha || github.sha }}" --output-dir "$RUNNER_TEMP/vast-cpu-checks"
+        run: python -B scripts/run_ci_checks.py --expected-commit "${{ github.event.pull_request.head.sha || github.sha }}" --output-dir "$RUNNER_TEMP/vast-cpu-checks" --job-started-monotonic-ns "$VAST_CI_JOB_STARTED_MONOTONIC_NS"
       - name: Preserve original CPU logs and explicit hardware gaps
         if: always()
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6

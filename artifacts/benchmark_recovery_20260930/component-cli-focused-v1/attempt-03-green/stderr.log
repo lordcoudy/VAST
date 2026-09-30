@@ -1,0 +1,79 @@
+test_exact_two_original_operations_one_guardian_stop_before_cold (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_exact_two_original_operations_one_guardian_stop_before_cold) ... ERROR
+test_occupied_output_rejects_before_reserve_or_source (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_occupied_output_rejects_before_reserve_or_source) ... ok
+test_original_failure_no_second_operation_and_authenticated_stop (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_original_failure_no_second_operation_and_authenticated_stop) ... ERROR
+test_real_bounded_reserve_release_checks_original_inode (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_real_bounded_reserve_release_checks_original_inode) ... ok
+test_reserve_replacement_is_preserved_and_fails (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_reserve_replacement_is_preserved_and_fails) ... ok
+test_source_mutation_before_receipt_last_is_failure (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_source_mutation_before_receipt_last_is_failure) ... ERROR
+test_stop_failure_preserves_original_body_cause_and_is_not_clean (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_stop_failure_preserves_original_body_cause_and_is_not_clean) ... ERROR
+test_symlink_input_rejects_before_source (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_symlink_input_rejects_before_source) ... ok
+
+======================================================================
+ERROR: test_exact_two_original_operations_one_guardian_stop_before_cold (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_exact_two_original_operations_one_guardian_stop_before_cold)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_gstreamer_component_cli_v1.py", line 141, in test_exact_two_original_operations_one_guardian_stop_before_cold
+    result = self.cli.run_component_pair_v1(**self.arguments, _dependencies=self.dependencies())
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_gstreamer_component_cli_v1.py", line 428, in run_component_pair_v1
+    terminal["guardian_" + name] = custody.write_exclusive(output / ("guardian." + name + ".log"),
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_physical_io_v1.py", line 2621, in write_exclusive
+    descriptor, _identity = self.write_exclusive_identity(
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_physical_io_v1.py", line 2641, in write_exclusive_identity
+    _require(type(payload) is bytes and bool(payload), f"{label} payload is empty")
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_physical_io_v1.py", line 92, in _require
+    raise PublicationPhysicalIoV1Error(message)
+publication_physical_io_v1.PublicationPhysicalIoV1Error: original guardian bounded stderr payload is empty
+
+======================================================================
+ERROR: test_original_failure_no_second_operation_and_authenticated_stop (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_original_failure_no_second_operation_and_authenticated_stop)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_gstreamer_component_cli_v1.py", line 158, in test_original_failure_no_second_operation_and_authenticated_stop
+    terminal = json.loads((self.root / "result" / self.cli.TERMINAL_FILENAME).read_bytes())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1021, in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1015, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmplvvhqo97/result/component_cli_terminal.v1.json'
+
+======================================================================
+ERROR: test_source_mutation_before_receipt_last_is_failure (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_source_mutation_before_receipt_last_is_failure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_gstreamer_component_cli_v1.py", line 196, in test_source_mutation_before_receipt_last_is_failure
+    self.cli.run_component_pair_v1(**self.arguments, _dependencies=dependencies)
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_gstreamer_component_cli_v1.py", line 439, in run_component_pair_v1
+    raise primary
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_gstreamer_component_cli_v1.py", line 405, in run_component_pair_v1
+    pin.check()
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_request_reconciliation_v1.py", line 107, in check
+    _require(self.before == _snapshot(os.fstat(self.fd)) ==
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_request_reconciliation_v1.py", line 44, in _require
+    raise ValueError(message)
+ValueError: operational file changed during cold validation
+component terminal persistence also failed: original guardian bounded stderr payload is empty
+
+======================================================================
+ERROR: test_stop_failure_preserves_original_body_cause_and_is_not_clean (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_stop_failure_preserves_original_body_cause_and_is_not_clean)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_gstreamer_component_cli_v1.py", line 168, in test_stop_failure_preserves_original_body_cause_and_is_not_clean
+    terminal = json.loads((self.root / "result" / self.cli.TERMINAL_FILENAME).read_bytes())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1021, in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1015, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmpjq7t83y2/result/component_cli_terminal.v1.json'
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.091s
+
+FAILED (errors=4)

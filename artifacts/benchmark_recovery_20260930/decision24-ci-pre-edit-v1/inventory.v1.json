@@ -1,0 +1,64 @@
+{
+  "claims": {
+    "full_suite_run": false,
+    "native139_cause_known": false,
+    "profile_authorized": false
+  },
+  "created_at_ns": 1790762877534956200,
+  "files": [
+    {
+      "epoch": [
+        17601399781211216820,
+        1407374885974062,
+        33206,
+        1,
+        17273,
+        1790744021426492300,
+        1790731871923224800
+      ],
+      "path": "scripts/run_ci_checks.py",
+      "sha256": "61c356c6bfae8d808ff4db1becee7385cd5ccebc9505b9a482e691c1a89d56ea",
+      "size_bytes": 17273,
+      "snapshot": "artifacts/benchmark_recovery_20260930/decision24-ci-pre-edit-v1/run_ci_checks.py.before.raw"
+    },
+    {
+      "epoch": [
+        17601399781211216820,
+        1407374885974061,
+        33206,
+        1,
+        3969,
+        1790744021427759700,
+        1790731871923224800
+      ],
+      "path": ".github/workflows/ci.yml",
+      "sha256": "ca182d794d66a14091cf64d95474e3359efa0d8490692086505bfa11a258aba2",
+      "size_bytes": 3969,
+      "snapshot": "artifacts/benchmark_recovery_20260930/decision24-ci-pre-edit-v1/ci.yml.before.raw"
+    },
+    {
+      "epoch": [
+        17601399781211216820,
+        2251799816106025,
+        33206,
+        1,
+        7769,
+        1790743953288724200,
+        1790731948477934400
+      ],
+      "path": "tests/test_run_ci_checks.py",
+      "sha256": "c96381a8ceea61844d403104d68cc17192ba1007b2ee9a04503195bdae4b05e2",
+      "size_bytes": 7769,
+      "snapshot": "artifacts/benchmark_recovery_20260930/decision24-ci-pre-edit-v1/test_run_ci_checks.py.before.raw"
+    }
+  ],
+  "kind": "vast_decision24_ci_pre_edit_inventory_v1",
+  "limits": {
+    "cleanup_s": 15,
+    "observer_namespace_bytes": 8388608,
+    "trace_bytes": 1048576,
+    "whole_job_s": 5400
+  },
+  "planning_commit": "ded811a8043575e7a93cf0bbc28696ac53667d3c",
+  "pr_comment": 5908873975
+}

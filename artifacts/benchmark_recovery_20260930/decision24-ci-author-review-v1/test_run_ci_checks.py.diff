@@ -1,0 +1,57 @@
+--- original/tests/test_run_ci_checks.py
++++ candidate/tests/test_run_ci_checks.py
+@@ -127,31 +127,38 @@
+ 
+     def test_real_periodic_stack_capture_keeps_the_active_test_and_result(self):
+         import json
+-        import subprocess
+         import sys
+         import textwrap
++        import time
+ 
+-        # faulthandler has one process-wide timer. Isolate the regression so it
+-        # cannot replace/cancel the outer full-discovery runner's 60s timer.
++        # The external parent requests dumps; the real suite child has no timer
++        # or observer thread that could invalidate the production subreaper rule.
+         child = textwrap.dedent("""
+-            import importlib.util,io,json,sys,tempfile,time,unittest
++            import importlib.util,io,json,sys,time,unittest
++            from pathlib import Path
+             spec=importlib.util.spec_from_file_location('ci',sys.argv[1])
+             ci=importlib.util.module_from_spec(spec); spec.loader.exec_module(ci)
+             class Waiting(unittest.TestCase):
+-                def runTest(self): time.sleep(.08)
+-            with tempfile.TemporaryFile(mode='w+',encoding='utf8') as stacks:
+-                result=ci.run_test_suite(unittest.TestSuite([Waiting()]),io.StringIO(),stacks,.02)
+-                stacks.seek(0); original=stacks.read()
+-            print(json.dumps({'passed':result.wasSuccessful(),'stacks':original}))
++                def runTest(self): time.sleep(.12)
++            with ci._observer.child_trace_handler(int(sys.argv[2]),int(sys.argv[3]),int(sys.argv[4])):
++                result=ci.run_test_suite(unittest.TestSuite([Waiting()]),io.StringIO())
++            Path(sys.argv[5]).write_text(json.dumps({'passed':result.wasSuccessful()}))
+         """)
+-        original = subprocess.run([sys.executable, "-I", "-B", "-c", child,
+-                                   str(ROOT / "scripts/run_ci_checks.py")],
+-                                  check=True, capture_output=True, text=True, timeout=10)
+-        observation = json.loads(original.stdout)
++        with tempfile.TemporaryDirectory() as directory:
++            original = ci._observer.observe_test_child(
++                lambda trace,event,stop: [sys.executable,"-I","-B","-c",child,
++                    str(ROOT / "scripts/run_ci_checks.py"),str(trace),str(event),str(stop),
++                    str(Path(directory)/"suite-result.json")],
++                output_dir=Path(directory)/"observer", interval_s=.02,
++                absolute_deadline_ns=time.monotonic_ns()+5_000_000_000)
++            self.assertTrue(original['successful'], original)
++            observation=json.loads((Path(directory)/"suite-result.json").read_text())
++            trace=(Path(directory)/"observer/trace.original.log").read_text()
++            ready=json.loads((Path(directory)/"observer/responses.original.jsonl").read_text().splitlines()[0])
+         self.assertTrue(observation["passed"])
+-        self.assertIn("Timeout", observation["stacks"])
+-        self.assertIn("runTest", observation["stacks"])
+-        self.assertIn("run_test_suite", observation["stacks"])
++        self.assertEqual(ready['native_task_count'],1)
++        self.assertIn("runTest",trace)
++        self.assertIn("run_test_suite",trace)
+ 
+     def test_expected_failure_and_unexpected_success_keep_original_outcomes(self):
+         stream = io.StringIO()

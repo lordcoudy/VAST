@@ -544,6 +544,7 @@ def load_verified_model_parity_acceptance_v4(
     *,
     project_root: Path | str,
     receipt_path: Path | str,
+    command_runner: Any = None,
 ) -> dict[str, Any]:
     try:
         root = parity_v4._physical_root(project_root)
@@ -584,7 +585,8 @@ def load_verified_model_parity_acceptance_v4(
     assessment_record = registry.add_descriptor(binding.get("accepted_assessment"), "accepted model-parity v4 assessment")
     assessment_document = _read_json(root.joinpath(*PurePosixPath(assessment_record["path"]).parts), "accepted model-parity v4 assessment")
     assessment_identity = _self_hash(assessment_document, "assessment_sha256", "accepted model-parity v4 assessment")
-    current_assessment = parity_v4.assess_model_parity_v4(manifest_path, project_root=root)
+    assessment_arguments = {} if command_runner is None else {"command_runner": command_runner}
+    current_assessment = parity_v4.assess_model_parity_v4(manifest_path, project_root=root, **assessment_arguments)
     assessed = _assessment_binding(current_assessment, material["accepted_manifest_content_identity_sha256"])
     expected_assessment = _accepted_assessment_document(material=material, transaction=transaction, assessed=assessed, refresh=refresh)
     _require(assessment_document == expected_assessment, "accepted model-parity v4 assessment drifted")

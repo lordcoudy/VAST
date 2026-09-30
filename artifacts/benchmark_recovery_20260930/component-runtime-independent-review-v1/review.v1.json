@@ -1,0 +1,149 @@
+{
+  "acceptance_limits": [
+    "Local fixture tests replace expensive live image/service/model delegates; this review executes no tests, image builds, workers, models, guardian, measurement or 20GiB reservation.",
+    "Author records five unchanged native3/worker2 source contexts, not current daemon acceptance. Actual selected current image/model/worker/calibration checks and CPU/GPU two-arm execution remain required.",
+    "Full CPU CI and legacy all-four/Q4/5600 campaign are not completed by these tests or component-kind results."
+  ],
+  "artifact_kind": "vast_component_runtime_independent_source_review_v1",
+  "facts": {
+    "controller_elapsed_s": 4.645566338993376,
+    "new_component_tests": 12,
+    "original_import_smoke_count": 62,
+    "original_import_smoke_returncode": 0,
+    "original_import_smoke_sources_equal": true,
+    "original_pid_and_group": 23349,
+    "original_quiescence": {
+      "original_group_absent": true,
+      "original_pid_absent": true
+    },
+    "original_staging_tests": 12,
+    "original_tests": 24,
+    "rehash_host_source_count": 87,
+    "rehash_selected_source_count": 73,
+    "returncode": 0,
+    "reviewer_ran_tests_or_external_workload": false,
+    "stable_focused_dependency_count": 17,
+    "timed_out": false,
+    "unittest_elapsed_s": 3.688
+  },
+  "hardware_acceptance": false,
+  "historical_limits": [
+    "First direct failing fixture/API test was tool-output-only with no persistent original PID/source channels; no retrospective capture is asserted.",
+    "Attempts01/02 retain original outer WSL channels/exit code but no original inner PID/source inventory; attempt03 supplies the actual final24 scoped custody.",
+    "OwnedStaging optional bound was added without a physical pre-edit inventory; the exact historical committed blob is separately retained and labeled."
+  ],
+  "original_evidence": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/root-seam3-author-review-v2/review.v1.json",
+      "sha256": "358e9710c1dbc02fb3cb29cfaddab30effbbb353d88f6c9a8ce7b78282e7b25e",
+      "size_bytes": 32837
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/root-seam3-focused-v1/attempt-03-final/execution.json",
+      "sha256": "1f573dea82e4db4c52067b7d08f9be1b5577de0433fff5e172fa4ce0172005f7",
+      "size_bytes": 7108
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/root-seam3-focused-v1/attempt-03-final/stderr.bin",
+      "sha256": "d2e2fa93dfda980a4b7e56ab9f06674992183373849b1b3a4ef261592dd0d9fc",
+      "size_bytes": 5171
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/root-seam3-focused-v1/attempt-03-final/stdout.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-packaged-import-smoke-v1/execution.v1.json",
+      "sha256": "d94cbf5a63a347220a9c636a434c339bdc705e3451c9049b2d9b92b1c0a5874f",
+      "size_bytes": 18499
+    }
+  ],
+  "owned_sources": [
+    {
+      "path": "deploy/gstreamer_custom/publication/Dockerfile",
+      "sha256": "5d10aec4076e67218905b2c71ae32553e6843810d6d176b8e31c0c3be9dffe78",
+      "size_bytes": 8169
+    },
+    {
+      "path": "deploy/gstreamer_custom/publication/runtime-source-allowlist.txt",
+      "sha256": "111c8d3a517a4ab350fbb2753a3c01965e6645eeaad72c24f1b9f1266659e600",
+      "size_bytes": 3538
+    },
+    {
+      "path": "scripts/publication_gstreamer_component_runtime_v1.py",
+      "sha256": "a77d70f6b35718c596cdf8d0a79a2275296c20562e10688047a16e70bde6a597",
+      "size_bytes": 65283
+    },
+    {
+      "path": "scripts/publication_owned_staging_cleanup_v1.py",
+      "sha256": "d601fb4460bc44b27cb2d38fd70e73a388fb137c95139fa10d4eefca944def92",
+      "size_bytes": 39390
+    },
+    {
+      "path": "scripts/publication_policy_qualification_execution_code_closure_v1.py",
+      "sha256": "984dd840a768b08462db82ea96cb7cdce4b9f6e3e1ca20605b258771f665a30c",
+      "size_bytes": 19176
+    },
+    {
+      "path": "tests/test_publication_gstreamer_component_runtime_v1.py",
+      "sha256": "86f334eb962620f106d20163af1696dd16a48a50ce982a5f9e6d401023fbb6e6",
+      "size_bytes": 19234
+    }
+  ],
+  "packaging_scope": "Rehashed actual selected73 and host87 leaves against closed author inventory; original62-copy import smoke is rc0 with unchanged bytes and no host factory loaded. Selected image still needs original rebuilt image/source/dependency inspection. Other three runtime images remain historical/ineligible; their missing new imports need registration before any future full build.",
+  "planning_commit": "9ad1a52b38cd5028de6b04bcc08192309ef192cf",
+  "publication_ready": false,
+  "qualification_ready": false,
+  "reproducibility_scope": "New component sources are outside historical165 checkout proof. Final physical/index/commit equality must bind current closure; no entire-project or all-four rebuild claim follows.",
+  "resolved_review_findings": [
+    {
+      "finding": "Guardian journal custody previously ended before final pair publication.",
+      "resolution": "Whole-pair custody now pins every journal descriptor at runtime:277/703; actual same-byte replacement negative is test:237."
+    },
+    {
+      "finding": "Generated preprocessing contract and receipt were not retained through the whole cold pair.",
+      "resolution": "Runtime:659 independently pins both leaves before loading and checks physical receipt/authority hashes; actual late same-byte replacement negative is test:254."
+    }
+  ],
+  "review_authorization": "https://github.com/lordcoudy/VAST/pull/2#issuecomment-5907711751",
+  "reviewed_at_utc": "2026-09-30T10:55:05.931221+00:00",
+  "reviewed_invariants": [
+    {
+      "finding": "Original two-operation capture uses actual selected model/calibration/closure/source/worker references; no future socket or aggregate qualification grant is fabricated.",
+      "source": "scripts/publication_gstreamer_component_runtime_v1.py:93"
+    },
+    {
+      "finding": "Held request reconstructs the entire existing factory runtime inputs and copied engine from held selected authority, preprocessing, actual service, context and reserved outputs. Resealed foreign source/engine fields reject before execution.",
+      "source": "scripts/publication_gstreamer_component_runtime_v1.py:202"
+    },
+    {
+      "finding": "Execution cannot opt out of live guardian validation. Original native v3 executor, process/container custody, collector and physical full-resource/ingress acceptance checks remain required; occupied attempts reject.",
+      "source": "scripts/publication_gstreamer_component_runtime_v1.py:538"
+    },
+    {
+      "finding": "Selected authority, original child inputs, nested process/container witnesses and all-phase journals remain held through cold recomputation and final receipt. Current source, worker, model, lifecycle, CID and measured/native identities join independently.",
+      "source": "scripts/publication_gstreamer_component_runtime_v1.py:630"
+    },
+    {
+      "finding": "Exact arm schema, typed zero exit/timestamps/counts, scientific scope and false full-eligibility fields prevent a component receipt becoming a publication, qualification or Q4 grant.",
+      "source": "scripts/publication_gstreamer_component_runtime_v1.py:717"
+    },
+    {
+      "finding": "Original measurement schedule fingerprints pair the arms; cohort IDs correctly remain arm-local. Existing all-phase reconciler checks multiplicity/replay and measurement membership.",
+      "source": "scripts/publication_gstreamer_component_runtime_v1.py:817"
+    },
+    {
+      "finding": "Observed completed latency quantiles/ECDF, absolute misses, ingress-minus-completed drops and coverage are descriptive. Nonpositive ratio denominators yield null with reason; one pair makes no population/accuracy/NVDEC claim.",
+      "source": "scripts/publication_gstreamer_component_runtime_v1.py:285"
+    },
+    {
+      "finding": "Optional positive byte limit is preserved through capture and owned unlink rehash; None keeps original default. Hardware copy uses exact 64MiB bound and immutable source/target custody.",
+      "source": "scripts/publication_owned_staging_cleanup_v1.py:194"
+    }
+  ],
+  "reviewer": "architecture_review (not runtime/executor or CLI author)",
+  "schema_version": 1,
+  "sha256": "cc0901323a9daba2b4f7a949cbe239cb8af692ff4e1b8f08c841cf65ada666e0",
+  "status": "approved_scoped_source_no_remaining_blocker"
+}

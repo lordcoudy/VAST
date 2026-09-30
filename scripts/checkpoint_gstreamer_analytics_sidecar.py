@@ -69,6 +69,15 @@ from publication_guardian_accepted_policy_preprocessing_contract_v1 import (
     load_accepted_policy_guardian_preprocessing_contract_v1,
     validate_accepted_policy_guardian_preprocessing_authority_v1,
 )
+from publication_guardian_component_preprocessing_contract_v1 import (
+    AUTHORITY_KIND as COMPONENT_PREPROCESSING_AUTHORITY_KIND,
+    RECEIPT_KIND as COMPONENT_PREPROCESSING_RECEIPT_KIND,
+    ComponentGuardianPreprocessingContractV1Error,
+    load_component_guardian_preprocessing_contract_v1,
+    validate_component_guardian_preprocessing_authority_v1,
+    validate_component_operational_context_v1,
+    validate_component_front_request_v1,
+)
 from publication_guardian_runtime_expectations_v1 import (
     GuardianRuntimeExpectationsV1Error,
     runtime_expectations_from_preprocessing_receipt_v1,
@@ -420,9 +429,12 @@ def _validate_preprocessing_authority_v1(
             return validate_guardian_preprocessing_authority_v1(value)
         if kind == "vast_guardian_accepted_policy_preprocessing_contract_authority_v1":
             return validate_accepted_policy_guardian_preprocessing_authority_v1(value)
+        if kind == COMPONENT_PREPROCESSING_AUTHORITY_KIND:
+            return validate_component_guardian_preprocessing_authority_v1(dict(value))
     except (
         GuardianPreprocessingContractV1Error,
         AcceptedPolicyGuardianPreprocessingContractV1Error,
+        ComponentGuardianPreprocessingContractV1Error,
     ) as error:
         raise SidecarError(
             f"analytics preprocessing contract authority is invalid: {error}"
@@ -4228,6 +4240,13 @@ class GStreamerAnalyticsSidecar:
                 )
             )
         )
+        if self.preprocessing_authority is not None and self.preprocessing_authority["artifact_kind"] == COMPONENT_PREPROCESSING_AUTHORITY_KIND:
+            _require(service_mode == PRODUCTION_SERVICE_MODE,
+                     "component preprocessing authority requires explicit production activation")
+            try:
+                validate_component_operational_context_v1(self.preprocessing_authority, operational_context)
+            except ComponentGuardianPreprocessingContractV1Error as error:
+                raise SidecarError(str(error)) from error
         self.lifecycle_id = uuid.uuid4().hex
         self.runtime_dir = _canonical_directory(
             runtime_dir,
@@ -4326,12 +4345,11 @@ class GStreamerAnalyticsSidecar:
                     "analytics production preprocessing candidate manifest is not canonical JSON"
                 ) from error
             authority_kind = self.preprocessing_authority["artifact_kind"]
-            manifest_field = (
-                "candidate_manifest_file_sha256"
-                if authority_kind
-                == "vast_guardian_preprocessing_contract_authority_v1"
-                else "accepted_policy_capability_manifest_file_sha256"
-            )
+            manifest_field = {
+                "vast_guardian_preprocessing_contract_authority_v1": "candidate_manifest_file_sha256",
+                "vast_guardian_accepted_policy_preprocessing_contract_authority_v1": "accepted_policy_capability_manifest_file_sha256",
+                COMPONENT_PREPROCESSING_AUTHORITY_KIND: "capability_manifest_file_sha256",
+            }[authority_kind]
             _require(
                 self.preprocessing_authority[manifest_field]
                 == candidate_manifest_file_sha256,
@@ -5444,6 +5462,12 @@ class GStreamerAnalyticsSidecar:
                                 message, request_route, protocol_mode,
                                 connection_seq, handled_requests + 1,
                             )
+                        if self.preprocessing_authority["artifact_kind"] == COMPONENT_PREPROCESSING_AUTHORITY_KIND:
+                            failure_stage = "component_scope"
+                            _require(self._operational_recorder is not None,
+                                     "component guardian operational capture is inactive")
+                            validate_component_front_request_v1(self.preprocessing_authority,
+                                self.policy_capability_manifest, message, request_route, protocol_mode)
                     failure_stage = "payload_integrity"
                     payload = verify_sealed_memfd(
                         descriptors[0],
@@ -6964,6 +6988,12 @@ def main(argv: Sequence[str] | None = None) -> int:
                             ),
                         )
                     )
+                elif preprocessing_receipt_document.get("artifact_kind") == COMPONENT_PREPROCESSING_RECEIPT_KIND:
+                    loaded_preprocessing = load_component_guardian_preprocessing_contract_v1(
+                        project_root=project_root, preprocessing_contract_path=args.preprocessing_contract,
+                        materialization_receipt_path=args.preprocessing_contract_receipt,
+                        capability_manifest_path=args.policy_capability_manifest,
+                        operational_context_path=args.operational_accounting_context)
                 else:
                     loaded_preprocessing = load_guardian_preprocessing_contract_v1(
                         project_root=project_root,

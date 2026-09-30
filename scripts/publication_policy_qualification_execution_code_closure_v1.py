@@ -32,6 +32,10 @@ SEED_MODULES = (
     "checkpoint_qualification_pilot_acceptance_v1",
     "publication_operational_stock_operations_v1",
     "publication_benchmark_native_diagnostic_v1",
+    "publication_gstreamer_component_runtime_v1",
+    "publication_gstreamer_component_cli_v1",
+    "publication_gstreamer_component_inputs_v1",
+    "publication_guardian_component_preprocessing_contract_v1",
 )
 _MAX_SOURCE_BYTES = 16 * 1024 * 1024
 _MAX_INTERPRETER_BYTES = 1024 * 1024 * 1024

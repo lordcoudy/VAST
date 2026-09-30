@@ -542,6 +542,7 @@ def _accepted_calibration_material(
     accepted_manifest_path: Path | str,
     accepted_assessment_path: Path | str,
     accepted_receipt_path: Path | str,
+    acceptance_loader: Callable[..., dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     manifest_relative = _relative_input(
         root, accepted_manifest_path, "accepted model-parity manifest"
@@ -566,7 +567,7 @@ def _accepted_calibration_material(
         if manifest_header_coordinate == (
             3, "checkpoint_analytics_model_parity_manifest"
         ):
-            acceptance_loader = (
+            default_acceptance_loader = (
                 model_parity_acceptance.load_verified_model_parity_acceptance
             )
         elif manifest_header_coordinate == (
@@ -575,12 +576,12 @@ def _accepted_calibration_material(
             from checkpoint_model_parity_acceptance_v4 import (
                 load_verified_model_parity_acceptance_v4,
             )
-            acceptance_loader = load_verified_model_parity_acceptance_v4
+            default_acceptance_loader = load_verified_model_parity_acceptance_v4
         else:
             raise BootstrapCalibrationV2Error(
                 "accepted model-parity manifest schema/kind is unsupported"
             )
-        raw_binding = acceptance_loader(
+        raw_binding = (default_acceptance_loader if acceptance_loader is None else acceptance_loader)(
             project_root=root,
             receipt_path=root / receipt_relative,
         )

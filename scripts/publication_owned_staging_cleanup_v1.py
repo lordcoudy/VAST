@@ -191,10 +191,19 @@ def _is_reparse(info: os.stat_result) -> bool:
     )
 
 
-def _sha256_fd(descriptor: int) -> str:
+def _sha256_fd(descriptor: int, *, maximum_bytes: int | None = None) -> str:
+    if maximum_bytes is not None:
+        _require(type(maximum_bytes) is int and maximum_bytes > 0
+                 and os.fstat(descriptor).st_size <= maximum_bytes,
+                 "owned staging file exceeds its explicit byte bound")
     digest = hashlib.sha256()
     os.lseek(descriptor, 0, os.SEEK_SET)
-    while chunk := os.read(descriptor, 1024 * 1024):
+    total = 0
+    while chunk := os.read(descriptor, min(1024 * 1024, maximum_bytes + 1 - total)
+                          if maximum_bytes is not None else 1024 * 1024):
+        total += len(chunk)
+        _require(maximum_bytes is None or total <= maximum_bytes,
+                 "owned staging file grew beyond its explicit byte bound")
         digest.update(chunk)
     os.lseek(descriptor, 0, os.SEEK_SET)
     return digest.hexdigest()
@@ -900,6 +909,7 @@ class OwnedStagingFileV1:
         sha256: str,
         mutation_watch_fd: int,
         label: str,
+        maximum_bytes: int | None = None,
     ) -> None:
         self.path = path
         self._parent_fd = parent_fd
@@ -909,10 +919,12 @@ class OwnedStagingFileV1:
         self.sha256 = sha256
         self._mutation_watch_fd = mutation_watch_fd
         self.label = label
+        self.maximum_bytes = maximum_bytes
         self.closed = False
 
     @classmethod
-    def capture(cls, path: Path | str, *, label: str) -> "OwnedStagingFileV1":
+    def capture(cls, path: Path | str, *, label: str,
+                maximum_bytes: int | None = None) -> "OwnedStagingFileV1":
         _require(os.name == "posix", f"{label} cleanup requires canonical POSIX custody")
         lexical = Path(os.path.abspath(os.fspath(path)))
         _require(
@@ -938,7 +950,7 @@ class OwnedStagingFileV1:
                 _snapshot(opened) == _snapshot(named),
                 f"{label} candidate identity changed while anchoring",
             )
-            digest = _sha256_fd(file_fd)
+            digest = _sha256_fd(file_fd, maximum_bytes=maximum_bytes)
             _require(
                 _snapshot(os.fstat(file_fd)) == _snapshot(opened),
                 f"{label} candidate changed while anchoring",
@@ -953,6 +965,7 @@ class OwnedStagingFileV1:
                 sha256=digest,
                 mutation_watch_fd=mutation_watch_fd,
                 label=label,
+                maximum_bytes=maximum_bytes,
             )
         except BaseException:
             if file_fd >= 0:
@@ -983,7 +996,7 @@ class OwnedStagingFileV1:
         opened = os.fstat(self._file_fd)
         _require(
             _snapshot(named) == self.snapshot == _snapshot(opened)
-            and _sha256_fd(self._file_fd) == self.sha256
+            and _sha256_fd(self._file_fd, maximum_bytes=self.maximum_bytes) == self.sha256
             and _snapshot(os.fstat(self._file_fd)) == self.snapshot,
             f"{self.label} candidate was rebound, mutated, or ABA-restored",
         )
