@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "vast_ci_original_denial_conditional_route_review_v1",
+  "disposition": "reviewed_existing_scope_implementation_preparation_only",
+  "source_commit": "5bc416a2beab98b6cc60229dac56332b48cc6ca2",
+  "planning": {
+    "path": "openspec/changes/fix-benchmark-preparations-spec/design.md",
+    "size_bytes": 35324,
+    "sha256": "5303b985449c32598099bdde7594ce3805f257bea7d59f7058fc96716231a12a",
+    "lines": "Decision24 namespace facts, 91-97"
+  },
+  "original_readonly_evidence": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-5bc416-original-host-retention-v1/cpu-review.v1.json",
+    "size_bytes": 9913,
+    "sha256": "22a7cabacd01e24a7ba8de305575645939278a69f7df46c4d153de044c3137f4"
+  },
+  "unchanged_stock_source": {
+    "path": "scripts/backend_publication_process_supervisor_v3.py",
+    "size_bytes": 124499,
+    "sha256": "acc40456cf93db8deb270f54d14b8f17555a268969e5bad0695372ddba12132d",
+    "behavior": "CLONE_NEWUSER then setgroups deny, uid_map, gid_map, mount/PID namespace; only missing setgroups is tolerated. EACCES remains failure."
+  },
+  "primary_source": {
+    "url": "https://documentation.ubuntu.com/release-notes/24.04/",
+    "section": "Security Improvements / Unprivileged user namespace restrictions",
+    "paraphrase": "Ubuntu describes a default policy permitting initial user-namespace creation while restricting subsequent capabilities, and documents an exact-executable unconfined profile with userns permission as an application-specific remedy."
+  },
+  "evidence_meets_existing_condition": true,
+  "basis": [
+    "Original PID3991, exact interpreter path and identity, boot and capture interval join the actual kernel record.",
+    "Original CLONE_NEWUSER completed successfully; following setgroups open failed EACCES13.",
+    "Actual journal record names the same PID, capable/sys_admin and unprivileged_userns; original query rc0 alone is insufficient."
+  ],
+  "permitted_next_scope": "Prepare and separately review CI-only exact-executable flags=(unconfined) { userns, } bytes and lifecycle under existing Decision24; no additional production or global-policy scope follows.",
+  "implementation_conditions": [
+    "A later original job must join its own genuine interpreter and denial; historical runner PID/inode witnesses cannot be rebound.",
+    "Pure joins reject foreign PID, boot, executable, time interval, operation and unavailable/injected denial facts.",
+    "Reject an existing profile collision; retain exact parser/load/unload terminals and remove only owned profile bytes and identity.",
+    "Keep unprivileged workload, stock namespace/auth/containment predicates and budgets unchanged; preserve failed enforcement, cleanup and actual test outcomes.",
+    "Actual intended namespace and mount operations, three required native IDs and portable full selection remain required; successful profile loading alone proves none."
+  ],
+  "limits": [
+    "Original collector policy_denial_proven=False stays unchanged.",
+    "No profile/parser/query/namespace/native/test/engine operation was performed by this reviewer.",
+    "The matching denial is not proof that every remaining failure or any historical native139 has the same cause.",
+    "No global sysctl, privilege/capability bypass, test skip, Python change or retry is authorized by this receipt."
+  ]
+}

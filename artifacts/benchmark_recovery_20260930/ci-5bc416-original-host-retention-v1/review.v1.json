@@ -1,0 +1,118 @@
+{
+  "actual_two_test_terminals": [
+    {
+      "elapsed_s": 0.01898829200000307,
+      "event": "test_terminal",
+      "monotonic_ns": 123254990263,
+      "outcome": "success",
+      "test_id": "test_analytics_model_contract.AnalyticsModelContractTests.test_repository_manifest_is_complete_and_hash_bound"
+    },
+    {
+      "elapsed_s": 0.0007571040000016183,
+      "event": "test_terminal",
+      "monotonic_ns": 123255823191,
+      "outcome": "success",
+      "test_id": "test_analytics_peer_identity.AnalyticsPeerIdentityAuthorityTests.test_observer_reads_exact_proc_file_and_small_docker_projection"
+    }
+  ],
+  "all_member_crc_verified": true,
+  "archive": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-5bc416-original-host-retention-v1/36764814739-host/original-artifact.zip",
+    "sha256": "86810a456641f4c1ffa39c3f230ee1710dbb802b157c2662a409f3467d76cef1",
+    "size_bytes": 325635
+  },
+  "artifact_kind": "vast_5bc_original_host_ci_retention_review_v1",
+  "closed_v2_summary_source": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-5bc416-original-host-retention-v1/summarize_host_v2.py",
+    "sha256": "30f48c39e47b7beb92fa18c793238632c7e96f7a266c38c07271783050f9ba82",
+    "size_bytes": 6309
+  },
+  "cpu_job_snapshot": {
+    "conclusion": null,
+    "full_result_pending": true,
+    "id": 110056199709,
+    "status": "in_progress"
+  },
+  "decoded_bytes": 1598160,
+  "finite_source_join": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-5bc416-original-host-retention-v1/host-original-readonly-review.v1.json",
+    "sha256": "38a63e8149f327e4d7c682999f18a06463629c0a5f0d8029647dabf84384c6fb",
+    "size_bytes": 5486
+  },
+  "first_static_summary_failure": "Original summarize_host.py exit1: apply_patch textual rendering added one final LF. No review report published. Existing decoded connector JSON preserves exact original text; v2 writes that exact UTF8 text to a NEW file and leaves failed source/first text rendering unchanged.",
+  "first_static_summary_source": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-5bc416-original-host-retention-v1/summarize_host.py",
+    "sha256": "093bb42392673e65d54fb57f0f647af2b6d61d221f351949940a59b3ebac31d6",
+    "size_bytes": 5494
+  },
+  "four_declared_committed_sources_match_actual_hosted_source_bytes": true,
+  "full_ci_successful": false,
+  "hardware_accepted": false,
+  "historical_rendering_extra_LF": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-5bc416-original-host-retention-v1/host-job-110056199870.decoded.original.log",
+    "sha256": "8de0355a3e528e8cf3b8241d7a30f398e038026f7c291d2e26bf3bffb89eff3c",
+    "size_bytes": 33960
+  },
+  "host_job_id": 110056199870,
+  "limitations": [
+    "Hosted model bytes were validated by original acquisition and model prerequisite; reviewer did not download or execute models.",
+    "Provider temporary file-reference URL was kept only in memory; stable IDs and authenticated original archive bytes are retained.",
+    "CPU suite was still in progress in this single recorded snapshot; host success does not establish full portable/native CI success."
+  ],
+  "namespace_denial_or_native_crash_cause": null,
+  "original_decoded_joblog": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-5bc416-original-host-retention-v1/host-job-110056199870.decoded.exact.original.log",
+    "sha256": "2f3ec46df3dfffd2fb93150ff2fca939d1b0acd7aed57b3afb1d3a4459c472fd",
+    "size_bytes": 33959
+  },
+  "original_decoded_tool_result": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-5bc416-original-host-retention-v1/host-job-110056199870.decoded-tool-result.original.json",
+    "sha256": "5c0f9f3984cec3bbd2990f16cd8ad53318916c40412893e94619f03ec7e2c2fc",
+    "size_bytes": 34654
+  },
+  "original_downloaded_model_count": 8,
+  "original_host_conclusion": "success",
+  "original_jobs_snapshot": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-5bc416-original-host-retention-v1/provider-jobs.snapshot01.original.json",
+    "sha256": "d33c3b7e6e33dfb0d4bc25ff0e05b57a736b2261d70f5dd46a3521c04913139a",
+    "size_bytes": 5820
+  },
+  "original_model_acquisition_elapsed_s": 7.702644587000009,
+  "original_model_acquisition_status": "complete",
+  "original_process": {
+    "argv": [
+      "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python",
+      "-I",
+      "-B",
+      "-c",
+      "import sys,unittest; sys.path[:0]=sys.argv[1:3]; import run_ci_checks as checks; suite=unittest.defaultTestLoader.loadTestsFromNames(sys.argv[3:]); result=unittest.TextTestRunner(verbosity=2,resultclass=checks.RecordedResult).run(suite); sys.exit(0 if result.wasSuccessful() and result.testsRun==2 and set(sys.argv[3:])<=set(result.successes) else 1)",
+      "/home/runner/work/VAST/VAST/tests",
+      "/home/runner/work/VAST/VAST/scripts",
+      "test_analytics_model_contract.AnalyticsModelContractTests.test_repository_manifest_is_complete_and_hash_bound",
+      "test_analytics_peer_identity.AnalyticsPeerIdentityAuthorityTests.test_observer_reads_exact_proc_file_and_small_docker_projection"
+    ],
+    "cleanup_error": null,
+    "elapsed_s": 0.8653027019999939,
+    "returncode": 0,
+    "timed_out": false
+  },
+  "original_provider_artifacts": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-5bc416-original-host-retention-v1/provider-artifacts.original.json",
+    "sha256": "d336851c4ba46b551331da9ccd453a2c7db3be0fcb8071bc9ac867bde2b7ec8e",
+    "size_bytes": 1066
+  },
+  "run_id": 36764814739,
+  "schema_version": 1,
+  "scope": "One local original host archive retention and closed metadata/CRC/source/outcome joins; completed host prerequisite result only. No CPU pending archive/log retrieval, retry/cancel/model/native/engine/namespace/test execution by reviewer.",
+  "source_before_after_equal": true,
+  "source_commit": "5bc416a2beab98b6cc60229dac56332b48cc6ca2",
+  "source_index_head_modified": false,
+  "temporary_signed_url_or_credentials_saved_or_output": false,
+  "tracked_path_count": 3549,
+  "zip_members": 51,
+  "zip_readonly_inventory": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-5bc416-original-host-retention-v1/36764814739-host/zip-readonly-inventory.v1.json",
+    "sha256": "bb3850e5ac068368c3eb46fc6675cf432e2f57aaa52e0ccb97b2f6c05ec5724b",
+    "size_bytes": 8271
+  }
+}

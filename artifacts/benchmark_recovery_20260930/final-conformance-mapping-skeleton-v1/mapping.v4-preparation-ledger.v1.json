@@ -1,0 +1,117 @@
+{
+  "82_register_rows_exact_name_and_scope": true,
+  "artifact_kind": "vast_mapping_v4_preparation_ledger_v1",
+  "authoring_script": {
+    "path": "artifacts/benchmark_recovery_20260930/final-conformance-mapping-skeleton-v1/prepare_mapping_v4.py",
+    "sha256": "6620ecc0386b10e039e7e8686fd1b07382effee25a7cf667db58dab46ce06b42",
+    "size_bytes": 41962
+  },
+  "earlier109_clauses_exact": true,
+  "input_document_descriptors_before_after_equal": [
+    {
+      "path": "openspec/changes/fix-benchmark-preparations-spec/proposal.md",
+      "sha256": "e4235e246b2d148dd73b8f749e1dd217efa3b7610d58e2c4daf6a3a51d6544a7",
+      "size_bytes": 13792
+    },
+    {
+      "path": "openspec/changes/fix-benchmark-preparations-spec/design.md",
+      "sha256": "5303b985449c32598099bdde7594ce3805f257bea7d59f7058fc96716231a12a",
+      "size_bytes": 35324
+    },
+    {
+      "path": "openspec/changes/fix-benchmark-preparations-spec/tasks.md",
+      "sha256": "38b0569683365fd734b6ae3b771fc4d1cbbfd820d1bdd864d25a64a2f5581f3c",
+      "size_bytes": 24568
+    },
+    {
+      "path": "openspec/changes/fix-benchmark-preparations-spec/specs/benchmark-launch-preparation/spec.md",
+      "sha256": "576821b3fd057becb7735b70affba8001e3e70a15308c4783928e7f9c5471be3",
+      "size_bytes": 71033
+    },
+    {
+      "path": "openspec/changes/fix-benchmark-preparations-spec/verification-plan.md",
+      "sha256": "b3db56c13e3a5c7157820f4e60f459455c5a83706b207c308f7af09716c8f73d",
+      "size_bytes": 48891
+    },
+    {
+      "path": "openspec/changes/fix-benchmark-preparations-spec/conformance-progress.md",
+      "sha256": "449563678e1c6392e1955246ff67fc8003a34bcead58c9bd47d45d61cd9aaf2f",
+      "size_bytes": 77152
+    },
+    {
+      "path": "BENCHMARK_RECOVERY_PLAN.md",
+      "sha256": "448c2a3653b2426f8e7bb30c5c2cb4a45cf0c9e396cbe300bf6917dcd2b7f231",
+      "size_bytes": 52297
+    },
+    {
+      "path": "docs/gstreamer-component-benchmark-runbook.md",
+      "sha256": "8051aaaab0a6e52c09beafc0ad91cf39a80322269880fdd783d1e777db896361",
+      "size_bytes": 8802
+    }
+  ],
+  "new_three_physical_gates_pending": true,
+  "output_descriptors": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/final-conformance-mapping-skeleton-v1/mapping.v4.json",
+      "sha256": "95e8954225d40ab1ed479eaeb088d7b7d8a71cb6f07f8fb410aef6b53901fdd8",
+      "size_bytes": 451904
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/final-conformance-mapping-skeleton-v1/task-completion-recommendation.v1.json",
+      "sha256": "6ef7b3f8d2c6e11f3807cc82069ffed88d00171761e22b557c2654de9e212cef",
+      "size_bytes": 44023
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/final-conformance-mapping-skeleton-v1/task-completion-recommendation.v1.md",
+      "sha256": "a6ffbfa069f7490362d5294157257f725dc6207ecf23d66276cece1df971a69f",
+      "size_bytes": 1325
+    }
+  ],
+  "preparation_failed_attempts": [
+    {
+      "failure": "Task parser omitted existing nested ID10.8.1; task-count assertion stopped before any output writes. Only the metadata parser was corrected; no task content or selection changed.",
+      "original_tool_exit_code": 1
+    },
+    {
+      "failure": "Artifact reader Git-output256KiB guard rejected genuine293953B original sidecar baseline; no output writes. Finite source-read cap adjusted to1MiB; no producer, source or authority budget changed.",
+      "original_tool_exit_code": 1
+    }
+  ],
+  "preserved_previous_mapping": {
+    "path": "artifacts/benchmark_recovery_20260930/final-conformance-mapping-skeleton-v1/mapping.v3.json",
+    "sha256": "f1db2751aa2750992229f7281adad3e8151dcfa2113faf86887358f2036cf043",
+    "size_bytes": 373598
+  },
+  "scenario_scope_counts": {
+    "active_selected_component_or_repository_behavior": 91,
+    "preserved_deferred_campaign_execution_with_active_strict_interface_checks": 15,
+    "preserved_research_execution_and_active_failure_integrity": 6
+  },
+  "schema_version": 1,
+  "source_commit_before_after": "5bc416a2beab98b6cc60229dac56332b48cc6ca2",
+  "source_point_distinction": {
+    "committed": {
+      "checked": 37,
+      "commit": "5bc416a2beab98b6cc60229dac56332b48cc6ca2",
+      "tasks_descriptor": {
+        "path": "openspec/changes/fix-benchmark-preparations-spec/tasks.md",
+        "sha256": "40db3b81948c0954f7fb46a557ffad0b02c1eb2a9c846a8b385a009dd0e3332e",
+        "size_bytes": 24286
+      },
+      "total": 65
+    },
+    "current_working": {
+      "checked": 38,
+      "only_difference_from_commit": "22.1 changed to checked with exact Decision27 planning/PR evidence; no setup or pair acceptance.",
+      "tasks_descriptor": {
+        "path": "openspec/changes/fix-benchmark-preparations-spec/tasks.md",
+        "sha256": "38b0569683365fd734b6ae3b771fc4d1cbbfd820d1bdd864d25a64a2f5581f3c",
+        "size_bytes": 24568
+      },
+      "total": 65
+    },
+    "mapping_changes_tasks": false
+  },
+  "static_ast_modules_read": 90,
+  "tests_or_engine_or_hardware_or_git_mutation": false
+}

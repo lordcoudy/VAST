@@ -25,16 +25,16 @@ from analytics_execution_endpoint import (  # noqa: E402
 )
 
 
-def expected_terminal_detector(artifact: dict[str, object], resource: str, project_root: Path) -> str:
+def expected_terminal_detector(artifact: dict[str, object], resource: str) -> str:
     binding_descriptor = artifact["analytics_execution_worker_binding"]
     probe_descriptor = artifact["analytics_runtime_probe"]
     assert isinstance(binding_descriptor, dict)
     assert isinstance(probe_descriptor, dict)
     binding = json.loads(
-        (project_root / str(binding_descriptor["path"])).read_text(encoding="utf-8")
+        (ROOT / str(binding_descriptor["path"])).read_text(encoding="utf-8")
     )
     probe = json.loads(
-        (project_root / str(probe_descriptor["path"])).read_text(encoding="utf-8")
+        (ROOT / str(probe_descriptor["path"])).read_text(encoding="utf-8")
     )
     capability = expected_capability_from_binding_and_probe(
         binding=binding,
@@ -183,7 +183,7 @@ class OpenVINOGVAQualificationFragmentV3Tests(unittest.TestCase):
                 self.assertEqual(identity["worker_image_digest"], binding["worker_image_id"])
                 self.assertEqual(
                     identity["terminal_detector"],
-                    expected_terminal_detector(artifact, row["resource"], self.project_root),
+                    expected_terminal_detector(artifact, row["resource"]),
                 )
                 self.assertIn("analytics-execution:", identity["terminal_backend"])
                 self.assertNotIn("gvadetect", identity["terminal_backend"].lower())

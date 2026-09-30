@@ -1,0 +1,202 @@
+{
+  "accepted": false,
+  "actual_five_source_before_after_equal": true,
+  "actual_scope": "Tiny actual filesystem copies and small CPython child fixtures. AST loads only collector function definitions; no setup dispatch body, repository/model/native module, clone, engine, guardian, benchmark, or new project root is executed.",
+  "actual_test_count": 22,
+  "artifact_kind": "vast_component_ext4_prepared_collectors_author_review_v2",
+  "boundaries": {
+    "capture_absolute_cleanup_persistence_limit_seconds": 130,
+    "capture_metadata_bytes": 1048576,
+    "capture_work_seconds": 120,
+    "original_pair_seconds": 2100,
+    "pair_cleanup_seconds": 15,
+    "pair_outer_seconds": 2250,
+    "per_command_channel_bytes": 1048576,
+    "setup_absolute_cleanup_persistence_limit_seconds": 610,
+    "setup_metadata_bytes": 8388608,
+    "setup_work_seconds": 600
+  },
+  "controller_elapsed_s": 0.3491103969863616,
+  "engine_model_native_benchmark_executed": false,
+  "fixes": [
+    "All actual Git argv in setup, capture and the two controllers use -c core.longpaths=true.",
+    "Inherited RLIMIT_NOFILE is observed before any setup namespace. Minimum is5388 retained leaves + exact unique ancestor paths + observed baseline +64 transient reserve; low soft limit fails before clone, no resource limit raised.",
+    "Setup work and original command cleanup share original600/610 absolute deadlines; persistence and all held descriptor close actions check the same hard deadline. Original successful late600 gate retained.",
+    "Capture starts its120s budget before GitHEAD, original87 inventory and before-hashes; all after-hashes/report remain inside the original120/130 envelope.",
+    "Both commands use bounded pipe channels; owner/launch-persistence failures cannot bypass original process-group kill/wait/pipe cleanup or truthful failed terminal.",
+    "Initial fresh target files/directories exactly match the original Git tracked set. Final files/directories exactly match that set plus the2504 original copied paths; unexpected files, directories, symlinks and hardlinks fail.",
+    "Full initial and final tracked rawbytes equal original Git blob SHA1 plus mode; actual SHA256/size/sevenepochs recorded. Any line-ending conversion is a reported failure, never blessed. File descriptors here are transient; no active source authority is inferred.",
+    "Exact2693 selected input source/target FDs retain all original seven epochs, full raw SHA256 checks, held ancestor identities and exclusive copy semantics unchanged."
+  ],
+  "focused_channels": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/focused-attempt-02/stdout.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/focused-attempt-02/stderr.raw",
+      "sha256": "d05850798b5558494cee335165903c78aaea40cf62174472f3277c3bb896d3f1",
+      "size_bytes": 3711
+    }
+  ],
+  "focused_dispatch": {
+    "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/focused-attempt-02/dispatch.v1.json",
+    "sha256": "227a9be87dbab8e715dd48b6ba6949bdd8f4a876485457990721db9368de0242",
+    "size_bytes": 3486
+  },
+  "focused_execution": {
+    "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/focused-attempt-02/execution.v1.json",
+    "sha256": "621dac0891d0fa41c633eb07d0dc3e48fdde0eb71d3f6828cfc610ce8d741522",
+    "size_bytes": 7370
+  },
+  "focused_observer": {
+    "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/observe_focused_attempt_02_v1.py",
+    "sha256": "224b121cbdd20371839f41df9eee6887a0e89210efeb8bd396b31e0d01f68ec9",
+    "size_bytes": 4409
+  },
+  "genuine_pre_edit_dependency_map": {
+    "chronology": "Existing original artifact explicitly declares Decision23 implementation permission pending and pins original eleven modules/allnine allowlists before seam1 factoring. Historical parent messages cite9a439387 before implementation grant. This is the pre-edit map, not a retrospective reconstruction.",
+    "declared_authorization": "Read-only preparation plus artifact inventory only; exact Decision23 committed PR implementation authorization pending",
+    "descriptor": {
+      "path": "artifacts/benchmark_recovery_20260930/gstreamer-component-seam1-preparation-v1/dependency-inventory.v1.json",
+      "sha256": "9a439387e2019ee309b05e68640e9763561545c52285ba6a4176eb7baf02b9b8",
+      "size_bytes": 10420
+    },
+    "kind": "vast_gstreamer_component_seam1_pre_edit_dependency_inventory_v1"
+  },
+  "helpers": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/setup_finite_ext4_root_v1.py",
+      "sha256": "c7306eefd8dce58fefd81e7fabb8a46a85c3910eb45993e897f7b7f5df48b979",
+      "size_bytes": 26675
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/capture_selected_host_closure_ext4_v1.py",
+      "sha256": "7455c32a8b2606e2b793c06cc244348bec86e570d173311f6adfde98e4e7dc7c",
+      "size_bytes": 10782
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/run_original_cpu_component_pair_ext4_v1.py",
+      "sha256": "49b6659ce3b6c595be21bf5ffefa721738a23094cc1a66642a9f5bab8666f559",
+      "size_bytes": 15089
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/run_original_gpu_component_pair_ext4_v3.py",
+      "sha256": "6200b55afd15ca2b9964a52de3fc0ae1fd4f6e72b131b50afa74fac01fad24b2",
+      "size_bytes": 15089
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/test_setup_finite_transfer_v1.py",
+      "sha256": "178217c6776de30ebb38680bf3ab593d8f67f4b13bf335a8284d716d55b0d92b",
+      "size_bytes": 13207
+    }
+  ],
+  "historical_focused_execution": {
+    "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/focused-attempt-01/execution.v1.json",
+    "sha256": "6cdab134cfa2d2834110950e4f51ae6cbfb7b801517e7387c344e6cc30cc3b8e",
+    "size_bytes": 3741
+  },
+  "historical_review": {
+    "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/author-review.v1.json",
+    "sha256": "a680eaf6997bea7c0fa59ab6bd72931b3f4a78f108fd2427180bd2e96b43750b",
+    "size_bytes": 6937
+  },
+  "historical_test_source_reconstruction": {
+    "descriptor": {
+      "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/test_setup_finite_transfer_v1.py.author-review-v1.reconstructed.raw",
+      "sha256": "8f7e2bd5d012c5b7aa9785c2d2a85fe5dd2ad8107a6d29b95175c4a9ae3aa8c2",
+      "size_bytes": 6740
+    },
+    "disclosure": "Original12-method test was expanded without first saving raw source. Finite edit inverse matches exact original6740B SHA8f7e2bd5 bound by immutable focused-attempt01. Saved bytes are reconstructed, not original before-edit custody."
+  },
+  "limitations": [
+    "Real2693 input copy/new Git root not attempted. New-root project bind reachability remains an independent original30+10 real gate.",
+    "New stock host closure and CPU06/GPU01v3 are still unexecuted. No old captured/session/runtime/model authority is rebound.",
+    "Cooperative deadline checks cannot interrupt an indefinitely blocked kernel fsync/close; the original outer bounded observer must enforce the same600+10 or120+10 process-group envelope. A late metadata file is not success."
+  ],
+  "new_cases": [
+    "test_exact_fresh_namespace_accepts_only_declared_tracked_and_copied_leaves",
+    "test_unlisted_leaf_and_empty_directory_are_both_rejected",
+    "test_exact_git_blob_raw_bytes_reject_line_ending_conversion",
+    "test_original_small_child_success_has_actual_owner_and_bounded_raw_channels",
+    "test_nonzero_original_child_preserves_failed_terminal",
+    "test_actual_channel_overflow_is_contained_and_failed",
+    "test_actual_original_absolute_timeout_contains_child_without_reset",
+    "test_actual_owner_observation_failure_still_contains_started_child",
+    "test_actual_launch_persistence_failure_still_contains_started_child",
+    "test_expired_original_cleanup_limit_cannot_publish_success"
+  ],
+  "original_controller_function_preservation": [
+    {
+      "all_original_function_AST_identical": true,
+      "current": {
+        "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/run_original_cpu_component_pair_ext4_v1.py",
+        "sha256": "49b6659ce3b6c595be21bf5ffefa721738a23094cc1a66642a9f5bab8666f559",
+        "size_bytes": 15089
+      },
+      "original": {
+        "path": "artifacts/benchmark_recovery_20260930/selected-gstreamer-cpu05-controller-preparation-v1/run_original_cpu_component_pair_v1.py",
+        "sha256": "a6245ffaef0f197fa561dacdd173aa45a1a35b84e4beda1fbe063ddcb1d19c13",
+        "size_bytes": 15136
+      },
+      "resource": "cpu"
+    },
+    {
+      "all_original_function_AST_identical": true,
+      "current": {
+        "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/run_original_gpu_component_pair_ext4_v3.py",
+        "sha256": "6200b55afd15ca2b9964a52de3fc0ae1fd4f6e72b131b50afa74fac01fad24b2",
+        "size_bytes": 15089
+      },
+      "original": {
+        "path": "artifacts/benchmark_recovery_20260930/selected-gstreamer-gpu01-controller-preparation-v2/run_original_gpu_component_pair_v1.py",
+        "sha256": "095de25ad80f0d2e38da3cbb2cbd5df0e84e51df4f55d0dccb07781b71e6a707",
+        "size_bytes": 15136
+      },
+      "resource": "gpu"
+    }
+  ],
+  "original_owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 41435,
+    "pid": 41435,
+    "ppid": 41434,
+    "startticks": 28208648,
+    "uid": 1000
+  },
+  "original_pid_and_group_absent": true,
+  "original_raw_preservation": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/setup_finite_ext4_root_v1.py.author-review-v1.raw",
+      "sha256": "cbc00d0ad965a89808ac07f5870db16fe85688fad648787266c1d46ac0d1b617",
+      "size_bytes": 18489
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/capture_selected_host_closure_ext4_v1.py.author-review-v1.raw",
+      "sha256": "425834a1b3016cc5a50843017de32a58b58449de571eda17ff4d5e3d6632ac6b",
+      "size_bytes": 3878
+    }
+  ],
+  "preserved_original_setup_IO_function_AST": [
+    "clock",
+    "epoch",
+    "canonical_directory",
+    "directory_barrier",
+    "path_for",
+    "pin",
+    "digest",
+    "read_plan",
+    "copy_original",
+    "owner"
+  ],
+  "preserved_original_twelve_test_AST": true,
+  "production_source_changed": false,
+  "publication_ready": false,
+  "real_setup_or_clone_executed": false,
+  "reviewed_planning_pr_reference": "https://github.com/lordcoudy/VAST/pull/2#issuecomment-5918066559",
+  "schema_version": 1,
+  "source_checkpoint_commit": "5bc416a2beab98b6cc60229dac56332b48cc6ca2",
+  "status": "frozen_for_independent_review; real setup/capture/pairs unexecuted"
+}

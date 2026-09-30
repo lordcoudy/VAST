@@ -1,0 +1,21 @@
+--- v1/reduce.py
++++ v2/reduce.py
+@@ -97,6 +97,7 @@
+     from topology_contract import validate_topology_events
+     from publication_acceptance_evidence import frozen_policy_requires_feedback
+     from full_resource_contract import validate_full_resource_evidence
++    from publication_operational_request_domain_v1 import payload_with_sha256_v1
+     for module in tuple(sys.modules.values()):
+         location = getattr(module, '__file__', None)
+         if not location:
+@@ -117,7 +118,9 @@
+     cli = doc(PAIR / 'component_cli_terminal.v1.json')
+     late = doc(PAIR / 'component_cli_late_failure.v1.json')
+     assert cli['status'] == late['status'] == 'failed' and cli['pair_result']['sha256'] == held[PAIR / 'cold-pair/component_pair_result.v1.json']['before']['sha256']
+-    assert late['original_terminal_sha256'] == cli['sha256'] and cold['publication_ready'] is False
++    assert payload_with_sha256_v1({key: value for key, value in cli.items() if key != 'sha256'}) == cli
++    assert payload_with_sha256_v1({key: value for key, value in late.items() if key != 'sha256'}) == late
++    assert late['original_terminal_sha256'] == held[PAIR / 'component_cli_terminal.v1.json']['before']['sha256'] and cold['publication_ready'] is False
+     assert cold['scientific_scope'] == 'topology_load_proxy_only' and cold['resource'] == 'cpu'
+     assert len(cold['arms']) == len(cold['arm_results']) == 2
+     for row in (cold['descriptive_csv'], cold['latency_ecdf_svg']):

@@ -1,0 +1,146 @@
+{
+  "accepted": false,
+  "actual_focused_execution": {
+    "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/focused-attempt-01/execution.v1.json",
+    "sha256": "6cdab134cfa2d2834110950e4f51ae6cbfb7b801517e7387c344e6cc30cc3b8e",
+    "size_bytes": 3741
+  },
+  "actual_focused_stderr": {
+    "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/focused-attempt-01/stderr.raw",
+    "sha256": "8aa4ead3bec596b3731febc4dd8b870e50ae1adeb280ee112d592ab1a9c0ba79",
+    "size_bytes": 1989
+  },
+  "actual_original_pid_and_group_absent": true,
+  "actual_source_before_after_equal": true,
+  "actual_test_count": 12,
+  "artifact_kind": "vast_component_ext4_prepared_collectors_author_review_v1",
+  "bounds": {
+    "closure_cleanup_seconds": 10,
+    "closure_seconds": 120,
+    "pair_cleanup_seconds": 15,
+    "pair_outer_seconds": 2250,
+    "setup_channel_bytes": 1048576,
+    "setup_cleanup_seconds": 10,
+    "setup_metadata_bytes": 8388608,
+    "setup_seconds": 600,
+    "stock_cli_pair_seconds": 2100
+  },
+  "collector_case_scope": [
+    "Genuine tiny original file stream to distinct target inode",
+    "Occupied target preserved",
+    "Same-bytes source and target leaf replacement rejected",
+    "Held actual ancestor symlink rejected",
+    "Original same-length raw-byte drift rejected",
+    "Hardlink rejected",
+    "Wrong declared digest failed prefix retained",
+    "Original target name substituted during actual delegated fsync rejected",
+    "Legitimate sibling creation allowed",
+    "Relative escape before output rejected",
+    "Actual expired deadline rejected without success"
+  ],
+  "engine_query_executed": false,
+  "helpers": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/capture_selected_host_closure_ext4_v1.py",
+      "sha256": "425834a1b3016cc5a50843017de32a58b58449de571eda17ff4d5e3d6632ac6b",
+      "size_bytes": 3878
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/run_original_cpu_component_pair_ext4_v1.py",
+      "sha256": "49b6659ce3b6c595be21bf5ffefa721738a23094cc1a66642a9f5bab8666f559",
+      "size_bytes": 15089
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/run_original_gpu_component_pair_ext4_v3.py",
+      "sha256": "6200b55afd15ca2b9964a52de3fc0ae1fd4f6e72b131b50afa74fac01fad24b2",
+      "size_bytes": 15089
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/setup_finite_ext4_root_v1.py",
+      "sha256": "cbc00d0ad965a89808ac07f5870db16fe85688fad648787266c1d46ac0d1b617",
+      "size_bytes": 18489
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/test_setup_finite_transfer_v1.py",
+      "sha256": "8f7e2bd5d012c5b7aa9785c2d2a85fe5dd2ad8107a6d29b95175c4a9ae3aa8c2",
+      "size_bytes": 6740
+    }
+  ],
+  "historical_preparation_reports": "preparation.v1/v2 are preserved unexecuted work-in-progress pin snapshots; this final review supersedes them. Original pre-existing capture-v6/CPU05/GPU01-v2 helpers and their actual failures remain unchanged.",
+  "model_inputs_copied": false,
+  "native_model_gpu_work_executed": false,
+  "new_workspace_created": false,
+  "original_controller_elapsed_s": 0.1320973639958538,
+  "original_controller_function_preservation": [
+    {
+      "adapted": {
+        "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/run_original_cpu_component_pair_ext4_v1.py",
+        "sha256": "49b6659ce3b6c595be21bf5ffefa721738a23094cc1a66642a9f5bab8666f559",
+        "size_bytes": 15089
+      },
+      "all_function_names": [
+        "clock",
+        "descriptor",
+        "epoch",
+        "error",
+        "latch",
+        "observe",
+        "owner",
+        "pin",
+        "write"
+      ],
+      "all_original_function_ast_identical": true,
+      "only_intended_global_bindings_changed": "literal root, original Gitdir, new closure path/name, CPU06 output identity, usage closure label; original GPU01 pair identity retained in fresh root",
+      "original": {
+        "path": "artifacts/benchmark_recovery_20260930/selected-gstreamer-cpu05-controller-preparation-v1/run_original_cpu_component_pair_v1.py",
+        "sha256": "a6245ffaef0f197fa561dacdd173aa45a1a35b84e4beda1fbe063ddcb1d19c13",
+        "size_bytes": 15136
+      },
+      "resource": "cpu"
+    },
+    {
+      "adapted": {
+        "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/run_original_gpu_component_pair_ext4_v3.py",
+        "sha256": "6200b55afd15ca2b9964a52de3fc0ae1fd4f6e72b131b50afa74fac01fad24b2",
+        "size_bytes": 15089
+      },
+      "all_function_names": [
+        "clock",
+        "descriptor",
+        "epoch",
+        "error",
+        "latch",
+        "observe",
+        "owner",
+        "pin",
+        "write"
+      ],
+      "all_original_function_ast_identical": true,
+      "only_intended_global_bindings_changed": "literal root, original Gitdir, new closure path/name, CPU06 output identity, usage closure label; original GPU01 pair identity retained in fresh root",
+      "original": {
+        "path": "artifacts/benchmark_recovery_20260930/selected-gstreamer-gpu01-controller-preparation-v2/run_original_gpu_component_pair_v1.py",
+        "sha256": "095de25ad80f0d2e38da3cbb2cbd5df0e84e51df4f55d0dccb07781b71e6a707",
+        "size_bytes": 15136
+      },
+      "resource": "gpu"
+    }
+  ],
+  "original_owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 41162,
+    "pid": 41162,
+    "ppid": 41161,
+    "startticks": 27938925,
+    "uid": 1000
+  },
+  "publication_ready": false,
+  "remaining_gate": "Independent peer review and exact helper/source commit+PR dispatch authorization. New-root exact-image read-only30+10 bind smoke is separate and required; these helpers perform no engine query.",
+  "reviewed_planning_pr_reference": "https://github.com/lordcoudy/VAST/pull/2#issuecomment-5918066559",
+  "schema_version": 1,
+  "source_checkpoint_commit": "5bc416a2beab98b6cc60229dac56332b48cc6ca2",
+  "source_production_scope": "No production/test/core/Git edits; artifact helpers and tiny fixture only. Current source180 and input189 match the original8f/raw inventory, parent committed same bytes at5bc.",
+  "status": "frozen_for_independent_review; no setup or hardware dispatch",
+  "unexecuted_setup_scope": "exact2693 input obligations; retain189 physically identical tracked targets; exclusively copy2504 original inputs; root uid-owned0700, actual root ext4 device, held source/target seven epochs/raw hashes, held ancestor FD/name/inode/mode/uid/gid, original source HEAD before/after, actual --shared alternate record; no original source/index normalization or rebinding.",
+  "unittest_elapsed_s": 0.064
+}

@@ -1,0 +1,172 @@
+{
+  "all_held_bytes_and_full_7_epochs_unchanged": true,
+  "all_phase_cold": false,
+  "arms": [
+    {
+      "admitted": 1080,
+      "c_obs_comp_ms_per_completed": 27099.533807829,
+      "c_obs_cpu_total_ms": 15229938.0,
+      "c_obs_gpu_total_ms": 0.0,
+      "c_obs_in_ms_per_ingress": 14101.794444444,
+      "c_obs_is_partial": true,
+      "c_obs_total_ms": 15229938.0,
+      "candidate_keys_exactly_matched": 72,
+      "carried_arm_keys_exactly_matched": 72,
+      "censored": 0,
+      "cold_csv_fields_exactly_matched": 14,
+      "cold_descriptive_keys_exactly_matched": 16,
+      "cold_summary_keys_exactly_matched": 72,
+      "completed": 562,
+      "completed_deadline_miss_percent": 100,
+      "completed_deadline_misses": 562,
+      "completed_per_180s_fps": 3.1222222222222222,
+      "completion_coverage_percent": 52.03703703703704,
+      "decoder_factory": "nvh264dec",
+      "decoder_required_resource": "nvdec",
+      "descriptive_metrics": {
+        "completed_deadline_misses": 562,
+        "completion_coverage": 0.5203703703703704,
+        "deadline_ms": 100.0,
+        "frames": 562,
+        "latency_max_ms": 9999.0,
+        "latency_p50_ms": 5212.0,
+        "latency_p95_ms": 9422.8,
+        "latency_p999_ms": 9967.023,
+        "latency_p99_ms": 9757.51,
+        "latency_population": "completed_measurement_frames",
+        "measurement_admitted": 1080,
+        "measurement_censored": 0,
+        "measurement_dropped": 518,
+        "slo_violation_rate_percent": 100.0,
+        "telemetry_source": "native",
+        "throughput_fps": 3.122
+      },
+      "dropped": 518,
+      "on_time_completed": 0,
+      "operation_id": "component-gstreamer_custom-cpu-h264-independent-processes",
+      "recorded_decode_stage_count": 4320,
+      "recorded_preprocess_stage_count": 4318
+    },
+    {
+      "admitted": 1080,
+      "c_obs_comp_ms_per_completed": 11897.523460411,
+      "c_obs_cpu_total_ms": 8114111.0,
+      "c_obs_gpu_total_ms": 0.0,
+      "c_obs_in_ms_per_ingress": 7513.065740741,
+      "c_obs_is_partial": true,
+      "c_obs_total_ms": 8114111.0,
+      "candidate_keys_exactly_matched": 72,
+      "carried_arm_keys_exactly_matched": 72,
+      "censored": 0,
+      "cold_csv_fields_exactly_matched": 14,
+      "cold_descriptive_keys_exactly_matched": 16,
+      "cold_summary_keys_exactly_matched": 72,
+      "completed": 682,
+      "completed_deadline_miss_percent": 100,
+      "completed_deadline_misses": 682,
+      "completed_per_180s_fps": 3.7888888888888888,
+      "completion_coverage_percent": 63.14814814814815,
+      "decoder_factory": "nvh264dec",
+      "decoder_required_resource": "nvdec",
+      "descriptive_metrics": {
+        "completed_deadline_misses": 682,
+        "completion_coverage": 0.6314814814814815,
+        "deadline_ms": 100.0,
+        "frames": 682,
+        "latency_max_ms": 8257.0,
+        "latency_p50_ms": 3611.5,
+        "latency_p95_ms": 7910.0,
+        "latency_p999_ms": 8257.0,
+        "latency_p99_ms": 8103.46,
+        "latency_population": "completed_measurement_frames",
+        "measurement_admitted": 1080,
+        "measurement_censored": 0,
+        "measurement_dropped": 398,
+        "slo_violation_rate_percent": 100.0,
+        "telemetry_source": "native",
+        "throughput_fps": 3.789
+      },
+      "dropped": 398,
+      "on_time_completed": 0,
+      "operation_id": "component-gstreamer_custom-cpu-h264-shared-video-dag",
+      "recorded_decode_stage_count": 1080,
+      "recorded_preprocess_stage_count": 1080
+    }
+  ],
+  "artifact_kind": "vast_cpu05_pure_sidecar_scientific_reduction_v1",
+  "completion_coverage_shared_minus_baseline_percentage_points": 11.11111111111111,
+  "custody": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu05-sidecar-independent-reduction-v2/attempt01/custody-and-comparison.v1.json",
+    "sha256": "3441e30a5c798b42c5687f871ecf9bf6754d96898cf3054e7c1bc9a754516c22",
+    "size_bytes": 72863
+  },
+  "descriptive_partial_c_obs_reduction_percent": 46.72262618534626,
+  "disposition": "metric_consistency_verified_original_cli_still_failed",
+  "exact_summary_field_comparison": "72 candidate keys,72 carried arm keys and72 cold pair summary keys per arm; complete typed canonical JSON comparisons. Cold descriptive metrics and all14 CSV fields independently recomputed; SVG bound by original descriptor only.",
+  "fd_holds_released": true,
+  "held_inputs": 73,
+  "held_reducer_sources": 25,
+  "helper_sources": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu05-sidecar-independent-reduction-v2/reduce.py",
+      "sha256": "f0855b5c2d1f587b795684766a6682d5e62e890b7f321a5dbe6d9f7713a71a87",
+      "size_bytes": 16508
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu05-sidecar-independent-reduction-v2/run.py",
+      "sha256": "6a9863de810ea22bdb4a23f0368771c616b750ffc46fce3b83f06dfc0cabe62f",
+      "size_bytes": 6414
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu05-sidecar-independent-reduction-v2/close.py",
+      "sha256": "302802b3f6c5a4db362450458ca5719d80ddbe2a6506d969a8c7f143ba604898",
+      "size_bytes": 7717
+    }
+  ],
+  "input_frame_key_sequence_sha256": "3f6cb4213c5e2909cebd9d48ce1284afe4f419957bd7dd71058dcc7ef39be948",
+  "input_schedule_sha256": "d07c87d325dd8d89315d0b0c532796bc553b2d7ec8bc49fa5d21ded24581b454",
+  "interpretation": "The shared graph recorded fewer decode/preprocess stage executions, lower partial attributed stage elapsed per admitted ingress, and more completed frames in this one CPU pair. Both arms delivered zero completed frames within100ms. The lower C_obs does not establish lower processor work, energy or native decoder busy time; differing completion/drop populations remain visible.",
+  "limitations": [
+    "One original descriptive CPU pair, no statistical repeats or GPU pair.",
+    "CPU-only denotes analytics placement; both plans use nvh264dec/NVDEC.",
+    "Completed-frame deadline percentages exclude dropped ingress; no latency was assigned to drops.",
+    "The unchanged stock legacy reducer, summarize_frames and pure full-resource validator were run. All72 fields join candidate/arm/cold summaries; no public cold/full authority/all-phase entrypoint or current complete87-source validation.",
+    "Original CPU05 CLI78/late deadline failure remains immutable. Authentic retained cold exports do not override it. This check cannot complete task18.8 or grant measurement/publication/fullcampaign acceptance.",
+    "nvdec_busy_equivalent_ns/device_sample and fanout resource counters may match their original carried summaries; no measured native decoder busy-time, quality or population claim is inferred.",
+    "Original SVG is physically descriptor-verified; no new rendering or independent SVG curve geometry check was performed."
+  ],
+  "measurement_acceptance": false,
+  "measurement_signature": "d2909d7ea12473e2d8f8b8322cf2847d35a1fd23594eb367a02053339fb9e0c1",
+  "model_or_engine_or_native_or_guardian_operations": false,
+  "original_cpu05_cli_exit_code": 78,
+  "original_reduction_terminal": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu05-sidecar-independent-reduction-v2/attempt01/terminal.v1.json",
+    "sha256": "6fcf9924373bd71368f0290dfe1a73215b082891cbf653ff7e29d123377d32f3",
+    "size_bytes": 3326
+  },
+  "postterminal_process_observations": [
+    {
+      "observed_at_ns": 1790794901438085486,
+      "original_child_group_members": [],
+      "original_processes": {
+        "40976": null,
+        "40977": null
+      }
+    },
+    {
+      "observed_at_ns": 1790794901490505590,
+      "original_child_group_members": [],
+      "original_processes": {
+        "40976": null,
+        "40977": null
+      }
+    }
+  ],
+  "recomputed_summaries": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu05-sidecar-independent-reduction-v2/attempt01/recomputed-summaries.v1.json",
+    "sha256": "9b132977b21b62aec3a68913e866c353a339b035d506f10d2535880a543b986c",
+    "size_bytes": 30015
+  },
+  "schema_version": 1,
+  "task_18_8_complete": false
+}

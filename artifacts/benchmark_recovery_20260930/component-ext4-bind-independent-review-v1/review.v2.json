@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "vast_ext4_bind_probe_independent_source_review_v2",
+  "disposition": "approved_prepared_unexecuted_after_default_inspector_format_correction",
+  "supersedes_current_source_gate": {
+    "path": "artifacts/benchmark_recovery_20260930/component-ext4-bind-independent-review-v1/review.v1.json",
+    "sha256": "84adc313fe280157e6b48fec929f754b45bb087b0aac16a2034548e8943038cb",
+    "scope": "Preserved historical unexecuted review; source6d95 was never dispatched."
+  },
+  "reviewed_source": {
+    "path": "artifacts/benchmark_recovery_20260930/component-ext4-bind-preparation-v1/probe_original_ext4_bind_v1.py",
+    "size_bytes": 16732,
+    "sha256": "5b7fc5eea23b4847489f598689176eb96f202b2e4588566663e217248532e70f"
+  },
+  "historical_source": {
+    "path": "artifacts/benchmark_recovery_20260930/component-ext4-bind-preparation-v1/probe_original_ext4_bind_v1.pre-format-fix.raw",
+    "size_bytes": 16724,
+    "sha256": "6d95e49d8f39cc4f0b6a877549780f91537c84d036efa60de95de0dbfe3bae1d"
+  },
+  "primary_source": {
+    "url": "https://raw.githubusercontent.com/docker/cli/v29.0.2/cli/command/inspect/inspector.go",
+    "reviewed_lines": "44-50,67-98,137-144,191-195",
+    "finding": "Empty-format inspect selects the indented JSON inspector. With no successful elements it flushes exact [] plus LF before returning the original status1 error; template mode instead flushes one LF."
+  },
+  "delta": "Exactly one tuple literal adds b'[]\\n' to the accepted original stdout forms. Status1 and exact identifier-bound stderr remain mandatory; every positive ownership/container/source/clock predicate and mutation call remains unchanged.",
+  "self_critique": "The v1 reviewer compared stock absence templates without checking the probe's unformatted inspector mode. Root caught this concrete API mismatch before any probe dispatch; v2 corrects that source gate without relabeling v1 as executed.",
+  "author_pure_scope": "author-review.v2.json records33 AST-extracted actual predicate cases under Windows Python3.14.7; the full probe was not imported/executed. No pinned-runtime or actual daemon acceptance is inferred.",
+  "future_gates": "All v1 future setup/current source/original physical bind/CID/FD/cleanup/fresh authority gates remain. Successful absence is a future physical result; this review itself observes none.",
+  "reviewer_operations": "Read-only exact two-source diff/hash and Docker primary source. No predicate/test rerun, setup, clone, Docker/daemon, model/native/namespace/GPU operation.",
+  "actual_bind_observed": false,
+  "hardware_acceptance": false,
+  "publication_ready": false,
+  "source_holds_active": false
+}

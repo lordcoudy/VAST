@@ -1,0 +1,29 @@
+{
+  "actual_engine_execution": false,
+  "actual_pure_predicate_cases": 33,
+  "artifact_kind": "vast_ext4_bind_default_inspect_format_review_v2",
+  "meaning": "probe uses unformatted container inspect; exact empty JSON array with rc1 and exact identifier-bound stderr is the genuine API absence form",
+  "model_native_gpu_acceptance": false,
+  "only_one_tuple_literal_changed": true,
+  "original": {
+    "path": "artifacts/benchmark_recovery_20260930/component-ext4-bind-preparation-v1/probe_original_ext4_bind_v1.pre-format-fix.raw",
+    "sha256": "6d95e49d8f39cc4f0b6a877549780f91537c84d036efa60de95de0dbfe3bae1d",
+    "size_bytes": 16724
+  },
+  "original_predicate_rejects_documented_default_empty_array": true,
+  "primary_source": "https://raw.githubusercontent.com/docker/cli/v29.0.2/cli/command/inspect/inspector.go",
+  "primary_source_lines": "191-194 default JSON inspector returns []newline on no elements;137-140 template inspector returns newline",
+  "prior_author_review": {
+    "path": "artifacts/benchmark_recovery_20260930/component-ext4-bind-preparation-v1/author-review.v1.json",
+    "sha256": "36d39f5ca2a153311db4ad815e395a502bef74a550369cd7f4f71e72d62fea1d",
+    "size_bytes": 4168
+  },
+  "publication_ready": false,
+  "python": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+  "scope": "AST-extracted actual predicate only; full probe not imported/executed",
+  "source": {
+    "path": "artifacts/benchmark_recovery_20260930/component-ext4-bind-preparation-v1/probe_original_ext4_bind_v1.py",
+    "sha256": "5b7fc5eea23b4847489f598689176eb96f202b2e4588566663e217248532e70f",
+    "size_bytes": 16732
+  }
+}

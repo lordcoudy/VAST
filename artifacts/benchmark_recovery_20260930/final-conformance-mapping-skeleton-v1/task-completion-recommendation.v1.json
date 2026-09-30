@@ -1,0 +1,771 @@
+{
+  "accepted_hardware_descriptor": null,
+  "actual_cpu05_cold_observation": {
+    "artifact_kind": "vast_complete_operational_reconciliation_v1",
+    "comparison_sha256": "f8513075164e602f7afb8139c5abda72f46d946e2319f92ab2180744d998d465",
+    "connections_accepted": 31,
+    "excluded_request_count": 1260,
+    "measurement_request_count": 7111,
+    "mode": "bounded_native_diagnostic_operational_v1",
+    "operations": [
+      {
+        "excluded_request_count": 647,
+        "measurement_request_count": 3657,
+        "ordinal": 0,
+        "request_count": 4304
+      },
+      {
+        "excluded_request_count": 613,
+        "measurement_request_count": 3454,
+        "ordinal": 1,
+        "request_count": 4067
+      }
+    ],
+    "original_operation_count": 2,
+    "publication_authority": false,
+    "request_count": 8371,
+    "requests_by_worker": {
+      "damage:cpu": 2191,
+      "damage:gpu": 0,
+      "foreign_object:cpu": 1653,
+      "foreign_object:gpu": 0,
+      "plate_number:cpu": 2307,
+      "plate_number:gpu": 0,
+      "vehicle_type:cpu": 2220,
+      "vehicle_type:gpu": 0
+    },
+    "schema_version": 1
+  },
+  "actual_hosted_plugin_entry_joins": [
+    {
+      "archive": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-8fefa-original-retention-v1/36751014399-cpu/original-artifact.zip",
+        "sha256": "8a8567ad9ed7488a21e0980a4975d5db1b8ce0a1674fdf1a2c6faaee02a29d98",
+        "size_bytes": 1915319
+      },
+      "call_entry": {
+        "name": "factory-appsrc.json",
+        "sha256": "fb9bc02c94569f1c371e8b9fc5f8b3614ac509abe240c734cada57b5b8be0f3a",
+        "size_bytes": 166
+      },
+      "factory": "appsrc",
+      "original_returncode": 0,
+      "plugin_filename_observed": "/usr/lib/x86_64-linux-gnu/gstreamer-1.0/libgstapp.so",
+      "stdout_entry": {
+        "name": "factory-appsrc.stdout",
+        "sha256": "f856c19875dd3f4e9db164fbfca71639fc4e2c7c60c7bed1643c1d9c23f34f91",
+        "size_bytes": 9007
+      },
+      "version_observed": "1.24.2"
+    },
+    {
+      "archive": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-8fefa-original-retention-v1/36751014399-cpu/original-artifact.zip",
+        "sha256": "8a8567ad9ed7488a21e0980a4975d5db1b8ce0a1674fdf1a2c6faaee02a29d98",
+        "size_bytes": 1915319
+      },
+      "call_entry": {
+        "name": "factory-queue.json",
+        "sha256": "752b98df892daa02bd7d9b2ae48ba4587c835f9ed7c92d0a30d2033a1c51d816",
+        "size_bytes": 167
+      },
+      "factory": "queue",
+      "original_returncode": 0,
+      "plugin_filename_observed": "/usr/lib/x86_64-linux-gnu/gstreamer-1.0/libgstcoreelements.so",
+      "stdout_entry": {
+        "name": "factory-queue.stdout",
+        "sha256": "f73affca7c13abc0843dc576660c929b2b3a29b25aaad608e1a5ddd583af8147",
+        "size_bytes": 5218
+      },
+      "version_observed": "1.24.2"
+    },
+    {
+      "archive": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-8fefa-original-retention-v1/36751014399-cpu/original-artifact.zip",
+        "sha256": "8a8567ad9ed7488a21e0980a4975d5db1b8ce0a1674fdf1a2c6faaee02a29d98",
+        "size_bytes": 1915319
+      },
+      "call_entry": {
+        "name": "factory-videoconvert.json",
+        "sha256": "5aaae8a81a554e89b7750f6e79011a6da478ca3027a427805ac563221d39c1db",
+        "size_bytes": 174
+      },
+      "factory": "videoconvert",
+      "original_returncode": 0,
+      "plugin_filename_observed": "/usr/lib/x86_64-linux-gnu/gstreamer-1.0/libgstvideoconvertscale.so",
+      "stdout_entry": {
+        "name": "factory-videoconvert.stdout",
+        "sha256": "8b01aef76679ca1743624ef160857330a4c95c9fa2a4dcce73d3ddae8ee6f019",
+        "size_bytes": 17518
+      },
+      "version_observed": "1.24.2"
+    }
+  ],
+  "actual_observer_message_semantics": {
+    "51_records_mean": "raw control chunks plus ready/stop messages; not51 completed dumps",
+    "requests_sent": 24,
+    "response_received_records": 51,
+    "responses_completed": 24,
+    "responses_started": 24
+  },
+  "artifact_kind": "vast_scoped_task_completion_recommendation_v1",
+  "current_commit": "5bc416a2beab98b6cc60229dac56332b48cc6ca2",
+  "evidence": {
+    "ci8f_failure": {
+      "path": "artifacts/benchmark_recovery_20260930/ci-8fefa-readonly-failure-diagnosis-v1/summary.v1.json",
+      "sha256": "159d58814bd00d771a71230b05954fc5baa395694b2f54be2810661bf910bc44",
+      "size_bytes": 31824
+    },
+    "ci_observer_peer": {
+      "path": "artifacts/benchmark_recovery_20260930/decision24-ci-independent-review-v1/review.v1.json",
+      "sha256": "44fa9941b35c64f03947c5719382e559df85278afd6901b7444357d81b49f962",
+      "size_bytes": 3913
+    },
+    "ci_prerequisite_author": {
+      "path": "artifacts/benchmark_recovery_20260930/decision25-ci-prerequisites-v1/author-review.v1.json",
+      "sha256": "cd804daf85fce509c569a949b147440ec768e3255607c79891d25c6edba319e2",
+      "size_bytes": 7644
+    },
+    "ci_prerequisite_peer": {
+      "path": "artifacts/benchmark_recovery_20260930/decision25-ci-parent-review-v1/review.v1.json",
+      "sha256": "b1b27754474f4328d177938f94fb2e8eaf6e369a1b80c3270640aa485d3f45c1",
+      "size_bytes": 5066
+    },
+    "cli_peer": {
+      "path": "artifacts/benchmark_recovery_20260930/component-cli-independent-review-v1/review.v1.json",
+      "sha256": "f93ba77187e10bc0231d3b06b83c2118c5406194930678cc13e69c456e7f1927",
+      "size_bytes": 4491
+    },
+    "cpu05_postterminal_peer": {
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu05-postterminal-audit-preparation-v1/review.v1.json",
+      "sha256": "d192102f51e1ab92652541c22ac7a532fcb9f656cd3ffb9af9f51d9ae4cadda8",
+      "size_bytes": 18217
+    },
+    "cpu05_reader_provenance": {
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu05-sidecar-independent-reduction-v2/reader-adaptation-provenance.v1.json",
+      "sha256": "df0762f0ad07efd36827d0d41c2b2892ac7a887827787b79d9548a1d054f7a17",
+      "size_bytes": 6659
+    },
+    "cpu05_scientific": {
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu05-sidecar-independent-reduction-v2/scientific-report.v1.json",
+      "sha256": "c9fdc0483b439cadeea1edf22ac75eb223db1a040943b38cc3bf1d2accc22fc4",
+      "size_bytes": 8481
+    },
+    "cpu05_scientific_peer": {
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu05-sidecar-scientific-peer-review-v1/review.v1.json",
+      "sha256": "19b71db915d1f708a7c507044903dd405d8bc08ac0768daa00fbceb4a41407d9",
+      "size_bytes": 6100
+    },
+    "decision27_planning_peer": {
+      "path": "artifacts/benchmark_recovery_20260930/decision27-planning-independent-review-v1/review.v1.json",
+      "sha256": "e0b21853f8656372646d7a954534cdcec3b5e22797166fa34d5b699746ba31d1",
+      "size_bytes": 6400
+    },
+    "held_dispatch_peer": {
+      "path": "artifacts/benchmark_recovery_20260930/component-held-session-dispatch-independent-review-v1/review.v1.json",
+      "sha256": "71ed26a1f4d3003c89fc77dec32f31e3e9a238843e312115b2932ff8b1953fb5",
+      "size_bytes": 46415
+    },
+    "held_session_peer": {
+      "path": "artifacts/benchmark_recovery_20260930/component-held-session-independent-review-v1/review.v1.json",
+      "sha256": "b8623147480662bd30fd6b721692d95a78c7930e8c6a6a88d7cd47dfd98089e8",
+      "size_bytes": 8562
+    },
+    "held_session_scope": {
+      "path": "artifacts/benchmark_recovery_20260930/component-held-session-host-image-scope-v1/review.v1.json",
+      "sha256": "3d401843d9e788ff76f0b2140fef8878d0f694529cc0406e076369cab91ae8e9",
+      "size_bytes": 4206
+    },
+    "journalctl_author": {
+      "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/author-review.v1.json",
+      "sha256": "c6ec12d9947bd377a9972f6bc9b3cd6e57f74d085f1f3f6027c2383938f1a26d",
+      "size_bytes": 21353
+    },
+    "journalctl_peer": {
+      "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-independent-review-v1/review.v1.json",
+      "sha256": "06124fd36e293c11b0f5732a5d05fa7d656d1bf31d616440046a99102afa1959",
+      "size_bytes": 4138
+    },
+    "model_inspect_repair_peer": {
+      "path": "artifacts/benchmark_recovery_20260930/component-model-inspect-adapter-independent-review-v1/review.v1.json",
+      "sha256": "bc1dd50bba917e66991065c1e87ec9d5e7dbc9b23ba4ed4d9b6f1c94a9ba8828",
+      "size_bytes": 2770
+    },
+    "portable_fixture_author": {
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/author-review.v1.json",
+      "sha256": "d2472259e91df4571de8da0fa27195de5836f15f0fc7e810e2320bddfe29fdaf",
+      "size_bytes": 31669
+    },
+    "portable_fixture_peer": {
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-independent-review-v1/review.v1.json",
+      "sha256": "5294f169c4e29776e2fe7b1413ec6fc29c1a3ef78ddb8f042644aa3ce2854aba",
+      "size_bytes": 7406
+    },
+    "pre_implementation_direction_peer": {
+      "path": "artifacts/benchmark_recovery_20260930/gstreamer-release-proposal-independent-review-v1/review.v1.json",
+      "sha256": "fdaa3ab3e7998bcf0e54af82b9984bc2e741b5777b997a0d32a5da91b3fb5d59",
+      "size_bytes": 6914
+    },
+    "probe_schema_repair_peer": {
+      "path": "artifacts/benchmark_recovery_20260930/component-probe-authority-schema-independent-review-v1/review.v1.json",
+      "sha256": "2212cafd91b191612e211ed30e600f6ea0d924b4e7d3baadeb426d86f2794e21",
+      "size_bytes": 4130
+    },
+    "relocation_classification": {
+      "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-feasibility-v1/git-input-classification.v1.json",
+      "sha256": "ed2858413c0dca784f05bff2ca4551b0d6f7879baf6624d07a54c1227a320e3c",
+      "size_bytes": 469891
+    },
+    "relocation_feasibility": {
+      "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-feasibility-v1/review.v1.json",
+      "sha256": "08f057794b0a4033d4b52853bbc0420e7d4cb6674b4a6fa03779e4f515b4f58e",
+      "size_bytes": 12127
+    },
+    "relocation_inventory": {
+      "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-feasibility-v1/inventory.v1.json",
+      "sha256": "8a03751c4f3e18a2590d04874496559cc77dab7ffebc8184269c0b9bb81dc364",
+      "size_bytes": 2087679
+    },
+    "runbook_peer": {
+      "path": "artifacts/benchmark_recovery_20260930/component-runbook-independent-review-v1/review.v2.json",
+      "sha256": "c0c270e2d98258f4293024328ba1907de99e9ebae43f9f2478e6533d9d080357",
+      "size_bytes": 4140
+    },
+    "runtime_peer": {
+      "path": "artifacts/benchmark_recovery_20260930/component-runtime-independent-review-v1/review.v1.json",
+      "sha256": "59f1ceb74d02887780ef798ebf2073bddbbf861233c41f65fb9d2a931dc3e10a",
+      "size_bytes": 8474
+    },
+    "seam1_peer": {
+      "path": "artifacts/benchmark_recovery_20260930/gstreamer-component-seam1-independent-review-v1/review.v1.json",
+      "sha256": "97f32ed9bc75b2c81d2e37e3b19d0ae246f45de7a1bb46c94aec08441ded1385",
+      "size_bytes": 4568
+    },
+    "seam1_pre_edit": {
+      "path": "artifacts/benchmark_recovery_20260930/gstreamer-component-seam1-preparation-v1/dependency-inventory.v1.json",
+      "sha256": "9a439387e2019ee309b05e68640e9763561545c52285ba6a4176eb7baf02b9b8",
+      "size_bytes": 10420
+    },
+    "seam2_author": {
+      "path": "artifacts/benchmark_recovery_20260930/component-seam2-final-review-v1/review.v1.json",
+      "sha256": "989a8d5f721e985a8611c15ca2bc229353aa6136cce0811d347bd180c49607ee",
+      "size_bytes": 5407
+    },
+    "seam2_peer": {
+      "path": "artifacts/benchmark_recovery_20260930/component-seam2-independent-review-v1/review.v1.json",
+      "sha256": "2ec2a04b9e88e1e545054615c5352b67d1ca82c2bcf844d52abc4f94717ef22f",
+      "size_bytes": 3672
+    },
+    "seam2_pre_edit": {
+      "path": "artifacts/benchmark_recovery_20260930/component-seam2-pre-edit-v1/inventory.v1.json",
+      "sha256": "4b2cc7a76a3e7497fb2e7b01733ca29a8ff8ea17ca4bcbce851f496a578085b0",
+      "size_bytes": 21191
+    },
+    "selected_build_terminal": {
+      "path": "artifacts/benchmark_recovery_20260930/selected-gstreamer-build-a4e145b7-v1/operation.terminal.v1.json",
+      "sha256": "fa1a2e4b58a0ebe686a43437c8c8500e7d073f1743e5dd2ec1fb4a26865947d7",
+      "size_bytes": 3663
+    },
+    "selected_host_renewal_peer": {
+      "path": "artifacts/benchmark_recovery_20260930/component-host-renewal-v3-independent-review-v1/review.v1.json",
+      "sha256": "3649f754e9645559c4169bd98313eb0993190e6191103e2dd7acde37f1f7b14e",
+      "size_bytes": 4158
+    },
+    "selected_image": {
+      "path": "artifacts/benchmark_recovery_20260930/selected-gstreamer-build-a4e145b7-v1/gstreamer_custom.runtime.freeze.json",
+      "sha256": "61874c718d6140d0d5cf745988bc301b916077af8f80e96742184f80a0805db7",
+      "size_bytes": 7049
+    },
+    "selected_packaged_terminal": {
+      "path": "artifacts/benchmark_recovery_20260930/selected-gstreamer-packaged-a4e145b7-v1/operation.terminal.v1.json",
+      "sha256": "093702f92948c5c595b622cded0f663ec399546226a54658adeaca948eb88eb6",
+      "size_bytes": 4020
+    },
+    "sibling_packaging_original": {
+      "path": "artifacts/benchmark_recovery_20260930/decision25-sibling-packaging-v1/green-01/terminal.v1.json",
+      "sha256": "2593850e7fd0022d38d7d4e3a1fe6055ff4ae4bb1f2b5694cc991b1859abf6ec",
+      "size_bytes": 5246
+    },
+    "sibling_packaging_peer": {
+      "path": "artifacts/benchmark_recovery_20260930/decision25-ci-root-independent-review-v1/scope-review.v1.json",
+      "sha256": "2ea522f8d4e792c7e094c3c172d921851df7b40a097c6cde692fb1b99704d2b6",
+      "size_bytes": 4798
+    },
+    "sibling_scope": {
+      "path": "artifacts/benchmark_recovery_20260930/decision25-sibling-packaging-v1/current-scope.v1.json",
+      "sha256": "63146780531c7fd84de8c49803e8260af6ebab46684f013139045695ce4d7490",
+      "size_bytes": 4769
+    }
+  },
+  "full_ci_acceptance": false,
+  "historical_register_policy": "Register membership is historical provenance, not blanket82-scenario deferral. Preserve active selected repair/trust/ownership/scientific behavior; defer only original physical campaign/research execution as specified. No checked-state/doc mutation.",
+  "measurement_acceptance": false,
+  "must_remain_pending": [
+    "18.8",
+    "18.9",
+    "18.10",
+    "18.11",
+    "18.12",
+    "18.13",
+    "18.14",
+    "19.4",
+    "19.5",
+    "20.6",
+    "20.7",
+    "21.4",
+    "21.5",
+    "22.2",
+    "22.3"
+  ],
+  "physical_final_gate_descriptor": null,
+  "pre_edit_chronology_evidence": {
+    "inventory_itself_in_9ad_commit": false,
+    "inventory_records_approval_pending": true,
+    "limit": "Baseline identity is independently reproduced; pre-edit author dispatch order must be assessed by parent. No filesystem current timestamp or later implementation review is used as chronology proof.",
+    "original_direction_review_physically_equals_9ad_blob": {
+      "path": "artifacts/benchmark_recovery_20260930/gstreamer-release-proposal-independent-review-v1/review.v1.json",
+      "sha256": "fdaa3ab3e7998bcf0e54af82b9984bc2e741b5777b997a0d32a5da91b3fb5d59",
+      "size_bytes": 6914
+    },
+    "seam1_pre_edit_original_modules_exact_9ad_blobs": [
+      {
+        "path": "scripts/publication_policy_qualification_runtime_inputs_v2.py",
+        "sha256": "8397821a2412b47be170d29d943f52b86b921a8cae5b6a37876bdf5a72c69fc4",
+        "size_bytes": 134987
+      },
+      {
+        "path": "scripts/publication_operational_stock_operations_v1.py",
+        "sha256": "1edcd2813f3bedbac4416d7e7d69b9e959ecc044aee710f248721b06e81f0689",
+        "size_bytes": 24380
+      },
+      {
+        "path": "scripts/publication_benchmark_native_diagnostic_v1.py",
+        "sha256": "4b308d6727168b211b4eca7917e18c7516247e77d41329856566e343b9bd9c53",
+        "size_bytes": 13329
+      },
+      {
+        "path": "scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+        "sha256": "7fcbb1767cecdd9b9555df29d511c2b95a0c36a021f8fe574b383472d6a6df83",
+        "size_bytes": 59617
+      },
+      {
+        "path": "scripts/checkpoint_native_policy_runtime.py",
+        "sha256": "76de5fa2bc52eb1a11b34abbfb93dd144d0769b802351dec992c92e0d1610c95",
+        "size_bytes": 73421
+      },
+      {
+        "path": "scripts/publication_guardian_preprocessing_contract_v1.py",
+        "sha256": "19dfff21eae9ad8cc3781b2fe47bdb6d9eb55c430962983d2f7553e04a5c529d",
+        "size_bytes": 68402
+      },
+      {
+        "path": "scripts/publication_guardian_runtime_expectations_v1.py",
+        "sha256": "556a3cd0a3c6a9081829ff639ed312bf5708f871347dfc4ed4d5257c4b69dc95",
+        "size_bytes": 6308
+      },
+      {
+        "path": "scripts/checkpoint_gstreamer_analytics_sidecar.py",
+        "sha256": "05c958f75564577465f5031dcb52010be990516c01f9e7b0504926abe9ccf55a",
+        "size_bytes": 293953
+      },
+      {
+        "path": "scripts/publication_operational_capture_plan_v1.py",
+        "sha256": "1019d8ca5aae7ec23315e08bafef0c4842350e55fedfb209453785b793c4ac95",
+        "size_bytes": 25882
+      },
+      {
+        "path": "scripts/publication_operational_runtime_context_v1.py",
+        "sha256": "20a470135fef1d6fc37b76585623197f18b2b20e4f192ba61ace45fcac5bdb51",
+        "size_bytes": 11192
+      },
+      {
+        "path": "scripts/publication_policy_qualification_execution_code_closure_v1.py",
+        "sha256": "5487bbb6203c17d5adcf1697148685590c11017228942d225cbb32a945f730a7",
+        "size_bytes": 18967
+      }
+    ]
+  },
+  "publication_ready": false,
+  "recommendations": [
+    {
+      "concrete_completion_basis": "Source-grounded dependency/seam reviewfdaa3ab3 is present byte-exact in the9ad planning commit before implementation. Original pre-edit inventory9a439387 records approval pending and all11 original module hashes independently equal9ad blobs, all9-image memberships, host78/source165 and minimum pure factoring. Separate seam2 inventory4b2cc7a7 retains original owned-source before hashes and native3/worker2 member baselines. Later host87/selected73/deps6 and finite relocation inventory supplement these original maps.",
+      "current_task_line": 70,
+      "current_test_module_paths": [
+        "tests/test_publication_gstreamer_component_inputs_v1.py"
+      ],
+      "evidence_refs": [
+        "pre_implementation_direction_peer",
+        "seam1_pre_edit",
+        "seam2_pre_edit",
+        "held_session_scope",
+        "selected_host_renewal_peer",
+        "relocation_feasibility"
+      ],
+      "exact_current_task_clause": "Map selected component imports/build/worker/model dependencies before edits; verify actual affected closure inventory and preserve unrelated source/evidence.",
+      "hardware_or_final_ci_acceptance": false,
+      "recommendation": "may_check_implementation_and_its_specified_local_validation",
+      "remaining_acceptance_and_freshness_limits": "The two pre-edit inventories were not themselves committed in9ad; current physical/Git existence alone cannot establish their creation time. Original author dispatch order and pending-approval record support chronology and need the parent reviewer's explicit assessment before checking the literal before-edits clause. Later358e implementation review is not retrospective chronology evidence. Fresh relocated CPU/GPU successful original CLI, current four-arm science, final full hosted/ext4 checks, active conformance/archive/merge remain separate unchecked gates.",
+      "source_paths": [
+        "scripts/publication_gstreamer_component_inputs_v1.py",
+        "scripts/publication_gstreamer_component_authority_v1.py",
+        "scripts/publication_guardian_runtime_expectations_v1.py"
+      ],
+      "task_id": "18.2",
+      "task_was_checked_by_this_review": false
+    },
+    {
+      "concrete_completion_basis": "The physical selected inventory/pure factoring is implemented. Original49 default-and-selected tests and later exact real stock inspect/probe regressions close two actual schema defects. CPU05 source/context phases completed genuine complete model/numeric/calibration/current worker checks before two native arms; >=30-per-cell and historical selected-row equality remain strict predicates. Foreign/stale/owner/epoch rejection is covered by original focused methods; full wrappers were not fabricated.",
+      "current_task_line": 71,
+      "current_test_module_paths": [
+        "tests/test_publication_gstreamer_component_inputs_v1.py"
+      ],
+      "evidence_refs": [
+        "seam1_peer",
+        "model_inspect_repair_peer",
+        "probe_schema_repair_peer",
+        "held_session_peer",
+        "cpu05_postterminal_peer"
+      ],
+      "exact_current_task_clause": "Implement selected explicit physical host inventory/materialization and pure existing helper factoring; verify real selected bindings, >=30 calibration samples/cell, historical selected-row equality, stale/foreign rejection and unchanged full wrappers without fake QualificationInputs.",
+      "hardware_or_final_ci_acceptance": false,
+      "recommendation": "may_check_implementation_and_its_specified_local_validation",
+      "remaining_acceptance_and_freshness_limits": "Initial seam1/source tests were metadata fixtures; current genuine stock validation is supplied by the later CPU05 phases. Original CPU05CLI78 is not measurement acceptance. Fresh relocated CPU/GPU successful original CLI, current four-arm science, final full hosted/ext4 checks, active conformance/archive/merge remain separate unchecked gates.",
+      "source_paths": [
+        "scripts/publication_gstreamer_component_inputs_v1.py",
+        "scripts/publication_gstreamer_component_authority_v1.py",
+        "scripts/publication_policy_qualification_runtime_inputs_v2.py"
+      ],
+      "task_id": "18.3",
+      "task_was_checked_by_this_review": false
+    },
+    {
+      "concrete_completion_basis": "Distinct component authority/preprocessing and exact three-kind dispatch, original seven native role/source front-worker joins and active two-operation before-inference guards are implemented. Original72 tests include10 component and62 legacy; genuine selected image19 packaged fixtures supplement physical CPU05 all8-worker activation/accounting. Old kinds, unknown/foreign and component full-entrypoint refusal remain strict.",
+      "current_task_line": 72,
+      "current_test_module_paths": [
+        "tests/test_publication_guardian_component_preprocessing_contract_v1.py",
+        "tests/test_checkpoint_gstreamer_analytics_sidecar.py"
+      ],
+      "evidence_refs": [
+        "seam2_author",
+        "seam2_peer",
+        "selected_packaged_terminal",
+        "cpu05_postterminal_peer"
+      ],
+      "exact_current_task_clause": "Implement distinct component preprocessing/authority receipt and exact three-kind guardian/sidecar/runtime-expectations dispatch; verify all8 workers/current pins/active two-operation context, before-inference unplanned arm/system/policy rejection, both old kind paths, unknown/foreign negatives and full-entrypoint rejection.",
+      "hardware_or_final_ci_acceptance": false,
+      "recommendation": "may_check_implementation_and_its_specified_local_validation",
+      "remaining_acceptance_and_freshness_limits": "Fresh relocated CPU/GPU successful original CLI, current four-arm science, final full hosted/ext4 checks, active conformance/archive/merge remain separate unchecked gates.",
+      "source_paths": [
+        "scripts/publication_guardian_component_preprocessing_contract_v1.py",
+        "scripts/publication_guardian_runtime_expectations_v1.py",
+        "scripts/checkpoint_gstreamer_analytics_sidecar.py",
+        "scripts/publication_gstreamer_component_authority_v1.py"
+      ],
+      "task_id": "18.4",
+      "task_was_checked_by_this_review": false
+    },
+    {
+      "concrete_completion_basis": "Executor/cold implementation delegates to original stock runtime, collector, physical custody/full-resource/ingress/all-phase validators. Original24 runtime/staging and14 CLI tests were supplemented by provider and58 private-session tests. CPU05 produced two real nativeCLI0/1080-ingress arms, genuine process/CID records, authenticated guardian shutdown and8371-request cold reconciliation; all full/qualification/Q4 flags remain false. Late original failure and cleanup were preserved.",
+      "current_task_line": 73,
+      "current_test_module_paths": [
+        "tests/test_publication_gstreamer_component_runtime_v1.py",
+        "tests/test_publication_gstreamer_component_cli_v1.py"
+      ],
+      "evidence_refs": [
+        "runtime_peer",
+        "cli_peer",
+        "held_session_peer",
+        "cpu05_postterminal_peer",
+        "cpu05_scientific_peer"
+      ],
+      "exact_current_task_clause": "Implement real component executor and cold result over original runtime/custody/physical validators and complete operational reconciliation; verify original CLI/CID/hardware collector and measurement/domain checks, no aggregate grant, bounded failure/cleanup and false full eligibility.",
+      "hardware_or_final_ci_acceptance": false,
+      "recommendation": "may_check_implementation_and_its_specified_local_validation",
+      "remaining_acceptance_and_freshness_limits": "Implementation/consumer behavior is complete; original CPU05pair did not meet2100s, and --rm leaves final daemon exit/OOM unknown where not observed. Do not infer final measurement acceptance or grant from cold presence. Fresh relocated CPU/GPU successful original CLI, current four-arm science, final full hosted/ext4 checks, active conformance/archive/merge remain separate unchecked gates.",
+      "source_paths": [
+        "scripts/publication_gstreamer_component_runtime_v1.py",
+        "scripts/publication_gstreamer_component_cli_v1.py",
+        "scripts/publication_operational_process_custody_v1.py",
+        "scripts/publication_operational_container_custody_v1.py"
+      ],
+      "task_id": "18.5",
+      "task_was_checked_by_this_review": false
+    },
+    {
+      "concrete_completion_basis": "Actual selected deterministic A/B/final build/capture and19 packaged fixtures pass with imagee474/receipt61874c718; exact embedded/import/current image projection and six host-only constants/three test-literal renewal were reviewed. Native3/worker2 remain physically unchanged. CPU05 complete original stock selected model/raw-numeric/calibration assessment ran without rebinding historical aggregate acceptance.",
+      "current_task_line": 74,
+      "current_test_module_paths": [
+        "tests/test_checkpoint_gstreamer_custom_publication_runtime_v3.py",
+        "tests/test_publication_runtime_frozen_identity_constants_v1.py"
+      ],
+      "evidence_refs": [
+        "selected_build_terminal",
+        "selected_image",
+        "selected_packaged_terminal",
+        "selected_host_renewal_peer",
+        "held_session_scope",
+        "cpu05_postterminal_peer"
+      ],
+      "exact_current_task_clause": "Renew only affected selected host/GStreamer packaging and actual image/import/embedded identities; verify packaged component regressions and unchanged native3/worker2 closures or renew affected evidence. Physically verify selected original common model/raw-numeric/calibration evidence or obtain missing selected checks without rebinding aggregate acceptance.",
+      "hardware_or_final_ci_acceptance": false,
+      "recommendation": "may_check_implementation_and_its_specified_local_validation",
+      "remaining_acceptance_and_freshness_limits": "Other three runtime images remain historical/ineligible. Fresh ext4 source epochs require a new host closure; relocation does not by itself require image rebuild when relative raw scope remains identical. Fresh relocated CPU/GPU successful original CLI, current four-arm science, final full hosted/ext4 checks, active conformance/archive/merge remain separate unchecked gates.",
+      "source_paths": [
+        "scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+        "deploy/gstreamer_custom/publication/Dockerfile",
+        "deploy/gstreamer_custom/publication/runtime-source-allowlist.txt"
+      ],
+      "task_id": "18.6",
+      "task_was_checked_by_this_review": false
+    },
+    {
+      "concrete_completion_basis": "Original CPU05 genuinely created fresh bounded namespaces, physically allocated/verified/released20GiB reserves, held six selected inputs and current source/model/resource/owner/socket authority, and executed exact six-stream/four-branch baseline/shared source plans. Focused occupied/aliased/stale/unsupported and reserve replacement negatives remain intact.",
+      "current_task_line": 75,
+      "current_test_module_paths": [
+        "tests/test_publication_gstreamer_component_cli_v1.py",
+        "tests/test_publication_gstreamer_component_inputs_v1.py",
+        "tests/test_publication_gstreamer_component_runtime_v1.py"
+      ],
+      "evidence_refs": [
+        "cli_peer",
+        "held_dispatch_peer",
+        "cpu05_postterminal_peer",
+        "relocation_feasibility"
+      ],
+      "exact_current_task_clause": "Preflight fresh local bounded namespaces, actual volume capacity/20GiB reserves, models/resources/owner/socket and current identities; verify exact six-stream/four-branch paired plan and reject occupied/stale/unsupported inputs.",
+      "hardware_or_final_ci_acceptance": false,
+      "recommendation": "may_check_implementation_and_its_specified_local_validation",
+      "remaining_acceptance_and_freshness_limits": "This check closes the implemented and genuinely observed CPU05 preflight only. It is no readiness certificate for a new root, future GPU, volume or daemon bind. Decision27 task22.2 must repeat actual destination and resource preflight before any new pair. Fresh relocated CPU/GPU successful original CLI, current four-arm science, final full hosted/ext4 checks, active conformance/archive/merge remain separate unchecked gates.",
+      "source_paths": [
+        "scripts/publication_gstreamer_component_cli_v1.py",
+        "scripts/publication_gstreamer_component_runtime_v1.py",
+        "scripts/publication_gstreamer_component_inputs_v1.py"
+      ],
+      "task_id": "18.7",
+      "task_was_checked_by_this_review": false
+    },
+    {
+      "concrete_completion_basis": "One external original parent/one fresh canonicalCP3.12.3 full-suite child and synchronous safe-GIL SIGUSR1 handler are implemented without native watchdog thread. Focused26 tests and original hosted8f24 requests/24 completed responses, both EOF and original status prove observation behavior. Full discovery,90m,600000/615000 and mandatory native criteria remain explicit unchanged constraints; trace/control/capture failures are sticky.",
+      "current_task_line": 87,
+      "current_test_module_paths": [
+        "tests/test_ci_external_test_observer_v1.py",
+        "tests/test_run_ci_checks.py"
+      ],
+      "evidence_refs": [
+        "ci_observer_peer",
+        "ci_prerequisite_peer",
+        "ci8f_failure"
+      ],
+      "exact_current_task_clause": "Implement one external original parent and one fresh Python3.12.3 full-suite child, synchronous safe-GIL SIGUSR1 dump handler without watchdog/extra worker thread, scheduled60s requests and honest actual response/lateness/missing/coalescing records. Verify unchanged full selection/required native successes/90m/600000/615000, bounded parent-drained1MiB trace, <=16KiB host/<=8MiB new metadata, sticky capture failure, exact PID lifecycle and no manufactured terminal/source-after.",
+      "hardware_or_final_ci_acceptance": false,
+      "recommendation": "may_check_implementation_and_its_specified_local_validation",
+      "remaining_acceptance_and_freshness_limits": "Original8f full suite failed; handler timing can be delayed/coalesced and original-child status does not establish descendant quiescence. Implementation completion does not close19.5/18.11/current full-CI acceptance.",
+      "source_paths": [
+        "scripts/ci_external_test_observer_v1.py",
+        "scripts/run_ci_checks.py",
+        ".github/workflows/ci.yml"
+      ],
+      "task_id": "19.2",
+      "task_was_checked_by_this_review": false
+    },
+    {
+      "concrete_completion_basis": "Original26 focused tests cover actual child/signal/native-task1, conflict/disposition, capture overflow/write/EOF/drain, original nonzero/cancellation and pidfd-acquisition-failure cleanup via the unreaped original Popen handle. Source before/after and actual PID/group/FD retirement are recorded; production namespace/subreaper/WSL andCP3.12.3 predicates were not weakened.",
+      "current_task_line": 88,
+      "current_test_module_paths": [
+        "tests/test_ci_external_test_observer_v1.py",
+        "tests/test_run_ci_checks.py"
+      ],
+      "evidence_refs": [
+        "ci_observer_peer",
+        "ci_prerequisite_author"
+      ],
+      "exact_current_task_clause": "Run focused genuine file/process/signal/native-task tests for response and first-failure semantics, handler conflict/restart/disposition, overflow/write/EOF/drain/FD cleanup, original signal/nonzero/cancellation and bounded owned containment; verify production subreaper/namespace/WSL predicates and Python version remain unchanged.",
+      "hardware_or_final_ci_acceptance": false,
+      "recommendation": "may_check_implementation_and_its_specified_local_validation",
+      "remaining_acceptance_and_freshness_limits": "No native139 cause is proven and no namespace/profile remedy follows from focused success. Original hosted/current full checks remain separate.",
+      "source_paths": [
+        "scripts/ci_external_test_observer_v1.py",
+        "scripts/run_ci_checks.py"
+      ],
+      "task_id": "19.3",
+      "task_was_checked_by_this_review": false
+    },
+    {
+      "concrete_completion_basis": "Canonical actualCP3.12.3 child argv and fixed project import path preserve-I/-B, complete inventory, original IDs, native/observer/budget gates. Original meaningful canonical-alias and contained-import regressions pass; real hosted8f uses that canonical child and complete2943 inventory/2934 portable selection.",
+      "current_task_line": 97,
+      "current_test_module_paths": [
+        "tests/test_run_ci_checks.py",
+        "tests/test_ci_test_selection_v1.py"
+      ],
+      "evidence_refs": [
+        "ci_prerequisite_author",
+        "ci_prerequisite_peer",
+        "ci8f_failure"
+      ],
+      "exact_current_task_clause": "Use validated actual canonical3.12.3 child argv and explicit fixed repository import path, preserving isolation/default discovery/original IDs and interpreter/native/observer/budget predicates; pass genuine canonical-alias and contained namespace-import regressions.",
+      "hardware_or_final_ci_acceptance": false,
+      "recommendation": "may_check_implementation_and_its_specified_local_validation",
+      "remaining_acceptance_and_freshness_limits": "The old8f original80 declaration vs88 actual skips failed honestly; subsequent finite88 correction is independently recorded, but final current full portable run is pending.",
+      "source_paths": [
+        "scripts/run_ci_checks.py",
+        "scripts/ci_test_selection_v1.py"
+      ],
+      "task_id": "20.2",
+      "task_was_checked_by_this_review": false
+    },
+    {
+      "concrete_completion_basis": "Actual8f package query and original gst-inspect appsrc/queue/videoconvert stdout retain loaded factory filenames/version1.24.2. Same original run configures/builds all six targets with zero statuses and reports all three mandatory native methods successful with no missing required native successes.",
+      "current_task_line": 98,
+      "current_test_module_paths": [
+        "tests/test_run_ci_checks.py",
+        "tests/test_checkpoint_analytics_execution_client_cpp.py"
+      ],
+      "evidence_refs": [
+        "ci_prerequisite_peer",
+        "ci8f_failure"
+      ],
+      "exact_current_task_clause": "Add explicit ephemeral GStreamer runtime plugin/tool prerequisites, retain actual loaded appsrc/queue/videoconvert facts and pass all unchanged six builds/three mandatory native regressions; installation alone is incomplete.",
+      "hardware_or_final_ci_acceptance": false,
+      "recommendation": "may_check_implementation_and_its_specified_local_validation",
+      "remaining_acceptance_and_freshness_limits": "This closes the individual prerequisites/build/native task. Overall8f/current hosted/ext4 complete portable and hardware gates remain failed/pending; package installation alone would not have sufficed.",
+      "source_paths": [
+        "scripts/run_ci_checks.py",
+        ".github/workflows/ci.yml"
+      ],
+      "task_id": "20.3",
+      "task_was_checked_by_this_review": false
+    },
+    {
+      "concrete_completion_basis": "Exact two reachable helpers are added to three sibling LF allowlists/COPY blocks. Original23 exact source-closure/COPY/negative tests pass with stable sources; actual inventory/native3/worker2 controls and finite rule preservation were reviewed. Subsequent selected renewal has its separate actual image receipt.",
+      "current_task_line": 99,
+      "current_test_module_paths": [
+        "tests/test_checkpoint_deepstream_runtime_source_closure_v3.py",
+        "tests/test_checkpoint_openvino_gva_runtime_source_closure_v3.py",
+        "tests/test_checkpoint_savant_runtime_source_closure_v3.py",
+        "tests/test_runtime_build_context_v3.py"
+      ],
+      "evidence_refs": [
+        "sibling_packaging_original",
+        "sibling_scope",
+        "sibling_packaging_peer",
+        "selected_host_renewal_peer"
+      ],
+      "exact_current_task_clause": "Add exactly the two reachable helpers to three sibling LF manifests/COPY blocks, pass original exact closure and negative tests, recompute affected inventories and preserve historical/ineligible sibling images with independently unchanged selected/native3/worker2 facts.",
+      "hardware_or_final_ci_acceptance": false,
+      "recommendation": "may_check_implementation_and_its_specified_local_validation",
+      "remaining_acceptance_and_freshness_limits": "Original sibling images are historical/ineligible, not rebuilt or rebound. Actual current selected image is e474, not the historical887 control named in the earlier scope receipt.",
+      "source_paths": [
+        "deploy/deepstream/checkpoint/runtime-source-allowlist.txt",
+        "deploy/openvino_gva/publication/runtime-source-allowlist.txt",
+        "deploy/savant/publication/runtime-source-allowlist.txt",
+        "deploy/deepstream/checkpoint/Dockerfile.runtime",
+        "deploy/openvino_gva/publication/Dockerfile",
+        "deploy/savant/publication/Dockerfile"
+      ],
+      "task_id": "20.4",
+      "task_was_checked_by_this_review": false
+    },
+    {
+      "concrete_completion_basis": "Finite metadata/temp-root/probe/forensic fixture repairs preserve original method IDs/decorators/assertion purposes. Original99 methods comprise96 successes and3 existing Windows skips, not99 successes; meaningful lexical import negatives remain detectable. Exact9 integration declarations and original80 skip rows remain,8 actual source-attested existing skips yield88; mandatory-test deferral is rejected. Selected-current tests bind genuinee474 receipt while oldg/full integration remains deferred/ineligible.",
+      "current_task_line": 100,
+      "current_test_module_paths": [
+        "tests/test_ci_test_selection_v1.py",
+        "tests/test_checkpoint_model_parity_materializer_v4.py",
+        "tests/test_publication_runtime_frozen_identity_constants_v1.py"
+      ],
+      "evidence_refs": [
+        "portable_fixture_author",
+        "portable_fixture_peer",
+        "ci_prerequisite_peer",
+        "sibling_packaging_peer",
+        "selected_host_renewal_peer"
+      ],
+      "exact_current_task_clause": "Repair portable historical-probe/forensic/temp-root fixtures without changing original IDs/assertions; review exact individual integration declarations/reasons/capabilities and default-all-other-portable selection, reject invalid or mandatory-test deferral, and bind selected-current identity tests to the actual reviewed receipt without old g rebinding.",
+      "hardware_or_final_ci_acceptance": false,
+      "recommendation": "may_check_implementation_and_its_specified_local_validation",
+      "remaining_acceptance_and_freshness_limits": "The finite focused slice and selector safeguards do not prove complete current hosted/ext4 portable success or physical full-integration execution; existing unsupported integration obligations remain explicit.",
+      "source_paths": [
+        "scripts/ci_test_selection_v1.py",
+        ".ci/integration-test-selection.v1.json"
+      ],
+      "task_id": "20.5",
+      "task_was_checked_by_this_review": false
+    }
+  ],
+  "schema_version": 1,
+  "scope_limits": [
+    "No source/test/planning/task/index/HEAD edit or checkboxes changed.",
+    "No test execution, discovery, engine/model/namespace/native/hardware operation or workflow dispatch/read of active output.",
+    "Exact old source receipts remain historical; later actual repairs/packaged results/CPU05 evidence are explicitly supplementary.",
+    "18.7 closes original observed CPU05 preflight, never future relocated/GPU readiness.22.2 must acquire genuine new destination/resource facts.",
+    "Retained CPU05 cold/scientific truth cannot turn its late originalCLI78 into accepted18.8 or close four-arm18.10.",
+    "Checking implementation tasks leaves current full portable/final source/build/native evidence and four-arm acceptance mandatory."
+  ],
+  "separate_planning_only_task": "22.1 is already checked only in current working tasks38/65; committed5bc remains37/65.",
+  "source_docs": [
+    {
+      "path": "openspec/changes/fix-benchmark-preparations-spec/proposal.md",
+      "sha256": "e4235e246b2d148dd73b8f749e1dd217efa3b7610d58e2c4daf6a3a51d6544a7",
+      "size_bytes": 13792
+    },
+    {
+      "path": "openspec/changes/fix-benchmark-preparations-spec/design.md",
+      "sha256": "5303b985449c32598099bdde7594ce3805f257bea7d59f7058fc96716231a12a",
+      "size_bytes": 35324
+    },
+    {
+      "path": "openspec/changes/fix-benchmark-preparations-spec/tasks.md",
+      "sha256": "38b0569683365fd734b6ae3b771fc4d1cbbfd820d1bdd864d25a64a2f5581f3c",
+      "size_bytes": 24568
+    },
+    {
+      "path": "openspec/changes/fix-benchmark-preparations-spec/specs/benchmark-launch-preparation/spec.md",
+      "sha256": "576821b3fd057becb7735b70affba8001e3e70a15308c4783928e7f9c5471be3",
+      "size_bytes": 71033
+    },
+    {
+      "path": "openspec/changes/fix-benchmark-preparations-spec/verification-plan.md",
+      "sha256": "b3db56c13e3a5c7157820f4e60f459455c5a83706b207c308f7af09716c8f73d",
+      "size_bytes": 48891
+    },
+    {
+      "path": "openspec/changes/fix-benchmark-preparations-spec/conformance-progress.md",
+      "sha256": "449563678e1c6392e1955246ff67fc8003a34bcead58c9bd47d45d61cd9aaf2f",
+      "size_bytes": 77152
+    },
+    {
+      "path": "BENCHMARK_RECOVERY_PLAN.md",
+      "sha256": "448c2a3653b2426f8e7bb30c5c2cb4a45cf0c9e396cbe300bf6917dcd2b7f231",
+      "size_bytes": 52297
+    },
+    {
+      "path": "docs/gstreamer-component-benchmark-runbook.md",
+      "sha256": "8051aaaab0a6e52c09beafc0ad91cf39a80322269880fdd783d1e777db896361",
+      "size_bytes": 8802
+    }
+  ],
+  "status": "read_only_recommendation_not_task_mutation_or_final_conformance",
+  "task_source_points": {
+    "committed": {
+      "checked": 37,
+      "commit": "5bc416a2beab98b6cc60229dac56332b48cc6ca2",
+      "tasks_descriptor": {
+        "path": "openspec/changes/fix-benchmark-preparations-spec/tasks.md",
+        "sha256": "40db3b81948c0954f7fb46a557ffad0b02c1eb2a9c846a8b385a009dd0e3332e",
+        "size_bytes": 24286
+      },
+      "total": 65
+    },
+    "current_working": {
+      "checked": 38,
+      "only_difference_from_commit": "22.1 changed to checked with exact Decision27 planning/PR evidence; no setup or pair acceptance.",
+      "tasks_descriptor": {
+        "path": "openspec/changes/fix-benchmark-preparations-spec/tasks.md",
+        "sha256": "38b0569683365fd734b6ae3b771fc4d1cbbfd820d1bdd864d25a64a2f5581f3c",
+        "size_bytes": 24568
+      },
+      "total": 65
+    },
+    "mapping_changes_tasks": false
+  }
+}

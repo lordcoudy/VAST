@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "vast_ext4_bind_probe_independent_source_review_v1",
+  "disposition": "approved_prepared_unexecuted_finite_bind_observation",
+  "planning_commit": "5bc416a2beab98b6cc60229dac56332b48cc6ca2",
+  "planning_pr_comment": "5918066559",
+  "reviewed_source": {
+    "path": "artifacts/benchmark_recovery_20260930/component-ext4-bind-preparation-v1/probe_original_ext4_bind_v1.py",
+    "size_bytes": 16724,
+    "sha256": "6d95e49d8f39cc4f0b6a877549780f91537c84d036efa60de95de0dbfe3bae1d"
+  },
+  "author_review": {
+    "path": "artifacts/benchmark_recovery_20260930/component-ext4-bind-preparation-v1/author-review.v1.json",
+    "size_bytes": 4168,
+    "sha256": "36d39f5ca2a153311db4ad815e395a502bef74a550369cd7f4f71e72d62fea1d"
+  },
+  "original_source": {
+    "path": "artifacts/benchmark_recovery_20260930/component-ext4-bind-preparation-v1/probe_original_ext4_bind_v1.v1-original.py",
+    "size_bytes": 12486,
+    "sha256": "be828c5a3e5616ee24a3f98fefe5e293ebb3d23de55c93adb7fb08be15ed0f31"
+  },
+  "diff": {
+    "path": "artifacts/benchmark_recovery_20260930/component-ext4-bind-preparation-v1/review-repairs.v1.diff",
+    "size_bytes": 16070,
+    "sha256": "8c342b27f8285b81bfa7ddab2ebf46e65f4e2991c66816af484143628a16916f"
+  },
+  "review": [
+    "Read the complete prepared source and author diff. One original fixed root/image read-only bind observation uses an unprivileged1000:1000 container, network none, cap-dropALL, no-new-privileges, fixed receipt bytes and current source commit argument.",
+    "Source/self/engine pins enforce canonical paths, regular single-link files, full seven-field epochs and bounded streaming hashes with the original30s deadline. Actual socket identity and owner are compared before/after.",
+    "Original command resources are retired independently even after owner/launch/capture failures; original cause and bounded cleanup facts remain sticky. Channels are64KiB and metadata1MiB. Missing EOF/group containment or actual deadline failure cannot yield successful exit.",
+    "Original name-to-CID fallback requires exact64hex CID plus reserved name, owner label and immutable image equality; mutations target only that exact verified CID. Nonforce removal is followed by both CID and reserved-name absence.",
+    "The three identifier-bound NotFound stderr forms and empty-or-one-LF stdout agree with the current stock container helper. Arbitrary error/whitespace cannot authorize absence.",
+    "Success requires actual stopped PID0/ExitCode0/OOMfalse, readonlyroot, exact user and readonly project mount plus the returned original receipt hash/size. These are future physical predicates, not observations made in this review.",
+    "The absolute40s final gate, failed late companion and nonzero disposition preserve lateness; failed cleanup, unresolved ownership or remaining groups remain failed/unknown."
+  ],
+  "future_dispatch_conditions": [
+    "Actual reviewed setup must first create the exact fresh root and source commit; this source review creates neither.",
+    "Retain original command/container/FD/source facts and actual successful terminal plus absence before claiming bind reachability.",
+    "The probe cannot supply a new host code closure or selected model/native/guardian/arm/cold authority; those remain fresh original gates."
+  ],
+  "reviewer_operations": "Read-only local source/hash/diff and stock error-template comparison. No probe import, test, setup, clone, Docker/daemon query, model/native/GPU/namespace operation or source mutation.",
+  "actual_bind_observed": false,
+  "hardware_acceptance": false,
+  "publication_ready": false,
+  "source_holds_active": false
+}
