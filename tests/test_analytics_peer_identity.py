@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+import errno
 import hashlib
 import json
 import os
@@ -264,12 +265,43 @@ class AnalyticsPeerIdentityAuthorityTests(unittest.TestCase):
                 stderr="",
             )
 
-        observed = authority._observe_peercred_pid0_platform_observation(
-            command_runner=runner
+        real_open, real_read, real_close = os.open, os.read, os.close
+        fixture_chunks = iter((OSRELEASE_RAW, b""))
+
+        def fixture_read(descriptor: int, size: int) -> bytes:
+            # Exercise the real proc fd, then return explicitly frozen unit bytes.
+            # This fixture is not an observation of the host's WSL platform.
+            self.assertLessEqual(len(real_read(descriptor, size)), size)
+            chunk = next(fixture_chunks)
+            self.assertLessEqual(len(chunk), size)
+            return chunk
+
+        with mock.patch.object(authority.os, "open", wraps=real_open) as opened, \
+                mock.patch.object(authority.os, "read", side_effect=fixture_read) as read, \
+                mock.patch.object(authority.os, "close", wraps=real_close) as closed:
+            observed = authority._observe_peercred_pid0_platform_observation(
+                command_runner=runner
+            )
+
+        descriptor = read.call_args_list[0].args[0]
+        self.assertIs(type(descriptor), int)
+        opened.assert_called_once_with(
+            Path("/proc/sys/kernel/osrelease"), os.O_RDONLY | os.O_NOFOLLOW | os.O_CLOEXEC
         )
+        self.assertEqual(read.call_args_list, [mock.call(descriptor, 256), mock.call(descriptor, 223)])
+        closed.assert_called_once_with(descriptor)
+        with self.assertRaises(OSError) as closure:
+            os.fstat(descriptor)
+        self.assertEqual(closure.exception.errno, errno.EBADF)
 
         self.assertEqual(calls, [["docker", "info", "--format={{json .}}"]])
         self.assertEqual(observed, self._platform())
+
+    def test_platform_parser_rejects_non_wsl_kernel_bytes(self) -> None:
+        with self.assertRaisesRegex(SidecarError, "WSL2 osrelease marker drifted"):
+            authority._build_peercred_pid0_platform_observation(
+                b"6.8.0-linux-generic\n", DOCKER_INFO
+            )
 
     def test_native_ext4_private_socket_custody_is_hash_bound(self) -> None:
         directory, path, listener = self._private_socket()
