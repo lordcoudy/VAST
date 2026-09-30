@@ -357,316 +357,274 @@ def _write_descriptive_artifacts_v1(output, destination, arms, directories, *, r
 def materialize_component_runtime_v1(*, project_root, component_authority_path, capture_plan_path,
         preprocessing_contract_path, preprocessing_receipt_path, guardian_authority_path,
         analytics_socket_path, scratch_root, output_dir):
-    """Independently validate inputs, then use the unchanged original factory."""
-    from publication_gstreamer_component_inputs_v1 import held_selected_component_inputs_v1
-    with held_selected_component_inputs_v1(project_root=project_root, component_authority_path=component_authority_path) as selected:
-        return _materialize_component_runtime_from_selected_v1(selected=selected, project_root=project_root, component_authority_path=component_authority_path, capture_plan_path=capture_plan_path, preprocessing_contract_path=preprocessing_contract_path, preprocessing_receipt_path=preprocessing_receipt_path, guardian_authority_path=guardian_authority_path, analytics_socket_path=analytics_socket_path, scratch_root=scratch_root, output_dir=output_dir)
-
-
-def _materialize_component_runtime_from_session_v1(session, *, project_root, component_authority_path, capture_plan_path,
-        preprocessing_contract_path, preprocessing_receipt_path, guardian_authority_path,
-        analytics_socket_path, scratch_root, output_dir):
-    from publication_gstreamer_component_inputs_v1 import _borrow_selected_component_session_v1
-    with _borrow_selected_component_session_v1(session, project_root=project_root,
-            component_authority_path=component_authority_path, boundary="materialize") as selected:
-        return _materialize_component_runtime_from_selected_v1(selected=selected, project_root=project_root, component_authority_path=component_authority_path, capture_plan_path=capture_plan_path, preprocessing_contract_path=preprocessing_contract_path, preprocessing_receipt_path=preprocessing_receipt_path, guardian_authority_path=guardian_authority_path, analytics_socket_path=analytics_socket_path, scratch_root=scratch_root, output_dir=output_dir)
-
-
-def _materialize_component_runtime_from_selected_v1(*, selected, project_root, component_authority_path, capture_plan_path,
-        preprocessing_contract_path, preprocessing_receipt_path, guardian_authority_path,
-        analytics_socket_path, scratch_root, output_dir):
+    """Use the original ABI-v3 factory for exactly two component bundles."""
     import publication_policy_qualification_runtime_inputs_v2 as factory
+    from publication_gstreamer_component_inputs_v1 import held_selected_component_inputs_v1
     from publication_guardian_component_preprocessing_contract_v1 import load_component_guardian_preprocessing_contract_v1
     from publication_operational_runtime_context_v1 import CAPTURE_KEY, CAPTURE_ROLE, OUTPUT_PATH_RULE
-    root, inventory = selected["root"], selected["inventory"]
-    destination = _absolute(root, output_dir)
-    _require(not os.path.lexists(destination), "component runtime output is occupied")
-    preprocessing = load_component_guardian_preprocessing_contract_v1(project_root=root,
-        preprocessing_contract_path=preprocessing_contract_path, materialization_receipt_path=preprocessing_receipt_path,
-        capability_manifest_path=_absolute(root, selected["capability_manifest_descriptor"]["path"]),
-        component_authority_path=component_authority_path)
-    analytics = factory._socket_record(Path(analytics_socket_path), label="component actual guardian front")
-    factory._require_socket_transport(analytics, expected_type="0005", label="component actual guardian front")
-    engine_socket = selected["engine_socket"]
-    factory._require_socket_transport(engine_socket, expected_type="0001", label="component actual engine socket")
-    scratch = factory._external_directory(Path(scratch_root), label="component original runtime scratch")
-    dataset, _media = factory._dataset_material(inventory, "h264")
-    with PhysicalRootCustodyV1.open(root, label="component runtime materialization") as custody:
-        _guardian, guardian_ref = _selected_guardian_v1(custody, root, guardian_authority_path,
-            preprocessing=preprocessing, analytics_socket_path=analytics_socket_path, live=True)
-        with held_operational_capture_plan_v1(project_root=root, index_path=_absolute(root, capture_plan_path)) as plan:
-            _require(plan["index"]["mode"] == DIAGNOSTIC_MODE and len(plan["operations_by_id"]) == 2 and
-                     _reference(root, preprocessing["receipt"]["operational_context"]) == plan["index"]["guardian_context"],
-                     "component runtime preprocessing/context is detached")
-            custody.ensure_directory_owned(destination, label="fresh component runtime bundles")
-            engine_target = destination / "container-engine" / "docker"
-            custody.ensure_directory_owned(engine_target.parent, label="owned component engine asset")
-            copied_engine = factory._copy_engine_asset(root, selected["engine_pin"], engine_target)
-            adapter_path, adapter_bytes, adapter_descriptor = factory._adapter_asset(inventory,
-                system="gstreamer_custom", final_root=destination)
-            custody.write_exclusive(adapter_path, adapter_bytes, label="component original external analytics manifest", mode=0o444)
-            _require(_reference(root, adapter_descriptor) == _descriptor(custody, root, adapter_path),
-                     "component external analytics manifest differs from original constructor")
-            files = factory._system_file_descriptors_from_pins_v1(root=root,
-                dataset_pin=inventory.dataset_pin, parity_pin=inventory.parity_pin,
-                candidate_pin=selected["candidate_pin"], calibration_pin=selected["calib_pin"],
-                system="gstreamer_custom", fixed=selected["fixed"], engine_asset_path=engine_target,
-                engine_pin=selected["engine_pin"], adapter_descriptor=adapter_descriptor)
-            records = []
-            cells = selected_cells_v1(selected["document"]["resource"])
-            for cell in cells:
-                context = plan["runtime_contexts_by_arm"].get(cell.arm_id)
-                _require(context is not None, "component original pair has no native capture context")
-                contract = factory._runtime_contract_from_material_v1(cell,
-                    nvidia=inventory.nvidia,
-                    preprocessing_sha256=preprocessing["receipt"]["preprocessing_contract_content_sha256"],
-                    files=files, source_files=selected["source_descriptors"],
-                    model_files=[*selected["model_descriptors"], *selected["proxy_model_descriptors"]],
-                    support_files=factory._support_descriptors(inventory, system="gstreamer_custom"),
-                    image=selected["image"], engine_socket=engine_socket, analytics_socket=analytics,
-                    scratch_root=scratch, probe=selected["probe"], capability_hashes=selected["capability_hashes"])
-                ref = _reference(root, context["descriptor"])
-                relative = Path(ref["path"]).relative_to(root).as_posix()
-                contract["files"][CAPTURE_ROLE] = {**ref, "path": relative,
-                    "container_path": factory._project_container_path(relative)}
-                contract[CAPTURE_KEY] = {"mode": DIAGNOSTIC_MODE, "output_dir": OUTPUT_PATH_RULE}
-                value = payload_with_sha256_v1({"schema_version": 1, "artifact_kind": BUNDLE_KIND,
-                    "operation_id": context["operation"]["operation_id"],
-                    "component_authority": _reference(root, selected["descriptor"]),
-                    "capture_plan": _descriptor(custody, root, capture_plan_path),
-                    "preprocessing_contract": _descriptor(custody, root, preprocessing_contract_path),
-                    "preprocessing_receipt": _descriptor(custody, root, preprocessing_receipt_path),
-                    "guardian_authority": guardian_ref,
-                    "original_operation": context["operation"]["original_operation"], "native_context": ref,
-                    "runtime_inputs": factory._runtime_inputs_for_cell(cell, dataset=dataset, contract=contract),
-                    "launcher_evidence_files": list(CHILD_EVIDENCE_FILES)})
-                path = destination / (cell.arm_id + ".component.json")
-                records.append({"operation_id": value["operation_id"], "descriptor": _write(custody, path, value)})
-            selected["verify_barrier"]()
-            factory._require_file_pin_unchanged(copied_engine, label="component copied original engine")
-            index = payload_with_sha256_v1({"schema_version": 1,
-                "artifact_kind": "vast_gstreamer_component_runtime_index_v1",
-                "component_authority": _reference(root, selected["descriptor"]), "bundles": records,
-                "engine_asset": _descriptor(custody, root, engine_target, 256 * 1024 * 1024),
-                "analytics_manifest": _descriptor(custody, root, adapter_path), **_component_flags()})
-            descriptor = _write(custody, destination / "component_runtime_index.v1.json", index)
-            custody.verify()
-            return {"descriptor": descriptor, "receipt": index}
+    with held_selected_component_inputs_v1(project_root=project_root,
+            component_authority_path=component_authority_path) as selected:
+        root, inventory = selected["root"], selected["inventory"]
+        destination = _absolute(root, output_dir)
+        _require(not os.path.lexists(destination), "component runtime output is occupied")
+        preprocessing = load_component_guardian_preprocessing_contract_v1(project_root=root,
+            preprocessing_contract_path=preprocessing_contract_path, materialization_receipt_path=preprocessing_receipt_path,
+            capability_manifest_path=_absolute(root, selected["capability_manifest_descriptor"]["path"]),
+            component_authority_path=component_authority_path)
+        analytics = factory._socket_record(Path(analytics_socket_path), label="component actual guardian front")
+        factory._require_socket_transport(analytics, expected_type="0005", label="component actual guardian front")
+        engine_socket = selected["engine_socket"]
+        factory._require_socket_transport(engine_socket, expected_type="0001", label="component actual engine socket")
+        scratch = factory._external_directory(Path(scratch_root), label="component original runtime scratch")
+        dataset, _media = factory._dataset_material(inventory, "h264")
+        with PhysicalRootCustodyV1.open(root, label="component runtime materialization") as custody:
+            _guardian, guardian_ref = _selected_guardian_v1(custody, root, guardian_authority_path,
+                preprocessing=preprocessing, analytics_socket_path=analytics_socket_path, live=True)
+            with held_operational_capture_plan_v1(project_root=root, index_path=_absolute(root, capture_plan_path)) as plan:
+                _require(plan["index"]["mode"] == DIAGNOSTIC_MODE and len(plan["operations_by_id"]) == 2 and
+                         _reference(root, preprocessing["receipt"]["operational_context"]) == plan["index"]["guardian_context"],
+                         "component runtime preprocessing/context is detached")
+                custody.ensure_directory_owned(destination, label="fresh component runtime bundles")
+                engine_target = destination / "container-engine" / "docker"
+                custody.ensure_directory_owned(engine_target.parent, label="owned component engine asset")
+                copied_engine = factory._copy_engine_asset(root, selected["engine_pin"], engine_target)
+                adapter_path, adapter_bytes, adapter_descriptor = factory._adapter_asset(inventory,
+                    system="gstreamer_custom", final_root=destination)
+                custody.write_exclusive(adapter_path, adapter_bytes, label="component original external analytics manifest", mode=0o444)
+                _require(_reference(root, adapter_descriptor) == _descriptor(custody, root, adapter_path),
+                         "component external analytics manifest differs from original constructor")
+                files = factory._system_file_descriptors_from_pins_v1(root=root,
+                    dataset_pin=inventory.dataset_pin, parity_pin=inventory.parity_pin,
+                    candidate_pin=selected["candidate_pin"], calibration_pin=selected["calib_pin"],
+                    system="gstreamer_custom", fixed=selected["fixed"], engine_asset_path=engine_target,
+                    engine_pin=selected["engine_pin"], adapter_descriptor=adapter_descriptor)
+                records = []
+                cells = selected_cells_v1(selected["document"]["resource"])
+                for cell in cells:
+                    context = plan["runtime_contexts_by_arm"].get(cell.arm_id)
+                    _require(context is not None, "component original pair has no native capture context")
+                    contract = factory._runtime_contract_from_material_v1(cell,
+                        nvidia=inventory.nvidia,
+                        preprocessing_sha256=preprocessing["receipt"]["preprocessing_contract_content_sha256"],
+                        files=files, source_files=selected["source_descriptors"],
+                        model_files=[*selected["model_descriptors"], *selected["proxy_model_descriptors"]],
+                        support_files=factory._support_descriptors(inventory, system="gstreamer_custom"),
+                        image=selected["image"], engine_socket=engine_socket, analytics_socket=analytics,
+                        scratch_root=scratch, probe=selected["probe"], capability_hashes=selected["capability_hashes"])
+                    ref = _reference(root, context["descriptor"])
+                    relative = Path(ref["path"]).relative_to(root).as_posix()
+                    contract["files"][CAPTURE_ROLE] = {**ref, "path": relative,
+                        "container_path": factory._project_container_path(relative)}
+                    contract[CAPTURE_KEY] = {"mode": DIAGNOSTIC_MODE, "output_dir": OUTPUT_PATH_RULE}
+                    value = payload_with_sha256_v1({"schema_version": 1, "artifact_kind": BUNDLE_KIND,
+                        "operation_id": context["operation"]["operation_id"],
+                        "component_authority": _reference(root, selected["descriptor"]),
+                        "capture_plan": _descriptor(custody, root, capture_plan_path),
+                        "preprocessing_contract": _descriptor(custody, root, preprocessing_contract_path),
+                        "preprocessing_receipt": _descriptor(custody, root, preprocessing_receipt_path),
+                        "guardian_authority": guardian_ref,
+                        "original_operation": context["operation"]["original_operation"], "native_context": ref,
+                        "runtime_inputs": factory._runtime_inputs_for_cell(cell, dataset=dataset, contract=contract),
+                        "launcher_evidence_files": list(CHILD_EVIDENCE_FILES)})
+                    path = destination / (cell.arm_id + ".component.json")
+                    records.append({"operation_id": value["operation_id"], "descriptor": _write(custody, path, value)})
+                selected["verify_barrier"]()
+                factory._require_file_pin_unchanged(copied_engine, label="component copied original engine")
+                index = payload_with_sha256_v1({"schema_version": 1,
+                    "artifact_kind": "vast_gstreamer_component_runtime_index_v1",
+                    "component_authority": _reference(root, selected["descriptor"]), "bundles": records,
+                    "engine_asset": _descriptor(custody, root, engine_target, 256 * 1024 * 1024),
+                    "analytics_manifest": _descriptor(custody, root, adapter_path), **_component_flags()})
+                descriptor = _write(custody, destination / "component_runtime_index.v1.json", index)
+                custody.verify()
+                return {"descriptor": descriptor, "receipt": index}
 
 
 @contextmanager
 def held_component_runtime_v1(*, project_root, component_authority_path, capture_plan_path,
         runtime_bundle_path, operation_id, preprocessing_contract_path, preprocessing_receipt_path,
         guardian_authority_path, analytics_socket_path, scratch_root, live_guardian=True):
-    """Independent public runtime custody never borrows another invocation."""
+    """Select one physically current component request, never full inputs."""
     from publication_gstreamer_component_inputs_v1 import held_selected_component_inputs_v1
-    with held_selected_component_inputs_v1(project_root=project_root, component_authority_path=component_authority_path) as selected:
-        with _held_component_runtime_from_selected_v1(selected=selected, project_root=project_root, component_authority_path=component_authority_path, capture_plan_path=capture_plan_path, runtime_bundle_path=runtime_bundle_path, operation_id=operation_id, preprocessing_contract_path=preprocessing_contract_path, preprocessing_receipt_path=preprocessing_receipt_path, guardian_authority_path=guardian_authority_path, analytics_socket_path=analytics_socket_path, scratch_root=scratch_root, live_guardian=live_guardian) as held:
-            yield held
-
-
-@contextmanager
-def _held_component_runtime_from_session_v1(session, *, boundary, project_root, component_authority_path, capture_plan_path,
-        runtime_bundle_path, operation_id, preprocessing_contract_path, preprocessing_receipt_path,
-        guardian_authority_path, analytics_socket_path, scratch_root, live_guardian=True):
-    from publication_gstreamer_component_inputs_v1 import _borrow_selected_component_session_v1
-    with _borrow_selected_component_session_v1(session, project_root=project_root,
-            component_authority_path=component_authority_path, boundary=boundary) as selected:
-        with _held_component_runtime_from_selected_v1(selected=selected, project_root=project_root, component_authority_path=component_authority_path, capture_plan_path=capture_plan_path, runtime_bundle_path=runtime_bundle_path, operation_id=operation_id, preprocessing_contract_path=preprocessing_contract_path, preprocessing_receipt_path=preprocessing_receipt_path, guardian_authority_path=guardian_authority_path, analytics_socket_path=analytics_socket_path, scratch_root=scratch_root, live_guardian=live_guardian) as held:
-            yield held
-
-
-@contextmanager
-def _held_component_runtime_from_selected_v1(*, selected, project_root, component_authority_path, capture_plan_path,
-        runtime_bundle_path, operation_id, preprocessing_contract_path, preprocessing_receipt_path,
-        guardian_authority_path, analytics_socket_path, scratch_root, live_guardian=True):
     from publication_gstreamer_component_authority_v1 import validate_component_original_native_row_v1
     from publication_guardian_component_preprocessing_contract_v1 import load_component_guardian_preprocessing_contract_v1
     from publication_operational_runtime_context_v1 import CAPTURE_KEY, CAPTURE_ROLE, OUTPUT_PATH_RULE
-    root = selected["root"]
-    with _held_operational_cold_custody_v1(root) as custody:
-        bundle, bundle_ref = _sealed_object(custody, root, runtime_bundle_path, kind=BUNDLE_KIND)
-        _require(set(bundle) == {"schema_version", "artifact_kind", "operation_id", "component_authority",
-            "capture_plan", "preprocessing_contract", "preprocessing_receipt", "guardian_authority",
-            "original_operation", "native_context", "runtime_inputs", "launcher_evidence_files", "sha256"},
-            "component bundle fields drifted")
-        _require(bundle["operation_id"] == operation_id and
-                 _operational_absolute_descriptor(root, bundle["component_authority"]) ==
-                 _operational_absolute_descriptor(root, selected["descriptor"]),
-                 "component bundle is detached from current selected inputs")
-        preprocessing = load_component_guardian_preprocessing_contract_v1(project_root=root,
-            preprocessing_contract_path=preprocessing_contract_path, materialization_receipt_path=preprocessing_receipt_path,
-            capability_manifest_path=_absolute(root, selected["capability_manifest_descriptor"]["path"]),
-            component_authority_path=component_authority_path)
-        for role, path in (("preprocessing_contract", preprocessing_contract_path),
-                           ("preprocessing_receipt", preprocessing_receipt_path)):
-            _require(bundle[role] == _descriptor(custody, root, path),
-                     "component runtime preprocessing physical reservation drifted")
-        guardian, guardian_ref = _selected_guardian_v1(custody, root, guardian_authority_path,
-            preprocessing=preprocessing, analytics_socket_path=analytics_socket_path, live=live_guardian)
-        _require(bundle["guardian_authority"] == guardian_ref, "component runtime changed the original guardian")
-        with held_operational_capture_plan_v1(project_root=root, index_path=_absolute(root, capture_plan_path),
-                expected_descriptor=_operational_absolute_descriptor(root, bundle["capture_plan"])) as plan:
-            _require(plan["index"]["mode"] == DIAGNOSTIC_MODE and len(plan["operations_by_id"]) == 2 and
-                     operation_id in plan["operations_by_id"], "component operation is outside its original pair")
-            operation = plan["operations_by_id"][operation_id]
-            cells = {cell.arm_id: cell for cell in selected_cells_v1(selected["document"]["resource"])}
-            cell = cells.get(operation["arm_id"])
-            _require(cell is not None and operation["phase"] == "diagnostic" and
-                     all(operation[k] == getattr(cell, k) for k in
-                         ("run_id", "system", "scenario", "codec", "policy", "deadline_ms")),
-                     "component operation changed the frozen coordinates")
-            original = _held_operational_object(custody, root, operation["original_operation"])
-            source_plan = _held_operational_object(custody, root, operation["descriptors"]["source_plan"],
-                                                  require_self_hash=False)
-            validate_component_original_native_row_v1(source=selected, row=operation, source_plan=source_plan)
-            _require(_reference(root, preprocessing["receipt"]["operational_context"]) == plan["index"]["guardian_context"],
-                     "component runtime preprocessing is detached from its capture plan")
-            context_ref = plan["runtime_contexts_by_arm"][cell.arm_id]["descriptor"]
-            _require(bundle["original_operation"] == operation["original_operation"] and
-                     bundle["native_context"] == context_ref and original["operation"] ==
-                     {k: v for k, v in operation.items() if k != "original_operation"},
-                     "component original/context binding drifted")
-            inputs = bundle["runtime_inputs"]
-            contract = inputs["dataset"]["gstreamer_custom_publication_runtime_v3"]
-            expected_inputs, engine = _expected_runtime_inputs_v1(custody=custody, selected=selected, cell=cell,
-                preprocessing=preprocessing, context_ref=context_ref,
-                bundle_directory=_absolute(root, runtime_bundle_path).parent,
-                analytics=guardian["front_socket"], scratch_root=scratch_root)
-            _require(canonical_json_v1(inputs) == canonical_json_v1(expected_inputs),
-                     "component runtime differs from exact selected original factory inputs")
-            _require(contract["container_image"] == original["container_image"] == selected["image"] and
-                     contract.get(CAPTURE_KEY) == {"mode": DIAGNOSTIC_MODE, "output_dir": OUTPUT_PATH_RULE} and
-                     _operational_absolute_descriptor(root, {k: contract["files"][CAPTURE_ROLE][k]
-                         for k in ("path", "size_bytes", "sha256")}) == context_ref,
-                     "component image or active native capture is detached")
-            for role, expected in (("policy_capability_manifest", selected["capability_manifest_descriptor"]),
-                                   ("policy_calibration", selected["calibration_descriptor"])):
-                observed = {k: contract["files"][role][k] for k in ("path", "size_bytes", "sha256")}
-                _require(_operational_absolute_descriptor(root, observed) == _operational_absolute_descriptor(root, expected),
-                         "component runtime changed selected " + role)
-            _require(bundle["launcher_evidence_files"] == list(CHILD_EVIDENCE_FILES),
-                     "component child evidence domain drifted")
-            directory = _absolute(root, original["outputs"]["measurement_dir"])
-            authority_ref = _operational_absolute_descriptor(root, selected["descriptor"])
-            request = NativePublicationRequestV3(system=cell.system, topology_kind=cell.topology_kind,
-                scenario=cell.scenario, project_root=root, output_dir=directory,
-                arm_contract_path=Path(authority_ref["path"]), arm_contract_file_sha256=authority_ref["sha256"],
-                run_id=cell.run_id, arm_id=cell.arm_id, runtime_inputs=copy.deepcopy(inputs),
-                launcher_evidence_files=CHILD_EVIDENCE_FILES)
-            def verify():
-                selected["verify_barrier"]()
-                actual = _descriptor(custody, root, runtime_bundle_path)
-                _require(actual == bundle_ref, "component runtime bundle changed during operation")
-                custody.verify()
-            verify()
-            yield {"request": request, "cell": cell, "selected": selected, "operation": operation,
-                "original": original, "original_operation_descriptor": operation["original_operation"],
-                "native_context_descriptor": context_ref, "container_image": selected["image"],
-                "engine_descriptor": engine, "execution_barrier": verify, "bundle_descriptor": bundle_ref}
-            verify()
+    with held_selected_component_inputs_v1(project_root=project_root,
+            component_authority_path=component_authority_path) as selected:
+        root = selected["root"]
+        with _held_operational_cold_custody_v1(root) as custody:
+            bundle, bundle_ref = _sealed_object(custody, root, runtime_bundle_path, kind=BUNDLE_KIND)
+            _require(set(bundle) == {"schema_version", "artifact_kind", "operation_id", "component_authority",
+                "capture_plan", "preprocessing_contract", "preprocessing_receipt", "guardian_authority",
+                "original_operation", "native_context", "runtime_inputs", "launcher_evidence_files", "sha256"},
+                "component bundle fields drifted")
+            _require(bundle["operation_id"] == operation_id and
+                     _operational_absolute_descriptor(root, bundle["component_authority"]) ==
+                     _operational_absolute_descriptor(root, selected["descriptor"]),
+                     "component bundle is detached from current selected inputs")
+            preprocessing = load_component_guardian_preprocessing_contract_v1(project_root=root,
+                preprocessing_contract_path=preprocessing_contract_path, materialization_receipt_path=preprocessing_receipt_path,
+                capability_manifest_path=_absolute(root, selected["capability_manifest_descriptor"]["path"]),
+                component_authority_path=component_authority_path)
+            for role, path in (("preprocessing_contract", preprocessing_contract_path),
+                               ("preprocessing_receipt", preprocessing_receipt_path)):
+                _require(bundle[role] == _descriptor(custody, root, path),
+                         "component runtime preprocessing physical reservation drifted")
+            guardian, guardian_ref = _selected_guardian_v1(custody, root, guardian_authority_path,
+                preprocessing=preprocessing, analytics_socket_path=analytics_socket_path, live=live_guardian)
+            _require(bundle["guardian_authority"] == guardian_ref, "component runtime changed the original guardian")
+            with held_operational_capture_plan_v1(project_root=root, index_path=_absolute(root, capture_plan_path),
+                    expected_descriptor=_operational_absolute_descriptor(root, bundle["capture_plan"])) as plan:
+                _require(plan["index"]["mode"] == DIAGNOSTIC_MODE and len(plan["operations_by_id"]) == 2 and
+                         operation_id in plan["operations_by_id"], "component operation is outside its original pair")
+                operation = plan["operations_by_id"][operation_id]
+                cells = {cell.arm_id: cell for cell in selected_cells_v1(selected["document"]["resource"])}
+                cell = cells.get(operation["arm_id"])
+                _require(cell is not None and operation["phase"] == "diagnostic" and
+                         all(operation[k] == getattr(cell, k) for k in
+                             ("run_id", "system", "scenario", "codec", "policy", "deadline_ms")),
+                         "component operation changed the frozen coordinates")
+                original = _held_operational_object(custody, root, operation["original_operation"])
+                source_plan = _held_operational_object(custody, root, operation["descriptors"]["source_plan"],
+                                                      require_self_hash=False)
+                validate_component_original_native_row_v1(source=selected, row=operation, source_plan=source_plan)
+                _require(_reference(root, preprocessing["receipt"]["operational_context"]) == plan["index"]["guardian_context"],
+                         "component runtime preprocessing is detached from its capture plan")
+                context_ref = plan["runtime_contexts_by_arm"][cell.arm_id]["descriptor"]
+                _require(bundle["original_operation"] == operation["original_operation"] and
+                         bundle["native_context"] == context_ref and original["operation"] ==
+                         {k: v for k, v in operation.items() if k != "original_operation"},
+                         "component original/context binding drifted")
+                inputs = bundle["runtime_inputs"]
+                contract = inputs["dataset"]["gstreamer_custom_publication_runtime_v3"]
+                expected_inputs, engine = _expected_runtime_inputs_v1(custody=custody, selected=selected, cell=cell,
+                    preprocessing=preprocessing, context_ref=context_ref,
+                    bundle_directory=_absolute(root, runtime_bundle_path).parent,
+                    analytics=guardian["front_socket"], scratch_root=scratch_root)
+                _require(canonical_json_v1(inputs) == canonical_json_v1(expected_inputs),
+                         "component runtime differs from exact selected original factory inputs")
+                _require(contract["container_image"] == original["container_image"] == selected["image"] and
+                         contract.get(CAPTURE_KEY) == {"mode": DIAGNOSTIC_MODE, "output_dir": OUTPUT_PATH_RULE} and
+                         _operational_absolute_descriptor(root, {k: contract["files"][CAPTURE_ROLE][k]
+                             for k in ("path", "size_bytes", "sha256")}) == context_ref,
+                         "component image or active native capture is detached")
+                for role, expected in (("policy_capability_manifest", selected["capability_manifest_descriptor"]),
+                                       ("policy_calibration", selected["calibration_descriptor"])):
+                    observed = {k: contract["files"][role][k] for k in ("path", "size_bytes", "sha256")}
+                    _require(_operational_absolute_descriptor(root, observed) == _operational_absolute_descriptor(root, expected),
+                             "component runtime changed selected " + role)
+                _require(bundle["launcher_evidence_files"] == list(CHILD_EVIDENCE_FILES),
+                         "component child evidence domain drifted")
+                directory = _absolute(root, original["outputs"]["measurement_dir"])
+                authority_ref = _operational_absolute_descriptor(root, selected["descriptor"])
+                request = NativePublicationRequestV3(system=cell.system, topology_kind=cell.topology_kind,
+                    scenario=cell.scenario, project_root=root, output_dir=directory,
+                    arm_contract_path=Path(authority_ref["path"]), arm_contract_file_sha256=authority_ref["sha256"],
+                    run_id=cell.run_id, arm_id=cell.arm_id, runtime_inputs=copy.deepcopy(inputs),
+                    launcher_evidence_files=CHILD_EVIDENCE_FILES)
+                def verify():
+                    selected["verify_barrier"]()
+                    actual = _descriptor(custody, root, runtime_bundle_path)
+                    _require(actual == bundle_ref, "component runtime bundle changed during operation")
+                    custody.verify()
+                verify()
+                yield {"request": request, "cell": cell, "selected": selected, "operation": operation,
+                    "original": original, "original_operation_descriptor": operation["original_operation"],
+                    "native_context_descriptor": context_ref, "container_image": selected["image"],
+                    "engine_descriptor": engine, "execution_barrier": verify, "bundle_descriptor": bundle_ref}
+                verify()
 
 
 def execute_component_operation_v1(**arguments):
     """One original native operation, stopped collector, receipt-last result."""
     _require("live_guardian" not in arguments, "component execution cannot disable actual live guardian custody")
     with held_component_runtime_v1(**arguments) as held:
-        return _execute_component_operation_from_held_v1(held, arguments)
-
-
-def _execute_component_operation_from_session_v1(session, **arguments):
-    _require("live_guardian" not in arguments, "component execution cannot disable actual live guardian custody")
-    with _held_component_runtime_from_session_v1(session, boundary="execute", **arguments) as held:
-        return _execute_component_operation_from_held_v1(held, arguments)
-
-
-def _execute_component_operation_from_held_v1(held, arguments):
-    root, cell, outputs = held["selected"]["root"], held["cell"], held["original"]["outputs"]
-    directory = Path(outputs["measurement_dir"])
-    process_dir = Path(outputs["process_receipt"]).parent
-    staging = directory.parent / ".hardware-host"
-    result_path = directory.parent / RESULT_FILENAME
-    _require(all(not os.path.lexists(path) for path in
-                 (directory, Path(str(directory) + ".operational"), process_dir, staging, result_path)),
-             "component original output is occupied; automatic retry is forbidden")
-    with PhysicalRootCustodyV1.open(root, label="component original output custody") as custody:
-        custody.ensure_directory_owned(directory, label="fresh component arm evidence")
-        custody.ensure_directory_owned(staging, label="component host hardware capture")
-        hardware_path = staging / "hardware_resource_samples.host.csv"
-        collector = HardwareResourceCollector(hardware_path, run_id=cell.run_id, interval_s=1.0)
-        started = time.time_ns()
-        held["execution_barrier"]()
-        primary = None
-        try:
-            collector.start()
-            collector.wait_until_ready(timeout_s=60.0)
-            with capture_original_engine_processes_v1(project_root=root, output_dir=process_dir,
-                    operation_id=arguments["operation_id"], original_operation_descriptor=held["original_operation_descriptor"],
-                    native_context_descriptor=held["native_context_descriptor"], container_image=held["container_image"]) as capture:
-                outcome = run_checkpoint_gstreamer_publication_runtime_v3(held["request"])
-                _require(type(outcome) is NativePublicationOutcomeV3 and
-                         type(outcome.exit_code) is int and outcome.exit_code == 0 and not outcome.blockers,
-                         "original component native terminal is unsuccessful")
-        except BaseException as error:
-            primary = error
-            raise
-        finally:
-            try:
-                _stop_collector(collector)
-            except BaseException as error:
-                if primary is None:
-                    raise
-                primary.add_note("component hardware collector cleanup also failed: " + str(error))
-        _require(capture.receipt_descriptor is not None and capture.container_receipt_descriptor is not None,
-                 "component original process/container custody is missing")
-        _require(set(custody.list_directory_names(directory, label="component original child domain")) ==
-                 set(CHILD_EVIDENCE_FILES), "component original child domain changed")
-        _commit_hardware_v1(custody, root, hardware_path, directory / "hardware_resource_samples.csv")
-        with _held_operational_cold_custody_v1(root) as cold:
-            _hold_acceptance_inputs_v1(cold, directory)
-            process = original_process_validator_v1(project_root=root, receipt_path=outputs["process_receipt"],
-                expected_descriptor=capture.receipt_descriptor, operation_id=arguments["operation_id"],
-                original_operation_descriptor=held["original_operation_descriptor"],
-                native_context_descriptor=held["native_context_descriptor"], expected_container_image=held["container_image"])
-            observed_engine = {k: process["measurement"]["launch"]["engine"][k] for k in ("path", "size_bytes", "sha256")}
-            _require(observed_engine == held["engine_descriptor"], "component original engine differs from current bundle")
-            cold.hold_validated_inputs(process, engine_descriptor=observed_engine)
-            container = original_container_validator_v1(project_root=root, receipt_path=outputs["container_receipt"],
-                expected_descriptor=capture.container_receipt_descriptor, process_receipt_path=outputs["process_receipt"],
-                expected_process_descriptor=capture.receipt_descriptor, operation_id=arguments["operation_id"],
-                original_operation_descriptor=held["original_operation_descriptor"],
-                native_context_descriptor=held["native_context_descriptor"], expected_container_image=held["container_image"])
-            cold.hold_validated_inputs(container, engine_descriptor=observed_engine)
-            _require(container["container_quiescence_verified"] is True, "component original container is not quiescent")
-            references = {"native_domain": _descriptor(custody, root, outputs["native_domain"], 64 * 1024 * 1024),
-                "process_receipt": capture.receipt_descriptor, "container_receipt": capture.container_receipt_descriptor,
-                "accepted_ingress": _descriptor(custody, root, directory / "ingress_ledger.csv", 64 * 1024 * 1024),
-                "measurement_decisions": _descriptor(custody, root, directory / "publication_policy_decisions.jsonl", 64 * 1024 * 1024),
-                "hardware": _descriptor(custody, root, directory / "hardware_resource_samples.csv", 64 * 1024 * 1024)}
-            # Existing source/cohort/stage/drop/reset validation and physical
-            # full-resource validation remain required; no full finalizer.
-            measured = _operational_measured_ingress_v1(root=root, operation=held["operation"],
-                directory=directory, ingress_descriptor=references["accepted_ingress"])
-            physical = prepare_checkpoint_publication_acceptance(output_dir=directory,
-                expected_run_id=cell.run_id, expected_system=cell.system, expected_scenario=cell.scenario,
-                expected_codec=cell.codec, expected_policy=cell.policy, expected_deadline_ms=cell.deadline_ms,
-                topology_kind=cell.topology_kind, hardware_collector_stopped=True)
-            _require(bool(measured) and all(count > 0 for count in physical["completed_frames_by_stream"].values()),
-                     "zero-frame component smoke cannot complete an original arm")
+        root, cell, outputs = held["selected"]["root"], held["cell"], held["original"]["outputs"]
+        directory = Path(outputs["measurement_dir"])
+        process_dir = Path(outputs["process_receipt"]).parent
+        staging = directory.parent / ".hardware-host"
+        result_path = directory.parent / RESULT_FILENAME
+        _require(all(not os.path.lexists(path) for path in
+                     (directory, Path(str(directory) + ".operational"), process_dir, staging, result_path)),
+                 "component original output is occupied; automatic retry is forbidden")
+        with PhysicalRootCustodyV1.open(root, label="component original output custody") as custody:
+            custody.ensure_directory_owned(directory, label="fresh component arm evidence")
+            custody.ensure_directory_owned(staging, label="component host hardware capture")
+            hardware_path = staging / "hardware_resource_samples.host.csv"
+            collector = HardwareResourceCollector(hardware_path, run_id=cell.run_id, interval_s=1.0)
+            started = time.time_ns()
             held["execution_barrier"]()
-            cold.verify()
-            receipt = payload_with_sha256_v1({"schema_version": 1, "artifact_kind": ARM_KIND,
-                "operation_id": arguments["operation_id"], "runtime_bundle": held["bundle_descriptor"],
-                "original_operation": held["original_operation_descriptor"], "native_context": held["native_context_descriptor"],
-                "container_image": held["container_image"], "outputs": references,
-                "started_at_ns": started, "finished_at_ns": time.time_ns(), "original_exit_code": 0,
-                "physical_validation": {k: v for k, v in physical.items() if k not in {"artifact_kind", "status"}},
-                "measurement_ingress_count": len(measured),
-                "scientific_scope": "topology_load_proxy_only", **_component_flags()})
-            result_ref = _write(custody, result_path, receipt)
-            cold.verify()
-            custody.verify()
-            return {"descriptor": result_ref, "receipt": receipt}
+            primary = None
+            try:
+                collector.start()
+                collector.wait_until_ready(timeout_s=60.0)
+                with capture_original_engine_processes_v1(project_root=root, output_dir=process_dir,
+                        operation_id=arguments["operation_id"], original_operation_descriptor=held["original_operation_descriptor"],
+                        native_context_descriptor=held["native_context_descriptor"], container_image=held["container_image"]) as capture:
+                    outcome = run_checkpoint_gstreamer_publication_runtime_v3(held["request"])
+                    _require(type(outcome) is NativePublicationOutcomeV3 and
+                             type(outcome.exit_code) is int and outcome.exit_code == 0 and not outcome.blockers,
+                             "original component native terminal is unsuccessful")
+            except BaseException as error:
+                primary = error
+                raise
+            finally:
+                try:
+                    _stop_collector(collector)
+                except BaseException as error:
+                    if primary is None:
+                        raise
+                    primary.add_note("component hardware collector cleanup also failed: " + str(error))
+            _require(capture.receipt_descriptor is not None and capture.container_receipt_descriptor is not None,
+                     "component original process/container custody is missing")
+            _require(set(custody.list_directory_names(directory, label="component original child domain")) ==
+                     set(CHILD_EVIDENCE_FILES), "component original child domain changed")
+            _commit_hardware_v1(custody, root, hardware_path, directory / "hardware_resource_samples.csv")
+            with _held_operational_cold_custody_v1(root) as cold:
+                _hold_acceptance_inputs_v1(cold, directory)
+                process = original_process_validator_v1(project_root=root, receipt_path=outputs["process_receipt"],
+                    expected_descriptor=capture.receipt_descriptor, operation_id=arguments["operation_id"],
+                    original_operation_descriptor=held["original_operation_descriptor"],
+                    native_context_descriptor=held["native_context_descriptor"], expected_container_image=held["container_image"])
+                observed_engine = {k: process["measurement"]["launch"]["engine"][k] for k in ("path", "size_bytes", "sha256")}
+                _require(observed_engine == held["engine_descriptor"], "component original engine differs from current bundle")
+                cold.hold_validated_inputs(process, engine_descriptor=observed_engine)
+                container = original_container_validator_v1(project_root=root, receipt_path=outputs["container_receipt"],
+                    expected_descriptor=capture.container_receipt_descriptor, process_receipt_path=outputs["process_receipt"],
+                    expected_process_descriptor=capture.receipt_descriptor, operation_id=arguments["operation_id"],
+                    original_operation_descriptor=held["original_operation_descriptor"],
+                    native_context_descriptor=held["native_context_descriptor"], expected_container_image=held["container_image"])
+                cold.hold_validated_inputs(container, engine_descriptor=observed_engine)
+                _require(container["container_quiescence_verified"] is True, "component original container is not quiescent")
+                references = {"native_domain": _descriptor(custody, root, outputs["native_domain"], 64 * 1024 * 1024),
+                    "process_receipt": capture.receipt_descriptor, "container_receipt": capture.container_receipt_descriptor,
+                    "accepted_ingress": _descriptor(custody, root, directory / "ingress_ledger.csv", 64 * 1024 * 1024),
+                    "measurement_decisions": _descriptor(custody, root, directory / "publication_policy_decisions.jsonl", 64 * 1024 * 1024),
+                    "hardware": _descriptor(custody, root, directory / "hardware_resource_samples.csv", 64 * 1024 * 1024)}
+                # Existing source/cohort/stage/drop/reset validation and physical
+                # full-resource validation remain required; no full finalizer.
+                measured = _operational_measured_ingress_v1(root=root, operation=held["operation"],
+                    directory=directory, ingress_descriptor=references["accepted_ingress"])
+                physical = prepare_checkpoint_publication_acceptance(output_dir=directory,
+                    expected_run_id=cell.run_id, expected_system=cell.system, expected_scenario=cell.scenario,
+                    expected_codec=cell.codec, expected_policy=cell.policy, expected_deadline_ms=cell.deadline_ms,
+                    topology_kind=cell.topology_kind, hardware_collector_stopped=True)
+                _require(bool(measured) and all(count > 0 for count in physical["completed_frames_by_stream"].values()),
+                         "zero-frame component smoke cannot complete an original arm")
+                held["execution_barrier"]()
+                cold.verify()
+                receipt = payload_with_sha256_v1({"schema_version": 1, "artifact_kind": ARM_KIND,
+                    "operation_id": arguments["operation_id"], "runtime_bundle": held["bundle_descriptor"],
+                    "original_operation": held["original_operation_descriptor"], "native_context": held["native_context_descriptor"],
+                    "container_image": held["container_image"], "outputs": references,
+                    "started_at_ns": started, "finished_at_ns": time.time_ns(), "original_exit_code": 0,
+                    "physical_validation": {k: v for k, v in physical.items() if k not in {"artifact_kind", "status"}},
+                    "measurement_ingress_count": len(measured),
+                    "scientific_scope": "topology_load_proxy_only", **_component_flags()})
+                result_ref = _write(custody, result_path, receipt)
+                cold.verify()
+                custody.verify()
+                return {"descriptor": result_ref, "receipt": receipt}
 
 
 def cold_component_pair_v1(**arguments):
@@ -674,25 +632,12 @@ def cold_component_pair_v1(**arguments):
     from publication_gstreamer_component_authority_v1 import held_component_authority_v1
     with held_component_authority_v1(project_root=arguments["project_root"],
             component_authority_path=arguments["component_authority_path"]) as selected:
-        result = _cold_component_pair_from_held_v1(selected=selected, _held_runtime=held_component_runtime_v1, **arguments)
+        result = _cold_component_pair_from_held_v1(selected=selected, **arguments)
         selected["verify_barrier"]()
         return result
 
 
-def _cold_component_pair_from_session_v1(session, **arguments):
-    from publication_gstreamer_component_inputs_v1 import _SelectedComponentSession
-    _require(type(session) is _SelectedComponentSession, "component cold requires its private held session")
-    selected = session._checked_material(project_root=arguments["project_root"],
-        component_authority_path=arguments["component_authority_path"])
-    selected["verify_barrier"]()
-    def runtime_holder(**values):
-        return _held_component_runtime_from_session_v1(session, boundary="cold", **values)
-    result = _cold_component_pair_from_held_v1(selected=selected, _held_runtime=runtime_holder, **arguments)
-    selected["verify_barrier"]()
-    return result
-
-
-def _cold_component_pair_from_held_v1(*, selected, _held_runtime=held_component_runtime_v1, project_root, component_authority_path, capture_plan_path,
+def _cold_component_pair_from_held_v1(*, selected, project_root, component_authority_path, capture_plan_path,
         runtime_bundle_paths, arm_result_paths, guardian_authority_path, guardian_lifecycle_path,
         preprocessing_contract_path, preprocessing_receipt_path, analytics_socket_path, scratch_root, output_dir):
     """Recompute two original arms and their full owned guardian lifetime."""
@@ -785,7 +730,7 @@ def _cold_component_pair_from_held_v1(*, selected, _held_runtime=held_component_
                          all(type(receipt.get(k)) is type(v) and receipt[k] == v
                              for k, v in _component_flags().items()),
                          "component arm kind, pair identity or full eligibility drifted")
-                with _held_runtime(project_root=root, component_authority_path=component_authority_path,
+                with held_component_runtime_v1(project_root=root, component_authority_path=component_authority_path,
                         capture_plan_path=capture_plan_path, runtime_bundle_path=bundle_path,
                         operation_id=operation["operation_id"],
                         preprocessing_contract_path=preprocessing_contract_path,

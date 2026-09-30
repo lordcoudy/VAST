@@ -1,0 +1,72 @@
+{
+  "additional_errors": [],
+  "capture_exceeded": false,
+  "child": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "pgid": 34479,
+    "pid": 34479,
+    "ppid": 34478,
+    "session": 34479,
+    "startticks": 26820611
+  },
+  "completed_pure_reduction": true,
+  "custody": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu04-sidecar-independent-reduction-v1/attempt01/custody-and-comparison.v1.json",
+    "sha256": "90c0c1e8b3f6b71a64999ef07896dd6a838652c1c0ba3ddd26f569017a8c362c",
+    "size_bytes": 67264
+  },
+  "elapsed_s": 30.679308217018843,
+  "measurement_acceptance": false,
+  "observed_eof": [
+    "stderr",
+    "stdout"
+  ],
+  "original_child_current": null,
+  "original_child_returncode": 0,
+  "original_group_members": [],
+  "outputs": {
+    "stderr": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu04-sidecar-independent-reduction-v1/attempt01/stderr.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "stdout": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu04-sidecar-independent-reduction-v1/attempt01/stdout.raw",
+      "sha256": "c76ff330f26d292ca6aff4d2c6433b166728625351998690df8fc5412a21e055",
+      "size_bytes": 227
+    }
+  },
+  "primary_error": null,
+  "recomputed_summaries": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu04-sidecar-independent-reduction-v1/attempt01/recomputed-summaries.v1.json",
+    "sha256": "1cf147c4d9b82961030f3dd2ba2ebbf97612451ab6acd0c096934b2ad9fcaf8a",
+    "size_bytes": 28233
+  },
+  "schema_version": 1,
+  "scope": "Pure sidecar reduction only; CPU04 remains failed, no all-phase acceptance",
+  "source_after": {
+    "reduce.py": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu04-sidecar-independent-reduction-v1/reduce.py",
+      "sha256": "250cdea5a5d67e4a96d2bd10e27581e65e2e2bd274fde1e3c7f043e1a36627f4",
+      "size_bytes": 12906
+    },
+    "run.py": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu04-sidecar-independent-reduction-v1/run.py",
+      "sha256": "e1a584867413fd2a71b14aa6f210fafedbd22a303a0066118a40dafc400eda54",
+      "size_bytes": 6414
+    }
+  },
+  "source_before": {
+    "reduce.py": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu04-sidecar-independent-reduction-v1/reduce.py",
+      "sha256": "250cdea5a5d67e4a96d2bd10e27581e65e2e2bd274fde1e3c7f043e1a36627f4",
+      "size_bytes": 12906
+    },
+    "run.py": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu04-sidecar-independent-reduction-v1/run.py",
+      "sha256": "e1a584867413fd2a71b14aa6f210fafedbd22a303a0066118a40dafc400eda54",
+      "size_bytes": 6414
+    }
+  },
+  "timed_out": false
+}

@@ -165,61 +165,6 @@ class ComponentRuntimeFixtureTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "cannot disable"):
             target.execute_component_operation_v1(**self.arguments, live_guardian=False)
 
-    def test_private_session_keeps_real_factory_and_custody_at_all_five_boundaries(self):
-        from publication_gstreamer_component_authority_v1 import held_component_authority_v1
-        import checkpoint_model_parity as parity
-        images = ["sha256:" + value * 64 for value in "abcd"]
-        raw = {image: {"Id": image, "RepoDigests": [], "Architecture": "amd64", "Os": "linux"}
-               for image in images}
-        projections = [(tuple(parity.build_image_inspect_command(image)),
-            parity._inspect_image(image, lambda _argv, image=image: __import__("json").dumps(raw[image])))
-            for image in images]
-        entries = []
-        @contextmanager
-        def expensive_host_fixture(**arguments):
-            entries.append(arguments)
-            with held_component_authority_v1(project_root=self.root, component_authority_path=self.authority) as held:
-                original = held["verify_barrier"]
-                for name in ("inventory", "fixed", "candidate_pin", "calib_pin", "engine_pin", "engine_socket",
-                             "support_descriptors", "dataset", "probe", "capability_hashes"):
-                    held[name] = self.selected[name]
-                def verify():
-                    original()
-                    stock._require_file_pin_unchanged(held["engine_pin"], label="original unit fixture engine")
-                    self.assertEqual(stock._socket_record(self.engine_path, label="original unit fixture socket"),
-                                     held["engine_socket"])
-                held["verify_barrier"] = verify
-                arguments["_image_observations"][:] = copy.deepcopy(projections)
-                yield held
-        with patch.object(component, "_held_selected_component_inputs_v1", expensive_host_fixture), \
-             patch.object(component, "held_selected_component_inputs_v1") as independent, \
-             patch.object(stock, "_run_json", side_effect=lambda argv, **kw: raw[argv[-1]]) as observer, \
-             patch.object(target, "_selected_guardian_v1", return_value=(self.guardian, self.guardian_ref)), \
-             patch.object(target, "run_checkpoint_gstreamer_publication_runtime_v3") as native:
-            with component._held_selected_component_session_v1(project_root=self.root,
-                    component_authority_path=self.authority) as session:
-                common = {key: value for key, value in self.arguments.items()
-                          if key not in {"operation_id", "runtime_bundle_path"}}
-                material = target._materialize_component_runtime_from_session_v1(session,
-                    **common, output_dir=self.root / "session-runtime")
-                rows = material["receipt"]["bundles"]
-                for boundary in ("execute", "cold"):
-                    for row in rows:
-                        with target._held_component_runtime_from_session_v1(session, boundary=boundary,
-                                **common, operation_id=row["operation_id"],
-                                runtime_bundle_path=row["descriptor"]["path"], live_guardian=boundary == "execute") as held:
-                            self.assertEqual(held["request"].runtime_inputs["streams"], 6)
-                            self.assertEqual(held["request"].runtime_inputs["duration_s"], 180)
-                            held["execution_barrier"]()
-                self.assertEqual(len(entries), 1)
-                self.assertEqual(observer.call_count, 20)
-                self.assertEqual([call.args[0][-1] for call in observer.call_args_list], images * 5)
-                independent.assert_not_called()
-                native.assert_not_called()
-            with self.assertRaises(ValueError):
-                target._materialize_component_runtime_from_session_v1(session,
-                    **common, output_dir=self.root / "after-close")
-
 
 @unittest.skipUnless(os.name == "posix", "original component custody is POSIX")
 class ComponentCustodyTests(unittest.TestCase):

@@ -1,0 +1,42 @@
+{
+  "argv": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "-c",
+    "import sys,unittest;sys.path[:0]=['/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests', '/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts'];s=unittest.defaultTestLoader.loadTestsFromNames(['test_publication_gstreamer_component_inputs_v1', 'test_publication_gstreamer_component_runtime_v1', 'test_publication_gstreamer_component_cli_v1']);r=unittest.TextTestRunner(verbosity=2).run(s);sys.exit(0 if r.wasSuccessful() else 1)"
+  ],
+  "classification": "local controlled unit fixtures only",
+  "original_ids": [
+    "test_publication_gstreamer_component_inputs_v1",
+    "test_publication_gstreamer_component_runtime_v1",
+    "test_publication_gstreamer_component_cli_v1"
+  ],
+  "source_before": {
+    "scripts/publication_gstreamer_component_cli_v1.py": {
+      "sha256": "4cce487a0f224a90b14c9c83a2fd47b1712d20d1631ec3a67766ed6f515b426b",
+      "size_bytes": 40969
+    },
+    "scripts/publication_gstreamer_component_inputs_v1.py": {
+      "sha256": "1390b429025478799a03065ebe031cb07dac2669f716f05f97f074735e5e75d1",
+      "size_bytes": 34510
+    },
+    "scripts/publication_gstreamer_component_runtime_v1.py": {
+      "sha256": "aecd556db7f1485eec79ea2971362e88da2d5a49fd3ea797cb5ad7d787b72014",
+      "size_bytes": 69372
+    },
+    "tests/test_publication_gstreamer_component_cli_v1.py": {
+      "sha256": "f8204fe8b4c45ef4a0dce6cafc3bed8242dc33e67468e6e35767fd42e752e125",
+      "size_bytes": 27148
+    },
+    "tests/test_publication_gstreamer_component_inputs_v1.py": {
+      "sha256": "678aee8e50b780950c86c13b8e76871d4e4b5496fadff5e2cc883af841b54368",
+      "size_bytes": 54712
+    },
+    "tests/test_publication_gstreamer_component_runtime_v1.py": {
+      "sha256": "18d72265cbed3d4d88f013f83922f458053329a22b1a10c04b1aa5938c34ef50",
+      "size_bytes": 25105
+    }
+  },
+  "timeout_s": 120
+}

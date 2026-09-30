@@ -187,8 +187,9 @@ def _proof_inputs(root, material, runtime_system):
     return [paths[path] for path in sorted(paths)]
 
 
-def _model_image_runner_v1(engine, engine_socket, observations=None):
-    """Keep the original inspect-only command and engine/socket predicates."""
+def _model_material(root, receipt_path, dependencies, *, engine, engine_socket):
+    receipt = stock._load_json_pin(_pin(root, receipt_path), label="original accepted model receipt")
+    from checkpoint_model_parity_acceptance_v4 import load_verified_model_parity_acceptance_v4
     def runner(command):
         _require(type(command) is list and len(command) == 6
             and command[:5] == ["docker", "image", "inspect", "--format", "{{json .}}"]
@@ -202,44 +203,12 @@ def _model_image_runner_v1(engine, engine_socket, observations=None):
         _require(stock._socket_record(Path(engine_socket["path"]), label="selected model observer socket after inspect") == engine_socket,
                  "selected model observer socket changed during inspect")
         _require(type(value) is dict, "selected formatted model image inspect must return one JSON object")
-        raw = json.dumps(value, sort_keys=True, separators=(",", ":"))
-        if observations is not None:
-            from checkpoint_model_parity import _inspect_image
-            # Project the actual response using the stock parser. This replay
-            # only projects bytes just observed; it authorizes no acceptance.
-            projection = _inspect_image(command[5], lambda _command: raw)
-            observations.append((tuple(command), projection))
-        return raw
-    return runner
-
-
-def _model_material(root, receipt_path, dependencies, *, engine, engine_socket, _image_observations=None):
-    receipt = stock._load_json_pin(_pin(root, receipt_path), label="original accepted model receipt")
-    from checkpoint_model_parity_acceptance_v4 import load_verified_model_parity_acceptance_v4
-    observed = [] if _image_observations is not None else None
-    runner = _model_image_runner_v1(engine, engine_socket, observed)
+        return json.dumps(value, sort_keys=True, separators=(",", ":"))
     def acceptance_loader(**arguments):
         return load_verified_model_parity_acceptance_v4(command_runner=runner, **arguments)
-    material = dependencies.model_validator(root=root, accepted_manifest_path=receipt["accepted_manifest"]["path"],
+    return dependencies.model_validator(root=root, accepted_manifest_path=receipt["accepted_manifest"]["path"],
         accepted_assessment_path=receipt["accepted_assessment"]["path"], accepted_receipt_path=receipt_path,
         acceptance_loader=acceptance_loader)
-    if _image_observations is not None:
-        from checkpoint_model_parity import build_image_inspect_command
-        images = receipt.get("runtime_images")
-        _require(type(images) is dict and set(images) == {"base", "workers"}
-            and all(type(images[key]) is dict and set(images[key]) == set(RESOURCES) for key in images),
-            "selected accepted model image coverage drifted")
-        expected = [images[group][resource] for resource in RESOURCES for group in ("base", "workers")]
-        _require(len(observed) == 4 and all(projection == row and command ==
-            tuple(build_image_inspect_command(row["reference"]))
-            for (command, projection), row in zip(observed, expected, strict=True)),
-            "selected full model validation did not observe its exact four original image projections")
-        _require(type(material) is dict and material.get("acceptance_binding", {}).get("runtime_images_sha256") ==
-            canonical_sha256(images), "selected model image observations are not bound to full acceptance")
-        # Publish these private facts only after the unchanged full validator
-        # has returned and its actual observations match the accepted receipt.
-        _image_observations[:] = copy.deepcopy(observed)
-    return material
 
 
 def _inventory(root, loaded):
@@ -355,15 +324,13 @@ def materialize_component_authority_v1(*, project_root, capability_manifest_path
         return {"authority_path": destination, "descriptor": descriptor, "document": document}
 
 
-def _verify_host_material(root, loaded, dependencies, *, _image_observations=None):
+def _verify_host_material(root, loaded, dependencies):
     value, environment = loaded["document"], loaded["environment"]
     engine = stock._external_executable_pin(Path(environment["engine"]["path"]), label="selected model validation engine")
     socket_pin = stock._socket_record(Path(environment["engine_socket"]["path"]), label="selected model validation socket")
     _require({"path": str(engine.path), "size_bytes": engine.size, "sha256": engine.sha256} == environment["engine"]
          and socket_pin == environment["engine_socket"], "selected model validation engine/socket changed")
-    arguments = {} if _image_observations is None else {"_image_observations": _image_observations}
-    material = _model_material(root, value["model_authority"]["path"], dependencies,
-                              engine=engine, engine_socket=socket_pin, **arguments)
+    material = _model_material(root, value["model_authority"]["path"], dependencies, engine=engine, engine_socket=socket_pin)
     _calibration(loaded["capability_manifest"], value["capability_manifest"], loaded["calibration"], material)
     _require(loaded["worker_projection"] == {key: material["model_parity_refresh_authority"][key]
         for key in ("execution_config", "binding_set", "workers", "runtime_probes")}, "selected worker/model provenance changed")
@@ -388,15 +355,12 @@ def _verify_host_material(root, loaded, dependencies, *, _image_observations=Non
 
 
 @contextmanager
-def _held_selected_component_inputs_v1(*, project_root, component_authority_path, expected_descriptor=None,
-                                      dependencies=DEFAULT_DEPENDENCIES, _image_observations=None):
+def held_selected_component_inputs_v1(*, project_root, component_authority_path, expected_descriptor=None,
+                                      dependencies=DEFAULT_DEPENDENCIES):
     with held_component_authority_v1(project_root=project_root, component_authority_path=component_authority_path,
                                     expected_descriptor=expected_descriptor) as loaded:
         root = loaded["root"]
-        if _image_observations is None:
-            _verify_host_material(root, loaded, dependencies)
-        else:
-            _verify_host_material(root, loaded, dependencies, _image_observations=_image_observations)
+        _verify_host_material(root, loaded, dependencies)
         inventory = _inventory(root, loaded)
         fixed = {role: _pin(root, relative) for role, relative in {
             "experiments_config": stock.EXPERIMENTS_PATH, "analytics_model_manifest": stock.OPENVINO_MODEL_MANIFEST_PATH,
@@ -422,89 +386,6 @@ def _held_selected_component_inputs_v1(*, project_root, component_authority_path
         verify()
         yield loaded
         verify()
-
-
-@contextmanager
-def held_selected_component_inputs_v1(*, project_root, component_authority_path, expected_descriptor=None,
-                                      dependencies=DEFAULT_DEPENDENCIES):
-    """Independent public calls always perform the complete host validation."""
-    with _held_selected_component_inputs_v1(project_root=project_root,
-            component_authority_path=component_authority_path, expected_descriptor=expected_descriptor,
-            dependencies=dependencies) as loaded:
-        yield loaded
-
-
-_SESSION_TOKEN = object()
-
-
-class _SelectedComponentSession:
-    """Private capability for one original held lifetime, never a grant."""
-    def __init__(self, token, selected, observations):
-        _require(token is _SESSION_TOKEN, "selected session must originate in its held context")
-        self._selected = selected
-        self._owner = os.getpid()
-        self._root = selected["root"]
-        self._authority = copy.deepcopy(selected["descriptor"])
-        self._observations = copy.deepcopy(observations)
-        self._active = True
-        _require(len(self._observations) == 4, "selected session has no complete original image observations")
-
-    def _checked_material(self, *, project_root, component_authority_path):
-        _require(self._active and self._owner == os.getpid(), "selected session is foreign or closed")
-        root = Path(project_root)
-        authority = Path(component_authority_path)
-        if not authority.is_absolute():
-            authority = root / authority
-        expected = self._root / self._authority["path"]
-        _require(root == self._root and root.resolve(strict=True) == root and
-            authority == expected and authority.resolve(strict=True) == authority and
-            self._selected["descriptor"] == self._authority, "selected session root/authority drifted")
-        return self._selected
-
-    @contextmanager
-    def borrow(self, *, project_root, component_authority_path, boundary):
-        selected = self._checked_material(project_root=project_root, component_authority_path=component_authority_path)
-        _require(boundary in ("materialize", "execute", "cold"), "selected session boundary is not original")
-        # Keep full raw hashes and physical epochs at both borrowed boundaries.
-        selected["verify_barrier"]()
-        from checkpoint_model_parity import _inspect_image
-        runner = _model_image_runner_v1(selected["engine_pin"], selected["engine_socket"])
-        for command, expected_projection in self._observations:
-            actual = _inspect_image(command[5], runner)
-            _require(actual == expected_projection, "selected original live model image projection drifted")
-        selected["verify_barrier"]()
-        primary = None
-        try:
-            yield selected
-        except BaseException as error:
-            primary = error
-            raise
-        finally:
-            try:
-                selected["verify_barrier"]()
-            except BaseException as error:
-                if primary is None:
-                    raise
-                primary.add_note("selected session closing barrier also failed: " + str(error))
-
-
-@contextmanager
-def _held_selected_component_session_v1(*, project_root, component_authority_path):
-    observations = []
-    with _held_selected_component_inputs_v1(project_root=project_root,
-            component_authority_path=component_authority_path, _image_observations=observations) as selected:
-        session = _SelectedComponentSession(_SESSION_TOKEN, selected, observations)
-        try:
-            yield session
-        finally:
-            session._active = False
-
-
-@contextmanager
-def _borrow_selected_component_session_v1(session, **arguments):
-    _require(type(session) is _SelectedComponentSession, "selected runtime requires its private held session")
-    with session.borrow(**arguments) as selected:
-        yield selected
 
 
 def main(argv=None):

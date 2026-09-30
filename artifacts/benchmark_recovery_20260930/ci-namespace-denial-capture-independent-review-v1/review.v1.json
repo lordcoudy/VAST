@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "vast_ci_namespace_capture_independent_source_review_v1",
+  "disposition": "approved_source_review",
+  "reviewer": "adversarial_review",
+  "sources": [
+    {
+      "path": "scripts/ci_namespace_diagnostic_v1.py",
+      "size_bytes": 22271,
+      "sha256": "c27e5fde456c0448cee9e7ea20a5861e66e5f0636c56fe207995993549dbcff8"
+    },
+    {
+      "path": "tests/test_ci_namespace_diagnostic_v1.py",
+      "size_bytes": 17886,
+      "sha256": "fe07668ac4b3c2f1f7c1af8c668b0d86e1b74d3f0d1cfc085074050ab6010832"
+    }
+  ],
+  "original_before": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-namespace-denial-capture-repair-v1/before/ci_namespace_diagnostic_v1.py",
+      "size_bytes": 20708,
+      "sha256": "a5533d76516844e308179f86f13a4326849fed8617b5f28fcfcf7ab7e1067ffa"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-namespace-denial-capture-repair-v1/before/test_ci_namespace_diagnostic_v1.py",
+      "size_bytes": 12692,
+      "sha256": "0125f209d9556c54badcbb6654c9c2c86b3980c3bf47495c1f7446306ec08fe5"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-namespace-denial-capture-repair-v1/green-final-source/terminal.v1.json",
+      "size_bytes": 3805,
+      "sha256": "d698b17eadfc8db8747f9d9d83ef6a154ea527eb83c8ad52d17c2a14274ca1b6"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-namespace-denial-capture-repair-v1/green-final-source/stderr.raw",
+      "size_bytes": 3203,
+      "sha256": "8e08c36a7befdbea2c32ca400047332ad53a6bc535d1b38005578209be3773c7"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-namespace-denial-capture-repair-v1/green-final-source/stdout.raw",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-namespace-denial-capture-repair-v1/red-original-source/terminal.v1.json",
+      "size_bytes": 3906,
+      "sha256": "c6b7129d2216fa68d28b79acde5ecdc730d76fdd8d9ea65eb70497c067430461"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-namespace-denial-capture-repair-v1/red-original-query/terminal.v1.json",
+      "size_bytes": 3910,
+      "sha256": "78b36e75613bca860f2a9fc90da020a2780e57f86b542b7c5b4ace9ec536dfdc"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-namespace-denial-capture-repair-v1/green-full-module/terminal.v1.json",
+      "size_bytes": 3803,
+      "sha256": "11aac3aa5b6b24267c767786c2f6105067c6e4ee1ccfbdad07d63adaab1f699a"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-readonly-failure-diagnosis-v1/review.v1.json",
+      "size_bytes": 30549,
+      "sha256": "34df4e5f82757632d67c595b5e4723d9fbc1f33033904f8e020ad6f7c6335337"
+    }
+  ],
+  "facts": [
+    "Retained hosted query was killed after original owner observation raised PermissionError reading /proc/3761/exe; increasing the two-second allowance would not repair that immediate error. No policy cause is established.",
+    "Final source delegates one unchanged stock namespace setup. Query uses original UID/groups and one gated same-PID execv to the exact read-only journalctl argv, without sudo or policy mutation.",
+    "Authentic pidfd/owner capture occurs while initial Python waits on the existing gate. Command intent is retained separately; post_exec_executable_observed remains false.",
+    "Exact DENIED plus exact PID selects only userns_create/unshare or capable/sys_admin candidates; case-insensitive query preserves Userns records. Candidate selection never grants causal policy evidence.",
+    "Original capture/namespace_worker definitions and constants are unchanged in the reviewed production diff. Existing original cleanup clock bounds the query execution2s/cleanup1s and final evidence close.",
+    "Two16KiB raw captures + two12032B reports + two256B late-close reserves + one4KiB denial leaf total61440B within65536B. Overflow and late close remain failed.",
+    "Quick ordinary-child fixtures now wait on the original gate. Genuine Python-to-Python exec fixture proves the original PID survives exec and preserves real EOF/group absence."
+  ],
+  "original_tests": {
+    "tests_run": 15,
+    "unittest_elapsed_s": 0.512,
+    "capture_elapsed_s": 0.5957264020107687,
+    "returncode": 0,
+    "source_witnesses": 4,
+    "sources_stable": true,
+    "original_child": {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 34684,
+      "pid": 34684,
+      "ppid": 34683,
+      "startticks": 26907396,
+      "uid": 1000
+    },
+    "original_child_current": null,
+    "original_group_members": [],
+    "timed_out": false,
+    "capture_exceeded": false,
+    "nominal_scope_note": "Original terminal retains an inherited cold-provider scope label; actual argv and exact raw test IDs establish namespace instrumentation/ordinary-child fixture scope."
+  },
+  "preserved_failures": [
+    "Original matcher RED failed with absent helper, including seven subtest errors.",
+    "Original query RED demonstrates missing case-insensitive/capability selection.",
+    "Earlier green-full-module directory actually contains returncode1: quick flush fixture exited before proc/exe owner observation. It remains failed evidence, not GREEN."
+  ],
+  "limits": {
+    "reviewer_tests_executed": false,
+    "actual_namespace_or_kernel_query_executed": false,
+    "hosted_denial_proven": false,
+    "production_policy_or_timeout_changed": false,
+    "full_ci_green_claim": false,
+    "new_hardware_or_model_claim": false
+  },
+  "blocking_findings": []
+}

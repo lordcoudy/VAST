@@ -11,93 +11,11 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class NamespaceDiagnosticTests(unittest.TestCase):
-    @staticmethod
-    def ordinary_child(code):
-        import sys
-        gate = ('import os,sys;position=sys.argv.index("--start-gate-fd");'
-                'fd=int(sys.argv[position+1]);assert os.read(fd,1)==b"1";os.close(fd);')
-        return [sys.executable, '-I', '-B', '-c', gate + code]
-
     def helper(self):
         spec = importlib.util.spec_from_file_location('ci_namespace', ROOT/'scripts/ci_namespace_diagnostic_v1.py')
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
         return module
-
-    def test_namespace_denial_candidate_retains_original_pid_capability_and_case(self):
-        helper = self.helper()
-        positive = (
-            'apparmor="DENIED" operation="userns_create" pid=123 comm="python3.12"',
-            'apparmor="DENIED" operation="capable" info="Userns policy restriction" capname="sys_admin" pid=123',
-        )
-        for message in positive:
-            with self.subTest(message=message):
-                self.assertTrue(helper._relevant_original_denial(message, 123))
-        for message in (
-            positive[0].replace('pid=123 ', 'pid=1234 '),
-            positive[1].replace('capname="sys_admin"', 'capname="net_admin"'),
-            positive[0].replace('"DENIED"', '"ALLOWED"'),
-            'plain text userns pid=123',
-            'apparmor="DENIED" operation="open" pid=123 name="unrelated"',
-        ):
-            with self.subTest(message=message):
-                self.assertFalse(helper._relevant_original_denial(message, 123))
-
-    def test_real_gated_exec_keeps_original_pid_and_truthful_initial_owner(self):
-        helper = self.helper()
-        import json, sys
-        command = [sys.executable, '-I', '-B', '-c', 'import os,json;print(json.dumps({"pid":os.getpid()}))']
-        with tempfile.TemporaryDirectory() as directory:
-            output = Path(directory)/'out'
-            result = helper.capture_original_child(helper._gated_execv_argv(sys.executable, command),
-                output, 10**30, execution_s=1, cleanup_s=1, start_gate=True)
-            self.assertTrue(result['capture_completed'])
-            self.assertEqual(result['returncode'], 0)
-            self.assertEqual(json.loads((output/'stdout.raw').read_bytes())['pid'], result['owner']['pid'])
-            self.assertEqual(result['owner']['executable_realpath'], str(Path(sys.executable).resolve(strict=True)))
-            self.assertTrue(result['original_group_absent'])
-            self.assertEqual(result['eof'], {'stdout': True, 'stderr': True})
-
-    def test_kernel_query_explicitly_captures_capability_denials_without_claiming_cause(self):
-        helper = self.helper()
-        import json, time
-        calls = []
-        def capture(argv, output, deadline, **kwargs):
-            output = Path(output); output.mkdir()
-            calls.append((argv, kwargs))
-            rows = [{'event': 'syscall_failed', 'syscall': 'open', 'path': '/proc/self/setgroups',
-                     'errno': 13, 'original_pid': 123}] if len(calls) == 1 else [
-                {'MESSAGE': 'apparmor="DENIED" operation="capable" capname="sys_admin" info="Userns policy restriction" pid=123'},
-                {'MESSAGE': 'apparmor="DENIED" operation="capable" capname="net_admin" pid=123'},
-                {'MESSAGE': 'apparmor="DENIED" operation="capable" capname="sys_admin" pid=1234'},
-                {'MESSAGE': 'foreign text pid=123'},
-            ]
-            (output/'stdout.raw').write_text('\n'.join(json.dumps(row) for row in rows) + '\n')
-            return {'owner': {'pid': 123}, 'capture_completed': True, 'returncode': 1 if len(calls) == 1 else 0,
-                    'failure': None, 'cleanup_deadline_ns': time.monotonic_ns() + 10_000_000_000,
-                    'started_wall_time_ns': time.time_ns(), 'terminal_wall_time_ns': time.time_ns()}
-        real_open = os.open
-        def opened(path, *args, **kwargs):
-            if path == '/dev/kmsg': raise PermissionError(13, 'explicit unavailable kernel fixture')
-            return real_open(path, *args, **kwargs)
-        with tempfile.TemporaryDirectory() as directory:
-            with mock.patch.object(helper, 'capture_original_child', capture), mock.patch.object(os, 'open', opened):
-                result = helper.observe_namespace_setup_v1(output_dir=Path(directory)/'out',
-                    python='/fixture/canonical-python', absolute_deadline_ns=10**30)
-        self.assertEqual(len(calls), 2)
-        self.assertIn('--case-sensitive=no', calls[1][0])
-        self.assertIn('capable', next(arg for arg in calls[1][0] if arg.startswith('--grep=')))
-        self.assertEqual(calls[1][1], {'execution_s': 2, 'cleanup_s': 1, 'start_gate': True})
-        self.assertEqual(calls[1][0][0], '/fixture/canonical-python')
-        self.assertEqual(Path(calls[1][0][5]).name, 'journalctl')
-        self.assertNotIn('sudo', ' '.join(calls[1][0]))
-        self.assertEqual(len(result['policy_denial']['records']), 1)
-        self.assertFalse(result['policy_denial']['policy_denial_proven'])
-        self.assertFalse(result['namespace_succeeded'])
-        query = result['policy_denial']['original_kernel_query']
-        self.assertEqual(query['command_after_original_start_gate'], calls[1][0][5:])
-        self.assertTrue(query['gate_owner_executable_is_initial_python'])
-        self.assertFalse(query['post_exec_executable_observed'])
 
     def test_exact_first_unshare_failure_delegates_once_and_retains_original_errno(self):
         helper = self.helper()
@@ -157,8 +75,8 @@ class NamespaceDiagnosticTests(unittest.TestCase):
         import sys
         with tempfile.TemporaryDirectory() as directory:
             result = helper.capture_original_child(
-                self.ordinary_child("print('explicit nonnamespace fixture');sys.exit(7)"),
-                Path(directory)/'out', 10**30, execution_s=1, cleanup_s=1, start_gate=True)
+                [sys.executable, '-I', '-B', '-c', "import sys;print('explicit nonnamespace fixture');sys.exit(7)"],
+                Path(directory)/'out', 10**30, execution_s=1, cleanup_s=1)
             self.assertEqual(result['returncode'], 7)
             self.assertFalse(result['timed_out'])
             self.assertEqual(result['eof'], {'stdout': True, 'stderr': True})
@@ -181,8 +99,8 @@ class NamespaceDiagnosticTests(unittest.TestCase):
         import sys
         with tempfile.TemporaryDirectory() as directory:
             result = helper.capture_original_child(
-                self.ordinary_child("os.write(1,b'x'*70000)"),
-                Path(directory)/'out', 10**30, execution_s=1, cleanup_s=1, start_gate=True)
+                [sys.executable, '-I', '-B', '-c', "import os;os.write(1,b'x'*70000)"],
+                Path(directory)/'out', 10**30, execution_s=1, cleanup_s=1)
             self.assertTrue(result['capture_exceeded'])
             self.assertLessEqual((Path(directory)/'out/stdout.raw').stat().st_size, 48*1024)
             self.assertFalse(result['capture_completed'])
@@ -222,8 +140,8 @@ class NamespaceDiagnosticTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             with mock.patch.object(Path, 'open', opened):
                 result = helper.capture_original_child(
-                    self.ordinary_child("print('explicit ordinary-child fixture')"),
-                    Path(directory)/'out', 10**30, execution_s=1, cleanup_s=1, start_gate=True)
+                    [sys.executable,'-I','-B','-c',"print('explicit ordinary-child fixture')"],
+                    Path(directory)/'out', 10**30, execution_s=1, cleanup_s=1)
             self.assertFalse(result['capture_completed'])
             self.assertIn('explicit original flush fault', result['failure'])
             self.assertTrue(retained[0].closed)
@@ -239,8 +157,8 @@ class NamespaceDiagnosticTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             with mock.patch.object(os, 'fsync', delayed):
                 result = helper.capture_original_child(
-                    self.ordinary_child('pass'),
-                    Path(directory)/'out', 10**30, execution_s=1, cleanup_s=.05, start_gate=True)
+                    [sys.executable,'-I','-B','-c','pass'],
+                    Path(directory)/'out', 10**30, execution_s=1, cleanup_s=.05)
             self.assertFalse(result['capture_completed'])
             self.assertIn('deadline',result['failure'])
 
@@ -249,8 +167,8 @@ class NamespaceDiagnosticTests(unittest.TestCase):
         import sys
         child = "import subprocess,sys;subprocess.Popen([sys.executable,'-I','-B','-c','import time;time.sleep(10)'])"
         with tempfile.TemporaryDirectory() as directory:
-            result = helper.capture_original_child(self.ordinary_child(child),
-                Path(directory)/'out',10**30,execution_s=2,cleanup_s=.2,start_gate=True)
+            result = helper.capture_original_child([sys.executable,'-I','-B','-c',child],
+                Path(directory)/'out',10**30,execution_s=2,cleanup_s=.2)
             self.assertFalse(result['capture_completed'])
             self.assertLess(result['elapsed_s'],1)
             self.assertTrue(result['original_group_absent'])
@@ -282,8 +200,7 @@ class NamespaceDiagnosticTests(unittest.TestCase):
                 result=helper.observe_namespace_setup_v1(output_dir=Path(directory)/'out',
                     python='/fixture/canonical-python',absolute_deadline_ns=10**30)
             self.assertEqual(len(calls),2)
-            self.assertEqual(Path(calls[1][5]).name, 'journalctl')
-            self.assertNotIn('sudo', ' '.join(calls[1]))
+            self.assertEqual(calls[1][1:3],['-n','--'])
             self.assertIn('--kernel',calls[1])
             self.assertNotIn('apparmor_parser',' '.join(calls[1]))
             self.assertEqual(len(result['policy_denial']['records']),1)
@@ -299,8 +216,8 @@ class NamespaceDiagnosticTests(unittest.TestCase):
             # This ordinary child is larger than the per-capture allowance;
             # it never invokes namespace setup or a kernel reader.
             result = helper.capture_original_child(
-                self.ordinary_child("os.write(1,b'x'*(24*1024))"),
-                output, 10**30, execution_s=1, cleanup_s=1, start_gate=True)
+                [sys.executable, '-I', '-B', '-c', "import os;os.write(1,b'x'*(24*1024))"],
+                output, 10**30, execution_s=1, cleanup_s=1)
             self.assertTrue(result['capture_exceeded'])
             self.assertFalse(result['capture_completed'])
             self.assertTrue(result['original_group_absent'])

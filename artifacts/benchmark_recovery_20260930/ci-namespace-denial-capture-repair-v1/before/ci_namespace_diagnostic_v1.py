@@ -303,39 +303,11 @@ def namespace_worker(start_gate_fd):
         return 1
 
 
-def _relevant_original_denial(message, pid):
-    """Select observed candidates only; syscall/label/time joins remain separate."""
-    if type(message) is not str or type(pid) is not int or pid <= 0:
-        return False
-    if 'apparmor="DENIED"' not in message or not re.search(r'\bpid=' + str(pid) + r'(?=\s|$)', message):
-        return False
-    operation = re.search(r'\boperation="([^"]+)"', message)
-    if operation is None:
-        return False
-    if operation[1] in ('userns_create', 'unshare'):
-        return True
-    return operation[1] == 'capable' and re.search(r'\bcapname="sys_admin"(?=\s|$)', message) is not None
-
-
-def _gated_execv_argv(python, command):
-    # The existing gate permits a genuine owner/pidfd observation before a
-    # short read-only command exits. execv keeps that same original PID.
-    # The observed executable is Python at the gate, not a claimed observation
-    # of the later journal executable. No credential transition is requested.
-    code = ('import os,sys;position=sys.argv.index("--start-gate-fd");'
-            'fd=int(sys.argv[position+1]);command=sys.argv[1:position];'
-            'assert os.read(fd,1)==b"1";os.close(fd);'
-            'os.execv(command[0],command)')
-    return [python, '-I', '-B', '-c', code, *command]
-
-
 def observe_namespace_setup_v1(*, output_dir, python, absolute_deadline_ns):
     # An unprivileged, nonblocking source may be unavailable. Retain that fact;
     # the bounded read-only query below never changes policy or infers a denial.
     kernel_fd = None
-    denial = {'path':'/dev/kmsg', 'records':[], 'policy_denial_proven':False,
-              'query_uid': os.getuid(), 'query_supplementary_groups': os.getgroups(),
-              'query_credential_transition': False}
+    denial = {'path':'/dev/kmsg', 'records':[], 'policy_denial_proven':False}
     try:
         kernel_fd = os.open('/dev/kmsg', os.O_RDONLY | os.O_NONBLOCK | os.O_CLOEXEC | os.O_NOFOLLOW)
         os.lseek(kernel_fd, 0, os.SEEK_END)
@@ -356,8 +328,10 @@ def observe_namespace_setup_v1(*, output_dir, python, absolute_deadline_ns):
                 if not raw: break
                 consumed += len(raw)
                 pid = (result.get('owner') or {}).get('pid')
-                if _relevant_original_denial(os.fsdecode(raw), pid):
-                    denial['records'].append({'raw':os.fsdecode(raw), 'observed_monotonic_ns':time.monotonic_ns()})
+                if pid and b'apparmor="DENIED"' in raw and b'userns' in raw and (
+                        ('pid='+str(pid)).encode() in raw):
+                    if re.search(rb'\bpid='+str(pid).encode()+rb'(?=\s|$)', raw):
+                        denial['records'].append({'raw':os.fsdecode(raw), 'observed_monotonic_ns':time.monotonic_ns()})
             denial['consumed_bytes'] = consumed
             denial['bounded_interval_only'] = True
             if not denial['records']:
@@ -378,19 +352,15 @@ def observe_namespace_setup_v1(*, output_dir, python, absolute_deadline_ns):
     # A single noninteractive read-only kernel query may recover the original
     # interval when /dev/kmsg was unavailable. Never retry namespace setup.
     if not denial['records'] and time.monotonic_ns()+3_000_000_000 < result['cleanup_deadline_ns']:
-        journal = Path('/usr/bin/journalctl')
-        if journal.is_file():
+        sudo, journal = Path('/usr/bin/sudo'), Path('/usr/bin/journalctl')
+        if sudo.is_file() and journal.is_file():
             start = result['started_wall_time_ns']//1_000_000_000-1
             end = result['terminal_wall_time_ns']//1_000_000_000+1
-            argv = [str(journal.resolve(strict=True)),
+            argv = [str(sudo.resolve(strict=True)), '-n', '--', str(journal.resolve(strict=True)),
                 '--kernel', '--since', '@'+str(start), '--until', '@'+str(end), '--no-pager',
-                '--output=json', '--lines=32', '--case-sensitive=no',
-                '--grep=apparmor=.*DENIED.*(userns|unshare|capable)']
-            log = capture_original_child(_gated_execv_argv(python, argv), Path(output_dir)/'kernel-query',
-                                         result['cleanup_deadline_ns'], execution_s=2, cleanup_s=1, start_gate=True)
-            log['command_after_original_start_gate'] = argv
-            log['gate_owner_executable_is_initial_python'] = True
-            log['post_exec_executable_observed'] = False
+                '--output=json', '--lines=32', '--grep=apparmor=.*DENIED.*(userns|unshare)']
+            log = capture_original_child(argv, Path(output_dir)/'kernel-query',
+                                         result['cleanup_deadline_ns'], execution_s=2, cleanup_s=1)
             denial['original_kernel_query'] = log
             if log['capture_completed'] and log['returncode'] == 0:
                 for line in (Path(output_dir)/'kernel-query/stdout.raw').read_bytes().splitlines():
@@ -398,7 +368,8 @@ def observe_namespace_setup_v1(*, output_dir, python, absolute_deadline_ns):
                         record = json.loads(line)
                         message = record.get('MESSAGE', '')
                         pid = (result.get('owner') or {}).get('pid')
-                        if _relevant_original_denial(message, pid):
+                        if pid and isinstance(message, str) and re.search(
+                                r'\bpid='+str(pid)+r'(?=\s|$)', message):
                             denial['records'].append({'original_journal_record':record})
                     except (ValueError, UnicodeError, AttributeError):
                         denial['unavailable'] = 'Original journal response was not complete JSON metadata.'
@@ -413,10 +384,7 @@ def observe_namespace_setup_v1(*, output_dir, python, absolute_deadline_ns):
         denial['original_kernel_query'] = {'path':'kernel-query/capture.json',
             'returncode':query['returncode'], 'capture_completed':query['capture_completed'],
             'started_wall_time_ns':query['started_wall_time_ns'],
-            'terminal_wall_time_ns':query['terminal_wall_time_ns'],
-            'command_after_original_start_gate':query['command_after_original_start_gate'],
-            'gate_owner_executable_is_initial_python':True,
-            'post_exec_executable_observed':False}
+            'terminal_wall_time_ns':query['terminal_wall_time_ns']}
     raw = _json(denial)
     if len(raw) > DENIAL_LIMIT:
         raise RuntimeError('relevant kernel denial facts exceed4KiB')

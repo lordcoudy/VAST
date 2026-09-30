@@ -1,0 +1,182 @@
+{
+  "accepted": false,
+  "all_checks_pass": true,
+  "audit_script": {
+    "path": "artifacts/benchmark_recovery_20260930/component-held-session-implementation-v1/author_audit.py",
+    "sha256": "a549131583a7e6fc440c8170067ede6de1a18e79d640bbf08e55baced9e6bd66",
+    "size_bytes": 14233
+  },
+  "checks": {
+    "all_original_host_checks_identical_except_private_observation_forwarding": true,
+    "all_original_selected_fd_engine_socket_factory_barriers_identical": true,
+    "all_other_cli_functions_identical": true,
+    "all_other_input_functions_identical": true,
+    "all_other_runtime_functions_identical": true,
+    "cli_original_2100_60_120_channel_reservation_constants_identical": true,
+    "cold_all_existing_predicates_identical_except_private_holder_name": true,
+    "execute_original_native_custody_body_identical": true,
+    "fifteen_new_fate_provider_routing_methods": true,
+    "frozen_six_before_after_equal": true,
+    "held_component_runtime_v1_body_identical_after_acquisition_extraction": true,
+    "host_AST_source_set_still_exact_87": true,
+    "materialize_component_runtime_v1_body_identical_after_acquisition_extraction": true,
+    "original_43_unit_methods_AST_identical": true,
+    "original_complete_model_validator_arguments_identical": true,
+    "original_focused_terminal_58_green_six_pins_stable_quiescent": true,
+    "original_inspect_only_command_engine_socket_timeout_parser_body_identical": true,
+    "selected_image_73_original_physical_sources_equal": true,
+    "selected_image_six_original_dependencies_equal": true,
+    "three_owned_host_scripts_outside_selected_image_sources_dependencies": true
+  },
+  "focused_execution": {
+    "path": "artifacts/benchmark_recovery_20260930/component-held-session-implementation-v1/attempt-04-focused/execution.json",
+    "sha256": "a73811714efb59491f2ac5acf2cd37002e7ba0ecc42e84269dde384a1383ae15",
+    "size_bytes": 3577
+  },
+  "focused_original_channels": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-held-session-implementation-v1/attempt-04-focused/stdout.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-held-session-implementation-v1/attempt-04-focused/stderr.bin",
+      "sha256": "1e2a3866acf76cfb59bec056ad6aaf9270935decea5e1faab7970966e207562c",
+      "size_bytes": 12306
+    }
+  ],
+  "historical_host_v5_receipt": {
+    "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/host/execution-code-closure.v5.json",
+    "sha256": "3b9cc84e185fc3cc51f9feafb5d4dabbf578d985633a9c4eeb95a400b28f714d",
+    "size_bytes": 30986
+  },
+  "host_source_count": 87,
+  "independent_planning_review": "c64480dd00c11f515a95d6d0aa83d4583f464af6150d433645e4a72dc0a03c03",
+  "kind": "vast_component_held_session_author_review_v1",
+  "limitations": [
+    "Unit metadata and expensive model/transport acceptance are explicit fixtures, not physical model/image/benchmark acceptance.",
+    "No new complete host receipt is issued: v5 is historical and stale for the three host edits; root must freeze a new closure before hardware dispatch.",
+    "No measured speedup, cold CPU04 recovery, GPU run, full CI, OpenSpec completion or archive is claimed.",
+    "Original model observer subprocess capture behavior is unchanged; only the nonauthorizing phase JSONL is bounded to twelve fixed phase pairs and 16KiB.",
+    "Earlier original red/failed attempts and raw channels remain immutable; no attempt is relabeled."
+  ],
+  "new_host_modules": [],
+  "new_test_methods": [
+    "tests/test_publication_gstreamer_component_inputs_v1.py:ComponentHeldSessionTests.test_engine_bytes_or_socket_identity_drift_rejects",
+    "tests/test_publication_gstreamer_component_inputs_v1.py:ComponentHeldSessionTests.test_exception_closes_actual_input_fds_and_keeps_original_failure",
+    "tests/test_publication_gstreamer_component_inputs_v1.py:ComponentHeldSessionTests.test_five_boundaries_share_one_full_assessment_but_observe_twenty_images",
+    "tests/test_publication_gstreamer_component_inputs_v1.py:ComponentHeldSessionTests.test_original_socket_replacement_and_ancestor_alias_reject_before_inspect",
+    "tests/test_publication_gstreamer_component_inputs_v1.py:ComponentHeldSessionTests.test_private_projection_collector_publishes_only_after_complete_assessment",
+    "tests/test_publication_gstreamer_component_inputs_v1.py:ComponentHeldSessionTests.test_public_held_inputs_retains_independent_complete_validation",
+    "tests/test_publication_gstreamer_component_inputs_v1.py:ComponentHeldSessionTests.test_raw_dict_foreign_pid_root_authority_and_closed_session_fail",
+    "tests/test_publication_gstreamer_component_inputs_v1.py:ComponentHeldSessionTests.test_same_bytes_replacement_is_rejected_before_live_image_observation",
+    "tests/test_publication_gstreamer_component_inputs_v1.py:ComponentHeldSessionTests.test_same_image_id_does_not_hide_projection_drift",
+    "tests/test_publication_gstreamer_component_cli_v1.py:ComponentCliTests.test_default_cli_owns_one_private_context_through_original_cold_and_stop",
+    "tests/test_publication_gstreamer_component_cli_v1.py:ComponentCliTests.test_failed_original_arm_timeline_does_not_invent_later_phases",
+    "tests/test_publication_gstreamer_component_cli_v1.py:ComponentCliTests.test_original_pair_retains_bounded_phase_starts_and_real_terminals",
+    "tests/test_publication_gstreamer_component_cli_v1.py:ComponentCliTests.test_timeline_has_exact_fixed_names_and_rejects_oversize_before_write",
+    "tests/test_publication_gstreamer_component_cli_v1.py:ComponentCliTests.test_timing_terminal_write_failure_keeps_start_and_performs_owned_cleanup",
+    "tests/test_publication_gstreamer_component_runtime_v1.py:ComponentRuntimeFixtureTests.test_private_session_keeps_real_factory_and_custody_at_all_five_boundaries"
+  ],
+  "original_test_methods": [
+    "tests/test_publication_gstreamer_component_inputs_v1.py:ComponentPureFactoryTests.test_native_factory_uses_explicit_current_material_without_qualification_inputs",
+    "tests/test_publication_gstreamer_component_inputs_v1.py:ComponentPureFactoryTests.test_selected_pin_factory_does_not_read_other_system_calibrations",
+    "tests/test_publication_gstreamer_component_inputs_v1.py:ComponentPhysicalAuthorityTests.test_real_physical_selected_eight_keep_complete_declaration_verbatim",
+    "tests/test_publication_gstreamer_component_inputs_v1.py:ComponentPhysicalAuthorityTests.test_original_stock_probe_authority_shape_and_implementation_are_bound",
+    "tests/test_publication_gstreamer_component_inputs_v1.py:ComponentPhysicalAuthorityTests.test_resealed_sibling_policy_count_and_model_binding_fail",
+    "tests/test_publication_gstreamer_component_inputs_v1.py:ComponentPhysicalAuthorityTests.test_stale_current_source_rejects_even_same_length",
+    "tests/test_publication_gstreamer_component_inputs_v1.py:ComponentPhysicalAuthorityTests.test_held_leaf_replacement_and_legitimate_sibling_output",
+    "tests/test_publication_gstreamer_component_inputs_v1.py:ComponentPhysicalAuthorityTests.test_expected_descriptor_semantic_seal_and_symlink_are_not_alias_authority",
+    "tests/test_publication_gstreamer_component_inputs_v1.py:ComponentPhysicalAuthorityTests.test_original_seven_roles_and_front_workers_are_independently_bound",
+    "tests/test_publication_gstreamer_component_inputs_v1.py:ComponentHostPredicatesTests.test_actual_materializer_commits_last_and_raw_refusal_leaves_only_owned_prefix",
+    "tests/test_publication_gstreamer_component_inputs_v1.py:ComponentHostPredicatesTests.test_selected_costs_retain_actual_original_sample_ids_and_medians",
+    "tests/test_publication_gstreamer_component_inputs_v1.py:ComponentHostPredicatesTests.test_model_observer_accepts_actual_stock_formatted_inspect_contract",
+    "tests/test_publication_gstreamer_component_inputs_v1.py:ComponentHostPredicatesTests.test_model_observer_routes_only_inspect_to_original_pinned_engine_socket",
+    "tests/test_publication_gstreamer_component_inputs_v1.py:ComponentHostPredicatesTests.test_materializer_refuses_bad_mode_or_occupied_output_before_any_preflight",
+    "tests/test_publication_gstreamer_component_cli_v1.py:ComponentCliTests.test_absolute_cli_inputs_cross_real_stock_source_pin_boundary",
+    "tests/test_publication_gstreamer_component_cli_v1.py:ComponentCliTests.test_exact_two_original_operations_one_guardian_stop_before_cold",
+    "tests/test_publication_gstreamer_component_cli_v1.py:ComponentCliTests.test_original_failure_no_second_operation_and_authenticated_stop",
+    "tests/test_publication_gstreamer_component_cli_v1.py:ComponentCliTests.test_stop_failure_preserves_original_body_cause_and_is_not_clean",
+    "tests/test_publication_gstreamer_component_cli_v1.py:ComponentCliTests.test_occupied_output_rejects_before_reserve_or_source",
+    "tests/test_publication_gstreamer_component_cli_v1.py:ComponentCliTests.test_symlink_input_rejects_before_source",
+    "tests/test_publication_gstreamer_component_cli_v1.py:ComponentCliTests.test_source_mutation_before_receipt_last_is_failure",
+    "tests/test_publication_gstreamer_component_cli_v1.py:ComponentCliTests.test_real_bounded_reserve_release_checks_original_inode",
+    "tests/test_publication_gstreamer_component_cli_v1.py:ComponentCliTests.test_reserve_replacement_is_preserved_and_fails",
+    "tests/test_publication_gstreamer_component_cli_v1.py:ComponentCliTests.test_original_pre_authority_child_exit_retains_logs_and_unknown_worker_cleanup",
+    "tests/test_publication_gstreamer_component_cli_v1.py:ComponentCliTests.test_oversized_authority_is_rejected_before_full_read",
+    "tests/test_publication_gstreamer_component_cli_v1.py:ComponentCliTests.test_reserve_cleanup_never_overwrites_original_body_failure",
+    "tests/test_publication_gstreamer_component_cli_v1.py:ComponentCliTests.test_reordered_runtime_pair_rejects_before_inference",
+    "tests/test_publication_gstreamer_component_cli_v1.py:ComponentCliTests.test_pidfd_open_failure_still_reaps_only_original_child",
+    "tests/test_publication_gstreamer_component_cli_v1.py:ComponentCliTests.test_source_drift_during_original_terminal_commit_creates_failed_companion",
+    "tests/test_publication_gstreamer_component_runtime_v1.py:ComponentRuntimeFixtureTests.test_original_pair_is_physically_planned_and_factory_reconstructed",
+    "tests/test_publication_gstreamer_component_runtime_v1.py:ComponentRuntimeFixtureTests.test_resealed_foreign_factory_fields_fail_before_native_execution",
+    "tests/test_publication_gstreamer_component_runtime_v1.py:ComponentRuntimeFixtureTests.test_same_shaped_foreign_copied_engine_fails_before_executor",
+    "tests/test_publication_gstreamer_component_runtime_v1.py:ComponentRuntimeFixtureTests.test_execution_cannot_opt_out_of_live_guardian",
+    "tests/test_publication_gstreamer_component_runtime_v1.py:ComponentCustodyTests.test_original_arm_local_cohort_ids_do_not_break_stock_schedule_pair_gate",
+    "tests/test_publication_gstreamer_component_runtime_v1.py:ComponentCustodyTests.test_original_hardware_transfer_is_exact_exclusive_and_owned",
+    "tests/test_publication_gstreamer_component_runtime_v1.py:ComponentCustodyTests.test_same_byte_source_substitution_refuses_transfer_and_retains_both_originals",
+    "tests/test_publication_gstreamer_component_runtime_v1.py:ComponentCustodyTests.test_oversized_sparse_hardware_is_refused_without_publication",
+    "tests/test_publication_gstreamer_component_runtime_v1.py:ComponentCustodyTests.test_all_acceptance_leaves_remain_held_after_validator_returns",
+    "tests/test_publication_gstreamer_component_runtime_v1.py:ComponentCustodyTests.test_guardian_journals_stay_held_after_the_surrounding_join_returns",
+    "tests/test_publication_gstreamer_component_runtime_v1.py:ComponentCustodyTests.test_generated_preprocessing_leaves_reject_late_same_byte_replacement",
+    "tests/test_publication_gstreamer_component_runtime_v1.py:ComponentCustodyTests.test_descriptive_metrics_keep_absolute_misses_drops_and_zero_denominator_reason",
+    "tests/test_publication_gstreamer_component_runtime_v1.py:ColdProviderBoundaryTests.test_real_cold_provider_resolves_before_two_arm_cardinality_guard",
+    "tests/test_publication_gstreamer_component_runtime_v1.py:ColdProviderBoundaryTests.test_actual_operational_header_reader_binds_physical_bytes"
+  ],
+  "originals_manifest": {
+    "path": "artifacts/benchmark_recovery_20260930/component-held-session-implementation-v1/originals.v1.json",
+    "sha256": "f4a45c73e34cd11de14dfe843a28917bc7384924742f7abf2f019f7c5155c572",
+    "size_bytes": 2399
+  },
+  "owned_source_pins": [
+    {
+      "path": "scripts/publication_gstreamer_component_inputs_v1.py",
+      "sha256": "1390b429025478799a03065ebe031cb07dac2669f716f05f97f074735e5e75d1",
+      "size_bytes": 34510
+    },
+    {
+      "path": "scripts/publication_gstreamer_component_cli_v1.py",
+      "sha256": "4cce487a0f224a90b14c9c83a2fd47b1712d20d1631ec3a67766ed6f515b426b",
+      "size_bytes": 40969
+    },
+    {
+      "path": "scripts/publication_gstreamer_component_runtime_v1.py",
+      "sha256": "aecd556db7f1485eec79ea2971362e88da2d5a49fd3ea797cb5ad7d787b72014",
+      "size_bytes": 69372
+    },
+    {
+      "path": "tests/test_publication_gstreamer_component_inputs_v1.py",
+      "sha256": "678aee8e50b780950c86c13b8e76871d4e4b5496fadff5e2cc883af841b54368",
+      "size_bytes": 54712
+    },
+    {
+      "path": "tests/test_publication_gstreamer_component_cli_v1.py",
+      "sha256": "f8204fe8b4c45ef4a0dce6cafc3bed8242dc33e67468e6e35767fd42e752e125",
+      "size_bytes": 27148
+    },
+    {
+      "path": "tests/test_publication_gstreamer_component_runtime_v1.py",
+      "sha256": "18d72265cbed3d4d88f013f83922f458053329a22b1a10c04b1aa5938c34ef50",
+      "size_bytes": 25105
+    }
+  ],
+  "planning_commit": "6358c42cf1b969fb7ac2aa7be51929c3da46b9af",
+  "pr_comment": "5915260312",
+  "schema_version": 1,
+  "selected_dependency_count": 6,
+  "selected_dependency_sha256": "0f338b3aeca6756d31dccdbbc8caeb6239e8e07fec0541c1df3fea91dfc1963e",
+  "selected_original_image_receipt": {
+    "path": "artifacts/benchmark_recovery_20260930/selected-gstreamer-build-a4e145b7-v1/gstreamer_custom.runtime.freeze.json",
+    "sha256": "61874c718d6140d0d5cf745988bc301b916077af8f80e96742184f80a0805db7",
+    "size_bytes": 7049
+  },
+  "selected_source_count": 73,
+  "selected_source_sha256": "8abbc9ffdbbd6ea3c8291a507be49b1aba89a75bb88996eb84ebc65333ed4daa",
+  "self_review": {
+    "fate": "Failures retire the private session and owned cleanup, preserve the original exception, and retain real timing starts without fabricated later terminals.",
+    "practical_limit": "Full ComponentPins verification still rehashes the held source closure; actual preparation latency remains a hardware measurement question.",
+    "unnecessary_framework": "No production module, public cache, fake partial assessor, skip mode, new dependency, altered numerical threshold or deadline was added. Private helpers share existing bodies."
+  },
+  "semantic_change": "Source materialization keeps its two original assessments; default CLI performs one complete held assessment, then five private borrow boundaries each freshly observe four original stock image projections. Public standalone entrypoints remain independent. Existing full raw hashes, FD/path/epoch barriers, original native wrappers and cold validators remain in use.",
+  "sha256": "e75f26991cfea8f85dfae6156db02ad85739ac7f5e09e88d2e7c5e0ff91f7c86"
+}

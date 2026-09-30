@@ -1,0 +1,76 @@
+test_namespace_denial_candidate_retains_original_pid_capability_and_case (test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_namespace_denial_candidate_retains_original_pid_capability_and_case) ... 
+  test_namespace_denial_candidate_retains_original_pid_capability_and_case (test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_namespace_denial_candidate_retains_original_pid_capability_and_case) (message='apparmor="DENIED" operation="userns_create" pid=123 comm="python3.12"') ... ERROR
+  test_namespace_denial_candidate_retains_original_pid_capability_and_case (test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_namespace_denial_candidate_retains_original_pid_capability_and_case) (message='apparmor="DENIED" operation="capable" info="Userns policy restriction" capname="sys_admin" pid=123') ... ERROR
+  test_namespace_denial_candidate_retains_original_pid_capability_and_case (test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_namespace_denial_candidate_retains_original_pid_capability_and_case) (message='apparmor="DENIED" operation="userns_create" pid=1234 comm="python3.12"') ... ERROR
+  test_namespace_denial_candidate_retains_original_pid_capability_and_case (test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_namespace_denial_candidate_retains_original_pid_capability_and_case) (message='apparmor="DENIED" operation="capable" info="Userns policy restriction" capname="net_admin" pid=123') ... ERROR
+  test_namespace_denial_candidate_retains_original_pid_capability_and_case (test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_namespace_denial_candidate_retains_original_pid_capability_and_case) (message='apparmor="ALLOWED" operation="userns_create" pid=123 comm="python3.12"') ... ERROR
+  test_namespace_denial_candidate_retains_original_pid_capability_and_case (test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_namespace_denial_candidate_retains_original_pid_capability_and_case) (message='plain text userns pid=123') ... ERROR
+  test_namespace_denial_candidate_retains_original_pid_capability_and_case (test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_namespace_denial_candidate_retains_original_pid_capability_and_case) (message='apparmor="DENIED" operation="open" pid=123 name="unrelated"') ... ERROR
+
+======================================================================
+ERROR: test_namespace_denial_candidate_retains_original_pid_capability_and_case (test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_namespace_denial_candidate_retains_original_pid_capability_and_case) (message='apparmor="DENIED" operation="userns_create" pid=123 comm="python3.12"')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_namespace_diagnostic_v1.py", line 28, in test_namespace_denial_candidate_retains_original_pid_capability_and_case
+    self.assertTrue(helper._relevant_original_denial(message, 123))
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'ci_namespace' has no attribute '_relevant_original_denial'
+
+======================================================================
+ERROR: test_namespace_denial_candidate_retains_original_pid_capability_and_case (test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_namespace_denial_candidate_retains_original_pid_capability_and_case) (message='apparmor="DENIED" operation="capable" info="Userns policy restriction" capname="sys_admin" pid=123')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_namespace_diagnostic_v1.py", line 28, in test_namespace_denial_candidate_retains_original_pid_capability_and_case
+    self.assertTrue(helper._relevant_original_denial(message, 123))
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'ci_namespace' has no attribute '_relevant_original_denial'
+
+======================================================================
+ERROR: test_namespace_denial_candidate_retains_original_pid_capability_and_case (test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_namespace_denial_candidate_retains_original_pid_capability_and_case) (message='apparmor="DENIED" operation="userns_create" pid=1234 comm="python3.12"')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_namespace_diagnostic_v1.py", line 37, in test_namespace_denial_candidate_retains_original_pid_capability_and_case
+    self.assertFalse(helper._relevant_original_denial(message, 123))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'ci_namespace' has no attribute '_relevant_original_denial'
+
+======================================================================
+ERROR: test_namespace_denial_candidate_retains_original_pid_capability_and_case (test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_namespace_denial_candidate_retains_original_pid_capability_and_case) (message='apparmor="DENIED" operation="capable" info="Userns policy restriction" capname="net_admin" pid=123')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_namespace_diagnostic_v1.py", line 37, in test_namespace_denial_candidate_retains_original_pid_capability_and_case
+    self.assertFalse(helper._relevant_original_denial(message, 123))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'ci_namespace' has no attribute '_relevant_original_denial'
+
+======================================================================
+ERROR: test_namespace_denial_candidate_retains_original_pid_capability_and_case (test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_namespace_denial_candidate_retains_original_pid_capability_and_case) (message='apparmor="ALLOWED" operation="userns_create" pid=123 comm="python3.12"')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_namespace_diagnostic_v1.py", line 37, in test_namespace_denial_candidate_retains_original_pid_capability_and_case
+    self.assertFalse(helper._relevant_original_denial(message, 123))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'ci_namespace' has no attribute '_relevant_original_denial'
+
+======================================================================
+ERROR: test_namespace_denial_candidate_retains_original_pid_capability_and_case (test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_namespace_denial_candidate_retains_original_pid_capability_and_case) (message='plain text userns pid=123')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_namespace_diagnostic_v1.py", line 37, in test_namespace_denial_candidate_retains_original_pid_capability_and_case
+    self.assertFalse(helper._relevant_original_denial(message, 123))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'ci_namespace' has no attribute '_relevant_original_denial'
+
+======================================================================
+ERROR: test_namespace_denial_candidate_retains_original_pid_capability_and_case (test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_namespace_denial_candidate_retains_original_pid_capability_and_case) (message='apparmor="DENIED" operation="open" pid=123 name="unrelated"')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_namespace_diagnostic_v1.py", line 37, in test_namespace_denial_candidate_retains_original_pid_capability_and_case
+    self.assertFalse(helper._relevant_original_denial(message, 123))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'ci_namespace' has no attribute '_relevant_original_denial'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.015s
+
+FAILED (errors=7)

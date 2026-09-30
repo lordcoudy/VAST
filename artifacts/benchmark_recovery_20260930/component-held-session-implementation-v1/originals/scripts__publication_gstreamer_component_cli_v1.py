@@ -50,99 +50,6 @@ def _error(error):
     return {"type": type(error).__name__, "message": str(error)[:4096]}
 
 
-class _PhaseTimelineV1:
-    """Fixed nonauthorizing events; a persisted start has no invented terminal."""
-    NAMES = {"reservation", "source", "context", "capture", "preprocessing", "guardian_start",
-             "runtime", "arm_baseline", "arm_shared", "guardian_stop", "cold", "context_close"}
-    MAX_BYTES = 16 * 1024
-
-    def __init__(self, custody, output, *, fixture):
-        self.custody, self.path = custody, output / "component_pair_timing.v1.jsonl"
-        self.fd = os.open(self.path, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW | os.O_CLOEXEC, 0o400)
-        try:
-            self.identity = os.fstat(self.fd)
-        except BaseException:
-            os.close(self.fd)
-            raise
-        self.names, self.bytes = set(), 0
-        self.fixture = fixture
-        self.failure = None
-
-    def _emit(self, value):
-        _require(self.failure is None, "phase timeline has a sticky persistence failure")
-        raw = json.dumps({"schema_version": 1, "nonauthority": True,
-            "explicit_fixture_dependencies": self.fixture, **value},
-            sort_keys=True, separators=(",", ":"), ensure_ascii=True).encode("ascii") + b"\n"
-        try:
-            self.custody.verify()
-            opened, named = os.fstat(self.fd), self.path.lstat()
-            _require((opened.st_dev, opened.st_ino) == (named.st_dev, named.st_ino) ==
-                (self.identity.st_dev, self.identity.st_ino) and stat.S_ISREG(named.st_mode) and named.st_nlink == 1,
-                "phase timeline original file identity changed")
-            _require(self.bytes + len(raw) <= self.MAX_BYTES, "phase timeline exceeds16KiB")
-            offset = 0
-            while offset < len(raw):
-                count = os.write(self.fd, raw[offset:])
-                _require(count > 0, "phase timeline short write")
-                offset += count
-                self.bytes += count
-            os.fsync(self.fd)
-        except BaseException as error:
-            self.failure = error
-            raise
-
-    @contextlib.contextmanager
-    def phase(self, name):
-        _require(name in self.NAMES and name not in self.names and len(self.names) < 12,
-                 "phase timeline name/count is not fixed")
-        self.names.add(name)
-        start = time.monotonic_ns()
-        persistence_error = None
-        try:
-            self._emit({"event": "start", "phase": name, "wall_ns": time.time_ns(),
-                "monotonic_ns": start, "status": "incomplete", "terminal_ns": None})
-        except BaseException as error:
-            if name not in ("guardian_stop", "context_close"):
-                raise
-            # An observer failure must never preempt actual owned cleanup.
-            persistence_error = error
-        primary = None
-        try:
-            yield
-        except BaseException as error:
-            primary = error
-            raise
-        finally:
-            try:
-                if persistence_error is not None:
-                    raise persistence_error
-                terminal = time.monotonic_ns()
-                self._emit({"event": "terminal", "phase": name, "wall_ns": time.time_ns(),
-                    "monotonic_ns": terminal, "elapsed_ns": terminal - start,
-                    "status": "complete" if primary is None else "failed",
-                    "error_type": None if primary is None else type(primary).__name__[:128]})
-            except BaseException as error:
-                if primary is None:
-                    raise
-                primary.add_note("phase timing persistence also failed: " + str(error))
-
-    def close(self):
-        try:
-            os.fsync(self.fd)
-            info = os.fstat(self.fd)
-            descriptor, raw, identity = self.custody.read_descriptor_identity(
-                self.path, label="original phase timeline", maximum=self.MAX_BYTES, capture=True)
-            _require(identity == (info.st_dev, info.st_ino) == (self.identity.st_dev, self.identity.st_ino)
-                and _epoch(info) == _epoch(os.fstat(self.fd)) == _epoch(self.path.lstat())
-                and info.st_size == self.bytes == len(raw) <= self.MAX_BYTES,
-                "phase timeline final bytes/identity changed")
-            if self.failure is not None:
-                raise self.failure
-            return {**descriptor, "path": str(self.path)}
-        finally:
-            os.close(self.fd)
-
-
 def _epoch(info):
     return (info.st_dev, info.st_ino, info.st_mode, info.st_nlink, info.st_size,
             info.st_mtime_ns, info.st_ctime_ns)
@@ -528,115 +435,76 @@ def run_component_pair_v1(*, project_root, resource, output_dir, scratch_root,
         pair = None
         reserve = None
         common = {}
-        timing = _PhaseTimelineV1(custody, output, fixture=_dependencies is not None)
         try:
-            with timing.phase("reservation"), deps.reserve(project_root=root, scratch_namespace=scratch_namespace, output_dir=output) as reserve:
-                with timing.phase('source'):
-                    source = deps.source(project_root=root, resource=resource, output_dir=output / "source",
-                        container_engine=container_engine, container_engine_socket=container_engine_socket,
-                        **{name: path.relative_to(root).as_posix() for name, path in input_paths.items()})
+            with deps.reserve(project_root=root, scratch_namespace=scratch_namespace, output_dir=output) as reserve:
+                source = deps.source(project_root=root, resource=resource, output_dir=output / "source",
+                    container_engine=container_engine, container_engine_socket=container_engine_socket,
+                    **{name: path.relative_to(root).as_posix() for name, path in input_paths.items()})
                 authority_path = Path(source["authority_path"])
-                session_stack = contextlib.ExitStack()
-                session_error = None
+                capture = deps.capture(project_root=root, component_authority_path=authority_path,
+                    execution_code_closure_path=input_paths["execution_code_closure_path"],
+                    output_dir=output / "operations", guardian_output_dir=output / "guardian-operational")
+                capture_path = Path(capture["descriptor"]["path"])
+                if not capture_path.is_absolute():
+                    capture_path = root / capture_path
+                context_path = Path(capture["value"]["guardian_context"]["path"])
+                if not context_path.is_absolute():
+                    context_path = root / context_path
+                preprocessing = deps.preprocessing(project_root=root, component_authority_path=authority_path,
+                    operational_context_path=context_path, output_dir=output / "preprocessing")
+                common = dict(project_root=root, component_authority_path=authority_path, capture_plan_path=capture_path,
+                    preprocessing_contract_path=preprocessing["contract_path"],
+                    preprocessing_receipt_path=preprocessing["receipt_path"],
+                    analytics_socket_path=scratch_namespace / "guardian" / "analytics-execution.sock",
+                    scratch_root=scratch_namespace)
+                _require(len(os.fsencode(common["analytics_socket_path"])) < 108, "component socket path exceeds Unix bound")
+                guardian = deps.guardian(project_root=root, component_authority_path=authority_path,
+                    preprocessing_contract_path=common["preprocessing_contract_path"],
+                    preprocessing_receipt_path=common["preprocessing_receipt_path"],
+                    operational_context_path=context_path, runtime_dir=scratch_namespace / "guardian",
+                    front_socket=common["analytics_socket_path"], evidence_root=output / "guardian", deadline=deadline)
                 try:
-                    with timing.phase("context"):
-                        if _dependencies is None:
-                            from publication_gstreamer_component_inputs_v1 import _held_selected_component_session_v1
-                            from publication_gstreamer_component_runtime_v1 import (
-                                _materialize_component_runtime_from_session_v1,
-                                _execute_component_operation_from_session_v1,
-                                _cold_component_pair_from_session_v1)
-                            session = session_stack.enter_context(_held_selected_component_session_v1(
-                                project_root=root, component_authority_path=authority_path))
-                            runtime_call = lambda **kw: _materialize_component_runtime_from_session_v1(session, **kw)
-                            execute_call = lambda **kw: _execute_component_operation_from_session_v1(session, **kw)
-                            cold_call = lambda **kw: _cold_component_pair_from_session_v1(session, **kw)
-                        else:
-                            session_stack.enter_context(contextlib.nullcontext())
-                            runtime_call, execute_call, cold_call = deps.runtime, deps.execute, deps.cold
-                    with timing.phase('capture'):
-                        capture = deps.capture(project_root=root, component_authority_path=authority_path,
-                            execution_code_closure_path=input_paths["execution_code_closure_path"],
-                            output_dir=output / "operations", guardian_output_dir=output / "guardian-operational")
-                    capture_path = Path(capture["descriptor"]["path"])
-                    if not capture_path.is_absolute():
-                        capture_path = root / capture_path
-                    context_path = Path(capture["value"]["guardian_context"]["path"])
-                    if not context_path.is_absolute():
-                        context_path = root / context_path
-                    with timing.phase('preprocessing'):
-                        preprocessing = deps.preprocessing(project_root=root, component_authority_path=authority_path,
-                            operational_context_path=context_path, output_dir=output / "preprocessing")
-                    common = dict(project_root=root, component_authority_path=authority_path, capture_plan_path=capture_path,
-                        preprocessing_contract_path=preprocessing["contract_path"],
-                        preprocessing_receipt_path=preprocessing["receipt_path"],
-                        analytics_socket_path=scratch_namespace / "guardian" / "analytics-execution.sock",
-                        scratch_root=scratch_namespace)
-                    _require(len(os.fsencode(common["analytics_socket_path"])) < 108, "component socket path exceeds Unix bound")
-                    guardian = deps.guardian(project_root=root, component_authority_path=authority_path,
-                        preprocessing_contract_path=common["preprocessing_contract_path"],
-                        preprocessing_receipt_path=common["preprocessing_receipt_path"],
-                        operational_context_path=context_path, runtime_dir=scratch_namespace / "guardian",
-                        front_socket=common["analytics_socket_path"], evidence_root=output / "guardian", deadline=deadline)
-                    try:
-                        with timing.phase("guardian_start"):
-                            common["guardian_authority_path"] = guardian.start()
-                        with timing.phase('runtime'):
-                            runtime = runtime_call(**common, output_dir=output / "runtime")
-                        records = runtime["receipt"]["bundles"]
-                        _require(len(records) == 2 and len({row["operation_id"] for row in records}) == 2,
-                                 "component runtime does not bind exactly two distinct original operations")
-                        _require([row["operation_id"] for row in records] ==
-                                 [row["operation_id"] for row in capture["value"]["native_contexts"]],
-                                 "component runtime changed the original paired execution order")
-                        arms, bundle_paths = [], []
-                        for row in records:
-                            guardian.check()
-                            _require(time.monotonic() < deadline, "component original pair deadline exceeded")
-                            for pin in (*pins.values(), *launch_pins.values()):
-                                pin.check()
-                            path = Path(row["descriptor"]["path"])
-                            if not path.is_absolute():
-                                path = root / path
-                            with timing.phase("arm_baseline" if not arms else "arm_shared"):
-                                result = execute_call(**common, runtime_bundle_path=path, operation_id=row["operation_id"])
-                            arms.append(Path(result["descriptor"]["path"]))
-                            bundle_paths.append(path)
-                    except BaseException as error:
-                        primary = error
-                        raise
-                    finally:
-                        try:
-                            with timing.phase('guardian_stop'):
-                                cleanup = guardian.close()
-                            _require(cleanup.get("authenticated_stop") is True and cleanup.get("process_quiescent") is True
-                                and cleanup.get("container_cleanup_verified") is True and cleanup.get("returncode") == 0,
-                                "original guardian closure is unsuccessful or unknown")
-                        except BaseException as error:
-                            cleanup = getattr(guardian, "last_observation", cleanup)
-                            cleanup_errors.append(_error(error))
-                            if primary is None:
-                                raise
-                            primary.add_note("component guardian cleanup also failed: " + str(error))
-                    with timing.phase('cold'):
-                        pair = cold_call(**common, runtime_bundle_paths=bundle_paths, arm_result_paths=arms,
-                            guardian_lifecycle_path=guardian.lifecycle_path, output_dir=output / "cold-pair")
-                    for pin in (*pins.values(), *launch_pins.values()):
-                        pin.check()
-                    custody.verify()
-                    _require(time.monotonic() < deadline, "component original pair deadline exceeded before terminal")
+                    common["guardian_authority_path"] = guardian.start()
+                    runtime = deps.runtime(**common, output_dir=output / "runtime")
+                    records = runtime["receipt"]["bundles"]
+                    _require(len(records) == 2 and len({row["operation_id"] for row in records}) == 2,
+                             "component runtime does not bind exactly two distinct original operations")
+                    _require([row["operation_id"] for row in records] ==
+                             [row["operation_id"] for row in capture["value"]["native_contexts"]],
+                             "component runtime changed the original paired execution order")
+                    arms, bundle_paths = [], []
+                    for row in records:
+                        guardian.check()
+                        _require(time.monotonic() < deadline, "component original pair deadline exceeded")
+                        for pin in (*pins.values(), *launch_pins.values()):
+                            pin.check()
+                        path = Path(row["descriptor"]["path"])
+                        if not path.is_absolute():
+                            path = root / path
+                        result = deps.execute(**common, runtime_bundle_path=path, operation_id=row["operation_id"])
+                        arms.append(Path(result["descriptor"]["path"]))
+                        bundle_paths.append(path)
                 except BaseException as error:
-                    session_error = error
+                    primary = error
                     raise
                 finally:
                     try:
-                        with timing.phase("context_close"):
-                            session_stack.__exit__(None if session_error is None else type(session_error),
-                                session_error, None if session_error is None else session_error.__traceback__)
+                        cleanup = guardian.close()
+                        _require(cleanup.get("authenticated_stop") is True and cleanup.get("process_quiescent") is True
+                            and cleanup.get("container_cleanup_verified") is True and cleanup.get("returncode") == 0,
+                            "original guardian closure is unsuccessful or unknown")
                     except BaseException as error:
-                        if session_error is None:
+                        cleanup = getattr(guardian, "last_observation", cleanup)
+                        cleanup_errors.append(_error(error))
+                        if primary is None:
                             raise
-                        session_error.add_note("selected context cleanup also failed: " + str(error))
+                        primary.add_note("component guardian cleanup also failed: " + str(error))
+                pair = deps.cold(**common, runtime_bundle_paths=bundle_paths, arm_result_paths=arms,
+                    guardian_lifecycle_path=guardian.lifecycle_path, output_dir=output / "cold-pair")
+                for pin in (*pins.values(), *launch_pins.values()):
+                    pin.check()
+                custody.verify()
+                _require(time.monotonic() < deadline, "component original pair deadline exceeded before terminal")
         except BaseException as error:
             primary = primary or error
             if reserve is None:
@@ -644,14 +512,6 @@ def run_component_pair_v1(*, project_root, resource, output_dir, scratch_root,
         finally:
             if reserve is not None and reserve.get("released") is not True:
                 cleanup_errors.append({"type": "ReserveFailure", "message": "original reserve release unverified"})
-            timing_descriptor = None
-            try:
-                timing_descriptor = timing.close()
-            except BaseException as error:
-                if primary is None:
-                    primary = error
-                else:
-                    primary.add_note("phase timeline closing also failed: " + str(error))
             terminal = {"schema_version": 1, "artifact_kind": "vast_gstreamer_component_cli_terminal_v1",
                 "resource": resource, "status": "failed" if primary is not None or cleanup_errors else "component_pair_complete",
                 "started_at_ns": started_ns, "terminal_at_ns": time.time_ns(), "deadline_seconds": PAIR_SECONDS,
@@ -660,7 +520,7 @@ def run_component_pair_v1(*, project_root, resource, output_dir, scratch_root,
                 "guardian_observation": {k:v for k,v in cleanup.items() if k not in ("stdout", "stderr")},
                 "capacity_reservation": reserve, "input_pins": {k:{"descriptor":pin.descriptor,"epoch":list(pin.before)} for k,pin in pins.items()},
                 "launch_source_pins": {k:{"descriptor":pin.descriptor,"epoch":list(pin.before)} for k,pin in launch_pins.items()},
-                "original_executable_argv_path": sys.executable, "phase_timing": timing_descriptor,
+                "original_executable_argv_path": sys.executable,
                 "component_pairs": 1 if primary is None and not cleanup_errors and pair else 0,
                 "pair_result": None if pair is None else pair["descriptor"], "qualification_eligible": False,
                 "q4_eligible": False, "publication_ready": False, "full_run_eligible": False,
