@@ -1,0 +1,177 @@
+{
+  "artifact_kind": "vast_independent_attempt04_failed_setup_review_v1",
+  "closure_checks": {
+    "all_original_leaf_fd_epochs_names_and_directory_epochs_rechecked": true,
+    "eight_code_and_four_core_physical_bytes_equal_exact_committed_blobs": true,
+    "held_rehashed_original_leaves": 49,
+    "late_failure_companion_or_run_namespace": false,
+    "original_groups_empty": true,
+    "original_postterminal_PID_absence": [
+      18303,
+      18330,
+      18569
+    ],
+    "original_source_before_after_equal": true,
+    "saved_original_dispatcher_equal_committed_bytes": true,
+    "sorted_original_leaf_inventory_sha256": "131d7d8e7afb5e59c95e82c079d8bd1a189a6176916a796bf59878baca6ee5cd",
+    "total_original_leaf_bytes": 99813
+  },
+  "disposition": "closed FAILED setup; no decoder experiment cohort",
+  "findings": [
+    {
+      "fact": "The preflight error handler serializes only bounded traceback. Pin.__init__ attaches rejection facts and mapped_library_pins adds original map context, but execute does not serialize them. The retained failed path/fstat are unavailable.",
+      "remedy": "Reuse the existing first-original-inner-failure bounded structured writer for preflight as well as run failures, before teardown; preserve current predicates and this immutable failed attempt. Cover original error preservation, unavailable fields and persistence failure without increasing existing caps.",
+      "severity": "blocker for next causal repair",
+      "source": "guest_consumer.py:774"
+    }
+  ],
+  "hold_release": "Eight frozen v4 code inputs, original dispatcher and four8a core planning inputs were held/rechecked through this closed audit. This audit phase now releases its hold so root can prepare a separately reviewed amendment; no dependent edit/attempt is authorized by this receipt.",
+  "implementation_comment": 5905737943,
+  "inputs": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-attempt04-original-controller/terminal.v1.json",
+      "sha256": "dacb5cff01af8e2a31b0e63de6ad909ef073a3cd6b0ef468d3e7c9c4efcd3978",
+      "size_bytes": 11335
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-attempt-04/controller/terminal.v1.json",
+      "sha256": "c4a50b10dfbce0bb9f98092d937fe977287eab788f6616910cc3c12d29370bfd",
+      "size_bytes": 7875
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-attempt-04/guest/metadata/research-terminal.v1.json",
+      "sha256": "cac7eff06d1f740e1510871ab08cf2441172dfe993d14e926b908850cf186259",
+      "size_bytes": 830
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-attempt04-postterminal-observation.v1.json",
+      "sha256": "efe47722822588d61643bbed004d8a1e8e11ecf89a9fa9575847a6e2900f616f",
+      "size_bytes": 15356
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-attempt-04/guest/metadata/original-failure-traceback.txt",
+      "sha256": "2d266fc1431c7f3d70162dc3d7c57c68f266314da29ba03a02e86dd5e241b5ab",
+      "size_bytes": 1154
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-attempt-04/guest/metadata/mapped-inputs-01.v1.json",
+      "sha256": "ba523076bcd7d1f76defff522447d9d9695e6664297389203b2a4db90deb6b64",
+      "size_bytes": 9000
+    }
+  ],
+  "limits": [
+    "The exact failing file/device/inode and reason for mismatch cannot be recovered from these original records; sorted map order or missing successful descriptors is not a retained failure-time observation.",
+    "The selected25 mapped rows and5paths attest an original map snapshot, not the failing opened FD or mapped memory bytes. No overlay, WSL, replacement, CUDA or decoder failure is established.",
+    "No source child or access-unit/decoder output cohort exists; no timing, correctness, 100ms, native pair, model, parity, qualification or publication result is authorized.",
+    "This reviewer performed only reads, Git blob inspection and this receipt write; no tests, Docker calls, source/decoder/GPU launch, re-decode or retry."
+  ],
+  "original_container": {
+    "CID_and_name_absent_after_removal": true,
+    "cid": "4dcebd88c7be10856f43ed4baa03bc8ebe7446d2419d8576d11d0520f6f8f026",
+    "cleanup_elapsed_after_final_close_s": 0.31808477197773755,
+    "exact_nonforce_removal_returncode": 0,
+    "image": "sha256:70696f057232acd382f60beaaf12cd9279b317b0ba9a7ade29f0b955ce90481a",
+    "name": "vast-decoder-research-940c62b2022148cf9cd4242311dcce3b",
+    "operation_label": "0af51054b68ff2d73265e083b3348e805a63b31386814ac7aa078eb6a9c998e1",
+    "terminal": {
+      "exit_code": 1,
+      "oom_killed": false,
+      "pid": 0,
+      "running": false
+    }
+  },
+  "original_outcome": {
+    "GI_initialized": true,
+    "completed_runs": 0,
+    "decoder_observations": 0,
+    "external_elapsed_s": 11.51308786298614,
+    "external_returncode": 1,
+    "external_timeout": false,
+    "guest_elapsed_s": 3.8946766709850635,
+    "guest_failure": "mapped input identity differs",
+    "guest_failure_stage": "decoder_plugin_metadata",
+    "registry_returncode": 0,
+    "source_AUs": 0
+  },
+  "planning_comment": 5905513846,
+  "planning_commit": "8a0bdb4b4ed1a09593ab054537766c0970d722df",
+  "reviewed_at_utc": "2026-09-30T07:00:24.385916+00:00",
+  "reviewer": "adversarial_review",
+  "schema_version": 1,
+  "sha256": "0ff6a79c5e0ce52c43681c91062bc9daf04193ead23294b3ad9ca7e6e81b9d72",
+  "source_and_core_pins": [
+    {
+      "commit": "c9566dffeeb9d50fcc1e95766481f74e8cb0d5c9",
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v4/README.md",
+      "sha256": "0a7c297c7c21198f7ba8e2567359e561e84408278b675c0f36b87587982ff667",
+      "size_bytes": 13459
+    },
+    {
+      "commit": "c9566dffeeb9d50fcc1e95766481f74e8cb0d5c9",
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v4/controller.py",
+      "sha256": "9e4dc93f88fab0879377e129f32e2a8b3292d342c17572f044fe6eb5e86b174c",
+      "size_bytes": 36891
+    },
+    {
+      "commit": "c9566dffeeb9d50fcc1e95766481f74e8cb0d5c9",
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v4/guest_consumer.py",
+      "sha256": "4cb32329cd6758b295cbef35456727a40b497d65b900597d5408954f322aea05",
+      "size_bytes": 50914
+    },
+    {
+      "commit": "c9566dffeeb9d50fcc1e95766481f74e8cb0d5c9",
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v4/research_protocol.py",
+      "sha256": "cbf5820bfc0cccc129ff02f6c14c1e724983843a4576e506f25075b70624a8fe",
+      "size_bytes": 26513
+    },
+    {
+      "commit": "c9566dffeeb9d50fcc1e95766481f74e8cb0d5c9",
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v4/test_mapped_inputs_v4.py",
+      "sha256": "831cbd07388af9994d2684ab2248e299c95b29ee4ad799f26375d603b2f2f986",
+      "size_bytes": 11433
+    },
+    {
+      "commit": "c9566dffeeb9d50fcc1e95766481f74e8cb0d5c9",
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v4/test_pin_diagnostics_v3.py",
+      "sha256": "87a79b11e9b6861bb24aed5b05597e72d267b94931cfddfc474e5c4957983935",
+      "size_bytes": 11350
+    },
+    {
+      "commit": "c9566dffeeb9d50fcc1e95766481f74e8cb0d5c9",
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v4/test_research_protocol.py",
+      "sha256": "2dbcec646c9d641f93ccbac4b633ad3513f5e2eb37161f6f9abdb39717255a45",
+      "size_bytes": 17449
+    },
+    {
+      "commit": "c9566dffeeb9d50fcc1e95766481f74e8cb0d5c9",
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v4/test_setup_v2.py",
+      "sha256": "f2b44bb02e30abfa502d61dcd754900149a009d62b51f7558839c9a760a79f23",
+      "size_bytes": 17070
+    },
+    {
+      "commit": "8a0bdb4b4ed1a09593ab054537766c0970d722df",
+      "path": "openspec/changes/fix-benchmark-preparations-spec/proposal.md",
+      "sha256": "64195309fe125980ce93946fa4f3a81dc0baa83c3357b6cf64414bde1124fbde",
+      "size_bytes": 14105
+    },
+    {
+      "commit": "8a0bdb4b4ed1a09593ab054537766c0970d722df",
+      "path": "openspec/changes/fix-benchmark-preparations-spec/design.md",
+      "sha256": "25fb99b3b92bc7ebfbcf3d5d0708a339a05cf64800b501d70292e0d9893a2662",
+      "size_bytes": 92551
+    },
+    {
+      "commit": "8a0bdb4b4ed1a09593ab054537766c0970d722df",
+      "path": "openspec/changes/fix-benchmark-preparations-spec/tasks.md",
+      "sha256": "36932aa1ad63ec93af8dfc87f24fc355449ba503d477e58cd91945def74da023",
+      "size_bytes": 46379
+    },
+    {
+      "commit": "8a0bdb4b4ed1a09593ab054537766c0970d722df",
+      "path": "openspec/changes/fix-benchmark-preparations-spec/specs/benchmark-launch-preparation/spec.md",
+      "sha256": "c128324d5647a42c6893d5962b5cbc1a320e5a5add5e34eb15dc4f2da295f262",
+      "size_bytes": 48427
+    }
+  ],
+  "source_commit": "c9566dffeeb9d50fcc1e95766481f74e8cb0d5c9"
+}

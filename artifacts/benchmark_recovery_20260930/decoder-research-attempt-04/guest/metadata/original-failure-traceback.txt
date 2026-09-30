@@ -1,0 +1,18 @@
+Traceback (most recent call last):
+  File "/opt/vast/code/guest_consumer.py", line 737, in execute
+    self.preflight()
+  File "/opt/vast/code/guest_consumer.py", line 238, in preflight
+    self.loaded_pins()
+  File "/opt/vast/code/guest_consumer.py", line 134, in loaded_pins
+    self.mapped_library_pins(os.getpid(), ('libgst', 'libglib', 'libgobject', 'libgirepository', '_gi.',
+  File "/opt/vast/code/guest_consumer.py", line 124, in mapped_library_pins
+    libraries.append(self.pin(path, mapped_identity=identities[path]).descriptor)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/vast/code/guest_consumer.py", line 84, in pin
+    pin = Pin(resolved, expected, deadline=self.phase_deadline, mapped_identity=mapped_identity)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/vast/code/research_protocol.py", line 126, in __init__
+    require((info.st_dev, info.st_ino) == mapped_identity ==
+  File "/opt/vast/code/research_protocol.py", line 39, in require
+    raise ResearchError(message)
+research_protocol.ResearchError: mapped input identity differs

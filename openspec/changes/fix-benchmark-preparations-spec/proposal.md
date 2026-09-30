@@ -35,6 +35,12 @@ Closed attempt03 at57164011 identifies a regular187984-byte mapped NVIDIA librar
 
 The original hosted diagnostic at53a0dcf61b5b5764880878cbe0138c9d965dfb85 acquired all eight frozen model files in10.8707s and passed the unchanged repository model test. Its peer unit, which already mocks Docker, failed on actual Ubuntu6.17.0-1022-azure with `WSL2 osrelease marker drifted`. Correct only its host-dependent kernel bytes fixture; production exact-path/FD/root-owner/mode/link/marker validation stays byte-identical. Retain real proc open/fstat/read/close while returning explicitly labelled frozen fixture bytes through the read seam, assert bounded calls/closure, and add direct non-WSL parser rejection. This is unit portability, not physical WSL or full-CI acceptance; other production failures remain undiagnosed.
 
+## Complete first-error and durable broker terminals - decision22, 2026-09-30
+
+Actual original attempt04 at c9566dff failed before any source/frame run with a mapped-input identity mismatch. Independent audit53e4c97f verifies original exit1/owned nonforce removal/both absence and process quiescence, then releases its exact v4/core4 hold. Outer preflight omitted the attached Pin facts, so the failing path/stat and mismatch cause remain unknown. Fix only bounded first-error serialization in a fresh artifact-v5, retain all identity predicates and original experiments, and permit one independently frozen original attempt05 after exact planning/source review. No speculative mapping waiver or automatic retry.
+
+The actual hosted065 incomplete139 outcome is preserved. Both normal and held broker early setup handlers have a source-demonstrated stdout-only failure path despite a validated durable journal; the parent then waits for a journal response after broker exit0/quiescence. Extract the existing exclusive terminal emitter, use it for these failed terminals, reject quiescent missing responses promptly, and retain bounded actual setup-stage/type/errno facts. Preserve owner/authorization/causal barrier, physical custody, unchanged600000/615000-ms limits and full discovery. Verify with genuine journal/isolated-child regressions and actual hosted diagnostics. Setup errno and139 crash cause remain unproven; no CI namespace grant or production relaxation is adopted here. Audit changed dependency closures and renew only affected identities before acceptance.
+
 ## Capabilities
 
 ### New Capabilities

@@ -51,6 +51,10 @@ Terminal failures SHALL produce at most one immutable diagnostic no larger than 
 - **WHEN** a lifecycle v1 record without the new diagnostic is inspected
 - **THEN** existing validation SHALL remain compatible and missing forensic context SHALL remain explicit.
 
+#### Scenario: Preflight library rejection retains original structured facts
+- **WHEN** decoder research fails in preflight with attached Pin rejection before any run starts
+- **THEN** the original bounded16KiB first-error record SHALL retain the actual path/stat/predicate/mapping provenance from the original snapshot captured before rejected-FD retirement, then serialize it before remaining guest teardown, without replacing the primary error, waiving identity equality or interpreting absent frames. A fresh reviewed v5 attempt05 SHALL preserve every original experiment and cleanup bound; failed04 SHALL remain immutable.
+
 ### Requirement: Retry and recovery policy is predictable
 Full-publication service and supervisor API/CLI defaults SHALL allow zero unexpected retries. Canonical launch configuration SHALL explicitly set zero. Unexpected or integrity failures SHALL stop with permanent exit 78; supported transport/storage failures SHALL retain transient exit 75 recovery with the same checkpoint. New-pair admission SHALL enforce the 20-GiB operational reserve on all required volumes while accepted-pair offload recovery SHALL not remeasure accepted arms.
 
@@ -317,6 +321,14 @@ Each bounded diagnostic and long-running benchmark stage SHALL have one persiste
 #### Scenario: Original launcher terminates during container ID publication
 - **WHEN** the owned launcher exits or fails while its container ID is missing or partially published
 - **THEN** bounded original file/process facts SHALL be retained, valid partial publication SHALL remain pending within existing limits, and terminal ownership SHALL be rechecked after launcher completion; cleanup success SHALL require positive exact ownership, preserved terminal state, actual owned removal and subsequent CID/name absence. Earlier NotFound or unavailable terminal state SHALL NOT be reported as post-removal quiescence or successful execution.
+
+#### Scenario: Early broker setup fails with a validated durable journal
+- **WHEN** either normal or held broker setup fails after journal validation
+- **THEN** its failed terminal SHALL use the existing exclusive intent/barrier/response sequence, retaining actual bounded stage/type/errno and owner/authorization limits; emission failure SHALL remain failed. No child work or accepted publication SHALL be inferred, and unvalidated requests SHALL NOT receive durable authority.
+
+#### Scenario: Quiescent broker has no durable terminal response
+- **WHEN** the parent observes original broker capture/exit/quiescence but the required validated journal response is absent
+- **THEN** it SHALL fail promptly with bounded original diagnostic facts rather than spend another execution allowance or accept stdout as durable authority;600000-ms execution and15000-ms cleanup constraints SHALL remain unchanged. Hosted setup errno/crash cause SHALL remain unknown until actually observed.
 
 ### Requirement: Scientific interpretation matches the executed workload
 Final outputs SHALL describe the opaque ResNet workload as `topology_load_proxy_only` under common OpenVINO CPU/TensorRT CUDA workers and limit backend comparisons to observed topology/scheduling/transport/resource behaviour. They SHALL retain real deadline/drop/negative outcomes and distinguish additive work from nonadditive elapsed diagnostics. Real KPP accuracy, backend-native inference rankings, true NVDEC busy time and formal AW-HEFT equivalence SHALL NOT be claimed without independently accepted corresponding evidence.

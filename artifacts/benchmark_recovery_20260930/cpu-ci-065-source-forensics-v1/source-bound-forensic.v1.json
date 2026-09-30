@@ -1,0 +1,297 @@
+{
+  "classification": "original hosted failure inspection; no executed tests, namespaces, containers or models",
+  "decoded_fatal_lines": [
+    "2026-09-30T06:13:00.6893367Z /home/runner/work/_temp/6946b0ce-aef4-4d2c-8549-feeb53c7310c.sh: line 1:  3359 Segmentation fault      (core dumped) python -B scripts/run_ci_checks.py --expected-commit \"065fb8dbb9df914d8a6e50300533dfc55d99b892\" --output-dir \"$RUNNER_TEMP/vast-cpu-checks\"",
+    "2026-09-30T06:13:00.6908712Z ##[error]Process completed with exit code 139."
+  ],
+  "hosted_commit": "065fb8dbb9df914d8a6e50300533dfc55d99b892",
+  "inspected_physical_sources_equal_original_hosted_before_inventory": {
+    "scripts/backend_publication_output_transaction_production_v3.py": {
+      "epoch": [
+        69,
+        3940649675811150,
+        33279,
+        1,
+        77939,
+        1789990791979198600,
+        1789990791979198600
+      ],
+      "path": "scripts/backend_publication_output_transaction_production_v3.py",
+      "sha256": "028b7bab8f2e860dc59eda9f2727e8f56230d353c69ab07d4943b4487cce5dee",
+      "size_bytes": 77939
+    },
+    "scripts/backend_publication_process_supervisor_v3.py": {
+      "epoch": [
+        69,
+        3096224745679184,
+        33279,
+        1,
+        121414,
+        1790546864761111600,
+        1790546864761111600
+      ],
+      "path": "scripts/backend_publication_process_supervisor_v3.py",
+      "sha256": "57c1391feda3c21ff31d4408b6fa60a7643ad6aa844bd65422aa8d0ef85bbef5",
+      "size_bytes": 121414
+    },
+    "scripts/run_ci_checks.py": {
+      "epoch": [
+        69,
+        1407374885974064,
+        33279,
+        1,
+        17273,
+        1790744021426492300,
+        1790744021426492300
+      ],
+      "path": "scripts/run_ci_checks.py",
+      "sha256": "61c356c6bfae8d808ff4db1becee7385cd5ccebc9505b9a482e691c1a89d56ea",
+      "size_bytes": 17273
+    },
+    "tests/test_backend_publication_output_transaction_production_v3.py": {
+      "epoch": [
+        69,
+        132856189009291960,
+        33279,
+        1,
+        54261,
+        1789990792140349900,
+        1789990792140349900
+      ],
+      "path": "tests/test_backend_publication_output_transaction_production_v3.py",
+      "sha256": "f78c2fa070e672f3777aca28f5d5043a19fca63987afa5fd8300d1582334812d",
+      "size_bytes": 54261
+    }
+  },
+  "interpretation": {
+    "full_ci_pass": false,
+    "host_namespace_policy": "AppArmor userns restriction and unprivileged UID/GID1001 are observed. They are not a recorded unshare failure.",
+    "hosted_setup_failure": "Plausible, not proven: original stdout failed frame, durable owner/request/response and broker terminal were not retained by this artifact.",
+    "segfault_cause": "Unidentified. Final malformed/incomplete watchdog dump is observed; timing association does not establish watchdog, namespace, or journal causality.",
+    "source_demonstrated_gap": "Early setup failure can exit rc0 with only stdout while durable parent awaits an absent journal; no changed timeouts are needed to explain this control-flow stall."
+  },
+  "job_id": 109762366332,
+  "local_read_query_correction": "One PowerShell hash-display query had parser error before any read or mutation; corrected query confirmed all four exact source sizes/hashes.",
+  "member_paths_contained_unique_without_symlinks": true,
+  "minimal_next_reviewed_diagnostic": "Retain bounded original broker stdout/stderr, terminal rc and setup-stage exception/errno plus journal leaf presence. Unit-inject setup failure before namespaces to show durable-mode failed response cannot wait; preserve600000ms/615000ms ABI and namespace containment. Investigate139 separately from original fatal evidence; no speculative watchdog disable.",
+  "missing_final_artifacts": [
+    "tracked-source.after.json",
+    "unittest-report.json"
+  ],
+  "original_decoded_job": {
+    "epoch": [
+      69,
+      34902897112122029,
+      33279,
+      1,
+      77270,
+      1790750025283456800,
+      1790750025283456800
+    ],
+    "path": "artifacts/benchmark_recovery_20260930/cpu-ci-run-36676456718/original-decoded-job.log",
+    "sha256": "0b07ff9ad00f362d0709fbe58901cc18f745859d6595f1dc03771e885c478a30",
+    "size_bytes": 77270
+  },
+  "original_host_facts": {
+    "api_available": {
+      "CLONE_NEWNS": true,
+      "CLONE_NEWPID": true,
+      "CLONE_NEWUSER": true,
+      "fork": true,
+      "pidfd_open": true,
+      "unshare": true
+    },
+    "executable": "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python",
+    "executable_realpath": "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python3.12",
+    "executable_stat": {
+      "st_dev": 66305,
+      "st_gid": 1001,
+      "st_ino": 2434325,
+      "st_mode": 33261,
+      "st_nlink": 1,
+      "st_size": 17744,
+      "st_uid": 1001
+    },
+    "gid": 1001,
+    "kernel_release": "6.17.0-1022-azure",
+    "namespace_sysctls": {
+      "apparmor_restrict_unprivileged_userns": {
+        "path": "/proc/sys/kernel/apparmor_restrict_unprivileged_userns",
+        "value": "1"
+      },
+      "max_user_namespaces": {
+        "path": "/proc/sys/user/max_user_namespaces",
+        "value": "63795"
+      },
+      "unprivileged_userns_clone": {
+        "path": "/proc/sys/kernel/unprivileged_userns_clone",
+        "value": "1"
+      }
+    },
+    "process_status": {
+      "CapAmb": "0000000000000000",
+      "CapBnd": "000001ffffffffff",
+      "CapEff": "0000000000000000",
+      "CapInh": "0000000000000000",
+      "CapPrm": "0000000000000000",
+      "NoNewPrivs": "0",
+      "Seccomp": "0"
+    },
+    "python": "3.12.3 (main, Sep 26 2024, 18:18:55) [GCC 13.2.0]",
+    "uid": 1001
+  },
+  "original_inputs_unchanged_after_inspection": true,
+  "original_native_commands": {
+    "native-build": {
+      "argv": [
+        "cmake",
+        "--build",
+        "/home/runner/work/_temp/vast-cpu-checks/build",
+        "--parallel",
+        "2",
+        "--target",
+        "vast_native_gst_probe",
+        "vast_checkpoint_source",
+        "gstadaptivescheduler",
+        "gstvastanalyticsterminal",
+        "gstvastanalyticsqueue",
+        "gstvastcheckpointprefixqueue"
+      ],
+      "elapsed_s": 13.438835739999988,
+      "returncode": 0,
+      "timed_out": false
+    },
+    "native-configure": {
+      "argv": [
+        "cmake",
+        "-S",
+        "/home/runner/work/VAST/VAST",
+        "-B",
+        "/home/runner/work/_temp/vast-cpu-checks/build",
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DVAST_BUILD_CUSTOM_CUDA_QT=OFF",
+        "-DCMAKE_RUNTIME_OUTPUT_DIRECTORY=/home/runner/work/_temp/vast-cpu-checks/build/bin",
+        "-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=/home/runner/work/_temp/vast-cpu-checks/build/lib"
+      ],
+      "elapsed_s": 7.7046491979999985,
+      "returncode": 0,
+      "timed_out": false
+    }
+  },
+  "original_stack": {
+    "complete_wait3045_occurrences": 5,
+    "literal_incomplete_tail": "checks.py\", line 350 in main\n  File \"/home/runner/work/VAST/VAST/scripts/run_ci_checks.py\", line 376 in <module>\nTimeout (0:01:00)!\nThread 0x00007f5a4de95b80 (most recent call first):\n  File \"/opt/hostedtoolcache/Python/3.12.3/x64/lib/python3.12/pathlib.py\", line 385 in with_segments\n  File \"/opt/hostedtoolcache/Python/3.12.3/x64/lib/python3.12/pathlib.py\", line 32602 in joinpath\n  File ",
+    "tail_ends_in_file_prefix": true,
+    "timeout_banners": 6
+  },
+  "original_zip": {
+    "epoch": [
+      69,
+      1407374885919221,
+      33279,
+      1,
+      938427,
+      1790749697341131100,
+      1790749697341131100
+    ],
+    "path": "artifacts/benchmark_recovery_20260930/cpu-ci-run-36676456718/original-artifact.zip",
+    "sha256": "ec02be0dd68e1ac5876278d06c8edf5484b4941a280495f673fb195fc21bae3e",
+    "size_bytes": 938427
+  },
+  "run_id": 36676456718,
+  "schema_version": 1,
+  "selected_member_pins": {
+    "host-facts.original.json": {
+      "sha256": "b7f6d564f6f686b040605914d316655f69dbdffd6ef78a73e13c3441d5138d9d",
+      "size_bytes": 1275
+    },
+    "native-build.json": {
+      "sha256": "b48e02133a39350916f9e981a0ba669cdadc7dc987dddf3e3d18294f3b1a7613",
+      "size_bytes": 403
+    },
+    "native-configure.json": {
+      "sha256": "fe38dee2531210a2e1856f0e0a79099e16d60f4d0eefc44413b1c4c1a455c19c",
+      "size_bytes": 469
+    },
+    "tracked-source.before.json": {
+      "sha256": "211b492f60283d26f4428d8276cf1b4f24c7f55dfa6f2f500dd5a39a3c6c99fe",
+      "size_bytes": 286491
+    },
+    "unittest-stacks.original.log": {
+      "sha256": "5999781069b36b1110a2ffee6be17b70824d2b35e620ec65c5df79356f4f310a",
+      "size_bytes": 14407
+    },
+    "unittest.original.log": {
+      "sha256": "a9734ec218470db5478dd6e6b77307daf12dd6c9627c7cc2a14423e3de059fc1",
+      "size_bytes": 83180
+    }
+  },
+  "source_path_findings": [
+    {
+      "fact": "Held broker commits owner, awaits authorization and enters namespace; setup exception writes failed frame to stdout and returns zero without committing durable terminal response.",
+      "lines": [
+        2684,
+        2711
+      ],
+      "source": "scripts/backend_publication_process_supervisor_v3.py"
+    },
+    {
+      "fact": "After non-timeout capture, rc0, empty stderr and quiescence, durable parent ignores stdout frame and waits for journal response.",
+      "lines": [
+        3259,
+        3282
+      ],
+      "source": "scripts/backend_publication_process_supervisor_v3.py"
+    },
+    {
+      "fact": "Absent terminal-response.frame returns None; parent polls every20ms for existing615000ms ABI. Invalid present journal throws rather than polls.",
+      "lines": [
+        2973,
+        3048
+      ],
+      "source": "scripts/backend_publication_process_supervisor_v3.py"
+    },
+    {
+      "fact": "Namespace-init completion commits terminal intent then durable response; persistence failure returns74 rather than zero.",
+      "lines": [
+        2544,
+        2586
+      ],
+      "source": "scripts/backend_publication_process_supervisor_v3.py"
+    },
+    {
+      "fact": "Collision fixture calls real original process supervisor before writing attacker-owned parent receipt; its own mock does not fabricate broker success.",
+      "lines": [
+        1201,
+        1222
+      ],
+      "source": "tests/test_backend_publication_output_transaction_production_v3.py"
+    },
+    {
+      "fact": "Repeat60s faulthandler watchdog is active during full suite and canceled on ordinary suite return.",
+      "lines": [
+        222,
+        227
+      ],
+      "source": "scripts/run_ci_checks.py"
+    }
+  ],
+  "test_events": {
+    "outcomes": {
+      "error": 1,
+      "skip": 2,
+      "success": 117
+    },
+    "starts": 121,
+    "terminals": 120,
+    "unfinished": [
+      {
+        "event": "test_started",
+        "monotonic_ns": 148046320406,
+        "test_id": "test_backend_publication_output_transaction_production_v3.BackendPublicationOutputTransactionProductionV3Tests.test_child_cannot_precreate_parent_owned_receipt"
+      }
+    ]
+  },
+  "zip_crc_pass": true,
+  "zip_members": 152
+}
