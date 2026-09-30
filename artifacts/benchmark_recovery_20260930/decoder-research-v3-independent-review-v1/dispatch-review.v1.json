@@ -1,0 +1,49 @@
+{
+  "accepted": false,
+  "artifact_kind": "vast_independent_decoder_attempt03_saved_dispatch_review_v1",
+  "author_binding_evidence": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-v3-focused-tests/attempt03-dispatch-binding-review.v1.json",
+      "sha256": "058549fdf640198d59dd3a2cd49857e76bc1f6e6e04b43144fb4a6d00e57dbe6",
+      "size_bytes": 2527
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-v3-focused-tests/attempt03-dispatch-binding.diff",
+      "sha256": "bc651f1afca4c10b17e248167d69baaf8cb92513e507f4aaa31749f933a6ca9f",
+      "size_bytes": 4298
+    }
+  ],
+  "dispatch": {
+    "path": "artifacts/benchmark_recovery_20260930/decoder-research-attempt03-original-dispatch.py",
+    "sha256": "06aed966e798ca415264816f8b5352b3af6c710045f912b93655e2cbaac45d15",
+    "size_bytes": 16431
+  },
+  "disposition": "Approved exact saved attempt03 dispatch binding-only delta; implementation code freeze/PR and explicit root dispatch remain required.",
+  "immutable_predecessor": {
+    "path": "artifacts/benchmark_recovery_20260930/decoder-research-attempt02-original-dispatch.py",
+    "sha256": "372cfec7e32be7747e21a9ef659d1f9037d5974b5bf04f458704236f377cd28f",
+    "size_bytes": 16325
+  },
+  "implementation_review": {
+    "path": "artifacts/benchmark_recovery_20260930/decoder-research-v3-independent-review-v1/review.v1.json",
+    "sha256": "fe23f1fac6ca95c0e863e7024dae3a1699da8a062fcfd329ec4aea26d9164a57",
+    "size_bytes": 6707
+  },
+  "limits": [
+    "No new physical research approval by this receipt alone.",
+    "No source/GI/Docker/model/benchmark launch, tests or complete32-AU reader gate added.",
+    "Original failed attempts remain immutable; no retry/outcome-search inference."
+  ],
+  "observed_at_utc": "2026-09-30T05:16:36.458325+00:00",
+  "planning_commit": "a84e0e734678aa9ecc9e0a4f16dcc3036c5c8f02",
+  "planning_pr_comment_id": 5904141981,
+  "publication_ready": false,
+  "reviewer": "adversarial_review",
+  "schema_version": 1,
+  "verified": [
+    "Independent normalized AST equality after onlyPLANNING/CODE7/CORE4 and artifact/attempt/docstring literal updates.",
+    "All seven physical code pins and all four current+exact a84 Git planning blobs match the saved constant tables.",
+    "Explicit Git/worktree arguments, original child/owner/raw log handling, single600s deadline,1MiB channel bounds and failed-only15s containment remain unchanged.",
+    "Attempt03 source-only review: neither research nor external-controller namespace exists; no dispatch or workload performed by reviewer."
+  ]
+}
