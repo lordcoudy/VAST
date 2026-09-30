@@ -1,0 +1,23 @@
+{
+  "argv": [
+    "/usr/bin/docker",
+    "image",
+    "inspect",
+    "--format",
+    "{{json .Id}} {{json .Config.User}} {{json .Config.Entrypoint}} {{json .Config.Labels}}",
+    "sha256:70696f057232acd382f60beaaf12cd9279b317b0ba9a7ade29f0b955ce90481a"
+  ],
+  "returncode": 0,
+  "started_at_ns": 1790726877779030782,
+  "stderr": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/gstreamer-packaged-regression-02/engine_03.stderr",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size_bytes": 0
+  },
+  "stdout": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/gstreamer-packaged-regression-02/engine_03.stdout",
+    "sha256": "2b9f26f8ab3d17d5d7b5164d496d0b1a0770b622ac695fb9af205cb29f1421f9",
+    "size_bytes": 1429
+  },
+  "terminal_at_ns": 1790726877821599360
+}

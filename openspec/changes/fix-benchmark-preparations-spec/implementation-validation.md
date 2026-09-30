@@ -1,6 +1,10 @@
 # Implementation validation — in progress
 
-## Current autonomous recovery checkpoint — 2026-09-29
+## Current implementation checkpoint — 2026-09-30
+
+Pushed implementation a5b3812457cc2eddfd19eaf7687a4e868a7d085b passes33 focused custody tests and the rebuilt GStreamer package passes10 actual socket/memfd tests with no skips/host runtime imports. Their original receipts, source165 audit and independent reviews are under artifacts/benchmark_recovery_20260930/ and summarized in BENCHMARK_RECOVERY_PLAN.md. GPU-aware inspection establishes available decoder controls only. Decisions16/17 are a new pending planning amendment; clean-checkout proof, isolated decoding, remaining affected images/parity, real model pairs, qualification/Q4/full execution and final CI/conformance/archive remain pending. Dated observations below retain their original-byte scope.
+
+## Historical autonomous recovery checkpoint — 2026-09-29
 
 The user's carte-blanche authorization expands this same change to implementation and full scientific completion. Planning review is in progress; no new production/test code or workload has been launched under this amendment. The durable root plan is `BENCHMARK_RECOVERY_PLAN.md`. Source/git baselines, original failed g evidence and the pinned WSL 19-test baseline are retained under `artifacts/benchmark_recovery_20260929/`. The first implementation gate will use actual producer/front/closure boundaries, followed by a real packaged publication-v3 CPU/GPU/static-hybrid pair and stock cold validation.
 

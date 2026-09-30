@@ -1,0 +1,109 @@
+{
+  "accepted": false,
+  "argv": [
+    "/usr/bin/docker",
+    "run",
+    "--rm",
+    "--name",
+    "vast-recovery-gst-boundary-c97f1bfdc9db4aa1be28",
+    "--cidfile",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/gstreamer-packaged-regression-02/original.cid",
+    "--label",
+    "vast.operational-custody=01a4d0698c640a80934805d22ac22e69f9f951274b5cbbc967968a2b7c4ab99b",
+    "--network",
+    "none",
+    "--read-only",
+    "--pids-limit",
+    "256",
+    "--memory",
+    "2g",
+    "--cpus",
+    "2",
+    "--tmpfs",
+    "/tmp:rw,nosuid,nodev,size=536870912,mode=1777",
+    "--env",
+    "OPENBLAS_NUM_THREADS=1",
+    "--env",
+    "OMP_NUM_THREADS=1",
+    "--env",
+    "MKL_NUM_THREADS=1",
+    "--env",
+    "NUMEXPR_NUM_THREADS=1",
+    "--mount",
+    "type=bind,src=/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests,dst=/mnt/vast-tests,readonly",
+    "--mount",
+    "type=bind,src=/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/configs,dst=/mnt/vast-configs,readonly",
+    "--mount",
+    "type=bind,src=/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/native_gst_probe,dst=/mnt/vast-native-source,readonly",
+    "--mount",
+    "type=bind,src=/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/gstreamer-packaged-regression-02/packaged_test_loader.v1.py,dst=/mnt/vast-loader.py,readonly",
+    "--mount",
+    "type=bind,src=/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/gstreamer-packaged-regression-02/packaged-source-expectations.v1.json,dst=/mnt/vast-expectations.json,readonly",
+    "--entrypoint",
+    "/usr/bin/python3",
+    "sha256:70696f057232acd382f60beaaf12cd9279b317b0ba9a7ade29f0b955ce90481a",
+    "-I",
+    "-B",
+    "/mnt/vast-loader.py"
+  ],
+  "cidfile": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/gstreamer-packaged-regression-02/original.cid",
+  "classification": "packaged real socket/memfd/recorder/reconciliation regression, local inference fixture only",
+  "commit": "a5b3812457cc2eddfd19eaf7687a4e868a7d085b",
+  "engine": {
+    "path": "/usr/bin/docker",
+    "sha256": "a429e235ef670ea83357a5c8c7451f0a69d485a6fee49f9032fd938a0ab4969d",
+    "size_bytes": 45570705
+  },
+  "image_id": "sha256:70696f057232acd382f60beaaf12cd9279b317b0ba9a7ade29f0b955ce90481a",
+  "label": "01a4d0698c640a80934805d22ac22e69f9f951274b5cbbc967968a2b7c4ab99b",
+  "name": "vast-recovery-gst-boundary-c97f1bfdc9db4aa1be28",
+  "socket_identity": [
+    61,
+    1944,
+    49584,
+    0,
+    1001
+  ],
+  "sources": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_boundary_v1.py",
+      "sha256": "e27cd10161224dbd6faf4a23f696f46922c782e71b762b894e0b61ce2e38eff6",
+      "size_bytes": 37440
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_checkpoint_gstreamer_analytics_sidecar.py",
+      "sha256": "08aecf8478eb3148ab5e4a051eb4ae81529f79a778e11c30383832a94e64e1b6",
+      "size_bytes": 126015
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_checkpoint_native_policy_runtime.py",
+      "sha256": "5dd6730460e04f34a2b394409e4a38c21d8cf178ba57149fa168a810dee0ff77",
+      "size_bytes": 35893
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/configs/analytics_execution_layer.yaml",
+      "sha256": "d9bec961f22395c005ac6866633aeeb8b9a829fd39bd776776a3b0cd84526033",
+      "size_bytes": 1453
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/configs/checkpoint_analytics_models_openvino.yaml",
+      "sha256": "48de16da0ea290518053349556671ff08c309fa01b6d502845f233b7e136eeca",
+      "size_bytes": 7885
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/native_gst_probe/vast_native_gst_probe.cpp",
+      "sha256": "c0e3f80ec32bdf539815ca59b5eee1b121c87905240e28b14ab0ba4b360d4c6f",
+      "size_bytes": 167521
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/gstreamer-packaged-regression-02/packaged_test_loader.v1.py",
+      "sha256": "886f92db8696c6f8d2f0c91cd32df60e61bebc71b0a3a6469270b9ab4d182d26",
+      "size_bytes": 1883
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/run_gstreamer_packaged_regression_v1.py",
+      "sha256": "b5ba24635e8a5a6d07087932cb5cd9333ee0e4b61e945f3c0b1f3091cd7c6058",
+      "size_bytes": 12503
+    }
+  ]
+}

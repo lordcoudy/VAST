@@ -1,0 +1,109 @@
+{
+  "accepted": false,
+  "artifact_kind": "vast_readonly_original_research_media_observation_v1",
+  "elapsed_s": 2.8550369899894577,
+  "limitation": "Frozen ffprobe metadata is byte-bound after current full-file SHA verification. Actual negotiated GStreamer caps remain unobserved until approved consumer execution.",
+  "manifest": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/data/videos/kpp/kpp_iss_publication_v3/kpp_iss_publication_v3_manifest.json",
+    "sha256": "9a9cf3e08be159bfd4bdeda1d9323b13102980322bde03d9b061e749c1d3fa24",
+    "size_bytes": 7225
+  },
+  "media": [
+    {
+      "actual_gstreamer_caps_observed": false,
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/data/videos/kpp/kpp_iss_publication_v3/h264/iss_v2_underbody.mp4",
+        "sha256": "b7e5165549172266a5617ff7bbca6e5b888775b0a2490e27b7cbe17640e3b102",
+        "size_bytes": 1079445865
+      },
+      "frozen_ffprobe": {
+        "avg_frame_rate": "600/1",
+        "codec_name": "h264",
+        "color_range": "tv",
+        "decoded_first_pts": 0,
+        "decoded_frame_count": 35646,
+        "decoded_frame_signatures": [
+          {
+            "color_range": "tv",
+            "height": 236,
+            "pix_fmt": "yuv420p",
+            "width": 1700
+          }
+        ],
+        "decoded_last_pts": 35645,
+        "decoded_pts_steps": [
+          1
+        ],
+        "duration_ns": 59410000000,
+        "frame_count": 35646,
+        "height": 236,
+        "pix_fmt": "yuv420p",
+        "r_frame_rate": "600/1",
+        "stream_duration_ts": 35646,
+        "stream_time_base": "1/600",
+        "width": 1700
+      },
+      "matches_frozen_descriptor": true,
+      "observed_epoch": [
+        69,
+        8162774326479753,
+        33279,
+        1,
+        1079445865,
+        1789993724457782000,
+        1789993724457782000
+      ],
+      "role": "underbody"
+    },
+    {
+      "actual_gstreamer_caps_observed": false,
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/data/videos/kpp/kpp_iss_publication_v3/h264/iss_v2_front_gate.mp4",
+        "sha256": "08991b572d2d990a07536c9a4a7eed7780b27127c0e38abe7b607ba97dd59273",
+        "size_bytes": 63131711
+      },
+      "frozen_ffprobe": {
+        "avg_frame_rate": "600/1",
+        "codec_name": "h264",
+        "color_range": "tv",
+        "decoded_first_pts": 0,
+        "decoded_frame_count": 33120,
+        "decoded_frame_signatures": [
+          {
+            "color_range": "tv",
+            "height": 1080,
+            "pix_fmt": "yuv420p",
+            "width": 1920
+          }
+        ],
+        "decoded_last_pts": 33119,
+        "decoded_pts_steps": [
+          1
+        ],
+        "duration_ns": 55200000000,
+        "frame_count": 33120,
+        "height": 1080,
+        "pix_fmt": "yuv420p",
+        "r_frame_rate": "600/1",
+        "stream_duration_ts": 33120,
+        "stream_time_base": "1/600",
+        "width": 1920
+      },
+      "matches_frozen_descriptor": true,
+      "observed_epoch": [
+        69,
+        11258999070296994,
+        33279,
+        1,
+        63131711,
+        1789993729006871400,
+        1789993729006871400
+      ],
+      "role": "front_gate"
+    }
+  ],
+  "publication_ready": false,
+  "schema_version": 1,
+  "started_at_ns": 1790728632636568978,
+  "terminal_at_ns": 1790728635491605960
+}

@@ -1,0 +1,310 @@
+{
+  "accepted": false,
+  "approval_limits": [
+    "Exact amended planning commit must be reviewed/recorded in the same PR before dependent consumer/byte-freeze application; this file is a delegated planning review, not independent GitHub approval.",
+    "No decoder experiment, consumer compile/run, model inference, qualification/Q4/full arm, checkout/staging/source application or scientific regime adoption was performed by this review.",
+    "A bound/error/timeout preserves failure and stops dependents. Actual media/prefix/package pins, source events and consumer/output correctness remain launch/execution gates.",
+    "Any selected production property/corpus/metric/deadline/algorithm amendment requires new coherent planning review and exact source/payload/count/string budget/invalidation proof."
+  ],
+  "artifact_kind": "vast_independent_scientific_checkout_planning_review_v1",
+  "change": "fix-benchmark-preparations-spec",
+  "disposition": "approved_planning_no_blocking_findings_exact_commit_PR_record_required",
+  "document_counts": {
+    "checked_tasks": 28,
+    "requirements": 16,
+    "scenarios": 69,
+    "tasks": 72
+  },
+  "evidence_pins": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-causality-research-recipe.v1.md",
+      "relative_path": "artifacts/benchmark_recovery_20260930/decoder-causality-research-recipe.v1.md",
+      "sha256": "7fe71db3f03cbfb3e1cbe140628a54cfdd962000938f422906033c0c6437bf91",
+      "size_bytes": 10960
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-causality-research-recipe.v1.json",
+      "relative_path": "artifacts/benchmark_recovery_20260930/decoder-causality-research-recipe.v1.json",
+      "sha256": "50804eb78680034875a02df1e99625b91c51971428a46bd20c1309d2067ffc39",
+      "size_bytes": 6437
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-host-dependencies.v1.json",
+      "relative_path": "artifacts/benchmark_recovery_20260930/decoder-research-host-dependencies.v1.json",
+      "sha256": "891e058cc22497367f960ec053245090aca57e8d3e4718e4e69f96bfb476e47f",
+      "size_bytes": 6678
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/scientific-operating-regime-review.v1.json",
+      "relative_path": "artifacts/benchmark_recovery_20260930/scientific-operating-regime-review.v1.json",
+      "sha256": "fb562383098af9c13a5a0c3cdb0486284ea196e62bb3e22fdca9f8558c4396d4",
+      "size_bytes": 38582
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/policy-selection-equivalence-review.v1.json",
+      "relative_path": "artifacts/benchmark_recovery_20260930/policy-selection-equivalence-review.v1.json",
+      "sha256": "1559bc92101b908da7fcdad84fa8c94f85875c6dddf874b52ffd30d324af0364",
+      "size_bytes": 5176
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-properties-review.v1.json",
+      "relative_path": "artifacts/benchmark_recovery_20260930/decoder-properties-review.v1.json",
+      "sha256": "403fd914b9a685d59ddf15c9d689f017494aa043fecb1ed8c3d3a35f324734e8",
+      "size_bytes": 9054
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/gstreamer-decoder-fresh-registry-inspection/decoder-inspection.v1.json",
+      "relative_path": "artifacts/benchmark_recovery_20260930/gstreamer-decoder-fresh-registry-inspection/decoder-inspection.v1.json",
+      "sha256": "99134bca7b5ca889338fa645e500b606d836359642410afc0c7cf19e6fb1418b",
+      "size_bytes": 1323
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/gstreamer-decoder-fresh-registry-inspection/nvh264dec.stdout",
+      "relative_path": "artifacts/benchmark_recovery_20260930/gstreamer-decoder-fresh-registry-inspection/nvh264dec.stdout",
+      "sha256": "d6deccb28b9cb06a780a1ca489882a146f0cf0e6bf14d734b7160bfef784673b",
+      "size_bytes": 6020
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/gstreamer-decoder-fresh-registry-inspection/nvh264dec.stderr",
+      "relative_path": "artifacts/benchmark_recovery_20260930/gstreamer-decoder-fresh-registry-inspection/nvh264dec.stderr",
+      "sha256": "125f6a1f6c3780f740a5fb7dcdf053db06b8d594894366eafcd21b12a958a086",
+      "size_bytes": 224
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/gstreamer-decoder-fresh-registry-inspection/nvh265dec.stdout",
+      "relative_path": "artifacts/benchmark_recovery_20260930/gstreamer-decoder-fresh-registry-inspection/nvh265dec.stdout",
+      "sha256": "42f66301ab672323f35d842cca2e99afd2fcfbad001c19d46ff1afc86bc0ba18",
+      "size_bytes": 5682
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/gstreamer-decoder-fresh-registry-inspection/nvh265dec.stderr",
+      "relative_path": "artifacts/benchmark_recovery_20260930/gstreamer-decoder-fresh-registry-inspection/nvh265dec.stderr",
+      "sha256": "fd4ff098d85dcfa22cac91101d1f90cb19c1d570abcb4a7f2a66e40962052898",
+      "size_bytes": 224
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-experiment-prerequisites/decoder-inspection.v1.json",
+      "relative_path": "artifacts/benchmark_recovery_20260930/decoder-experiment-prerequisites/decoder-inspection.v1.json",
+      "sha256": "83f137c37866392c2888e3f7a6e653d759e93028e22a01e4d7f68a3e55e78633",
+      "size_bytes": 667
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-experiment-prerequisites/package_metadata.stdout",
+      "relative_path": "artifacts/benchmark_recovery_20260930/decoder-experiment-prerequisites/package_metadata.stdout",
+      "sha256": "7579d69964297817a7b47d4a191e164a383ea347f9814a2efb2dec8db78d7776",
+      "size_bytes": 20940
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-experiment-prerequisites/package_metadata.terminal.v1.json",
+      "relative_path": "artifacts/benchmark_recovery_20260930/decoder-experiment-prerequisites/package_metadata.terminal.v1.json",
+      "sha256": "2b4d8373c6b4f7e9c2c9a38e6bf0a41c9a778b579952c4053b91910d7c14793d",
+      "size_bytes": 6687
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/byte-freeze.minimum-proposed.gitattributes.v1.txt",
+      "relative_path": "artifacts/benchmark_recovery_20260930/byte-freeze.minimum-proposed.gitattributes.v1.txt",
+      "sha256": "650f4584f8ba6ceda86b1274ffb43c80871b6e8620f5ce5314e2c165a54b609c",
+      "size_bytes": 10589
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/byte-freeze-readonly-observations.v1.json",
+      "relative_path": "artifacts/benchmark_recovery_20260930/byte-freeze-readonly-observations.v1.json",
+      "sha256": "ead2b5907412e4bf5b47ffd093c482dd341a1eab0107515258b7b531a69cbb2d",
+      "size_bytes": 40233
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/packaging-source-rollforward.v4.json",
+      "relative_path": "artifacts/benchmark_recovery_20260930/packaging-source-rollforward.v4.json",
+      "sha256": "6199d98a4496a7c54d5a45ff80687786f5bf7ad43c90f0d2a1129cf2ba007c31",
+      "size_bytes": 281341
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/packaging-source-rollforward-independent-review.v4.json",
+      "relative_path": "artifacts/benchmark_recovery_20260930/packaging-source-rollforward-independent-review.v4.json",
+      "sha256": "7c20fe90fb5634291ce40469275b13db47ce6ca0d9466625bcf9f0e2b964b378",
+      "size_bytes": 3753
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/planning-byte-freeze-review.v2.json",
+      "relative_path": "artifacts/benchmark_recovery_20260930/planning-byte-freeze-review.v2.json",
+      "sha256": "ce6f247884d62b6d17db70091cb25ad70a464c0fc3990ce78d0f8e8f99feceb4",
+      "size_bytes": 13050
+    }
+  ],
+  "immutable_recipe_refinement": "Historical recipev1 remains unchanged. Normative design17 now narrows its conditional dependency route to observed packaged GI with explicit init, corrects original event-ACK-binary sequencing, fixes clock/backpressure/async=false/actual-decoder-sink-EOS interpretation, and freezes numeric admission bounds. Consumer implementation must follow those reviewed refinements, not infer authority from the older looser recipe.",
+  "independence_disclosure": "Reviewer authored the cited scientific/alias reviews and immutable decoder recipe. Independently read parent-authored final planning bytes, actual original metadata and source; architecture review is corroboration rather than a substitute for this review.",
+  "new_scenarios_verified_in_delta_and_verification_map": [
+    "Exact source identity depends on inherited line endings",
+    "Frozen policy labels are placement aliases",
+    "Deadline and attributed elapsed measurements are saturated or confounded",
+    "Decoder mechanism research precedes an adopted regime"
+  ],
+  "official_sources": [
+    "https://git-scm.com/docs/gitattributes",
+    "https://gstreamer.freedesktop.org/documentation/nvcodec/nvh264dec.html",
+    "https://docs.nvidia.com/video-technologies/video-codec-sdk/13.0/read-me/index.html"
+  ],
+  "owned_diff": {
+    "base": "a5b3812457cc2eddfd19eaf7687a4e868a7d085b",
+    "paths": [
+      "BENCHMARK_RECOVERY_PLAN.md",
+      "openspec/changes/fix-benchmark-preparations-spec/proposal.md",
+      "openspec/changes/fix-benchmark-preparations-spec/design.md",
+      "openspec/changes/fix-benchmark-preparations-spec/tasks.md",
+      "openspec/changes/fix-benchmark-preparations-spec/specs/benchmark-launch-preparation/spec.md",
+      "openspec/changes/fix-benchmark-preparations-spec/verification-plan.md",
+      "openspec/changes/fix-benchmark-preparations-spec/preparation-plan.md",
+      "openspec/changes/fix-benchmark-preparations-spec/implementation-validation.md",
+      "openspec/changes/fix-benchmark-preparations-spec/image-invalidation.md",
+      "openspec/changes/fix-benchmark-preparations-spec/conformance-progress.md"
+    ],
+    "returncode": 0,
+    "sha256": "98be47135cf2daadbfc59325ca94fea4c8c3ab754c9ce534b4845a0be4fc0a43",
+    "size_bytes": 55714,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "publication_ready": false,
+  "research_budget_arithmetic": {
+    "all_four_plus_preflight_seconds": 600,
+    "appsink_buffers_max": 1,
+    "appsrc_buffers_max": 1,
+    "event_bytes_max": 16384,
+    "event_bytes_product": 8388608,
+    "events_per_run": 512,
+    "four_namespaces_plus_metadata_bytes": 1107296256,
+    "interpretation": "Feasible checked research admission predicates, not source constructor theorems, proof that the unobserved first32 raw AU aggregate fits, decoder-driver RSS bounds or full-benchmark storage admission. Validate current event declarations/caps before ACK; verify current binary after ACK before appsrc/next ACK with header size before payload allocation, and check applicable output/event caps before writes. Preserve failed attempts; no cgroup tuning or automatic limit increase/retry.",
+    "metadata_bytes_max": 33554432,
+    "namespace_bytes_max": 268435456,
+    "one_mapped_RGB_frame_bytes_max": 67108864,
+    "per_run_hard_seconds": 120,
+    "per_run_phase_seconds": {
+      "EOS_drain": 10,
+      "admission": 31.5,
+      "future_start": 2,
+      "owned_cleanup": 15,
+      "startup": 45
+    },
+    "phase_sum_seconds": 103.5,
+    "preflight_hard_seconds": 120,
+    "raw_AU_aggregate_bytes_max": 134217728,
+    "stderr_bytes_max": 1048576,
+    "stdout_bytes_max": 1048576,
+    "wire_payload_bytes_max": 67108864
+  },
+  "reviewed_at_utc": "2026-09-30T00:47:05.530478+00:00",
+  "reviewed_files": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/BENCHMARK_RECOVERY_PLAN.md",
+      "relative_path": "BENCHMARK_RECOVERY_PLAN.md",
+      "sha256": "328769947277002bb67877681c3dd9841ff7e1487242502a88cc6300e00980cf",
+      "size_bytes": 23666
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/openspec/changes/fix-benchmark-preparations-spec/proposal.md",
+      "relative_path": "openspec/changes/fix-benchmark-preparations-spec/proposal.md",
+      "sha256": "2cd339e5d973d7d0336ed8bb90caf6d31ae48bd617cef78aad24b1b12f4659e5",
+      "size_bytes": 9974
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/openspec/changes/fix-benchmark-preparations-spec/design.md",
+      "relative_path": "openspec/changes/fix-benchmark-preparations-spec/design.md",
+      "sha256": "80a720683d33e00bd6b42608fc7497f3ea6b415426a4104c34cb2cee4896bfab",
+      "size_bytes": 73976
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/openspec/changes/fix-benchmark-preparations-spec/tasks.md",
+      "relative_path": "openspec/changes/fix-benchmark-preparations-spec/tasks.md",
+      "sha256": "81e8b8c937edf3e36195fc70e42efcef1c91c4f275b75e4ebd56bd1131dac3a4",
+      "size_bytes": 36417
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/openspec/changes/fix-benchmark-preparations-spec/specs/benchmark-launch-preparation/spec.md",
+      "relative_path": "openspec/changes/fix-benchmark-preparations-spec/specs/benchmark-launch-preparation/spec.md",
+      "sha256": "5207a2237a4cc0199ba2d617d28956277ac4ccf9a15b865193087694719050b9",
+      "size_bytes": 42239
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/openspec/changes/fix-benchmark-preparations-spec/verification-plan.md",
+      "relative_path": "openspec/changes/fix-benchmark-preparations-spec/verification-plan.md",
+      "sha256": "e98ad458ff28cc776870ba6d65740b45b970f44b66920a4df76d23e8e3af0665",
+      "size_bytes": 31535
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/openspec/changes/fix-benchmark-preparations-spec/preparation-plan.md",
+      "relative_path": "openspec/changes/fix-benchmark-preparations-spec/preparation-plan.md",
+      "sha256": "4daf8452fe085663c7f07b71f1440a1eab40ae83ba89469eca4ecc97743ba46d",
+      "size_bytes": 24051
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/openspec/changes/fix-benchmark-preparations-spec/implementation-validation.md",
+      "relative_path": "openspec/changes/fix-benchmark-preparations-spec/implementation-validation.md",
+      "sha256": "4d01517278dc1498eb602fa09eb4b4cf750df823c2e5544876e0b50e439b47d5",
+      "size_bytes": 157226
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/openspec/changes/fix-benchmark-preparations-spec/image-invalidation.md",
+      "relative_path": "openspec/changes/fix-benchmark-preparations-spec/image-invalidation.md",
+      "sha256": "1b538151226979a2cbbe4508340f4c0c42273dfe99db9733a958d04e79754bde",
+      "size_bytes": 62074
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/openspec/changes/fix-benchmark-preparations-spec/conformance-progress.md",
+      "relative_path": "openspec/changes/fix-benchmark-preparations-spec/conformance-progress.md",
+      "sha256": "d43d80aade06f76b6ada46f15ff2ae391e04fdddd5f195994e4146eaddf0fead",
+      "size_bytes": 72782
+    }
+  ],
+  "reviewer": "/root/adversarial_review",
+  "schema_version": 1,
+  "scope": "Independent read-only review of final ten planning/current-pointer files, decisions16/17, actual packaged prerequisite metadata and source-grounded research feasibility; no experiment, source implementation, model/benchmark acceptance or GitHub APPROVE.",
+  "self_critique": "My earlier review repaired integrity/accounting but did not establish scientific information. Decoder buffering was initially plausible rather than proven, and the HEFT/DAHEFT identity is global rather than only expired requests. I also initially recommended validating current binary fields before ACK without accounting for the original source's ACK-before-enqueue ordering; the parent source reread caught that deadlock. No receipt was sealed or consumer launched under that wording. Final planning/source review binds the corrected event-first then ACK then binary validation before appsrc/next ACK. These corrections remain explicit rather than rewriting historical reviews. The narrowed mechanism experiment is the smallest physical next step; broad parity/qualification/full execution before resolving it would spend time without distinguishing the suspected mechanism.",
+  "sha256": "3dee1e452fa90bd5a2102ebbbb64f93c1cdbebe822ee9e560c6efc947c264e5c",
+  "source_commit": "a5b3812457cc2eddfd19eaf7687a4e868a7d085b",
+  "source_grounded_findings": [
+    "The finite156-path -text !eol rule and22 raw source replacements preserve actual bytes, nine explicit LF contracts and unrelated dirty paths. Fresh initial autocrlf true/false checkouts must verify all165 raw/index descriptors and actual closures. No old inode/custody receipt is rebound; image reuse remains stock-scope and live-validation dependent.",
+    "Actual packaged isolated Python/GI3.50/Gst1.28.2 exposes push/pull/video-map APIs. The separate stock-path probe retained NotInitialized, so the consumer must explicitly Gst.init(None) and pin actual loaded modules/typelibs/libraries/plugin/source ELF. Metadata is not a decoded-output test. No host substitution, compile or dependency install is justified.",
+    "Original source673 emits the event,674-676 waits for exact ACK,678 enqueues binary and679 increments offsets from scaled GstBuffer duration with a1ns fallback; sender393 writes asynchronously. Current event has no DTS/duration/transportPTS/caps. Before ACK validate its declarations, consecutive schedule, byte reservation and any completed prior packet. After ACK validate the current80B header/size before allocation, then full payload/hash/PTS/DTS/duration and exact event match before appsrc/next ACK. Never wait for the current binary before its enabling ACK or fail solely because the next event precedes the previous sender's binary completion. STOP can wait behind admission locking. The31.5s window must prove exactly32 admissions and duration/schedule>=999999600ns; no publication guard is inherited.",
+    "Default/zero is the only decoder property comparison. The fixed front/default,front/zero,underbody/zero,underbody/default order and first32/central9-24 cohort prevent silent reselection. Every PTS/caps/order/active-RGB-row hash is compared; classify flush against the actual decoder-sink EOS event, not host/source EOF or appsrc's EOS request. EOS-only central outputs are insufficient steady-state timing and remain separate correctness/flush observations.",
+    "Guest monotonic decoder sink/src observations precede logging/hashing. Realtime source admission and host CLI time are different clocks; no cross-clock subtraction is permitted without separately labelled actual-realtime observations and quantization/clock-step limits. Hash/sample hold and backpressure remain disclosed limitations.",
+    "All-finite common-deadline HEFT/DAHEFT selection equivalence holds independently of decode saturation. Seven labels and frozen matrix remain intact as provenance/expected algorithmic null controls; separate physical run noise cannot establish algorithm advantage.",
+    "Original predecision expiration and worst-stream saturation make zero relative violation difference insensitive to further latency regression. C_obs is partial attributed elapsed; decode wall residence is not CPU work, NVDEC busy time, energy or model quality. Mechanism results cannot authorize new corpus/pipeline/deadline/policy formulas or a six-stream model/benchmark claim."
+  ],
+  "source_pins": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/native_gst_probe/checkpoint_source_coordinator.cpp",
+      "relative_path": "deploy/native_gst_probe/checkpoint_source_coordinator.cpp",
+      "sha256": "03f69a8e1be20c03a9044d0a478e52b8721bed18b3f61170e35f899ff9708fc4",
+      "size_bytes": 27391
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/native_gst_probe/checkpoint_admission_transport.hpp",
+      "relative_path": "deploy/native_gst_probe/checkpoint_admission_transport.hpp",
+      "sha256": "54e9aa0a05b50aacd9372fa6a2a660fb7f31f37d68b76d349362dad34e87e48d",
+      "size_bytes": 9551
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/native_gst_probe/vast_native_gst_probe.cpp",
+      "relative_path": "deploy/native_gst_probe/vast_native_gst_probe.cpp",
+      "sha256": "c0e3f80ec32bdf539815ca59b5eee1b121c87905240e28b14ab0ba4b360d4c6f",
+      "size_bytes": 167521
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_frozen_replay_v1.py",
+      "relative_path": "scripts/publication_policy_frozen_replay_v1.py",
+      "sha256": "df03b7706ec354aab21714c09c9d0d95e7aa5a7124aefac574637f07e3d5d051",
+      "size_bytes": 21538
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_native_policy_runtime.py",
+      "relative_path": "scripts/checkpoint_native_policy_runtime.py",
+      "sha256": "76de5fa2bc52eb1a11b34abbfb93dd144d0769b802351dec992c92e0d1610c95",
+      "size_bytes": 73421
+    }
+  ],
+  "tests_or_workloads_run_by_this_review": [],
+  "whitespace_check": {
+    "returncode": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

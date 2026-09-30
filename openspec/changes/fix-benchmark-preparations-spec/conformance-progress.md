@@ -1,6 +1,10 @@
 # Conformance progress — implementation in progress
 
-## Current autonomous recovery checkpoint — 2026-09-29
+## Current conformance checkpoint — 2026-09-30
+
+Pushed a5b3812457cc2eddfd19eaf7687a4e868a7d085b has33 focused custody-test passes and10 actual-front packaged socket/memfd passes. These are scoped implementation evidence, not complete requirement conformance or model acceptance. New decisions16/17 add exact checkout-byte proof, isolated decoder research and policy/metric interpretation; their new tasks remain unchecked pending exact-commit planning review and physical execution. verification-plan.md maps all new named scenarios. Remaining images/parity, real model pairs, qualification/Q4/full results, factual storage, configured CI, final conformance and archive remain open. BENCHMARK_RECOVERY_PLAN.md retains the current evidence pointers; historical counts below remain dated facts.
+
+## Historical autonomous recovery checkpoint — 2026-09-29
 
 The same change/branch/PR now carries the user's explicit autonomous implementation and full benchmark completion authorization. Revised planning is under review before dependent code; new requirements/scenarios have no implementation or physical acceptance evidence yet. `BENCHMARK_RECOVERY_PLAN.md` records ordered gates and continuation rules. Source/git baselines, pinned WSL coordinator baseline (19 passed) and original failed g evidence are retained under `artifacts/benchmark_recovery_20260929/` as local observations, not publication receipts.
 

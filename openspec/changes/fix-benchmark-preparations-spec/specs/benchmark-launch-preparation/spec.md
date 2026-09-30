@@ -81,6 +81,10 @@ Preparation SHALL bind exact source/fixture/configuration bytes, runtime/package
 - **WHEN** the same accepted inputs and environment generate the full-run plan again
 - **THEN** its matrix/policy identities, pair/arm order, seeds, durations and analysis settings SHALL match exactly.
 
+#### Scenario: Exact source identity depends on inherited line endings
+- **WHEN** the captured 165-file executable/build source inventory has only inherited CR-at-EOL differences from committed blobs
+- **THEN** the reviewed finite exact-path byte-preservation rules and only the 22 original raw replacements SHALL preserve all physical source bytes and nine existing explicit LF contracts; fresh initial checkouts with autocrlf true and false SHALL reproduce every size/SHA and actual dependency context before reproducibility is claimed, without blanket staging or reuse of another checkout's physical custody.
+
 ### Requirement: Native-probe qualification path is integrated before qualification
 OpenVINO GVA and GStreamer Custom qualification cells SHALL execute through the native probe with queue-level reads matching each property's declared width, a container task ceiling that admits all 24 workers (4096), decode-stage artifacts that are loaded GStreamer factories only, and identifier validation that accepts every frozen branch name. CPU and GPU native policy implementation, emitter and emitter-hash identities SHALL be bound to the frozen qualification-v2 capability manifest, and the executing analytics path SHALL match the manifest's selected backend. A verified native queue overflow before policy path entry SHALL produce one native branch-drop terminal with correct trace lineage and no policy decision, path entry, policy execution terminal or analytics inference for that branch/frame. Stage and resource attribution SHALL reflect only physically completed stages: a postdecode prefix drop has decode evidence but no preprocessing for its affected branch, whereas a pre-detector drop follows preprocessing. Missing preprocessing for any other branch outcome SHALL remain invalid. The shared native-probe runtime SHALL produce a preexisting `resource_events.csv` from the accepted native stage intervals before publication, with one matching resource row per physical stage, explicit provenance for measured time and estimated auxiliary metrics, and no fabricated missing stage. Publication SHALL still reject an absent or inconsistent sidecar. Unknown, duplicate or post-entry drops SHALL fail closed. The GStreamer Custom runtime SHALL accept the qualification bundle's copied, hash-verified container-engine client. Before any 32-cell attempt, one nonpromoting pre-check replay for each native-probe system and resource SHALL reach its original successful terminal.
 
@@ -300,6 +304,18 @@ Final outputs SHALL describe the opaque ResNet workload as `topology_load_proxy_
 #### Scenario: Only proxy or partial resource evidence exists
 - **WHEN** accepted execution uses opaque models or lacks direct evidence for a resource quantity or formal scheduler equivalence
 - **THEN** analysis and claim state SHALL retain the exact proxy/coverage limitation without relabelling it as the missing scientific proof.
+
+#### Scenario: Frozen policy labels are placement aliases
+- **WHEN** the HEFT and deadline-aware HEFT selectors have the proved identical finish ordering, allowed set and tie rules
+- **THEN** outputs SHALL identify the labels as placement aliases/expected algorithmic null control, retain their frozen coordinates and actual run noise, and SHALL NOT claim a distinct deadline-aware algorithm advantage or silently alter formulas/remove arms.
+
+#### Scenario: Deadline and attributed elapsed measurements are saturated or confounded
+- **WHEN** the worst-stream deadline statistic saturates or decoder wall residence dominates attributed elapsed cost
+- **THEN** outputs SHALL report actual latency/drop/headroom and the guardrail's lost sensitivity, label C_obs as partial observed attributed stage elapsed, and SHALL NOT infer CPU work, NVDEC busy time, energy saving or absolute compliance from duplicated waiting intervals or a zero relative violation difference.
+
+#### Scenario: Decoder mechanism research precedes an adopted regime
+- **WHEN** the four reviewed isolated original-media default/zero display-delay research runs execute
+- **THEN** they SHALL retain exactly 32 original paced access units per run, preselected central timing, complete per-PTS pixel/caps/completeness/order evidence, actual package/plugin/library/source identities, original bounded ownership/terminals and immutable nonpromoting receipts; no host decoder, model acceptance, benchmark count or qualification grant SHALL be substituted, and any adopted pipeline/corpus/deadline/metric change SHALL wait for a further exact-commit planning review.
 
 ### Requirement: Authorized full execution closes durable results and repository evidence
 After all current qualification/Q4/storage/preflight gates pass, recovery SHALL execute the preserved full experiment through one supported durable owner/checkpoint. Accepted pairs SHALL be uploaded, read back and durably receipted before raw cleanup; supported resume SHALL verify and reuse accepted pairs without remeasurement. Completion SHALL require 5,600 accepted arms, 2,800 accepted pairs and verified storage transactions, successful stock verify/finalize/finalized-only export and independently checked analysis. Required CI/conformance and reviewed warnings SHALL precede supported sync/archive in this same branch/PR; archive and main specs SHALL be committed/pushed, and required final-commit checks and delegated final review/authorization SHALL precede merge. Missing factual capacity or failed required checks SHALL remain real blockers, never inferred from general authorization.

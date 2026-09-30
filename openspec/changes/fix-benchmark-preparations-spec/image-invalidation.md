@@ -1,6 +1,10 @@
 # Affected evidence and renewal order
 
-## Current autonomous recovery amendment — 2026-09-29
+## Current affected-source checkpoint — 2026-09-30
+
+Pushed a5b3812457cc2eddfd19eaf7687a4e868a7d085b repairs the observed Docker NotFound newline and exact stock GVA three-field image contract. The rebuilt GStreamer image70696f057232acd382f60beaaf12cd9279b317b0ba9a7ade29f0b955ce90481a passes its10 actual-front packaged tests. Source audit v4 binds165 members and complete four-runtime/native-three/worker-two/host78 closures; remaining three runtime images and current aggregate/parity renewal remain pending. Decision16 will preserve these physical bytes across Git checkouts; decision17 research has not yet run and adopts no scientific change. See BENCHMARK_RECOVERY_PLAN.md and artifacts/benchmark_recovery_20260930/. Historical records below are not current-source acceptance.
+
+## Historical autonomous recovery amendment — 2026-09-29
 
 The user authorized autonomous planning, implementation, verification and full benchmark completion on 29 September. Planning is being amended in this same change/branch/PR before dependent code. The revised first physical gate is a real bounded publication-v3 native pair with stock cold validators; no identity/topology-only substitute or fabricated grant is permitted. Only affected executable dependency closures require rebuilt bytes. Current coordinator/guardian/closure changes affect all four publication runtimes; the native foundations and two inference-worker closures are unchanged unless a shared/native/worker edit is actually required. Dependent aggregate/parity authority must still be renewed as required by its actual contract. No fresh source/image/qualification/full-run acceptance is asserted here.
 
