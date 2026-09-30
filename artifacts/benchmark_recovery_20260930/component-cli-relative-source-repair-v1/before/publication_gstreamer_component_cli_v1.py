@@ -438,8 +438,7 @@ def run_component_pair_v1(*, project_root, resource, output_dir, scratch_root,
         try:
             with deps.reserve(project_root=root, scratch_namespace=scratch_namespace, output_dir=output) as reserve:
                 source = deps.source(project_root=root, resource=resource, output_dir=output / "source",
-                    container_engine=container_engine, container_engine_socket=container_engine_socket,
-                    **{name: path.relative_to(root).as_posix() for name, path in input_paths.items()})
+                    container_engine=container_engine, container_engine_socket=container_engine_socket, **input_paths)
                 authority_path = Path(source["authority_path"])
                 capture = deps.capture(project_root=root, component_authority_path=authority_path,
                     execution_code_closure_path=input_paths["execution_code_closure_path"],

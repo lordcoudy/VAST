@@ -1,0 +1,29 @@
+--- original CPU01 driver
++++ prepared CPU02 driver
+@@ -2,18 +2,22 @@
+ import hashlib,json,os,selectors,signal,stat,subprocess,sys,time
+ from pathlib import Path
+ ROOT=Path('/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec')
+-COMMIT='f51273005165281e290a791d794902f3e722086d'
++assert len(sys.argv)==3,'usage: driver SOURCE_COMMIT HOST_CLOSURE_V3_SHA256'
++COMMIT=sys.argv[1]
++CLOSURE_SHA256=sys.argv[2]
++assert len(COMMIT)==40 and all(char in '0123456789abcdef' for char in COMMIT)
++assert len(CLOSURE_SHA256)==64 and all(char in '0123456789abcdef' for char in CLOSURE_SHA256)
+ IMAGE='sha256:88778ac8b7b91ca90b8d0f03c48823898fc8438ab9b0ad1df7548746792e2f4f'
+ BASE=ROOT/'artifacts/gstreamer_component_release_20260930_a3e976d0'
+-PAIR=BASE/'cpu-pair-01'
+-DEST=BASE/'cpu-pair-01-original-controller'
++PAIR=BASE/'cpu-pair-02'
++DEST=BASE/'cpu-pair-02-original-controller'
+ EXPECTED={
+  'capability_manifest_path':('artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g/candidate/checkpoint_policy_capability_candidate_manifest.json','3c921a062345d571c836eed6e40de6b3bf4b7be798e24b792c10c1d1df3c1494'),
+  'calibration_path':('artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g/bootstrap/checkpoint_policy_qualification_bootstrap_calibration.gstreamer_custom.v2.json','8f984df897f12f6269e68a2a1dda6ffe5fc112c5729f5f46fd9f7079bde96b15'),
+  'model_parity_receipt_path':('configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260928g.accepted.acceptance_receipt.json','6f50d92e74ab7750f262d2697b0fceeb979d4f221eda90a0223cce4d5ff7a169'),
+  'runtime_image_receipt_path':('artifacts/benchmark_recovery_20260930/selected-gstreamer-build-a3e976d0-v1/gstreamer_custom.runtime.freeze.json','7807fc43cf4f706d2756baefcbdd4887798b04168db06f7acbdbea4a8541cc8c'),
+  'worker_freeze_receipt_path':('artifacts/fix_benchmark_preparations_20260928g/worker_images/analytics-worker.freeze.json','ff7dca7f25ffa9856cf0afdf97569e9ced3292866251e2523db00aa23875ef96'),
+- 'execution_code_closure_path':('artifacts/gstreamer_component_release_20260930_a3e976d0/host/execution-code-closure.v2.json','3492d16b9eeab880fa3cb100a5e7088989461abfe5e1c7dea0d10dcaa48eca7d')}
++ 'execution_code_closure_path':('artifacts/gstreamer_component_release_20260930_a3e976d0/host/execution-code-closure.v3.json',CLOSURE_SHA256)}
+ START=time.monotonic();DEADLINE=START+2250
+ pins=[];source_pins=[];input_pins={};primary=None;cleanup_errors=[];timed_out=False;exceeded=False
+ child=None;child_owner=None;argv=None;signals=[];before=[];after=[];group_members=[]

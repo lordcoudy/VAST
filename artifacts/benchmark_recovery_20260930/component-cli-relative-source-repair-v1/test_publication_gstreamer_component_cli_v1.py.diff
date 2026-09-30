@@ -1,0 +1,50 @@
+--- before/tests/test_publication_gstreamer_component_cli_v1.py
++++ after/tests/test_publication_gstreamer_component_cli_v1.py
+@@ -139,6 +139,47 @@
+         return SimpleNamespace(source=source, capture=capture, preprocessing=preprocessing,
+                                guardian=guardian_factory, runtime=runtime, execute=execute, cold=cold,
+                                reserve=self.reserve)
++
++    def test_absolute_cli_inputs_cross_real_stock_source_pin_boundary(self):
++        import publication_policy_qualification_runtime_inputs_v2 as stock
++        dependencies = self.dependencies()
++        original_source = dependencies.source
++        original_capture = dependencies.capture
++        observed = {}
++        rejected = []
++
++        def strict_source(**arguments):
++            # Real stock filesystem pinning for every one of the six roles;
++            # subsequent source/model/guardian work remains an explicit fixture.
++            for name in self.cli.INPUT_NAMES:
++                try:
++                    pin = stock._project_pin(arguments["project_root"], arguments[name],
++                                             label="selected component original input")
++                    observed[name] = pin
++                except stock.QualificationRuntimeInputMaterializationV2Error as error:
++                    rejected.append(error)
++            if rejected:
++                raise rejected[0]
++            return original_source(**arguments)
++
++        def absolute_capture(**arguments):
++            self.assertEqual(arguments["execution_code_closure_path"],
++                             self.input_paths["execution_code_closure_path"])
++            self.assertTrue(arguments["execution_code_closure_path"].is_absolute())
++            return original_capture(**arguments)
++
++        dependencies.source = strict_source
++        dependencies.capture = absolute_capture
++        result = self.cli.run_component_pair_v1(**self.arguments, _dependencies=dependencies)
++        self.assertEqual(set(observed), set(self.cli.INPUT_NAMES))
++        self.assertEqual(rejected, [])
++        for name, pin in observed.items():
++            self.assertEqual(pin.path, self.input_paths[name])
++            self.assertEqual(pin.relative, self.input_paths[name].relative_to(self.root).as_posix())
++        terminal = json.loads(Path(result["terminal_path"]).read_bytes())
++        for name, path in self.input_paths.items():
++            self.assertEqual(terminal["input_pins"][name]["descriptor"]["path"], str(path))
++        self.assertEqual(terminal["status"], "component_pair_complete")
+ 
+     def test_exact_two_original_operations_one_guardian_stop_before_cold(self):
+         result = self.cli.run_component_pair_v1(**self.arguments, _dependencies=self.dependencies())
