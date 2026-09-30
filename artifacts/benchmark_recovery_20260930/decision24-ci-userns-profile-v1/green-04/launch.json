@@ -1,0 +1,24 @@
+{
+  "argv": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "-c",
+    "import json,pathlib,sys,unittest\nroot=pathlib.Path(sys.argv[1]);out=pathlib.Path(sys.argv[2]);sys.path[:0]=[str(root/'tests'),str(root/'scripts'),str(root)]\nnames=['test_ci_test_selection_v1.SelectionContracts.test_new_ci_userns_policy_contract_cannot_be_deferred_or_skipped'] if sys.argv[3]=='red' else ['test_ci_userns_profile_v1','test_ci_namespace_diagnostic_v1','test_run_ci_checks','test_ci_test_selection_v1']\nclass OriginalResult(unittest.TextTestResult):\n def __init__(self,*a,**k):super().__init__(*a,**k);self.original_success_ids=[]\n def addSuccess(self,test):self.original_success_ids.append(test.id());super().addSuccess(test)\nsuite=unittest.defaultTestLoader.loadTestsFromNames(names);result=unittest.TextTestRunner(verbosity=1,resultclass=OriginalResult).run(suite)\nvalue={'successful_test_ids':result.original_success_ids,'tests_run':result.testsRun,'errors':[{'test_id':t.id(),'traceback':e} for t,e in result.errors],'failures':[{'test_id':t.id(),'traceback':e} for t,e in result.failures],'skips':[{'test_id':t.id(),'reason':e} for t,e in result.skipped],'successful':result.wasSuccessful(),'no_profile_namespace_or_journal_operation':True}\n(out/'test-results.json').open('x').write(json.dumps(value,sort_keys=True,indent=2)+'\\n');sys.exit(0 if result.wasSuccessful() else 1)\n",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision24-ci-userns-profile-v1/green-04",
+    "green"
+  ],
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 47451,
+    "pid": 47451,
+    "startticks": 28612245,
+    "uid": 1000
+  },
+  "python": "3.12.3 (main, Jun 19 2026, 12:46:00) [GCC 13.3.0]",
+  "selection": "green",
+  "started_monotonic": 286122.449602922,
+  "test_controller_cap_seconds": 120
+}

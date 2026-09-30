@@ -1,0 +1,17 @@
+..............F...........................................................
+======================================================================
+FAIL: test_privileged_minimum_budget_accepts_only_two_original_fixed_command_shapes (test_ci_userns_profile_v1.UsernsProfileTests.test_privileged_minimum_budget_accepts_only_two_original_fixed_command_shapes)
+----------------------------------------------------------------------
+RuntimeError: parser source is not this original controller held FD
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_userns_profile_v1.py", line 294, in test_privileged_minimum_budget_accepts_only_two_original_fixed_command_shapes
+    with self.assertRaisesRegex(RuntimeError,'unknown privileged command'):
+AssertionError: "unknown privileged command" does not match "parser source is not this original controller held FD"
+
+----------------------------------------------------------------------
+Ran 74 tests in 2.336s
+
+FAILED (failures=1)

@@ -1,0 +1,115 @@
+{
+  "actual_cli_pid": null,
+  "actual_no_future_owner_or_terminal_fabricated": true,
+  "actual_terminal_sha256": null,
+  "actual_terminal_size": null,
+  "all_original_dispatch_function_AST_preserved": true,
+  "all_v1_audit_function_AST_preserved": true,
+  "all_v1_dispatch_function_AST_preserved": true,
+  "artifact_kind": "vast_component_cpu06_ext4_postterminal_audit_preparation_v2",
+  "before_raw_snapshots": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu06-ext4-postterminal-audit-preparation-v1/cpu05-audit_v3.original.raw",
+      "sha256": "22a00a9bfdd7d016c2286001b2d31d183740a2eaff9e20b1d63c8558e22ab241",
+      "size_bytes": 15239
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu06-ext4-postterminal-audit-preparation-v1/cpu05-dispatch_v3.original.raw",
+      "sha256": "81ccf6ca6451bdb9cbedca950b8070b64a06019c5500f075ea95d21612eca433",
+      "size_bytes": 1766
+    }
+  ],
+  "benchmark_accepted": false,
+  "bounds": {
+    "audit_seconds": 120,
+    "held_file_bytes": 67108864,
+    "metadata_bytes": 1048576,
+    "original_dispatch_child_wait_cleanup_seconds": 5,
+    "original_dispatch_wait_seconds": 135
+  },
+  "changed_audit_function_AST": [
+    "scan"
+  ],
+  "current_source87_or_image_modified": false,
+  "engine_model_native_test_or_benchmark_executed": false,
+  "final_gate": "Original audit report requires successful final deadline gate/dispatch rc0 and absence of late-failure companion for acceptance;120s remains the audit bound,135s containment does not authorize late acceptance.",
+  "future_dispatch_arguments": [
+    "ORIGINAL_TERMINAL_SHA256",
+    "ORIGINAL_TERMINAL_SIZE",
+    "ORIGINAL_CLI_PID"
+  ],
+  "future_original_owner_source": "Actual hash-pinned original terminal, joined to its authentic original launch and prelaunch controller/boot/argv records.",
+  "historical_preparation": {
+    "path": "artifacts/benchmark_recovery_20260930/component-cpu06-ext4-postterminal-audit-preparation-v1/preparation.v1.json",
+    "sha256": "f4e8680da3a4b84d1559a2d41514929d3e00ce283737b29479975e50414d4f8f",
+    "size_bytes": 4486
+  },
+  "necessary_delta": "Only audit footer adds a final120-second elapsed check after finalreport fsync/close, original heldFD release and stdout flush. Late status produces O_EXCL late-failure companion and nonzero exit without rewriting the original report/firstcause. Dispatcher changes only reader filename and retains135s backstop.",
+  "necessary_deltas": [
+    "CPU06/ext4/source0ad/new closure SHA/source controller literal bindings",
+    "Future terminal/hash/size/PID arguments replace CPU05 actual static owner tuple; original full owner must be observed and joined",
+    "Process scans now explicitly retain UID/GID and read errors rather than swallowing errors; unknown scan cannot pass",
+    "Original source HEAD/cached-diff are read from this new ext4 root Gitdir with -c core.longpaths=true"
+  ],
+  "new_audit_or_test_execution": false,
+  "new_host_closure_sha256": "adbcb638a5f104e43c95b84e4d16388a8111d39321afb3e8e7a26f2ef537b498",
+  "new_root": "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+  "original_audit": {
+    "path": "artifacts/benchmark_recovery_20260930/component-cpu05-postterminal-audit-preparation-v1/audit_v3.py",
+    "sha256": "22a00a9bfdd7d016c2286001b2d31d183740a2eaff9e20b1d63c8558e22ab241",
+    "size_bytes": 15239
+  },
+  "original_cpu06_controller_sha256": "49b6659ce3b6c595be21bf5ffefa721738a23094cc1a66642a9f5bab8666f559",
+  "original_dispatch": {
+    "path": "artifacts/benchmark_recovery_20260930/component-cpu05-postterminal-audit-preparation-v1/dispatch_v3.py",
+    "sha256": "81ccf6ca6451bdb9cbedca950b8070b64a06019c5500f075ea95d21612eca433",
+    "size_bytes": 1766
+  },
+  "prepared_sources": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu06-ext4-postterminal-audit-preparation-v1/audit_v2.py",
+      "sha256": "e8e7e72280d2971d677763f512b0bede8710550c7a9518b6f19e779ad12e1d98",
+      "size_bytes": 17876
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu06-ext4-postterminal-audit-preparation-v1/dispatch_v2.py",
+      "sha256": "2264e57b2b012b6a4ed6b5b7bf8935939b1ba2a9086e1fe175b77b02ee67f33a",
+      "size_bytes": 1998
+    }
+  ],
+  "preserved_scope": [
+    "Original95 descriptor/full-byte/name/seven-epoch before/after/current FD custody and final complete rehash",
+    "Original guardian authenticated stop/clientPID/startticks/lifecycle/reserve release and actual original daemon receipt state, absence is not invented state",
+    "Original two arms1080 ingress/same schedule/full-resource completed-frame positives, all-phase cold result/CSV/SVG hash joins",
+    "Authentic CLI success is required for benchmark_accepted; retained cold output never overrides failed CLI. No publication/Q4/full grants.",
+    "No cold replay/raw reducer run; this is original retained-output custody audit only."
+  ],
+  "preserved_unexecuted_v1_sources": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu06-ext4-postterminal-audit-preparation-v1/audit_v1.py",
+      "sha256": "52b0b3b8edebec226a959edcd8ea2d77979275c6d3c73fb211e3c8e88f2687bb",
+      "size_bytes": 16935
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu06-ext4-postterminal-audit-preparation-v1/dispatch_v1.py",
+      "sha256": "f3458cf73f3c304338610804ca5a3810f36549fab1ecac5fd142f4dc1b1aee45",
+      "size_bytes": 1998
+    }
+  ],
+  "read_original_or_new_model_weights": false,
+  "remaining_gate": "Independent peer source review; actual CPU06 original terminal must exist, then parent supplies exact SHA/size/PID for one bounded original audit dispatch.",
+  "schema_version": 1,
+  "source_commit": "0ad78d6abdb3c526544a17185af7fe8094716735",
+  "status": "prepared_only_not_executed",
+  "unchanged_audit_function_AST": [
+    "clock",
+    "epoch",
+    "hold",
+    "doc",
+    "desc",
+    "sealed",
+    "content",
+    "write",
+    "recheck_all"
+  ]
+}

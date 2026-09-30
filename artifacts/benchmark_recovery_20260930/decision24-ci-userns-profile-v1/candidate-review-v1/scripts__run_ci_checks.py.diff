@@ -1,0 +1,78 @@
+--- original/scripts/run_ci_checks.py
++++ candidate/scripts/run_ci_checks.py
+@@ -28,6 +28,10 @@
+     'vast_ci_selection', Path(__file__).with_name('ci_test_selection_v1.py'))
+ _selection = importlib.util.module_from_spec(_selection_spec)
+ _selection_spec.loader.exec_module(_selection)
++_profile_spec = importlib.util.spec_from_file_location(
++    'vast_ci_userns_profile', Path(__file__).with_name('ci_userns_profile_v1.py'))
++_profile = importlib.util.module_from_spec(_profile_spec)
++_profile_spec.loader.exec_module(_profile)
+ 
+ 
+ ROOT = Path(__file__).resolve().parents[1]
+@@ -333,10 +337,12 @@
+     return sorted(ids)
+ 
+ 
+-def suite_child(output: Path, trace_fd: int, event_fd: int, stop_fd: int) -> int:
++def suite_child(output: Path, trace_fd: int, event_fd: int, stop_fd: int, expected_profile=None) -> int:
+     """Exactly one fresh child discovers the unchanged complete suite."""
+     report = {"successful": False}
++    profile_observation = None
+     try:
++        profile_observation = _profile.observe_suite_profile_v1(expected_profile)
+         with _observer.child_trace_handler(trace_fd, event_fd, stop_fd) as observation:
+             sys.path.insert(0, str(ROOT))
+             validate_repository_import_origins()
+@@ -359,6 +365,7 @@
+         report["successful"] = False
+         report["child_failure"] = f"{type(exc).__name__}: {exc}"
+     finally:
++        report['profile_observation'] = profile_observation
+         write_json(output / "unittest-child.report.json", report)
+         os.close(trace_fd)
+         os.close(event_fd)
+@@ -440,13 +447,16 @@
+     parser.add_argument("--trace-fd", type=int, help=argparse.SUPPRESS)
+     parser.add_argument("--event-fd", type=int, help=argparse.SUPPRESS)
+     parser.add_argument("--stop-fd", type=int, help=argparse.SUPPRESS)
++    parser.add_argument("--expected-profile", help=argparse.SUPPRESS)
+     parser.add_argument("--output-dir", required=True, type=Path)
+     args = parser.parse_args()
+     output = args.output_dir.resolve()
+     if args.suite_child:
+         if args.trace_fd is None or args.event_fd is None or args.stop_fd is None or args.expected_commit is not None:
+             raise RuntimeError("invalid internal suite-child invocation")
+-        return suite_child(output, args.trace_fd, args.event_fd, args.stop_fd)
++        return suite_child(output, args.trace_fd, args.event_fd, args.stop_fd, args.expected_profile)
++    if args.expected_profile is not None:
++        parser.error('--expected-profile is internal to the original suite child')
+     if args.expected_commit is None:
+         parser.error("--expected-commit is required for the original CI parent")
+     if output == ROOT or ROOT in output.parents:
+@@ -517,11 +527,19 @@
+                                                               absolute_deadline_ns)
+         if not report['namespace_diagnostic']['capture_completed']:
+             raise RuntimeError('original namespace diagnostic capture/cleanup failed')
+-        report["observer"] = _observer.observe_test_child(
+-            lambda trace_fd, event_fd, stop_fd: [python, "-I", "-B", str(Path(__file__).resolve()),
+-                "--suite-child", "--output-dir", str(output), "--trace-fd", str(trace_fd),
+-                "--event-fd", str(event_fd), "--stop-fd", str(stop_fd)],
+-            output_dir=output / "external-test-observer", absolute_deadline_ns=absolute_deadline_ns)
++        with _profile.held_ci_userns_profile_v1(diagnostic_dir=output/'namespace-diagnostic',
++                diagnostic=report['namespace_diagnostic'], python=python,
++                output_dir=output/'namespace-profile', job_start_ns=started_ns,
++                absolute_deadline_ns=absolute_deadline_ns) as profile:
++            report['namespace_profile'] = profile['report']
++            expected = (['--expected-profile', profile['expected_profile']]
++                        if profile['expected_profile'] is not None else [])
++            report["observer"] = _observer.observe_test_child(
++                lambda trace_fd, event_fd, stop_fd: [python, "-I", "-B", str(Path(__file__).resolve()),
++                    "--suite-child", "--output-dir", str(output), "--trace-fd", str(trace_fd),
++                    "--event-fd", str(event_fd), "--stop-fd", str(stop_fd), *expected],
++                output_dir=output / "external-test-observer",
++                absolute_deadline_ns=profile['suite_deadline_ns'])
+         child_report_path = output / "unittest-child.report.json"
+         if child_report_path.is_file():
+             report["unittest"] = json.loads(child_report_path.read_text(encoding="utf-8"))

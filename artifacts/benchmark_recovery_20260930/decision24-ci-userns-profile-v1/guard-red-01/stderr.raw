@@ -1,0 +1,35 @@
+FFF
+======================================================================
+FAIL: test_post_verify_budget_guard_never_dispatches_a_root_command_past_original_deadline (test_ci_userns_profile_v1.UsernsProfileTests.test_post_verify_budget_guard_never_dispatches_a_root_command_past_original_deadline) (phase='slow_verify_inventory')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_userns_profile_v1.py", line 273, in test_post_verify_budget_guard_never_dispatches_a_root_command_past_original_deadline
+    self.assertEqual(phase,'post_suite_verify','insufficient load budget yielded suite')
+AssertionError: 'slow_verify_inventory' != 'post_suite_verify'
+- slow_verify_inventory
++ post_suite_verify
+ : insufficient load budget yielded suite
+
+======================================================================
+FAIL: test_post_verify_budget_guard_never_dispatches_a_root_command_past_original_deadline (test_ci_userns_profile_v1.UsernsProfileTests.test_post_verify_budget_guard_never_dispatches_a_root_command_past_original_deadline) (phase='preceding_inventory_parser')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_userns_profile_v1.py", line 273, in test_post_verify_budget_guard_never_dispatches_a_root_command_past_original_deadline
+    self.assertEqual(phase,'post_suite_verify','insufficient load budget yielded suite')
+AssertionError: 'preceding_inventory_parser' != 'post_suite_verify'
+- preceding_inventory_parser
++ post_suite_verify
+ : insufficient load budget yielded suite
+
+======================================================================
+FAIL: test_post_verify_budget_guard_never_dispatches_a_root_command_past_original_deadline (test_ci_userns_profile_v1.UsernsProfileTests.test_post_verify_budget_guard_never_dispatches_a_root_command_past_original_deadline) (phase='post_suite_verify')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_userns_profile_v1.py", line 271, in test_post_verify_budget_guard_never_dispatches_a_root_command_past_original_deadline
+    with self.assertRaisesRegex(RuntimeError,'self-timeout.*closing reserve'):
+AssertionError: RuntimeError not raised
+
+----------------------------------------------------------------------
+Ran 1 test in 0.316s
+
+FAILED (failures=3)

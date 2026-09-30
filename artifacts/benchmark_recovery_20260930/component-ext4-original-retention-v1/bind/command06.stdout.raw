@@ -1,0 +1,272 @@
+[
+    {
+        "Id": "4e14a7d73811531299937ee4a1929968b4a445dc5b774b0b5bdf13fc724762f1",
+        "Created": "2026-09-30T20:42:56.189257481Z",
+        "Path": "/usr/bin/python3",
+        "Args": [
+            "-I",
+            "-B",
+            "-c",
+            "import hashlib,json;from pathlib import Path;p=Path('/vast-root/artifacts/benchmark_recovery_20260930/selected-gstreamer-build-a4e145b7-v1/gstreamer_custom.runtime.freeze.json');raw=p.read_bytes();print(json.dumps({'sha256':hashlib.sha256(raw).hexdigest(),'size_bytes':len(raw)},sort_keys=True));assert hashlib.sha256(raw).hexdigest()=='61874c718d6140d0d5cf745988bc301b916077af8f80e96742184f80a0805db7'"
+        ],
+        "State": {
+            "Status": "exited",
+            "Running": false,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 0,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "2026-09-30T20:42:56.299861412Z",
+            "FinishedAt": "2026-09-30T20:42:56.480194493Z",
+            "Health": {
+                "Status": "unhealthy",
+                "FailingStreak": 0,
+                "Log": []
+            }
+        },
+        "Image": "sha256:e474867043f1a74387573140cb2bfd69825df2672edad0acda0d28954af84cb6",
+        "ResolvConfPath": "/var/lib/docker/containers/4e14a7d73811531299937ee4a1929968b4a445dc5b774b0b5bdf13fc724762f1/resolv.conf",
+        "HostnamePath": "/var/lib/docker/containers/4e14a7d73811531299937ee4a1929968b4a445dc5b774b0b5bdf13fc724762f1/hostname",
+        "HostsPath": "/var/lib/docker/containers/4e14a7d73811531299937ee4a1929968b4a445dc5b774b0b5bdf13fc724762f1/hosts",
+        "LogPath": "/var/lib/docker/containers/4e14a7d73811531299937ee4a1929968b4a445dc5b774b0b5bdf13fc724762f1/4e14a7d73811531299937ee4a1929968b4a445dc5b774b0b5bdf13fc724762f1-json.log",
+        "Name": "/vast-d27-bind-41539",
+        "RestartCount": 0,
+        "Driver": "overlayfs",
+        "Platform": "linux",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "",
+        "ExecIDs": null,
+        "HostConfig": {
+            "Binds": null,
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "json-file",
+                "Config": {}
+            },
+            "NetworkMode": "none",
+            "PortBindings": {},
+            "RestartPolicy": {
+                "Name": "no",
+                "MaximumRetryCount": 0
+            },
+            "AutoRemove": false,
+            "VolumeDriver": "",
+            "VolumesFrom": null,
+            "ConsoleSize": [
+                0,
+                0
+            ],
+            "CapAdd": null,
+            "CapDrop": [
+                "ALL"
+            ],
+            "CgroupnsMode": "private",
+            "Dns": null,
+            "DnsOptions": [],
+            "DnsSearch": [],
+            "ExtraHosts": null,
+            "GroupAdd": null,
+            "IpcMode": "private",
+            "Cgroup": "",
+            "Links": null,
+            "OomScoreAdj": 0,
+            "PidMode": "",
+            "Privileged": false,
+            "PublishAllPorts": false,
+            "ReadonlyRootfs": true,
+            "SecurityOpt": [
+                "no-new-privileges"
+            ],
+            "UTSMode": "",
+            "UsernsMode": "",
+            "ShmSize": 67108864,
+            "Runtime": "runc",
+            "Isolation": "",
+            "CpuShares": 0,
+            "Memory": 0,
+            "NanoCpus": 0,
+            "CgroupParent": "",
+            "BlkioWeight": 0,
+            "BlkioWeightDevice": [],
+            "BlkioDeviceReadBps": [],
+            "BlkioDeviceWriteBps": [],
+            "BlkioDeviceReadIOps": [],
+            "BlkioDeviceWriteIOps": [],
+            "CpuPeriod": 0,
+            "CpuQuota": 0,
+            "CpuRealtimePeriod": 0,
+            "CpuRealtimeRuntime": 0,
+            "CpusetCpus": "",
+            "CpusetMems": "",
+            "Devices": [],
+            "DeviceCgroupRules": null,
+            "DeviceRequests": null,
+            "MemoryReservation": 0,
+            "MemorySwap": 0,
+            "MemorySwappiness": null,
+            "OomKillDisable": null,
+            "PidsLimit": null,
+            "Ulimits": [],
+            "CpuCount": 0,
+            "CpuPercent": 0,
+            "IOMaximumIOps": 0,
+            "IOMaximumBandwidth": 0,
+            "Mounts": [
+                {
+                    "Type": "bind",
+                    "Source": "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+                    "Target": "/vast-root",
+                    "ReadOnly": true
+                }
+            ],
+            "MaskedPaths": [
+                "/proc/acpi",
+                "/proc/asound",
+                "/proc/interrupts",
+                "/proc/kcore",
+                "/proc/keys",
+                "/proc/latency_stats",
+                "/proc/sched_debug",
+                "/proc/scsi",
+                "/proc/timer_list",
+                "/proc/timer_stats",
+                "/sys/devices/virtual/powercap",
+                "/sys/firmware"
+            ],
+            "ReadonlyPaths": [
+                "/proc/bus",
+                "/proc/fs",
+                "/proc/irq",
+                "/proc/sys",
+                "/proc/sysrq-trigger"
+            ]
+        },
+        "Storage": {
+            "RootFS": {
+                "Snapshot": {
+                    "Name": "overlayfs"
+                }
+            }
+        },
+        "Mounts": [
+            {
+                "Type": "bind",
+                "Source": "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+                "Destination": "/vast-root",
+                "Mode": "",
+                "RW": false,
+                "Propagation": "rprivate"
+            }
+        ],
+        "Config": {
+            "Hostname": "4e14a7d73811",
+            "Domainname": "",
+            "User": "1000:1000",
+            "AttachStdin": false,
+            "AttachStdout": true,
+            "AttachStderr": true,
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "PATH=/opt/intel/dlstreamer/gstreamer/bin:/opt/intel/dlstreamer/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "LIBVA_DRIVER_NAME=iHD",
+                "GST_PLUGIN_PATH=/opt/vast/lib/gstreamer-1.0:/opt/intel/dlstreamer/lib:/opt/intel/dlstreamer/gstreamer/lib/gstreamer-1.0:/opt/intel/dlstreamer/gstreamer/lib/",
+                "LD_LIBRARY_PATH=/opt/intel/dlstreamer/gstreamer/lib:/opt/intel/dlstreamer/lib:/opt/intel/dlstreamer/lib/gstreamer-1.0:/opt/opencv:/opt/rdkafka:/opt/librealsense:/usr/local/lib/gstreamer-1.0:/usr/local/lib",
+                "LIBVA_DRIVERS_PATH=/usr/lib/x86_64-linux-gnu/dri",
+                "GST_VA_ALL_DRIVERS=1",
+                "MODEL_PROC_PATH=/opt/intel/dlstreamer/samples/gstreamer/model_proc",
+                "PYTHONPATH=/opt/vast/checkpoint:/opt/vast/python",
+                "TERM=xterm",
+                "GI_TYPELIB_PATH=/opt/intel/dlstreamer/gstreamer/lib/girepository-1.0:/opt/intel/dlstreamer/lib/girepository-1.0:/usr/lib/x86_64-linux-gnu/girepository-1.0",
+                "NVIDIA_DRIVER_CAPABILITIES=compute,utility,video",
+                "VAST_NATIVE_PYTHONPATH=/opt/intel/dlstreamer/gstreamer/lib/python3/dist-packages:/opt/intel/dlstreamer/python",
+                "VAST_GST_REGISTRY_TEMPLATE=/opt/vast/share/gstreamer-registry.bin",
+                "PYTHONDONTWRITEBYTECODE=1",
+                "PYTHONNOUSERSITE=1"
+            ],
+            "Cmd": [
+                "-I",
+                "-B",
+                "-c",
+                "import hashlib,json;from pathlib import Path;p=Path('/vast-root/artifacts/benchmark_recovery_20260930/selected-gstreamer-build-a4e145b7-v1/gstreamer_custom.runtime.freeze.json');raw=p.read_bytes();print(json.dumps({'sha256':hashlib.sha256(raw).hexdigest(),'size_bytes':len(raw)},sort_keys=True));assert hashlib.sha256(raw).hexdigest()=='61874c718d6140d0d5cf745988bc301b916077af8f80e96742184f80a0805db7'"
+            ],
+            "Healthcheck": {
+                "Test": [
+                    "CMD",
+                    "bash",
+                    "-c",
+                    "pgrep bash \u003e /dev/null || exit 1"
+                ],
+                "Interval": 30000000000,
+                "Timeout": 10000000000,
+                "StartPeriod": 5000000000,
+                "Retries": 3
+            },
+            "Image": "sha256:e474867043f1a74387573140cb2bfd69825df2672edad0acda0d28954af84cb6",
+            "Volumes": null,
+            "WorkingDir": "/home/dlstreamer",
+            "Entrypoint": [
+                "/usr/bin/python3"
+            ],
+            "Labels": {
+                "desktop.docker.io/wsl-distro": "Ubuntu",
+                "org.opencontainers.image.version": "24.04",
+                "org.vast.base-image-id": "sha256:b102aafc0f88f8cfad92349e6a55d0f9755a3f5bff109a70ebdb8936d4a8e84c",
+                "org.vast.claim-status": "deterministic-image-awaiting-exact-kpp-v3-gpu-pilots",
+                "org.vast.component": "gstreamer-custom-checkpoint-publication-runtime",
+                "org.vast.native_probe.kind": "openvino-dlstreamer",
+                "org.vast.native_probe.source_sha": "b9b350163f4d030ee4a182e06edd9b5f49ed809501d5e64de632dcff24ca8fab",
+                "org.vast.publication-image.base-image-id": "sha256:355435d2bdb986fe1d51f443d366da3ac1eb0c7175aa03ce2b31e4485f36b3bd",
+                "org.vast.publication-image.build-context-sha256": "02e42c6a712a2f19a32c7631d0e1a74d24b306eceb91e432402ef374560104b9",
+                "org.vast.publication-image.build-image-id": "sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759",
+                "org.vast.publication-image.dependency-set-sha256": "82fd616a980231cc98ffdd62e1d04536b9a0de845341b32287f94213a7679577",
+                "org.vast.publication-image.source-set-sha256": "a902001a6538fe82b59eb8a7112116dc17086e11320fda0b4134ac7fccf5c5d4",
+                "org.vast.publication-runtime-abi": "3",
+                "org.vast.runtime-dependency-set-sha256": "0f338b3aeca6756d31dccdbbc8caeb6239e8e07fec0541c1df3fea91dfc1963e",
+                "org.vast.runtime-source-sha256": "8abbc9ffdbbd6ea3c8291a507be49b1aba89a75bb88996eb84ebc65333ed4daa",
+                "vast.component.ext4-bind-owner": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b:41539"
+            }
+        },
+        "NetworkSettings": {
+            "SandboxID": "",
+            "SandboxKey": "",
+            "Ports": {},
+            "Networks": {
+                "none": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": null,
+                    "DriverOpts": null,
+                    "GwPriority": 0,
+                    "NetworkID": "7357f4fc45377c6834b0b23ed5afd8154bbc56ed0bd243343fb923cc3605cf93",
+                    "EndpointID": "",
+                    "Gateway": "",
+                    "IPAddress": "",
+                    "MacAddress": "",
+                    "IPPrefixLen": 0,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "DNSNames": null
+                }
+            }
+        },
+        "ImageManifestDescriptor": {
+            "mediaType": "application/vnd.oci.image.manifest.v1+json",
+            "digest": "sha256:e474867043f1a74387573140cb2bfd69825df2672edad0acda0d28954af84cb6",
+            "size": 3347,
+            "annotations": {
+                "config.digest": "sha256:c67b11061963b846e1b94301d8f758cf920cb2037e785883ab2224cfa5a74c42"
+            },
+            "platform": {
+                "architecture": "amd64",
+                "os": "linux"
+            }
+        }
+    }
+]

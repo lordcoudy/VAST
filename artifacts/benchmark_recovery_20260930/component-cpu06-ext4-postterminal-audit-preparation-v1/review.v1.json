@@ -1,0 +1,486 @@
+{
+  "acceptance_requires_final_deadline_gate_and_dispatch_rc0": true,
+  "arms": [
+    {
+      "completed_by_stream": {
+        "0": 94,
+        "1": 94,
+        "2": 90,
+        "3": 96,
+        "4": 94,
+        "5": 91
+      },
+      "container_id": "5f0d5ef82b98f5b5579b8441dfadbbf0608bfb9f44040a0e6da853fec6f68517",
+      "container_receipt": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/original_container_custody.v1.json",
+        "sha256": "21102362fd9354df0075828154e97959f84c579e01aecbe285020a971ec3bc31",
+        "size_bytes": 3824
+      },
+      "daemon_terminal_evidence": "not retained; original --rm CLI0 plus exactCID NotFound",
+      "measurement_ingress_count": 1080,
+      "native_cli_returncode": 0,
+      "operation_id": "component-gstreamer_custom-cpu-h264-independent-processes",
+      "result": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/component_arm_result.v1.json",
+        "sha256": "b737117b1de5fbb64d31f62b19a056fefd1ea57beb300991f0c47b5cafd141c7",
+        "size_bytes": 15380
+      },
+      "schedule_fingerprint": "c1365bac6483c39143dd0a8a350f6b6eb66de91e9cfd18987475c7b12f63a5a5"
+    },
+    {
+      "completed_by_stream": {
+        "0": 120,
+        "1": 125,
+        "2": 114,
+        "3": 112,
+        "4": 105,
+        "5": 100
+      },
+      "container_id": "7213c6487298c22840523f5b3f6219680e381e2dc161b77e16ed86efa6b5c0c1",
+      "container_receipt": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/original_container_custody.v1.json",
+        "sha256": "593033b54ac833d23401a70b0b6ba6cb540199b8d62fc049bb3183552a56c80a",
+        "size_bytes": 3784
+      },
+      "daemon_terminal_evidence": "not retained; original --rm CLI0 plus exactCID NotFound",
+      "measurement_ingress_count": 1080,
+      "native_cli_returncode": 0,
+      "operation_id": "component-gstreamer_custom-cpu-h264-shared-video-dag",
+      "result": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/component_arm_result.v1.json",
+        "sha256": "ca403db7eb9b32bc8c416be4735ab722eb5354cb6170cb82a4887ffc0cdb62ac",
+        "size_bytes": 14097
+      },
+      "schedule_fingerprint": "c1365bac6483c39143dd0a8a350f6b6eb66de91e9cfd18987475c7b12f63a5a5"
+    }
+  ],
+  "artifact_kind": "vast_cpu06_ext4_closed_boundary_independent_review_v1",
+  "benchmark_accepted": true,
+  "cli_terminal": {
+    "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/component_cli_terminal.v1.json",
+    "sha256": "325b61a733baaa6b304131d6b45e4b612d29d7e4212521d0f7d4a0ef231f5b99",
+    "size_bytes": 8836
+  },
+  "close_errors": [],
+  "cold_pair": {
+    "descriptive_csv": {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/cold-pair/component_pair_metrics.csv",
+      "sha256": "5c6920d63c5b10b29e75fbb07697670c9bbb4a06c1b1c2c6b931022a6a607107",
+      "size_bytes": 617
+    },
+    "descriptor": {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/cold-pair/component_pair_result.v1.json",
+      "sha256": "a44e07d2f943de47789ce2fd7eb6f20610da1849268a18603aed5a6a80251841",
+      "size_bytes": 18461
+    },
+    "latency_ecdf_svg": {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/cold-pair/component_pair_latency_ecdf.svg",
+      "sha256": "adcdde3d39907ec488a76060860068c3352a2747fa2b00abe5bf0971e63892c9",
+      "size_bytes": 89272
+    },
+    "reconciliation": {
+      "artifact_kind": "vast_complete_operational_reconciliation_v1",
+      "comparison_sha256": "f4f3dc3c0d74ff769b557d4c26f61c2d6ac6e80a37a222788717f4d5f65967fe",
+      "connections_accepted": 31,
+      "excluded_request_count": 1262,
+      "measurement_request_count": 7097,
+      "mode": "bounded_native_diagnostic_operational_v1",
+      "operations": [
+        {
+          "excluded_request_count": 646,
+          "measurement_request_count": 3659,
+          "ordinal": 0,
+          "request_count": 4305
+        },
+        {
+          "excluded_request_count": 616,
+          "measurement_request_count": 3438,
+          "ordinal": 1,
+          "request_count": 4054
+        }
+      ],
+      "original_operation_count": 2,
+      "publication_authority": false,
+      "request_count": 8359,
+      "requests_by_worker": {
+        "damage:cpu": 2193,
+        "damage:gpu": 0,
+        "foreign_object:cpu": 1651,
+        "foreign_object:gpu": 0,
+        "plate_number:cpu": 2311,
+        "plate_number:gpu": 0,
+        "vehicle_type:cpu": 2204,
+        "vehicle_type:gpu": 0
+      },
+      "schema_version": 1
+    },
+    "retained_cold_result_does_not_override_cli_failure": false
+  },
+  "disposition": "closed_original_component_pair_complete",
+  "guardian_original": {
+    "argv": [
+      "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+      "-I",
+      "-B",
+      "-c",
+      "import runpy,sys;sys.path.insert(0,'/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts');runpy.run_path('/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_gstreamer_analytics_sidecar.py',run_name='__main__')",
+      "--production-guardian",
+      "--project-root",
+      "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+      "--config",
+      "/home/s-a-balashov/work/vast-component-release-20260930-d27/configs/analytics_execution_layer.refreshed.v4.fix-benchmark-20260928g.json",
+      "--binding-set",
+      "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/bindings",
+      "--policy-capability-manifest",
+      "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g/candidate/checkpoint_policy_capability_candidate_manifest.json",
+      "--preprocessing-contract",
+      "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/preprocessing/guardian-preprocessing-contract.v1.json",
+      "--preprocessing-contract-receipt",
+      "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/preprocessing/guardian-component-preprocessing-receipt.v1.json",
+      "--operational-accounting-context",
+      "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/capture-plan/guardian_capture_context.v1.json",
+      "--runtime-dir",
+      "/tmp/vast-component-18cc9be087f781e4/guardian",
+      "--front-socket",
+      "/tmp/vast-component-18cc9be087f781e4/guardian/analytics-execution.sock",
+      "--evidence-root",
+      "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/guardian",
+      "--max-connections",
+      "202560",
+      "--max-requests-per-connection",
+      "4320000",
+      "--max-total-requests",
+      "29168640000",
+      "--startup-timeout-seconds",
+      "120.0",
+      "--shutdown-timeout-seconds",
+      "10"
+    ],
+    "authenticated_stop": true,
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "cleanup_errors": [],
+    "container_cleanup_verified": true,
+    "original_child_pid": 42412,
+    "original_engine": {
+      "path": "/usr/bin/docker",
+      "sha256": "a429e235ef670ea83357a5c8c7451f0a69d485a6fee49f9032fd938a0ab4969d",
+      "size_bytes": 45570705
+    },
+    "original_engine_socket": "unix:///run/docker.sock",
+    "original_process_group": 42412,
+    "owner_process": {
+      "gid": 1000,
+      "pid": 42412,
+      "proc_stat_starttime_ticks": 28504575,
+      "uid": 1000
+    },
+    "process_quiescent": true,
+    "returncode": 0
+  },
+  "hold_release": true,
+  "limits": [
+    "This boundary audit joins retained authentic original receipts. It does not rerun the all-phase cold consumer or raw numeric/C_obs reducer.",
+    "Native daemon ExitCode/Pid/OOM fields are reported only when actually retained. Exact --rm CID absence plus originalCLI0 is stated separately.",
+    "Guardian cleanup is scoped to original authenticated lifecycle/CLI evidence and actual process absence. No daemon query or independent worker inspection.",
+    "No reviewer engine/model/native/guardian/namespace/test execution or historical failure reclassification."
+  ],
+  "original95_before_after_current_full7epochs_equal": true,
+  "original_cli_returncode": 0,
+  "original_first_error": null,
+  "original_phase_timing": [
+    {
+      "event": "start",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 284956856626690,
+      "nonauthority": true,
+      "phase": "reservation",
+      "schema_version": 1,
+      "status": "incomplete",
+      "terminal_ns": null,
+      "wall_ns": 1790802642581943754
+    },
+    {
+      "event": "start",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 284956898382360,
+      "nonauthority": true,
+      "phase": "source",
+      "schema_version": 1,
+      "status": "incomplete",
+      "terminal_ns": null,
+      "wall_ns": 1790802642623700020
+    },
+    {
+      "elapsed_ns": 40027856330,
+      "error_type": null,
+      "event": "terminal",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 284996926238690,
+      "nonauthority": true,
+      "phase": "source",
+      "schema_version": 1,
+      "status": "complete",
+      "wall_ns": 1790802682650002878
+    },
+    {
+      "event": "start",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 284996930685759,
+      "nonauthority": true,
+      "phase": "context",
+      "schema_version": 1,
+      "status": "incomplete",
+      "terminal_ns": null,
+      "wall_ns": 1790802682654448402
+    },
+    {
+      "elapsed_ns": 21985287079,
+      "error_type": null,
+      "event": "terminal",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 285018915972838,
+      "nonauthority": true,
+      "phase": "context",
+      "schema_version": 1,
+      "status": "complete",
+      "wall_ns": 1790802704637936199
+    },
+    {
+      "event": "start",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 285018920328690,
+      "nonauthority": true,
+      "phase": "capture",
+      "schema_version": 1,
+      "status": "incomplete",
+      "terminal_ns": null,
+      "wall_ns": 1790802704642291295
+    },
+    {
+      "elapsed_ns": 16473765618,
+      "error_type": null,
+      "event": "terminal",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 285035394094308,
+      "nonauthority": true,
+      "phase": "capture",
+      "schema_version": 1,
+      "status": "complete",
+      "wall_ns": 1790802721113739750
+    },
+    {
+      "event": "start",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 285035396266550,
+      "nonauthority": true,
+      "phase": "preprocessing",
+      "schema_version": 1,
+      "status": "incomplete",
+      "terminal_ns": null,
+      "wall_ns": 1790802721115911456
+    },
+    {
+      "elapsed_ns": 6508354024,
+      "error_type": null,
+      "event": "terminal",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 285041904620574,
+      "nonauthority": true,
+      "phase": "preprocessing",
+      "schema_version": 1,
+      "status": "complete",
+      "wall_ns": 1790802727624265679
+    },
+    {
+      "event": "start",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 285045700150471,
+      "nonauthority": true,
+      "phase": "guardian_start",
+      "schema_version": 1,
+      "status": "incomplete",
+      "terminal_ns": null,
+      "wall_ns": 1790802731419795518
+    },
+    {
+      "elapsed_ns": 14775900989,
+      "error_type": null,
+      "event": "terminal",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 285060476051460,
+      "nonauthority": true,
+      "phase": "guardian_start",
+      "schema_version": 1,
+      "status": "complete",
+      "wall_ns": 1790802746194580062
+    },
+    {
+      "event": "start",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 285060478272289,
+      "nonauthority": true,
+      "phase": "runtime",
+      "schema_version": 1,
+      "status": "incomplete",
+      "terminal_ns": null,
+      "wall_ns": 1790802746196800763
+    },
+    {
+      "elapsed_ns": 11278614363,
+      "error_type": null,
+      "event": "terminal",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 285071756886652,
+      "nonauthority": true,
+      "phase": "runtime",
+      "schema_version": 1,
+      "status": "complete",
+      "wall_ns": 1790802757475415254
+    },
+    {
+      "event": "start",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 285071761613830,
+      "nonauthority": true,
+      "phase": "arm_baseline",
+      "schema_version": 1,
+      "status": "incomplete",
+      "terminal_ns": null,
+      "wall_ns": 1790802757480142110
+    },
+    {
+      "elapsed_ns": 306554717523,
+      "error_type": null,
+      "event": "terminal",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 285378316331353,
+      "nonauthority": true,
+      "phase": "arm_baseline",
+      "schema_version": 1,
+      "status": "complete",
+      "wall_ns": 1790803064018315764
+    },
+    {
+      "event": "start",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 285378320856858,
+      "nonauthority": true,
+      "phase": "arm_shared",
+      "schema_version": 1,
+      "status": "incomplete",
+      "terminal_ns": null,
+      "wall_ns": 1790803064022840892
+    },
+    {
+      "elapsed_ns": 298603731504,
+      "error_type": null,
+      "event": "terminal",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 285676924588362,
+      "nonauthority": true,
+      "phase": "arm_shared",
+      "schema_version": 1,
+      "status": "complete",
+      "wall_ns": 1790803362609604564
+    },
+    {
+      "event": "start",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 285676930354820,
+      "nonauthority": true,
+      "phase": "guardian_stop",
+      "schema_version": 1,
+      "status": "incomplete",
+      "terminal_ns": null,
+      "wall_ns": 1790803362615370612
+    },
+    {
+      "elapsed_ns": 655066462,
+      "error_type": null,
+      "event": "terminal",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 285677585421282,
+      "nonauthority": true,
+      "phase": "guardian_stop",
+      "schema_version": 1,
+      "status": "complete",
+      "wall_ns": 1790803363270437230
+    },
+    {
+      "event": "start",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 285677587723896,
+      "nonauthority": true,
+      "phase": "cold",
+      "schema_version": 1,
+      "status": "incomplete",
+      "terminal_ns": null,
+      "wall_ns": 1790803363272739751
+    },
+    {
+      "elapsed_ns": 80191846443,
+      "error_type": null,
+      "event": "terminal",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 285757779570339,
+      "nonauthority": true,
+      "phase": "cold",
+      "schema_version": 1,
+      "status": "complete",
+      "wall_ns": 1790803443459910826
+    },
+    {
+      "event": "start",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 285757784243927,
+      "nonauthority": true,
+      "phase": "context_close",
+      "schema_version": 1,
+      "status": "incomplete",
+      "terminal_ns": null,
+      "wall_ns": 1790803443464584144
+    },
+    {
+      "elapsed_ns": 2488370970,
+      "error_type": null,
+      "event": "terminal",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 285760272614897,
+      "nonauthority": true,
+      "phase": "context_close",
+      "schema_version": 1,
+      "status": "complete",
+      "wall_ns": 1790803445952954915
+    },
+    {
+      "elapsed_ns": 803433732282,
+      "error_type": null,
+      "event": "terminal",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 285760290358972,
+      "nonauthority": true,
+      "phase": "reservation",
+      "schema_version": 1,
+      "status": "complete",
+      "wall_ns": 1790803445970699397
+    }
+  ],
+  "outer_elapsed_s": 804.3636947160121,
+  "outer_signals": [],
+  "outer_terminal": {
+    "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06-original-controller/original.terminal.v1.json",
+    "sha256": "e87c878c725f309cf344f27926cb6e12647e839a8f5745084b69619c090d3db9",
+    "size_bytes": 88066
+  },
+  "outer_timeout": false,
+  "reserve_released_and_absent": true,
+  "reviewer_held_fds_released": true,
+  "schema_version": 1,
+  "source_commit": "0ad78d6abdb3c526544a17185af7fe8094716735",
+  "task_18_8_complete": true,
+  "witness": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu06-ext4-postterminal-audit-preparation-v1/held-inputs-and-processes.v1.json",
+    "sha256": "2ac074233e8c322215127de44b35d4e149d5652e416f7bafeac50baaf5e23a4c",
+    "size_bytes": 128254
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "cleanup_s": 10,
+  "container_name": "vast-d27-bind-41539",
+  "image": "sha256:e474867043f1a74387573140cb2bfd69825df2672edad0acda0d28954af84cb6",
+  "inputs_before": [
+    {
+      "epoch": [
+        2096,
+        548709,
+        33188,
+        1,
+        7049,
+        1790800677895996945,
+        1790800677895996945
+      ],
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/selected-gstreamer-build-a4e145b7-v1/gstreamer_custom.runtime.freeze.json",
+      "sha256": "61874c718d6140d0d5cf745988bc301b916077af8f80e96742184f80a0805db7",
+      "size_bytes": 7049
+    },
+    {
+      "epoch": [
+        2096,
+        547140,
+        33188,
+        1,
+        16732,
+        1790800677639982951,
+        1790800677639982951
+      ],
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/component-ext4-bind-preparation-v1/probe_original_ext4_bind_v1.py",
+      "sha256": "5b7fc5eea23b4847489f598689176eb96f202b2e4588566663e217248532e70f",
+      "size_bytes": 16732
+    },
+    {
+      "epoch": [
+        2096,
+        11482,
+        33261,
+        1,
+        45570705,
+        1785954533000000000,
+        1787561618463537524
+      ],
+      "path": "/usr/bin/docker",
+      "sha256": "a429e235ef670ea83357a5c8c7451f0a69d485a6fee49f9032fd938a0ab4969d",
+      "size_bytes": 45570705
+    }
+  ],
+  "native_model_gpu_acceptance": false,
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "executable": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "executable_unavailable": null,
+    "gid": 1000,
+    "pgid": 41538,
+    "pid": 41539,
+    "ppid": 41538,
+    "startticks": 28329018,
+    "uid": 1000
+  },
+  "owner_label": {
+    "vast.component.ext4-bind-owner": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b:41539"
+  },
+  "publication_ready": false,
+  "socket_before": [
+    61,
+    1944,
+    49584,
+    1
+  ],
+  "socket_owner_before": {
+    "gid": 1001,
+    "uid": 0
+  },
+  "source_commit": "0ad78d6abdb3c526544a17185af7fe8094716735",
+  "target": "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+  "timeout_s": 30
+}

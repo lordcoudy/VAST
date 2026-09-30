@@ -1,0 +1,196 @@
+{
+  "artifact_kind": "vast_ci_userns_profile_pre_edit_inventory_v1",
+  "authorized_execution": "focused pure joins/ordinary process/parser fixtures only after setup quiescence coordination; no localprofile/namespace/model/engine/fullsuite",
+  "ext4_copy_inventory": {
+    "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-feasibility-v1/inventory.v1.json",
+    "sha256": "8a03751c4f3e18a2590d04874496559cc77dab7ffebc8184269c0b9bb81dc364",
+    "size_bytes": 2087679
+  },
+  "host87_descriptor": {
+    "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/host/execution-code-closure.v6.json",
+    "sha256": "fedf5d8c85c5e435d4bfab21b4c8851db1e07fd9a982f428f91621314b3a8805",
+    "size_bytes": 30986
+  },
+  "observed_at_ns": 1790800826107563000,
+  "owned_paths": [
+    {
+      "ext4_copy2693_member": false,
+      "host87_member": false,
+      "path": "scripts/ci_namespace_diagnostic_v1.py",
+      "present_before": true,
+      "runtime_allowlist_membership": {
+        "deploy/analytics_execution/publication/openvino-dependency-allowlist.txt": false,
+        "deploy/analytics_execution/publication/openvino-source-allowlist.txt": false,
+        "deploy/analytics_execution/publication/tensorrt-dependency-allowlist.txt": false,
+        "deploy/analytics_execution/publication/tensorrt-source-allowlist.txt": false,
+        "deploy/deepstream/checkpoint/runtime-dependency-allowlist.txt": false,
+        "deploy/deepstream/checkpoint/runtime-source-allowlist.txt": false,
+        "deploy/gstreamer_custom/publication/runtime-build-context-allowlist.txt": false,
+        "deploy/gstreamer_custom/publication/runtime-dependency-allowlist.txt": false,
+        "deploy/gstreamer_custom/publication/runtime-source-allowlist.txt": false,
+        "deploy/native_gst_probe/publication/deepstream-dependency-allowlist.txt": false,
+        "deploy/native_gst_probe/publication/deepstream-source-allowlist.txt": false,
+        "deploy/native_gst_probe/publication/openvino-dependency-allowlist.txt": false,
+        "deploy/native_gst_probe/publication/openvino-source-allowlist.txt": false,
+        "deploy/native_gst_probe/publication/savant-dependency-allowlist.txt": false,
+        "deploy/native_gst_probe/publication/savant-source-allowlist.txt": false,
+        "deploy/openvino_gva/publication/runtime-build-context-allowlist.txt": false,
+        "deploy/openvino_gva/publication/runtime-source-allowlist.txt": false,
+        "deploy/savant/publication/runtime-source-allowlist.txt": false
+      },
+      "sha256": "7bb96d3dba712f8c47c2afc2984628ccee7cca03e827895e95f1461c3479bbe5",
+      "size_bytes": 22270,
+      "snapshot_path": "artifacts/benchmark_recovery_20260930/decision24-ci-userns-profile-v1/before/scripts/ci_namespace_diagnostic_v1.py"
+    },
+    {
+      "ext4_copy2693_member": false,
+      "host87_member": false,
+      "path": "scripts/run_ci_checks.py",
+      "present_before": true,
+      "runtime_allowlist_membership": {
+        "deploy/analytics_execution/publication/openvino-dependency-allowlist.txt": false,
+        "deploy/analytics_execution/publication/openvino-source-allowlist.txt": false,
+        "deploy/analytics_execution/publication/tensorrt-dependency-allowlist.txt": false,
+        "deploy/analytics_execution/publication/tensorrt-source-allowlist.txt": false,
+        "deploy/deepstream/checkpoint/runtime-dependency-allowlist.txt": false,
+        "deploy/deepstream/checkpoint/runtime-source-allowlist.txt": false,
+        "deploy/gstreamer_custom/publication/runtime-build-context-allowlist.txt": false,
+        "deploy/gstreamer_custom/publication/runtime-dependency-allowlist.txt": false,
+        "deploy/gstreamer_custom/publication/runtime-source-allowlist.txt": false,
+        "deploy/native_gst_probe/publication/deepstream-dependency-allowlist.txt": false,
+        "deploy/native_gst_probe/publication/deepstream-source-allowlist.txt": false,
+        "deploy/native_gst_probe/publication/openvino-dependency-allowlist.txt": false,
+        "deploy/native_gst_probe/publication/openvino-source-allowlist.txt": false,
+        "deploy/native_gst_probe/publication/savant-dependency-allowlist.txt": false,
+        "deploy/native_gst_probe/publication/savant-source-allowlist.txt": false,
+        "deploy/openvino_gva/publication/runtime-build-context-allowlist.txt": false,
+        "deploy/openvino_gva/publication/runtime-source-allowlist.txt": false,
+        "deploy/savant/publication/runtime-source-allowlist.txt": false
+      },
+      "sha256": "6841581ae05ae7ea862752fb23f0999e48283d6dcad27c4634c94e626960eabc",
+      "size_bytes": 28237,
+      "snapshot_path": "artifacts/benchmark_recovery_20260930/decision24-ci-userns-profile-v1/before/scripts/run_ci_checks.py"
+    },
+    {
+      "ext4_copy2693_member": false,
+      "host87_member": false,
+      "path": "tests/test_run_ci_checks.py",
+      "present_before": true,
+      "runtime_allowlist_membership": {
+        "deploy/analytics_execution/publication/openvino-dependency-allowlist.txt": false,
+        "deploy/analytics_execution/publication/openvino-source-allowlist.txt": false,
+        "deploy/analytics_execution/publication/tensorrt-dependency-allowlist.txt": false,
+        "deploy/analytics_execution/publication/tensorrt-source-allowlist.txt": false,
+        "deploy/deepstream/checkpoint/runtime-dependency-allowlist.txt": false,
+        "deploy/deepstream/checkpoint/runtime-source-allowlist.txt": false,
+        "deploy/gstreamer_custom/publication/runtime-build-context-allowlist.txt": false,
+        "deploy/gstreamer_custom/publication/runtime-dependency-allowlist.txt": false,
+        "deploy/gstreamer_custom/publication/runtime-source-allowlist.txt": false,
+        "deploy/native_gst_probe/publication/deepstream-dependency-allowlist.txt": false,
+        "deploy/native_gst_probe/publication/deepstream-source-allowlist.txt": false,
+        "deploy/native_gst_probe/publication/openvino-dependency-allowlist.txt": false,
+        "deploy/native_gst_probe/publication/openvino-source-allowlist.txt": false,
+        "deploy/native_gst_probe/publication/savant-dependency-allowlist.txt": false,
+        "deploy/native_gst_probe/publication/savant-source-allowlist.txt": false,
+        "deploy/openvino_gva/publication/runtime-build-context-allowlist.txt": false,
+        "deploy/openvino_gva/publication/runtime-source-allowlist.txt": false,
+        "deploy/savant/publication/runtime-source-allowlist.txt": false
+      },
+      "sha256": "fdfff7c66e0d50e51b4cc616a5f660dc19eafdeabf0cfe0f88583689e91b3925",
+      "size_bytes": 15786,
+      "snapshot_path": "artifacts/benchmark_recovery_20260930/decision24-ci-userns-profile-v1/before/tests/test_run_ci_checks.py"
+    },
+    {
+      "ext4_copy2693_member": false,
+      "host87_member": false,
+      "path": "scripts/ci_userns_profile_v1.py",
+      "present_before": false,
+      "runtime_allowlist_membership": {
+        "deploy/analytics_execution/publication/openvino-dependency-allowlist.txt": false,
+        "deploy/analytics_execution/publication/openvino-source-allowlist.txt": false,
+        "deploy/analytics_execution/publication/tensorrt-dependency-allowlist.txt": false,
+        "deploy/analytics_execution/publication/tensorrt-source-allowlist.txt": false,
+        "deploy/deepstream/checkpoint/runtime-dependency-allowlist.txt": false,
+        "deploy/deepstream/checkpoint/runtime-source-allowlist.txt": false,
+        "deploy/gstreamer_custom/publication/runtime-build-context-allowlist.txt": false,
+        "deploy/gstreamer_custom/publication/runtime-dependency-allowlist.txt": false,
+        "deploy/gstreamer_custom/publication/runtime-source-allowlist.txt": false,
+        "deploy/native_gst_probe/publication/deepstream-dependency-allowlist.txt": false,
+        "deploy/native_gst_probe/publication/deepstream-source-allowlist.txt": false,
+        "deploy/native_gst_probe/publication/openvino-dependency-allowlist.txt": false,
+        "deploy/native_gst_probe/publication/openvino-source-allowlist.txt": false,
+        "deploy/native_gst_probe/publication/savant-dependency-allowlist.txt": false,
+        "deploy/native_gst_probe/publication/savant-source-allowlist.txt": false,
+        "deploy/openvino_gva/publication/runtime-build-context-allowlist.txt": false,
+        "deploy/openvino_gva/publication/runtime-source-allowlist.txt": false,
+        "deploy/savant/publication/runtime-source-allowlist.txt": false
+      }
+    },
+    {
+      "ext4_copy2693_member": false,
+      "host87_member": false,
+      "path": "tests/test_ci_userns_profile_v1.py",
+      "present_before": false,
+      "runtime_allowlist_membership": {
+        "deploy/analytics_execution/publication/openvino-dependency-allowlist.txt": false,
+        "deploy/analytics_execution/publication/openvino-source-allowlist.txt": false,
+        "deploy/analytics_execution/publication/tensorrt-dependency-allowlist.txt": false,
+        "deploy/analytics_execution/publication/tensorrt-source-allowlist.txt": false,
+        "deploy/deepstream/checkpoint/runtime-dependency-allowlist.txt": false,
+        "deploy/deepstream/checkpoint/runtime-source-allowlist.txt": false,
+        "deploy/gstreamer_custom/publication/runtime-build-context-allowlist.txt": false,
+        "deploy/gstreamer_custom/publication/runtime-dependency-allowlist.txt": false,
+        "deploy/gstreamer_custom/publication/runtime-source-allowlist.txt": false,
+        "deploy/native_gst_probe/publication/deepstream-dependency-allowlist.txt": false,
+        "deploy/native_gst_probe/publication/deepstream-source-allowlist.txt": false,
+        "deploy/native_gst_probe/publication/openvino-dependency-allowlist.txt": false,
+        "deploy/native_gst_probe/publication/openvino-source-allowlist.txt": false,
+        "deploy/native_gst_probe/publication/savant-dependency-allowlist.txt": false,
+        "deploy/native_gst_probe/publication/savant-source-allowlist.txt": false,
+        "deploy/openvino_gva/publication/runtime-build-context-allowlist.txt": false,
+        "deploy/openvino_gva/publication/runtime-source-allowlist.txt": false,
+        "deploy/savant/publication/runtime-source-allowlist.txt": false
+      }
+    }
+  ],
+  "planning_basis": "Decision24 exact ded811a8043575e7a93cf0bbc28696ac53667d3c / PR5908873975; conditional current5bc3991 denial route c3b13120; parent delegated apply2026-09-30",
+  "primary_sources": [
+    {
+      "scope": "per-executable unconfined+userns profile; currentphysicaldenial not inferred from docs",
+      "url": "https://documentation.ubuntu.com/release-notes/24.04/"
+    },
+    {
+      "lines": [
+        128,
+        145,
+        219,
+        226
+      ],
+      "scope": "--add collision failure / --remove exact definition / --skip-cache",
+      "url": "https://gitlab.com/apparmor/apparmor/-/raw/v4.0.0/parser/apparmor_parser.pod"
+    },
+    {
+      "lines": [
+        182,
+        223
+      ],
+      "scope": "root-owned timeout original parser TERM19+KILL1 signal path",
+      "url": "https://raw.githubusercontent.com/coreutils/coreutils/v9.4/src/timeout.c"
+    },
+    {
+      "lines": [
+        1451,
+        1458,
+        1496,
+        1510
+      ],
+      "scope": "named unconfined mode label formatting",
+      "url": "https://raw.githubusercontent.com/torvalds/linux/v6.8/security/apparmor/label.c"
+    }
+  ],
+  "privileged_operations_executed": false,
+  "runtime_allowlist_count": 18,
+  "schema_version": 1,
+  "source_head": "0ad78d6abdb3c526544a17185af7fe8094716735",
+  "tests_executed": false
+}

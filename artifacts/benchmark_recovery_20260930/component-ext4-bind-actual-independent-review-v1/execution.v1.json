@@ -1,0 +1,43 @@
+{
+  "argv": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-ext4-bind-actual-independent-review-v1/audit_original_bind_v1.py"
+  ],
+  "artifact_kind": "vast_bind_actual_independent_reader_closed_execution_v1",
+  "engine_native_model_operations": false,
+  "limit": "Original reader stdout and WSL warning returned as tool output; no separate saved rawstdio or physical external dispatcher is fabricated. Own originalPGID/startticks were not recorded; only genuine readerPID absence is asserted.",
+  "original_reader_elapsed_s": 0.10674609197303653,
+  "original_reader_owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pid": 41822,
+    "uid": 1000
+  },
+  "original_tool_observed_exit_code": 0,
+  "raw_stdio_physical_capture_available": false,
+  "reader_source": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-ext4-bind-actual-independent-review-v1/audit_original_bind_v1.py",
+    "sha256": "a173f437a477ced0561dc47e44f73817c14985220d6cafbd2781a11856133bce",
+    "size_bytes": 10119
+  },
+  "review": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-ext4-bind-actual-independent-review-v1/review.v1.json",
+    "sha256": "130790415f7287678ce5ffb4f50d6378f50d2371c18159b29bef1b862f914934",
+    "size_bytes": 24840
+  },
+  "schema_version": 1,
+  "two_post_reader_absence_scans": [
+    {
+      "absent": true,
+      "reviewer_pid": 41822,
+      "wall_time_ns": 1790801715832874123
+    },
+    {
+      "absent": true,
+      "reviewer_pid": 41822,
+      "wall_time_ns": 1790801715933001036
+    }
+  ]
+}

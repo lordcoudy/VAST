@@ -1,0 +1,41 @@
+{
+  "accepted": false,
+  "available_bytes": 920335081472,
+  "classification_sha256": "ed2858413c0dca784f05bff2ca4551b0d6f7879baf6624d07a54c1227a320e3c",
+  "cleanup_s": 10,
+  "controller": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 41497,
+    "pid": 41498,
+    "ppid": 41497,
+    "startticks": 28299041,
+    "uid": 1000
+  },
+  "fd_budget": {
+    "baseline_open_fds": 4,
+    "observed_hard_limit": 1048576,
+    "observed_soft_limit": 10240,
+    "required_ancestor_fds": 1105,
+    "required_leaf_fds": 5388,
+    "required_minimum_fds": 6561,
+    "resource_limit_changed": false,
+    "temporary_overhead_reserve_fds": 64
+  },
+  "inventory_sha256": "8a03751c4f3e18a2590d04874496559cc77dab7ffebc8184269c0b9bb81dc364",
+  "planning_commit": "5bc416a2beab98b6cc60229dac56332b48cc6ca2",
+  "publication_ready": false,
+  "source_commit": "0ad78d6abdb3c526544a17185af7fe8094716735",
+  "source_root_identity": [
+    69,
+    53198770600159584,
+    16895
+  ],
+  "target": "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+  "target_parent_identity": [
+    2096,
+    1569,
+    16877
+  ],
+  "timeout_s": 600
+}

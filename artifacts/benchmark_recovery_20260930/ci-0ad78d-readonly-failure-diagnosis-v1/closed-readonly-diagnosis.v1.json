@@ -1,0 +1,59 @@
+{
+  "artifact_kind": "vast_original0ad_ci_readonly_diagnosis_closed_sources_v1",
+  "cpu_review": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-0ad78d-readonly-failure-diagnosis-v1/original-inspection-v3/cpu-review.v1.json",
+    "sha256": "bc611cb43eb5515f90feccf7b714ff17a33e2908cf0e145605e075b4434343f2",
+    "size_bytes": 13719
+  },
+  "full_ci_successful": false,
+  "hardware_acceptance": false,
+  "host_review": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-0ad78d-readonly-failure-diagnosis-v1/host-original-inspection-v2/host-review.v1.json",
+    "sha256": "9cbec7c16ae9bf3191bc9edd26e7d4eb43e29922b0e3191286656c7a5a57f2c6",
+    "size_bytes": 11735
+  },
+  "host_success_is_only_two_prerequisites": true,
+  "local_inspector_toolterminals_are_not_hosted_job_terminals": true,
+  "original_cpu_inspector_terminal": {
+    "reader": {
+      "path": "artifacts/benchmark_recovery_20260930/ci-0ad78d-readonly-failure-diagnosis-v1/inspect_cpu_original_v4.py",
+      "sha256": "926914107e257a50b53ef48dcec6886119a4df1da807981f5a7683d55efc8b4c",
+      "size_bytes": 13003
+    },
+    "returncode": 0,
+    "tool_chunk": "807e66",
+    "tool_elapsed_s": 1.0981386
+  },
+  "original_host_inspector_terminal": {
+    "reader": {
+      "path": "artifacts/benchmark_recovery_20260930/ci-0ad78d-readonly-failure-diagnosis-v1/inspect_host_original_v2.py",
+      "sha256": "8b6ca0611c65b6e3b035f111406c7e4721b9a462bdc74c92b3644573f21271aa",
+      "size_bytes": 8011
+    },
+    "returncode": 0,
+    "tool_chunk": "279365",
+    "tool_elapsed_includes_only_artifact_correction_then_original_metadata_inspector": true,
+    "tool_elapsed_s": 1.0895628
+  },
+  "original_hosted_archives_or_sources_modified": false,
+  "original_inspector_failure_disclosures": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-0ad78d-readonly-failure-diagnosis-v1/original-inspector-failures.v1.json",
+      "sha256": "e8ee3caeb00cdf41fe49351f58e45146d513144fa6f692a5c7298f66ca7b133f",
+      "size_bytes": 1031
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-0ad78d-readonly-failure-diagnosis-v1/original-inspector-failures.v2.json",
+      "sha256": "c9778c2583da0b576107b1b096b8c44a428e2f2036806f028452309f0a244b99",
+      "size_bytes": 690
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-0ad78d-readonly-failure-diagnosis-v1/original-host-inspector-failure.v1.json",
+      "sha256": "47a121f4de9dbf13c23eeb225216906af1bdd024803555890d9dec37fb0d917f",
+      "size_bytes": 708
+    }
+  ],
+  "schema_version": 1,
+  "source_commit": "0ad78d6abdb3c526544a17185af7fe8094716735",
+  "tests_models_native_engine_namespace_actions_or_benchmark_executed": false
+}

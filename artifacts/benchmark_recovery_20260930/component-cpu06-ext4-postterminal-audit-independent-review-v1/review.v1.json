@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "vast_cpu06_ext4_postterminal_audit_prepared_source_independent_review_v1",
+  "disposition": "approved_prepared_source_only",
+  "reviewable": true,
+  "blocking_findings": [],
+  "reviewed_sources": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu06-ext4-postterminal-audit-preparation-v1/audit_v2.py",
+      "size_bytes": 17876,
+      "sha256": "e8e7e72280d2971d677763f512b0bede8710550c7a9518b6f19e779ad12e1d98"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu06-ext4-postterminal-audit-preparation-v1/dispatch_v2.py",
+      "size_bytes": 1998,
+      "sha256": "2264e57b2b012b6a4ed6b5b7bf8935939b1ba2a9086e1fe175b77b02ee67f33a"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu06-ext4-postterminal-audit-preparation-v1/preparation.v2.json",
+      "size_bytes": 5991,
+      "sha256": "4cf19d2733f5d2bec0426c7fd962058a2d577b7c0d4e12ddd8634bf24285102e"
+    }
+  ],
+  "preserved_history": [
+    {"file": "audit_v1.py", "size_bytes": 16935, "sha256": "52b0b3b8edebec226a959edcd8ea2d77979275c6d3c73fb211e3c8e88f2687bb"},
+    {"file": "dispatch_v1.py", "size_bytes": 1998, "sha256": "f3458cf73f3c304338610804ca5a3810f36549fab1ecac5fd142f4dc1b1aee45"},
+    {"file": "preparation.v1.json", "size_bytes": 4486, "sha256": "f4e8680da3a4b84d1559a2d41514929d3e00ce283737b29479975e50414d4f8f"},
+    {"file": "cpu05-audit_v3.original.raw", "size_bytes": 15239, "sha256": "22a00a9bfdd7d016c2286001b2d31d183740a2eaff9e20b1d63c8558e22ab241"},
+    {"file": "cpu05-dispatch_v3.original.raw", "size_bytes": 1766, "sha256": "81ccf6ca6451bdb9cbedca950b8070b64a06019c5500f075ea95d21612eca433"}
+  ],
+  "bindings": {
+    "original_root": "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+    "original_source_commit": "0ad78d6abdb3c526544a17185af7fe8094716735",
+    "fresh_stock_host_closure_sha256": "adbcb638a5f104e43c95b84e4d16388a8111d39321afb3e8e7a26f2ef537b498",
+    "original_cpu06_controller_sha256": "49b6659ce3b6c595be21bf5ffefa721738a23094cc1a66642a9f5bab8666f559",
+    "future_arguments": ["ORIGINAL_TERMINAL_SHA256", "ORIGINAL_TERMINAL_SIZE", "ORIGINAL_CLI_PID"]
+  },
+  "source_findings": [
+    "Future terminal hash/size and actual CLI PID are mandatory. The terminal owner is joined to original launch/prelaunch argv, parent controller, boot, UID/GID, PGID and authenticated guardian-stop PID/startticks; historical CPU05 PID constants are absent.",
+    "All95 original source/input/interpreter/controller rows must have identical original before/after descriptors and full seven-field epochs, and are held together, fully hashed and rechecked against the original current ext4 names before release.",
+    "Two actual process/group/session scans reject any original member or unexplained read error. Reserve release and original authenticated guardian lifecycle are checked independently of parent process absence.",
+    "Native original CLI0 with exact --rm CID NotFound is reported as absence evidence. Daemon ExitCode/Pid/OOM facts are asserted only when a positive original inspect was retained; no new daemon query is performed.",
+    "Arm/cold descriptors, ingress1080, CPU/full-resource completion and equal measurement schedule are joined. Retained cold output may coexist with failed original CLI, but does not change closed_failed_original or complete task18.8.",
+    "Ten v1 audit function ASTs and both v1 dispatcher function ASTs are identical in v2. Compared with the genuine CPU05 raw auditor, nine custody function ASTs remain identical and scan alone adds UID/GID and explicit read errors.",
+    "The concrete v1 timing defect is repaired: final elapsed is checked after report fsync/close, all held FD close attempts and stdout flush. At elapsed>=120, an exclusive late-failure companion preserves the original report/first failure and forces nonzero. The135-second dispatch backstop cannot authorize late acceptance. Any future acceptance requires dispatch rc0 and no late-failure companion."
+  ],
+  "review_method": {
+    "actual_full_source_reads": true,
+    "physical_hash_and_ast_comparison": "Pinned CPython3.12.3 -I -B metadata-only inline inspection; no auditor or dispatcher import/execution.",
+    "inspection_stdout_and_original_WSL_warning": "Retained in original tool result only; no physical reviewer dispatch script or raw-log receipt was created.",
+    "prepared_auditor_executed": false,
+    "tests_engine_models_native_namespace_or_cold_executed": false,
+    "active_cpu06_output_read": false,
+    "source87_or_image_or_original_evidence_modified": false,
+    "reviewer_source_holds_remaining": false
+  },
+  "remaining_actual_gate": "Wait for the genuine original CPU06 terminal and closed writers, then use its exact physical SHA/size/CLI PID for the one postterminal audit. Verify actual dispatch returncode, absence of late-failure companion and original process/resource cleanup before adopting its report.",
+  "benchmark_accepted": false,
+  "task_18_8_complete": false,
+  "limitations": [
+    "This is independent prepared-source review, not a successful audit or benchmark result.",
+    "The auditor joins original receipts and current95 custody; it does not rerun the all-phase cold consumer, numeric/C_obs reducer, decoder or workload.",
+    "Uninterruptible file persistence is contained by the original135-second dispatcher backstop and must remain a failed or unknown audit; the final120-second gate governs acceptance."
+  ]
+}

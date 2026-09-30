@@ -1,0 +1,17 @@
+{
+  "errors": [
+    {
+      "test_id": "test_ci_userns_profile_v1.UsernsProfileTests.test_original_shape_joins_only_exact_interpreter_pid_boot_operation_and_time",
+      "traceback": "Traceback (most recent call last):\n  File \"/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_userns_profile_v1.py\", line 64, in test_original_shape_joins_only_exact_interpreter_pid_boot_operation_and_time\n    module = helper()\n             ^^^^^^^^\n  File \"/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_userns_profile_v1.py\", line 19, in helper\n    spec.loader.exec_module(module)\n  File \"<frozen importlib._bootstrap_external>\", line 991, in exec_module\n  File \"<frozen importlib._bootstrap_external>\", line 1128, in get_code\n  File \"<frozen importlib._bootstrap_external>\", line 1186, in get_data\nFileNotFoundError: [Errno 2] No such file or directory: '/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/ci_userns_profile_v1.py'\n"
+    },
+    {
+      "test_id": "test_ci_userns_profile_v1.UsernsProfileTests.test_real_fresh_child_rejects_wrong_profile_before_discovery",
+      "traceback": "Traceback (most recent call last):\n  File \"/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_userns_profile_v1.py\", line 167, in test_real_fresh_child_rejects_wrong_profile_before_discovery\n    report=json.loads((output/'unittest-child.report.json').read_bytes())\n                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/pathlib.py\", line 1021, in read_bytes\n    with self.open(mode='rb') as f:\n         ^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/pathlib.py\", line 1015, in open\n    return io.open(self, mode, buffering, encoding, errors, newline)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmpplz9v0hh/unittest-child.report.json'\n"
+    }
+  ],
+  "failures": [],
+  "no_profile_namespace_or_journal_operation": true,
+  "skips": [],
+  "successful": false,
+  "tests_run": 2
+}

@@ -1,0 +1,21 @@
+F.............F.......................................................
+======================================================================
+FAIL: test_absent_foreign_ambiguous_or_generic_denial_is_not_a_profile_grant (test_ci_userns_profile_v1.UsernsProfileTests.test_absent_foreign_ambiguous_or_generic_denial_is_not_a_profile_grant) (bad={'MESSAGE': 'audit: type=1400 audit(1790802418.977:128): apparmor="DENIED" operation="capable" class="cap" profile="unprivileged_userns" pid=42015 comm="python3.12" capability=21 capname="sys_admin"', '_BOOT_ID': 'dde50e6939bf45bdbdb7bc33c9adcb0b', '_TRANSPORT': 'kernel', '__REALTIME_TIMESTAMP': '1790802418977342', '__MONOTONIC_TIMESTAMP': '284733239925'})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_userns_profile_v1.py", line 246, in test_absent_foreign_ambiguous_or_generic_denial_is_not_a_profile_grant
+    with self.assertRaises(RuntimeError): module.join_original_userns_denial_v1(*bad)
+AssertionError: RuntimeError not raised
+
+======================================================================
+FAIL: test_real_held_profile_detects_named_substitution_and_same_size_mutation (test_ci_userns_profile_v1.UsernsProfileTests.test_real_held_profile_detects_named_substitution_and_same_size_mutation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_userns_profile_v1.py", line 289, in test_real_held_profile_detects_named_substitution_and_same_size_mutation
+    with self.assertRaises(RuntimeError):module.verify_held_v1(path,fd,identity)
+AssertionError: RuntimeError not raised
+
+----------------------------------------------------------------------
+Ran 70 tests in 1.716s
+
+FAILED (failures=2)
