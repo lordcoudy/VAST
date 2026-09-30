@@ -175,13 +175,9 @@ def _worker_material(pins, projection, capability_manifest, preprocessing):
     probes = {}
     for resource in RESOURCES:
         authority = projection["runtime_probes"][resource]
-        _require(type(authority) is dict and set(authority) == {"path", "size_bytes", "sha256", "worker_implementation_sha256"},
-                 "component probe authority fields drifted")
         probe = pins.object({key: authority[key] for key in ("path", "size_bytes", "sha256")})
         probes[resource] = validate_runtime_probe(probe, engine=ENGINES[resource])
-        # The held descriptor already binds every byte of the original probe.
-        _require(probes[resource]["worker_implementation_sha256"] == authority["worker_implementation_sha256"],
-                 "component probe implementation drifted")
+        _require(canonical_sha256(probe) == authority["content_identity_sha256"], "component probe content drifted")
         worker = projection["workers"][resource]
         _require(all(checked["workers"][resource][key] == worker[key] for key in ("image", "image_id", "worker_implementation_sha256"))
                  and probe["worker_implementation_sha256"] == worker["worker_implementation_sha256"],

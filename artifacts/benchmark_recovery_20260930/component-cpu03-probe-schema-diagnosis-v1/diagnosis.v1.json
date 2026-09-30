@@ -1,0 +1,209 @@
+{
+  "acceptance": false,
+  "artifact_kind": "vast_component_cpu03_readonly_handoff_schema_diagnosis_v1",
+  "cause": {
+    "fixture_gap": "tests/test_publication_gstreamer_component_inputs_v1.py:139-140 adds a field forbidden by stock schema and embeds it in fake receipt",
+    "observed_primary": {
+      "message": "content_identity_sha256",
+      "type": "KeyError"
+    },
+    "source_chain": [
+      "publication_gstreamer_component_inputs_v1.py:310 _load proposed document",
+      "publication_gstreamer_component_authority_v1.py:269 _worker_material",
+      "publication_gstreamer_component_authority_v1.py:180 indexes absent authority content_identity_sha256"
+    ],
+    "stock_schema": "checkpoint_model_parity_acceptance_v4.py:140-145 exact4 probe descriptor plus worker implementation"
+  },
+  "host_only_enrichment_rejected_reason": [
+    "authority.py:265-266 requires document projection exactly original receipt four roles",
+    "inputs.py:335-336 repeats stock material projection exact equality"
+  ],
+  "limitations": [
+    "Original terminal contains no traceback; callsite chain is source-derived and uniquely matches this key in reached pure loader",
+    "No claim of all later runtime API behavior from static source audit",
+    "Source-byte hash binds the full original probe serialization; no invented semantic authority is necessary"
+  ],
+  "minimal_repair_recommendation": [
+    "Keep original receipt projection exact; keep pins.object physical descriptor custody and validate_runtime_probe",
+    "At authority.py:180 compare validated probe worker_implementation_sha256 against original authority worker_implementation_sha256 (already stock schema), retaining config/worker join",
+    "Use actual stock validate_refresh_authority_v4/real accepted probe shape in regression; remove fabricated fixture content identity",
+    "Renew selected image/capture and host wrapper/closure because authority module is in selected runtime COPY+allowlist; preserve887 and all failed originals"
+  ],
+  "no_engine_model_inference_or_unit_commands_executed": true,
+  "no_source_modified": true,
+  "original_cli": {
+    "path": "artifacts/gstreamer_component_release_20260930_a3e976d0/cpu-pair-03/component_cli_terminal.v1.json",
+    "sha256": "0ae1e1f324a10e20e485eba697f7c9f56585e1b578fb424c1beb8b5d97826848",
+    "size_bytes": 5927
+  },
+  "original_model_receipt": {
+    "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260928g.accepted.acceptance_receipt.json",
+    "sha256": "6f50d92e74ab7750f262d2697b0fceeb979d4f221eda90a0223cce4d5ff7a169",
+    "size_bytes": 20686
+  },
+  "original_outer": {
+    "path": "artifacts/gstreamer_component_release_20260930_a3e976d0/cpu-pair-03-original-controller/original.terminal.v1.json",
+    "sha256": "dabb0f6d5287c907232d0eeb97847674850096f20301de6daf58249e9d52464d",
+    "size_bytes": 91707
+  },
+  "other_projection_handoffs": [
+    {
+      "consumer": "publication_guardian_runtime_expectations_v1.py:113-119 exact5, authority.py:160 content identity and worker projection; stock.py:161-167 same exact5",
+      "fields": [
+        "content_identity_sha256",
+        "path",
+        "sha256",
+        "size_bytes",
+        "worker_projection_sha256"
+      ],
+      "mismatch_found": false,
+      "role": "execution_config"
+    },
+    {
+      "consumer": "runtime_expectations.py:141-147 exact4, authority.py:164-174 index/content bindings; acceptance_v4.py:170-193 same",
+      "fields": [
+        "bindings",
+        "bindings_identity_sha256",
+        "identity_sha256",
+        "index"
+      ],
+      "mismatch_found": false,
+      "role": "binding_set"
+    },
+    {
+      "consumer": "runtime_expectations.py:170-194 exact5, authority.py:181-185 config/probe identity; acceptance_v4.py:135-138 same",
+      "fields": {
+        "cpu": [
+          "image",
+          "image_id",
+          "receipt_sha256",
+          "source_set_sha256",
+          "worker_implementation_sha256"
+        ],
+        "gpu": [
+          "image",
+          "image_id",
+          "receipt_sha256",
+          "source_set_sha256",
+          "worker_implementation_sha256"
+        ]
+      },
+      "mismatch_found": false,
+      "role": "workers"
+    },
+    {
+      "consumer_fields": [
+        "acceptance_binding",
+        "acceptance_binding_sha256",
+        "accepted_manifest",
+        "accepted_assessment",
+        "accepted_receipt",
+        "transaction_index",
+        "physical_response_evidence",
+        "physical_response_evidence_sha256",
+        "services",
+        "transfers",
+        "model_parity_refresh_authority"
+      ],
+      "mismatch_found": false,
+      "producer": "publication_policy_qualification_bootstrap_v2.py:757-784 returns all keys; copies refresh authority without enrichment",
+      "role": "accepted_calibration_material"
+    },
+    {
+      "fields": [
+        "image_id",
+        "repository_digest",
+        "inspect_projection_sha256",
+        "base_image_id"
+      ],
+      "mismatch_found": false,
+      "producer": "inputs.py:155-156 stock receipt physical projection; authority.py:304-308 same exact4; original current native Gst contract",
+      "role": "runtime_image_contract"
+    },
+    {
+      "consumer": "inputs.py:355-392 constructs fixed, dataset, adapter support, actual engine/socket/probe/capability hashes from exact stock helper outputs; runtime.py:201-240 and368-446 reconstruct same inputs",
+      "limitation": "source review only; original CPU03 failed before construction/measurement of runtime bundles",
+      "mismatch_found": false,
+      "role": "selected inventory to stock runtime factory"
+    }
+  ],
+  "probe_facts": {
+    "cpu": {
+      "actual_fields": [
+        "path",
+        "sha256",
+        "size_bytes",
+        "worker_implementation_sha256"
+      ],
+      "canonical_content_sha256": "482e539b91441791e55d4a7f8968c91ee3bc190b4cbf9b0cb25d55a24a3cfd06",
+      "canonical_field_is_absent_from_original_authority": true,
+      "original_authority": {
+        "path": "artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/runtime_probes/cpu_runtime_probe.json",
+        "sha256": "0b496134ac3fec04449072218ddb6e2767d21b782127ab0d57c81c3b0daac874",
+        "size_bytes": 659,
+        "worker_implementation_sha256": "b5782c91b6bdab9958a4f63485acae8975b4930843453a61e2fbe61b2c4da63b"
+      },
+      "original_physical_full_content_hash_matched": true,
+      "raw_is_canonical_plus_lf": true,
+      "worker_implementation_join_matched": true
+    },
+    "gpu": {
+      "actual_fields": [
+        "path",
+        "sha256",
+        "size_bytes",
+        "worker_implementation_sha256"
+      ],
+      "canonical_content_sha256": "0b4fd4d44e64cebd5340526bf2af651d55403f9c35a6cbfaadd7b8fdb6d57199",
+      "canonical_field_is_absent_from_original_authority": true,
+      "original_authority": {
+        "path": "artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/runtime_probes/gpu_runtime_probe.json",
+        "sha256": "b627a3790622cfb0e2334e7d3b31e6acf0b0fc5396f921d4552850056ba9b962",
+        "size_bytes": 654,
+        "worker_implementation_sha256": "b8e6250e6f3871a2ffa5753a62300aeea77f132194b4309728ff74f49fbb9feb"
+      },
+      "original_physical_full_content_hash_matched": true,
+      "raw_is_canonical_plus_lf": true,
+      "worker_implementation_join_matched": true
+    }
+  },
+  "schema_version": 1,
+  "source_commit": "30ae1a400595e049cfdb3585629134630fe0f25b",
+  "sources": {
+    "scripts/checkpoint_model_parity_acceptance_v4.py": {
+      "path": "scripts/checkpoint_model_parity_acceptance_v4.py",
+      "sha256": "cda34465993fccd9acff9833b4db52292e7e58fce5286eda44ceb62dcab71cda",
+      "size_bytes": 31392
+    },
+    "scripts/publication_gstreamer_component_authority_v1.py": {
+      "path": "scripts/publication_gstreamer_component_authority_v1.py",
+      "sha256": "3be5c65c2b60573eef177df7adfb32643e196f80c5c9850ef140f4dd1ce9bf83",
+      "size_bytes": 27033
+    },
+    "scripts/publication_gstreamer_component_inputs_v1.py": {
+      "path": "scripts/publication_gstreamer_component_inputs_v1.py",
+      "sha256": "1fd0076ae65d363b2c247789927b17250c529d5069500655a3148db59d64d706",
+      "size_bytes": 28197
+    },
+    "scripts/publication_gstreamer_component_runtime_v1.py": {
+      "path": "scripts/publication_gstreamer_component_runtime_v1.py",
+      "sha256": "a77d70f6b35718c596cdf8d0a79a2275296c20562e10688047a16e70bde6a597",
+      "size_bytes": 65283
+    },
+    "scripts/publication_guardian_runtime_expectations_v1.py": {
+      "path": "scripts/publication_guardian_runtime_expectations_v1.py",
+      "sha256": "6ef8cca85130ea16c4b90dd9cdc1001955abaa73763e2436da8a3660ba84fa4f",
+      "size_bytes": 7872
+    },
+    "scripts/publication_policy_qualification_bootstrap_v2.py": {
+      "path": "scripts/publication_policy_qualification_bootstrap_v2.py",
+      "sha256": "1f248748d16ead95def536bf7d2815e7b79a8754696c8a37aba51018ba8a75f6",
+      "size_bytes": 82531
+    },
+    "tests/test_publication_gstreamer_component_inputs_v1.py": {
+      "path": "tests/test_publication_gstreamer_component_inputs_v1.py",
+      "sha256": "80182f5fa8c0bebfa64fe610914e9d239105118d623e351ff7b32c085f9a7d4b",
+      "size_bytes": 40044
+    }
+  }
+}

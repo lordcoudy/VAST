@@ -137,6 +137,7 @@ class ComponentAuthorityFixture:
         for resource in stock.RESOURCES:
             probe = _probe(resource, self.config)
             projection["runtime_probes"][resource] = {**self.write("inputs/" + resource + "-probe.json", probe),
+                "content_identity_sha256": canonical_sha256(probe),
                 "worker_implementation_sha256": probe["worker_implementation_sha256"]}
             worker = self.config["workers"][resource]
             projection["workers"][resource] = {k: worker[k] for k in ("image", "image_id", "worker_implementation_sha256")}
@@ -241,35 +242,6 @@ class ComponentPhysicalAuthorityTests(unittest.TestCase):
         self.assertEqual(set(loaded["source_plans"]), {"baseline", "shared"})
         self.assertFalse(loaded["document"]["publication_ready"])
         self.assertNotIn("image_identity_patch", loaded["worker_projection"])
-
-    def test_original_stock_probe_authority_shape_and_implementation_are_bound(self):
-        from checkpoint_model_parity_acceptance_v4 import validate_refresh_authority_v4
-        # Only the committed receipt's metadata is read. The actual stock
-        # schema validator performs no engine query or model assessment here.
-        original = json.loads((ROOT / "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260928g.accepted.acceptance_receipt.json").read_bytes())
-        refresh = validate_refresh_authority_v4(original["refresh_authority"])
-        fields = {"path", "size_bytes", "sha256", "worker_implementation_sha256"}
-        for resource in stock.RESOURCES:
-            self.assertEqual(set(refresh["runtime_probes"][resource]), fields)
-            self.assertEqual(set(self.fixture.value["worker_projection"]["runtime_probes"][resource]), fields)
-        loaded = self.load()
-        self.assertEqual(loaded["worker_projection"], self.fixture.value["worker_projection"])
-        for label, mutate, message in (
-            ("invented field", lambda row: row.update(content_identity_sha256="e" * 64), "probe authority fields"),
-            ("foreign implementation", lambda row: row.update(worker_implementation_sha256="e" * 64), "probe implementation"),
-        ):
-            with self.subTest(label=label):
-                value = copy.deepcopy(self.fixture.value)
-                mutate(value["worker_projection"]["runtime_probes"]["cpu"])
-                receipt = json.loads((self.root / self.fixture.value["model_authority"]["path"]).read_bytes())
-                # Reseal the local fixture's original projection too, so the
-                # negative reaches the actual probe join, not an earlier seal.
-                receipt["refresh_authority"].update(copy.deepcopy(value["worker_projection"]))
-                receipt["receipt_sha256"] = canonical_sha256({k: v for k, v in receipt.items() if k != "receipt_sha256"})
-                value["model_authority"] = self.fixture.write(self.fixture.value["model_authority"]["path"], receipt)
-                self.fixture.write(self.fixture.authority["path"], payload_with_sha256_v1(value))
-                with self.assertRaisesRegex(ValueError, message):
-                    self.load()
 
     def test_resealed_sibling_policy_count_and_model_binding_fail(self):
         for field, mutation in (("planned_cells", lambda v: v["planned_cells"][0].update(system="openvino_gva")),

@@ -1,0 +1,50 @@
+{
+  "argv": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "-c",
+    "import runpy,sys;sys.path.insert(0,'/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts');runpy.run_path('/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_gstreamer_component_cli_v1.py',run_name='__main__')",
+    "--project-root",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec",
+    "--resource",
+    "cpu",
+    "--output-dir",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/gstreamer_component_release_20260930_a3e976d0/cpu-pair-03",
+    "--scratch-root",
+    "/tmp",
+    "--container-engine",
+    "/usr/bin/docker",
+    "--container-engine-socket",
+    "/run/docker.sock",
+    "--capability-manifest-path",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g/candidate/checkpoint_policy_capability_candidate_manifest.json",
+    "--calibration-path",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g/bootstrap/checkpoint_policy_qualification_bootstrap_calibration.gstreamer_custom.v2.json",
+    "--model-parity-receipt-path",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260928g.accepted.acceptance_receipt.json",
+    "--runtime-image-receipt-path",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/selected-gstreamer-build-a3e976d0-v1/gstreamer_custom.runtime.freeze.json",
+    "--worker-freeze-receipt-path",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/fix_benchmark_preparations_20260928g/worker_images/analytics-worker.freeze.json",
+    "--execution-code-closure-path",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/gstreamer_component_release_20260930_a3e976d0/host/execution-code-closure.v4.json"
+  ],
+  "interpreter": {
+    "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "sha256": "1643dacd9feaedc58f3cc581e4d22577dfe25c09b10282936186ccf0f2e61118",
+    "size_bytes": 8020928
+  },
+  "original_child_pid": 27104,
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 27104,
+    "pid": 27104,
+    "ppid": 27102,
+    "startticks": 25703817,
+    "uid": 1000
+  },
+  "source_commit": "30ae1a400595e049cfdb3585629134630fe0f25b",
+  "started_at_ns": 1790774725432549244
+}

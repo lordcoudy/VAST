@@ -1,0 +1,75 @@
+{
+  "artifact_kind": "vast_component_probe_schema_independent_source_review_v1",
+  "author_review": {
+    "path": "artifacts/benchmark_recovery_20260930/component-probe-authority-schema-repair-v1/author-review.v1.json",
+    "sha256": "308513b234a2dab22e142c80104b2d455d37f09900cda2d01c12bef4e0dbaab8",
+    "size_bytes": 6605
+  },
+  "engine_queries": 0,
+  "model_or_hardware_acceptance": false,
+  "new_workload_authorized_by_receipt": false,
+  "original_green": {
+    "elapsed_capture_s": 1.9766781450016424,
+    "path": "artifacts/benchmark_recovery_20260930/component-probe-authority-schema-repair-v1/green-01/terminal.v1.json",
+    "raw_stderr": {
+      "path": "artifacts/benchmark_recovery_20260930/component-probe-authority-schema-repair-v1/green-01/stderr.raw",
+      "sha256": "7efd19176dc23f3f05d370faefcacf1fc36d719f31c8fb04b19b1c2afd1cc4e7",
+      "size_bytes": 3286
+    },
+    "reviewer_rerun": false,
+    "sha256": "853929706dfe43ab742a5ea44dbfa61fcfb4a879384b761545c063a6217f804f",
+    "size_bytes": 4905,
+    "source5_before_after_equal": true,
+    "tests": 14
+  },
+  "original_receipt": {
+    "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260928g.accepted.acceptance_receipt.json",
+    "sha256": "6f50d92e74ab7750f262d2697b0fceeb979d4f221eda90a0223cce4d5ff7a169",
+    "size_bytes": 20686
+  },
+  "original_red": {
+    "path": "artifacts/benchmark_recovery_20260930/component-probe-authority-schema-repair-v1/red-01/terminal.v1.json",
+    "sha256": "65caf74aa3da463d0d868624456cce5d640b674956e9dd378db4a4b524729d37",
+    "size_bytes": 5004
+  },
+  "owned_final": [
+    {
+      "path": "scripts/publication_gstreamer_component_authority_v1.py",
+      "sha256": "9f0e0e56a238ad26f8ab525bc9f3bc0ebdd0e136b7bc0f8853ab3a0745342c6f",
+      "size_bytes": 27355
+    },
+    {
+      "path": "tests/test_publication_gstreamer_component_inputs_v1.py",
+      "sha256": "3d90d2e684251a98df4d3156eccf5deb56ffaab480c9a2ec3ea7c1606f104d38",
+      "size_bytes": 42256
+    }
+  ],
+  "reviewable": true,
+  "reviewer_owned_other_files": [
+    "scripts/run_ci_checks.py",
+    ".github/workflows/ci.yml",
+    "tests/test_run_ci_checks.py",
+    "scripts/ci_namespace_diagnostic_v1.py",
+    "tests/test_ci_namespace_diagnostic_v1.py"
+  ],
+  "reviewer_production_edits": false,
+  "reviewer_tests_run": 0,
+  "schema_version": 1,
+  "self_review": "Approval fixes a source/fixture schema mismatch, not physical operability. Actual CPU03 reached a device probe but no measurement. No retained per-call CID proof is invented. Later runtime/model/pair acceptance remains unproved.",
+  "source_audit": {
+    "all_four_runtime_aggregates_invalidated": true,
+    "native3_worker2_unchanged": true,
+    "path": "artifacts/benchmark_recovery_20260930/component-probe-authority-schema-repair-v1/source-image-scope.v1.json",
+    "required_before_physical_pair": "Genuine renewed selected image, exact host wrapper identities and fresh host closure. Sibling images stay historical/ineligible.",
+    "sha256": "44e6c73ce8b29af057e116ddf3545fb5d9215705e14addb8b637baa2f16c1568",
+    "size_bytes": 9136
+  },
+  "source_findings": [
+    "Stock validate_refresh_authority_v4108/144 returns exact4 runtime-probe authority fields; the removed semantic-content field was invented by the prior fixture.",
+    "Changed _worker_material175\u2013190 now rejects nonexact4 shape and joins authority implementation to the schema/engine-validated physical probe; existing worker config/probe equality is retained.",
+    "ComponentPinsV1.read/object still verifies original path,size,full serialized SHA and held epoch. Removing an absent secondary semantic hash does not remove original-byte custody.",
+    "Component authority projection still equals the original accepted receipt projection. Kind/resource/accepted/publication/qualification flags remain strict and unchanged.",
+    "New original receipt parser regression and resealed extra-field/foreign-implementation negatives reach the intended probe boundary; all13 prior methods remain and the fixture now has stock shape."
+  ],
+  "verdict": "approved within narrow source repair"
+}

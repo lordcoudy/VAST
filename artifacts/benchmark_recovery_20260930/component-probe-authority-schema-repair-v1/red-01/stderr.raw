@@ -1,0 +1,32 @@
+test_original_stock_probe_authority_shape_and_implementation_are_bound (test_publication_gstreamer_component_inputs_v1.ComponentPhysicalAuthorityTests.test_original_stock_probe_authority_shape_and_implementation_are_bound) ... ERROR
+
+======================================================================
+ERROR: test_original_stock_probe_authority_shape_and_implementation_are_bound (test_publication_gstreamer_component_inputs_v1.ComponentPhysicalAuthorityTests.test_original_stock_probe_authority_shape_and_implementation_are_bound)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_gstreamer_component_inputs_v1.py", line 255, in test_original_stock_probe_authority_shape_and_implementation_are_bound
+    loaded = self.load()
+             ^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_gstreamer_component_inputs_v1.py", line 233, in load
+    return load_component_authority_v1(project_root=self.root,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_gstreamer_component_authority_v1.py", line 404, in load_component_authority_v1
+    with held_component_authority_v1(**kwargs) as loaded:
+  File "/usr/lib/python3.12/contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_gstreamer_component_authority_v1.py", line 394, in held_component_authority_v1
+    loaded = _load(pins, descriptor)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_gstreamer_component_authority_v1.py", line 269, in _load
+    config, bindings, probes, capabilities, external, binding_index = _worker_material(pins, projection, candidate, preprocessing)
+                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_gstreamer_component_authority_v1.py", line 180, in _worker_material
+    _require(canonical_sha256(probe) == authority["content_identity_sha256"], "component probe content drifted")
+                                        ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'content_identity_sha256'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.116s
+
+FAILED (errors=1)
