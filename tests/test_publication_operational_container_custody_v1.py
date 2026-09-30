@@ -91,6 +91,15 @@ class ContainerCustodyContractTests(unittest.TestCase):
             with self.subTest(stderr=stderr):
                 self.assertFalse(custody._confirmed_absent(1, b"", stderr, cid))
         self.assertTrue(custody._confirmed_absent(1, b"", ("Error response from daemon: No such container: " + cid + "\n").encode(), cid))
+        exact = ("Error response from daemon: No such container: " + cid + "\n").encode()
+        self.assertTrue(custody._confirmed_absent(1, b"\n", exact, cid))
+        for stdout in (b" ", b"\t", b"\r\n", b"\n\n", b" \n", b"{}\n", b"foreign\n"):
+            with self.subTest(stdout=stdout):
+                self.assertFalse(custody._confirmed_absent(1, stdout, exact, cid))
+        for code in (0, 2, -9, True):
+            self.assertFalse(custody._confirmed_absent(code, b"\n", exact, cid))
+        for stderr in (exact + b"\n", exact.replace(cid.encode(), b"other"), b"permission denied\n"):
+            self.assertFalse(custody._confirmed_absent(1, b"\n", stderr, cid))
 
     def test_cid_is_exact_original_regular_single_link_bytes(self):
         with tempfile.TemporaryDirectory() as name:
@@ -223,6 +232,20 @@ class OriginalContainerCompositionTests(unittest.TestCase):
                 capture.container_receipt_descriptor = self.rewrite(capture.container_receipt_descriptor, receipt)
                 with self.assertRaisesRegex(ValueError, "terminal timestamp order|failed or remains running"):
                     self.validate(capture)
+
+    def test_actual_gva_three_field_image_is_preserved_without_fabricated_base(self):
+        self.image = {key: value for key, value in self.image.items() if key != "base_image_id"}
+        value = json.loads(Path(self.original["path"]).read_bytes())
+        value["container_image"] = self.image
+        value["operation"]["system"] = "openvino_gva"
+        self.original = self.write("original.json", payload_with_sha256_v1(value))
+        with self.capture() as capture:
+            self.measure()
+        result = self.validate(capture)
+        self.assertTrue(result["container_quiescence_verified"])
+        receipt = json.loads(Path(capture.container_receipt_descriptor["path"]).read_bytes())
+        self.assertEqual(receipt["container_image"], self.image)
+        self.assertEqual(set(receipt["container_image"]), {"image_id", "repository_digest", "inspect_projection_sha256"})
 
     def rewrite(self, descriptor, value):
         path = Path(descriptor["path"])

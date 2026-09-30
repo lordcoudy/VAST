@@ -22,6 +22,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 from publication_operational_request_domain_v1 import canonical_json_v1, payload_with_sha256_v1
 from publication_child_evidence_materializer_v1 import materialize_publication_child_evidence_group_v1
 import publication_operational_process_custody_v1 as observer
+import publication_policy_qualification_runtime_inputs_v2 as stock_runtime
 from publication_operational_process_custody_v1 import (
     capture_original_engine_processes_v1, original_engine_phase_v1,
     engine_process_started_v1, engine_process_terminal_v1, original_process_validator_v1,
@@ -380,6 +381,73 @@ class ProcessCustodyTests(unittest.TestCase):
         with self.capture() as capture:
             self.run_child()
         self.assertEqual(self.validate(capture)["receipt"]["container_image"], self.image)
+
+    def test_actual_stock_inspector_image_contracts_survive_original_capture(self):
+        # Only Docker's inspect transport is a fixture. The stock four-system
+        # projection validators and contract constructors execute unchanged.
+        bindings, inspected = {}, {}
+        native = {"openvino_gva": stock_runtime.openvino_runtime,
+                  "gstreamer_custom": stock_runtime.gstreamer_runtime}
+        for system in stock_runtime.SYSTEMS:
+            if system in native:
+                module = native[system]
+                reference = module.EXPECTED_IMAGE_REFERENCE
+                material = {"final_reference": reference, "image_id": module.EXPECTED_IMAGE_ID,
+                    "repository_digest": module.EXPECTED_REPOSITORY_DIGEST,
+                    "inspect_projection_sha256": module.EXPECTED_IMAGE_INSPECT_PROJECTION_SHA256}
+                if system == "gstreamer_custom":
+                    material["base_image_id"] = module.EXPECTED_BASE_IMAGE_ID
+                raw = {"Architecture": "amd64", "Os": "linux", "Id": module.EXPECTED_IMAGE_ID,
+                    "RepoDigests": [module.EXPECTED_REPOSITORY_DIGEST], "Config": {
+                        "Entrypoint": [module.EXPECTED_IMAGE_ENTRYPOINT],
+                        "Labels": dict(module.EXPECTED_IMAGE_LABELS), "User": module.EXPECTED_IMAGE_USER}}
+                if system == "gstreamer_custom":
+                    raw["Created"] = "1970-01-01T00:00:00Z"
+                key = "openvino_gva_runtime_image" if system == "openvino_gva" else "gstreamer_runtime_image"
+                binding = {key: material}
+            else:
+                module = stock_runtime.deepstream_runtime if system == "deepstream" else stock_runtime.savant_runtime
+                repository = "fixture/" + system
+                reference = repository + ":stock-image-shape"
+                image_id = "sha256:" + "1" * 64
+                digest = repository + "@sha256:" + "2" * 64
+                raw = {"Architecture": "amd64", "Os": "linux", "Id": image_id,
+                    "RepoDigests": [digest], "Config": {"Entrypoint": [module.EXPECTED_COORDINATOR_PATH],
+                        "Labels": dict(module.REQUIRED_IMAGE_LABELS)}}
+                if system == "deepstream":
+                    binding = {"image_identity": {"final_reference": reference, "image_id": image_id,
+                        "repository_digest": digest, "entrypoint": module.EXPECTED_COORDINATOR_PATH}}
+                else:
+                    binding = {"savant_runtime_image": {"identity": {"final_reference": reference,
+                        "image_id": image_id, "repository_digests": [digest],
+                        "entrypoint": [module.EXPECTED_COORDINATOR_PATH]}}}
+            inspected[reference] = raw
+            for resource in ("cpu", "gpu"):
+                bindings[(system, resource)] = copy.deepcopy(binding)
+        images = stock_runtime._inspect_runtime_images(SimpleNamespace(resource_bindings=bindings),
+            engine=Path("/fixture/docker"), engine_socket=Path("/fixture/docker.sock"),
+            dependencies=SimpleNamespace(inspect_image=lambda engine, socket, reference: copy.deepcopy(inspected[reference])))
+        self.assertEqual(set(images["openvino_gva"]["contract"]),
+            {"image_id", "repository_digest", "inspect_projection_sha256"})
+        self.assertEqual(set(images["gstreamer_custom"]["contract"]),
+            {"image_id", "repository_digest", "inspect_projection_sha256", "base_image_id"})
+        for system in stock_runtime.SYSTEMS:
+            with self.subTest(system=system):
+                self.image = images[system]["contract"]
+                with self.capture(output_dir=self.root / "outputs" / ("stock-" + system)) as capture:
+                    self.run_child()
+                result = self.validate(capture)
+                self.assertEqual(result["receipt"]["container_image"], self.image)
+                self.assertEqual(result["measurement"]["launch"]["container_image"], self.image)
+
+    def test_gva_three_field_contract_rejects_missing_extra_and_invalid_projection(self):
+        image = {"image_id": "sha256:" + "1" * 64,
+            "repository_digest": "fixture/gva@sha256:" + "2" * 64,
+            "inspect_projection_sha256": "3" * 64}
+        for changed in ({key: value for key, value in image.items() if key != "image_id"},
+                        {**image, "unknown": "fixture"}, {**image, "inspect_projection_sha256": "invalid"}):
+            with self.subTest(image=changed), self.assertRaises(ValueError):
+                observer._image(changed)
 
     def test_cold_native_transfer_hash_is_streamed_above_supplemental_memory_budget(self):
         self.native_payload = b'{"fixture_only":true}\n' * (35 * 1024 * 1024 // 22)

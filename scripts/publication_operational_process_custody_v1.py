@@ -33,6 +33,7 @@ MAX_ENGINE_BYTES = 256 * 1024 * 1024
 MAX_INPUT_BYTES = 1024 * 1024
 MAX_TRANSFER_METADATA_BYTES = 8192
 IMAGE_FIELDS = {"image_id", "repository_digest", "inspect_projection_sha256", "base_image_id"}
+GVA_IMAGE_FIELDS = {"image_id", "repository_digest", "inspect_projection_sha256"}
 SDK_IMAGE_FIELDS = {"image_id", "repository_digest", "inspect_sha256", "coordinator_path", "required_labels"}
 SOCKET_FIELDS = {"path", "device", "inode", "owner_uid", "owner_gid"}
 OWNER_FIELDS = {"pid", "proc_stat_starttime_ticks", "uid", "gid", "boot_id", "ppid"}
@@ -132,12 +133,12 @@ def _validate_owner(value):
 
 
 def _image(value):
-    _require(type(value) is dict and set(value) in (IMAGE_FIELDS, SDK_IMAGE_FIELDS), "original container image fields drifted")
+    _require(type(value) is dict and set(value) in (IMAGE_FIELDS, GVA_IMAGE_FIELDS, SDK_IMAGE_FIELDS), "original container image fields drifted")
     for key in ("image_id", "base_image_id") if set(value) == IMAGE_FIELDS else ("image_id",):
         _require(type(value[key]) is str and re.fullmatch(r"sha256:[0-9a-f]{64}", value[key]), "original container image ID invalid")
     _require(type(value["repository_digest"]) is str and len(value["repository_digest"]) <= 512
              and re.fullmatch(r"[A-Za-z0-9./:_-]+@sha256:[0-9a-f]{64}", value["repository_digest"]), "original repository digest invalid")
-    inspect_key = "inspect_projection_sha256" if set(value) == IMAGE_FIELDS else "inspect_sha256"
+    inspect_key = "inspect_sha256" if set(value) == SDK_IMAGE_FIELDS else "inspect_projection_sha256"
     _require(type(value[inspect_key]) is str and re.fullmatch(r"[0-9a-f]{64}", value[inspect_key]),
              "original image projection digest invalid")
     if set(value) == SDK_IMAGE_FIELDS:

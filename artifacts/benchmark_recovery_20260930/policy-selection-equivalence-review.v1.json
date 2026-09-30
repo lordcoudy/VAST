@@ -1,0 +1,68 @@
+{
+  "accepted": false,
+  "actual_call_chain": [
+    "checkpoint_native_policy_runtime.py:615 constructs publication_policy_contract.PolicyEngine",
+    "PolicyEngine.decide at670 normalizes one actual request then calls _evaluate_policy",
+    "publication_policy_contract.py:599 delegates directly to evaluate_frozen_policy_v1",
+    "publication_policy_frozen_replay_v1.py:356\u2013371 compares the following exact keys"
+  ],
+  "artifact_kind": "vast_independent_policy_selection_equivalence_review_v1",
+  "correction": "The earlier v1 review correctly proved equivalence after deadline expiration but missed that the same proof extends to every valid finite candidate finish. Source review now proves unconditional resource-selection equivalence, not merely a saturated operating-regime effect. Preserve v1 unchanged.",
+  "domain": {
+    "allowed": "both policies restrict to the identical nonempty allowed set; one allowed candidate is immediate equality",
+    "finish": "f_r=max(decision_time,available_r)+service_r+transfer_r; proof covers finite finishes in valid accepted decision domain. Bare finite inputs can overflow at artificial extreme magnitudes; those cannot be emitted as canonical finite accepted records and are not physical supported-mode measurements.",
+    "request_validation": "normalize_frozen_request_v1 requires one positive finite deadline shared by all candidate resources, finite nonnegative decision/availability/transfer and positive finite service, exact CPU/GPU candidates, Boolean allowed flags, nonnegative integer queue depths",
+    "state": "neither HEFT branch consults adaptive weights/EWMA; actual resource-availability updates depend on selected finish and terminal observations, so same exogenous request/history selects the same routes",
+    "tie_tail": "(transfer_ms,queue_depth,fixed_resource_order_cpu_gpu) is identical for both policies"
+  },
+  "exact_order_keys": {
+    "deadline_aware_heft": "(f_r>D,max(0,f_r-D),f_r,transfer_r,queue_depth_r,resource_index_r)",
+    "heft": "(f_r,transfer_r,queue_depth_r,resource_index_r)"
+  },
+  "limits": [
+    "Record policy labels, reasons, contract hashes and record hashes differ; proof is about routing decisions for the same request/history, not byte-identical reports.",
+    "Separate physical arms may differ due timing, cache, contention or noise; such measured differences do not demonstrate a distinct algorithm.",
+    "Low-delay corpus or decoder property fixes cannot create an HEFT-versus-deadline-aware HEFT policy ablation because the selection functions remain identical."
+  ],
+  "proof": [
+    "For f1<f2<=D: both Boolean fields are false and lateness is zero; third finish field orders f1 before f2.",
+    "For f1<=D<f2: false Boolean orders f1 before true independently of all remaining fields.",
+    "For D<f1<f2: same true Boolean, subtraction of the common finite D is nondecreasing. If rounded lateness differs it preserves order; if rounding ties the explicit third finish field orders f1 before f2.",
+    "For f1==f2: feasibility and lateness are equal, so identical tie tails break the tie identically.",
+    "Therefore the transform (f>D,max(0,f-D),f) preserves exactly the finish ordering, and argmin selects the identical resource for every valid allowed candidate set.",
+    "The public select_ready_task helper at742 also groups HEFT and deadline-aware HEFT in the same rank/deadline/arrival/identity ordering. Native immediate socket handling does not supply a hidden distinct multi-job deadline order."
+  ],
+  "publication_ready": false,
+  "required_review_decision": "Either explicitly label the frozen policies as placement aliases and revise claims/analysis/matrix accounting through reviewed specification, or design a genuinely distinct deadline scheduling algorithm with an explicit ready-job set and validated behavior. Do not invent an arbitrary score perturbation or silently remove a policy/alter5600arms.",
+  "reviewed_at_utc": "2026-09-29T23:56:01.270243+00:00",
+  "schema_version": 1,
+  "scope": "read-only source proof; no production changes, tests, benchmark or new policy acceptance",
+  "sha256": "48a09096282096691f88ab5e833c198a0f57c47edb5abb13c174939ba4c3e38f",
+  "sources": [
+    {
+      "path": "scripts/publication_policy_frozen_replay_v1.py",
+      "sha256": "df03b7706ec354aab21714c09c9d0d95e7aa5a7124aefac574637f07e3d5d051",
+      "size_bytes": 21538
+    },
+    {
+      "path": "scripts/publication_policy_contract.py",
+      "sha256": "276c15284c46b99ae32ae99653cc10f9f65e09d49d69498322c906614d1ba8a1",
+      "size_bytes": 40143
+    },
+    {
+      "path": "scripts/checkpoint_native_policy_runtime.py",
+      "sha256": "76de5fa2bc52eb1a11b34abbfb93dd144d0769b802351dec992c92e0d1610c95",
+      "size_bytes": 73421
+    },
+    {
+      "path": "configs/experiments.yaml",
+      "sha256": "18b69285690cdb6ad2f8e9fa528122a05fd3e4abe647a776e60c8e5eed4344e0",
+      "size_bytes": 23078
+    }
+  ],
+  "supplements_original_review": {
+    "path": "artifacts/benchmark_recovery_20260930/scientific-operating-regime-review.v1.json",
+    "sha256": "fb562383098af9c13a5a0c3cdb0486284ea196e62bb3e22fdca9f8558c4396d4",
+    "size_bytes": 38582
+  }
+}

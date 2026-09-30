@@ -131,7 +131,9 @@ def _read_cid(path):
 
 
 def _confirmed_absent(returncode, stdout, stderr, identifier):
-    if returncode != 1 or stdout != b"":
+    # The pinned Docker CLI emits one empty formatted output line even when
+    # ContainerInspect returns exact NotFound; retain that byte unchanged.
+    if type(returncode) is not int or returncode != 1 or stdout not in (b"", b"\n"):
         return False
     prefixes = ("Error response from daemon: No such container: ", "Error: No such object: ",
         "Error: No such container: ")
