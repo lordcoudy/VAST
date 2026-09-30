@@ -31,6 +31,10 @@ Repair the demonstrated clean-checkout model prerequisite by acquiring only the 
 
 Closed attempt03 at57164011 identifies a regular187984-byte mapped NVIDIA library with four hard links as the sole rejected predicate; stable original path/FD facts and independently verified failed cleanup are retained. A hard-link count describes names for an inode, not whether it is a regular input. New artifact-v4 therefore retains strict one-link default Pins for plan/code/media/CID/evidence and permits positive link counts only for the already selected mapped libraries when their actual original process-map device/inode is joined to held and named file identity before hashing. Retain size/hash/ancestor/epoch checks, including link count, and strict default cache hits. Bound and retain original map provenance; mapping identity does not certify memory-page contents or explain how this library acquired four links. Focused real-file/mapping negatives and exact implementation review precede one fresh attempt04 of the same fixed four32-AU experiment and limits. No automatic retry or scientific adoption follows.
 
+## Portable peer-observer unit fixture - decision21, 2026-09-30
+
+The original hosted diagnostic at53a0dcf61b5b5764880878cbe0138c9d965dfb85 acquired all eight frozen model files in10.8707s and passed the unchanged repository model test. Its peer unit, which already mocks Docker, failed on actual Ubuntu6.17.0-1022-azure with `WSL2 osrelease marker drifted`. Correct only its host-dependent kernel bytes fixture; production exact-path/FD/root-owner/mode/link/marker validation stays byte-identical. Retain real proc open/fstat/read/close while returning explicitly labelled frozen fixture bytes through the read seam, assert bounded calls/closure, and add direct non-WSL parser rejection. This is unit portability, not physical WSL or full-CI acceptance; other production failures remain undiagnosed.
+
 ## Capabilities
 
 ### New Capabilities

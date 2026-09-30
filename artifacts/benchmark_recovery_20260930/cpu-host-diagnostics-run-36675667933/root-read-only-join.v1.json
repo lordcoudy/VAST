@@ -1,0 +1,109 @@
+{
+  "kind": "root_read_only_host_diagnostic_join",
+  "commit": "53a0dcf61b5b5764880878cbe0138c9d965dfb85",
+  "zip_sha256": "2dc1f280ecc0384a69a8680336619a1d4e16736ce895dae4f3dd875e80f6c904",
+  "original_member_count": 51,
+  "original_decoded_bytes": 585612,
+  "tracked_before_after_equal": true,
+  "tracked_paths": 1442,
+  "acquisition_original_cli": {
+    "argv": [
+      "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python",
+      "-I",
+      "-B",
+      "/home/runner/work/VAST/VAST/scripts/prepare_ci_model_assets.py",
+      "--output-dir",
+      "/home/runner/work/_temp/vast-host-diagnostics/model-acquisition"
+    ],
+    "elapsed_s": 11.239153638000005,
+    "returncode": 0,
+    "timed_out": false
+  },
+  "acquisition_original_elapsed_s": 10.870681444999946,
+  "assets": [
+    {
+      "index": 0,
+      "path": "models/openvino/public/intel/person-vehicle-bike-detection-2002/FP16/person-vehicle-bike-detection-2002.xml",
+      "size_bytes": 254351,
+      "original_pid": 2514,
+      "original_elapsed_s": 1.5176492749999966,
+      "status": "downloaded"
+    },
+    {
+      "index": 1,
+      "path": "models/openvino/public/intel/person-vehicle-bike-detection-2002/FP16/person-vehicle-bike-detection-2002.bin",
+      "size_bytes": 3691778,
+      "original_pid": 2515,
+      "original_elapsed_s": 1.7180400870000199,
+      "status": "downloaded"
+    },
+    {
+      "index": 2,
+      "path": "models/openvino/public/intel/person-vehicle-bike-detection-crossroad-1016/FP16/person-vehicle-bike-detection-crossroad-1016.xml",
+      "size_bytes": 292640,
+      "original_pid": 2516,
+      "original_elapsed_s": 1.2669051350000018,
+      "status": "downloaded"
+    },
+    {
+      "index": 3,
+      "path": "models/openvino/public/intel/person-vehicle-bike-detection-crossroad-1016/FP16/person-vehicle-bike-detection-crossroad-1016.bin",
+      "size_bytes": 5774062,
+      "original_pid": 2517,
+      "original_elapsed_s": 1.7683331850000172,
+      "status": "downloaded"
+    },
+    {
+      "index": 4,
+      "path": "models/openvino/public/intel/vehicle-license-plate-detection-barrier-0106/FP16/vehicle-license-plate-detection-barrier-0106.xml",
+      "size_bytes": 325452,
+      "original_pid": 2518,
+      "original_elapsed_s": 0.7155603709999809,
+      "status": "downloaded"
+    },
+    {
+      "index": 5,
+      "path": "models/openvino/public/intel/vehicle-license-plate-detection-barrier-0106/FP16/vehicle-license-plate-detection-barrier-0106.bin",
+      "size_bytes": 1286772,
+      "original_pid": 2519,
+      "original_elapsed_s": 0.7156181689999812,
+      "status": "downloaded"
+    },
+    {
+      "index": 6,
+      "path": "models/openvino/public/intel/vehicle-detection-0202/FP16/vehicle-detection-0202.xml",
+      "size_bytes": 254888,
+      "original_pid": 2520,
+      "original_elapsed_s": 1.2668799180000292,
+      "status": "downloaded"
+    },
+    {
+      "index": 7,
+      "path": "models/openvino/public/intel/vehicle-detection-0202/FP16/vehicle-detection-0202.bin",
+      "size_bytes": 3634654,
+      "original_pid": 2521,
+      "original_elapsed_s": 1.8678977460000397,
+      "status": "downloaded"
+    }
+  ],
+  "test_original_terminals": [
+    {
+      "elapsed_s": 0.023542716000008568,
+      "event": "test_terminal",
+      "monotonic_ns": 494710107666,
+      "outcome": "success",
+      "test_id": "test_analytics_model_contract.AnalyticsModelContractTests.test_repository_manifest_is_complete_and_hash_bound"
+    },
+    {
+      "elapsed_s": 0.0014915830000177266,
+      "event": "test_terminal",
+      "monotonic_ns": 494711670241,
+      "outcome": "error",
+      "test_id": "test_analytics_peer_identity.AnalyticsPeerIdentityAuthorityTests.test_observer_reads_exact_proc_file_and_small_docker_projection"
+    }
+  ],
+  "actual_kernel_release": "6.17.0-1022-azure",
+  "full_ci_successful": false,
+  "hardware_acceptance": false,
+  "limitations": "Hosted model payloads are not in this metadata ZIP; this joins original acquisitions and the independent repository-test outcome, not a local rehash of remote files. Other full-suite production causes remain undiagnosed."
+}

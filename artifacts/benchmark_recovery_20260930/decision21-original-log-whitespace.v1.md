@@ -1,0 +1,3 @@
+# Original hosted log byte preservation
+
+The connector-decoded original job109759964963 log is retained exactly as received (UTF-8 BOM), 34,653 bytes, SHA256 3d47aa8bc5fd68572c7f9f0d6d50fe0c2c4807a6d5a9b2b8773e9e94d788d56d. Nine original timestamp-only lines retain trailing spaces at lines118,122,125,127,129,131,133,203,286. They are not source formatting; normalizing them would alter original evidence. This exception is limited to that exact original log. The independently downloaded original artifact ZIP has its separate actual-byte digest. All other owned Decision21 paths pass git diff --check.
