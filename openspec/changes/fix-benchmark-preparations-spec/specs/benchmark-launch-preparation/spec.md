@@ -341,6 +341,14 @@ Final outputs SHALL describe the opaque ResNet workload as `topology_load_proxy_
 - **WHEN** actual attempt02 is reviewed or a subsequent strict file pin rejects an input
 - **THEN** original unknown cause and zero-AU failure SHALL be preserved; new artifact-v3 SHALL record bounded requested/resolved path, original fstat/lstat/type/link/size/predicate/limit and inner stage/traceback when available before cleanup, without weakening checks. One exact-reviewed fresh attempt03 MAY execute the same fixed experiment/caps after focused negatives and implementation freeze; any actual predicate remedy SHALL require further source-grounded review, and no automatic retry or research acceptance SHALL be inferred.
 
+#### Scenario: A mapped library has several hard links
+- **WHEN** an already selected library has positive hard-link count and its original bounded process-map device/inode matches the held regular file and named resolved file before hashing
+- **THEN** the explicit mapped-input Pin MAY accept those original backing bytes under unchanged size/hash/ancestor/full-epoch checks; ordinary plan/code/media/CID/evidence Pins and default cache hits SHALL retain single-link rejection. Conflicting/malformed/deleted mappings, mismatched identity or later bytes/path/link-count mutation SHALL fail. Mapping identity SHALL NOT imply memory-page integrity or a particular reason for the link count.
+
+#### Scenario: Reviewed mapped-input correction precedes another research attempt
+- **WHEN** the closed failed attempt03 diagnosis is used to implement artifact-v4
+- **THEN** original failures and independently verified owned cleanup SHALL remain immutable; focused actual mmap/file/process negatives and exact source/dispatch review SHALL precede one fresh attempt04 under the same four32-AU source/order/cohort and every original cap. No automatic retry, changed scientific regime or research/benchmark acceptance SHALL follow from the setup correction alone.
+
 ### Requirement: Authorized full execution closes durable results and repository evidence
 After all current qualification/Q4/storage/preflight gates pass, recovery SHALL execute the preserved full experiment through one supported durable owner/checkpoint. Accepted pairs SHALL be uploaded, read back and durably receipted before raw cleanup; supported resume SHALL verify and reuse accepted pairs without remeasurement. Completion SHALL require 5,600 accepted arms, 2,800 accepted pairs and verified storage transactions, successful stock verify/finalize/finalized-only export and independently checked analysis. Required CI/conformance and reviewed warnings SHALL precede supported sync/archive in this same branch/PR; archive and main specs SHALL be committed/pushed, and required final-commit checks and delegated final review/authorization SHALL precede merge. Missing factual capacity or failed required checks SHALL remain real blockers, never inferred from general authorization.
 

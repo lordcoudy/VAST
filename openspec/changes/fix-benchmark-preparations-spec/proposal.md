@@ -21,11 +21,15 @@ VAST can execute real native diagnostics but cannot yet complete the independent
 - Configure appropriate final-commit CI and complete requirement/scenario conformance, sync/archive and final review in the same PR before authorized merge.
 - Replace corrupted command examples and stale operating guidance with a checked, self-contained preparation runbook and evidence checklist.
 
-## Narrow setup and CI diagnosis amendment - 2026-09-30
+## Historical setup and CI diagnosis amendment - decision19, 2026-09-30
 
 Actual attempt02 completed GI initialization but failed the first pipeline's file pinning before source admission. Preserve its original unknown failing path/stat and verified exact-owned cleanup. New artifact-v3 records the original Pin path, stat/type/link/size/bound facts and inner stage/traceback without weakening its checks; one explicitly reviewed fresh attempt03 retains the original four32-AU experiment and caps. Diagnose the demonstrated rejection before reviewing a package-policy remedy.
 
 Repair the demonstrated clean-checkout model prerequisite by acquiring only the eight unchanged manifest objects with exact size/SHA-256/SHA-384 and bounded exclusive publication. Extend the existing CPU test result with immediate per-test start/terminal/elapsed/tracebacks,60-second original stacks and16-KiB whitelisted host facts. Preserve full discovery, three required native successes,90-minute job and real600000/615000-ms broker constraints. Hosted peer/production causes remain unknown until original exceptions are retained. This amendment adopts no pipeline, corpus, algorithm, deadline, metric or shortened matrix.
+
+## Mapped-library input correction - decision20, 2026-09-30
+
+Closed attempt03 at57164011 identifies a regular187984-byte mapped NVIDIA library with four hard links as the sole rejected predicate; stable original path/FD facts and independently verified failed cleanup are retained. A hard-link count describes names for an inode, not whether it is a regular input. New artifact-v4 therefore retains strict one-link default Pins for plan/code/media/CID/evidence and permits positive link counts only for the already selected mapped libraries when their actual original process-map device/inode is joined to held and named file identity before hashing. Retain size/hash/ancestor/epoch checks, including link count, and strict default cache hits. Bound and retain original map provenance; mapping identity does not certify memory-page contents or explain how this library acquired four links. Focused real-file/mapping negatives and exact implementation review precede one fresh attempt04 of the same fixed four32-AU experiment and limits. No automatic retry or scientific adoption follows.
 
 ## Capabilities
 

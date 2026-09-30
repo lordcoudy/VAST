@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "/opt/vast/code/guest_consumer.py", line 714, in execute
+    completed.append(self.run(index, by_role[role], setting))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/vast/code/guest_consumer.py", line 691, in run
+    require(successful, 'original research run failed; no retry or subsequent setting allowed')
+  File "/opt/vast/code/research_protocol.py", line 38, in require
+    raise ResearchError(message)
+research_protocol.ResearchError: original research run failed; no retry or subsequent setting allowed
