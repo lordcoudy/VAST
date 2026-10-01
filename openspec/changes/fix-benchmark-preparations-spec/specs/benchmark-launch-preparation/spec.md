@@ -354,6 +354,18 @@ Each bounded diagnostic and long-running benchmark stage SHALL have one persiste
 - **WHEN** the parent observes original broker capture/exit/quiescence but the required validated journal response is absent
 - **THEN** it SHALL fail promptly with bounded original diagnostic facts rather than spend another execution allowance or accept stdout as durable authority;600000-ms execution and15000-ms cleanup constraints SHALL remain unchanged. Hosted setup errno/crash cause SHALL remain unknown until actually observed.
 
+#### Scenario: Validated worker transport fails before frontend exit is visible
+- **WHEN** the first validated production request fails on its exact owned worker route while the Docker frontend has not reported exit
+- **THEN** shutdown SHALL retain that route's bounded original failure-time process/container/log snapshot exactly once before disposable teardown, without moving a live capture writer's file offset; the diagnostic stage SHALL distinguish worker invocation from front response transmission. Live or unavailable facts SHALL NOT be reported as terminal exit, clean stop or cause. Observation failure or a later concurrent failure SHALL NOT replace the original request failure or grant acceptance.
+
+#### Scenario: Worker history contains frequent health-check events
+- **WHEN** bounded original worker termination history is observed
+- **THEN** the query SHALL use the original container identity and container die/oom/kill/destroy filters under the existing2-second,8192/1024-byte and32-record bounds; cap failure or unavailable history SHALL remain explicit, and missing OOM events or exit137 alone SHALL NOT establish OOM attribution or its absence.
+
+#### Scenario: Original native measurement has a failed captured terminal
+- **WHEN** an original measured engine child has nonzero return, timeout, capture overflow or drain failure
+- **THEN** the producer SHALL exclusively preserve its already captured stdout/stderr bytes at the existing8MiB/channel bounds before disposal, with a <=4KiB nonauthorizing adjunct binding unchanged original launch/terminal descriptors, raw hashes and actual incomplete-capture flags. Persistence failure SHALL remain sticky failed, original failure facts SHALL survive, and no additional measurement, successful receipt or publication authority SHALL be inferred. Successful calls SHALL retain their existing schema and SHALL NOT produce a failed-call adjunct.
+
 ### Requirement: Scientific interpretation matches the executed workload
 Final outputs SHALL describe the opaque ResNet workload as `topology_load_proxy_only` under common OpenVINO CPU/TensorRT CUDA workers and limit backend comparisons to observed topology/scheduling/transport/resource behaviour. They SHALL retain real deadline/drop/negative outcomes and distinguish additive work from nonadditive elapsed diagnostics. Real KPP accuracy, backend-native inference rankings, true NVDEC busy time and formal AW-HEFT equivalence SHALL NOT be claimed without independently accepted corresponding evidence.
 

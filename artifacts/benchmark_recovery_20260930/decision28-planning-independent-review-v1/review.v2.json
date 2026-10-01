@@ -1,0 +1,137 @@
+{
+  "PR": "https://github.com/lordcoudy/VAST/pull/2",
+  "baseline_commit": "9d47e99b623df44816f7b0a0b73b249a940f7723",
+  "blocking_findings": [],
+  "branch": "codex/fix-benchmark-preparations-spec",
+  "change": "fix-benchmark-preparations-spec",
+  "code_tests_CI_changed_by_reviewer": false,
+  "evidence_scope": {
+    "failed_CPU07_peer": "85b668c7 plus process4353e833; benchmarkfalse and all95 released",
+    "failed_original_query_peer": "016937e5; capfailure/rawprefix only, no cause",
+    "hosted34_actual_peer": "86b339b1; portable/native/source/profile evidence only, no hardware grant",
+    "source_diagnosis": {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\component-cpu07-worker-events-observation-preparation-v1\\source-observability-review.v1.json",
+      "sha256": "3dd7a896179d83f9f51862556c5dee5a4787ba274020b52771f244d28fa764e3",
+      "size_bytes": 7495
+    }
+  },
+  "new_task_checkbox_checked": false,
+  "next_gate": "Root must freeze exact reviewed planning commit and record delegated standing authorization in same PR before dependent implementation.",
+  "owned_document_pins": [
+    {
+      "before_commit": "9d47e99b623df44816f7b0a0b73b249a940f7723",
+      "before_sha256": "e4235e246b2d148dd73b8f749e1dd217efa3b7610d58e2c4daf6a3a51d6544a7",
+      "before_size_bytes": 13792,
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\openspec\\changes\\fix-benchmark-preparations-spec\\proposal.md",
+      "sha256": "5971d2a50337373c70f2414946976aabe51cb54223ca7c1f0acd29e099494c5e",
+      "size_bytes": 16049
+    },
+    {
+      "before_commit": "9d47e99b623df44816f7b0a0b73b249a940f7723",
+      "before_sha256": "5303b985449c32598099bdde7594ce3805f257bea7d59f7058fc96716231a12a",
+      "before_size_bytes": 35324,
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\openspec\\changes\\fix-benchmark-preparations-spec\\design.md",
+      "sha256": "83d73b96d9f2b6dac10043633b7108afe2549d6304fa798f62fedd7095d57ebb",
+      "size_bytes": 40041
+    },
+    {
+      "before_commit": "9d47e99b623df44816f7b0a0b73b249a940f7723",
+      "before_sha256": "792f5b3b78c068008312c136794bb1272af7600726c1e3c7ab0329e25b2eb9cc",
+      "before_size_bytes": 30373,
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\openspec\\changes\\fix-benchmark-preparations-spec\\tasks.md",
+      "sha256": "b7cae9fa692df7da6f03c1d8d6d5a918fff72af2b8c073def6629dfee16b89af",
+      "size_bytes": 32570
+    },
+    {
+      "before_commit": "9d47e99b623df44816f7b0a0b73b249a940f7723",
+      "before_sha256": "576821b3fd057becb7735b70affba8001e3e70a15308c4783928e7f9c5471be3",
+      "before_size_bytes": 71033,
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\openspec\\changes\\fix-benchmark-preparations-spec\\specs\\benchmark-launch-preparation\\spec.md",
+      "sha256": "e42fa4a5c5931aaf82c0e2fac408c5a3930d80a4a110c6c4fcc1a889d455ec90",
+      "size_bytes": 72946
+    },
+    {
+      "before_commit": "9d47e99b623df44816f7b0a0b73b249a940f7723",
+      "before_sha256": "8697f83dc027412307fa9171603377d21ea624df7ae48988d042b9a37460bc04",
+      "before_size_bytes": 91067,
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\BENCHMARK_RECOVERY_PLAN.md",
+      "sha256": "c74e5959cea5151bd982be56e224446c7b60aa451b798ff154b7ce3d4af97ea8",
+      "size_bytes": 107566
+    }
+  ],
+  "preservation": {
+    "all65_original_task_text_checkstates_exact": true,
+    "all_old_spec_bytes_exact_after_removing_only_three_new_R14_scenarios": true,
+    "checked_tasks_before_after": [
+      56,
+      56
+    ],
+    "five_new23_tasks_unchecked": true,
+    "original82_scenario_72_task_campaign_register_not_modified_by_this_scope": true,
+    "proposal_design_tasks_original_bytes_are_exact_prefixes": true,
+    "requirements_before_after": [
+      20,
+      20
+    ],
+    "scenarios_before_after": [
+      112,
+      115
+    ],
+    "tasks_before_after": [
+      65,
+      70
+    ]
+  },
+  "review_findings": [
+    "First internally validated branch/resource is retained under original failure lock and existing exactly-once collector is called before disposable teardown; live/unavailable snapshots are not terminal authority. Original failure retains precedence.",
+    "File-backed fstat/positional pread prevents observation from moving live writer offset; original2s/8192+1024/32event/16KiB bounds remain.",
+    "Terminal-only exact-original-CID events preserve historical retention/absence/OOM limitations and firstquery failure.",
+    "Failed original measured-child raw bytes are mandatory, exclusive and bounded8MiB/channel; <=4KiB nonauthorizing adjunct is last, binds unchanged launch/terminal/raw/flags; persistence failure stays failed. Success schemas/cold predicates untouched.",
+    "Meaningful real-offset/process/custody/first-cause/collision regressions and existing assertions are required before source acceptance.",
+    "Actual source impact requires fresh selected runtime image/import/embedded and host87/current95 authority; native3/worker2 may remain only after unchanged closure proof. Old CPU07/historical0ad receipts cannot become current.",
+    "Original2100/2250/15, intake/scientific/model/cold/raw/source/CI/conformance/archive/latest-check/review/merge gates remain strict; no automatic measurement retry or causal remedy guessed.",
+    "Durable active plan now records failedCPU07, released95 and closed actual hosted34 peer; earlier dated plans remain explicitly historical."
+  ],
+  "reviewable": true,
+  "reviewed_at_UTC": "2026-10-01T03:56:43.369799+00:00",
+  "reviewer_handles_released": true,
+  "source_grounded_stage_finding": {
+    "front_response_send_line": 5533,
+    "implication": "The original CPU07 inference label alone cannot locate EPIPE at worker invocation versus native-front reply. Successful worker return followed by front-send failure must be labeled response_send; invocation failure retains inference. Both remain failures. This review does not assert which original socket actually broke.",
+    "original_inference_assignment_line": 5477,
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\scripts\\checkpoint_gstreamer_analytics_sidecar.py",
+    "sha256": "0a0ff1d67e536d42258d8d53f8ed511283db478aba30442411b607bb849970ef",
+    "size_bytes": 296398,
+    "stage_not_reassigned_between_invocation_and_front_send": true,
+    "worker_invocation_lines": [
+      5485,
+      5494
+    ]
+  },
+  "status": "reviewed_exact_Decision28_planning_successor_stage_clarification_only",
+  "successor_delta_disposition": {
+    "adds_explicit_response_send_before_successful_front_reply": true,
+    "checked_task_count_unchanged": 56,
+    "code_or_success_predicate_change_already_implemented": false,
+    "meaningful_positive_inference_then_front_EPIPE_and_invocation_error_regressions_required": true,
+    "original_CPU07_diagnostic_unmodified": true,
+    "requirement_scenario_task_counts_unchanged_from_v1": [
+      20,
+      115,
+      70
+    ]
+  },
+  "supersedes_scope_only": {
+    "original_receipt_preserved": true,
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision28-planning-independent-review-v1\\review.v1.json",
+    "sha256": "6913aaaaa83a227e6b776f43effbe356c697b461655011ced4f05144c2da6a77",
+    "size_bytes": 6112
+  },
+  "verification": "Actual five final documents and fixed Git baseline read; original65 task text/checkstates equal, all old spec bytes equal after removing only three R14 scenarios. Final five bytes reread unchanged before exclusive receipt. No formal CLI rerun, source implementation, engine, test or workload executed. No outstanding reviewer handles.",
+  "wording_findings_resolved": [
+    "Design may changed to mandatory shall for failedraw retention.",
+    "Proposal unknown worker/backend transport mechanism avoids asserting primary death cause.",
+    "Current durable plan pointer separates current failedCPU07/CI facts from dated historical states."
+  ],
+  "workload_or_engine_run_by_reviewer": false
+}
