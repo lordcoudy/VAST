@@ -1,0 +1,108 @@
+{
+  "argv": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/capacity_fixture_focused_child_v1.py",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/capacity-fixture-focused-attempt02"
+  ],
+  "cleanup_s": 10,
+  "deadline_s": 120,
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 53687,
+    "pid": 53687,
+    "ppid": 53685,
+    "startticks": 29308824,
+    "uid": 1000
+  },
+  "scope": "six focused fixture/real observer units; actual small Python children only",
+  "source_before": [
+    {
+      "epoch": [
+        69,
+        1407374885973190,
+        33279,
+        1,
+        47271,
+        1790724976212369600,
+        1790724976212369600
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_process_custody_v1.py",
+      "sha256": "5ea8477e527bf57438ce81cea9b8b19fb628c555cb808711438e2036bcaee923",
+      "size_bytes": 47271
+    },
+    {
+      "epoch": [
+        69,
+        1407374885973191,
+        33279,
+        1,
+        30982,
+        1790810575438030000,
+        1790810575438030000
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_process_custody_v1.py",
+      "sha256": "8ba4f9b93e00b368712cc3f84855b648ff98d54ff887de25f99d4208e11a97d1",
+      "size_bytes": 30982
+    },
+    {
+      "epoch": [
+        69,
+        1407374885973073,
+        33279,
+        1,
+        25997,
+        1790716534106631500,
+        1790716534106631500
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_request_domain_v1.py",
+      "sha256": "5df1071402080957c312acddb85e0285c589c4a7d1948d51e9bf5e274727f0b9",
+      "size_bytes": 25997
+    },
+    {
+      "epoch": [
+        69,
+        8444249303189920,
+        33279,
+        1,
+        21544,
+        1789990792085503900,
+        1789990792085503900
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_child_evidence_materializer_v1.py",
+      "sha256": "056654b0a019720164bc478a83f584ab4f4121b5c8570e44d2358dbfa6a71bc9",
+      "size_bytes": 21544
+    },
+    {
+      "epoch": [
+        69,
+        1688849862687204,
+        33279,
+        1,
+        5083,
+        1790810718396301600,
+        1790810718396301600
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/capacity_fixture_focused_child_v1.py",
+      "sha256": "9817526ca9135a6f0a6d8acff2b1d15241b3faabe7562d1c16ef8cf911a12398",
+      "size_bytes": 5083
+    },
+    {
+      "epoch": [
+        69,
+        1970324839397863,
+        33279,
+        1,
+        5400,
+        1790810772345674300,
+        1790810772345674300
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/capture_capacity_fixture_focused_v2.py",
+      "sha256": "533dcff22403f418643e380a4dc57b1cc2ffc09f4bf1a1dad895fece2f63a72b",
+      "size_bytes": 5400
+    }
+  ],
+  "source_head": "4cb9d8313cca71256179bc3b59cc6f9137e7b8ba"
+}

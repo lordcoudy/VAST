@@ -1,0 +1,23 @@
+{
+  "actual_gpu_pid": null,
+  "actual_gpu_terminal": null,
+  "bounds": "internal120 seconds including finalreport/FDclose; original /usr/bin/timeout120 TERM+10KILL containment; no hardwarebudget changes",
+  "cpu_accepted_release_proof_sha256": "20c896c126454b17f747d2b119b6a60444f7d8bc338184782eb68ec8ab37218a",
+  "original_scope_exclusions": [
+    "model/numeric asset reads",
+    "engine/image/namespace/native/model/test execution",
+    "benchmark dispatch"
+  ],
+  "readiness_accepted": false,
+  "root": "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+  "schema_version": 1,
+  "source": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-gpu01-ext4-readiness-v1/audit_v1.py",
+    "sha256": "df393f25ac43245279147fd18cca71bbbe97ea45b1a4db6b83e93bd6236f20be",
+    "size_bytes": 12986
+  },
+  "source_commit": "0ad78d6abdb3c526544a17185af7fe8094716735",
+  "status": "prepared_source_not_executed",
+  "stock95": "6 actual controller-declared immutable metadata refs+87 original codeclosure source rows+current CP interpreter+actual GPU6200b55a controller",
+  "stock_loader": "load_execution_code_closure_v1 full physical body + assert_loaded_project_modules_covered_v1"
+}

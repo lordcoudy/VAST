@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "vast_cpu06_output_retention_independent_source_review_v1",
+  "reviewer": "/root/adversarial_review",
+  "disposition": "approved_preparation_only",
+  "blocking_findings": [],
+  "inputs": [
+    {"path": "artifacts/benchmark_recovery_20260930/component-cpu06-windows-retention-preparation-v1/inventory.v1.json", "size_bytes": 97442, "sha256": "f18913e434ceddd0f65dae6ad0b7b0c642d54b6d1ff9751e2c9bb28378ba2ce0"},
+    {"path": "artifacts/benchmark_recovery_20260930/component-cpu06-windows-retention-preparation-v1/pack_original_outputs_v2.py", "size_bytes": 10516, "sha256": "43088e67d8f470033be6f4fa07ed109c718e047c4e61615b3d979ee1e784d929"},
+    {"path": "artifacts/benchmark_recovery_20260930/component-cpu06-windows-retention-preparation-v1/preparation.v2.json", "size_bytes": 7312, "sha256": "7f187d616acb8588f4a4fd59eda5e87e3b7189a428964f9ce0528ffbb00f0f71"},
+    {"path": "artifacts/benchmark_recovery_20260930/component-cpu06-windows-retention-preparation-v1/original-launch-recipe.v1.json", "size_bytes": 2672, "sha256": "26d50b760d57bccfb833edeabace6a8b79184fdfc2f12f3d42e5bcd78f2ba723"},
+    {"path": "artifacts/benchmark_recovery_20260930/component-cpu06-windows-retention-preparation-v1/pack_original_outputs_v1.py", "size_bytes": 10261, "sha256": "8c04f47d1e49d175112cf49e9e11752373a38b691ba5d10bcc4f12d094e65248"}
+  ],
+  "independent_source_checks": {
+    "all_input_hashes_and_sizes_match_announced_pins": true,
+    "source_parsed_without_import_or_execution": true,
+    "only_changed_original_function": "write",
+    "eight_other_original_function_ASTs_unchanged": true,
+    "unique_retained_paths": 128,
+    "retained_bytes_recomputed_from_inventory": 165944632,
+    "largest_retained_leaf_bytes": 32365325,
+    "exact_source_directory_count": 29,
+    "exact_source_leaf_count_including_excluded_input": 129,
+    "excluded_engine_input_bytes": 45570705,
+    "combined_original_namespace_bytes": 211515337,
+    "outer_recipe_contains_fixed_120_second_timeout_and_10_second_kill_reserve": true
+  },
+  "review": [
+    "The fixed inventory SHA, exact two CPU namespaces and safe relative members prevent expanding this retention into model/source input copying. The Docker executable duplicate is enumerated and excluded from the archive while remaining part of the exact source namespace check.",
+    "Original source and metadata handles use O_NOFOLLOW, single-link regular-file checks, full seven-field epoch comparisons, held ancestor identities and final source namespace checks. The archive records each original URI and epoch rather than rebinding a copied path as original authority.",
+    "Streaming source reads and archive replay use one-MiB chunks. Each source is below 64 MiB; the fixed 165,944,632-byte total and small fixed 128-row manifest fit the 256-MiB archive bound. Reopened ZIP membership, CRC and decompressed size/SHA are all checked, followed by physical package hashing.",
+    "The v2 write fix permits bounded exclusive failure persistence after the original work clock expires. The final check remains after receipt persistence, original metadata/directory FD retirement and stdout flush; late completion writes a sticky companion and returns nonzero. The original 120-second timeout plus 10-second kill reserve must remain in the actual launch recipe.",
+    "The GPU terminal is supplied by exact physical SHA/size, held and rechecked. Its original numeric PID/group absence is checked before retention. Authentic CPU/GPU UID, boot, startticks, terminal disposition, full95 FD release and process closure remain the separate already-closed root launch prerequisites; this packer does not independently reconstruct those identity proofs.",
+    "A retained ZIP and complete retention receipt grant neither hardware nor benchmark acceptance. Failed or partial archives remain failed; original ext4 outputs and historical authority paths are preserved."
+  ],
+  "required_original_launch_conditions": [
+    "Root supplies the authentic closed original GPU terminal SHA and size only after its audited process/FD closure and the original CPU closure. No active-output retention.",
+    "Root launches the exact reviewed v2 once through the original 120+10 envelope with fresh exclusive capture and output names. Any forced timeout, close error, late companion, nonzero exit or incomplete replay remains failed retention.",
+    "Any subsequent report must cite actual retained originals and archive descriptors. It must not infer original model/container acceptance from this copy operation."
+  ],
+  "scope_limits": {
+    "reviewer_reads": "Only the five small prepared source/metadata files and their ASTs; no original 165.9-MB raw output stream was read or hashed.",
+    "reviewer_execution": "One inline pinned-CPython metadata/AST/hash inspection, without importing the packer. The inspection has tool output, not a separately fabricated physical dispatch witness.",
+    "retention_executed": false,
+    "source_or_process_holds_remaining": false,
+    "hardware_or_benchmark_grant": false
+  }
+}

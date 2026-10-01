@@ -1,0 +1,223 @@
+{
+  "errors": [],
+  "failures": [],
+  "ids": [
+    "test_backend_publication_broker_terminal_v3.BackendPublicationBrokerTerminalV3Tests.test_actual_authorization_drift_is_failed_terminal_and_launches_no_child",
+    "test_backend_publication_broker_terminal_v3.BackendPublicationBrokerTerminalV3Tests.test_actual_held_descriptor_mismatch_retains_failed_custody",
+    "test_backend_publication_broker_terminal_v3.BackendPublicationBrokerTerminalV3Tests.test_conflicting_response_preserves_actual_terminal_prefix_and_returns74",
+    "test_backend_publication_broker_terminal_v3.BackendPublicationBrokerTerminalV3Tests.test_conflicting_terminal_intent_returns74_without_overwrite",
+    "test_backend_publication_broker_terminal_v3.BackendPublicationBrokerTerminalV3Tests.test_hash_invalid_request_cannot_create_durable_authority",
+    "test_backend_publication_broker_terminal_v3.BackendPublicationBrokerTerminalV3Tests.test_held_early_setup_failure_commits_original_failed_terminal",
+    "test_backend_publication_broker_terminal_v3.BackendPublicationBrokerTerminalV3Tests.test_held_losing_owner_commit_cannot_write_elected_owner_terminal",
+    "test_backend_publication_broker_terminal_v3.BackendPublicationBrokerTerminalV3Tests.test_invalid_request_remains_failed_stdout_without_durable_authority",
+    "test_backend_publication_broker_terminal_v3.BackendPublicationBrokerTerminalV3Tests.test_normal_early_setup_failure_commits_original_failed_terminal",
+    "test_backend_publication_broker_terminal_v3.BackendPublicationBrokerTerminalV3Tests.test_normal_losing_owner_commit_cannot_write_elected_owner_terminal",
+    "test_backend_publication_broker_terminal_v3.BackendPublicationBrokerTerminalV3Tests.test_quiescent_failed_stdout_is_not_durable_authority_and_fails_promptly",
+    "test_backend_publication_broker_terminal_v3.BackendPublicationBrokerTerminalV3Tests.test_setup_diagnostic_is_bounded_and_uses_actual_cause_errno"
+  ],
+  "omitted_actual_namespace_id": "test_backend_publication_broker_terminal_v3.BackendPublicationBrokerTerminalV3Tests.test_original_namespace_completion_still_emits_valid_durable_result",
+  "scope": "real journal/isolated-child units; explicit injected namespace refusal; no hosted-cause or hardware grant",
+  "skips": [],
+  "source_after": [
+    {
+      "epoch": [
+        69,
+        4785074606502405,
+        33279,
+        1,
+        7459,
+        1790809956738826600,
+        1790809956738826600
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/broker-terminal-owner-repair-v1/run_focused_v1.py",
+      "sha256": "607a330e2374de2cc67c55b8598fcbe2ed12f3ae05fe02a7c743ce6b5a29cd23",
+      "size_bytes": 7459
+    },
+    {
+      "epoch": [
+        69,
+        4503599629240788,
+        33279,
+        1,
+        132238,
+        1789990792092103700,
+        1789990792092103700
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_physical_io_v1.py",
+      "sha256": "bc8a28239d86f1913a66757a497d9d5398dd1b17757c6f17725ae72bc01961ed",
+      "size_bytes": 132238
+    },
+    {
+      "epoch": [
+        69,
+        3940649675811147,
+        33279,
+        1,
+        7230,
+        1789990791976691000,
+        1789990791976691000
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/backend_publication_launcher_invocation_v3.py",
+      "sha256": "ac10258c97fcdd58da02236f7a36974b2ba5060ce2f935955db05b5a9f422ba5",
+      "size_bytes": 7230
+    },
+    {
+      "epoch": [
+        69,
+        3096224745679184,
+        33279,
+        1,
+        124707,
+        1790809978827636100,
+        1790809978827636100
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/backend_publication_process_supervisor_v3.py",
+      "sha256": "99f772665d0d271b24d98f2393a50a0f9e0bbfe5c2840e5ccce65d89a84ed13e",
+      "size_bytes": 124707
+    },
+    {
+      "epoch": [
+        69,
+        3940649675811146,
+        33279,
+        1,
+        41765,
+        1789990791976691000,
+        1789990791976691000
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/backend_publication_dispatch_v3.py",
+      "sha256": "b755230a19c8ab3e46dbe49aa2fa3e7054a79a7e7e4e98f91ceed560fada2740",
+      "size_bytes": 41765
+    },
+    {
+      "epoch": [
+        69,
+        137078313659951802,
+        33279,
+        1,
+        52269,
+        1789990792141350500,
+        1789990792141350500
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_backend_publication_process_supervisor_v3.py",
+      "sha256": "63a6835836ff057e2e38b2d3f18ed4f7cb8b5a6f8dddea926b376b0e8a6b5eb5",
+      "size_bytes": 52269
+    },
+    {
+      "epoch": [
+        69,
+        3659174699626610,
+        33279,
+        1,
+        22542,
+        1790809867466919300,
+        1790809867466919300
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_backend_publication_broker_terminal_v3.py",
+      "sha256": "aa427e5e4ecd2e9e787516c85580d7d9b4dd5fda5e3ae9d26f73fca24d11fec8",
+      "size_bytes": 22542
+    }
+  ],
+  "source_before": [
+    {
+      "epoch": [
+        69,
+        4785074606502405,
+        33279,
+        1,
+        7459,
+        1790809956738826600,
+        1790809956738826600
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/broker-terminal-owner-repair-v1/run_focused_v1.py",
+      "sha256": "607a330e2374de2cc67c55b8598fcbe2ed12f3ae05fe02a7c743ce6b5a29cd23",
+      "size_bytes": 7459
+    },
+    {
+      "epoch": [
+        69,
+        4503599629240788,
+        33279,
+        1,
+        132238,
+        1789990792092103700,
+        1789990792092103700
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_physical_io_v1.py",
+      "sha256": "bc8a28239d86f1913a66757a497d9d5398dd1b17757c6f17725ae72bc01961ed",
+      "size_bytes": 132238
+    },
+    {
+      "epoch": [
+        69,
+        3940649675811147,
+        33279,
+        1,
+        7230,
+        1789990791976691000,
+        1789990791976691000
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/backend_publication_launcher_invocation_v3.py",
+      "sha256": "ac10258c97fcdd58da02236f7a36974b2ba5060ce2f935955db05b5a9f422ba5",
+      "size_bytes": 7230
+    },
+    {
+      "epoch": [
+        69,
+        3096224745679184,
+        33279,
+        1,
+        124707,
+        1790809978827636100,
+        1790809978827636100
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/backend_publication_process_supervisor_v3.py",
+      "sha256": "99f772665d0d271b24d98f2393a50a0f9e0bbfe5c2840e5ccce65d89a84ed13e",
+      "size_bytes": 124707
+    },
+    {
+      "epoch": [
+        69,
+        3940649675811146,
+        33279,
+        1,
+        41765,
+        1789990791976691000,
+        1789990791976691000
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/backend_publication_dispatch_v3.py",
+      "sha256": "b755230a19c8ab3e46dbe49aa2fa3e7054a79a7e7e4e98f91ceed560fada2740",
+      "size_bytes": 41765
+    },
+    {
+      "epoch": [
+        69,
+        137078313659951802,
+        33279,
+        1,
+        52269,
+        1789990792141350500,
+        1789990792141350500
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_backend_publication_process_supervisor_v3.py",
+      "sha256": "63a6835836ff057e2e38b2d3f18ed4f7cb8b5a6f8dddea926b376b0e8a6b5eb5",
+      "size_bytes": 52269
+    },
+    {
+      "epoch": [
+        69,
+        3659174699626610,
+        33279,
+        1,
+        22542,
+        1790809867466919300,
+        1790809867466919300
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_backend_publication_broker_terminal_v3.py",
+      "sha256": "aa427e5e4ecd2e9e787516c85580d7d9b4dd5fda5e3ae9d26f73fca24d11fec8",
+      "size_bytes": 22542
+    }
+  ],
+  "sources_unchanged": true,
+  "tests_run": 12
+}

@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "vast_four_arm_pure_science_independent_closed_result_review_v1",
+  "reviewer": "/root/adversarial_review",
+  "disposition": "verified_original_descriptive_reduction_and_exports",
+  "blocking_findings": [],
+  "evidence": [
+    {"path": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/author-closure.v1.json", "size_bytes": 11892, "sha256": "38a7953ecbdd8a9abaa2dcbcd8a460b7e7de5a5a12def4b14564d7deb00b3eea"},
+    {"path": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/original-execution-root-grant.v1.json", "size_bytes": 4128, "sha256": "17c5ab405273c0a5a49dd7e02671d8bf1cfc1eb48c1de42926d39dc52490eb90"},
+    {"path": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/attempt01/launch.v1.json", "size_bytes": 3126, "sha256": "6aca01cea57a4d30beea5b52b5479fd928d62a71e9465b8293970c15eb68dfbd"},
+    {"path": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/attempt01/terminal.v1.json", "size_bytes": 4439, "sha256": "2bf785728fe48b3381cf3e275a2d912638deaeb4e2e45fd0a86117eed62a4825"},
+    {"path": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/attempt01/custody-and-comparison.v1.json", "size_bytes": 206412, "sha256": "e73d34e277619099c7549fc7d51d9870d62c74dbd1c338496dc9aaa9d933c424"},
+    {"path": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/attempt01/recomputed-summaries.v1.json", "size_bytes": 70769, "sha256": "e6491331aef1750214bdc14cac407804bab4680b43244b58b50d99313fb9819b"},
+    {"path": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/attempt01/exports-and-interpretation.v1.json", "size_bytes": 11407, "sha256": "0700a387be61f1bbd6c8cb9f71d32d6b1182aa4e8ce79815037cdf10b07aa88c"},
+    {"path": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/attempt01/four_arm_metrics.csv", "size_bytes": 1913, "sha256": "0926bc6bf324f7b4489f1ffbd0df25b16cbe6c0da0b96b3c244e43ef86350d34"},
+    {"path": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/attempt01/four_arm_latency_coverage_cobs.svg", "size_bytes": 183708, "sha256": "73b4cf44a795e188fd9a1a9d2445005d184fc55dcac305d535267b5bfad463e2"},
+    {"path": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/postterminal-process-observation.v1.json", "size_bytes": 392, "sha256": "e4c19a77d35236024e165ecd097fddb3aef0f517cbd70596e12b49a2adae32cf"}
+  ],
+  "independent_checks": {
+    "source_three_before_after_current_equal_to_reviewed_pins": true,
+    "original_returncode": 0,
+    "original_capture_elapsed_s": 61.0041748189833,
+    "original_reducer_elapsed_s": 60.856084486993495,
+    "original_both_EOF": true,
+    "timeout_overflow_primary_or_additional_error": false,
+    "late_companion_present": false,
+    "original_child_pid": 53052,
+    "original_observer_pid": 53050,
+    "original_process_groups_absent_at_terminal_and_closed_later_observation": true,
+    "original_postterminal_scan_errors": [],
+    "held_unique_inputs": 220,
+    "all_220_recorded_full_hash_size_and_seven_epochs_before_after_equal": true,
+    "original_FD_holds_released": true,
+    "actual_project_import_sources": 27,
+    "actual_matplotlib_package_leaves": 95,
+    "actual_raw_evidence_leaves": 60,
+    "each_arm_typed_candidate_arm_cold_summary_fields_exact": 72,
+    "each_arm_typed_descriptive_fields_exact": 16,
+    "each_arm_original_csv_columns_exact": 14,
+    "new_four_rows_28_columns_match_typed_export_values": true,
+    "export_physical_hashes_match_original_descriptors": true,
+    "SVG_XML_well_formed": true
+  },
+  "numeric_findings": [
+    {"resource": "cpu", "scenario": "baseline", "admitted": 1080, "completed": 559, "dropped": 521, "censored": 0, "on_time_completed": 0, "latency_p50_ms": 5256.0, "partial_c_obs_ms_per_ingress": 14108.182407407},
+    {"resource": "cpu", "scenario": "shared", "admitted": 1080, "completed": 676, "dropped": 404, "censored": 0, "on_time_completed": 0, "latency_p50_ms": 3590.0, "partial_c_obs_ms_per_ingress": 7523.422222222},
+    {"resource": "gpu", "scenario": "baseline", "admitted": 1080, "completed": 1070, "dropped": 10, "censored": 0, "on_time_completed": 1, "latency_p50_ms": 2131.0, "partial_c_obs_ms_per_ingress": 10324.72037037},
+    {"resource": "gpu", "scenario": "shared", "admitted": 1080, "completed": 1075, "dropped": 5, "censored": 0, "on_time_completed": 1, "latency_p50_ms": 2154.0, "partial_c_obs_ms_per_ingress": 2964.597222222}
+  ],
+  "scientific_interpretation": [
+    "The original CPU shared arm has greater descriptive completion coverage (51.759% to62.593%) and lower completed-frame median latency (5256 to3590 ms). Both CPU arms have zero on-time completions at100 ms. This is useful load/topology evidence, not an observed successful SLO regime.",
+    "The original GPU pair completes1070/1080 and1075/1080 admissions, but each has only one on-time completion. Median latency remains approximately2.1 seconds (2131 versus2154 ms), so this pair does not demonstrate a deadline benefit from sharing.",
+    "Partial C_obs per admitted frame is lower in the shared arms by approximately46.7% CPU and71.3% GPU. These are summed attributed stage-elapsed proxies; overlapping/queued stages and sequential baseline-first execution prohibit relabelling them as processor work, energy, NVDEC busy-time savings or a causal effect estimate.",
+    "Every export preserves admitted/completed/dropped/censored balance and completed-only latency. No latency is fabricated for drops. The supplied ratios correctly leave the zero CPU on-time baseline ratio unavailable.",
+    "Six logical streams reuse two recordings at1 fps with the original600-scale timeline. One pair per resource, unchanged intake, common NVDEC decoder and absent confidence intervals remain explicit. The near-saturated100-ms outcome does not prove that overload or a particular decoder buffer caused it; no mechanism repair, accuracy or population claim follows from these results."
+  ],
+  "review_limits": [
+    "Reviewed exact closed outputs and typed comparison/custody ledgers; no original raw re-reduction, test, renderer, model, native, engine or policy replay was performed.",
+    "The220 original FD/hash/epoch checks and process scans are authentic executed reader evidence, independently cross-checked here as closed records. This review does not falsely claim a second physical hash pass over229.7 MB or fresh global process/engine absence.",
+    "The author-only Windows/POSIX path spelling assertion failure was followed by a metadata spelling correction, not a second reducer or producer execution; the original failure disclosure is retained.",
+    "This receipt verifies the bounded descriptive consumer result and export scope. Original CPU/GPU all-phase acceptance remains in their separate original receipts; no full-campaign, accuracy or full-CI grant is issued. All reviewer holds are released."
+  ],
+  "pure_descriptive_result_verified": true,
+  "measurement_acceptance": false,
+  "full_campaign_acceptance": false,
+  "full_CI_acceptance": false
+}

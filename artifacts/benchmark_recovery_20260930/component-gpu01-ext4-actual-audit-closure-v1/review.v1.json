@@ -1,0 +1,463 @@
+{
+  "actual_original_cli_owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 47763,
+    "pid": 47763,
+    "ppid": 47761,
+    "startticks": 28764548,
+    "uid": 1000
+  },
+  "actual_original_guardian_owner": {
+    "gid": 1000,
+    "pid": 48013,
+    "proc_stat_starttime_ticks": 28773540,
+    "uid": 1000
+  },
+  "actual_original_outer_elapsed_s": 834.7983397349599,
+  "all_phase_reconciliation": {
+    "artifact_kind": "vast_complete_operational_reconciliation_v1",
+    "comparison_sha256": "0025faf77ab1f320f2761ca93787fd698bd7ec2fdb1fd3a200cabacf33516d09",
+    "connections_accepted": 31,
+    "excluded_request_count": 1488,
+    "measurement_request_count": 8594,
+    "mode": "bounded_native_diagnostic_operational_v1",
+    "operations": [
+      {
+        "excluded_request_count": 744,
+        "measurement_request_count": 4294,
+        "ordinal": 0,
+        "request_count": 5038
+      },
+      {
+        "excluded_request_count": 744,
+        "measurement_request_count": 4300,
+        "ordinal": 1,
+        "request_count": 5044
+      }
+    ],
+    "original_operation_count": 2,
+    "publication_authority": false,
+    "request_count": 10082,
+    "requests_by_worker": {
+      "damage:cpu": 0,
+      "damage:gpu": 2520,
+      "foreign_object:cpu": 0,
+      "foreign_object:gpu": 2520,
+      "plate_number:cpu": 0,
+      "plate_number:gpu": 2520,
+      "vehicle_type:cpu": 0,
+      "vehicle_type:gpu": 2522
+    },
+    "schema_version": 1
+  },
+  "artifact_kind": "vast_gpu01_ext4_actual_closed_audit_metadata_review_v1",
+  "benchmark_accepted_gpu_component_only": true,
+  "close_errors": [],
+  "cold_pair": {
+    "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-01/cold-pair/component_pair_result.v1.json",
+    "sha256": "a28af5697096df8a468be6c04cf6307c4a425778a3b9b83f6dfae1c54025562d",
+    "size_bytes": 18450
+  },
+  "elapsed_after_release_s": 0.03466049599228427,
+  "fresh_two_actual_process_scans": [
+    {
+      "actual_pid_absence": {
+        "47761": true,
+        "47763": true,
+        "48013": true,
+        "52771": true,
+        "52772": true
+      },
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "errors": [],
+      "members": [],
+      "observed_at_ns": 1790806561780776052
+    },
+    {
+      "actual_pid_absence": {
+        "47761": true,
+        "47763": true,
+        "48013": true,
+        "52771": true,
+        "52772": true
+      },
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "errors": [],
+      "members": [],
+      "observed_at_ns": 1790806561782210842
+    }
+  ],
+  "full_publication_q4_accepted": false,
+  "guardian_authenticated_stop": true,
+  "late_companion_absent": true,
+  "limitation": "Metadata-only second gate; original approved auditor performed95 full-byte/name/seven-epoch checks. No repeated weight reads, cold scan, engine/model/native/test operation.",
+  "metadata_witnesses": [
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-gpu01-ext4-actual-audit-closure-v1/review_closed_metadata_v1.py",
+        "sha256": "8e37507854ce409be1554410332e3986dd9b7194516910aa29bbe3b1b178dd56",
+        "size_bytes": 12304
+      },
+      "epoch": [
+        69,
+        2814749769526242,
+        33279,
+        1,
+        12304,
+        1790806551740585200,
+        1790806551740585200
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-gpu01-ext4-postterminal-audit-preparation-v1/audit_v1.py",
+        "sha256": "033a597766a461c8f1b1e2be43bb775ec27e3085202bb384e4ba2c15261d43f8",
+        "size_bytes": 17876
+      },
+      "epoch": [
+        69,
+        1407374885977283,
+        33279,
+        1,
+        17876,
+        1790804263279948300,
+        1790804263279948300
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-gpu01-ext4-postterminal-audit-preparation-v1/dispatch_v1.py",
+        "sha256": "7eb5ad62673ca3cfd947fe0d28b1273f2153a1c41b1e4a482f1e011216cb4bc6",
+        "size_bytes": 1998
+      },
+      "epoch": [
+        69,
+        1407374885977284,
+        33279,
+        1,
+        1998,
+        1790804263282556600,
+        1790804263282556600
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-gpu01-ext4-postterminal-audit-preparation-v1/review.v1.json",
+        "sha256": "e4335edf0f39faed54045149e12a162b7b4d2bfbdb56cf3fa7b8213e0742a5db",
+        "size_bytes": 18011
+      },
+      "epoch": [
+        69,
+        3096224746199964,
+        33279,
+        1,
+        18011,
+        1790806229223896700,
+        1790806229223896700
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-gpu01-ext4-postterminal-audit-preparation-v1/held-inputs-and-processes.v1.json",
+        "sha256": "a056d62dd49d667ca96b59f6a263e77d2159113215f12264e9f08164e0fd3988",
+        "size_bytes": 128300
+      },
+      "epoch": [
+        69,
+        2814749769489307,
+        33279,
+        1,
+        128300,
+        1790806229220832300,
+        1790806229220832300
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-gpu01-ext4-postterminal-audit-preparation-v1/dispatch.terminal.v1.json",
+        "sha256": "9b6d5d8a4f3ad9a32517d1a84cf260717a05d300801b077ff30495a3705d2194",
+        "size_bytes": 1619
+      },
+      "epoch": [
+        69,
+        2814749769489310,
+        33279,
+        1,
+        1619,
+        1790806229268720200,
+        1790806229268720200
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-gpu01-ext4-postterminal-audit-preparation-v1/dispatch.launch.v1.json",
+        "sha256": "f5de2facfc0c91b1ed299617e0bc7b3b789d7e23c69129f50149730b32618198",
+        "size_bytes": 1174
+      },
+      "epoch": [
+        69,
+        2251799816067990,
+        33279,
+        1,
+        1174,
+        1790806229137177700,
+        1790806229137177700
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-gpu01-ext4-postterminal-audit-preparation-v1/audit.launch.v1.json",
+        "sha256": "1de48f908fd2cb7d661d1d970e9ca05e888777e27ebfff0ca9d765742f3be173",
+        "size_bytes": 847
+      },
+      "epoch": [
+        69,
+        3096224746199962,
+        33279,
+        1,
+        847,
+        1790806229172300300,
+        1790806229172300300
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-gpu01-ext4-postterminal-audit-preparation-v1/audit.stdout.v1.raw",
+        "sha256": "f95ac130cd23954e8200b47277d2283d96e46311d4fdb71b4c079617a5038069",
+        "size_bytes": 289
+      },
+      "epoch": [
+        69,
+        2814749769489304,
+        33279,
+        1,
+        289,
+        1790806229224939500,
+        1790806229224939500
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-gpu01-ext4-postterminal-audit-preparation-v1/audit.stderr.v1.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "epoch": [
+        69,
+        2251799816067993,
+        33279,
+        1,
+        0,
+        1790806229147739300,
+        1790806229147739300
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-01-original-controller/original.terminal.v1.json",
+        "sha256": "4c0e3fd34fb8ac8255bffab52fec7a310601eb4d29211a40f6948e882cbf3fc9",
+        "size_bytes": 88102
+      },
+      "epoch": [
+        2096,
+        553072,
+        33188,
+        1,
+        88102,
+        1790806165782129339,
+        1790806165782129339
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-01/component_cli_terminal.v1.json",
+        "sha256": "abea1a00a5cb5c68e56657b78bea0683461bed121cce61afb11f2f1cd046460e",
+        "size_bytes": 8836
+      },
+      "epoch": [
+        2096,
+        553071,
+        33060,
+        1,
+        8836,
+        1790806165574118023,
+        1790806165574118023
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-01/guardian/service_lifecycle.v1.json",
+        "sha256": "3169bc6995b2beda2e6fcec475ab921d514b3b981b2306b11ca5fe78428dbf9c",
+        "size_bytes": 10040
+      },
+      "epoch": [
+        2096,
+        553224,
+        33024,
+        1,
+        10040,
+        1790806069602822233,
+        1790806069602822233
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-01/guardian/service_authority.v1.json",
+        "sha256": "82601d23d573aece336263118922c10795c7695ce9378cd9e9e642f2110589f7",
+        "size_bytes": 16312
+      },
+      "epoch": [
+        2096,
+        552977,
+        33024,
+        1,
+        16312,
+        1790805435672034923,
+        1790805435672034923
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-01/cold-pair/component_pair_result.v1.json",
+        "sha256": "a28af5697096df8a468be6c04cf6307c4a425778a3b9b83f6dfae1c54025562d",
+        "size_bytes": 18450
+      },
+      "epoch": [
+        2096,
+        553068,
+        33060,
+        1,
+        18450,
+        1790806160395516439,
+        1790806160395516439
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-01/cold-pair/component_pair_metrics.csv",
+        "sha256": "23f110ccd5400f9e5b447dd9ed4e8a6a598007741a7538deee31abf8dde91c13",
+        "size_bytes": 616
+      },
+      "epoch": [
+        2096,
+        553065,
+        33060,
+        1,
+        616,
+        1790806158995438272,
+        1790806158995438272
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-01/cold-pair/component_pair_latency_ecdf.svg",
+        "sha256": "2acd67721f16d88987f0d4c8189defb77be1272d82b0a52589c9ba374d99a2bf",
+        "size_bytes": 77040
+      },
+      "epoch": [
+        2096,
+        553066,
+        33060,
+        1,
+        77040,
+        1790806159087443409,
+        1790806159087443409
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-01/operations/arms/component-gstreamer_custom-gpu-h264-independent-processes/component_arm_result.v1.json",
+        "sha256": "e4abfbf28e01b5cc3fb021f242a475af72e5b2064e00734cf617bbefb17a2ff1",
+        "size_bytes": 15441
+      },
+      "epoch": [
+        2096,
+        553192,
+        33060,
+        1,
+        15441,
+        1790805757587568006,
+        1790805757587568006
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-01/operations/arms/component-gstreamer_custom-gpu-h264-shared-video-dag/component_arm_result.v1.json",
+        "sha256": "3ea3747565734fec22f70d8cab6912cd17d6d61dc52f5de0ec2bc5e47ac3075a",
+        "size_bytes": 14150
+      },
+      "epoch": [
+        2096,
+        553222,
+        33060,
+        1,
+        14150,
+        1790806066438633718,
+        1790806066438633718
+      ]
+    }
+  ],
+  "original_audit95_before_after_current_equal": true,
+  "original_audit_dispatcher": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-gpu01-ext4-postterminal-audit-preparation-v1/dispatch_v1.py",
+    "sha256": "7eb5ad62673ca3cfd947fe0d28b1273f2153a1c41b1e4a482f1e011216cb4bc6",
+    "size_bytes": 1998
+  },
+  "original_audit_elapsed_s": 0.1312920229975134,
+  "original_audit_fds_released": true,
+  "original_audit_reader": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-gpu01-ext4-postterminal-audit-preparation-v1/audit_v1.py",
+    "sha256": "033a597766a461c8f1b1e2be43bb775ec27e3085202bb384e4ba2c15261d43f8",
+    "size_bytes": 17876
+  },
+  "original_auditor_retained_inputs_count": 149,
+  "original_cli_status": "component_pair_complete",
+  "original_cli_terminal": {
+    "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-01/component_cli_terminal.v1.json",
+    "sha256": "abea1a00a5cb5c68e56657b78bea0683461bed121cce61afb11f2f1cd046460e",
+    "size_bytes": 8836
+  },
+  "original_completed_frames_per_arm": [
+    1070,
+    1075
+  ],
+  "original_dispatch_terminal": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-gpu01-ext4-postterminal-audit-preparation-v1/dispatch.terminal.v1.json",
+    "sha256": "9b6d5d8a4f3ad9a32517d1a84cf260717a05d300801b077ff30495a3705d2194",
+    "size_bytes": 1619
+  },
+  "original_ingress_per_arm": 1080,
+  "original_outer_capture_accepted_false_preserved": true,
+  "original_outer_terminal": {
+    "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-01-original-controller/original.terminal.v1.json",
+    "sha256": "4c0e3fd34fb8ac8255bffab52fec7a310601eb4d29211a40f6948e882cbf3fc9",
+    "size_bytes": 88102
+  },
+  "original_review": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-gpu01-ext4-postterminal-audit-preparation-v1/review.v1.json",
+    "sha256": "e4335edf0f39faed54045149e12a162b7b4d2bfbdb56cf3fa7b8213e0742a5db",
+    "size_bytes": 18011
+  },
+  "original_witness": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-gpu01-ext4-postterminal-audit-preparation-v1/held-inputs-and-processes.v1.json",
+    "sha256": "a056d62dd49d667ca96b59f6a263e77d2159113215f12264e9f08164e0fd3988",
+    "size_bytes": 128300
+  },
+  "reserve_absent": true,
+  "reviewer_metadata_fds_released": true,
+  "reviewer_source": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-gpu01-ext4-actual-audit-closure-v1/review_closed_metadata_v1.py",
+    "sha256": "8e37507854ce409be1554410332e3986dd9b7194516910aa29bbe3b1b178dd56",
+    "size_bytes": 12304
+  },
+  "schema_version": 1,
+  "source_commit": "0ad78d6abdb3c526544a17185af7fe8094716735",
+  "status": "accepted_original_gpu_component_boundary",
+  "task_18_9_complete": true,
+  "task_recommendations": {
+    "18.9": "Complete selected forced-GPU pair; CPU06 already independently accepted. No qualification/Q4/full grant.",
+    "21.4": "Both fresh original fixed-budget pairs accepted. Root may close after joining prior three-host-only impact/unchanged73/native3/worker2 and timing receipts.",
+    "22.2": "Genuine ext4 setup/new stock87 closure and both fixed-budget pairs accepted. Root may close after joining prior setup/bind/host/controller reviews."
+  }
+}

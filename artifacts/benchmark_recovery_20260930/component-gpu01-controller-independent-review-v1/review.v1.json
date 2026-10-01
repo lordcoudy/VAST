@@ -1,0 +1,40 @@
+{
+  "artifact_kind": "vast_independent_gpu01_prepared_controller_review_v1",
+  "basis_review": {
+    "path": "artifacts/benchmark_recovery_20260930/component-host-renewal-v3-independent-review-v1/review.v1.json",
+    "sha256": "3649f754e9645559c4169bd98313eb0993190e6191103e2dd7acde37f1f7b14e",
+    "size_bytes": 4158
+  },
+  "checks": [
+    "Forward and inverse raw byte proof exact for CPU\u2192GPU, cpu\u2192gpu, gpu-pair-04\u2192gpu-pair-01 only.",
+    "CPU04-reviewed ownership,95-input custody,1MiB channels,2100s stock pair/2250s observer/15s teardown and existing20GiB CLI reserve behavior unchanged.",
+    "Original dynamic source commit and host-closure argument gates unchanged; image e474 and runtime receipt61874 unchanged.",
+    "New GPU01 output and observer namespaces absent at review; no CPU04 active output read."
+  ],
+  "current_closed_host_closure": {
+    "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/host/execution-code-closure.v5.json",
+    "sha256": "3b9cc84e185fc3cc51f9feafb5d4dabbf578d985633a9c4eeb95a400b28f714d",
+    "size_bytes": 30986
+  },
+  "disposition": "approved_unexecuted_literal_only_controller_preparation",
+  "independent_review": true,
+  "limits": [
+    "This is source preparation approval, not execution or hardware/scientific acceptance.",
+    "Actual GPU dispatch requires root authorization after CPU04 terminal, independent custody audit and cold review close.",
+    "No reviewer tests, engine query, model or worker operation."
+  ],
+  "reviewed_at_ns": 1790780118230130851,
+  "schema_version": 1,
+  "source_pins": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/selected-gstreamer-cpu04-controller-preparation-v1/run_original_cpu_component_pair_v1.py",
+      "sha256": "f5c60a937c87353621d614060f1471646a4349969a87af4c157d32a0fde080ea",
+      "size_bytes": 15136
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/selected-gstreamer-gpu01-controller-preparation-v1/run_original_gpu_component_pair_v1.py",
+      "sha256": "807f28e2cb6acb5584d318a0064a9eaa11095a3982a5327e50bf7293fbff3027",
+      "size_bytes": 15136
+    }
+  ]
+}

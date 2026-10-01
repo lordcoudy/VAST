@@ -1,0 +1,71 @@
+{
+  "CPU_original_complete_retention_receipt": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu06-windows-retention-preparation-v1/original-retention-attempt01/receipt.v1.json",
+    "sha256": "fc0c3f64522153022614ba8b7b5c951bbf9bf24dd2059781bd20411645c98373",
+    "size_bytes": 2059
+  },
+  "CPU_source_original": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu06-windows-retention-preparation-v1/pack_original_outputs_v2.py",
+    "sha256": "43088e67d8f470033be6f4fa07ed109c718e047c4e61615b3d979ee1e784d929",
+    "size_bytes": 10516
+  },
+  "GPU_actual_acceptance_proof": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-gpu01-ext4-actual-audit-closure-v1/review.v1.json",
+    "sha256": "6c25127270763cf47a03291be9b2115671ea7d6df3d4d8c19fb7f59932b79768",
+    "size_bytes": 16564
+  },
+  "all_bytes": 266274388,
+  "all_file_count": 129,
+  "all_function_ASTs_equal": true,
+  "archive_strategy": "128 original GPU01 files plus URI/fullSHA/CRC/epoch7 manifest, streamingZIP level1; originals preserved at ext4 URIs; original ZIP CRC and all decompressed memberSHA reverified; receipt is data retention only",
+  "artifact_kind": "vast_gpu01_finite_retention_preparation_v1",
+  "author_AST_check_history": "Initial reverse string normalization replaced preexisting unchanged GPU gate labels as well and falsely failed; corrected exact forward literal transform from CPU source plus independent unchanged9function AST comparison. No packer/test/data operation or functionalsource repair.",
+  "benchmark_or_hardware_or_model_grant": false,
+  "bounds": "Unchanged original120+10 outer130; source<=64MiB, archive<=256MiB,metadata<=1MiB,stream chunks1MiB; original final120 receipt-last/sticky latefailure and FD/CRC/fullSHA predicates unchanged",
+  "copied_original_CPU_source": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-gpu01-windows-retention-preparation-v1/cpu06-pack_original_outputs_v2.original.py",
+    "sha256": "43088e67d8f470033be6f4fa07ed109c718e047c4e61615b3d979ee1e784d929",
+    "size_bytes": 10516
+  },
+  "directory_count": 29,
+  "duplicate_verification_scope": "Actual accepted source-authority engine descriptor equals both actual original ELF launch engine descriptors, whose inode/mode/size match currentstat. Metadata preparation does not reread current45.6MB duplicate payload; original6c accepted producer/cold proof supplies original current byte authority. Only copied runtime Docker input excluded.",
+  "excluded_engine_duplicate_bytes": 45570705,
+  "inventory": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-gpu01-windows-retention-preparation-v1/inventory.v1.json",
+    "sha256": "aa750080acc6da6d66b9e5f9e2b52a9f9952a5f587d9f6cbe00c9d576650d371",
+    "size_bytes": 100145
+  },
+  "largest_retained_leaf_bytes": 38210066,
+  "literal_changes": {
+    "165944632": "220703683",
+    "211515337": "266274388",
+    "CPU06": "GPU01",
+    "cpu-pair-06": "gpu-pair-01",
+    "cpu06": "gpu01",
+    "cpu_acceptance_proof_sha256": "gpu_acceptance_proof_sha256",
+    "f18913e434ceddd0f65dae6ad0b7b0c642d54b6d1ff9751e2c9bb28378ba2ce0": "aa750080acc6da6d66b9e5f9e2b52a9f9952a5f587d9f6cbe00c9d576650d371"
+  },
+  "packer": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-gpu01-windows-retention-preparation-v1/pack_original_outputs_v2.py",
+    "sha256": "6e60e0b8c88cb94ba9590bad617b8fa1d29715d6c58fa4ba3bdfc90987e21b44",
+    "size_bytes": 10516
+  },
+  "preserved_preparation_v1": {
+    "sha256": "33f3d3c255d3e70aefe60407082ea8dd12d6bbb4d8055f31ebdc96f9e8a8542d",
+    "size_bytes": 4589
+  },
+  "remaining_gate": "Independent exactsource peer and root original one-dispatch authorization; no packing performed",
+  "retained_bytes": 220703683,
+  "retained_file_count": 128,
+  "retention_executed": false,
+  "schema_version": 1,
+  "source_groups": [
+    "gpu-pair-01",
+    "gpu-pair-01-original-controller"
+  ],
+  "source_namespace_custody": "Exact129-file29-directory initial namespace/epochs and ancestor dirFDs; transferred leaf source7epochs beforeafter; final originalsource membership/metadata/dirFD rechecks; releaseFDs before receipt-last",
+  "static_AST_only_no_test_or_packer_execution": true,
+  "status": "source_frozen_prepared_not_executed",
+  "unchanged_function_count": 9,
+  "whole_AST_exact_forward_literal_adaptation_equal": true
+}

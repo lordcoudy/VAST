@@ -1,0 +1,153 @@
+{
+  "artifact_kind": "vast_component_supervisor_renewal_independent_source_review_v1",
+  "author_review": {
+    "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/author-review.v1.json",
+    "sha256": "1e5597e2773fd22b90213f3a1b605a634572b17bba16fb9a27882840c56091e3",
+    "size_bytes": 6295
+  },
+  "bindings": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/renewal-recipe.v2.json",
+      "sha256": "9739e90148531a397ec4487906ff696d12165a4150c7ea06dd91ecedaa14459c",
+      "size_bytes": 11096
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/source-scope-preparation.v2.json",
+      "sha256": "5e62b7d50ec2975bd61a2693b7b828fbeffe57898f970ff7299ef90256d87456",
+      "size_bytes": 85281
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/controller-preparation.v1.json",
+      "sha256": "33d3f96be4cc377b08b42757b60593c1b49dcec3a0bc992f908762a5f5591a8a",
+      "size_bytes": 2413
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/metadata-collision-preflight.v2.json",
+      "sha256": "a3a49f4f8b7c16d17769d60780df10851595a6f56f248dd4c6f71d6827d21bb5",
+      "size_bytes": 74696
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/renewal-recipe.v1.json",
+      "sha256": "bc0914859cee12a6503b0ca77fbb99369ce0aac24aaa165a8ae5a680b604f372",
+      "size_bytes": 9936
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/plan.pending.md",
+      "sha256": "4d7bdf0701dcb026bcced4965863ea9c1264e04cb24c0a883a32a02dcd86bf67",
+      "size_bytes": 3669
+    }
+  ],
+  "blockers": [],
+  "checks": [
+    "Renewal pins the exact canonical ext4 root UID/GID/device/inode, shared objects directory, config and alternates. Ordinary checkout --detach only; no force/reset/clean/fetch/automatic retry or rollback.",
+    "Before mutation, future tracked names colliding with currently untracked originals are refused even for identical bytes. Protected currently tracked original blob IDs AND modes must agree. This resolved the reviewer preventive finding.",
+    "Actual2693 presence/path inventory and2504 original untracked names are descriptive historical membership only. Future execution streams actual complete SHA256/raw Git blob/execute mode and retains original regular single-link FDs, full7epochs, names and ancestor identities across the checkout.",
+    "Every actual current untracked leaf and declared original input except the approved broker leaf remains protected. All original namespace members retained; original fullbytes/epochs rejoined after update and all held descriptors retired. Any inconsistency fails without retry.",
+    "Original Git group is checked regardless direct-child exit. Surviving owned group gets SIGKILL containment and remains failed, with first fault, signals, EOF, reaping and individual resource-close facts. This resolved the reviewer cleanup edge.",
+    "Absolute600 work/610 hard envelope, bounded8MiB metadata/channels, finite20k namespace/tree and positive FD-capacity precondition; final receipt publication and FD close precede sticky late failure/nonzero. Caller exact timeout600+KILL10 remains required; forced timeout cannot grant clean renewal.",
+    "Separate stock capture has8 original function ASTs identical. Only old receipt inventory/path/SHA, fresh output namespace and exclusive new receipt filename changed. Actual stock CLI remains project-root/receipt with pinned CPython -I -B and120+10 envelope.",
+    "Old adbcb638 epoch-bound authority is never loaded/rebound to renewed sources. It supplies only87 canonical source-path names. Actual future receipt/current source87/interpreter/HEAD/raw body/epoch validation must independently close after the real stock capture.",
+    "CPU07/GPU02 raw text is exact finite literal adaptation of original closed controllers; all9 original function/class ASTs identical. Fresh names and new closure filename only;95 simultaneous pins, CLI2100/outer2250/teardown15 and scientific settings unchanged.",
+    "Current180 source/dependency/controller physical bytes independently rehashed:67,504,786 B, no mismatch to closed scope. Sole prior/current source SHA delta is supervisor124707B99f. All18 original allowlist bytes verified, broker absent; selected73/deps6/native3/worker2 remain unchanged by this host repair.",
+    "Closed metadata preflight470 candidate names intersects none of2836 original untracked leaves and records unchanged original6499-name epochs/HEAD/index. This remains a candidate-only check, not the future commit: helper must recheck the actual committed tree.",
+    "Original CPU06/GPU01 audit/science/retention evidence descriptors physically verified; old results stay authentic historical0ad outcomes and are never substituted for current-source pair acceptance."
+  ],
+  "controller_inverse_checks": [
+    {
+      "function_class_AST_count": 9,
+      "origin": {
+        "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/run_original_cpu_component_pair_ext4_v1.py",
+        "sha256": "49b6659ce3b6c595be21bf5ffefa721738a23094cc1a66642a9f5bab8666f559",
+        "size_bytes": 15089
+      },
+      "raw_exact_literal_inverse": true,
+      "resource": "cpu",
+      "source": {
+        "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/run_original_cpu_component_pair_ext4_supervisor_v2.py",
+        "sha256": "b4488d87a4c0feb500d7fdbca77af76e4745efeafb4927003ea1e932227ec8fd",
+        "size_bytes": 15100
+      }
+    },
+    {
+      "function_class_AST_count": 9,
+      "origin": {
+        "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/run_original_gpu_component_pair_ext4_v3.py",
+        "sha256": "6200b55afd15ca2b9964a52de3fc0ae1fd4f6e72b131b50afa74fac01fad24b2",
+        "size_bytes": 15089
+      },
+      "raw_exact_literal_inverse": true,
+      "resource": "gpu",
+      "source": {
+        "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/run_original_gpu_component_pair_ext4_supervisor_v4.py",
+        "sha256": "4c37f05c80777ffa4b9932441a1301cef66a8fd38fbb986e4f1eae40e6b00831",
+        "size_bytes": 15100
+      }
+    }
+  ],
+  "disposition": "approved_prepared_source_only",
+  "execution_limits": {
+    "checkout_hard_s": 610,
+    "checkout_work_s": 600,
+    "future_CLI_s": 2100,
+    "future_outer_s": 2250,
+    "future_pair_pins": 95,
+    "future_teardown_s": 15,
+    "stock_capture_hard_s": 130,
+    "stock_capture_work_s": 120
+  },
+  "full_ci_successful": false,
+  "future_host_closure": null,
+  "future_source_commit": null,
+  "hardware_or_scientific_acceptance": false,
+  "limits": [
+    "Prepared/unexecuted review only; no checkout or stock source capture/test/model/media/producer raw payload/engine/native/benchmark operation by reviewer. Source-only dependency/wheel bytes were read for the180-item scope proof.",
+    "No current live-image/measurement/full-CI/qualification grant. Additional measured source differences require reviewed revision. Future commit and host closure remain null.",
+    "Original source-scope comparisons are byte facts, not historical epoch rebinding. New checkout source epochs are intentionally new; old producer receipts remain unchanged.",
+    "Reviewer used Windows Python3.14 -I -B for AST/JSON/file hashes; no physical saved reviewer dispatch source or Linux epoch observation is asserted. All reviewer handles closed."
+  ],
+  "original_source_commit": "0ad78d6abdb3c526544a17185af7fe8094716735",
+  "required_actual_gates": [
+    "Final broker/capacity source+focused+peer reviews and new same-PR exact checkpoint commit/push. Future commit must be concrete40hex and present in existing shared Git objects; no fetch/clone is performed by renewal.",
+    "Root creates/completes the genuinely fresh exact-source ext4 CI checkout/setup FIRST in its separate namespace, preserving old benchmark95 physical epochs. Do not dispatch full localCI during measurements.",
+    "Physically check the listed original closed CPU06/GPU01/science/CPU+GPU retention metadata and fresh selected original PID/PGID absence. No active source/guardian/auditor/packer or holder; no checkout while any original FD hold exists. Historical absence records are retained observations, not a new global-host quiet assertion.",
+    "No concurrent source/HEAD/index edits in either source checkout while the original update/capture runs; caller separately holds the exact reviewed helper/source bytes.",
+    "New future-tree paths that collide with existing untracked originals are refused even if bytes agree. Protected currently tracked originals must have identical future blob IDs and modes BEFORE checkout. No force/reset/clean/deletion or overwrite/restore transaction.",
+    "Independently join actual renewed source/root/unchanged inputs+old output epochs and fresh stock87 host closure after all original command/resource holds release. Only then separate explicit one-shot CPU07/GPU02 authorization."
+  ],
+  "reviewable": true,
+  "reviewed_at_utc": "2026-10-01T00:01:03.668363+00:00",
+  "reviewer_ran_tests_or_helpers": false,
+  "schema_version": 1,
+  "scope": "Frozen ordinary detached-checkout renewal helper, separate new stock host closure, finite recipe/source-scope proof, and CPU07/GPU02 literal controller preparations. No execution grant or new authority.",
+  "source_scope": {
+    "all18_allowlists_physical_verified": true,
+    "changed_paths": [
+      "scripts/backend_publication_process_supervisor_v3.py"
+    ],
+    "physical_bytes_hashed": 67504786,
+    "physical_source_count": 180,
+    "selected_image_id": "sha256:e474867043f1a74387573140cb2bfd69825df2672edad0acda0d28954af84cb6"
+  },
+  "sources": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/renew_existing_ext4_checkout_v1.py",
+      "sha256": "9d60472768809a770b2a3056aa83b19c3f8e6e50882879e60ffd33425553d77c",
+      "size_bytes": 14035
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/capture_selected_host_closure_ext4_supervisor_v2.py",
+      "sha256": "658af2e3c400c232e107af8c3cc5469a372dcf446dff3ac454a34bec9189c187",
+      "size_bytes": 10668
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/run_original_cpu_component_pair_ext4_supervisor_v2.py",
+      "sha256": "b4488d87a4c0feb500d7fdbca77af76e4745efeafb4927003ea1e932227ec8fd",
+      "size_bytes": 15100
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/run_original_gpu_component_pair_ext4_supervisor_v4.py",
+      "sha256": "4c37f05c80777ffa4b9932441a1301cef66a8fd38fbb986e4f1eae40e6b00831",
+      "size_bytes": 15100
+    }
+  ]
+}

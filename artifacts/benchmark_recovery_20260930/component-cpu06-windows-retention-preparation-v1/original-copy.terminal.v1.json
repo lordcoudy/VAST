@@ -1,0 +1,153 @@
+{
+  "argv": [
+    "/usr/bin/timeout",
+    "--signal=TERM",
+    "--kill-after=10s",
+    "120s",
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu06-windows-retention-preparation-v1/pack_original_outputs_v2.py",
+    "4c0e3fd34fb8ac8255bffab52fec7a310601eb4d29211a40f6948e882cbf3fc9",
+    "88102"
+  ],
+  "capture_fds_closed": true,
+  "capture_owner": {
+    "argv": [
+      "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+      "-I",
+      "-B",
+      "-c",
+      "import hashlib,json,os,signal,stat,subprocess,sys,time\nfrom pathlib import Path\nhere=Path('/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu06-windows-retention-preparation-v1')\npython='/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python'\nsource=here/'pack_original_outputs_v2.py'\nargv=['/usr/bin/timeout','--signal=TERM','--kill-after=10s','120s',python,'-I','-B',str(source),'4c0e3fd34fb8ac8255bffab52fec7a310601eb4d29211a40f6948e882cbf3fc9','88102']\ndef descriptor(p):\n raw=p.read_bytes();s=p.lstat();assert stat.S_ISREG(s.st_mode) and s.st_nlink==1\n return {'path':str(p),'size_bytes':len(raw),'sha256':hashlib.sha256(raw).hexdigest(),'epoch7':[s.st_dev,s.st_ino,s.st_mode,s.st_nlink,s.st_size,s.st_mtime_ns,s.st_ctime_ns]}\ndef save(name,value):\n with (here/name).open('x') as out:json.dump(value,out,sort_keys=True,indent=2);out.write('\\n');out.flush();os.fsync(out.fileno())\ndef owner(pid):\n p=Path('/proc',str(pid));v=(p/'stat').read_text().rsplit(')',1)[1].split();status=dict(l.split(':',1) for l in (p/'status').read_text().splitlines() if ':' in l)\n return {'pid':pid,'ppid':int(v[1]),'pgid':int(v[2]),'session':int(v[3]),'startticks':int(v[19]),'state':v[0],'uid':int(status['Uid'].split()[0]),'gid':int(status['Gid'].split()[0]),'boot_id':Path('/proc/sys/kernel/random/boot_id').read_text().strip(),'argv':(p/'cmdline').read_bytes().rstrip(b'\\0').decode().split('\\0')}\ndef scan(ids):\n rows=[];errors=[]\n for p in Path('/proc').iterdir():\n  if not p.name.isdigit():continue\n  try:\n   v=(p/'stat').read_text().rsplit(')',1)[1].split()\n   if int(p.name) in ids or int(v[2]) in ids:rows.append(owner(int(p.name)))\n  except FileNotFoundError:pass\n  except (OSError,ValueError) as exc:errors.append({'pid':int(p.name),'type':type(exc).__name__,'errno':getattr(exc,'errno',None)})\n return {'at_ns':time.time_ns(),'members':rows,'errors':errors,'pids_absent':{str(p):not Path('/proc',str(p)).exists() for p in sorted(ids)}}\nbefore=descriptor(source);assert before['size_bytes']==10516 and before['sha256']=='43088e67d8f470033be6f4fa07ed109c718e047c4e61615b3d979ee1e784d929'\nassert not os.path.lexists(here/'original-retention-attempt01')\nstart=time.monotonic();started=time.time_ns();child=None;actual=None;failure=None;signals=[]\nwith (here/'original-copy.stdout.raw').open('xb') as stdout,(here/'original-copy.stderr.raw').open('xb') as stderr:\n child=subprocess.Popen(argv,stdout=stdout,stderr=stderr,start_new_session=True)\n timeout_owner=owner(child.pid);save('original-copy.launch.v1.json',{'argv':argv,'capture_owner':owner(os.getpid()),'timeout_owner':timeout_owner,'source_before':before,'started_at_ns':started,'work_s':120,'cleanup_s':10})\n try:\n  while child.poll() is None:\n   for pid in (Path('/proc',str(child.pid),'task',str(child.pid),'children').read_text().split() if Path('/proc',str(child.pid)).exists() else []):\n    try:\n     candidate=owner(int(pid))\n     if str(source) in candidate['argv']:\n      actual=candidate\n    except FileNotFoundError:pass\n   if actual is not None and not (here/'original-copy.child-owner.v1.json').exists():save('original-copy.child-owner.v1.json',actual)\n   if time.monotonic()-start>=130:raise TimeoutError('original outer130s')\n   if os.fstat(stdout.fileno()).st_size>1048576 or os.fstat(stderr.fileno()).st_size>1048576:raise RuntimeError('original capture exceeds1MiB')\n   time.sleep(.02)\n  code=child.wait();assert actual is not None,'original packer owner not observed'\n except BaseException as exc:\n  failure={'type':type(exc).__name__,'message':str(exc)[:4096]}\n  if child.poll() is None:signals.append('SIGKILL');os.killpg(child.pid,signal.SIGKILL)\n  code=child.wait(timeout=5)\n finally:\n  stdout.flush();os.fsync(stdout.fileno());stderr.flush();os.fsync(stderr.fileno())\nafter=descriptor(source);assert after==before\nids={child.pid}\nif actual is not None:ids.add(actual['pid'])\nscans=[scan(ids),scan(ids)]\nterminal={'schema_version':1,'kind':'original_cpu06_output_retention_capture_v1','argv':argv,'source_before':before,'source_after':after,'capture_owner':owner(os.getpid()),'timeout_owner':timeout_owner,'packer_owner':actual,'started_at_ns':started,'terminal_at_ns':time.time_ns(),'elapsed_s':time.monotonic()-start,'returncode':code,'original_child_reaped':True,'failure':failure,'signals':signals,'stdout':descriptor(here/'original-copy.stdout.raw'),'stderr':descriptor(here/'original-copy.stderr.raw'),'process_scans':scans,'late_failure_absent':not os.path.lexists(here/'original-retention-attempt01/late-failure.v1.json'),'capture_fds_closed':True,'retention_is_not_authority':True}\nsave('original-copy.terminal.v1.json',terminal)\nprint(json.dumps(descriptor(here/'original-copy.terminal.v1.json')),flush=True)\nassert failure is None and code==0 and terminal['elapsed_s']<130 and terminal['late_failure_absent'] and all(not s['members'] and not s['errors'] and all(s['pids_absent'].values()) for s in scans)"
+    ],
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 52935,
+    "pid": 52935,
+    "ppid": 52929,
+    "session": 52935,
+    "startticks": 28960654,
+    "state": "R",
+    "uid": 1000
+  },
+  "elapsed_s": 1.1522133989492431,
+  "failure": null,
+  "kind": "original_cpu06_output_retention_capture_v1",
+  "late_failure_absent": true,
+  "original_child_reaped": true,
+  "packer_owner": {
+    "argv": [
+      "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+      "-I",
+      "-B",
+      "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu06-windows-retention-preparation-v1/pack_original_outputs_v2.py",
+      "4c0e3fd34fb8ac8255bffab52fec7a310601eb4d29211a40f6948e882cbf3fc9",
+      "88102"
+    ],
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 52937,
+    "pid": 52938,
+    "ppid": 52937,
+    "session": 52937,
+    "startticks": 28960661,
+    "state": "R",
+    "uid": 1000
+  },
+  "process_scans": [
+    {
+      "at_ns": 1790807293233302746,
+      "errors": [],
+      "members": [],
+      "pids_absent": {
+        "52937": true,
+        "52938": true
+      }
+    },
+    {
+      "at_ns": 1790807293234598963,
+      "errors": [],
+      "members": [],
+      "pids_absent": {
+        "52937": true,
+        "52938": true
+      }
+    }
+  ],
+  "retention_is_not_authority": true,
+  "returncode": 0,
+  "schema_version": 1,
+  "signals": [],
+  "source_after": {
+    "epoch7": [
+      69,
+      3940649676331921,
+      33279,
+      1,
+      10516,
+      1790806153137050600,
+      1790806153137050600
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu06-windows-retention-preparation-v1/pack_original_outputs_v2.py",
+    "sha256": "43088e67d8f470033be6f4fa07ed109c718e047c4e61615b3d979ee1e784d929",
+    "size_bytes": 10516
+  },
+  "source_before": {
+    "epoch7": [
+      69,
+      3940649676331921,
+      33279,
+      1,
+      10516,
+      1790806153137050600,
+      1790806153137050600
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu06-windows-retention-preparation-v1/pack_original_outputs_v2.py",
+    "sha256": "43088e67d8f470033be6f4fa07ed109c718e047c4e61615b3d979ee1e784d929",
+    "size_bytes": 10516
+  },
+  "started_at_ns": 1790807292082482960,
+  "stderr": {
+    "epoch7": [
+      69,
+      2814749769526274,
+      33279,
+      1,
+      0,
+      1790807292082487900,
+      1790807292082487900
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu06-windows-retention-preparation-v1/original-copy.stderr.raw",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size_bytes": 0
+  },
+  "stdout": {
+    "epoch7": [
+      69,
+      3659174699658240,
+      33279,
+      1,
+      404,
+      1790807293220735600,
+      1790807293220735600
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu06-windows-retention-preparation-v1/original-copy.stdout.raw",
+    "sha256": "db7cdeec2fcfbcc009cdb10590c7a5c89bd327d2af6dcfe4e7195784441accb2",
+    "size_bytes": 404
+  },
+  "terminal_at_ns": 1790807293234695547,
+  "timeout_owner": {
+    "argv": [
+      ""
+    ],
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 52937,
+    "pid": 52937,
+    "ppid": 52935,
+    "session": 52937,
+    "startticks": 28960661,
+    "state": "D",
+    "uid": 1000
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "kind": "vast_gpu01_output_retention_closed_result_independent_review_v1",
+  "reviewer": "/root/adversarial_review",
+  "status": "verified_complete_non_authority_retention",
+  "concrete_blockers": [],
+  "source_gate_sha256": "8e008cd475c69f2f10c6a29b9f3b203c749863a5d5b54f500261ca307dd3b1f7",
+  "original_scope": {
+    "execution_count": 1,
+    "root_grant_sha256": "7e7241cd72ba53ff08e0a596c5611a09d3f549f07ea371d9d5261a2f3eca8f43",
+    "author_closure_sha256": "7c0f53f74d0018b26b984740580d0457c54397c8e10ac10fc588096132231927",
+    "packer_sha256": "6e60e0b8c88cb94ba9590bad617b8fa1d29715d6c58fa4ba3bdfc90987e21b44",
+    "source_before_after_same_bytes_and_full_epoch7": true,
+    "original_tool_chunk": "d030d1",
+    "returncode": 0,
+    "elapsed_s": 1.30376066401368,
+    "failure": null,
+    "signals": [],
+    "late_failure_absent": true,
+    "actual_capture_timeout_packer_pids": [53614, 53615, 53616],
+    "original_child_reaped_and_capture_fds_closed": true,
+    "two_original_child_group_scans_empty": true,
+    "later_all_three_pid_group_scan_empty_without_errors": true
+  },
+  "archive": {
+    "path": "artifacts/benchmark_recovery_20260930/component-gpu01-windows-retention-preparation-v1/original-retention-attempt01/gpu01-original-output-retention.v1.zip",
+    "size_bytes": 21482466,
+    "sha256": "5c1c0e4ae34e70e469b7acc55819d352f3e467a8bd1c86fb5c1f23f602e8e3c6",
+    "original_members": 128,
+    "manifest_members": 1,
+    "original_uncompressed_bytes": 220703683,
+    "manifest_size_bytes": 111834,
+    "manifest_sha256": "5e31ffc42cf1776a030b0880adeefa2b6356d9133c5d7f09bf81f1dfc383e0a5",
+    "only_excluded_input_duplicate_bytes": 45570705
+  },
+  "independently_checked": [
+    "Original saved grant, recipe10argv, source pin, terminal, raw channels, receipt and postterminal process observation join.",
+    "Physical archive full SHA/size, unique safe129 member names, manifest CRC-read, exact128 inventory membership, all sizes/central CRCs/original URIs and full7 source-before/source-after epochs.",
+    "Archived original GPU terminal4c0e3fd3/88102 full bytes join recipe, receipt and authentic closed6c acceptance proof descriptor.",
+    "Original receipt records full member CRC/decompressed SHA, source namespace/ancestor/epoch checks, successful FD retirement and no late failure. Reviewed exact packer enforces these predicates before its successful exit."
+  ],
+  "closed_leaf_pins": {
+    "original-copy.terminal.v1.json": "4622:33302f862e20bc868e85c2531c7af4e48520bf460b2b152100d8d53d7c552e5d",
+    "original-retention-attempt01/receipt.v1.json": "2061:8d87e5f8bf6e8b748da41c94ea1be2007aeeed148068506eed04689ba80501c7",
+    "postterminal-process-observation.v1.json": "409:c064fa12553a64a942eeeab850cd07b3b4cd28b260a2afc1ac1f5d8bfed97eca",
+    "original-tool-terminal.v1.json": "1441:eefa7c688cf7a20e5d5edf248ead3c189485183258453c2e6eebbd0f47aa12ee"
+  },
+  "limits": "Independent review did not perform a second full220MB decompression or payload hash replay. It read the physical21.5MB archive hash, central member metadata,111KB manifest and88KB archived terminal, and verified the original executed source/receipt predicates. No new engine, model, namespace, source, producer, acceptance or benchmark execution; all originals preserved and no descriptors remain held. Retention adds no authority."
+}

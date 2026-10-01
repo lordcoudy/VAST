@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "vast_current_source_ext4_cpu_ci_preparation_v1",
+  "status": "prepared_unexecuted_requires_root_review",
+  "source_commit": "4cb9d8313cca71256179bc3b59cc6f9137e7b8ba",
+  "source_git_common_dir": "/mnt/e/STUDY/VAST/.git",
+  "source_checkout_dependency": "Independent checkout and index; shared Git objects depend on this original common repository. No prune/delete/object rewrite while retained. Exact detached commit; no branch-tip dependency.",
+  "checkout": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831",
+  "output": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831-original-output",
+  "benchmark_root_untouched": "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+  "benchmark_root_commit_untouched": "0ad78d6abdb3c526544a17185af7fe8094716735",
+  "python": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+  "preconditions": [
+    "Accepted closed CPU06 and GPU01 postterminal95 custody reviews; all original/auditor groups absent and reviewer FDs released.",
+    "Exclusive absent checkout/output/capture namespaces; canonical real parent directories, UID/GID1000, ext4 and available space at least20GiB before clone. Refuse aliases/symlinks or occupied destinations; no cleanup/resume/automatic retry.",
+    "Record actual original common Git directory/commit/ancestry, canonical CPython3.12.3 executable inode/nlink1 and hash, new-root UID/GID/mode/filesystem and statvfs. Preserve source and benchmark root identity before/after.",
+    "Existing pinned Python packages equal .ci/requirements.txt and pip check succeeds; actual build-essential/cmake/pkg-config/GLib/GStreamer development packages and gst-inspect-1.0 present. Record versions/paths; missing prerequisites fail setup rather than installing on the benchmark host.",
+    "Only clone/config/checkout/Git and metadata prerequisite operations during setup; no model/input/source corpus copy or namespace/profile/kernel experiment in setup. The unchanged original CI driver owns its later actual diagnostics/optional strictly authorized profile fate."
+  ],
+  "setup_work_limit_s": 300,
+  "setup_cleanup_s": 10,
+  "setup_commands": [
+    ["/usr/bin/git", "-c", "core.longpaths=true", "clone", "--shared", "--no-checkout", "/mnt/e/STUDY/VAST", "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831"],
+    ["/usr/bin/git", "-c", "core.longpaths=true", "-C", "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831", "config", "core.autocrlf", "false"],
+    ["/usr/bin/git", "-c", "core.longpaths=true", "-C", "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831", "config", "core.longpaths", "true"],
+    ["/usr/bin/git", "-c", "core.longpaths=true", "-C", "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831", "checkout", "--detach", "4cb9d8313cca71256179bc3b59cc6f9137e7b8ba"],
+    ["/usr/bin/git", "-c", "core.longpaths=true", "-C", "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831", "rev-parse", "HEAD"],
+    ["/usr/bin/git", "-c", "core.longpaths=true", "-C", "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831", "status", "--porcelain=v1", "-z"]
+  ],
+  "stock_cli_argv": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python", "-I", "-B",
+    "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/run_ci_checks.py",
+    "--expected-commit", "4cb9d8313cca71256179bc3b59cc6f9137e7b8ba",
+    "--output-dir", "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831-original-output",
+    "--job-started-monotonic-ns", "ACTUAL_ORIGINAL_DISPATCH_MONOTONIC_NS"
+  ],
+  "stock_original_job_limit_s": 5400,
+  "outer_cleanup_s": 10,
+  "outer_containment": "/usr/bin/timeout --signal=TERM --kill-after=10s 5400s ORIGINAL_STOCK_CLI_ARGV; actual job clock supplied once at original dispatch. Do not reset the clock or increase original90-minute acceptance. Capture original stdout/stderr with exclusive noclobber names and actual PID/startticks/UID/GID/process group; on failure retain source/outcome/terminal and quiescence, no rerun.",
+  "stock_checks": [
+    "Stock driver hashes every actual tracked path before/after and independently verifies Git HEAD raw blob equality; any checkout conversion is an original failure, never normalized/rebound.",
+    "Stock driver alone acquires exact canonical8 model assets with bounded streaming metadata; no pre-copy from the benchmark/model authority root.",
+    "Build all6 required native targets and load actual appsrc/queue/videoconvert factory facts. Require all3 exact original native regression methods to succeed.",
+    "Full unchanged default discovery and finite original9 integration-method exceptions. Validate actual skip outcomes against the unchanged88-declaration audit; never force an expected result count, blanket skip or treat integration as executed.",
+    "Require original full report successful, native and unit terminals, complete original capture/namespace/profile fate, raw source before/after equality, actual0 exit and final90-minute deadline. Failure or missing metadata remains failure.",
+    "This local current-source CPU lane is distinct from hosted CI and the accepted original0ad benchmark. It grants neither GPU/model parity nor full publication/Q4/campaign acceptance."
+  ],
+  "source_pins": {
+    "scripts/run_ci_checks.py": {"size_bytes": 29477, "sha256": "ce375eca51164a76ab6a88cf02b92804077f08c6b8401d68b48e293020c27a2c"},
+    "scripts/ci_test_selection_v1.py": {"size_bytes": 9978, "sha256": "c9883b041ec2b52f1796677d0baeee6bdd64394c576ecdc4c8b48134ec6d7f1d"},
+    "scripts/ci_external_test_observer_v1.py": {"size_bytes": 20916, "sha256": "000ded0c9bd442983b54d224ce3041818af6e35e2e0d4f9c9b382b74db499c59"},
+    "scripts/ci_userns_profile_v1.py": {"size_bytes": 25945, "sha256": "2b268daa1f6b1c7095e2ad35aa333cfc88998dfc7f024e39cee04d178334a578"},
+    "scripts/ci_namespace_diagnostic_v1.py": {"size_bytes": 23980, "sha256": "4f7e10d2decd1411f4c31281ceda4374d4d8cf1971fcb36497d11cfca10d8cc0"},
+    "scripts/prepare_ci_model_assets.py": {"size_bytes": 30314, "sha256": "2f87df4f6d98239190c17b42bb7f43188fc2a12604f7b0f6aa0246f7df15b36c"},
+    ".ci/requirements.txt": {"size_bytes": 454, "sha256": "9972a44ffd57d27ff351d2ffc168043d688af6042a4c4a59f4f6c21a77adecef"},
+    ".ci/integration-test-selection.v1.json": {"size_bytes": 34014, "sha256": "09e9268069e88b957f9ae54a827960bc18ee13a00d4319994d108d3cb81a0805"}
+  },
+  "actual_clone": null,
+  "actual_ci_terminal": null,
+  "actual_ci_success": null,
+  "limitations": "Unexecuted finite command recipe. Read-only planning inspected the actual original driver predicates; prerequisite availability and complete fresh source/clone byte equality remain genuine future gates. No installs, clone, CI/model/network/native/profile or benchmark operation has occurred."
+}

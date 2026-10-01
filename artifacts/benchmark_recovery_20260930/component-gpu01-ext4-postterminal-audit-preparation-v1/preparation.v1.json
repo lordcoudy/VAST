@@ -1,0 +1,71 @@
+{
+  "actual_gpu_cli_pid": null,
+  "actual_gpu_controller": {
+    "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/run_original_gpu_component_pair_ext4_v3.py",
+    "sha256": "6200b55afd15ca2b9964a52de3fc0ae1fd4f6e72b131b50afa74fac01fad24b2",
+    "size_bytes": 15089
+  },
+  "actual_gpu_terminal_sha256": null,
+  "actual_gpu_terminal_size": null,
+  "all_original_audit_and_dispatch_function_AST_identical": true,
+  "artifact_kind": "vast_component_gpu01_ext4_postterminal_audit_preparation_v1",
+  "benchmark_accepted": false,
+  "future_arguments": [
+    "ORIGINAL_TERMINAL_SHA256",
+    "ORIGINAL_TERMINAL_SIZE",
+    "ORIGINAL_CLI_PID"
+  ],
+  "new_host_closure_sha256": "adbcb638a5f104e43c95b84e4d16388a8111d39321afb3e8e7a26f2ef537b498",
+  "no_future_original_owner_or_terminal_fabricated": true,
+  "original_closed_cpu_audit_source": {
+    "path": "artifacts/benchmark_recovery_20260930/component-cpu06-ext4-postterminal-audit-preparation-v1/audit_v2.py",
+    "sha256": "e8e7e72280d2971d677763f512b0bede8710550c7a9518b6f19e779ad12e1d98",
+    "size_bytes": 17876
+  },
+  "original_closed_cpu_dispatch_source": {
+    "path": "artifacts/benchmark_recovery_20260930/component-cpu06-ext4-postterminal-audit-preparation-v1/dispatch_v2.py",
+    "sha256": "2264e57b2b012b6a4ed6b5b7bf8935939b1ba2a9086e1fe175b77b02ee67f33a",
+    "size_bytes": 1998
+  },
+  "prepared_sources": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-gpu01-ext4-postterminal-audit-preparation-v1/audit_v1.py",
+      "sha256": "033a597766a461c8f1b1e2be43bb775ec27e3085202bb384e4ba2c15261d43f8",
+      "size_bytes": 17876
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-gpu01-ext4-postterminal-audit-preparation-v1/dispatch_v1.py",
+      "sha256": "7eb5ad62673ca3cfd947fe0d28b1273f2153a1c41b1e4a482f1e011216cb4bc6",
+      "size_bytes": 1998
+    }
+  ],
+  "preserved_raw_sources": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-gpu01-ext4-postterminal-audit-preparation-v1/cpu06-audit_v2.original.raw",
+      "sha256": "e8e7e72280d2971d677763f512b0bede8710550c7a9518b6f19e779ad12e1d98",
+      "size_bytes": 17876
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-gpu01-ext4-postterminal-audit-preparation-v1/cpu06-dispatch_v2.original.raw",
+      "sha256": "2264e57b2b012b6a4ed6b5b7bf8935939b1ba2a9086e1fe175b77b02ee67f33a",
+      "size_bytes": 1998
+    }
+  ],
+  "read_weights_execute_auditor_or_model_engine_native_tests": false,
+  "remaining_gate": "Independent source review; parent may dispatch only after one authentic original GPU terminal with actual future arguments.",
+  "schema_version": 1,
+  "scope_replacements": {
+    "49b6659ce3b6c595be21bf5ffefa721738a23094cc1a66642a9f5bab8666f559": "6200b55afd15ca2b9964a52de3fc0ae1fd4f6e72b131b50afa74fac01fad24b2",
+    "CPU06": "GPU01",
+    "cold['resource']=='cpu'": "cold['resource']=='gpu'",
+    "component-gstreamer_custom-cpu-h264-": "component-gstreamer_custom-gpu-h264-",
+    "cpu-pair-06": "gpu-pair-01",
+    "run_original_cpu_component_pair_ext4_v1.py": "run_original_gpu_component_pair_ext4_v3.py",
+    "task_18_8_complete": "task_18_9_complete",
+    "vast_cpu06_": "vast_gpu01_"
+  },
+  "source_commit": "0ad78d6abdb3c526544a17185af7fe8094716735",
+  "status": "prepared_only_unexecuted",
+  "task_18_9_complete": false,
+  "unchanged_predicates_and_bounds": "Exact95 original descriptor/full-byte/name/7epoch FD custody; actual owner joined to authentic terminal/launch/controller; genuine two UID/startticks/proc scans; actual guardian/authstop/reserve/raw-cold joins;120s final postreport+FDclose gate plus exclusive sticky late companion/nonzero failure;135s dispatcher containment only. GPU resource/operation paths and18.9 scope replace CPU literals."
+}

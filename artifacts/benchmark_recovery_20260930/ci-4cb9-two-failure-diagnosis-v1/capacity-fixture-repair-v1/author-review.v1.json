@@ -1,0 +1,110 @@
+{
+  "accepted": false,
+  "actual_capacity_receipt": {
+    "body_error": "original engine phase missing or call capacity exhausted",
+    "body_error_type": "ValueError",
+    "call_count": 32,
+    "failure": "original_engine_start_observation_failed",
+    "original_descriptor": {
+      "path": "/tmp/tmpo_i1am6e/outputs/capacity/original_engine_process_capture.v1.json",
+      "sha256": "8eb0930045eb6130d2be923658d1b4bbc75228cf1e4facab00657ba7df68bb25",
+      "size_bytes": 14529
+    },
+    "retained_name": "original-fixture-receipt-02.json"
+  },
+  "all_other_original_methods_AST_identical": true,
+  "artifact_kind": "vast_capacity_fixture_author_review_v1",
+  "capture_fds_closed": true,
+  "changed_original_method": "test_caught_invalid_phase_remains_sticky_and_call_capacity_is_bounded",
+  "elapsed_s": 6.801124601974152,
+  "evidence": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/capacity-fixture-repair-v1/preedit-authorization.v1.json",
+      "sha256": "3d169892941822a5d256e5682d7c18ad4071583a934dca1b28abfc711a11fe3b",
+      "size_bytes": 888
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/capacity-original-reproduction-attempt01/terminal.v1.json",
+      "sha256": "16f36aaff64bed199691b08cf7bb9ccb9f27e13333f4fed0e8498fe707313271",
+      "size_bytes": 6805
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/capacity-controlled-lifecycle-attempt01/terminal.v1.json",
+      "sha256": "8534547568bd8c7a34af1c46e45e8cd4e4b9203531ea7faea105b468cb6257f9",
+      "size_bytes": 6820
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/capacity-controlled-lifecycle-attempt01/original-lifecycle-probe.v1.json",
+      "sha256": "70fff181e85e979fffe1677e88b85211fad7ffa765cb3ea3fe365a1c61075cf0",
+      "size_bytes": 3322
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/capacity-fixture-focused-attempt02/terminal.v1.json",
+      "sha256": "ce03d8fd70705e2a1c0b17f9effc87eec6100e6976c101d2f9ae1fc30c0287b6",
+      "size_bytes": 6917
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/capacity-fixture-focused-attempt02/original-observations.v1.json",
+      "sha256": "44696b596c82aa46c75eca63bff0f90f57e4134cce9bae0dc383a57be95ac6aa",
+      "size_bytes": 57905
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/capacity-fixture-focused-attempt02/stderr.raw",
+      "sha256": "16eaf6eb0875011708588b5852c1fa6de824558f780c52ccf2f664d3aaf06caf",
+      "size_bytes": 1354
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/capacity-fixture-focused-attempt01/prelaunch-failure.v1.json",
+      "sha256": "91e2b89824a60b1fa84e961f0e93f309477e1d367ccc9818907d83a01bf30497",
+      "size_bytes": 1015
+    }
+  ],
+  "limitations": [
+    "First focused collector failed only in Git prelaunch, before any unit child. Its source/namespace/error remain immutable.",
+    "No full CI, model, namespace policy, engine, native or benchmark dispatch."
+  ],
+  "original_focused_owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 53687,
+    "pid": 53687,
+    "ppid": 53685,
+    "startticks": 29308824,
+    "uid": 1000
+  },
+  "original_test_method_count": 20,
+  "process_and_run_child_AST_identical": true,
+  "schema_version": 1,
+  "scope": "capacity-only real readiness/registration/release helper plus one real pre-readiness failure unit; exact33rd capacity error assertion,32 and failed-status assertions retained",
+  "self_review": [
+    "Readiness gate is only used by the capacity loop; it holds an actual child alive until the unchanged original observer registers it.",
+    "All observed stdout includes the real consumed READY prefix before hashing terminal bytes.",
+    "The33rd actual child reaches the original capacity validator, which refuses the exact intended condition; fixture finally kills/reaps its blocked child.",
+    "The actual child failing before READY registers zero calls and cannot emit complete capture.",
+    "Existing intentional fast/zombie process helpers and units remain unchanged; actual zombie and nonzero/timeout units passed in the six-case capture.",
+    "No source87/selected73/native3/worker2 production bytes are changed by this test-only fix.",
+    "Hosted first swallowed ValueError remains unknown; original unchanged local unit passed, controlled reaped refusal was FileNotFoundError, not a hosted-cause proof."
+  ],
+  "status": "frozen_pending_independent_peer",
+  "test": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_process_custody_v1.py",
+    "sha256": "8ba4f9b93e00b368712cc3f84855b648ff98d54ff887de25f99d4208e11a97d1",
+    "size_bytes": 30982
+  },
+  "two_actual_process_scans": [
+    {
+      "group_members": [],
+      "read_errors": []
+    },
+    {
+      "group_members": [],
+      "read_errors": []
+    }
+  ],
+  "unchanged_production_process_helper": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_process_custody_v1.py",
+    "sha256": "5ea8477e527bf57438ce81cea9b8b19fb628c555cb808711438e2036bcaee923",
+    "size_bytes": 47271
+  },
+  "whole_original_module_AST_equal_after_exact_capacity_delta_inverse": true
+}

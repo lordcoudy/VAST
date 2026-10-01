@@ -1,0 +1,42 @@
+{
+  "actual_future_args": {
+    "gpu_original_terminal_sha256": null,
+    "gpu_original_terminal_size": null
+  },
+  "argument_order": [
+    "GPU_ORIGINAL_TERMINAL_SHA256",
+    "GPU_ORIGINAL_TERMINAL_SIZE"
+  ],
+  "capture": "Root invokes original argv once with supplied actual closed terminal args, captures original stdout/stderr/tool terminal without rewriting them, and records actual PID/startticks/UID/group. Shell redirects must refuse existing capture names (noclobber); no wrapper generator needed.",
+  "copies_or_original_data_hashes_performed": false,
+  "fresh_output_namespace": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu06-windows-retention-preparation-v1/original-retention-attempt01",
+  "inventory": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu06-windows-retention-preparation-v1/inventory.v1.json",
+    "sha256": "f18913e434ceddd0f65dae6ad0b7b0c642d54b6d1ff9751e2c9bb28378ba2ce0",
+    "size_bytes": 97442
+  },
+  "maximum_outer_seconds": 130,
+  "maximum_output_archive_bytes": 268435456,
+  "original_argv_prefix": [
+    "/usr/bin/timeout",
+    "--signal=TERM",
+    "--kill-after=10s",
+    "120s",
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu06-windows-retention-preparation-v1/pack_original_outputs_v2.py"
+  ],
+  "reader": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu06-windows-retention-preparation-v1/pack_original_outputs_v2.py",
+    "sha256": "43088e67d8f470033be6f4fa07ed109c718e047c4e61615b3d979ee1e784d929",
+    "size_bytes": 10516
+  },
+  "root_postterminal_gate": "Peer review, authentic original GPU/auditor95 FD release and process closure, exact active original source/data invariance; no prior failed execution is resumed or replaced.",
+  "schema_version": 1,
+  "status": "prepared_only_do_not_execute_while_gpu_active",
+  "stderr_path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu06-windows-retention-preparation-v1/original-copy.stderr.raw",
+  "stdout_path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu06-windows-retention-preparation-v1/original-copy.stdout.raw",
+  "term_cleanup_seconds": 10,
+  "work_seconds": 120
+}

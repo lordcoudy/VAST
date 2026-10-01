@@ -1,0 +1,2246 @@
+{
+  "all18_allowlists": [
+    {
+      "broker_source_member": false,
+      "equal_original_ext4_bytes": true,
+      "path": "deploy/analytics_execution/publication/openvino-dependency-allowlist.txt",
+      "sha256": "c6de183e6bbb3d3cea16cfeea98d22d64d1e034ae87a568111284f474c002d1a",
+      "size_bytes": 47
+    },
+    {
+      "broker_source_member": false,
+      "equal_original_ext4_bytes": true,
+      "path": "deploy/analytics_execution/publication/openvino-source-allowlist.txt",
+      "sha256": "b1a42fda639e43e61d1d3ab20161f9a294754d9157b0b54be23de02a5e62e3e4",
+      "size_bytes": 124
+    },
+    {
+      "broker_source_member": false,
+      "equal_original_ext4_bytes": true,
+      "path": "deploy/analytics_execution/publication/tensorrt-dependency-allowlist.txt",
+      "sha256": "c05e67bd428175b99aa15e9325d1e7f6f6e5258e1857c0da15509ddda76383f6",
+      "size_bytes": 47
+    },
+    {
+      "broker_source_member": false,
+      "equal_original_ext4_bytes": true,
+      "path": "deploy/analytics_execution/publication/tensorrt-source-allowlist.txt",
+      "sha256": "6fefe6f415200d4a10025e3efb9e28fc22737dee84ca7cb5e40be660b8667722",
+      "size_bytes": 172
+    },
+    {
+      "broker_source_member": false,
+      "equal_original_ext4_bytes": true,
+      "path": "deploy/deepstream/checkpoint/runtime-dependency-allowlist.txt",
+      "sha256": "c63c495e89b109abca372f1b43047ed989f0e5a95779b9004e47ce657635f3c2",
+      "size_bytes": 670
+    },
+    {
+      "broker_source_member": false,
+      "equal_original_ext4_bytes": true,
+      "path": "deploy/deepstream/checkpoint/runtime-source-allowlist.txt",
+      "sha256": "43b41dee019fc730704d3c176a753d0e26c8f871da59714ce97e70e9209396cc",
+      "size_bytes": 3780
+    },
+    {
+      "broker_source_member": false,
+      "equal_original_ext4_bytes": true,
+      "path": "deploy/gstreamer_custom/publication/runtime-build-context-allowlist.txt",
+      "sha256": "c90fd7e4b347fdf086924d1bf419d0e03c3335a1e901bcd402b628a5379872bc",
+      "size_bytes": 320
+    },
+    {
+      "broker_source_member": false,
+      "equal_original_ext4_bytes": true,
+      "path": "deploy/gstreamer_custom/publication/runtime-dependency-allowlist.txt",
+      "sha256": "f4655c4dbd7eee1da21267a9e3f08cbddc4a18d8e69fda2a8a0fcc4898119072",
+      "size_bytes": 589
+    },
+    {
+      "broker_source_member": false,
+      "equal_original_ext4_bytes": true,
+      "path": "deploy/gstreamer_custom/publication/runtime-source-allowlist.txt",
+      "sha256": "111c8d3a517a4ab350fbb2753a3c01965e6645eeaad72c24f1b9f1266659e600",
+      "size_bytes": 3538
+    },
+    {
+      "broker_source_member": false,
+      "equal_original_ext4_bytes": true,
+      "path": "deploy/native_gst_probe/publication/deepstream-dependency-allowlist.txt",
+      "sha256": "ea34504be944777a79047b36626552642921aa10ad0c8c2c6707fa50fda3f887",
+      "size_bytes": 46
+    },
+    {
+      "broker_source_member": false,
+      "equal_original_ext4_bytes": true,
+      "path": "deploy/native_gst_probe/publication/deepstream-source-allowlist.txt",
+      "sha256": "9a25d25c340f7c0a5e920c8700bb75fbfbf891a6d7fecc3e68363e34ea9dca28",
+      "size_bytes": 562
+    },
+    {
+      "broker_source_member": false,
+      "equal_original_ext4_bytes": true,
+      "path": "deploy/native_gst_probe/publication/openvino-dependency-allowlist.txt",
+      "sha256": "56987dcbda19e589653eb5cceac8e482f0896b5cd89bd4bb92e6ba8d1aeffcff",
+      "size_bytes": 44
+    },
+    {
+      "broker_source_member": false,
+      "equal_original_ext4_bytes": true,
+      "path": "deploy/native_gst_probe/publication/openvino-source-allowlist.txt",
+      "sha256": "4fbb83d112fff52b8a8a85e3cd48decb4498705328c74b289eee834119b50f05",
+      "size_bytes": 894
+    },
+    {
+      "broker_source_member": false,
+      "equal_original_ext4_bytes": true,
+      "path": "deploy/native_gst_probe/publication/savant-dependency-allowlist.txt",
+      "sha256": "24de33ad711ca197a08e9f6d527e36d406f18318dc2cd53d5420c3855691a86c",
+      "size_bytes": 89
+    },
+    {
+      "broker_source_member": false,
+      "equal_original_ext4_bytes": true,
+      "path": "deploy/native_gst_probe/publication/savant-source-allowlist.txt",
+      "sha256": "78416b85bc9434312548da1d5dd14b008406813ea13b8a33b212d432d5bce5c0",
+      "size_bytes": 621
+    },
+    {
+      "broker_source_member": false,
+      "equal_original_ext4_bytes": true,
+      "path": "deploy/openvino_gva/publication/runtime-build-context-allowlist.txt",
+      "sha256": "d169204f89573eede568ec1c401e3ae3157a3774be39ac0815b6463e4f329d82",
+      "size_bytes": 369
+    },
+    {
+      "broker_source_member": false,
+      "equal_original_ext4_bytes": true,
+      "path": "deploy/openvino_gva/publication/runtime-source-allowlist.txt",
+      "sha256": "f91760d199bf72651be9ea71bcec2effa43d0afdd7a7f89202f1885308fd6624",
+      "size_bytes": 3457
+    },
+    {
+      "broker_source_member": false,
+      "equal_original_ext4_bytes": true,
+      "path": "deploy/savant/publication/runtime-source-allowlist.txt",
+      "sha256": "691feca866c3bfdd09fced300659f1f7888c2bdb298c427fa4f4204ce9eba9b4",
+      "size_bytes": 3841
+    }
+  ],
+  "all_capture_functions_AST_equal": true,
+  "artifact_kind": "vast_component_supervisor_renewal_preparation_source_scope_v1",
+  "capture_origin": {
+    "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/capture_selected_host_closure_ext4_v1.py",
+    "sha256": "7455c32a8b2606e2b793c06cc244348bec86e570d173311f6adfde98e4e7dc7c",
+    "size_bytes": 10782
+  },
+  "capture_prepared": {
+    "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/capture_selected_host_closure_ext4_supervisor_v2.py",
+    "sha256": "658af2e3c400c232e107af8c3cc5469a372dcf446dff3ac454a34bec9189c187",
+    "size_bytes": 10668
+  },
+  "coverage_addendum": "180 is the exact union of original source_groups and controller_files; all27 controller references are included, with overlaps deduplicated. All18 manifests remain byte-identical; only the broker differs.",
+  "current_broker": {
+    "path": "scripts/backend_publication_process_supervisor_v3.py",
+    "sha256": "99f772665d0d271b24d98f2393a50a0f9e0bbfe5c2840e5ccce65d89a84ed13e",
+    "size_bytes": 124707
+  },
+  "future_host_closure": null,
+  "future_source_commit": null,
+  "measured_source_differences": [
+    "scripts/backend_publication_process_supervisor_v3.py"
+  ],
+  "native3_worker2_source_groups_unchanged": true,
+  "old_host_receipt_use": "Only finite source-path inventory for the future new stock capture. No old public loader/new model assessment or receipt rebind occurs.",
+  "original_ext4_source_commit": "0ad78d6abdb3c526544a17185af7fe8094716735",
+  "physical_source_only_comparison_count": 180,
+  "prior_narrow166_source_comparison": {
+    "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/source-scope-preparation.v1.json",
+    "sha256": "6178161d774419f43792e3407656eee22dec38845f0bb636f82462d0dac9b487",
+    "size_bytes": 72024
+  },
+  "schema_version": 1,
+  "selected_image_id": "sha256:e474867043f1a74387573140cb2bfd69825df2672edad0acda0d28954af84cb6",
+  "selected_sources73_dependencies6_unchanged": true,
+  "source_preparation_has_executed_checkout_capture_or_hardware": false,
+  "source_rows": [
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "26a63a9a8115c8da1e48fbe36002d2e9aee1fc8a85122b480a55e8052ebe1758",
+      "equal": true,
+      "original_ext4_sha256": "26a63a9a8115c8da1e48fbe36002d2e9aee1fc8a85122b480a55e8052ebe1758",
+      "path": "CMakeLists.txt",
+      "source_groups": [
+        "native_probe_deepstream",
+        "native_probe_openvino",
+        "native_probe_savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "48de16da0ea290518053349556671ff08c309fa01b6d502845f233b7e136eeca",
+      "equal": true,
+      "original_ext4_sha256": "48de16da0ea290518053349556671ff08c309fa01b6d502845f233b7e136eeca",
+      "path": "configs/checkpoint_analytics_models_openvino.yaml",
+      "source_groups": [
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": true,
+      "current_windows_sha256": "c13f12001048471e20400e5a0bb37df5efa01e6c936772ae9aaea5de548a6b22",
+      "equal": true,
+      "original_ext4_sha256": "c13f12001048471e20400e5a0bb37df5efa01e6c936772ae9aaea5de548a6b22",
+      "path": "configs/publication_image_build_v1.json",
+      "source_groups": []
+    },
+    {
+      "controller_dependency": true,
+      "current_windows_sha256": "63890245c248bae1afae453b404bcd7ef60b586d4c5fb4f44ed8b5beabf88fb7",
+      "equal": true,
+      "original_ext4_sha256": "63890245c248bae1afae453b404bcd7ef60b586d4c5fb4f44ed8b5beabf88fb7",
+      "path": "configs/publication_qualification_image_refreeze_v1.json",
+      "source_groups": []
+    },
+    {
+      "controller_dependency": true,
+      "current_windows_sha256": "f90a3f763ee07cdced97af3716fb7d3a24a3c8b1b15cb0e94b0c15fe8616159b",
+      "equal": true,
+      "original_ext4_sha256": "f90a3f763ee07cdced97af3716fb7d3a24a3c8b1b15cb0e94b0c15fe8616159b",
+      "path": "deploy/analytics_execution/Dockerfile.openvino",
+      "source_groups": [
+        "analytics_worker_openvino"
+      ]
+    },
+    {
+      "controller_dependency": true,
+      "current_windows_sha256": "c8dc088959e4b43303420931aab7834e67063beb80de613934e11b758e03db82",
+      "equal": true,
+      "original_ext4_sha256": "c8dc088959e4b43303420931aab7834e67063beb80de613934e11b758e03db82",
+      "path": "deploy/analytics_execution/Dockerfile.tensorrt",
+      "source_groups": [
+        "analytics_worker_tensorrt"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "ab7b50ef7143485594bf7426225a464b7d0299490ad7c3b75195b150547c53da",
+      "equal": true,
+      "original_ext4_sha256": "ab7b50ef7143485594bf7426225a464b7d0299490ad7c3b75195b150547c53da",
+      "path": "deploy/analytics_execution/openvino_worker.py",
+      "source_groups": [
+        "analytics_worker_openvino"
+      ]
+    },
+    {
+      "controller_dependency": true,
+      "current_windows_sha256": "c6de183e6bbb3d3cea16cfeea98d22d64d1e034ae87a568111284f474c002d1a",
+      "equal": true,
+      "original_ext4_sha256": "c6de183e6bbb3d3cea16cfeea98d22d64d1e034ae87a568111284f474c002d1a",
+      "path": "deploy/analytics_execution/publication/openvino-dependency-allowlist.txt",
+      "source_groups": []
+    },
+    {
+      "controller_dependency": true,
+      "current_windows_sha256": "b1a42fda639e43e61d1d3ab20161f9a294754d9157b0b54be23de02a5e62e3e4",
+      "equal": true,
+      "original_ext4_sha256": "b1a42fda639e43e61d1d3ab20161f9a294754d9157b0b54be23de02a5e62e3e4",
+      "path": "deploy/analytics_execution/publication/openvino-source-allowlist.txt",
+      "source_groups": []
+    },
+    {
+      "controller_dependency": true,
+      "current_windows_sha256": "c05e67bd428175b99aa15e9325d1e7f6f6e5258e1857c0da15509ddda76383f6",
+      "equal": true,
+      "original_ext4_sha256": "c05e67bd428175b99aa15e9325d1e7f6f6e5258e1857c0da15509ddda76383f6",
+      "path": "deploy/analytics_execution/publication/tensorrt-dependency-allowlist.txt",
+      "source_groups": []
+    },
+    {
+      "controller_dependency": true,
+      "current_windows_sha256": "6fefe6f415200d4a10025e3efb9e28fc22737dee84ca7cb5e40be660b8667722",
+      "equal": true,
+      "original_ext4_sha256": "6fefe6f415200d4a10025e3efb9e28fc22737dee84ca7cb5e40be660b8667722",
+      "path": "deploy/analytics_execution/publication/tensorrt-source-allowlist.txt",
+      "source_groups": []
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "859b3380f54a458cf8742c0713ec0cad9dfea649a75183ca4d8938420ede2d88",
+      "equal": true,
+      "original_ext4_sha256": "859b3380f54a458cf8742c0713ec0cad9dfea649a75183ca4d8938420ede2d88",
+      "path": "deploy/analytics_execution/tensorrt_backend.cpp",
+      "source_groups": [
+        "analytics_worker_tensorrt"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "8032150efc66e91c79aba37de98834f50238708aa9050cb8230d2a1ed96966d1",
+      "equal": true,
+      "original_ext4_sha256": "8032150efc66e91c79aba37de98834f50238708aa9050cb8230d2a1ed96966d1",
+      "path": "deploy/analytics_execution/tensorrt_worker.py",
+      "source_groups": [
+        "analytics_worker_tensorrt"
+      ]
+    },
+    {
+      "controller_dependency": true,
+      "current_windows_sha256": "2235b11c12e4bd84656a986c0064200fabc964b16a42a83ea6090e70e9e3fd30",
+      "equal": true,
+      "original_ext4_sha256": "2235b11c12e4bd84656a986c0064200fabc964b16a42a83ea6090e70e9e3fd30",
+      "path": "deploy/deepstream/checkpoint/Dockerfile.runtime",
+      "source_groups": [
+        "deepstream"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "3a72778f6b2bbb4f81fc3fa63330d5da557e38a655da6f86f0daf5d8242ebdcb",
+      "equal": true,
+      "original_ext4_sha256": "3a72778f6b2bbb4f81fc3fa63330d5da557e38a655da6f86f0daf5d8242ebdcb",
+      "path": "deploy/deepstream/checkpoint/requirements.lock",
+      "source_groups": [
+        "deepstream",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": true,
+      "current_windows_sha256": "c63c495e89b109abca372f1b43047ed989f0e5a95779b9004e47ce657635f3c2",
+      "equal": true,
+      "original_ext4_sha256": "c63c495e89b109abca372f1b43047ed989f0e5a95779b9004e47ce657635f3c2",
+      "path": "deploy/deepstream/checkpoint/runtime-dependency-allowlist.txt",
+      "source_groups": [
+        "deepstream",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": true,
+      "current_windows_sha256": "43b41dee019fc730704d3c176a753d0e26c8f871da59714ce97e70e9209396cc",
+      "equal": true,
+      "original_ext4_sha256": "43b41dee019fc730704d3c176a753d0e26c8f871da59714ce97e70e9209396cc",
+      "path": "deploy/deepstream/checkpoint/runtime-source-allowlist.txt",
+      "source_groups": [
+        "deepstream"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "226da0240004ec5bbaa20828d31049f4d1b53a9fce51d1c4c3c9ea9ba2f803ce",
+      "equal": true,
+      "original_ext4_sha256": "226da0240004ec5bbaa20828d31049f4d1b53a9fce51d1c4c3c9ea9ba2f803ce",
+      "path": "deploy/deepstream/checkpoint/validate_runtime_source_closure_v3.py",
+      "source_groups": [
+        "deepstream"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "074d1a300f9f4c33249e83d951acdd6bd840231f3c9affa0d83f017cd3dde68c",
+      "equal": true,
+      "original_ext4_sha256": "074d1a300f9f4c33249e83d951acdd6bd840231f3c9affa0d83f017cd3dde68c",
+      "path": "deploy/deepstream/checkpoint/vast_deepstream_checkpoint_runtime",
+      "source_groups": [
+        "deepstream"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "2cd4e9952e61fec325cdead99ea3e9d8d115750e8993c3e8d9c4fc1dabc25de1",
+      "equal": true,
+      "original_ext4_sha256": "2cd4e9952e61fec325cdead99ea3e9d8d115750e8993c3e8d9c4fc1dabc25de1",
+      "path": "deploy/deepstream/checkpoint/vast_deepstream_meta_bridge.cpp",
+      "source_groups": [
+        "deepstream"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "e286c79b814ed9b46594ed415a1b0c33534d9619ed30d3e5275d6b1157c50aae",
+      "equal": true,
+      "original_ext4_sha256": "e286c79b814ed9b46594ed415a1b0c33534d9619ed30d3e5275d6b1157c50aae",
+      "path": "deploy/deepstream/checkpoint/vast_deepstream_meta_bridge.h",
+      "source_groups": [
+        "deepstream"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "c28e664a6915ab8f13e7ca8109fde8d12d79658c64b8d3ce3c18f5dcc88639b3",
+      "equal": true,
+      "original_ext4_sha256": "c28e664a6915ab8f13e7ca8109fde8d12d79658c64b8d3ce3c18f5dcc88639b3",
+      "path": "deploy/deepstream/checkpoint/vast_deepstream_publication_runtime_v3",
+      "source_groups": [
+        "deepstream"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "ec031d5d2feb36d1d1a24380e4db6d43695f3748343d99434e6f5f9156aaa2ed",
+      "equal": true,
+      "original_ext4_sha256": "ec031d5d2feb36d1d1a24380e4db6d43695f3748343d99434e6f5f9156aaa2ed",
+      "path": "deploy/deepstream/checkpoint/wheels/PyYAML-6.0.2-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "source_groups": [
+        "deepstream",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "ffa75af20b44f8dba823498024771d5ac50620e6915abac414251bd971b4529f",
+      "equal": true,
+      "original_ext4_sha256": "ffa75af20b44f8dba823498024771d5ac50620e6915abac414251bd971b4529f",
+      "path": "deploy/deepstream/checkpoint/wheels/numpy-1.26.4-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "source_groups": [
+        "deepstream",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "86976a1c5b25ae3f8ccae3a5306e443569ee3c3faf444dfd0f41cda24667ad57",
+      "equal": true,
+      "original_ext4_sha256": "86976a1c5b25ae3f8ccae3a5306e443569ee3c3faf444dfd0f41cda24667ad57",
+      "path": "deploy/deepstream/checkpoint/wheels/pandas-2.2.3-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "source_groups": [
+        "deepstream",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427",
+      "equal": true,
+      "original_ext4_sha256": "a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427",
+      "path": "deploy/deepstream/checkpoint/wheels/python_dateutil-2.9.0.post0-py2.py3-none-any.whl",
+      "source_groups": [
+        "deepstream",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "dd95840dd199baea12d9cc096a1d452caa6596a1c1e4b5f3dbd1541855d5e815",
+      "equal": true,
+      "original_ext4_sha256": "dd95840dd199baea12d9cc096a1d452caa6596a1c1e4b5f3dbd1541855d5e815",
+      "path": "deploy/deepstream/checkpoint/wheels/pytz-2026.3.post1-py2.py3-none-any.whl",
+      "source_groups": [
+        "deepstream",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274",
+      "equal": true,
+      "original_ext4_sha256": "4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274",
+      "path": "deploy/deepstream/checkpoint/wheels/six-1.17.0-py2.py3-none-any.whl",
+      "source_groups": [
+        "deepstream",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "dc096730c87af6cab1b171c9d532be840741ff5d459015e7f6947bd7d7e54931",
+      "equal": true,
+      "original_ext4_sha256": "dc096730c87af6cab1b171c9d532be840741ff5d459015e7f6947bd7d7e54931",
+      "path": "deploy/deepstream/checkpoint/wheels/tzdata-2026.3-py2.py3-none-any.whl",
+      "source_groups": [
+        "deepstream",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "833f35287c2e0bbb0310930822b4181c66eaa090dceef62533c0ccf989457487",
+      "equal": true,
+      "original_ext4_sha256": "833f35287c2e0bbb0310930822b4181c66eaa090dceef62533c0ccf989457487",
+      "path": "deploy/gstreamer_adaptivescheduler/gstadaptivescheduler.c",
+      "source_groups": [
+        "native_probe_openvino"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "7a4b2800774c25d59808637f10fbfad778394debf16d80618157df84a5e614ab",
+      "equal": true,
+      "original_ext4_sha256": "7a4b2800774c25d59808637f10fbfad778394debf16d80618157df84a5e614ab",
+      "path": "deploy/gstreamer_analytics_terminal/checkpoint_analytics_model_provenance.hpp",
+      "source_groups": [
+        "native_probe_openvino"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "f21bbdd2494edc08fa626e5c102bfc1d995e81946ddc7f3ae101505bc45b0ae1",
+      "equal": true,
+      "original_ext4_sha256": "f21bbdd2494edc08fa626e5c102bfc1d995e81946ddc7f3ae101505bc45b0ae1",
+      "path": "deploy/gstreamer_analytics_terminal/gstvastanalyticsqueue.cpp",
+      "source_groups": [
+        "native_probe_openvino"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "b9548761c572aaa4e3878deecba24f312ed35536e95cf220e36425cab67f75e7",
+      "equal": true,
+      "original_ext4_sha256": "b9548761c572aaa4e3878deecba24f312ed35536e95cf220e36425cab67f75e7",
+      "path": "deploy/gstreamer_analytics_terminal/gstvastanalyticsterminal.cpp",
+      "source_groups": [
+        "native_probe_openvino"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "452414e01a9406cf69d1d95dcd054cbb9cc23a5cff0aaede9a51175d349d2924",
+      "equal": true,
+      "original_ext4_sha256": "452414e01a9406cf69d1d95dcd054cbb9cc23a5cff0aaede9a51175d349d2924",
+      "path": "deploy/gstreamer_analytics_terminal/gstvastcheckpointprefixqueue.cpp",
+      "source_groups": [
+        "native_probe_openvino"
+      ]
+    },
+    {
+      "controller_dependency": true,
+      "current_windows_sha256": "5d10aec4076e67218905b2c71ae32553e6843810d6d176b8e31c0c3be9dffe78",
+      "equal": true,
+      "original_ext4_sha256": "5d10aec4076e67218905b2c71ae32553e6843810d6d176b8e31c0c3be9dffe78",
+      "path": "deploy/gstreamer_custom/publication/Dockerfile",
+      "source_groups": [
+        "gstreamer_custom"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "e5ac36aa2ad9cbd78636a2a317d4c19ac04392124e7f70ad8936f0a6472642ef",
+      "equal": true,
+      "original_ext4_sha256": "e5ac36aa2ad9cbd78636a2a317d4c19ac04392124e7f70ad8936f0a6472642ef",
+      "path": "deploy/gstreamer_custom/publication/requirements.lock",
+      "source_groups": [
+        "gstreamer_custom",
+        "openvino_gva"
+      ]
+    },
+    {
+      "controller_dependency": true,
+      "current_windows_sha256": "f4655c4dbd7eee1da21267a9e3f08cbddc4a18d8e69fda2a8a0fcc4898119072",
+      "equal": true,
+      "original_ext4_sha256": "f4655c4dbd7eee1da21267a9e3f08cbddc4a18d8e69fda2a8a0fcc4898119072",
+      "path": "deploy/gstreamer_custom/publication/runtime-dependency-allowlist.txt",
+      "source_groups": []
+    },
+    {
+      "controller_dependency": true,
+      "current_windows_sha256": "111c8d3a517a4ab350fbb2753a3c01965e6645eeaad72c24f1b9f1266659e600",
+      "equal": true,
+      "original_ext4_sha256": "111c8d3a517a4ab350fbb2753a3c01965e6645eeaad72c24f1b9f1266659e600",
+      "path": "deploy/gstreamer_custom/publication/runtime-source-allowlist.txt",
+      "source_groups": [
+        "gstreamer_custom"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "2f241d0fbf8e250d09f3dc8c6c97999910991c8649c44e56ee69d4f1cb38b8e7",
+      "equal": true,
+      "original_ext4_sha256": "2f241d0fbf8e250d09f3dc8c6c97999910991c8649c44e56ee69d4f1cb38b8e7",
+      "path": "deploy/gstreamer_custom/publication/vast_gstreamer_custom_publication_runtime_v3",
+      "source_groups": [
+        "gstreamer_custom"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "3cdec01fa790a186d430433fdd4d4ffb70eed6f0eeb4bf05c8dbe2dce0a9bcb8",
+      "equal": true,
+      "original_ext4_sha256": "3cdec01fa790a186d430433fdd4d4ffb70eed6f0eeb4bf05c8dbe2dce0a9bcb8",
+      "path": "deploy/gstreamer_custom/publication/wheels/numpy-2.5.2-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+      "source_groups": [
+        "gstreamer_custom",
+        "openvino_gva"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "d373ce03ffd84010ed9839fa73672a9c8256990532e158440c0085db7d914b34",
+      "equal": true,
+      "original_ext4_sha256": "d373ce03ffd84010ed9839fa73672a9c8256990532e158440c0085db7d914b34",
+      "path": "deploy/gstreamer_custom/publication/wheels/pandas-3.0.5-cp312-cp312-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl",
+      "source_groups": [
+        "gstreamer_custom",
+        "openvino_gva"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427",
+      "equal": true,
+      "original_ext4_sha256": "a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427",
+      "path": "deploy/gstreamer_custom/publication/wheels/python_dateutil-2.9.0.post0-py2.py3-none-any.whl",
+      "source_groups": [
+        "gstreamer_custom",
+        "openvino_gva"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "ba1cc08a7ccde2d2ec775841541641e4548226580ab850948cbfda66a1befcdc",
+      "equal": true,
+      "original_ext4_sha256": "ba1cc08a7ccde2d2ec775841541641e4548226580ab850948cbfda66a1befcdc",
+      "path": "deploy/gstreamer_custom/publication/wheels/pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl",
+      "source_groups": [
+        "gstreamer_custom",
+        "openvino_gva"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274",
+      "equal": true,
+      "original_ext4_sha256": "4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274",
+      "path": "deploy/gstreamer_custom/publication/wheels/six-1.17.0-py2.py3-none-any.whl",
+      "source_groups": [
+        "gstreamer_custom",
+        "openvino_gva"
+      ]
+    },
+    {
+      "controller_dependency": true,
+      "current_windows_sha256": "2c0f2728e05067703a87de4484b06b9838a18b6b3e477c4b6f24d998b71189a8",
+      "equal": true,
+      "original_ext4_sha256": "2c0f2728e05067703a87de4484b06b9838a18b6b3e477c4b6f24d998b71189a8",
+      "path": "deploy/native_gst_probe/Dockerfile.deepstream",
+      "source_groups": [
+        "native_probe_deepstream"
+      ]
+    },
+    {
+      "controller_dependency": true,
+      "current_windows_sha256": "c695d64bcbe35b1a3089be78c9e4f6eafa1d50e75156d49e522fddee782a27a3",
+      "equal": true,
+      "original_ext4_sha256": "c695d64bcbe35b1a3089be78c9e4f6eafa1d50e75156d49e522fddee782a27a3",
+      "path": "deploy/native_gst_probe/Dockerfile.openvino",
+      "source_groups": [
+        "native_probe_openvino"
+      ]
+    },
+    {
+      "controller_dependency": true,
+      "current_windows_sha256": "f40e637c2054e125faaedc8baba4bd2fa0e95ca641a22fec9750c353ddd08787",
+      "equal": true,
+      "original_ext4_sha256": "f40e637c2054e125faaedc8baba4bd2fa0e95ca641a22fec9750c353ddd08787",
+      "path": "deploy/native_gst_probe/Dockerfile.savant",
+      "source_groups": [
+        "native_probe_savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "54e9aa0a05b50aacd9372fa6a2a660fb7f31f37d68b76d349362dad34e87e48d",
+      "equal": true,
+      "original_ext4_sha256": "54e9aa0a05b50aacd9372fa6a2a660fb7f31f37d68b76d349362dad34e87e48d",
+      "path": "deploy/native_gst_probe/checkpoint_admission_transport.hpp",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "native_probe_deepstream",
+        "native_probe_openvino",
+        "native_probe_savant",
+        "openvino_gva"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "d531893e2586bb02432d69edfae7bb2ec08a04711c2c8e22353efda678ae461a",
+      "equal": true,
+      "original_ext4_sha256": "d531893e2586bb02432d69edfae7bb2ec08a04711c2c8e22353efda678ae461a",
+      "path": "deploy/native_gst_probe/checkpoint_analytics_execution_client.hpp",
+      "source_groups": [
+        "gstreamer_custom",
+        "native_probe_deepstream",
+        "native_probe_openvino",
+        "native_probe_savant",
+        "openvino_gva"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "1133706b13443ada600105f3b6897a82e7cf2d3493b04937b58fe4f4a24bf98d",
+      "equal": true,
+      "original_ext4_sha256": "1133706b13443ada600105f3b6897a82e7cf2d3493b04937b58fe4f4a24bf98d",
+      "path": "deploy/native_gst_probe/checkpoint_analytics_terminal_transport.hpp",
+      "source_groups": [
+        "gstreamer_custom",
+        "native_probe_deepstream",
+        "native_probe_openvino",
+        "native_probe_savant",
+        "openvino_gva"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "18f53922dc6af25d4e24c1c35a11603122d80c04261bfe67c5db149e300e44a6",
+      "equal": true,
+      "original_ext4_sha256": "18f53922dc6af25d4e24c1c35a11603122d80c04261bfe67c5db149e300e44a6",
+      "path": "deploy/native_gst_probe/checkpoint_gstreamer_analytics_bridge.hpp",
+      "source_groups": [
+        "gstreamer_custom",
+        "native_probe_deepstream",
+        "native_probe_openvino",
+        "native_probe_savant",
+        "openvino_gva"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "85d2b64ccc977a76b6a9c250fd77ea8f02029382cc6121c52ff7ec3bc57acc0c",
+      "equal": true,
+      "original_ext4_sha256": "85d2b64ccc977a76b6a9c250fd77ea8f02029382cc6121c52ff7ec3bc57acc0c",
+      "path": "deploy/native_gst_probe/checkpoint_native_policy_client.hpp",
+      "source_groups": [
+        "gstreamer_custom",
+        "native_probe_deepstream",
+        "native_probe_openvino",
+        "native_probe_savant",
+        "openvino_gva"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "6eb7c3b5f6cd31820727b6cd0808707873b9b01a45547a5549b8dde9b7b728b6",
+      "equal": true,
+      "original_ext4_sha256": "6eb7c3b5f6cd31820727b6cd0808707873b9b01a45547a5549b8dde9b7b728b6",
+      "path": "deploy/native_gst_probe/checkpoint_resource_interval_emitter.hpp",
+      "source_groups": [
+        "gstreamer_custom",
+        "native_probe_deepstream",
+        "native_probe_openvino",
+        "native_probe_savant",
+        "openvino_gva"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "2fd34309bfcbdce6b96f4023c198453dbcbbbef59351a4e5e06f0f2be9d8bc9b",
+      "equal": true,
+      "original_ext4_sha256": "2fd34309bfcbdce6b96f4023c198453dbcbbbef59351a4e5e06f0f2be9d8bc9b",
+      "path": "deploy/native_gst_probe/checkpoint_runtime_emitter.hpp",
+      "source_groups": [
+        "gstreamer_custom",
+        "native_probe_deepstream",
+        "native_probe_openvino",
+        "native_probe_savant",
+        "openvino_gva"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "03f69a8e1be20c03a9044d0a478e52b8721bed18b3f61170e35f899ff9708fc4",
+      "equal": true,
+      "original_ext4_sha256": "03f69a8e1be20c03a9044d0a478e52b8721bed18b3f61170e35f899ff9708fc4",
+      "path": "deploy/native_gst_probe/checkpoint_source_coordinator.cpp",
+      "source_groups": [
+        "deepstream",
+        "native_probe_deepstream",
+        "native_probe_openvino",
+        "native_probe_savant"
+      ]
+    },
+    {
+      "controller_dependency": true,
+      "current_windows_sha256": "ea34504be944777a79047b36626552642921aa10ad0c8c2c6707fa50fda3f887",
+      "equal": true,
+      "original_ext4_sha256": "ea34504be944777a79047b36626552642921aa10ad0c8c2c6707fa50fda3f887",
+      "path": "deploy/native_gst_probe/publication/deepstream-dependency-allowlist.txt",
+      "source_groups": []
+    },
+    {
+      "controller_dependency": true,
+      "current_windows_sha256": "9a25d25c340f7c0a5e920c8700bb75fbfbf891a6d7fecc3e68363e34ea9dca28",
+      "equal": true,
+      "original_ext4_sha256": "9a25d25c340f7c0a5e920c8700bb75fbfbf891a6d7fecc3e68363e34ea9dca28",
+      "path": "deploy/native_gst_probe/publication/deepstream-source-allowlist.txt",
+      "source_groups": []
+    },
+    {
+      "controller_dependency": true,
+      "current_windows_sha256": "56987dcbda19e589653eb5cceac8e482f0896b5cd89bd4bb92e6ba8d1aeffcff",
+      "equal": true,
+      "original_ext4_sha256": "56987dcbda19e589653eb5cceac8e482f0896b5cd89bd4bb92e6ba8d1aeffcff",
+      "path": "deploy/native_gst_probe/publication/openvino-dependency-allowlist.txt",
+      "source_groups": []
+    },
+    {
+      "controller_dependency": true,
+      "current_windows_sha256": "4fbb83d112fff52b8a8a85e3cd48decb4498705328c74b289eee834119b50f05",
+      "equal": true,
+      "original_ext4_sha256": "4fbb83d112fff52b8a8a85e3cd48decb4498705328c74b289eee834119b50f05",
+      "path": "deploy/native_gst_probe/publication/openvino-source-allowlist.txt",
+      "source_groups": []
+    },
+    {
+      "controller_dependency": true,
+      "current_windows_sha256": "24de33ad711ca197a08e9f6d527e36d406f18318dc2cd53d5420c3855691a86c",
+      "equal": true,
+      "original_ext4_sha256": "24de33ad711ca197a08e9f6d527e36d406f18318dc2cd53d5420c3855691a86c",
+      "path": "deploy/native_gst_probe/publication/savant-dependency-allowlist.txt",
+      "source_groups": []
+    },
+    {
+      "controller_dependency": true,
+      "current_windows_sha256": "78416b85bc9434312548da1d5dd14b008406813ea13b8a33b212d432d5bce5c0",
+      "equal": true,
+      "original_ext4_sha256": "78416b85bc9434312548da1d5dd14b008406813ea13b8a33b212d432d5bce5c0",
+      "path": "deploy/native_gst_probe/publication/savant-source-allowlist.txt",
+      "source_groups": []
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "c0e3f80ec32bdf539815ca59b5eee1b121c87905240e28b14ab0ba4b360d4c6f",
+      "equal": true,
+      "original_ext4_sha256": "c0e3f80ec32bdf539815ca59b5eee1b121c87905240e28b14ab0ba4b360d4c6f",
+      "path": "deploy/native_gst_probe/vast_native_gst_probe.cpp",
+      "source_groups": [
+        "gstreamer_custom",
+        "native_probe_deepstream",
+        "native_probe_openvino",
+        "native_probe_savant",
+        "openvino_gva"
+      ]
+    },
+    {
+      "controller_dependency": true,
+      "current_windows_sha256": "594dc1f55c8249b1767324d110f84af605b4237b9589d0baa980df617919101f",
+      "equal": true,
+      "original_ext4_sha256": "594dc1f55c8249b1767324d110f84af605b4237b9589d0baa980df617919101f",
+      "path": "deploy/openvino_gva/publication/Dockerfile",
+      "source_groups": [
+        "openvino_gva"
+      ]
+    },
+    {
+      "controller_dependency": true,
+      "current_windows_sha256": "f91760d199bf72651be9ea71bcec2effa43d0afdd7a7f89202f1885308fd6624",
+      "equal": true,
+      "original_ext4_sha256": "f91760d199bf72651be9ea71bcec2effa43d0afdd7a7f89202f1885308fd6624",
+      "path": "deploy/openvino_gva/publication/runtime-source-allowlist.txt",
+      "source_groups": []
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "3871aeb3037d041deb1722bfb6523125416a8939d204c21f2b9e8c906e9815ae",
+      "equal": true,
+      "original_ext4_sha256": "3871aeb3037d041deb1722bfb6523125416a8939d204c21f2b9e8c906e9815ae",
+      "path": "deploy/openvino_gva/publication/vast_openvino_gva_publication_runtime_v3",
+      "source_groups": [
+        "openvino_gva"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "d33892d6886702cf4b67d8f822d3d4255bc0b323b67a0706de300a3ca308d6e1",
+      "equal": true,
+      "original_ext4_sha256": "d33892d6886702cf4b67d8f822d3d4255bc0b323b67a0706de300a3ca308d6e1",
+      "path": "deploy/savant/canonical_distributed_module.yml",
+      "source_groups": [
+        "native_probe_savant"
+      ]
+    },
+    {
+      "controller_dependency": true,
+      "current_windows_sha256": "8ec0991d4af832aff22fc0699b80b8cc68725d892b99cc7376f923ffac218672",
+      "equal": true,
+      "original_ext4_sha256": "8ec0991d4af832aff22fc0699b80b8cc68725d892b99cc7376f923ffac218672",
+      "path": "deploy/savant/publication/Dockerfile",
+      "source_groups": [
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "6458a085aa9311b520e8ab64f20a9056950a3930928ce413971627ccd0a6dff8",
+      "equal": true,
+      "original_ext4_sha256": "6458a085aa9311b520e8ab64f20a9056950a3930928ce413971627ccd0a6dff8",
+      "path": "deploy/savant/publication/gstvastcheckpointbranchqueue.cpp",
+      "source_groups": [
+        "native_probe_savant"
+      ]
+    },
+    {
+      "controller_dependency": true,
+      "current_windows_sha256": "691feca866c3bfdd09fced300659f1f7888c2bdb298c427fa4f4204ce9eba9b4",
+      "equal": true,
+      "original_ext4_sha256": "691feca866c3bfdd09fced300659f1f7888c2bdb298c427fa4f4204ce9eba9b4",
+      "path": "deploy/savant/publication/runtime-source-allowlist.txt",
+      "source_groups": [
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "f42c86eb73ce3b35d23fe9ee7ef97effcdf27f3b1fda7834d95a86192fef3c43",
+      "equal": true,
+      "original_ext4_sha256": "f42c86eb73ce3b35d23fe9ee7ef97effcdf27f3b1fda7834d95a86192fef3c43",
+      "path": "deploy/savant/publication/validate_runtime_source_closure_v3.py",
+      "source_groups": [
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "4705c34256980b51636950978d292b91d8cf688aa7e26b3248c2bb553435b6b6",
+      "equal": true,
+      "original_ext4_sha256": "4705c34256980b51636950978d292b91d8cf688aa7e26b3248c2bb553435b6b6",
+      "path": "deploy/savant/publication/vast_savant_checkpoint_runtime",
+      "source_groups": [
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "d356f9a945bde5e1d6a6753b89e551a14371aa27e84886014f3c2807d98b2ff2",
+      "equal": true,
+      "original_ext4_sha256": "d356f9a945bde5e1d6a6753b89e551a14371aa27e84886014f3c2807d98b2ff2",
+      "path": "scripts/analytics_execution_bindings.py",
+      "source_groups": [
+        "host87"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "5622726cb4a261b42509678c1ec6fd6c065923515a4d25ee6cb5b5f2d0824279",
+      "equal": true,
+      "original_ext4_sha256": "5622726cb4a261b42509678c1ec6fd6c065923515a4d25ee6cb5b5f2d0824279",
+      "path": "scripts/analytics_execution_capability.py",
+      "source_groups": [
+        "host87"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "acf5861d59efac7026ea89f28e1b4d550bd1254e8cdbea4df41eb874c7b5466b",
+      "equal": true,
+      "original_ext4_sha256": "acf5861d59efac7026ea89f28e1b4d550bd1254e8cdbea4df41eb874c7b5466b",
+      "path": "scripts/analytics_execution_endpoint.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "283fa34b91e4fbf5953f78509f7da3a38f92731c696878774104f193576831d9",
+      "equal": true,
+      "original_ext4_sha256": "283fa34b91e4fbf5953f78509f7da3a38f92731c696878774104f193576831d9",
+      "path": "scripts/analytics_execution_protocol.py",
+      "source_groups": [
+        "analytics_worker_openvino",
+        "analytics_worker_tensorrt",
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "04b59f3c5a1fa94d764f3b0e71fcb2cd0d7b0e2ad915573529019e2d2f32f00d",
+      "equal": true,
+      "original_ext4_sha256": "04b59f3c5a1fa94d764f3b0e71fcb2cd0d7b0e2ad915573529019e2d2f32f00d",
+      "path": "scripts/analytics_execution_worker.py",
+      "source_groups": [
+        "analytics_worker_openvino",
+        "analytics_worker_tensorrt",
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "fdf779ce50ada84e5adbaad75c95455618f5ce3ece7c3fc759fe56e635d38c62",
+      "equal": true,
+      "original_ext4_sha256": "fdf779ce50ada84e5adbaad75c95455618f5ce3ece7c3fc759fe56e635d38c62",
+      "path": "scripts/analytics_model_contract.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "f065d22176edcd37cbf7ba68983119d3871362f9d01ee6a112976941d7c405d0",
+      "equal": true,
+      "original_ext4_sha256": "f065d22176edcd37cbf7ba68983119d3871362f9d01ee6a112976941d7c405d0",
+      "path": "scripts/backend_publication_dispatch.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "b755230a19c8ab3e46dbe49aa2fa3e7054a79a7e7e4e98f91ceed560fada2740",
+      "equal": true,
+      "original_ext4_sha256": "b755230a19c8ab3e46dbe49aa2fa3e7054a79a7e7e4e98f91ceed560fada2740",
+      "path": "scripts/backend_publication_dispatch_v3.py",
+      "source_groups": [
+        "host87"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "ac10258c97fcdd58da02236f7a36974b2ba5060ce2f935955db05b5a9f422ba5",
+      "equal": true,
+      "original_ext4_sha256": "ac10258c97fcdd58da02236f7a36974b2ba5060ce2f935955db05b5a9f422ba5",
+      "path": "scripts/backend_publication_launcher_invocation_v3.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "159e307319d8e6f41e1684cd9ba871097de54747bd9013cb7b71e370e1b0cec5",
+      "equal": true,
+      "original_ext4_sha256": "159e307319d8e6f41e1684cd9ba871097de54747bd9013cb7b71e370e1b0cec5",
+      "path": "scripts/backend_publication_output_receipt.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "99f772665d0d271b24d98f2393a50a0f9e0bbfe5c2840e5ccce65d89a84ed13e",
+      "equal": false,
+      "original_ext4_sha256": "acc40456cf93db8deb270f54d14b8f17555a268969e5bad0695372ddba12132d",
+      "path": "scripts/backend_publication_process_supervisor_v3.py",
+      "source_groups": [
+        "host87"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "ba633140e27fe78cb6bfec97093f60e476f2bd8c43f50a0998a6b80532ffb56c",
+      "equal": true,
+      "original_ext4_sha256": "ba633140e27fe78cb6bfec97093f60e476f2bd8c43f50a0998a6b80532ffb56c",
+      "path": "scripts/backend_publication_runtime_authority.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "c90c726c00f14d5a198304ec8b74fecff8d1a4a21c41afd266073b80733b4c9f",
+      "equal": true,
+      "original_ext4_sha256": "c90c726c00f14d5a198304ec8b74fecff8d1a4a21c41afd266073b80733b4c9f",
+      "path": "scripts/backend_runtime_grant.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "c4fbd3e2afa99d5ca83130622857bbbaa3ceb0d60796d3d5a761345a32f764a4",
+      "equal": true,
+      "original_ext4_sha256": "c4fbd3e2afa99d5ca83130622857bbbaa3ceb0d60796d3d5a761345a32f764a4",
+      "path": "scripts/backend_runtime_qualification_v3.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "04cd9c75a7c405e960bdb7e4f2dea9759d839a333d43f79bd9b2b4aacaace17b",
+      "equal": true,
+      "original_ext4_sha256": "04cd9c75a7c405e960bdb7e4f2dea9759d839a333d43f79bd9b2b4aacaace17b",
+      "path": "scripts/benchmark_contract.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "a21f29f455c803154713f7825795fbf821d6abc8bb645e3552aa6dd1049e6d3a",
+      "equal": true,
+      "original_ext4_sha256": "a21f29f455c803154713f7825795fbf821d6abc8bb645e3552aa6dd1049e6d3a",
+      "path": "scripts/build_deepstream_publication_runtime_v3.sh",
+      "source_groups": [
+        "deepstream"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "9ff46e6aabea8ddb082255b504cdfce1a8d400b743ff11460866ab2d2214b437",
+      "equal": true,
+      "original_ext4_sha256": "9ff46e6aabea8ddb082255b504cdfce1a8d400b743ff11460866ab2d2214b437",
+      "path": "scripts/build_savant_publication_runtime_v3.sh",
+      "source_groups": [
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "9429cc4843d085e54daa7023b8bab9a5e9361a20204d20ba4e2dad0f1c2a3908",
+      "equal": true,
+      "original_ext4_sha256": "9429cc4843d085e54daa7023b8bab9a5e9361a20204d20ba4e2dad0f1c2a3908",
+      "path": "scripts/checkpoint_acceptance_metadata_binding.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "4db82ea10118d942457901393f447ebcf7602577b77fd1c0be9084f54366b7f7",
+      "equal": true,
+      "original_ext4_sha256": "4db82ea10118d942457901393f447ebcf7602577b77fd1c0be9084f54366b7f7",
+      "path": "scripts/checkpoint_admission.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "cdfd615aded0c1f9c784677e52ecb6ef543b02eec9d74244429c51adc87cff34",
+      "equal": true,
+      "original_ext4_sha256": "cdfd615aded0c1f9c784677e52ecb6ef543b02eec9d74244429c51adc87cff34",
+      "path": "scripts/checkpoint_deepstream_container_runtime_v3.py",
+      "source_groups": [
+        "deepstream"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "6e26f956dbe88b79e8fb974e1b4228d147eef8e0c4cfcbc0d90ed43dbdb57cac",
+      "equal": true,
+      "original_ext4_sha256": "6e26f956dbe88b79e8fb974e1b4228d147eef8e0c4cfcbc0d90ed43dbdb57cac",
+      "path": "scripts/checkpoint_deepstream_launcher.py",
+      "source_groups": [
+        "deepstream"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "8cff10050e05ed554b386ec6648693eaa069823bd68cac15ac7b2211e0638cbf",
+      "equal": true,
+      "original_ext4_sha256": "8cff10050e05ed554b386ec6648693eaa069823bd68cac15ac7b2211e0638cbf",
+      "path": "scripts/checkpoint_deepstream_protocol_adapter.py",
+      "source_groups": [
+        "deepstream",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "356e9171fb772f217c785632d3f57e96430da7138a146fe8720c56b1decd68ae",
+      "equal": true,
+      "original_ext4_sha256": "356e9171fb772f217c785632d3f57e96430da7138a146fe8720c56b1decd68ae",
+      "path": "scripts/checkpoint_deepstream_protocol_bridge.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "d3c1753df6d7ddcf40e3971066a5dfc9d4f71572c5bd3f18961460903b5aef0a",
+      "equal": true,
+      "original_ext4_sha256": "d3c1753df6d7ddcf40e3971066a5dfc9d4f71572c5bd3f18961460903b5aef0a",
+      "path": "scripts/checkpoint_deepstream_publication_runtime_v3.py",
+      "source_groups": [
+        "host87"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "2e1a9778481288a6dc9f0b3fe881454e329a3d377758130086166a2923d8b9fe",
+      "equal": true,
+      "original_ext4_sha256": "2e1a9778481288a6dc9f0b3fe881454e329a3d377758130086166a2923d8b9fe",
+      "path": "scripts/checkpoint_deepstream_qualification_fragment_v1.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "3f287f504a62e3140b4dc4ba772057423bbfd05adda837a9b81f09fda2642b35",
+      "equal": true,
+      "original_ext4_sha256": "3f287f504a62e3140b4dc4ba772057423bbfd05adda837a9b81f09fda2642b35",
+      "path": "scripts/checkpoint_deepstream_resource_runtime_v3.py",
+      "source_groups": [
+        "deepstream",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "97bb847a826f4be1933fdda6d9cb08b32304fab8c126231a2a16fce19172e2fd",
+      "equal": true,
+      "original_ext4_sha256": "97bb847a826f4be1933fdda6d9cb08b32304fab8c126231a2a16fce19172e2fd",
+      "path": "scripts/checkpoint_deepstream_runtime.py",
+      "source_groups": [
+        "deepstream"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "1f2d7978433a8ef32654e823272e5b6a9b28bd38c19924ecfee7a6f449da0e85",
+      "equal": true,
+      "original_ext4_sha256": "1f2d7978433a8ef32654e823272e5b6a9b28bd38c19924ecfee7a6f449da0e85",
+      "path": "scripts/checkpoint_deepstream_sdk_runtime.py",
+      "source_groups": [
+        "deepstream",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "d0ff1e5910e41815e116988757ad5eb3b6c9ea6bc1cc56219d00be0b23e2da43",
+      "equal": true,
+      "original_ext4_sha256": "d0ff1e5910e41815e116988757ad5eb3b6c9ea6bc1cc56219d00be0b23e2da43",
+      "path": "scripts/checkpoint_gstreamer_analytics_bridge.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "0a0ff1d67e536d42258d8d53f8ed511283db478aba30442411b607bb849970ef",
+      "equal": true,
+      "original_ext4_sha256": "0a0ff1d67e536d42258d8d53f8ed511283db478aba30442411b607bb849970ef",
+      "path": "scripts/checkpoint_gstreamer_analytics_sidecar.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "7f70138de1e87ab43dfab1e37674979c551dd24ee02fba205cd9905790b060c5",
+      "equal": true,
+      "original_ext4_sha256": "7f70138de1e87ab43dfab1e37674979c551dd24ee02fba205cd9905790b060c5",
+      "path": "scripts/checkpoint_gstreamer_custom_container_coordinator_v3.py",
+      "source_groups": [
+        "gstreamer_custom"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "ee0476b574e012b213bdc603a7a930234c0bb27d929859ef03acfdb99eb7a241",
+      "equal": true,
+      "original_ext4_sha256": "ee0476b574e012b213bdc603a7a930234c0bb27d929859ef03acfdb99eb7a241",
+      "path": "scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+      "source_groups": [
+        "host87"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "36cbd08613a4420f8b1aa516f297f0019d05ce7df58b17e4ca8e5f2bac498f97",
+      "equal": true,
+      "original_ext4_sha256": "36cbd08613a4420f8b1aa516f297f0019d05ce7df58b17e4ca8e5f2bac498f97",
+      "path": "scripts/checkpoint_gstreamer_runtime.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "ecb4d10ee878fe77fef30ca7df9990e5e2cc8a959c6aa6e285736a489b71d17c",
+      "equal": true,
+      "original_ext4_sha256": "ecb4d10ee878fe77fef30ca7df9990e5e2cc8a959c6aa6e285736a489b71d17c",
+      "path": "scripts/checkpoint_model_parity.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "660071f68ae3378f704c497aab78ffa3b2c6d20a976ca52402ebe2c7b4bbeea4",
+      "equal": true,
+      "original_ext4_sha256": "660071f68ae3378f704c497aab78ffa3b2c6d20a976ca52402ebe2c7b4bbeea4",
+      "path": "scripts/checkpoint_model_parity_acceptance.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "cda34465993fccd9acff9833b4db52292e7e58fce5286eda44ceb62dcab71cda",
+      "equal": true,
+      "original_ext4_sha256": "cda34465993fccd9acff9833b4db52292e7e58fce5286eda44ceb62dcab71cda",
+      "path": "scripts/checkpoint_model_parity_acceptance_v4.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "34474de61e19a8f3b1167ff8b52f11f33514e1d9483220abf693456ec840cf9c",
+      "equal": true,
+      "original_ext4_sha256": "34474de61e19a8f3b1167ff8b52f11f33514e1d9483220abf693456ec840cf9c",
+      "path": "scripts/checkpoint_model_parity_v4.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "76de5fa2bc52eb1a11b34abbfb93dd144d0769b802351dec992c92e0d1610c95",
+      "equal": true,
+      "original_ext4_sha256": "76de5fa2bc52eb1a11b34abbfb93dd144d0769b802351dec992c92e0d1610c95",
+      "path": "scripts/checkpoint_native_policy_runtime.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "33a94d90919880c8f04b9e49a9841cda21ceceee1bb36ef1489e9103d2b4b583",
+      "equal": true,
+      "original_ext4_sha256": "33a94d90919880c8f04b9e49a9841cda21ceceee1bb36ef1489e9103d2b4b583",
+      "path": "scripts/checkpoint_openvino_gva_container_coordinator_v3.py",
+      "source_groups": [
+        "openvino_gva"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "428e600aca23616e6e43e49331c54ac7b1f58e7784f5f79a03fdf8392a34b17d",
+      "equal": true,
+      "original_ext4_sha256": "428e600aca23616e6e43e49331c54ac7b1f58e7784f5f79a03fdf8392a34b17d",
+      "path": "scripts/checkpoint_openvino_gva_publication_runtime_v3.py",
+      "source_groups": [
+        "host87"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "ddb0779a0142962fbdd5dbada6127f748d854204b4b1939734ee64eddb60e12d",
+      "equal": true,
+      "original_ext4_sha256": "ddb0779a0142962fbdd5dbada6127f748d854204b4b1939734ee64eddb60e12d",
+      "path": "scripts/checkpoint_publication_launcher_adapter_v3.py",
+      "source_groups": [
+        "host87"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "29dcbd607858118ad7e5e4a221a58034ac07ea4f819bede4831d23852f41a97f",
+      "equal": true,
+      "original_ext4_sha256": "29dcbd607858118ad7e5e4a221a58034ac07ea4f819bede4831d23852f41a97f",
+      "path": "scripts/checkpoint_publication_launcher_guard_v3.py",
+      "source_groups": [
+        "host87"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "8d389885bf48aedfcdcc65519db41ee2a962da3e77c2ca224c477b8d7742b055",
+      "equal": true,
+      "original_ext4_sha256": "8d389885bf48aedfcdcc65519db41ee2a962da3e77c2ca224c477b8d7742b055",
+      "path": "scripts/checkpoint_publication_runtime.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "5de1c97482b5de0584847b727861b5a59868ddf001ff0c79c7331c8283a3d1a2",
+      "equal": true,
+      "original_ext4_sha256": "5de1c97482b5de0584847b727861b5a59868ddf001ff0c79c7331c8283a3d1a2",
+      "path": "scripts/checkpoint_qualification_pilot_acceptance_v1.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "fb91d24e69385d37fc59b68c116829163cc3e29ed6b1403276b0b0676af90135",
+      "equal": true,
+      "original_ext4_sha256": "fb91d24e69385d37fc59b68c116829163cc3e29ed6b1403276b0b0676af90135",
+      "path": "scripts/checkpoint_runtime.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "1de5f88c0939f3d9c38744e8248e5c0268159909393a4712af0e25e6d8462890",
+      "equal": true,
+      "original_ext4_sha256": "1de5f88c0939f3d9c38744e8248e5c0268159909393a4712af0e25e6d8462890",
+      "path": "scripts/checkpoint_runtime_plan.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "bdc1b8f0ec2b3d9a2f60146e2d922d118848ec992e6f751b2592b11785d15cae",
+      "equal": true,
+      "original_ext4_sha256": "bdc1b8f0ec2b3d9a2f60146e2d922d118848ec992e6f751b2592b11785d15cae",
+      "path": "scripts/checkpoint_savant_container_runtime_v3.py",
+      "source_groups": [
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "cc8ab6173bc21a26c9a6eadac6679bff7b80fd6f8bf2cb46b53ad685f56e7fbf",
+      "equal": true,
+      "original_ext4_sha256": "cc8ab6173bc21a26c9a6eadac6679bff7b80fd6f8bf2cb46b53ad685f56e7fbf",
+      "path": "scripts/checkpoint_savant_ingress.py",
+      "source_groups": [
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "73dc0bfb5a30f34afe3a444183f6ef269558264683468e8909427404fd514b86",
+      "equal": true,
+      "original_ext4_sha256": "73dc0bfb5a30f34afe3a444183f6ef269558264683468e8909427404fd514b86",
+      "path": "scripts/checkpoint_savant_launcher.py",
+      "source_groups": [
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "66acc570993ec071db8323fc2763744fb8ae5359b673aff2ba213ea9814ab68b",
+      "equal": true,
+      "original_ext4_sha256": "66acc570993ec071db8323fc2763744fb8ae5359b673aff2ba213ea9814ab68b",
+      "path": "scripts/checkpoint_savant_native_module.py",
+      "source_groups": [
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "a82f3196a91c8ca27cb0a91c5923dc6b40ade18dde190111c89b1d5b86f0b61d",
+      "equal": true,
+      "original_ext4_sha256": "a82f3196a91c8ca27cb0a91c5923dc6b40ade18dde190111c89b1d5b86f0b61d",
+      "path": "scripts/checkpoint_savant_protocol_adapter_v3.py",
+      "source_groups": [
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "0f8ef082eba3d7d0eda798ca70d89b6ddab6ba046215a884d05b73452c3275b3",
+      "equal": true,
+      "original_ext4_sha256": "0f8ef082eba3d7d0eda798ca70d89b6ddab6ba046215a884d05b73452c3275b3",
+      "path": "scripts/checkpoint_savant_protocol_bridge.py",
+      "source_groups": [
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "1bb0a25726543870d4e7705c1148ebaa1028fb6ab7d05e0ab2cc3b85eac8bba7",
+      "equal": true,
+      "original_ext4_sha256": "1bb0a25726543870d4e7705c1148ebaa1028fb6ab7d05e0ab2cc3b85eac8bba7",
+      "path": "scripts/checkpoint_savant_publication_runtime_v3.py",
+      "source_groups": [
+        "host87"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "e9b19da939a7de8de28f8fcc270ca1b12de787be5be0d2e4078cca37280daf37",
+      "equal": true,
+      "original_ext4_sha256": "e9b19da939a7de8de28f8fcc270ca1b12de787be5be0d2e4078cca37280daf37",
+      "path": "scripts/checkpoint_savant_publication_specs_v3.py",
+      "source_groups": [
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "c835fe15852d79551c4ac953492268a5c04d5651a0756f5bdc6786f30c2308a4",
+      "equal": true,
+      "original_ext4_sha256": "c835fe15852d79551c4ac953492268a5c04d5651a0756f5bdc6786f30c2308a4",
+      "path": "scripts/checkpoint_savant_pyfunc_v3.py",
+      "source_groups": [
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "17b5efcfcbf3e0cda58e839a74ef0b917ac59d0b6d118a6e7873acfdf266bf63",
+      "equal": true,
+      "original_ext4_sha256": "17b5efcfcbf3e0cda58e839a74ef0b917ac59d0b6d118a6e7873acfdf266bf63",
+      "path": "scripts/checkpoint_savant_resource_runtime_v3.py",
+      "source_groups": [
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "58cc0fab1411e1ab291e89b2fc4c53d8faa8766014e8bdbe279a0faa33bd4555",
+      "equal": true,
+      "original_ext4_sha256": "58cc0fab1411e1ab291e89b2fc4c53d8faa8766014e8bdbe279a0faa33bd4555",
+      "path": "scripts/checkpoint_savant_runtime.py",
+      "source_groups": [
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "b336cbfcda7dcc5ac15f510706cc0de99e5ebe875183d404345f081a2c702b66",
+      "equal": true,
+      "original_ext4_sha256": "b336cbfcda7dcc5ac15f510706cc0de99e5ebe875183d404345f081a2c702b66",
+      "path": "scripts/checkpoint_savant_sdk_runtime_v3.py",
+      "source_groups": [
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "f2db6624aa56970dd09cd8cf3dcb97c5c55ab47f3c20c54cf5c26cc2263d70dc",
+      "equal": true,
+      "original_ext4_sha256": "f2db6624aa56970dd09cd8cf3dcb97c5c55ab47f3c20c54cf5c26cc2263d70dc",
+      "path": "scripts/collect_metrics.py",
+      "source_groups": [
+        "host87"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "4a491283963629f6c3ed2f1649d62b1a2945241edeb1e735b90144eb3f41f6fe",
+      "equal": true,
+      "original_ext4_sha256": "4a491283963629f6c3ed2f1649d62b1a2945241edeb1e735b90144eb3f41f6fe",
+      "path": "scripts/extract_kpp_legacy_iss.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "812c18bdd6fe648d8939de8e00e0dd864cba84d4e96b1f6bcbc753f932d4fa34",
+      "equal": true,
+      "original_ext4_sha256": "812c18bdd6fe648d8939de8e00e0dd864cba84d4e96b1f6bcbc753f932d4fa34",
+      "path": "scripts/formal_aw_heft_reference.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "44c3cbf660aac5db5a29556e7cbc717acc01acd26f115c4c5591d3ded7f2d4f1",
+      "equal": true,
+      "original_ext4_sha256": "44c3cbf660aac5db5a29556e7cbc717acc01acd26f115c4c5591d3ded7f2d4f1",
+      "path": "scripts/freeze_kpp_frozen_reconstruction_v1.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "73cb1726532df1c4fdd4249673c471cceb035906f78bf68e250f1706c08dcffa",
+      "equal": true,
+      "original_ext4_sha256": "73cb1726532df1c4fdd4249673c471cceb035906f78bf68e250f1706c08dcffa",
+      "path": "scripts/freeze_kpp_iss_publication_v3.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "d4ab7bf4497e48d4e04f4cd49f0b97606a46457ac516fabfc456dd09a3f64c33",
+      "equal": true,
+      "original_ext4_sha256": "d4ab7bf4497e48d4e04f4cd49f0b97606a46457ac516fabfc456dd09a3f64c33",
+      "path": "scripts/freeze_kpp_legacy_iss_v2_transcodes.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "2eb73e379287e65776049e3a98c530a5c3a0e9e81749a7a9f2ae8d4c80b52a7c",
+      "equal": true,
+      "original_ext4_sha256": "2eb73e379287e65776049e3a98c530a5c3a0e9e81749a7a9f2ae8d4c80b52a7c",
+      "path": "scripts/full_resource_contract.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "d4d0dfe352249316c9c5b72136bea326947b77b7952ce1ff5add5ab502bad19d",
+      "equal": true,
+      "original_ext4_sha256": "d4d0dfe352249316c9c5b72136bea326947b77b7952ce1ff5add5ab502bad19d",
+      "path": "scripts/kpp_frozen_reconstruction_v1_dataset.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "6ad62418f36f5e0dcfee55d43c117a9faa7e82f82c3388f53b1e7bf85049909d",
+      "equal": true,
+      "original_ext4_sha256": "6ad62418f36f5e0dcfee55d43c117a9faa7e82f82c3388f53b1e7bf85049909d",
+      "path": "scripts/kpp_iss_publication_v3_dataset.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "c5a2c67a6a5f1293f0b5939980534d87f7089dd221542c88eed4bf95650cfc42",
+      "equal": true,
+      "original_ext4_sha256": "c5a2c67a6a5f1293f0b5939980534d87f7089dd221542c88eed4bf95650cfc42",
+      "path": "scripts/kpp_legacy_iss_v2_manifest.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "db4cdb5f42268e2f1eb2c75c1bb44fa25d1e30f8938e4809cd1477b1ced88d01",
+      "equal": true,
+      "original_ext4_sha256": "db4cdb5f42268e2f1eb2c75c1bb44fa25d1e30f8938e4809cd1477b1ced88d01",
+      "path": "scripts/materialize_runtime_build_context_v3.py",
+      "source_groups": [
+        "deepstream",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "bb5598b8917e0662d7cb933196be43c332c4fec6363691d971b64ae1a53127bb",
+      "equal": true,
+      "original_ext4_sha256": "bb5598b8917e0662d7cb933196be43c332c4fec6363691d971b64ae1a53127bb",
+      "path": "scripts/model_parity_grant.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "e360b386f94712c0737b56f0a224b7979bbab1865e7cbffaebcc72462209f193",
+      "equal": true,
+      "original_ext4_sha256": "e360b386f94712c0737b56f0a224b7979bbab1865e7cbffaebcc72462209f193",
+      "path": "scripts/production_arm_evidence_finalizer_v1.py",
+      "source_groups": [
+        "host87"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "fdd2491e874e21b02586f13d6a4f0c1c34ca3b78ce837ede1779ac7d964ea8d6",
+      "equal": true,
+      "original_ext4_sha256": "fdd2491e874e21b02586f13d6a4f0c1c34ca3b78ce837ede1779ac7d964ea8d6",
+      "path": "scripts/publication_acceptance_evidence.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "4b308d6727168b211b4eca7917e18c7516247e77d41329856566e343b9bd9c53",
+      "equal": true,
+      "original_ext4_sha256": "4b308d6727168b211b4eca7917e18c7516247e77d41329856566e343b9bd9c53",
+      "path": "scripts/publication_benchmark_native_diagnostic_v1.py",
+      "source_groups": [
+        "host87"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "056654b0a019720164bc478a83f584ab4f4121b5c8570e44d2358dbfa6a71bc9",
+      "equal": true,
+      "original_ext4_sha256": "056654b0a019720164bc478a83f584ab4f4121b5c8570e44d2358dbfa6a71bc9",
+      "path": "scripts/publication_child_evidence_materializer_v1.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "9f0e0e56a238ad26f8ab525bc9f3bc0ebdd0e136b7bc0f8853ab3a0745342c6f",
+      "equal": true,
+      "original_ext4_sha256": "9f0e0e56a238ad26f8ab525bc9f3bc0ebdd0e136b7bc0f8853ab3a0745342c6f",
+      "path": "scripts/publication_gstreamer_component_authority_v1.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "4cce487a0f224a90b14c9c83a2fd47b1712d20d1631ec3a67766ed6f515b426b",
+      "equal": true,
+      "original_ext4_sha256": "4cce487a0f224a90b14c9c83a2fd47b1712d20d1631ec3a67766ed6f515b426b",
+      "path": "scripts/publication_gstreamer_component_cli_v1.py",
+      "source_groups": [
+        "host87"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "1390b429025478799a03065ebe031cb07dac2669f716f05f97f074735e5e75d1",
+      "equal": true,
+      "original_ext4_sha256": "1390b429025478799a03065ebe031cb07dac2669f716f05f97f074735e5e75d1",
+      "path": "scripts/publication_gstreamer_component_inputs_v1.py",
+      "source_groups": [
+        "host87"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "aecd556db7f1485eec79ea2971362e88da2d5a49fd3ea797cb5ad7d787b72014",
+      "equal": true,
+      "original_ext4_sha256": "aecd556db7f1485eec79ea2971362e88da2d5a49fd3ea797cb5ad7d787b72014",
+      "path": "scripts/publication_gstreamer_component_runtime_v1.py",
+      "source_groups": [
+        "host87"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "e488da96ba0f52589c8c594fd1ac7f1a3e397bed09416bd9c4d63a556dc8bf5b",
+      "equal": true,
+      "original_ext4_sha256": "e488da96ba0f52589c8c594fd1ac7f1a3e397bed09416bd9c4d63a556dc8bf5b",
+      "path": "scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "7aa52f62ddd5651559737f31dc75dadbefedd1759c8d528b185666262775c990",
+      "equal": true,
+      "original_ext4_sha256": "7aa52f62ddd5651559737f31dc75dadbefedd1759c8d528b185666262775c990",
+      "path": "scripts/publication_guardian_component_preprocessing_contract_v1.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "130130ba64079f6a80ef4762a45c9969f4b3a425432a70d082ecc5a59004169d",
+      "equal": true,
+      "original_ext4_sha256": "130130ba64079f6a80ef4762a45c9969f4b3a425432a70d082ecc5a59004169d",
+      "path": "scripts/publication_guardian_operational_recorder_v1.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "19dfff21eae9ad8cc3781b2fe47bdb6d9eb55c430962983d2f7553e04a5c529d",
+      "equal": true,
+      "original_ext4_sha256": "19dfff21eae9ad8cc3781b2fe47bdb6d9eb55c430962983d2f7553e04a5c529d",
+      "path": "scripts/publication_guardian_preprocessing_contract_v1.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "6ef8cca85130ea16c4b90dd9cdc1001955abaa73763e2436da8a3660ba84fa4f",
+      "equal": true,
+      "original_ext4_sha256": "6ef8cca85130ea16c4b90dd9cdc1001955abaa73763e2436da8a3660ba84fa4f",
+      "path": "scripts/publication_guardian_runtime_expectations_v1.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "a27c2daaebb8fe8cad0fecfbcc60dc29f041835f8ae01e673dd321b3df1ea50e",
+      "equal": true,
+      "original_ext4_sha256": "a27c2daaebb8fe8cad0fecfbcc60dc29f041835f8ae01e673dd321b3df1ea50e",
+      "path": "scripts/publication_image_build_v1.py",
+      "source_groups": [
+        "host87"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "3154cae593782ca64adf7318d615c7c5185ff1d8b06098647e50f00940edcd42",
+      "equal": true,
+      "original_ext4_sha256": "3154cae593782ca64adf7318d615c7c5185ff1d8b06098647e50f00940edcd42",
+      "path": "scripts/publication_immutable_directory_v1.py",
+      "source_groups": [
+        "host87"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "1019d8ca5aae7ec23315e08bafef0c4842350e55fedfb209453785b793c4ac95",
+      "equal": true,
+      "original_ext4_sha256": "1019d8ca5aae7ec23315e08bafef0c4842350e55fedfb209453785b793c4ac95",
+      "path": "scripts/publication_operational_capture_plan_v1.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "036805ad328ddc6c63377c942f86bf3e26a0bf6de2a83847c4bc9801d5d8d334",
+      "equal": true,
+      "original_ext4_sha256": "036805ad328ddc6c63377c942f86bf3e26a0bf6de2a83847c4bc9801d5d8d334",
+      "path": "scripts/publication_operational_container_custody_v1.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "5ea8477e527bf57438ce81cea9b8b19fb628c555cb808711438e2036bcaee923",
+      "equal": true,
+      "original_ext4_sha256": "5ea8477e527bf57438ce81cea9b8b19fb628c555cb808711438e2036bcaee923",
+      "path": "scripts/publication_operational_process_custody_v1.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "5df1071402080957c312acddb85e0285c589c4a7d1948d51e9bf5e274727f0b9",
+      "equal": true,
+      "original_ext4_sha256": "5df1071402080957c312acddb85e0285c589c4a7d1948d51e9bf5e274727f0b9",
+      "path": "scripts/publication_operational_request_domain_v1.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "7036af860c587e3b93f6835ac3c0992643daa754693867c342a97a63aac9a51d",
+      "equal": true,
+      "original_ext4_sha256": "7036af860c587e3b93f6835ac3c0992643daa754693867c342a97a63aac9a51d",
+      "path": "scripts/publication_operational_request_reconciliation_v1.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "20a470135fef1d6fc37b76585623197f18b2b20e4f192ba61ace45fcac5bdb51",
+      "equal": true,
+      "original_ext4_sha256": "20a470135fef1d6fc37b76585623197f18b2b20e4f192ba61ace45fcac5bdb51",
+      "path": "scripts/publication_operational_runtime_context_v1.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "1edcd2813f3bedbac4416d7e7d69b9e959ecc044aee710f248721b06e81f0689",
+      "equal": true,
+      "original_ext4_sha256": "1edcd2813f3bedbac4416d7e7d69b9e959ecc044aee710f248721b06e81f0689",
+      "path": "scripts/publication_operational_stock_operations_v1.py",
+      "source_groups": [
+        "host87"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "d601fb4460bc44b27cb2d38fd70e73a388fb137c95139fa10d4eefca944def92",
+      "equal": true,
+      "original_ext4_sha256": "d601fb4460bc44b27cb2d38fd70e73a388fb137c95139fa10d4eefca944def92",
+      "path": "scripts/publication_owned_staging_cleanup_v1.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "bc8a28239d86f1913a66757a497d9d5398dd1b17757c6f17725ae72bc01961ed",
+      "equal": true,
+      "original_ext4_sha256": "bc8a28239d86f1913a66757a497d9d5398dd1b17757c6f17725ae72bc01961ed",
+      "path": "scripts/publication_physical_io_v1.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "276c15284c46b99ae32ae99653cc10f9f65e09d49d69498322c906614d1ba8a1",
+      "equal": true,
+      "original_ext4_sha256": "276c15284c46b99ae32ae99653cc10f9f65e09d49d69498322c906614d1ba8a1",
+      "path": "scripts/publication_policy_contract.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "df03b7706ec354aab21714c09c9d0d95e7aa5a7124aefac574637f07e3d5d051",
+      "equal": true,
+      "original_ext4_sha256": "df03b7706ec354aab21714c09c9d0d95e7aa5a7124aefac574637f07e3d5d051",
+      "path": "scripts/publication_policy_frozen_replay_v1.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "449eb645a6014cabfeb0e016edb476454b61368cdefbc71543459facacfa0cb9",
+      "equal": true,
+      "original_ext4_sha256": "449eb645a6014cabfeb0e016edb476454b61368cdefbc71543459facacfa0cb9",
+      "path": "scripts/publication_policy_projection_v1.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "529a5ed62e57dba014dd781fa8e2a6b1a24b63812cd5a53aefb8ae279d9948e3",
+      "equal": true,
+      "original_ext4_sha256": "529a5ed62e57dba014dd781fa8e2a6b1a24b63812cd5a53aefb8ae279d9948e3",
+      "path": "scripts/publication_policy_qualification.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "1f248748d16ead95def536bf7d2815e7b79a8754696c8a37aba51018ba8a75f6",
+      "equal": true,
+      "original_ext4_sha256": "1f248748d16ead95def536bf7d2815e7b79a8754696c8a37aba51018ba8a75f6",
+      "path": "scripts/publication_policy_qualification_bootstrap_v2.py",
+      "source_groups": [
+        "host87"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "5a9039a86e1abb2ce84f189217cd77e0885f86cba71cc1d6aca09b89df638304",
+      "equal": true,
+      "original_ext4_sha256": "5a9039a86e1abb2ce84f189217cd77e0885f86cba71cc1d6aca09b89df638304",
+      "path": "scripts/publication_policy_qualification_execution_closure_v1.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "984dd840a768b08462db82ea96cb7cdce4b9f6e3e1ca20605b258771f665a30c",
+      "equal": true,
+      "original_ext4_sha256": "984dd840a768b08462db82ea96cb7cdce4b9f6e3e1ca20605b258771f665a30c",
+      "path": "scripts/publication_policy_qualification_execution_code_closure_v1.py",
+      "source_groups": [
+        "host87"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "ac2857c78d2069a5641b7ec73c4dbf5a9e067c069b3b22d7ebef205e169e45c4",
+      "equal": true,
+      "original_ext4_sha256": "ac2857c78d2069a5641b7ec73c4dbf5a9e067c069b3b22d7ebef205e169e45c4",
+      "path": "scripts/publication_policy_qualification_fragments_from_authority_v2.py",
+      "source_groups": [
+        "host87"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "16326c3b793b0535a34e6ee7995146388456011eabdb2454b5a1e2ed45a59a27",
+      "equal": true,
+      "original_ext4_sha256": "16326c3b793b0535a34e6ee7995146388456011eabdb2454b5a1e2ed45a59a27",
+      "path": "scripts/publication_policy_qualification_index_v2.py",
+      "source_groups": [
+        "host87"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "419074d4cb65c6170f3cb33922d769b3c781cb1f24609e762c955dca72d0a09a",
+      "equal": true,
+      "original_ext4_sha256": "419074d4cb65c6170f3cb33922d769b3c781cb1f24609e762c955dca72d0a09a",
+      "path": "scripts/publication_policy_qualification_pilot_executor_v2.py",
+      "source_groups": [
+        "host87"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "a4358e759a24cbf49652cecbbb7a30199476d0c3539be5e1c9dd87b972aeb2f8",
+      "equal": true,
+      "original_ext4_sha256": "a4358e759a24cbf49652cecbbb7a30199476d0c3539be5e1c9dd87b972aeb2f8",
+      "path": "scripts/publication_policy_qualification_runtime_inputs_v2.py",
+      "source_groups": [
+        "host87"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "b85710fc0277339773775e8082f518026b14493b53330d7b142b4aa42d2bb14b",
+      "equal": true,
+      "original_ext4_sha256": "b85710fc0277339773775e8082f518026b14493b53330d7b142b4aa42d2bb14b",
+      "path": "scripts/publication_policy_qualification_transaction_v2.py",
+      "source_groups": [
+        "host87"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "38757bd592fed2c137325f0f4b320812145ac64a2a78550a85e549bf0a0cbb8a",
+      "equal": true,
+      "original_ext4_sha256": "38757bd592fed2c137325f0f4b320812145ac64a2a78550a85e549bf0a0cbb8a",
+      "path": "scripts/publication_qualification_image_refreeze_v1.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "c004770b75f07ca929877c1034eb34bdef00f0fdb9b37d2dfeef0f70ff4d1f7a",
+      "equal": true,
+      "original_ext4_sha256": "c004770b75f07ca929877c1034eb34bdef00f0fdb9b37d2dfeef0f70ff4d1f7a",
+      "path": "scripts/resource_interval_contract.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    },
+    {
+      "controller_dependency": false,
+      "current_windows_sha256": "b7ec477419946c1cd0102ffb0eaacca5e54ed04cb5e60f9d0802a9c46c72ef2a",
+      "equal": true,
+      "original_ext4_sha256": "b7ec477419946c1cd0102ffb0eaacca5e54ed04cb5e60f9d0802a9c46c72ef2a",
+      "path": "scripts/topology_contract.py",
+      "source_groups": [
+        "deepstream",
+        "gstreamer_custom",
+        "host87",
+        "openvino_gva",
+        "savant"
+      ]
+    }
+  ],
+  "status": "prepared_source_only"
+}

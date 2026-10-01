@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "status": "setup_complete_full_ci_not_dispatched",
+  "source_commit": "4cb9d8313cca71256179bc3b59cc6f9137e7b8ba",
+  "stock_ci_invocation_count": 0,
+  "original_setup_tool": "d6dbaf",
+  "original_setup_returncode": 0,
+  "setup_report": {
+    "path": "original-setup-attempt01/execution.v1.json",
+    "size_bytes": 29004,
+    "sha256": "9f3ca03c4c3924845cf6dac825c9b7b3937f7c64e27f2b2557d8f165455ceb7f"
+  },
+  "original_setup_capture": {
+    "path": "original-setup.capture-terminal.v1.json",
+    "size_bytes": 9150,
+    "sha256": "420f0cf28c377b2a4449305b6c24daf6fcb4c34fdb928a32a00b8039c9e73b1b"
+  },
+  "root_instruction": "Before any full stock CI launch, report actual setup prerequisites/state and defer the future full4cb dispatch while the two newly reported original hosted failures are diagnosed. Do not stop an already launched original.",
+  "instruction_applied": "The only active operation was the already-started finite checkout/setup. It completed normally, all prerequisite gates passed and all its held/capture FDs closed. No full-suite operation had started, so no operation was cancelled or retried.",
+  "benchmark_root_head_preserved": "0ad78d6abdb3c526544a17185af7fe8094716735",
+  "benchmark_95_input_epochs_preserved": true,
+  "source_or_package_installations": false,
+  "ci_or_model_acceptance_claim": false,
+  "hosted_failure_cause_reviewed_by_this_record": false
+}

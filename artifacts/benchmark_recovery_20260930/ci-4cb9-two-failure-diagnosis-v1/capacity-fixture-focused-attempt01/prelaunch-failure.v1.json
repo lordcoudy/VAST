@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "git",
+    "-c",
+    "core.longpaths=true",
+    "-C",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec",
+    "rev-parse",
+    "HEAD"
+  ],
+  "classification": "original artifact-controller Git prelaunch failure; no unit child spawned",
+  "failure_type": "CalledProcessError",
+  "namespace_preserved": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/capacity-fixture-focused-attempt01",
+  "original_error_text": "Command returned non-zero exit status128 before Popen test dispatch. Original git stderr was captured only in the exception object and not retained by this collector.",
+  "original_source_sha256": "02eae7c122ed6b0a5a6d4e81657758a90970d290febd7309e5af43e585c65249",
+  "original_tool_chunk": "aeb434",
+  "repair": "New collector v2 uses explicit actual WSL worktree Gitdir/worktree; old source and namespace unchanged.",
+  "returncode": 128,
+  "test_invocations": 0
+}

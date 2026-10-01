@@ -1,0 +1,49 @@
+    def _capacity_ready(self, process):
+        import select
+        readable, _, _ = select.select([process.stdout], [], [], 5)
+        if not readable or process.stdout.readline(7) != b"READY\n":
+            raise RuntimeError("capacity fixture child failed before readiness")
+        self.assertIsNone(process.poll())
+        return b"READY\n"
+
+    def _run_capacity_child(self, *, phase="measurement"):
+        # Only the capacity loop requires a live child until real registration.
+        program = ("import sys;sys.stdout.buffer.write(b'READY\\n');sys.stdout.buffer.flush();"
+                   "gate=sys.stdin.buffer.read(1);"
+                   "sys.exit(77) if gate!=b'G' else print('original output')")
+        with original_engine_phase_v1(phase):
+            argv = ["-c", program]
+            if phase == "measurement":
+                argv.extend(("--mount", f"type=bind,src={self.root / 'inputs'},dst=/workspace/project,readonly",
+                             "--mount", f"type=bind,src={self.source},dst=/opt/vast/operational",
+                             "--operational-request-context", "/workspace/project/context.json",
+                             "--operational-output-dir", "/opt/vast/operational"))
+            process = subprocess.Popen([self.engine.proc_path, *argv], executable=self.engine.proc_path,
+                stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, pass_fds=(self.engine_fd,))
+            try:
+                prefix = self._capacity_ready(process)
+                token = engine_process_started_v1(process, self.engine, self.socket_pin, argv)
+                # The actual observer returned before the parent releases input.
+                self.assertIsNotNone(token)
+                stdout, stderr = process.communicate(b"G", timeout=5)
+                stdout = prefix + stdout
+                engine_process_terminal_v1(token, process, stdout, stderr, False, False, False)
+                capture = observer.current_original_engine_capture_v1()
+                if phase == "measurement" and process.returncode == 0 and capture.native_transfer is None:
+                    self.transfer()
+            finally:
+                if process.poll() is None:
+                    process.kill()
+                process.communicate(timeout=5)
+
+    def test_capacity_fixture_failed_ready_child_never_registers(self):
+        with self.assertRaisesRegex(RuntimeError, "capacity fixture child failed before readiness"):
+            with self.capture(output_dir=self.root / "outputs/failed-capacity-ready") as capture, \
+                    original_engine_phase_v1("measurement"), self.process("raise SystemExit(7)") as (process, argv):
+                self._capacity_ready(process)
+                engine_process_started_v1(process, self.engine, self.socket_pin, argv)
+        receipt = json.loads(Path(capture.receipt_descriptor["path"]).read_bytes())
+        self.assertEqual(receipt["call_count"], 0)
+        self.assertEqual(receipt["status"], "failed_original_cli_capture")
+        self.assertIsNone(capture.native_transfer)
+

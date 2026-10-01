@@ -1,0 +1,46 @@
+{
+  "artifact_kind": "vast_original_gpu01_output_retention_root_grant_v1",
+  "capture_adaptation": "Exact original CPU06 capture code retained in original launch argv; only GPU preparation directory, expected reader SHA and capture kind literals differ. All capture control/owner/raw/130s/process scan logic remains unchanged.",
+  "capture_origin": {
+    "path": "artifacts/benchmark_recovery_20260930/component-cpu06-windows-retention-preparation-v1/original-copy.launch.v1.json",
+    "sha256": "de164a5147dc98cb1d72a24fe390b210e6b63aa4a82431c4490e4f5fd0339982",
+    "size_bytes": 6784
+  },
+  "capture_source": {
+    "path": "artifacts/benchmark_recovery_20260930/component-gpu01-windows-retention-preparation-v1/capture_original_gpu01.py",
+    "sha256": "dd93615a874d101ab659d16d92034fc4a14553470c21de28584564f7531f2d7a",
+    "size_bytes": 5000
+  },
+  "execution_count_authorized": 1,
+  "peer_review": {
+    "path": "artifacts/benchmark_recovery_20260930/component-gpu01-windows-retention-independent-review-v1/review.v1.json",
+    "sha256": "8e008cd475c69f2f10c6a29b9f3b203c749863a5d5b54f500261ca307dd3b1f7",
+    "size_bytes": 5024
+  },
+  "recorded_at_utc": "2026-09-30T23:22:16.845625+00:00",
+  "retention_is_not_authority": true,
+  "root_message": "ROOT GRANTS ONE original GPU01 finite-retention pack: exactrecipe10argv/packer10516B6e60e0b8 +inventory100145Baa750080, original4c0/88102 terminal +closed6c gate. Persistgrant; executeonce freshoriginal-retention-attempt01 with120+10/130 clocks, rawchannels/originalowner/EOF/closedsource/128member220703683B fullSHA+CRC+source7epochs/ancestor/FDretirement/latecompanion. Copiesonlynoauthority. Onfailurepreservefirstresultnoautomaticretry.",
+  "schema_version": 1,
+  "source_and_recipe": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-gpu01-windows-retention-preparation-v1/pack_original_outputs_v2.py",
+      "sha256": "6e60e0b8c88cb94ba9590bad617b8fa1d29715d6c58fa4ba3bdfc90987e21b44",
+      "size_bytes": 10516
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-gpu01-windows-retention-preparation-v1/inventory.v1.json",
+      "sha256": "aa750080acc6da6d66b9e5f9e2b52a9f9952a5f587d9f6cbe00c9d576650d371",
+      "size_bytes": 100145
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-gpu01-windows-retention-preparation-v1/original-launch-recipe.v1.json",
+      "sha256": "786ef09ec7db39e9d624bc84241084b29a7951d36a6a81cb418e786d018eda0a",
+      "size_bytes": 2254
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-gpu01-windows-retention-preparation-v1/preparation.v2.json",
+      "sha256": "0766d9b1c09e7733165bba89673b6d56ea291871d4048c0843b07e0fa539e9c1",
+      "size_bytes": 4764
+    }
+  ]
+}

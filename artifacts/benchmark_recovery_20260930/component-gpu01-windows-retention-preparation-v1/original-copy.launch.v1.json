@@ -1,0 +1,62 @@
+{
+  "argv": [
+    "/usr/bin/timeout",
+    "--signal=TERM",
+    "--kill-after=10s",
+    "120s",
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-gpu01-windows-retention-preparation-v1/pack_original_outputs_v2.py",
+    "4c0e3fd34fb8ac8255bffab52fec7a310601eb4d29211a40f6948e882cbf3fc9",
+    "88102"
+  ],
+  "capture_owner": {
+    "argv": [
+      "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+      "-I",
+      "-B",
+      "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-gpu01-windows-retention-preparation-v1/capture_original_gpu01.py"
+    ],
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 53614,
+    "pid": 53614,
+    "ppid": 53607,
+    "session": 53614,
+    "startticks": 29287101,
+    "state": "R",
+    "uid": 1000
+  },
+  "cleanup_s": 10,
+  "source_before": {
+    "epoch7": [
+      69,
+      4785074606502379,
+      33279,
+      1,
+      10516,
+      1790809644267288900,
+      1790809644267288900
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-gpu01-windows-retention-preparation-v1/pack_original_outputs_v2.py",
+    "sha256": "6e60e0b8c88cb94ba9590bad617b8fa1d29715d6c58fa4ba3bdfc90987e21b44",
+    "size_bytes": 10516
+  },
+  "started_at_ns": 1790810556394870978,
+  "timeout_owner": {
+    "argv": [
+      ""
+    ],
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 53615,
+    "pid": 53615,
+    "ppid": 53614,
+    "session": 53615,
+    "startticks": 29287109,
+    "state": "D",
+    "uid": 1000
+  },
+  "work_s": 120
+}

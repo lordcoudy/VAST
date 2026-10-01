@@ -1,0 +1,69 @@
+{
+  "argv": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/reduce.py",
+    "--project-root",
+    "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+    "--output-dir",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/attempt01",
+    "--execution-deadline-ns",
+    "290895642377974",
+    "--font-cache",
+    "/home/s-a-balashov/.cache/matplotlib/fontlist-v3.11.0.json",
+    "--cpu-original-terminal",
+    "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06-original-controller/original.terminal.v1.json",
+    "--cpu-original-terminal-sha256",
+    "e87c878c725f309cf344f27926cb6e12647e839a8f5745084b69619c090d3db9",
+    "--cpu-original-terminal-size",
+    "88066",
+    "--gpu-original-terminal",
+    "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-01-original-controller/original.terminal.v1.json",
+    "--gpu-original-terminal-sha256",
+    "4c0e3fd34fb8ac8255bffab52fec7a310601eb4d29211a40f6948e882cbf3fc9",
+    "--gpu-original-terminal-size",
+    "88102"
+  ],
+  "child": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 53052,
+    "pid": 53052,
+    "ppid": 53050,
+    "session": 53052,
+    "startticks": 29078564,
+    "uid": 1000
+  },
+  "execution_budget_s": 110,
+  "initial_head": "0ad78d6abdb3c526544a17185af7fe8094716735",
+  "observer": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 53050,
+    "pid": 53050,
+    "ppid": 53044,
+    "session": 53050,
+    "startticks": 29078556,
+    "uid": 1000
+  },
+  "scope": "Pure closed four-arm original data reduction/render; no benchmark/model/engine calls.",
+  "source_before": {
+    "reduce.py": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/reduce.py",
+      "sha256": "f4332d703d94dd54e7b856f12d04300bc95d99ec1eb456f87d24b8f98813ccff",
+      "size_bytes": 24264
+    },
+    "render.py": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/render.py",
+      "sha256": "fbf411a550617f24634de711f1bcd93a5c4889d50fc1f5c4ac78291b248301f1",
+      "size_bytes": 9184
+    },
+    "run.py": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/run.py",
+      "sha256": "b88c9e78b0ba8f075ab8934810f67de903af49dd3ef87181f896d59b2b5cf91e",
+      "size_bytes": 7853
+    }
+  },
+  "teardown_budget_s": 10
+}

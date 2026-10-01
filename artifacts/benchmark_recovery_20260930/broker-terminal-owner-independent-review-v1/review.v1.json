@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "kind": "vast_broker_terminal_owner_independent_source_review_v1",
+  "reviewer": "/root/adversarial_review",
+  "status": "approved_scoped_source_and_regression_review",
+  "reviewable": true,
+  "remaining_blockers": [],
+  "exact_final_pins": {
+    "scripts/backend_publication_process_supervisor_v3.py": {"size_bytes": 124707, "sha256": "99f772665d0d271b24d98f2393a50a0f9e0bbfe5c2840e5ccce65d89a84ed13e"},
+    "tests/test_backend_publication_broker_terminal_v3.py": {"size_bytes": 22598, "sha256": "1e632d43c6a8361b7483ef9d160832e5993760f48103a8a22527c3bac1cbe1fa"},
+    "author-review.v1.json": {"size_bytes": 12165, "sha256": "6d597bca035d385e0f03cad2a4a0481360db37701ae8337668bdc7f43562118c"},
+    "author-review.v2.supplement.json": {"size_bytes": 3017, "sha256": "2015d19722c8d500dc7efd3c9825daa126f8591443f4f285fad6d61cf145110f"}
+  },
+  "evidence_directory": "artifacts/benchmark_recovery_20260930/broker-terminal-owner-repair-v1",
+  "source_correctness": {
+    "before_source_size_bytes": 124499,
+    "before_source_sha256": "acc40456cf93db8deb270f54d14b8f17555a268969e5bad0695372ddba12132d",
+    "before_exactly_equals_git_4cb9_blob": true,
+    "exact_raw_inverse_produces_before_bytes": true,
+    "changed_production_functions": ["_posix_broker_entry_v3", "_posix_held_broker_entry_production_v3"],
+    "change": "Both entrypoints keep terminal_journal null until _commit_durable_owner returns successfully. Only then does the request journal become this candidate's durable terminal-writer authority.",
+    "losing_owner_behavior": "Original bounded owner_commit failure is emitted on that candidate's stdout. It cannot write terminal-intent.json or terminal-response.frame belonging to the elected owner.",
+    "elected_owner_behavior": "After successful immutable owner commit, original authorization/held-invocation/namespace failures still use the existing durable intent, causal settle and exclusive response publication.",
+    "unchanged": "All other raw production bytes, owner/authentication/parent checks, namespace and containment behavior, 600000/615000 bounds, public schema and return-status conventions.",
+    "architecture_security_performance": "Two private state assignments express the existing owner-election boundary. No new lock, abstraction, persisted grant, dependency, retry, permission, loop or hot-path work."
+  },
+  "meaningful_original_regressions": {
+    "red_execution": "16070:cb0edbc0b343124a0f039ff19128ba5621844951f96dd530c7c977f2bbb79cae",
+    "red": "Both genuine pipe-gated owner/loser child cases fail on old source because the loser creates the elected owner's terminal intent.",
+    "green12_execution": "46915:5dfe8f71dc58457795612128f82451f5859e6ae64d56859b5a8d047ea7b559cf",
+    "green12_unit_elapsed_s": 5.099,
+    "green12_capture_elapsed_s": 5.346240364015102,
+    "green12_counts": {"successes": 12, "failures": 0, "errors": 0, "skips": 0},
+    "all13_original_child_terminal_and_raw_stream_descriptor_joins_verified": true,
+    "green12_reader_pid": 53426,
+    "two_original_reader_group_scans_empty_no_errors": true,
+    "all_original_capture_fds_closed": true,
+    "winner_and_loser_observations": {
+      "normal": {"winner_pid": 53439, "loser_pid": 53440},
+      "held": {"winner_pid": 53435, "loser_pid": 53436},
+      "winner_response_bytes": 528,
+      "winner_response_sha256": "459c637cc82fa317c25b9ce2ba465bb62f762f08cd3435cadc91608015a74bec",
+      "loser_stdout_bytes": 618,
+      "loser_stdout_sha256": "994330e51f5fa3e1ede073af219bd18d35d1bdcd42669ea326e6e86ffc960b36",
+      "winner_owner_pid_and_original_terminal_intent_response_join": true
+    }
+  },
+  "reviewer_requested_test_lifecycle_repair": {
+    "resolved": true,
+    "prior_test_sha256": "aa427e5e4ecd2e9e787516c85580d7d9b4dd5fda5e3ae9d26f73fca24d11fec8",
+    "finding": "New test helper initially read winner proc metadata and getsid before its cleanup try/finally; an observation exception could bypass containment/reap.",
+    "repair": "Witness locals initialize to null; both acquisitions now occur inside the existing cleanup try. Production bytes are unchanged.",
+    "fresh_final_two_case_execution": "16285:a0e393716e8fa979b1e1813da466033881206d7740ed4f823e089aaa28499346",
+    "fresh_final_two_case_result": "6769:3b4fb832d194df975046d572340eaa6a0b3f46adc8c338eb202e71486d7c6a52",
+    "fresh_capture_elapsed_s": 1.707656952959951,
+    "fresh_reader_pid": 53648,
+    "fresh_four_children_and_reader_closed": true,
+    "source_before_after_stable_capture_fds_closed_two_group_scans_empty": true,
+    "all11_original_test_method_asts_unchanged": true,
+    "metadata_fault_execution_claimed": false
+  },
+  "source_and_acceptance_scope": {
+    "all18_actual_allowlist_raw_hashes_rechecked": true,
+    "supervisor_member_of_runtime_native_worker_allowlists_or_docker_copy": false,
+    "supervisor_member_of_host87_and_relocation2693": true,
+    "host_authority_renewal_required": true,
+    "old_0ad_source_and_physical_pair_receipts": "Remain authentic immutable historical authorities for their original root. They are not rebound to this changed current host candidate.",
+    "original_real_namespace_completion_test": "Preserved unchanged and mandatory in full CI; deliberately unexecuted in this focused no-policy journal slice.",
+    "full_ci_or_hardware_acceptance": false,
+    "hosted_failure_cause_claim": "The source-demonstrated losing-owner defect is repaired. These focused units do not prove either original hosted failure resolved; the first swallowed capacity failure remains unknown."
+  },
+  "review_limits": "Read source, exact before snapshots, original retained red/green captures and small fixture leaves; ran only pure AST/byte/metadata inspection and Git blob reading. No reviewer test, real namespace, daemon, native, model, policy, replay or hardware invocation. No author/original evidence changed. All reviewer file handles closed."
+}

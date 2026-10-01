@@ -1,0 +1,91 @@
+    def _losing_owner_cannot_publish(self, *, held):
+        import select
+        self.authorization.write_bytes(self.authorization_bytes)
+        code = f"""
+import hashlib,os,pathlib,sys
+sys.path.insert(0,{str(ROOT / 'scripts')!r})
+import backend_publication_process_supervisor_v3 as s
+root=pathlib.Path({str(self.root)!r})
+journal=s._DurableJournalSpec(root/'journal',pathlib.Path({str(self.authorization)!r}),
+ {self.spec.authorization_sha256!r},{self.spec.session_sha256!r})
+s._commit_durable_owner(journal)
+sys.stdout.buffer.write(b'OWNER_READY\\n');sys.stdout.buffer.flush()
+if sys.stdin.buffer.read(1)!=b'G':raise SystemExit(79)
+frame=s._broker_response_frame(outcome='failed',message='elected owner original unit terminal',
+ observation=None,stdout=b'',stderr=b'')
+raise SystemExit(s._emit_broker_terminal_response_v3(frame,journal))
+"""
+        argv = [str(Path(sys.executable).resolve(strict=True)), "-I", "-B", "-c", code]
+        begun = time.monotonic()
+        winner = subprocess.Popen(argv, cwd=self.root, stdin=subprocess.PIPE,
+                                  stdout=subprocess.PIPE, stderr=subprocess.PIPE, start_new_session=True)
+        released = False
+        timed_out = False
+        stdout = stderr = b""
+        original_stat = Path(f"/proc/{winner.pid}/stat").read_text()
+        original_session = os.getsid(winner.pid)
+        try:
+            ready, _, _ = select.select([winner.stdout], [], [], 5)
+            self.assertTrue(ready, "real elected owner did not reach its pipe gate")
+            self.assertEqual(winner.stdout.readline(), b"OWNER_READY\n")
+            owner_path = self.journal / supervisor._DURABLE_JOURNAL_OWNER_FILENAME
+            original_owner = owner_path.read_bytes()
+            pid, _, session = supervisor._validate_durable_owner(self.spec)
+            self.assertEqual((pid, session), (winner.pid, original_session))
+            self.assertIsNone(winner.poll())
+            rc, loser_stdout, loser_stderr, loser_timeout = self._entry(held=held)
+            self.assertEqual((rc, loser_stderr, loser_timeout), (0, b"", False))
+            # The actual owner-commit loser must never publish to this journal.
+            self.assertFalse((self.journal / supervisor._DURABLE_JOURNAL_TERMINAL_FILENAME).exists())
+            self.assertFalse((self.journal / supervisor._DURABLE_JOURNAL_RESPONSE_FILENAME).exists())
+            self.assertEqual(owner_path.read_bytes(), original_owner)
+            self.assertIsNone(winner.poll())
+            with self.assertRaisesRegex(supervisor.BackendPublicationProcessSupervisorV3Error,
+                                        "stage=owner_commit") as error:
+                supervisor._parse_broker_response_frame(loser_stdout, command=self.command, cwd=self.cwd)
+            self.assertIsNone(error.exception.observation)
+            self.assertFalse((self.output / "latency_samples.json").exists())
+            winner.stdin.write(b"G")
+            winner.stdin.flush()
+            released = True
+            stdout, stderr = winner.communicate(timeout=5)
+            self.assertEqual((winner.returncode, stdout, stderr), (0, b"", b""))
+            response = supervisor._load_durable_journal_leaf(self.spec,
+                supervisor._DURABLE_JOURNAL_RESPONSE_FILENAME, limit=64 * 1024, required=True)[0]
+            with self.assertRaisesRegex(supervisor.BackendPublicationProcessSupervisorV3Error,
+                                        "elected owner original unit terminal"):
+                supervisor._parse_broker_response_frame(response, command=self.command, cwd=self.cwd)
+            intent = json.loads((self.journal / supervisor._DURABLE_JOURNAL_TERMINAL_FILENAME).read_bytes())
+            self.assertEqual(intent["response_sha256"], hashlib.sha256(response).hexdigest())
+            self.assertEqual(intent["response_size_bytes"], len(response))
+            self.assertEqual(owner_path.read_bytes(), original_owner)
+        finally:
+            if winner.poll() is None:
+                os.killpg(winner.pid, signal.SIGKILL)
+            try:
+                tail_stdout, tail_stderr = winner.communicate(timeout=5)
+                if not released:
+                    stdout, stderr = tail_stdout, tail_stderr
+            except subprocess.TimeoutExpired:
+                timed_out = True
+                raise
+            finally:
+                (self.root / "winner.stdout").write_bytes(stdout)
+                (self.root / "winner.stderr").write_bytes(stderr)
+                value = {"classification": "original pipe-gated unit-fixture owner; no namespace/model grant",
+                    "argv": argv, "pid": winner.pid, "original_proc_stat": original_stat,
+                    "original_session": original_session, "released_to_emit": released,
+                    "returncode": winner.returncode, "timed_out": timed_out,
+                    "elapsed_s": time.monotonic() - begun,
+                    "original_process_absent": not Path(f"/proc/{winner.pid}").exists(),
+                    "stdout_size_bytes": len(stdout), "stdout_sha256": hashlib.sha256(stdout).hexdigest(),
+                    "stderr_size_bytes": len(stderr), "stderr_sha256": hashlib.sha256(stderr).hexdigest()}
+                (self.root / "winner-terminal.json").write_text(json.dumps(value, sort_keys=True) + "\n")
+                self.assertTrue(value["original_process_absent"])
+
+    def test_normal_losing_owner_commit_cannot_write_elected_owner_terminal(self):
+        self._losing_owner_cannot_publish(held=False)
+
+    def test_held_losing_owner_commit_cannot_write_elected_owner_terminal(self):
+        self._losing_owner_cannot_publish(held=True)
+

@@ -1,0 +1,265 @@
+{
+  "actual_child_terminals": [
+    {
+      "argv": [
+        "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+        "-I",
+        "-B",
+        "-c",
+        "\nimport errno,json,os,pathlib,sys,time\nsys.path.insert(0,'/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts')\nimport backend_publication_process_supervisor_v3 as s\nroot=pathlib.Path('/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/broker-terminal-owner-repair-v1/attempt-01-red/fixtures/test_held_losing_owner_commit_cannot_write_elected_owner_terminal')\nreal_commit=s._commit_durable_journal_leaf\nreal_sleep=s.time.sleep\ndef event(value):\n with (root/'emission-events.jsonl').open('ab') as f:\n  f.write((json.dumps(value,sort_keys=True)+'\\n').encode())\ndef commit(*args,**kwargs):\n event({'event':'commit_started','name':args[1]})\n result=real_commit(*args,**kwargs)\n event({'event':'commit_completed','name':args[1]})\n return result\ndef sleep(seconds):\n if seconds==s._DURABLE_TERMINAL_SETTLE_SECONDS:event({'event':'settle','seconds':seconds})\n real_sleep(seconds)\ns._commit_durable_journal_leaf=commit\ns.time.sleep=sleep\nif True:\n def denied():raise PermissionError(errno.EPERM,'explicit injected unit-fixture errno')\n s._enter_linux_pid_namespace_v3=denied\n def deny_external(event,args):\n  if event in {'subprocess.Popen','os.fork','os.unshare','socket.connect'}:raise AssertionError('setup failure launched external work')\n sys.addaudithook(deny_external)\nfds=[]\ntry:\n if True:\n  for path in ('/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python','/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/fixtures/backend_publication_v3_process_fixture.py','/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/broker-terminal-owner-repair-v1/attempt-01-red/fixtures/test_held_losing_owner_commit_cannot_write_elected_owner_terminal'):fds.append(os.open(path,os.O_RDONLY|os.O_CLOEXEC))\n  if False:fds[1],fds[2]=fds[2],fds[1]\n  result=s._posix_held_broker_entry_production_v3(tuple(fds))\n else:result=s._posix_broker_entry_v3()\nfinally:\n for fd in fds:os.close(fd)\nraise SystemExit(result)\n"
+      ],
+      "classification": "original isolated unit-fixture child; no model/hardware acceptance",
+      "elapsed_s": 0.5234153830097057,
+      "original_proc_stat": "53406 (python) R 53400 53406 53406 0 -1 4194304 21 0 0 0 0 0 0 0 20 0 1 0 29227348 9101312 112 18446744073709551615 4325376 7352317 140733698410608 0 0 0 0 0 0 0 0 0 17 11 0 0 0 0 0 10653128 12216448 290975744 140733698413625 140733698415829 140733698415829 140733698420634 0\n",
+      "original_process_absent": true,
+      "original_session": 53406,
+      "pid": 53406,
+      "returncode": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_size_bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_size_bytes": 0,
+      "timed_out": false
+    },
+    {
+      "argv": [
+        "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+        "-I",
+        "-B",
+        "-c",
+        "\nimport hashlib,os,pathlib,sys\nsys.path.insert(0,'/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts')\nimport backend_publication_process_supervisor_v3 as s\nroot=pathlib.Path('/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/broker-terminal-owner-repair-v1/attempt-01-red/fixtures/test_held_losing_owner_commit_cannot_write_elected_owner_terminal')\njournal=s._DurableJournalSpec(root/'journal',pathlib.Path('/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/broker-terminal-owner-repair-v1/attempt-01-red/fixtures/test_held_losing_owner_commit_cannot_write_elected_owner_terminal/authorization/authorization.bin'),\n '8ef4e6727726f1a517a110b9cb56b66f9ddae35df6b12b2d49616ad0378db8a7','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')\ns._commit_durable_owner(journal)\nsys.stdout.buffer.write(b'OWNER_READY\\n');sys.stdout.buffer.flush()\nif sys.stdin.buffer.read(1)!=b'G':raise SystemExit(79)\nframe=s._broker_response_frame(outcome='failed',message='elected owner original unit terminal',\n observation=None,stdout=b'',stderr=b'')\nraise SystemExit(s._emit_broker_terminal_response_v3(frame,journal))\n"
+      ],
+      "classification": "original pipe-gated unit-fixture owner; no namespace/model grant",
+      "elapsed_s": 0.6855059780064039,
+      "original_proc_stat": "53405 (python) R 53400 53405 53405 0 -1 4194304 12 0 0 0 0 0 0 0 20 0 1 0 29227333 8441856 0 18446744073709551615 4325376 7352317 140720715892144 0 0 0 0 0 0 0 0 0 17 9 0 0 0 0 0 10653128 12216448 795303936 140720715900804 140720715902165 140720715902165 140720715906970 0\n",
+      "original_process_absent": true,
+      "original_session": 53405,
+      "pid": 53405,
+      "released_to_emit": false,
+      "returncode": -9,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_size_bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_size_bytes": 0,
+      "timed_out": false
+    },
+    {
+      "argv": [
+        "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+        "-I",
+        "-B",
+        "-c",
+        "\nimport errno,json,os,pathlib,sys,time\nsys.path.insert(0,'/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts')\nimport backend_publication_process_supervisor_v3 as s\nroot=pathlib.Path('/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/broker-terminal-owner-repair-v1/attempt-01-red/fixtures/test_normal_losing_owner_commit_cannot_write_elected_owner_terminal')\nreal_commit=s._commit_durable_journal_leaf\nreal_sleep=s.time.sleep\ndef event(value):\n with (root/'emission-events.jsonl').open('ab') as f:\n  f.write((json.dumps(value,sort_keys=True)+'\\n').encode())\ndef commit(*args,**kwargs):\n event({'event':'commit_started','name':args[1]})\n result=real_commit(*args,**kwargs)\n event({'event':'commit_completed','name':args[1]})\n return result\ndef sleep(seconds):\n if seconds==s._DURABLE_TERMINAL_SETTLE_SECONDS:event({'event':'settle','seconds':seconds})\n real_sleep(seconds)\ns._commit_durable_journal_leaf=commit\ns.time.sleep=sleep\nif True:\n def denied():raise PermissionError(errno.EPERM,'explicit injected unit-fixture errno')\n s._enter_linux_pid_namespace_v3=denied\n def deny_external(event,args):\n  if event in {'subprocess.Popen','os.fork','os.unshare','socket.connect'}:raise AssertionError('setup failure launched external work')\n sys.addaudithook(deny_external)\nfds=[]\ntry:\n if False:\n  for path in ('/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python','/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/fixtures/backend_publication_v3_process_fixture.py','/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/broker-terminal-owner-repair-v1/attempt-01-red/fixtures/test_normal_losing_owner_commit_cannot_write_elected_owner_terminal'):fds.append(os.open(path,os.O_RDONLY|os.O_CLOEXEC))\n  if False:fds[1],fds[2]=fds[2],fds[1]\n  result=s._posix_held_broker_entry_production_v3(tuple(fds))\n else:result=s._posix_broker_entry_v3()\nfinally:\n for fd in fds:os.close(fd)\nraise SystemExit(result)\n"
+      ],
+      "classification": "original isolated unit-fixture child; no model/hardware acceptance",
+      "elapsed_s": 0.5289991190074943,
+      "original_proc_stat": "53404 (python) R 53400 53404 53404 0 -1 4194304 12 0 0 0 0 0 0 0 20 0 1 0 29227277 8441856 0 18446744073709551615 4325376 7352317 140728829510736 0 0 0 0 0 0 0 0 0 17 9 0 0 0 0 0 10653128 12216448 814329856 140728829514804 140728829517013 140728829517013 140728829521818 0\n",
+      "original_process_absent": true,
+      "original_session": 53404,
+      "pid": 53404,
+      "returncode": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_size_bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_size_bytes": 0,
+      "timed_out": false
+    },
+    {
+      "argv": [
+        "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+        "-I",
+        "-B",
+        "-c",
+        "\nimport hashlib,os,pathlib,sys\nsys.path.insert(0,'/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts')\nimport backend_publication_process_supervisor_v3 as s\nroot=pathlib.Path('/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/broker-terminal-owner-repair-v1/attempt-01-red/fixtures/test_normal_losing_owner_commit_cannot_write_elected_owner_terminal')\njournal=s._DurableJournalSpec(root/'journal',pathlib.Path('/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/broker-terminal-owner-repair-v1/attempt-01-red/fixtures/test_normal_losing_owner_commit_cannot_write_elected_owner_terminal/authorization/authorization.bin'),\n '8ef4e6727726f1a517a110b9cb56b66f9ddae35df6b12b2d49616ad0378db8a7','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')\ns._commit_durable_owner(journal)\nsys.stdout.buffer.write(b'OWNER_READY\\n');sys.stdout.buffer.flush()\nif sys.stdin.buffer.read(1)!=b'G':raise SystemExit(79)\nframe=s._broker_response_frame(outcome='failed',message='elected owner original unit terminal',\n observation=None,stdout=b'',stderr=b'')\nraise SystemExit(s._emit_broker_terminal_response_v3(frame,journal))\n"
+      ],
+      "classification": "original pipe-gated unit-fixture owner; no namespace/model grant",
+      "elapsed_s": 0.6900946900132112,
+      "original_proc_stat": "53403 (python) R 53400 53403 53403 0 -1 4194304 13 0 0 0 0 0 0 0 20 0 1 0 29227262 8441856 0 18446744073709551615 4325376 7352317 140730507655744 0 0 0 0 0 0 0 0 0 17 14 0 0 0 0 0 10653128 12216448 705310720 140730507663232 140730507664597 140730507664597 140730507669402 0\n",
+      "original_process_absent": true,
+      "original_session": 53403,
+      "pid": 53403,
+      "released_to_emit": false,
+      "returncode": -9,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_size_bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_size_bytes": 0,
+      "timed_out": false
+    }
+  ],
+  "all_capture_fds_closed": true,
+  "capture": {
+    "exceeded": false,
+    "read_errors": []
+  },
+  "elapsed_s": 1.6641582560259849,
+  "full_ci_invocations": 0,
+  "hardware_acceptance": false,
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 53400,
+    "pid": 53400,
+    "ppid": 53399,
+    "startticks": 29227242,
+    "uid": 1000
+  },
+  "process_scans": [
+    {
+      "owned_group_members": [],
+      "read_errors": []
+    },
+    {
+      "owned_group_members": [],
+      "read_errors": []
+    }
+  ],
+  "real_namespace_invocations": 0,
+  "returncode": 1,
+  "source_after": [
+    {
+      "epoch": [
+        69,
+        3096224745679184,
+        33279,
+        1,
+        124499,
+        1790754661743690100,
+        1790754661743690100
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/backend_publication_process_supervisor_v3.py",
+      "sha256": "acc40456cf93db8deb270f54d14b8f17555a268969e5bad0695372ddba12132d",
+      "size_bytes": 124499
+    },
+    {
+      "epoch": [
+        69,
+        3659174699626610,
+        33279,
+        1,
+        22542,
+        1790809867466919300,
+        1790809867466919300
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_backend_publication_broker_terminal_v3.py",
+      "sha256": "aa427e5e4ecd2e9e787516c85580d7d9b4dd5fda5e3ae9d26f73fca24d11fec8",
+      "size_bytes": 22542
+    },
+    {
+      "epoch": [
+        69,
+        137078313659951802,
+        33279,
+        1,
+        52269,
+        1789990792141350500,
+        1789990792141350500
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_backend_publication_process_supervisor_v3.py",
+      "sha256": "63a6835836ff057e2e38b2d3f18ed4f7cb8b5a6f8dddea926b376b0e8a6b5eb5",
+      "size_bytes": 52269
+    },
+    {
+      "epoch": [
+        69,
+        4785074606502405,
+        33279,
+        1,
+        7459,
+        1790809956738826600,
+        1790809956738826600
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/broker-terminal-owner-repair-v1/run_focused_v1.py",
+      "sha256": "607a330e2374de2cc67c55b8598fcbe2ed12f3ae05fe02a7c743ce6b5a29cd23",
+      "size_bytes": 7459
+    }
+  ],
+  "source_before": [
+    {
+      "epoch": [
+        69,
+        3096224745679184,
+        33279,
+        1,
+        124499,
+        1790754661743690100,
+        1790754661743690100
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/backend_publication_process_supervisor_v3.py",
+      "sha256": "acc40456cf93db8deb270f54d14b8f17555a268969e5bad0695372ddba12132d",
+      "size_bytes": 124499
+    },
+    {
+      "epoch": [
+        69,
+        3659174699626610,
+        33279,
+        1,
+        22542,
+        1790809867466919300,
+        1790809867466919300
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_backend_publication_broker_terminal_v3.py",
+      "sha256": "aa427e5e4ecd2e9e787516c85580d7d9b4dd5fda5e3ae9d26f73fca24d11fec8",
+      "size_bytes": 22542
+    },
+    {
+      "epoch": [
+        69,
+        137078313659951802,
+        33279,
+        1,
+        52269,
+        1789990792141350500,
+        1789990792141350500
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_backend_publication_process_supervisor_v3.py",
+      "sha256": "63a6835836ff057e2e38b2d3f18ed4f7cb8b5a6f8dddea926b376b0e8a6b5eb5",
+      "size_bytes": 52269
+    },
+    {
+      "epoch": [
+        69,
+        4785074606502405,
+        33279,
+        1,
+        7459,
+        1790809956738826600,
+        1790809956738826600
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/broker-terminal-owner-repair-v1/run_focused_v1.py",
+      "sha256": "607a330e2374de2cc67c55b8598fcbe2ed12f3ae05fe02a7c743ce6b5a29cd23",
+      "size_bytes": 7459
+    }
+  ],
+  "source_unchanged": true,
+  "stderr": {
+    "epoch": [
+      69,
+      4785074606502409,
+      33279,
+      1,
+      2512,
+      1790809959374346100,
+      1790809959374346100
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/broker-terminal-owner-repair-v1/attempt-01-red/stderr.raw",
+    "sha256": "9d107de6ef671a3c43409412a9ab3655953f977fc727cef6a9139708d54b5228",
+    "size_bytes": 2512
+  },
+  "stdout": {
+    "epoch": [
+      69,
+      4785074606502408,
+      33279,
+      1,
+      0,
+      1790809957778510000,
+      1790809957778510000
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/broker-terminal-owner-repair-v1/attempt-01-red/stdout.raw",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size_bytes": 0
+  },
+  "timed_out": false
+}

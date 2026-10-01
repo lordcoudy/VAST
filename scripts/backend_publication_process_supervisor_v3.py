@@ -2630,6 +2630,7 @@ def _posix_broker_entry_v3() -> int:
     if os.name == "nt":
         return 78
     durable_journal: _DurableJournalSpec | None = None
+    terminal_journal: _DurableJournalSpec | None = None
     stage = "request_read"
     try:
         request = _read_broker_request_frame_v3(0)
@@ -2638,6 +2639,7 @@ def _posix_broker_entry_v3() -> int:
         if durable_journal is not None:
             stage = "owner_commit"
             _commit_durable_owner(durable_journal)
+            terminal_journal = durable_journal
             stage = "authorization"
             _wait_for_durable_authorization(durable_journal)
         stage = "namespace"
@@ -2655,7 +2657,7 @@ def _posix_broker_entry_v3() -> int:
             )
         except BaseException:
             return 74
-        return _emit_broker_terminal_response_v3(frame, durable_journal)
+        return _emit_broker_terminal_response_v3(frame, terminal_journal)
     if namespace_init_pid != 0:
         return _wait_linux_namespace_init_v3(
             namespace_init_pid,
@@ -2731,6 +2733,7 @@ def _posix_held_broker_entry_production_v3(
     if os.name == "nt":
         return 78
     durable_journal: _DurableJournalSpec | None = None
+    terminal_journal: _DurableJournalSpec | None = None
     stage = "request_read"
     try:
         request = _read_broker_request_frame_v3(0)
@@ -2739,6 +2742,7 @@ def _posix_held_broker_entry_production_v3(
         if durable_journal is not None:
             stage = "owner_commit"
             _commit_durable_owner(durable_journal)
+            terminal_journal = durable_journal
             stage = "authorization"
             _wait_for_durable_authorization(durable_journal)
         stage = "held_invocation"
@@ -2760,7 +2764,7 @@ def _posix_held_broker_entry_production_v3(
             )
         except BaseException:
             return 74
-        return _emit_broker_terminal_response_v3(frame, durable_journal)
+        return _emit_broker_terminal_response_v3(frame, terminal_journal)
     if namespace_init_pid != 0:
         return _wait_linux_namespace_init_v3(
             namespace_init_pid,

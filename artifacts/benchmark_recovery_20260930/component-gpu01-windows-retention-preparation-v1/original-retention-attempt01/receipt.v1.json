@@ -1,0 +1,58 @@
+{
+  "all_member_crc_and_decompressed_sha256_verified": true,
+  "archive": {
+    "epoch7": [
+      69,
+      2533274792819110,
+      33279,
+      1,
+      21482466,
+      1790810557237552600,
+      1790810557237552600
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-gpu01-windows-retention-preparation-v1/original-retention-attempt01/gpu01-original-output-retention.v1.zip",
+    "sha256": "5c1c0e4ae34e70e469b7acc55819d352f3e467a8bd1c86fb5c1f23f602e8e3c6",
+    "size_bytes": 21482466
+  },
+  "artifact_kind": "vast_gpu01_original_output_retention_receipt_v1",
+  "close_errors": [],
+  "copied_engine_input_excluded_bytes": 45570705,
+  "directory_fds_released": true,
+  "gpu_success_or_full_ci_not_claimed": true,
+  "inventory": {
+    "epoch7": [
+      69,
+      4785074606502369,
+      33279,
+      1,
+      100145,
+      1790809525005222200,
+      1790809525005222200
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-gpu01-windows-retention-preparation-v1/inventory.v1.json",
+    "sha256": "aa750080acc6da6d66b9e5f9e2b52a9f9952a5f587d9f6cbe00c9d576650d371",
+    "size_bytes": 100145
+  },
+  "original_bytes": 220703683,
+  "original_file_count": 128,
+  "original_gpu_terminal": {
+    "epoch7": [
+      2096,
+      553072,
+      33188,
+      1,
+      88102,
+      1790806165782129339,
+      1790806165782129339
+    ],
+    "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-01-original-controller/original.terminal.v1.json",
+    "sha256": "4c0e3fd34fb8ac8255bffab52fec7a310601eb4d29211a40f6948e882cbf3fc9",
+    "size_bytes": 88102
+  },
+  "retention_is_not_benchmark_source_or_publication_authority": true,
+  "schema_version": 1,
+  "source_namespace_before_after_exact": true,
+  "source_original_epoch7_before_after_equal": true,
+  "status": "complete_non_authority_retention",
+  "zip_member_count": 129
+}

@@ -1,0 +1,108 @@
+{
+  "argv": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/probe_capacity_lifecycle_child_v1.py",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/capacity-controlled-lifecycle-attempt01"
+  ],
+  "cleanup_s": 10,
+  "deadline_s": 120,
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 53524,
+    "pid": 53524,
+    "ppid": 53522,
+    "startticks": 29268785,
+    "uid": 1000
+  },
+  "scope": "three controlled real-child lifecycle cases; no hosted-cause claim",
+  "source_before": [
+    {
+      "epoch": [
+        2096,
+        557740,
+        33188,
+        1,
+        47271,
+        1790807805219836387,
+        1790807805219836387
+      ],
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/publication_operational_process_custody_v1.py",
+      "sha256": "5ea8477e527bf57438ce81cea9b8b19fb628c555cb808711438e2036bcaee923",
+      "size_bytes": 47271
+    },
+    {
+      "epoch": [
+        2096,
+        558006,
+        33188,
+        1,
+        27795,
+        1790807805247837837,
+        1790807805247837837
+      ],
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/tests/test_publication_operational_process_custody_v1.py",
+      "sha256": "161938214d28727a633838108b95777e363bf4c516bd4c49a37baf897d3fe95d",
+      "size_bytes": 27795
+    },
+    {
+      "epoch": [
+        2096,
+        557741,
+        33188,
+        1,
+        25997,
+        1790807805219836387,
+        1790807805219836387
+      ],
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/publication_operational_request_domain_v1.py",
+      "sha256": "5df1071402080957c312acddb85e0285c589c4a7d1948d51e9bf5e274727f0b9",
+      "size_bytes": 25997
+    },
+    {
+      "epoch": [
+        2096,
+        557724,
+        33188,
+        1,
+        21544,
+        1790807805219836387,
+        1790807805219836387
+      ],
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/publication_child_evidence_materializer_v1.py",
+      "sha256": "056654b0a019720164bc478a83f584ab4f4121b5c8570e44d2358dbfa6a71bc9",
+      "size_bytes": 21544
+    },
+    {
+      "epoch": [
+        69,
+        2533274792819090,
+        33279,
+        1,
+        6589,
+        1790810371014878000,
+        1790810371014878000
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/probe_capacity_lifecycle_child_v1.py",
+      "sha256": "9766699fa5529f7fe16b83d95b6b43bb29183cad6095028b9c6f68c794d28cdc",
+      "size_bytes": 6589
+    },
+    {
+      "epoch": [
+        69,
+        2533274792819091,
+        33279,
+        1,
+        5303,
+        1790810372040468500,
+        1790810372040468500
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/capture_capacity_lifecycle_probe_v1.py",
+      "sha256": "2b1ab75dc0a05ed5dc44a10322ec13d57da8c03e36dc642b78fcb7af91fd3661",
+      "size_bytes": 5303
+    }
+  ],
+  "source_head": "4cb9d8313cca71256179bc3b59cc6f9137e7b8ba"
+}
