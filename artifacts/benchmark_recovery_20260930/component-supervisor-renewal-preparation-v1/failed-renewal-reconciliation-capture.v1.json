@@ -1,0 +1,49 @@
+{
+  "all_review_FDs_released": true,
+  "original_reader": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "failed_original_not_accepted": true,
+    "gid": 1000,
+    "pgid": 57614,
+    "pid": 57615,
+    "ppid": 57614,
+    "startticks": 29909177,
+    "uid": 1000,
+    "work_s": 600
+  },
+  "original_renewal_remains_failed": true,
+  "original_tool_exit_code": 0,
+  "original_tool_session": 69828,
+  "report": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/failed-renewal-preserved-input-reconciliation-attempt01/review.v1.json",
+    "sha256": "3478c3386b325483aaa0478dc1a60932f90900912f68c2fd8feb8c051f0a15c2",
+    "size_bytes": 1879
+  },
+  "schema_version": 1,
+  "source": {
+    "sha256": "48ed05fc7eaeff6ff2366cfb6e07d8f976c3749be076d24bf7b804bd6847a462",
+    "size_bytes": 7565
+  },
+  "status": "closed_readonly_reconciliation_capture",
+  "stock_capture_or_checkout_retry": false,
+  "two_actual_process_scans": [
+    {
+      "PIDs_absent": {
+        "57614": true,
+        "57615": true
+      },
+      "at_ns": 1790816906754675724,
+      "errors": [],
+      "members": []
+    },
+    {
+      "PIDs_absent": {
+        "57614": true,
+        "57615": true
+      },
+      "at_ns": 1790816906756168011,
+      "errors": [],
+      "members": []
+    }
+  ]
+}

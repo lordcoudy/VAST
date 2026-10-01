@@ -1,0 +1,98 @@
+{
+  "acceptance": false,
+  "artifact_kind": "vast_current_source_ci_attributes_prepared_independent_review_v1",
+  "authorization_record": "https://github.com/lordcoudy/VAST/pull/2#issuecomment-5922384139",
+  "blockers": [],
+  "comparison": {
+    "all4_complete_raw_literal_forward_inverse_equal": true,
+    "all8_current_physical_CI_source_size_SHA256_and_declared_commit_blob_SHA1_equal": true,
+    "all8_setup_4_setupcapture_8_fullcapture_function_class_AST_equal": true,
+    "authentic_original_4cb_recipe_setup": true,
+    "no_production_or_CI_source_changes_in_preparation": true,
+    "only_substitutions": "Exact source commit, fresh checkout/output/preparation path literals, and exact recipe/setup source size/hash bindings.",
+    "reviewed_supervisor_setup_capture_and_d2ccc_fullcapture": true
+  },
+  "critical_review": "The previous setup failed from exact forensic JSON clean conversion and stays immutable. The new helper retains the actual raw-Git/clean-status prerequisites; it does not normalize payloads or skip a failing check. Literal adaptation uses a distinct absent namespace and exact 78b commit. Complete successful setup and a separately authorized original stock CI capture must still be observed; this source review cannot establish either result.",
+  "disposition": "approved_prepared_source_only",
+  "fresh_binding": {
+    "all_actual_dispatch_terminal_success_fields_null": true,
+    "benchmark_commit": "0ad78d6abdb3c526544a17185af7fe8094716735",
+    "benchmark_root": "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+    "checkout": "/home/s-a-balashov/work/vast-current-source-ci-20261001-supervisor-attributes",
+    "future_outputs_absent_as_observed_in_author_preparation": [
+      "/home/s-a-balashov/work/vast-current-source-ci-20261001-supervisor-attributes",
+      "/home/s-a-balashov/work/vast-current-source-ci-20261001-supervisor-attributes-original-output",
+      "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-attributes-preparation-v1/original-setup-attempt01",
+      "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-attributes-preparation-v1/original-full-ci-attempt01"
+    ],
+    "output": "/home/s-a-balashov/work/vast-current-source-ci-20261001-supervisor-attributes-original-output",
+    "preserved_failed_checkout": "/home/s-a-balashov/work/vast-current-source-ci-20261001-supervisor"
+  },
+  "inherited_gates": {
+    "all_tracked_raw_Git_bytes_modes_and_clean_status_required": true,
+    "current_CP3_12_3_packages_build_prerequisites_no_install_waiver": true,
+    "exclusive_new_checkout_output_capture_namespaces": true,
+    "full_CI_work_cleanup_s": [
+      5400,
+      10
+    ],
+    "full_capture_output_owned_independent_retirement_receipt_and_poststdout_deadline_gates_preserved": true,
+    "full_default_selection_nine_integration_88_exact_skip_audit_unchanged": true,
+    "full_stock_driver_one_original_job_clock": true,
+    "namespace_profile_fate_and_original_process_group_capture_cleanup_unchanged": true,
+    "original0ad_benchmark_root_not_rebound_or_changed": true,
+    "original_95_metadata_custody_before_after_and_release": true,
+    "purposebuilt_coreutils_timeout_and_original_signals_returncode": true,
+    "setup_work_cleanup_s": [
+      300,
+      10
+    ],
+    "shared_Git_objects_dependency_explicit": true,
+    "six_required_native_builds_three_original_native_successes": true
+  },
+  "limits": [
+    "No reviewer Git, setup, package installation, test, stock helper, model, engine, namespace/profile, native or benchmark execution.",
+    "No current closure or benchmark authority is created or transferred; old0ad producer descriptors and epochs remain original.",
+    "Inherited full capture observes original child/group facts and explicitly cannot infer global or escaped-descendant quiescence.",
+    "The full-CI command is prepared for after authentic successful setup; acceptance requires actual report/source/cleanup/deadline joins, not this preparation."
+  ],
+  "method": "Inline Windows CPython pure file/hash/AST/JSON inspection; no physical dispatch wrapper fabricated.",
+  "reviewable": true,
+  "reviewed_at_utc": "2026-10-01T00:49:45.350748+00:00",
+  "reviewed_files": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-attributes-preparation-v1/preparation.v1.json",
+      "sha256": "61fbb55ef7acf48a020786fc8995b88f714d288d3e155a566f3756dfc4675470",
+      "size_bytes": 14161
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-attributes-preparation-v1/recipe.v1.json",
+      "sha256": "11602ad3dcda9b7f432e2d93ada230c17a39e91879c596d631ecb9a11c8e65d5",
+      "size_bytes": 7084
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-attributes-preparation-v1/setup_original_current_ci_v1.py",
+      "sha256": "dee5583e8ca3ca0cfae7e7ea479dd671207f76f37002ad99feb4129d347dfe77",
+      "size_bytes": 12547
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-attributes-preparation-v1/capture_original_setup_v1.py",
+      "sha256": "6527b4bac545e99c0d61d8b2e06ced7c482a08e6ed2dcd6d5bc64464d50cb45a",
+      "size_bytes": 4860
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-attributes-preparation-v1/capture_original_full_ci_v1.py",
+      "sha256": "7466113634f2b02da39f0dc6c47bc855bdb2fc850ec8f194f13ed2f4cef50c85",
+      "size_bytes": 10382
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-attributes-preparation-v1/prepare_literal_ci_v1.py",
+      "sha256": "ac92e1b897f566c74690fc57d03a70a4c8443962e9f7390ff9e243c049644f20",
+      "size_bytes": 9961
+    }
+  ],
+  "reviewer": "adversarial_review",
+  "reviewer_handles_closed": true,
+  "schema_version": 1,
+  "source_commit": "78b869e4f8bc101413ed00776bd89d1089a8318d"
+}

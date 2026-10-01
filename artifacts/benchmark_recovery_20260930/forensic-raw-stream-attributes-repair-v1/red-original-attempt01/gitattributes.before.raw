@@ -236,6 +236,3 @@ deploy/native_gst_probe/vast_native_gst_probe.cpp text eol=lf
 # Preserve the two additional original JSON blobs exposed by existing-index checkout.
 /artifacts/benchmark_recovery_20260930/ci-4cb9-original-host-retention-v1/host-download-source-review.v1.json -text !eol
 /artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-preparation-v1/capture-literal-preparation.v1.json -text !eol
-
-# Captured forensic raw streams are byte evidence; disable automatic EOL conversion.
-/artifacts/benchmark_recovery_20260930/**/*.raw -text !eol

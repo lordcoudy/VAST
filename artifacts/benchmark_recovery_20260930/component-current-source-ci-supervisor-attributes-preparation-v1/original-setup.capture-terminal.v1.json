@@ -1,0 +1,147 @@
+{
+  "argv": [
+    "/usr/bin/timeout",
+    "--signal=TERM",
+    "--kill-after=10s",
+    "300s",
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-attributes-preparation-v1/setup_original_current_ci_v1.py"
+  ],
+  "capture_fds_closed": true,
+  "capture_owner": {
+    "argv": [
+      "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+      "-I",
+      "-B",
+      "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-attributes-preparation-v1/capture_original_setup_v1.py"
+    ],
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 57410,
+    "pid": 57410,
+    "ppid": 57404,
+    "session": 57410,
+    "startticks": 29816606,
+    "state": "R",
+    "uid": 1000
+  },
+  "elapsed_s": 4.092327914957423,
+  "failure": null,
+  "kind": "original_current_source_ci_setup_capture_v1",
+  "late_failure_absent": true,
+  "original_child_reaped": true,
+  "process_scans": [
+    {
+      "at_ns": 1790815855254778215,
+      "errors": [],
+      "members": [],
+      "pids_absent": {
+        "57412": true,
+        "57413": true
+      }
+    },
+    {
+      "at_ns": 1790815855255967965,
+      "errors": [],
+      "members": [],
+      "pids_absent": {
+        "57412": true,
+        "57413": true
+      }
+    }
+  ],
+  "returncode": 0,
+  "schema_version": 1,
+  "setup_owner": {
+    "argv": [
+      "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+      "-I",
+      "-B",
+      "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-attributes-preparation-v1/setup_original_current_ci_v1.py"
+    ],
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 57412,
+    "pid": 57413,
+    "ppid": 57412,
+    "session": 57412,
+    "startticks": 29816614,
+    "state": "R",
+    "uid": 1000
+  },
+  "signals": [],
+  "source_after": {
+    "epoch7": [
+      69,
+      1970324839398920,
+      33279,
+      1,
+      12547,
+      1790815641296523500,
+      1790815641296523500
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-attributes-preparation-v1/setup_original_current_ci_v1.py",
+    "sha256": "dee5583e8ca3ca0cfae7e7ea479dd671207f76f37002ad99feb4129d347dfe77",
+    "size_bytes": 12547
+  },
+  "source_before": {
+    "epoch7": [
+      69,
+      1970324839398920,
+      33279,
+      1,
+      12547,
+      1790815641296523500,
+      1790815641296523500
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-attributes-preparation-v1/setup_original_current_ci_v1.py",
+    "sha256": "dee5583e8ca3ca0cfae7e7ea479dd671207f76f37002ad99feb4129d347dfe77",
+    "size_bytes": 12547
+  },
+  "started_at_ns": 1790815851165014166,
+  "stderr": {
+    "epoch7": [
+      69,
+      1970324839398943,
+      33279,
+      1,
+      0,
+      1790815851165210000,
+      1790815851165210000
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-attributes-preparation-v1/original-setup.stderr.raw",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size_bytes": 0
+  },
+  "stdout": {
+    "epoch7": [
+      69,
+      1970324839398942,
+      33279,
+      1,
+      327,
+      1790815855231779900,
+      1790815855231779900
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-attributes-preparation-v1/original-setup.stdout.raw",
+    "sha256": "6fc72c5569e6a787a748290eab2181cb3b1a4e47422ebc74d6a33e82db758e97",
+    "size_bytes": 327
+  },
+  "terminal_at_ns": 1790815855256059923,
+  "timeout_owner": {
+    "argv": [
+      ""
+    ],
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 57412,
+    "pid": 57412,
+    "ppid": 57410,
+    "session": 57412,
+    "startticks": 29816614,
+    "state": "D",
+    "uid": 1000
+  }
+}

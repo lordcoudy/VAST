@@ -1,0 +1,20 @@
+{
+  "source_commit": "78b869e4f8bc101413ed00776bd89d1089a8318d",
+  "scope": "One existing detached ext4 checkout renewal followed, only after its actual success, by one fresh stock host closure. No hardware pair or full CI launch.",
+  "standing_user_authorization": "https://github.com/lordcoudy/VAST/pull/2#issuecomment-5922384139",
+  "renewal_recipe_sha256": "9739e90148531a397ec4487906ff696d12165a4150c7ea06dd91ecedaa14459c",
+  "renewal_source_peer_sha256": "ce23c737db6974ec2be06068caf3b509beb8046d2209bd54f36ddc17567d1107",
+  "original_setup_capture_sha256": "15e8c02cf46313e0e62281e8394982a71529c415c6e2216c0377bb2b1bf742df",
+  "actual_setup_review_sha256": "dab51e047ab64d73d89e9fc810667a5790753ca4af9987c3b51d77f099befee5",
+  "actual_setup_closure_sha256": "ec27745694cf59ee6a2b4b8811a49d4356b6d2bdc58d5eb351c00a80b7ddc2e3",
+  "checkout_helper_sha256": "9d60472768809a770b2a3056aa83b19c3f8e6e50882879e60ffd33425553d77c",
+  "stock_capture_sha256": "658af2e3c400c232e107af8c3cc5469a372dcf446dff3ac454a34bec9189c187",
+  "checkout_bounds_s": [600, 10],
+  "stock_closure_bounds_s": [120, 10],
+  "execution_root": "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+  "only_changed_original_declared_input": "scripts/backend_publication_process_supervisor_v3.py",
+  "preserve_all_originals_and_untracked_inputs": true,
+  "new_untracked_tree_collisions_or_changed_protected_blob_modes_refused": true,
+  "automatic_retry_or_reset_allowed": false,
+  "root_review_conclusion": "Fresh exact-source CI setup genuinely passed raw Git/source/prerequisites and released old95 custody. Original benchmark holds and processes are closed. Execute frozen sources once sequentially; require actual checkout and new87 closure/process/FD joins before any separate hardware grant."
+}

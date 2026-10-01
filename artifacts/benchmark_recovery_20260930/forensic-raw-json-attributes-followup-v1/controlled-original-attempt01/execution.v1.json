@@ -1,0 +1,2504 @@
+{
+  "all_children_reaped_and_capture_fds_closed": true,
+  "all_raw_payloads_preserved": true,
+  "controller": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 57687,
+    "pid": 57687,
+    "ppid": 57683,
+    "session": 57687,
+    "startticks": 29926303,
+    "uid": 1000
+  },
+  "elapsed_s": 0.4714283740031533,
+  "existing_index_cases": [
+    {
+      "bad_head": "c1db676a896efc5781fd5d0232acc346be5967cb",
+      "confirmed_red_after_explicit_refresh": {
+        "raw_rows": [
+          {
+            "actual_clean_oid": "5782753256d37677ccdb841305dca285f07a6630",
+            "original_raw_oid": "a014c6a345b082274424e21d68ec4c1bc7f8c4fd",
+            "path": "artifacts/benchmark_recovery_20260930/ci-4cb9-original-host-retention-v1/host-download-source-review.v1.json",
+            "sha256": "fd05cee1e1e3bc3adf34e8b65e31e245c7389827008417f4c3bb900980bf2482",
+            "size_bytes": 552
+          },
+          {
+            "actual_clean_oid": "b7afd1fc29845c90ca4e2783b8875475414316b2",
+            "original_raw_oid": "966f7390f6c816a7ac7654a85351efb9500cf84c",
+            "path": "artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-preparation-v1/capture-literal-preparation.v1.json",
+            "sha256": "34f807f54f06a0dbaad50966608e54d299801b950cd7ea2f1e46d642878fd0f3",
+            "size_bytes": 887
+          }
+        ],
+        "status_entries": [
+          " M artifacts/benchmark_recovery_20260930/ci-4cb9-original-host-retention-v1/host-download-source-review.v1.json",
+          " M artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-preparation-v1/capture-literal-preparation.v1.json"
+        ],
+        "status_hex": "204d206172746966616374732f62656e63686d61726b5f7265636f766572795f32303236303933302f63692d346362392d6f726967696e616c2d686f73742d726574656e74696f6e2d76312f686f73742d646f776e6c6f61642d736f757263652d7265766965772e76312e6a736f6e00204d206172746966616374732f62656e63686d61726b5f7265636f766572795f32303236303933302f636f6d706f6e656e742d63757272656e742d736f757263652d63692d73757065727669736f722d7072657061726174696f6e2d76312f636170747572652d6c69746572616c2d7072657061726174696f6e2e76312e6a736f6e00"
+      },
+      "effective_attributes_nul_fields": [
+        "artifacts/benchmark_recovery_20260930/ci-4cb9-original-host-retention-v1/host-download-source-review.v1.json",
+        "text",
+        "unset",
+        "artifacts/benchmark_recovery_20260930/ci-4cb9-original-host-retention-v1/host-download-source-review.v1.json",
+        "eol",
+        "unspecified",
+        "artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-preparation-v1/capture-literal-preparation.v1.json",
+        "text",
+        "unset",
+        "artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-preparation-v1/capture-literal-preparation.v1.json",
+        "eol",
+        "unspecified"
+      ],
+      "fixed_head": "3307249d48e36419b958545dfd8d0f0c66dcafef",
+      "green_after_ordinary_checkout_and_refresh": {
+        "raw_rows": [
+          {
+            "actual_clean_oid": "a014c6a345b082274424e21d68ec4c1bc7f8c4fd",
+            "original_raw_oid": "a014c6a345b082274424e21d68ec4c1bc7f8c4fd",
+            "path": "artifacts/benchmark_recovery_20260930/ci-4cb9-original-host-retention-v1/host-download-source-review.v1.json",
+            "sha256": "fd05cee1e1e3bc3adf34e8b65e31e245c7389827008417f4c3bb900980bf2482",
+            "size_bytes": 552
+          },
+          {
+            "actual_clean_oid": "966f7390f6c816a7ac7654a85351efb9500cf84c",
+            "original_raw_oid": "966f7390f6c816a7ac7654a85351efb9500cf84c",
+            "path": "artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-preparation-v1/capture-literal-preparation.v1.json",
+            "sha256": "34f807f54f06a0dbaad50966608e54d299801b950cd7ea2f1e46d642878fd0f3",
+            "size_bytes": 887
+          }
+        ],
+        "status_entries": [],
+        "status_hex": ""
+      },
+      "immediate_after_ordinary_checkout": {
+        "raw_rows": [
+          {
+            "actual_clean_oid": "5782753256d37677ccdb841305dca285f07a6630",
+            "original_raw_oid": "a014c6a345b082274424e21d68ec4c1bc7f8c4fd",
+            "path": "artifacts/benchmark_recovery_20260930/ci-4cb9-original-host-retention-v1/host-download-source-review.v1.json",
+            "sha256": "fd05cee1e1e3bc3adf34e8b65e31e245c7389827008417f4c3bb900980bf2482",
+            "size_bytes": 552
+          },
+          {
+            "actual_clean_oid": "b7afd1fc29845c90ca4e2783b8875475414316b2",
+            "original_raw_oid": "966f7390f6c816a7ac7654a85351efb9500cf84c",
+            "path": "artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-preparation-v1/capture-literal-preparation.v1.json",
+            "sha256": "34f807f54f06a0dbaad50966608e54d299801b950cd7ea2f1e46d642878fd0f3",
+            "size_bytes": 887
+          }
+        ],
+        "status_entries": [
+          " M artifacts/benchmark_recovery_20260930/ci-4cb9-original-host-retention-v1/host-download-source-review.v1.json",
+          " M artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-preparation-v1/capture-literal-preparation.v1.json"
+        ],
+        "status_hex": "204d206172746966616374732f62656e63686d61726b5f7265636f766572795f32303236303933302f63692d346362392d6f726967696e616c2d686f73742d726574656e74696f6e2d76312f686f73742d646f776e6c6f61642d736f757263652d7265766965772e76312e6a736f6e00204d206172746966616374732f62656e63686d61726b5f7265636f766572795f32303236303933302f636f6d706f6e656e742d63757272656e742d736f757263652d63692d73757065727669736f722d7072657061726174696f6e2d76312f636170747572652d6c69746572616c2d7072657061726174696f6e2e76312e6a736f6e00"
+      },
+      "initial_autocrlf": "false",
+      "old_head": "0cc0e332ff4d8716ec60870402a0799c0daefd3b",
+      "root": "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/existing-false"
+    },
+    {
+      "bad_head": "c1db676a896efc5781fd5d0232acc346be5967cb",
+      "confirmed_red_after_explicit_refresh": {
+        "raw_rows": [
+          {
+            "actual_clean_oid": "5782753256d37677ccdb841305dca285f07a6630",
+            "original_raw_oid": "a014c6a345b082274424e21d68ec4c1bc7f8c4fd",
+            "path": "artifacts/benchmark_recovery_20260930/ci-4cb9-original-host-retention-v1/host-download-source-review.v1.json",
+            "sha256": "fd05cee1e1e3bc3adf34e8b65e31e245c7389827008417f4c3bb900980bf2482",
+            "size_bytes": 552
+          },
+          {
+            "actual_clean_oid": "b7afd1fc29845c90ca4e2783b8875475414316b2",
+            "original_raw_oid": "966f7390f6c816a7ac7654a85351efb9500cf84c",
+            "path": "artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-preparation-v1/capture-literal-preparation.v1.json",
+            "sha256": "34f807f54f06a0dbaad50966608e54d299801b950cd7ea2f1e46d642878fd0f3",
+            "size_bytes": 887
+          }
+        ],
+        "status_entries": [
+          " M artifacts/benchmark_recovery_20260930/ci-4cb9-original-host-retention-v1/host-download-source-review.v1.json",
+          " M artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-preparation-v1/capture-literal-preparation.v1.json"
+        ],
+        "status_hex": "204d206172746966616374732f62656e63686d61726b5f7265636f766572795f32303236303933302f63692d346362392d6f726967696e616c2d686f73742d726574656e74696f6e2d76312f686f73742d646f776e6c6f61642d736f757263652d7265766965772e76312e6a736f6e00204d206172746966616374732f62656e63686d61726b5f7265636f766572795f32303236303933302f636f6d706f6e656e742d63757272656e742d736f757263652d63692d73757065727669736f722d7072657061726174696f6e2d76312f636170747572652d6c69746572616c2d7072657061726174696f6e2e76312e6a736f6e00"
+      },
+      "effective_attributes_nul_fields": [
+        "artifacts/benchmark_recovery_20260930/ci-4cb9-original-host-retention-v1/host-download-source-review.v1.json",
+        "text",
+        "unset",
+        "artifacts/benchmark_recovery_20260930/ci-4cb9-original-host-retention-v1/host-download-source-review.v1.json",
+        "eol",
+        "unspecified",
+        "artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-preparation-v1/capture-literal-preparation.v1.json",
+        "text",
+        "unset",
+        "artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-preparation-v1/capture-literal-preparation.v1.json",
+        "eol",
+        "unspecified"
+      ],
+      "fixed_head": "3307249d48e36419b958545dfd8d0f0c66dcafef",
+      "green_after_ordinary_checkout_and_refresh": {
+        "raw_rows": [
+          {
+            "actual_clean_oid": "a014c6a345b082274424e21d68ec4c1bc7f8c4fd",
+            "original_raw_oid": "a014c6a345b082274424e21d68ec4c1bc7f8c4fd",
+            "path": "artifacts/benchmark_recovery_20260930/ci-4cb9-original-host-retention-v1/host-download-source-review.v1.json",
+            "sha256": "fd05cee1e1e3bc3adf34e8b65e31e245c7389827008417f4c3bb900980bf2482",
+            "size_bytes": 552
+          },
+          {
+            "actual_clean_oid": "966f7390f6c816a7ac7654a85351efb9500cf84c",
+            "original_raw_oid": "966f7390f6c816a7ac7654a85351efb9500cf84c",
+            "path": "artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-preparation-v1/capture-literal-preparation.v1.json",
+            "sha256": "34f807f54f06a0dbaad50966608e54d299801b950cd7ea2f1e46d642878fd0f3",
+            "size_bytes": 887
+          }
+        ],
+        "status_entries": [],
+        "status_hex": ""
+      },
+      "immediate_after_ordinary_checkout": {
+        "raw_rows": [
+          {
+            "actual_clean_oid": "5782753256d37677ccdb841305dca285f07a6630",
+            "original_raw_oid": "a014c6a345b082274424e21d68ec4c1bc7f8c4fd",
+            "path": "artifacts/benchmark_recovery_20260930/ci-4cb9-original-host-retention-v1/host-download-source-review.v1.json",
+            "sha256": "fd05cee1e1e3bc3adf34e8b65e31e245c7389827008417f4c3bb900980bf2482",
+            "size_bytes": 552
+          },
+          {
+            "actual_clean_oid": "b7afd1fc29845c90ca4e2783b8875475414316b2",
+            "original_raw_oid": "966f7390f6c816a7ac7654a85351efb9500cf84c",
+            "path": "artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-preparation-v1/capture-literal-preparation.v1.json",
+            "sha256": "34f807f54f06a0dbaad50966608e54d299801b950cd7ea2f1e46d642878fd0f3",
+            "size_bytes": 887
+          }
+        ],
+        "status_entries": [
+          " M artifacts/benchmark_recovery_20260930/ci-4cb9-original-host-retention-v1/host-download-source-review.v1.json",
+          " M artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-preparation-v1/capture-literal-preparation.v1.json"
+        ],
+        "status_hex": "204d206172746966616374732f62656e63686d61726b5f7265636f766572795f32303236303933302f63692d346362392d6f726967696e616c2d686f73742d726574656e74696f6e2d76312f686f73742d646f776e6c6f61642d736f757263652d7265766965772e76312e6a736f6e00204d206172746966616374732f62656e63686d61726b5f7265636f766572795f32303236303933302f636f6d706f6e656e742d63757272656e742d736f757263652d63692d73757065727669736f722d7072657061726174696f6e2d76312f636170747572652d6c69746572616c2d7072657061726174696f6e2e76312e6a736f6e00"
+      },
+      "initial_autocrlf": "true",
+      "old_head": "0cc0e332ff4d8716ec60870402a0799c0daefd3b",
+      "root": "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/existing-true"
+    }
+  ],
+  "no_full_checkout_ci_or_benchmark_acceptance": true,
+  "original_git_commands": [
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/seed",
+        "init",
+        "-q"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57688,
+        "pid": 57688,
+        "ppid": 57687,
+        "session": 57688,
+        "startticks": 29926309,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/000.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/000.stdout.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/seed",
+        "config",
+        "core.autocrlf",
+        "false"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57689,
+        "pid": 57689,
+        "ppid": 57687,
+        "session": 57689,
+        "startticks": 29926312,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/001.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/001.stdout.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/seed",
+        "config",
+        "user.name",
+        "Finite Git fixture"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57690,
+        "pid": 57690,
+        "ppid": 57687,
+        "session": 57690,
+        "startticks": 29926313,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/002.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/002.stdout.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/seed",
+        "config",
+        "user.email",
+        "fixture.invalid@example.invalid"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57691,
+        "pid": 57691,
+        "ppid": 57687,
+        "session": 57691,
+        "startticks": 29926314,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/003.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/003.stdout.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/seed",
+        "add",
+        "--",
+        ".gitattributes"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57692,
+        "pid": 57692,
+        "ppid": 57687,
+        "session": 57692,
+        "startticks": 29926315,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/004.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/004.stdout.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/seed",
+        "commit",
+        "-q",
+        "-m",
+        "Old tree before the two new forensic blobs"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57693,
+        "pid": 57693,
+        "ppid": 57687,
+        "session": 57693,
+        "startticks": 29926316,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/005.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/005.stdout.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/seed",
+        "rev-parse",
+        "HEAD"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57695,
+        "pid": 57695,
+        "ppid": 57687,
+        "session": 57695,
+        "startticks": 29926318,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/006.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/006.stdout.raw",
+        "sha256": "2617db139e573eadeeea6a925c7d279877823e280176fde9b12e8ec8d76213dc",
+        "size_bytes": 41
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/seed",
+        "hash-object",
+        "-w",
+        "--stdin"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57696,
+        "pid": 57696,
+        "ppid": 57687,
+        "session": 57696,
+        "startticks": 29926319,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/007.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/007.stdout.raw",
+        "sha256": "c3042f0e78674b2e66e636f237c6fd1fd175735259f3584caa23b240f5c13887",
+        "size_bytes": 41
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/seed",
+        "update-index",
+        "--add",
+        "--cacheinfo",
+        "100644,a014c6a345b082274424e21d68ec4c1bc7f8c4fd,artifacts/benchmark_recovery_20260930/ci-4cb9-original-host-retention-v1/host-download-source-review.v1.json"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57697,
+        "pid": 57697,
+        "ppid": 57687,
+        "session": 57697,
+        "startticks": 29926319,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/008.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/008.stdout.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/seed",
+        "hash-object",
+        "-w",
+        "--stdin"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57698,
+        "pid": 57698,
+        "ppid": 57687,
+        "session": 57698,
+        "startticks": 29926320,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/009.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/009.stdout.raw",
+        "sha256": "cc303e274179761048fd6971f66eb02aee098a33138c63bd6e4662ee59789465",
+        "size_bytes": 41
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/seed",
+        "update-index",
+        "--add",
+        "--cacheinfo",
+        "100644,966f7390f6c816a7ac7654a85351efb9500cf84c,artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-preparation-v1/capture-literal-preparation.v1.json"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57699,
+        "pid": 57699,
+        "ppid": 57687,
+        "session": 57699,
+        "startticks": 29926321,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/010.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/010.stdout.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/seed",
+        "commit",
+        "-q",
+        "-m",
+        "Raw new forensic blobs with inherited text LF contract"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57700,
+        "pid": 57700,
+        "ppid": 57687,
+        "session": 57700,
+        "startticks": 29926322,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/011.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/011.stdout.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/seed",
+        "rev-parse",
+        "HEAD"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57702,
+        "pid": 57702,
+        "ppid": 57687,
+        "session": 57702,
+        "startticks": 29926323,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/012.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/012.stdout.raw",
+        "sha256": "e5f96b2bca65c3aa2d76bbfce61209dddf3316b0387dda106b8eb49ead22b3fa",
+        "size_bytes": 41
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/seed",
+        "add",
+        "--",
+        ".gitattributes"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57703,
+        "pid": 57703,
+        "ppid": 57687,
+        "session": 57703,
+        "startticks": 29926323,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/013.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/013.stdout.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/seed",
+        "commit",
+        "-q",
+        "-m",
+        "Two exact raw byte rules"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57704,
+        "pid": 57704,
+        "ppid": 57687,
+        "session": 57704,
+        "startticks": 29926324,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/014.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/014.stdout.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/seed",
+        "rev-parse",
+        "HEAD"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57706,
+        "pid": 57706,
+        "ppid": 57687,
+        "session": 57706,
+        "startticks": 29926325,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/015.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/015.stdout.raw",
+        "sha256": "2f8937eb99f606c04864c77f54fa3812eebbf9e5b710e496ce985a71be263840",
+        "size_bytes": 41
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/seed",
+        "diff",
+        "--name-only",
+        "-z",
+        "c1db676a896efc5781fd5d0232acc346be5967cb",
+        "3307249d48e36419b958545dfd8d0f0c66dcafef"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57707,
+        "pid": 57707,
+        "ppid": 57687,
+        "session": 57707,
+        "startticks": 29926325,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/016.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/016.stdout.raw",
+        "sha256": "69a5e27a974e2601186abe1a3eb5ab30e8bb8204475494ae30755aeae44cda24",
+        "size_bytes": 15
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb",
+        "clone",
+        "--no-local",
+        "--no-checkout",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/seed",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/existing-false"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57708,
+        "pid": 57708,
+        "ppid": 57687,
+        "session": 57708,
+        "startticks": 29926326,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/017.stderr.raw",
+        "sha256": "5f8944e8c423833070d3f351df4709ddfed75e762453aacf470dd0ef5625242f",
+        "size_bytes": 109
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/017.stdout.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/existing-false",
+        "config",
+        "core.autocrlf",
+        "false"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57730,
+        "pid": 57730,
+        "ppid": 57687,
+        "session": 57730,
+        "startticks": 29926329,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/018.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/018.stdout.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/existing-false",
+        "checkout",
+        "--detach",
+        "0cc0e332ff4d8716ec60870402a0799c0daefd3b"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57731,
+        "pid": 57731,
+        "ppid": 57687,
+        "session": 57731,
+        "startticks": 29926329,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/019.stderr.raw",
+        "sha256": "427abd6f85a98ddb529e80dbeea2bba09230be35480416374f3301f48b8116b9",
+        "size_bytes": 66
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/019.stdout.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/existing-false",
+        "status",
+        "--porcelain=v1",
+        "-z"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57732,
+        "pid": 57732,
+        "ppid": 57687,
+        "session": 57732,
+        "startticks": 29926330,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/020.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/020.stdout.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/existing-false",
+        "checkout",
+        "--detach",
+        "c1db676a896efc5781fd5d0232acc346be5967cb"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57733,
+        "pid": 57733,
+        "ppid": 57687,
+        "session": 57733,
+        "startticks": 29926330,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/021.stderr.raw",
+        "sha256": "5018ab11aba03eb68b5d3d626a851d6df74d8cbce574a4d4d996b4ff6f9731ab",
+        "size_bytes": 156
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/021.stdout.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/existing-false",
+        "status",
+        "--porcelain=v1",
+        "-z"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57734,
+        "pid": 57734,
+        "ppid": 57687,
+        "session": 57734,
+        "startticks": 29926331,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/022.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/022.stdout.raw",
+        "sha256": "a2c63bab890bf2185c74f658c71e12b46d0522c69ec460133f6feea8a11c5a2a",
+        "size_bytes": 243
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/existing-false",
+        "hash-object",
+        "--path=artifacts/benchmark_recovery_20260930/ci-4cb9-original-host-retention-v1/host-download-source-review.v1.json",
+        "--stdin"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57735,
+        "pid": 57735,
+        "ppid": 57687,
+        "session": 57735,
+        "startticks": 29926332,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/023.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/023.stdout.raw",
+        "sha256": "86c6100c03f939460ba1cd3da866131c1fbaa54e4a30078b2a0d5123af1d98f2",
+        "size_bytes": 41
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/existing-false",
+        "hash-object",
+        "--path=artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-preparation-v1/capture-literal-preparation.v1.json",
+        "--stdin"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57736,
+        "pid": 57736,
+        "ppid": 57687,
+        "session": 57736,
+        "startticks": 29926333,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/024.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/024.stdout.raw",
+        "sha256": "212061e2a8281d8fa1567b7507b67d02ad1ed126a70d9db471a9d52a654307c2",
+        "size_bytes": 41
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0,
+        1
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/existing-false",
+        "update-index",
+        "--really-refresh"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57737,
+        "pid": 57737,
+        "ppid": 57687,
+        "session": 57737,
+        "startticks": 29926333,
+        "uid": 1000
+      },
+      "returncode": 1,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/025.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/025.stdout.raw",
+        "sha256": "275386a78d7f515594027fed4b9e061ff38df7e00f258785c6f8b37da5da6550",
+        "size_bytes": 265
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/existing-false",
+        "status",
+        "--porcelain=v1",
+        "-z"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57738,
+        "pid": 57738,
+        "ppid": 57687,
+        "session": 57738,
+        "startticks": 29926334,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/026.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/026.stdout.raw",
+        "sha256": "a2c63bab890bf2185c74f658c71e12b46d0522c69ec460133f6feea8a11c5a2a",
+        "size_bytes": 243
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/existing-false",
+        "hash-object",
+        "--path=artifacts/benchmark_recovery_20260930/ci-4cb9-original-host-retention-v1/host-download-source-review.v1.json",
+        "--stdin"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57739,
+        "pid": 57739,
+        "ppid": 57687,
+        "session": 57739,
+        "startticks": 29926335,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/027.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/027.stdout.raw",
+        "sha256": "86c6100c03f939460ba1cd3da866131c1fbaa54e4a30078b2a0d5123af1d98f2",
+        "size_bytes": 41
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/existing-false",
+        "hash-object",
+        "--path=artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-preparation-v1/capture-literal-preparation.v1.json",
+        "--stdin"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57740,
+        "pid": 57740,
+        "ppid": 57687,
+        "session": 57740,
+        "startticks": 29926336,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/028.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/028.stdout.raw",
+        "sha256": "212061e2a8281d8fa1567b7507b67d02ad1ed126a70d9db471a9d52a654307c2",
+        "size_bytes": 41
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/existing-false",
+        "checkout",
+        "--detach",
+        "3307249d48e36419b958545dfd8d0f0c66dcafef"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57741,
+        "pid": 57741,
+        "ppid": 57687,
+        "session": 57741,
+        "startticks": 29926336,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/029.stderr.raw",
+        "sha256": "bccb54c4de85e34889970e9d5e7ac648fe77923e8cf5e985bb43226db9c25f3c",
+        "size_bytes": 138
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/029.stdout.raw",
+        "sha256": "c2d17776688f948392e92aca820ba1029e675d031666cc033b3b4e06857e3f48",
+        "size_bytes": 241
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/existing-false",
+        "update-index",
+        "--really-refresh"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57742,
+        "pid": 57742,
+        "ppid": 57687,
+        "session": 57742,
+        "startticks": 29926337,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/030.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/030.stdout.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/existing-false",
+        "status",
+        "--porcelain=v1",
+        "-z"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57743,
+        "pid": 57743,
+        "ppid": 57687,
+        "session": 57743,
+        "startticks": 29926338,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/031.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/031.stdout.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/existing-false",
+        "hash-object",
+        "--path=artifacts/benchmark_recovery_20260930/ci-4cb9-original-host-retention-v1/host-download-source-review.v1.json",
+        "--stdin"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57744,
+        "pid": 57744,
+        "ppid": 57687,
+        "session": 57744,
+        "startticks": 29926338,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/032.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/032.stdout.raw",
+        "sha256": "c3042f0e78674b2e66e636f237c6fd1fd175735259f3584caa23b240f5c13887",
+        "size_bytes": 41
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/existing-false",
+        "hash-object",
+        "--path=artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-preparation-v1/capture-literal-preparation.v1.json",
+        "--stdin"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57745,
+        "pid": 57745,
+        "ppid": 57687,
+        "session": 57745,
+        "startticks": 29926339,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/033.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/033.stdout.raw",
+        "sha256": "cc303e274179761048fd6971f66eb02aee098a33138c63bd6e4662ee59789465",
+        "size_bytes": 41
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/existing-false",
+        "check-attr",
+        "-z",
+        "text",
+        "eol",
+        "--stdin"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57746,
+        "pid": 57746,
+        "ppid": 57687,
+        "session": 57746,
+        "startticks": 29926340,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/034.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/034.stdout.raw",
+        "sha256": "31da41e2fa3ffb082fa2c9d51d620bdcbef776be895597e443c1b38212e42350",
+        "size_bytes": 528
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb",
+        "clone",
+        "--no-local",
+        "--no-checkout",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/seed",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/existing-true"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57747,
+        "pid": 57747,
+        "ppid": 57687,
+        "session": 57747,
+        "startticks": 29926340,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/035.stderr.raw",
+        "sha256": "79299e5dbb01b7dc5c5add8fca0589e7e869d1f4ae17a8431335a1c92252b101",
+        "size_bytes": 108
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/035.stdout.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/existing-true",
+        "config",
+        "core.autocrlf",
+        "true"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57769,
+        "pid": 57769,
+        "ppid": 57687,
+        "session": 57769,
+        "startticks": 29926343,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/036.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/036.stdout.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/existing-true",
+        "checkout",
+        "--detach",
+        "0cc0e332ff4d8716ec60870402a0799c0daefd3b"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57770,
+        "pid": 57770,
+        "ppid": 57687,
+        "session": 57770,
+        "startticks": 29926343,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/037.stderr.raw",
+        "sha256": "427abd6f85a98ddb529e80dbeea2bba09230be35480416374f3301f48b8116b9",
+        "size_bytes": 66
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/037.stdout.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/existing-true",
+        "status",
+        "--porcelain=v1",
+        "-z"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57771,
+        "pid": 57771,
+        "ppid": 57687,
+        "session": 57771,
+        "startticks": 29926344,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/038.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/038.stdout.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/existing-true",
+        "checkout",
+        "--detach",
+        "c1db676a896efc5781fd5d0232acc346be5967cb"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57772,
+        "pid": 57772,
+        "ppid": 57687,
+        "session": 57772,
+        "startticks": 29926344,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/039.stderr.raw",
+        "sha256": "5018ab11aba03eb68b5d3d626a851d6df74d8cbce574a4d4d996b4ff6f9731ab",
+        "size_bytes": 156
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/039.stdout.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/existing-true",
+        "status",
+        "--porcelain=v1",
+        "-z"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57773,
+        "pid": 57773,
+        "ppid": 57687,
+        "session": 57773,
+        "startticks": 29926345,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/040.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/040.stdout.raw",
+        "sha256": "a2c63bab890bf2185c74f658c71e12b46d0522c69ec460133f6feea8a11c5a2a",
+        "size_bytes": 243
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/existing-true",
+        "hash-object",
+        "--path=artifacts/benchmark_recovery_20260930/ci-4cb9-original-host-retention-v1/host-download-source-review.v1.json",
+        "--stdin"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57774,
+        "pid": 57774,
+        "ppid": 57687,
+        "session": 57774,
+        "startticks": 29926346,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/041.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/041.stdout.raw",
+        "sha256": "86c6100c03f939460ba1cd3da866131c1fbaa54e4a30078b2a0d5123af1d98f2",
+        "size_bytes": 41
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/existing-true",
+        "hash-object",
+        "--path=artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-preparation-v1/capture-literal-preparation.v1.json",
+        "--stdin"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57775,
+        "pid": 57775,
+        "ppid": 57687,
+        "session": 57775,
+        "startticks": 29926347,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/042.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/042.stdout.raw",
+        "sha256": "212061e2a8281d8fa1567b7507b67d02ad1ed126a70d9db471a9d52a654307c2",
+        "size_bytes": 41
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0,
+        1
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/existing-true",
+        "update-index",
+        "--really-refresh"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57776,
+        "pid": 57776,
+        "ppid": 57687,
+        "session": 57776,
+        "startticks": 29926348,
+        "uid": 1000
+      },
+      "returncode": 1,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/043.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/043.stdout.raw",
+        "sha256": "275386a78d7f515594027fed4b9e061ff38df7e00f258785c6f8b37da5da6550",
+        "size_bytes": 265
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/existing-true",
+        "status",
+        "--porcelain=v1",
+        "-z"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57777,
+        "pid": 57777,
+        "ppid": 57687,
+        "session": 57777,
+        "startticks": 29926348,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/044.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/044.stdout.raw",
+        "sha256": "a2c63bab890bf2185c74f658c71e12b46d0522c69ec460133f6feea8a11c5a2a",
+        "size_bytes": 243
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/existing-true",
+        "hash-object",
+        "--path=artifacts/benchmark_recovery_20260930/ci-4cb9-original-host-retention-v1/host-download-source-review.v1.json",
+        "--stdin"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57778,
+        "pid": 57778,
+        "ppid": 57687,
+        "session": 57778,
+        "startticks": 29926349,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/045.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/045.stdout.raw",
+        "sha256": "86c6100c03f939460ba1cd3da866131c1fbaa54e4a30078b2a0d5123af1d98f2",
+        "size_bytes": 41
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/existing-true",
+        "hash-object",
+        "--path=artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-preparation-v1/capture-literal-preparation.v1.json",
+        "--stdin"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57779,
+        "pid": 57779,
+        "ppid": 57687,
+        "session": 57779,
+        "startticks": 29926350,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/046.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/046.stdout.raw",
+        "sha256": "212061e2a8281d8fa1567b7507b67d02ad1ed126a70d9db471a9d52a654307c2",
+        "size_bytes": 41
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/existing-true",
+        "checkout",
+        "--detach",
+        "3307249d48e36419b958545dfd8d0f0c66dcafef"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57780,
+        "pid": 57780,
+        "ppid": 57687,
+        "session": 57780,
+        "startticks": 29926351,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/047.stderr.raw",
+        "sha256": "bccb54c4de85e34889970e9d5e7ac648fe77923e8cf5e985bb43226db9c25f3c",
+        "size_bytes": 138
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/047.stdout.raw",
+        "sha256": "c2d17776688f948392e92aca820ba1029e675d031666cc033b3b4e06857e3f48",
+        "size_bytes": 241
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/existing-true",
+        "update-index",
+        "--really-refresh"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57781,
+        "pid": 57781,
+        "ppid": 57687,
+        "session": 57781,
+        "startticks": 29926351,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/048.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/048.stdout.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/existing-true",
+        "status",
+        "--porcelain=v1",
+        "-z"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57782,
+        "pid": 57782,
+        "ppid": 57687,
+        "session": 57782,
+        "startticks": 29926352,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/049.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/049.stdout.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/existing-true",
+        "hash-object",
+        "--path=artifacts/benchmark_recovery_20260930/ci-4cb9-original-host-retention-v1/host-download-source-review.v1.json",
+        "--stdin"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57783,
+        "pid": 57783,
+        "ppid": 57687,
+        "session": 57783,
+        "startticks": 29926353,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/050.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/050.stdout.raw",
+        "sha256": "c3042f0e78674b2e66e636f237c6fd1fd175735259f3584caa23b240f5c13887",
+        "size_bytes": 41
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/existing-true",
+        "hash-object",
+        "--path=artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-preparation-v1/capture-literal-preparation.v1.json",
+        "--stdin"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57784,
+        "pid": 57784,
+        "ppid": 57687,
+        "session": 57784,
+        "startticks": 29926353,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/051.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/051.stdout.raw",
+        "sha256": "cc303e274179761048fd6971f66eb02aee098a33138c63bd6e4662ee59789465",
+        "size_bytes": 41
+      }
+    },
+    {
+      "allowed_returncodes": [
+        0
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb/existing-true",
+        "check-attr",
+        "-z",
+        "text",
+        "eol",
+        "--stdin"
+      ],
+      "child_pid_absent": true,
+      "child_reaped": true,
+      "first_error": null,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 57785,
+        "pid": 57785,
+        "ppid": 57687,
+        "session": 57785,
+        "startticks": 29926354,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/052.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/052.stdout.raw",
+        "sha256": "31da41e2fa3ffb082fa2c9d51d620bdcbef776be895597e443c1b38212e42350",
+        "size_bytes": 528
+      }
+    }
+  ],
+  "process_scans": [
+    {
+      "at_ns": 1790816948531513911,
+      "errors": [],
+      "members": [],
+      "pids_absent": {
+        "57688": true,
+        "57689": true,
+        "57690": true,
+        "57691": true,
+        "57692": true,
+        "57693": true,
+        "57695": true,
+        "57696": true,
+        "57697": true,
+        "57698": true,
+        "57699": true,
+        "57700": true,
+        "57702": true,
+        "57703": true,
+        "57704": true,
+        "57706": true,
+        "57707": true,
+        "57708": true,
+        "57730": true,
+        "57731": true,
+        "57732": true,
+        "57733": true,
+        "57734": true,
+        "57735": true,
+        "57736": true,
+        "57737": true,
+        "57738": true,
+        "57739": true,
+        "57740": true,
+        "57741": true,
+        "57742": true,
+        "57743": true,
+        "57744": true,
+        "57745": true,
+        "57746": true,
+        "57747": true,
+        "57769": true,
+        "57770": true,
+        "57771": true,
+        "57772": true,
+        "57773": true,
+        "57774": true,
+        "57775": true,
+        "57776": true,
+        "57777": true,
+        "57778": true,
+        "57779": true,
+        "57780": true,
+        "57781": true,
+        "57782": true,
+        "57783": true,
+        "57784": true,
+        "57785": true
+      }
+    },
+    {
+      "at_ns": 1790816948533059824,
+      "errors": [],
+      "members": [],
+      "pids_absent": {
+        "57688": true,
+        "57689": true,
+        "57690": true,
+        "57691": true,
+        "57692": true,
+        "57693": true,
+        "57695": true,
+        "57696": true,
+        "57697": true,
+        "57698": true,
+        "57699": true,
+        "57700": true,
+        "57702": true,
+        "57703": true,
+        "57704": true,
+        "57706": true,
+        "57707": true,
+        "57708": true,
+        "57730": true,
+        "57731": true,
+        "57732": true,
+        "57733": true,
+        "57734": true,
+        "57735": true,
+        "57736": true,
+        "57737": true,
+        "57738": true,
+        "57739": true,
+        "57740": true,
+        "57741": true,
+        "57742": true,
+        "57743": true,
+        "57744": true,
+        "57745": true,
+        "57746": true,
+        "57747": true,
+        "57769": true,
+        "57770": true,
+        "57771": true,
+        "57772": true,
+        "57773": true,
+        "57774": true,
+        "57775": true,
+        "57776": true,
+        "57777": true,
+        "57778": true,
+        "57779": true,
+        "57780": true,
+        "57781": true,
+        "57782": true,
+        "57783": true,
+        "57784": true,
+        "57785": true
+      }
+    }
+  ],
+  "schema_version": 1,
+  "scratch": "/var/tmp/vast-forensic-json-existing-index-72a6aa07b3a24bf684be9fbfc18585fb",
+  "source_and_fixed_tree_only_difference": ".gitattributes",
+  "source_sha256": "bcdc1a5b9dc51abaab8dc33b66bfc0f57764d7be30431216fd9f1d18c1e9655d",
+  "stat_cache_limit": "Immediate clean status may be cached; explicit refresh plus clean/raw object equality is required by this fixture. Existing original roots were never refreshed or mutated.",
+  "status": "passed_existing_index_fixture_only"
+}

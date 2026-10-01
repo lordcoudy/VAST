@@ -1,0 +1,39 @@
+{
+  "current_recipe": {
+    "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/current-pair-auditors-readiness.pending.v2.json",
+    "sha256": "12ecf67067fa6bd91f043eb0d6babd141cd7bffdd7726542f9dd610ab02afff0",
+    "size_bytes": 10322
+  },
+  "new_JSON_receipt_encoding": "literal LF bytes via xb",
+  "no_current_or_historical_originals_overwritten": true,
+  "original_author": {
+    "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/current-pair-auditors-author.v1.json",
+    "sha256": "7a9d42a97b6bd9c16679af122b1ebb6678dbb4e99059d7b439cbf4e5404fa999",
+    "size_bytes": 24838
+  },
+  "prepared_sources": {
+    "cpu_audit": {
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu07-ext4-postterminal-audit-preparation-v1/audit_v1.py",
+      "sha256": "43d1e260193d698e59979f3a8f44b0457771548bce199348ecfb65c4351220a7",
+      "size_bytes": 17922
+    },
+    "cpu_dispatch": {
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu07-ext4-postterminal-audit-preparation-v1/dispatch_v1.py",
+      "sha256": "8e0ee4c872c31364d25112f328f365b5266bcc5d13431b77ffed3f6f254b0ea8",
+      "size_bytes": 1998
+    },
+    "gpu_audit": {
+      "path": "artifacts/benchmark_recovery_20260930/component-gpu02-ext4-postterminal-audit-preparation-v1/audit_v1.py",
+      "sha256": "70ba30687a64822fb871c0ef5ee8fb396c1117cad9e04c7fb23f2521444a84b2",
+      "size_bytes": 17922
+    },
+    "gpu_dispatch": {
+      "path": "artifacts/benchmark_recovery_20260930/component-gpu02-ext4-postterminal-audit-preparation-v1/dispatch_v1.py",
+      "sha256": "808d8afa0e6a58090b7577998df1ed2b019f692b4d9e77055f56893ee429e21d",
+      "size_bytes": 1998
+    }
+  },
+  "schema_version": 1,
+  "scope": "Only command/output recipe path spelling supersedes v1. All source/function AST proofs and future null fields unchanged; no original auditor/stock/model/test/engine/process/checkout execution.",
+  "status": "prepared_only_no_execution"
+}

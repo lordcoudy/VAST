@@ -1,0 +1,262 @@
+{
+  "all_fds_retired": true,
+  "close_errors": [],
+  "commands": [
+    {
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+        "rev-parse",
+        "HEAD"
+      ],
+      "counts": {
+        "stderr": 0,
+        "stdout": 41
+      },
+      "eof": [
+        "stderr",
+        "stdout"
+      ],
+      "fault": null,
+      "original_group_absent": true,
+      "original_pid_absent": true,
+      "returncode": 0,
+      "signals": []
+    },
+    {
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+        "status",
+        "--porcelain=v1",
+        "-z",
+        "--untracked-files=no"
+      ],
+      "counts": {
+        "stderr": 0,
+        "stdout": 0
+      },
+      "eof": [
+        "stderr",
+        "stdout"
+      ],
+      "fault": null,
+      "original_group_absent": true,
+      "original_pid_absent": true,
+      "returncode": 0,
+      "signals": []
+    },
+    {
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+        "cat-file",
+        "-e",
+        "78b869e4f8bc101413ed00776bd89d1089a8318d^{commit}"
+      ],
+      "counts": {
+        "stderr": 0,
+        "stdout": 0
+      },
+      "eof": [
+        "stderr",
+        "stdout"
+      ],
+      "fault": null,
+      "original_group_absent": true,
+      "original_pid_absent": true,
+      "returncode": 0,
+      "signals": []
+    },
+    {
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+        "merge-base",
+        "--is-ancestor",
+        "0ad78d6abdb3c526544a17185af7fe8094716735",
+        "78b869e4f8bc101413ed00776bd89d1089a8318d"
+      ],
+      "counts": {
+        "stderr": 0,
+        "stdout": 0
+      },
+      "eof": [
+        "stderr",
+        "stdout"
+      ],
+      "fault": null,
+      "original_group_absent": true,
+      "original_pid_absent": true,
+      "returncode": 0,
+      "signals": []
+    },
+    {
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+        "ls-tree",
+        "-r",
+        "-z",
+        "0ad78d6abdb3c526544a17185af7fe8094716735"
+      ],
+      "counts": {
+        "stderr": 0,
+        "stdout": 573601
+      },
+      "eof": [
+        "stderr",
+        "stdout"
+      ],
+      "fault": null,
+      "original_group_absent": true,
+      "original_pid_absent": true,
+      "returncode": 0,
+      "signals": []
+    },
+    {
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+        "ls-tree",
+        "-r",
+        "-z",
+        "78b869e4f8bc101413ed00776bd89d1089a8318d"
+      ],
+      "counts": {
+        "stderr": 0,
+        "stdout": 766175
+      },
+      "eof": [
+        "stderr",
+        "stdout"
+      ],
+      "fault": null,
+      "original_group_absent": true,
+      "original_pid_absent": true,
+      "returncode": 0,
+      "signals": []
+    },
+    {
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+        "checkout",
+        "--detach",
+        "78b869e4f8bc101413ed00776bd89d1089a8318d"
+      ],
+      "counts": {
+        "stderr": 180,
+        "stdout": 0
+      },
+      "eof": [
+        "stderr",
+        "stdout"
+      ],
+      "fault": null,
+      "original_group_absent": true,
+      "original_pid_absent": true,
+      "returncode": 0,
+      "signals": []
+    },
+    {
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+        "rev-parse",
+        "HEAD"
+      ],
+      "counts": {
+        "stderr": 0,
+        "stdout": 41
+      },
+      "eof": [
+        "stderr",
+        "stdout"
+      ],
+      "fault": null,
+      "original_group_absent": true,
+      "original_pid_absent": true,
+      "returncode": 0,
+      "signals": []
+    },
+    {
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+        "status",
+        "--porcelain=v1",
+        "-z",
+        "--untracked-files=no"
+      ],
+      "counts": {
+        "stderr": 0,
+        "stdout": 243
+      },
+      "eof": [
+        "stderr",
+        "stdout"
+      ],
+      "fault": null,
+      "original_group_absent": true,
+      "original_pid_absent": true,
+      "returncode": 0,
+      "signals": []
+    }
+  ],
+  "elapsed_s": 12.59092021099059,
+  "facts": {},
+  "first_error": {
+    "message": "",
+    "type": "AssertionError"
+  },
+  "hardware_acceptance": false,
+  "previous_source_commit": "0ad78d6abdb3c526544a17185af7fe8094716735",
+  "source_commit": "78b869e4f8bc101413ed00776bd89d1089a8318d",
+  "status": "failed"
+}

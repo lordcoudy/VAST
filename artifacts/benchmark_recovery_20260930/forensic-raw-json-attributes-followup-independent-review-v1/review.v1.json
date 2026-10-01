@@ -1,0 +1,115 @@
+{
+  "actual_controlled_effect": {
+    "all_FDs_closed_original_witness": true,
+    "all_command_logs_rehashed_and_allowed_returncodes_checked": true,
+    "child_reap_and_two_original_scans_checked": true,
+    "command_count": 53,
+    "existing_index_cases": [
+      "autocrlf=false",
+      "autocrlf=true"
+    ],
+    "finite_after_scan": {
+      "conflicts": 0,
+      "count": 352
+    },
+    "finite_before_scan": {
+      "conflicts": 2,
+      "count": 349
+    },
+    "fixed_actual_dirty_entries_per_case": 0,
+    "only_fixture_commit_delta_attributes": ".gitattributes",
+    "raw_original_blobs_preserved_and_clean_object_ids_equal_after_exact_rules": true,
+    "red_actual_dirty_entries_per_case": 2
+  },
+  "blocking_findings": [],
+  "limits": [
+    "The object-ID comparisons and explicit --really-refresh in scratch repositories expose status stat-cache masking. This was not an original-root index refresh.",
+    "This finite metadata scan is not a guarantee for arbitrary future evidence files. Future checkpoint raw-versus-clean identity remains necessary.",
+    "Windows current byte hashes were checked; original Linux full seven-field epochs are compared only between retained Linux witnesses.",
+    "The failed original renewal and prior failed CI setup remain failed and preserved. No recovery, current host authority, full CI, campaign or hardware acceptance is granted."
+  ],
+  "pins": [
+    {
+      "path": ".gitattributes",
+      "sha256": "504ceb16d7ab7cff66925251859ccb453bfb3b0190b12f6ad0eba64ed79a9acd",
+      "size_bytes": 16430
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/author-review.v1.json",
+      "sha256": "6179948655b67a61b8f00179d83b38bb67d9f5157526be55b44078f0a3d0418e",
+      "size_bytes": 471790
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/preedit-proposal-and-authorization.v1.json",
+      "sha256": "99a5d39eb68e17edd14a4114d01fe92f1869f6a93cc37127efe1df427ca84751",
+      "size_bytes": 504685
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled-original-attempt01/execution.v1.json",
+      "sha256": "3722e20001bfb378d825d311aa3f63d5d910c4ddbe2ba561dfe3356cf7a62960",
+      "size_bytes": 93805
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/controlled_existing_index_v1.py",
+      "sha256": "bcdc1a5b9dc51abaab8dc33b66bfc0f57764d7be30431216fd9f1d18c1e9655d",
+      "size_bytes": 8560
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/diagnose_finite_v1.py",
+      "sha256": "5dc7fd4c1ef0cb49999571688d428cfc7095e520c2e7b12f4d4d3e50f59908b6",
+      "size_bytes": 6739
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/apply_exact_two_v1.py",
+      "sha256": "593d6092cda176fdfb77ba8720a59e644529eaefd3a86ae6713b02306a7e6fb5",
+      "size_bytes": 2695
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-followup-v1/close_author_review_v1.py",
+      "sha256": "2cfa684f4a4981912b4e2da87acc9d3a3b97bce697e74158e6d8c92bc1aa54d2",
+      "size_bytes": 5848
+    }
+  ],
+  "review_scope": "Independent read-only byte, source and original closed controlled-Git evidence review; no Git, fixture, renewal, engine or workload execution.",
+  "reviewed_at_ns": 1790817566211021300,
+  "reviewer_process_scope": {
+    "all_reader_file_handles_closed": true,
+    "no_original_runtime_source_holds": true,
+    "pure_metadata_reader_only": true
+  },
+  "schema_version": 1,
+  "source_checkpoint": "78b869e4f8bc101413ed00776bd89d1089a8318d",
+  "source_findings": {
+    "all118_owned_evidence_descriptors_rehashed": true,
+    "entire_16082_byte_prefix_preserved": true,
+    "exact_append_rules": [
+      "/artifacts/benchmark_recovery_20260930/ci-4cb9-original-host-retention-v1/host-download-source-review.v1.json -text !eol",
+      "/artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-preparation-v1/capture-literal-preparation.v1.json -text !eol"
+    ],
+    "no_wildcard_or_existing_LF_contract_change": true,
+    "only_production_path": ".gitattributes",
+    "payloads": [
+      {
+        "CRLF_count": 12,
+        "clean_under_previous_LF_rules_sha1": "5782753256d37677ccdb841305dca285f07a6630",
+        "path": "artifacts/benchmark_recovery_20260930/ci-4cb9-original-host-retention-v1/host-download-source-review.v1.json",
+        "raw_blob_sha1": "a014c6a345b082274424e21d68ec4c1bc7f8c4fd",
+        "sha256": "fd05cee1e1e3bc3adf34e8b65e31e245c7389827008417f4c3bb900980bf2482",
+        "size_bytes": 552
+      },
+      {
+        "CRLF_count": 13,
+        "clean_under_previous_LF_rules_sha1": "b7afd1fc29845c90ca4e2783b8875475414316b2",
+        "path": "artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-preparation-v1/capture-literal-preparation.v1.json",
+        "raw_blob_sha1": "966f7390f6c816a7ac7654a85351efb9500cf84c",
+        "sha256": "34f807f54f06a0dbaad50966608e54d299801b950cd7ea2f1e46d642878fd0f3",
+        "size_bytes": 887
+      }
+    ],
+    "retained_source_146_full_epoch_descriptors_equal_before_after": true,
+    "source_146_byte_pins_rechecked": true,
+    "two_paths_and_attributes_excluded_original2693_copy_inputs": true,
+    "two_payload_retained_epochs_unchanged": true
+  },
+  "status": "approved_finite_two_attributes_source_and_controlled_effect"
+}

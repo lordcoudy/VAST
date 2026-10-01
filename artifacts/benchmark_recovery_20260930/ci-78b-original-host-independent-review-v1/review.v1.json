@@ -1,0 +1,159 @@
+{
+  "all_reviewer_handles_closed": true,
+  "artifacts": [
+    {
+      "ZIP": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-78b-original-host-retention-v1/artifact-11134652857.original.zip",
+        "sha256": "0e0e5e3ee5a1999249fe540a6921ebcbad1e9d43e83e390002090ef574738c44",
+        "size_bytes": 2023348
+      },
+      "artifact_id": 11134652857,
+      "decoded_size_bytes": 10616190,
+      "members": 197,
+      "provider_digest_CRC_all_member_SHA_verified": true
+    },
+    {
+      "ZIP": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-78b-original-host-retention-v1/artifact-11133839350.original.zip",
+        "sha256": "d61b81ce3c9265e6111105601bf993813c17c582620031beee088b4412f7d0dc",
+        "size_bytes": 411177
+      },
+      "artifact_id": 11133839350,
+      "decoded_size_bytes": 2168156,
+      "members": 51,
+      "provider_digest_CRC_all_member_SHA_verified": true
+    }
+  ],
+  "blocking_findings": [],
+  "external_observer": {
+    "completed_dumps": 19,
+    "descendant_quiescence": "not established by original-child status",
+    "no_forced_signals_or_timeout": true,
+    "original_child_rc": 0,
+    "pipe_EOF": {
+      "control": true,
+      "trace": true
+    },
+    "requests": 19,
+    "whole_job_absolute_90min_bound": true
+  },
+  "fresh_conditional_profile": {
+    "absent_before_present_after_add_absent_after_remove": true,
+    "audit_wall_quantization_allowance_ns": 2000000,
+    "boot_id": "a773c5c7-434d-4895-8e30-187d4bed9d1a",
+    "errno": 13,
+    "exact_executable_userns_only_profile": true,
+    "exact_owned_name": "vast-ci-userns-b051fa6eeaa548afae9143bf04d3f6c6",
+    "expected_actual_label_equal": true,
+    "first_failed_operation": "open:/proc/self/setgroups",
+    "fresh_same_PID_kernel_capability_denial": "sys_admin/unprivileged_userns",
+    "held_FDs_released_original_witness": true,
+    "kernel_inventory_before_after_identical": true,
+    "kernel_query_original_rc": 0,
+    "original_diagnostic_PID": 3806,
+    "original_general_collector_policy_denial_proven": false,
+    "original_load_unload_rc0": true,
+    "original_unshare_completed_flags": 268435456,
+    "profile_byte_SHA256": "166d36aa3300a9393495d8e65d5c0f446feac43754afaae2c7a198ed2392377a",
+    "separate_strict_join_verified": true,
+    "suite_original_PID": 3817
+  },
+  "independent_host_diagnostics": {
+    "elapsed_s": 1.3167537699999912,
+    "full_CI_claim": false,
+    "original_rc": 0,
+    "two_original_IDs": [
+      "test_analytics_model_contract.AnalyticsModelContractTests.test_repository_manifest_is_complete_and_hash_bound",
+      "test_analytics_peer_identity.AnalyticsPeerIdentityAuthorityTests.test_observer_reads_exact_proc_file_and_small_docker_projection"
+    ],
+    "two_passes_raw_log_verified": true
+  },
+  "limitations": [
+    "The 88 audited skips and 9 integration deferrals are nonexecution, not successful tests.",
+    "Executable binary SHA/stat/FD custody is the original witness; the hosted interpreter binary is not retained inside the ZIP for independent rehash. All other strict-join input leaves were rehashed.",
+    "This establishes run33 portable CI/profile outcomes at commit78b only; it does not retroactively accept failed renewal or grant current host/hardware/full-campaign/merge acceptance.",
+    "Kernel query success alone is not causal proof. Fresh syscall/PID/boot/executable/label/time/kernel-record joins were verified; no historical crash-cause claim.",
+    "Original observer does not establish all descendant quiescence from child status."
+  ],
+  "original_run_id": 36797383777,
+  "original_run_number": 33,
+  "pins": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-78b-original-host-retention-v1/retain_originals_v1.py",
+      "sha256": "193860a35a26c216c772ababdf5eed9cdeacb741b14ebcae382e1d98731378d3",
+      "size_bytes": 5911
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-78b-original-host-retention-v1/original-provider-metadata.v1.json",
+      "sha256": "7229f9d31da612e23533b5b7a69c8154bf695b43efe4aae6b1bad0689256ffa0",
+      "size_bytes": 26787
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-78b-original-host-retention-v1/original-retention-terminal.v1.json",
+      "sha256": "596f390247d06987cbe44a7cb2775bf8b6df43d81459d49a0f83e82171d2603b",
+      "size_bytes": 59779
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-78b-original-host-retention-v1/job-110163826615.original.log",
+      "sha256": "4e7b10aa5131c3573a92360cc371658cdb83b51f39a51f20cbdd65ea02fa0325",
+      "size_bytes": 94801
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-78b-original-host-retention-v1/job-110163826390.original.log",
+      "sha256": "c589d10195278462448e33ef35a65345bb46ae30af177f3ee318b6d0b2d329fb",
+      "size_bytes": 33953
+    }
+  ],
+  "portable_selection": {
+    "all_required_native_successes": [
+      "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_client_regression",
+      "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_policy_topology_regression",
+      "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_reset_queue_level_regression"
+    ],
+    "appsrc_queue_videoconvert_original_inspects_success": true,
+    "audited_existing_skips_nonexecution": 88,
+    "counts_recomputed_from_original_ID_sets": true,
+    "discovered": 2972,
+    "errors": 0,
+    "executed_portable": 2963,
+    "failures": 0,
+    "integration_declarations_unexecuted": 9,
+    "six_built_targets": [
+      "vast_native_gst_probe",
+      "vast_checkpoint_source",
+      "gstadaptivescheduler",
+      "gstvastanalyticsterminal",
+      "gstvastanalyticsqueue",
+      "gstvastcheckpointprefixqueue"
+    ],
+    "successes": 2875
+  },
+  "provider_jobs": [
+    {
+      "conclusion": "success",
+      "job_id": 110163826390,
+      "name": "Original host prerequisite diagnostics"
+    },
+    {
+      "conclusion": "success",
+      "job_id": 110163826615,
+      "name": "cpu-checks"
+    }
+  ],
+  "reviewed_at_ns": 1790818000890069700,
+  "reviewer_schema_correction": "Initial inline metadata assertion assumed workflow_action false; original schema uses null for no action. Corrected without original retrieval, test or data retry.",
+  "schema_version": 1,
+  "scope": "Read-only retained provider/ZIP/log/source/outcome joins; no workflow action or test/namespace/profile/hardware replay.",
+  "source_commit": "78b869e4f8bc101413ed00776bd89d1089a8318d",
+  "source_integrity": {
+    "before_after_original_JSON_bytes_identical": true,
+    "original_raw_checkout_bytes_match_commit": true,
+    "retainer_literal_inverse_to_run32": true,
+    "seven_current_CI_byte_pins_match_original_manifests": true,
+    "source_rows_per_job": {
+      "cpu": 4721,
+      "host": 4721
+    }
+  },
+  "status": "original_run33_portable_CI_pass_scoped_independent_join"
+}

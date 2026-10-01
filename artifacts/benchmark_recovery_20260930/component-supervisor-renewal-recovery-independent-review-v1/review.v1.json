@@ -1,0 +1,119 @@
+{
+  "actual_current_old_commit": "78b869e4f8bc101413ed00776bd89d1089a8318d",
+  "all_reviewer_handles_closed": true,
+  "blocking_findings": [],
+  "closed_actual_prerequisite": {
+    "closed_FD_process_capture": {
+      "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/failed-renewal-reconciliation-capture.v1.json",
+      "sha256": "2d8f51c5d61ed615fd74093c82697115b14945a464fef0a8d77eaec9b7878882",
+      "size_bytes": 1383
+    },
+    "preserved3024_current_map": {
+      "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/failed-renewal-preserved-input-reconciliation-attempt01/preserved-current.v1.json",
+      "sha256": "4532d7e1b5740d5c6b5d44024c7095b5547c41ccbc0d06ebcd903319a4a92267",
+      "size_bytes": 1964699
+    },
+    "reconciliation_report": {
+      "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/failed-renewal-preserved-input-reconciliation-attempt01/review.v1.json",
+      "sha256": "3478c3386b325483aaa0478dc1a60932f90900912f68c2fd8feb8c051f0a15c2",
+      "size_bytes": 1879
+    },
+    "tracked4721_current_map": {
+      "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/failed-renewal-preserved-input-reconciliation-attempt01/tracked-current.v1.json",
+      "sha256": "88400bf3105f55284cd88a1e41a3edc89e0e7a7a38375a81b8507216718d0e8e",
+      "size_bytes": 2600094
+    }
+  },
+  "future_source_commit": null,
+  "independent_source_checks": {
+    "ALL2693_original_inputs_and_all_actual_untracked_names_FD_protected": true,
+    "FD_close_independent_error_capture_and_receipt_last_guard": true,
+    "actual_root_ext4_identity_UID_GID_and_shared_Git_alternates_bound": true,
+    "all15_original_function_ASTs_identical": true,
+    "all3024_sealed_original_rows_must_equal_current_protected_full_descriptor": true,
+    "all4721_current_raw_tracked_rows_must_equal_sealed_full_descriptor": true,
+    "all_new_raw_Git_blobs_execute_modes_validated": true,
+    "exact_broker99f_and_two_payload_rows_must_equal_sealed_current_rows": true,
+    "exact_reconciliation_report_capture_and_maps_pinned_and_FD_held_before_checkout": true,
+    "function_names": [
+      "clock",
+      "epoch",
+      "identity",
+      "error",
+      "relative",
+      "ancestors",
+      "digest",
+      "pin",
+      "write",
+      "doc",
+      "owner",
+      "git",
+      "objects",
+      "raw_tracked",
+      "members"
+    ],
+    "future_adoption_of_untracked_or_protected_blob_mode_change_refused": true,
+    "future_commit_must_be_exact40hex_different_from78b_and_descendant": true,
+    "initial_status_requires_exact_two_known_M_paths_no_extra_dirty_entries": true,
+    "new_exclusive_output_no_force_reset_clean_renormalize_rollback": true,
+    "original_functions_retain_600_610_clocks_Git_child_capture_group_cleanup_FD_raw_name_ancestor_and_epoch_checks": true,
+    "post_checkout_status_EMPTY_plus_both_known_raw_clean_object_IDs_and_attributes_required": true,
+    "preserved_fullbytes_full7epochs_before_after_and_final_rehash_required": true,
+    "prior_new_baseline_gap_fixed": true,
+    "source180_changes_empty_broker99f_unchanged_image_groups_unchanged": true,
+    "source_line_refs": {
+      "broker_and_two_metadata_before_comparison": 198,
+      "full3024_preserved_epoch_comparison_before_checkout": 197,
+      "full4721_raw_epoch_comparison_before_checkout": 182,
+      "held_four_sealed_refs_before_checkout": 163,
+      "new_filter_raw_identity": 211,
+      "ordinary_checkout": 201,
+      "receipt_last600_guard": 234,
+      "retire_FDs": 226,
+      "source180_no_delta": 217
+    }
+  },
+  "limits": [
+    "No current4GB binary replay or actual root metadata query was performed; closed reconciliation byte/maps were rehashed and source guards inspected.",
+    "Inherited functions and final600s gate are unchanged; the outer600+10 purpose-built containment remains required and forced timeout remains failed.",
+    "This source gate is not checkout completion, CI completion, current host authority, scientific acceptance or hardware authorization."
+  ],
+  "no_current_root_or_original_source_holds": true,
+  "original_failure_retained": {
+    "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/original-checkout-renewal-attempt01/execution.v1.json",
+    "sha256": "588f23dad4097608741a2068112fb0e56dec76488dda21903a971193716cea13",
+    "size_bytes": 5724
+  },
+  "pins": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-recovery-preparation-v1/recover_existing_ext4_checkout_v2.py",
+      "sha256": "897f2fb5082d1a3521bc99f8aeed6db94c5bb9c8061c2343fa1b92dfdae86b23",
+      "size_bytes": 18538
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-recovery-preparation-v1/recovery-recipe.pending.v2.json",
+      "sha256": "42e5ae21a3711714df81b0c8c6bae9e8763d2e9ffa26f736dd9bfe30e5c85e71",
+      "size_bytes": 8055
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-recovery-preparation-v1/author-source-review.v3.json",
+      "sha256": "ed361d7fcd77a61373c006f0ac14ded2eeee27e2d1546ea13b89d5a5b617e865",
+      "size_bytes": 1798
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/renew_existing_ext4_checkout_v1.py",
+      "sha256": "9d60472768809a770b2a3056aa83b19c3f8e6e50882879e60ffd33425553d77c",
+      "size_bytes": 14035
+    }
+  ],
+  "remaining_runtime_gates": [
+    "Root concrete reviewed attributes checkpoint and explicit one-execution grant must precede invocation. The pending recipe has no future commit/receipt/owner claims.",
+    "Genuine recovery output must pass empty status, raw/filter identity, protected bytes/epochs and cleanup; old failed9d is never treated as a successful recovery.",
+    "Only after recovery success may the separately reviewed 658af2 stock87 capture produce a genuinely new host closure. Its historical old closure is path inventory only.",
+    "Fresh current95 physical witnesses and correct concrete future CI setup/controller bindings remain required before any selected workload. Old0ad or failed78b authority is not rebound."
+  ],
+  "reviewed_at_ns": 1790818108467178600,
+  "schema_version": 1,
+  "source_scope": "New finite recovery helper from actual78b HEAD plus exact recipe/prerequisite records; no checkout, test, Git, source, model, stock, engine or hardware execution.",
+  "status": "approved_prepared_recovery_v2_source_only"
+}

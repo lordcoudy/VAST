@@ -1,0 +1,224 @@
+{
+  "CPU_job_id": 110154542231,
+  "actual_outcomes": {
+    "actual_appsrc_queue_videoconvert_factory_inspections_rc0": true,
+    "all9_integration_declarations_and_all88_audited_skips_exact_original_manifest": true,
+    "audited_original_skips_nonexecution": 88,
+    "declared_integration_deferred_nonexecution": 9,
+    "default_discovered": 2972,
+    "errors": 0,
+    "expected_failures": 0,
+    "failures": 0,
+    "host_two_prerequisite_IDs_pass_reported": true,
+    "original_portable_ID_partition_complete_disjoint": true,
+    "portable_executed": 2963,
+    "required_successes_missing": 0,
+    "required_three_native_regression_IDs_succeeded": [
+      "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_client_regression",
+      "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_policy_topology_regression",
+      "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_reset_queue_level_regression"
+    ],
+    "six_native_targets_built_rc0": [
+      "vast_native_gst_probe",
+      "vast_checkpoint_source",
+      "gstadaptivescheduler",
+      "gstvastanalyticsterminal",
+      "gstvastanalyticsqueue",
+      "gstvastcheckpointprefixqueue"
+    ],
+    "successful_original_test_IDs": 2875,
+    "unexpected_successes": 0
+  },
+  "archives": {
+    "CPU": {
+      "decoded_bytes": 10480858,
+      "members": 197
+    },
+    "all_members_unique_safe_relative_paths_and_CRC_checked": true,
+    "both_provider_size_SHA256_equal": true,
+    "host": {
+      "decoded_bytes": 2017416,
+      "members": 51
+    },
+    "no_extract_or_replay": true
+  },
+  "artifact_kind": "vast_original_e897_hosted_ci_independent_review_v1",
+  "blockers": [],
+  "disposition": "verified_original_full_portable_CI_success_at_exact_e897",
+  "fresh_original_profile_join": {
+    "actual_errno": 13,
+    "actual_failed_stock_operation": "open:/proc/self/setgroups",
+    "before_and_after_unload_kernel_inventory_raw_bytes_equal": true,
+    "boot_id": "9a96bf35-ac21-415c-ae0d-cc9f2ae5871a",
+    "collector_policy_denial_proven_flag_remains_false": true,
+    "exact_owned_profile_name": "vast-ci-userns-95aa1b69ccfc4ad09aaeb24f27a77fc8",
+    "fixed_exact_original_executable_profile_text_rehashed": true,
+    "held_profile_input_FDs_released_reported": true,
+    "kernel_denial": "capable/sys_admin, profile unprivileged_userns, same original PID/boot and original audit time within declared 2ms quantization allowance",
+    "kernel_inventory_absent_before_present_after_add_absent_after_remove": true,
+    "namespace_PID": 3982,
+    "original_load_unload_phase20plus10": true,
+    "original_unshare_CLONE_NEWUSER_completed": true,
+    "parser_add_and_remove_original_rc0_self_timeout_19plus1": true,
+    "profile_158bytes_SHA256": "670770229d692d63de305cb64fca44b380d6f59628caa877cb8a2e43cbe83bb1",
+    "raw_kernel_query_returncode": 0,
+    "separate_strict_join_raw_input_descriptors_verified": true,
+    "suite_PID": 3993,
+    "suite_expected_label_equals_actual_label": true
+  },
+  "host_job_id": 110154541899,
+  "observer": {
+    "actual_descendant_quiescence_limit": "not established by original-child status",
+    "complete_response_dumps": 22,
+    "forced_SIGTERM_or_SIGKILL": false,
+    "no_errors_or_timeout_reported": true,
+    "original60s_requests_sent": 22,
+    "original_rc0": true,
+    "original_subject_PID": 3993,
+    "ready_native_task_count": 1,
+    "requests_stop_acknowledged": true,
+    "trace_and_control_EOF": true
+  },
+  "primary_member_joins": [
+    {
+      "member": "report.json",
+      "sha256": "e8136575e947089b0c8cc5dc7db55435eb9558984339824135fad8d874485a54",
+      "size_bytes": 1814970,
+      "zip": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-e897-original-host-retention-v1/artifact-11133678243.original.zip",
+        "sha256": "66e9d42d01393932bef3e26ca5887ed72a7633849ec428039cf9de1c9a4eec14",
+        "size_bytes": 2011068
+      }
+    },
+    {
+      "member": "unittest-child.report.json",
+      "sha256": "163819ae1d9dbd436c50b21fee5ca50e4777d93190af75bc69c4befa8b0e9ade",
+      "size_bytes": 1746485,
+      "zip": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-e897-original-host-retention-v1/artifact-11133678243.original.zip",
+        "sha256": "66e9d42d01393932bef3e26ca5887ed72a7633849ec428039cf9de1c9a4eec14",
+        "size_bytes": 2011068
+      }
+    },
+    {
+      "member": "tracked-source.before.json",
+      "sha256": "f1bf4090ef5292cdfb2773ba41a4538b2e66cb4a66e434117500832772a29e2e",
+      "size_bytes": 990999,
+      "zip": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-e897-original-host-retention-v1/artifact-11133678243.original.zip",
+        "sha256": "66e9d42d01393932bef3e26ca5887ed72a7633849ec428039cf9de1c9a4eec14",
+        "size_bytes": 2011068
+      }
+    },
+    {
+      "member": "tracked-source.after.json",
+      "sha256": "f1bf4090ef5292cdfb2773ba41a4538b2e66cb4a66e434117500832772a29e2e",
+      "size_bytes": 990999,
+      "zip": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-e897-original-host-retention-v1/artifact-11133678243.original.zip",
+        "sha256": "66e9d42d01393932bef3e26ca5887ed72a7633849ec428039cf9de1c9a4eec14",
+        "size_bytes": 2011068
+      }
+    },
+    {
+      "member": "namespace-profile/joined-denial.json",
+      "sha256": "c322a8ddf755bfe18a5a775875960415bf4ce06fcebe5a4c7ad064e5a8b679b7",
+      "size_bytes": 1463,
+      "zip": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-e897-original-host-retention-v1/artifact-11133678243.original.zip",
+        "sha256": "66e9d42d01393932bef3e26ca5887ed72a7633849ec428039cf9de1c9a4eec14",
+        "size_bytes": 2011068
+      }
+    },
+    {
+      "member": "namespace-profile/profile-lifecycle.json",
+      "sha256": "3cbde20120fd6e78217f1c59fceb58fe58f0afa78af960f92381b3ca886304fb",
+      "size_bytes": 973,
+      "zip": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-e897-original-host-retention-v1/artifact-11133678243.original.zip",
+        "sha256": "66e9d42d01393932bef3e26ca5887ed72a7633849ec428039cf9de1c9a4eec14",
+        "size_bytes": 2011068
+      }
+    },
+    {
+      "member": "external-test-observer/terminal.v1.json",
+      "sha256": "ae803a29d65baf802d4bf94d6a583b1ed48b4095f82c3cd06ab5051d422da2e2",
+      "size_bytes": 1483,
+      "zip": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-e897-original-host-retention-v1/artifact-11133678243.original.zip",
+        "sha256": "66e9d42d01393932bef3e26ca5887ed72a7633849ec428039cf9de1c9a4eec14",
+        "size_bytes": 2011068
+      }
+    }
+  ],
+  "provider_jobs_and_run_completed_success": true,
+  "reviewed_at_utc": "2026-10-01T00:55:59.573401+00:00",
+  "reviewed_originals": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-e897-original-host-retention-v1/original-provider-metadata.v1.json",
+      "sha256": "4bd947bb181d56935f5b81692bd0112086c048e1f1287a04a1c8e6392ccc4ad1",
+      "size_bytes": 26807
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-e897-original-host-retention-v1/original-retention-terminal.v1.json",
+      "sha256": "a1dd1699eecbd681ef48e76f259d0dab49dd9ed3918fc39a3faa011523bf88ad",
+      "size_bytes": 59774
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-e897-original-host-retention-v1/scoped-author-review.v1.json",
+      "sha256": "6218b629aae6e7f7abd61a732845e30457115cbf34cf5ea341c53bb69b3d51f5",
+      "size_bytes": 43903
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-e897-original-host-retention-v1/artifact-11133678243.original.zip",
+      "sha256": "66e9d42d01393932bef3e26ca5887ed72a7633849ec428039cf9de1c9a4eec14",
+      "size_bytes": 2011068
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-e897-original-host-retention-v1/artifact-11133248258.original.zip",
+      "sha256": "2a14185d7189c96a0b974c3d8e5c60a35791f3af8c89a376a3fea8f3ce08e2e2",
+      "size_bytes": 396979
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-e897-original-host-retention-v1/job-110154542231.original.log",
+      "sha256": "85454ee42f420995a63cf1e1d02aaaaab3c9fada79ac811d33b702240af7b93d",
+      "size_bytes": 91681
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-e897-original-host-retention-v1/job-110154541899.original.log",
+      "sha256": "800c7138b56b6c2fb60d15181fd38e8ba9a815899587f8e8b5a531ffb5bb8725",
+      "size_bytes": 33971
+    }
+  ],
+  "reviewer": "adversarial_review",
+  "reviewer_actions": {
+    "Git_test_namespace_profile_model_engine_workload_execution": false,
+    "all_file_ZIP_handles_closed": true,
+    "method": "Inline Windows CPython bounded original ZIP/JSON/hash inspection; no dispatch wrapper fabricated.",
+    "network_or_temporary_URL_retrieval": false,
+    "new_artifact_only": true
+  },
+  "run_id": 36794448836,
+  "run_number": 32,
+  "schema_version": 1,
+  "scope_limits": [
+    "This is authentic passing portable hosted CI at exacte897. It does not supply a passing current78b or later checkpoint result.",
+    "88 existing skips and nine integration declarations remain unexecuted, including ten retired schema migration skips requiring final conformance disposition; none count as success.",
+    "No model parity, GPU decode/SDK execution, current selected paired benchmark, full publication/Q4/campaign completion, archive or merge is granted.",
+    "The scoped fresh denial/profile join is not a general cause claim for historical139 crashes or every namespace failure.",
+    "Original raw Git byte equality can pass while automatic clean status in a distinct failed local checkout remains dirty; the original failed setup and finite15 attributes repair are separate retained facts."
+  ],
+  "source_and_clock": {
+    "CPU_and_host_tracked_rows_each": 4402,
+    "CPU_raw_checkout_blob_equality_reported": true,
+    "actual_original_job_limit_s": 5400,
+    "both_source_before_after_raw_JSON_bytes_equal": true,
+    "canonical_python": "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python3.12",
+    "changed_tracked_paths": [],
+    "deadline_not_relaxed_or_restarted": true,
+    "report_elapsed_s": 1372.3842524390002,
+    "seven_retained_exact_CI_source_bytes_rehashed_and_joined_original_tracked_manifest": true,
+    "version": "3.12.3"
+  },
+  "source_commit": "e897514dbefe3015756995d05f924aa44dd39552"
+}

@@ -1,0 +1,42 @@
+{
+  "actual_prerequisite": {
+    "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/failed-renewal-preserved-input-reconciliation-attempt01/review.v1.json",
+    "sha256": "3478c3386b325483aaa0478dc1a60932f90900912f68c2fd8feb8c051f0a15c2",
+    "size_bytes": 1879
+  },
+  "actualexecution": false,
+  "actualfailedoriginal_preserved": true,
+  "all_original13_function_ASTs_equal": true,
+  "function_names": [
+    "ancestors",
+    "clock",
+    "digest",
+    "doc",
+    "epoch",
+    "error",
+    "git",
+    "identity",
+    "members",
+    "objects",
+    "owner",
+    "pin",
+    "raw_tracked",
+    "relative",
+    "write"
+  ],
+  "future_source_commit": null,
+  "helper": {
+    "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-recovery-preparation-v1/recover_existing_ext4_checkout_v1.py",
+    "sha256": "76237e1b1e2be55c0532ab0387398ca30a2c3db3aa2a18e3b7b3901a3f052305",
+    "size_bytes": 15586
+  },
+  "only_changes": "CurrentOLD78b/newoutputnamespace; exact2 initialraw-filterstatus checks; protectALLoriginal2693 plus2 metadata andalluntracked; newfilter=raw verification; sourcechanges=[]/bothbroker99f; descriptivefacts. No CLIrunner/timing/FD/Gitmode/epoch/quiescence weakening.",
+  "recipe": {
+    "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-recovery-preparation-v1/recovery-recipe.pending.v1.json",
+    "sha256": "5c77af5efd0d14494e3497dd4f3a39af49e21b006aff9117e5ec8269e766dd0a",
+    "size_bytes": 6118
+  },
+  "remaining_gate": "Independentpreparedsourcepeer; exactfutureattrscheckpoint/explicitrootonegrant. Freshcurrent95/newhostclosure/setup/hardware separate.",
+  "schema_version": 1,
+  "status": "closed_prepared_source_only"
+}

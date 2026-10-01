@@ -1,0 +1,25 @@
+{
+  "argv": [
+    "/usr/bin/git",
+    "-c",
+    "core.longpaths=true",
+    "-c",
+    "core.hooksPath=/dev/null",
+    "-C",
+    "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+    "status",
+    "--porcelain=v1",
+    "-z",
+    "--untracked-files=no"
+  ],
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 57545,
+    "pid": 57545,
+    "ppid": 57515,
+    "session": 57545,
+    "startticks": 29865288,
+    "uid": 1000
+  }
+}
