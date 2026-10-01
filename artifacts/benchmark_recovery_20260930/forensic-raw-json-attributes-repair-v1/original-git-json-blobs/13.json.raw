@@ -1,0 +1,18 @@
+{
+  "source_before": [
+    {
+      "path": "scripts/ci_userns_profile_v1.py",
+      "size_bytes": 25088,
+      "sha256": "92e004fdd2689261eb57984d82b163f4d545297f2a86694e9d0fbe5dca6f4ecc",
+      "snapshot": "artifacts/benchmark_recovery_20260930/decision24-ci-userns-profile-v1/guard-repair-v1/before/scripts/ci_userns_profile_v1.py"
+    },
+    {
+      "path": "tests/test_ci_userns_profile_v1.py",
+      "size_bytes": 25131,
+      "sha256": "29da5597c92ea2b67a8d7c11d205bae484868a1ade2c17fbcab9a5cb6093d0d8",
+      "snapshot": "artifacts/benchmark_recovery_20260930/decision24-ci-userns-profile-v1/guard-repair-v1/before/tests/test_ci_userns_profile_v1.py"
+    }
+  ],
+  "parent_grant": "Critic concrete remaining fixed root timeout guard; preserve30 suite reserve/20+10/90m; minimum fixed selftimeout+1 close seconds",
+  "observed_at_ns": 1790804341168096700
+}

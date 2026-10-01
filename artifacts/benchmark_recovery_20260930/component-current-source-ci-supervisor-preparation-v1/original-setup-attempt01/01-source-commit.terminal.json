@@ -1,0 +1,54 @@
+{
+  "argv": [
+    "/usr/bin/git",
+    "-c",
+    "core.longpaths=true",
+    "--git-dir=/mnt/e/STUDY/VAST/.git",
+    "cat-file",
+    "-e",
+    "e897514dbefe3015756995d05f924aa44dd39552^{commit}"
+  ],
+  "child_reaped": true,
+  "cwd": null,
+  "elapsed_s": 0.03788478299975395,
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 57021,
+    "pid": 57024,
+    "ppid": 57022,
+    "startticks": 29578145,
+    "state": "R",
+    "uid": 1000
+  },
+  "returncode": 0,
+  "started_at_ns": 1790813466593834884,
+  "stderr": {
+    "epoch7": [
+      69,
+      1970324839397944,
+      33279,
+      1,
+      0,
+      1790813466593190000,
+      1790813466593190000
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-preparation-v1/original-setup-attempt01/01-source-commit.stderr.raw",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size_bytes": 0
+  },
+  "stdout": {
+    "epoch7": [
+      69,
+      3377699722951223,
+      33279,
+      1,
+      0,
+      1790813466592187400,
+      1790813466592187400
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-preparation-v1/original-setup-attempt01/01-source-commit.stdout.raw",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size_bytes": 0
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "vast_component_held_session_independent_source_review_v1",
+  "disposition": "approved_source_review",
+  "reviewer": "adversarial_review",
+  "planning_commit": "6358c42cf1b969fb7ac2aa7be51929c3da46b9af",
+  "sources": [
+    {
+      "path": "scripts/publication_gstreamer_component_cli_v1.py",
+      "size_bytes": 40969,
+      "sha256": "4cce487a0f224a90b14c9c83a2fd47b1712d20d1631ec3a67766ed6f515b426b"
+    },
+    {
+      "path": "scripts/publication_gstreamer_component_inputs_v1.py",
+      "size_bytes": 34510,
+      "sha256": "1390b429025478799a03065ebe031cb07dac2669f716f05f97f074735e5e75d1"
+    },
+    {
+      "path": "scripts/publication_gstreamer_component_runtime_v1.py",
+      "size_bytes": 69372,
+      "sha256": "aecd556db7f1485eec79ea2971362e88da2d5a49fd3ea797cb5ad7d787b72014"
+    },
+    {
+      "path": "tests/test_publication_gstreamer_component_cli_v1.py",
+      "size_bytes": 27148,
+      "sha256": "f8204fe8b4c45ef4a0dce6cafc3bed8242dc33e67468e6e35767fd42e752e125"
+    },
+    {
+      "path": "tests/test_publication_gstreamer_component_inputs_v1.py",
+      "size_bytes": 54712,
+      "sha256": "678aee8e50b780950c86c13b8e76871d4e4b5496fadff5e2cc883af841b54368"
+    },
+    {
+      "path": "tests/test_publication_gstreamer_component_runtime_v1.py",
+      "size_bytes": 25105,
+      "sha256": "18d72265cbed3d4d88f013f83922f458053329a22b1a10c04b1aa5938c34ef50"
+    }
+  ],
+  "static_audit": {
+    "path": "artifacts/benchmark_recovery_20260930/component-held-session-independent-review-v1/static-audit.v1.json",
+    "size_bytes": 3781,
+    "sha256": "2d0615e3a7b58d7eb52b23495d0dd7ed9af7826acdfa8dab6dac11337a2fbc45"
+  },
+  "reviewer_audit_source": {
+    "path": "artifacts/benchmark_recovery_20260930/component-held-session-independent-review-v1/audit.py",
+    "size_bytes": 2779,
+    "sha256": "2aab6157aa8f715f2a0cc4997fc9be160b513f4e343c6d511b53fe69d17a5e2b"
+  },
+  "original_execution": {
+    "path": "artifacts/benchmark_recovery_20260930/component-held-session-implementation-v1/attempt-04-focused/execution.json",
+    "sha256": "a73811714efb59491f2ac5acf2cd37002e7ba0ecc42e84269dde384a1383ae15",
+    "size_bytes": 3577
+  },
+  "old_test_ast_comparisons": [
+    {
+      "added_tests": [
+        "ComponentCliTests.test_default_cli_owns_one_private_context_through_original_cold_and_stop",
+        "ComponentCliTests.test_failed_original_arm_timeline_does_not_invent_later_phases",
+        "ComponentCliTests.test_original_pair_retains_bounded_phase_starts_and_real_terminals",
+        "ComponentCliTests.test_timeline_has_exact_fixed_names_and_rejects_oversize_before_write",
+        "ComponentCliTests.test_timing_terminal_write_failure_keeps_start_and_performs_owned_cleanup"
+      ],
+      "changed_original_tests": [],
+      "original_test_count": 15,
+      "path": "tests/test_publication_gstreamer_component_cli_v1.py",
+      "removed_original_tests": []
+    },
+    {
+      "added_tests": [
+        "ComponentHeldSessionTests.test_engine_bytes_or_socket_identity_drift_rejects",
+        "ComponentHeldSessionTests.test_exception_closes_actual_input_fds_and_keeps_original_failure",
+        "ComponentHeldSessionTests.test_five_boundaries_share_one_full_assessment_but_observe_twenty_images",
+        "ComponentHeldSessionTests.test_original_socket_replacement_and_ancestor_alias_reject_before_inspect",
+        "ComponentHeldSessionTests.test_private_projection_collector_publishes_only_after_complete_assessment",
+        "ComponentHeldSessionTests.test_public_held_inputs_retains_independent_complete_validation",
+        "ComponentHeldSessionTests.test_raw_dict_foreign_pid_root_authority_and_closed_session_fail",
+        "ComponentHeldSessionTests.test_same_bytes_replacement_is_rejected_before_live_image_observation",
+        "ComponentHeldSessionTests.test_same_image_id_does_not_hide_projection_drift"
+      ],
+      "changed_original_tests": [],
+      "original_test_count": 14,
+      "path": "tests/test_publication_gstreamer_component_inputs_v1.py",
+      "removed_original_tests": []
+    },
+    {
+      "added_tests": [
+        "ComponentRuntimeFixtureTests.test_private_session_keeps_real_factory_and_custody_at_all_five_boundaries"
+      ],
+      "changed_original_tests": [],
+      "original_test_count": 14,
+      "path": "tests/test_publication_gstreamer_component_runtime_v1.py",
+      "removed_original_tests": []
+    }
+  ],
+  "checks": [
+    "Source materialization still calls the complete original model material validation twice. The genuine private session enters _held_selected_component_inputs_v1 with default complete dependencies once. No new public skip-validation input, partial assessor or global cache is introduced.",
+    "Original complete validator collects actual four stock image projections before publishing its private observation list, verifies exact accepted order/count and runtime_images_sha256, and preserves original calibration/source/model/closure joins.",
+    "The private session binds original PID, canonical physical root, original authority descriptor and active lifetime; only the exact session type/internal construction token is accepted. Raw dictionaries, foreign owner/root/authority and closed sessions reject before stages.",
+    "The five former validation boundaries retain full original verify_barrier hash/epoch/name/ancestor/engine/socket checks and four fresh stock image projections each. Entry/exit failures preserve the original exception with closing-barrier notes.",
+    "Materializer, held runtime, executor and cold bodies retain original factory reconstruction, live guardian restrictions, collector stop, original process/container inputs, accepted ingress, resources and complete all-phase reconciliation. Public entrypoints still acquire independent selected inputs before delegation.",
+    "Cold provider import now uses the genuine reconciliation helper as separately reviewed by fb47145c; no closure epoch waiver, restoration, historical rebinding or accepted CPU04 result is introduced.",
+    "The original CLI owns session lifetime through runtime/two arms/authenticated guardian stop/cold pair result, then closes it. Guardian cleanup remains inside its owned error path; failed timing persistence cannot preempt stop/context cleanup.",
+    "Timeline has twelve fixed names, at most24 start/terminal events and16KiB, actual wall and monotonic clocks, null start terminal and honest failed/incomplete fates. Sticky persistence failure keeps pair status failed and original reserve/FD cleanup.",
+    "All43 original test methods are AST-identical;15 new methods establish control flow and real source FD/socket/name/epoch/factory/failure fates. All58 original focused tests passed."
+  ],
+  "original_test_execution": {
+    "tests_run": 58,
+    "unittest_elapsed_s": 7.74,
+    "capture_elapsed_s": 8.676143079006579,
+    "returncode": 0,
+    "source_witnesses": 6,
+    "source_stable": true,
+    "original_pid": 34769,
+    "original_pid_absent": true,
+    "process_group_members_after": [],
+    "readers_alive": false,
+    "timed_out": false,
+    "capture_errors": [],
+    "scope": "Real pure authority FD/custody and original factory contracts, stock image projections and ordinary child/limited reserve fixtures; unavailable complete model/numeric acceptance, transport, guardian and native actions explicitly injected."
+  },
+  "self_review": "The session is a small lifecycle correction that removes duplicate semantic assessments rather than relaxing byte or scientific gates. Counting three complete assessments is demonstrated by source/control flow; unit fixtures do not establish actual full numeric model execution. Retained full raw hash sweeps and additional fresh image observations mean runtime improvement remains unmeasured until fresh original CPU/GPU pairs. The extracted helper bodies add code but keep one implementation shared with strict public wrappers.",
+  "limits": {
+    "reviewer_tests_executed": false,
+    "project_modules_imported_by_reviewer": false,
+    "engine_or_model_queries": false,
+    "actual_cpu_gpu_pair_or_acceptance": false,
+    "old_cpu04_reaccepted": false,
+    "current_image_or_host_closure_accepted": false,
+    "performance_improvement_claimed": false,
+    "source_scope_note": "Root actual pure image-scope proof and fresh87-source host closure remain separately required before physical launch."
+  },
+  "blocking_findings": []
+}

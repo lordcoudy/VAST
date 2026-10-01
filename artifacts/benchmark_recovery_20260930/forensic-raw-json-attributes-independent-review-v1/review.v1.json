@@ -1,0 +1,127 @@
+{
+  "artifact_kind": "vast_finite_forensic_raw_json_attributes_independent_review_v1",
+  "basis_commit": "e897514dbefe3015756995d05f924aa44dd39552",
+  "before": {
+    "path": "artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-repair-v1/gitattributes.before.raw",
+    "sha256": "77481d872c88a645984de5e1f5751e93ee0435361d223579f93426b4022cde6d",
+    "size_bytes": 14272
+  },
+  "blockers": [],
+  "controlled_original": {
+    "GREEN_fresh_initial_autocrlf": [
+      "false",
+      "true"
+    ],
+    "GREEN_raw_and_clean_blob_ids_equal_original_and_status_empty": true,
+    "RED_original_raw_blobs_remain_byte_exact_with15_dirty_entries": true,
+    "actual_Git_children": 109,
+    "all_original_capture_and_review_FDs_reported_closed": true,
+    "all_returncodes_zero": true,
+    "elapsed_s": 0.861227647,
+    "fixture_only_not_full_project_checkout_or_CI": true,
+    "only_fixture_commit_delta": ".gitattributes",
+    "original_child_identities_reaped_and_observed_absent": true,
+    "receipt": {
+      "path": "artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-repair-v1/controlled-original-attempt01/execution.v1.json",
+      "sha256": "e66d943779006ba732aa63b2e62da4c59a361c7bdd93ade21ad47b9668ca7714",
+      "size_bytes": 203616
+    },
+    "two_retained_process_group_scans": {
+      "matches_each_scan": 0,
+      "original_PID_and_group_count": 110
+    }
+  },
+  "critical_review": "The failed checkout already retained the original CRLF bytes. The demonstrated fault is automatic clean creating LF blob IDs unequal to the raw committed objects; rewriting forensic payloads would destroy original evidence. These fifteen exact rules fix that comparison while leaving all previous LF contracts intact. The controlled fixture establishes only this finite Git behavior.",
+  "custody_and_scope": {
+    "Windows_review_recomputed_physical_bytes_without_conflating_WSL_epochs": true,
+    "all9_runtime_native_worker_manifest_intersections": [],
+    "dot_gitattributes_absent_original2693_copy_inputs_all10_source_groups_27_controller_files": true,
+    "host87_intersection": [],
+    "no_long_held_reviewer_descriptors": true,
+    "original_WSL15_primary_and_failed_checkout_descriptors_byte_and_full7epoch_equal": true,
+    "original_WSL_before_after_146_source_descriptors_byte_and_full7epoch_equal": true,
+    "original_failed_CI_setup_preserved": true,
+    "renewal_helper_body_change_required": false,
+    "selected73_intersection": [],
+    "sole_previously_reviewed_runtime_delta_remains_supervisor99f": true
+  },
+  "disposition": "approved_finite_source_and_effect",
+  "independent_checks": {
+    "actual_command_status_logs_match_RED15_then_GREEN_empty_twice": true,
+    "actual_fixture_diff_stdout_equals_only_dot_gitattributes": true,
+    "current15_payloads_match_saved_raw_original_Git_blobs": true,
+    "current_original_owned_evidence_descriptors_rehashed": 246,
+    "current_union_source_bytes_rehashed": 146,
+    "original218_Git_stdout_stderr_logs_rehashed": true,
+    "original_status_raw_descriptor": {
+      "path": "artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-preparation-v1/original-setup-attempt01/07-setup.stdout.raw",
+      "sha256": "d29a435c0a172d3d9ea09ac9cadc5265a21a5a84f92da9996e9d0c94cc03a139",
+      "size_bytes": 1580
+    },
+    "raw_Git_SHA1_and_CRLF_clean_SHA1_recomputed_for_all15": true,
+    "raw_equals_original_Git_but_clean_object_differs_under_original_rules": true
+  },
+  "limits_and_next_gate": [
+    "Root must checkpoint the exact attributes and use a new explicit source commit and fresh exclusive CI setup namespace. The failed e897 setup stays failed and unchanged.",
+    "No passing full CI, current host authority, selected image, benchmark acceptance, archive or merge is claimed. Existing source/closure/measurement predicates remain required."
+  ],
+  "owned_production_delta": {
+    "path": ".gitattributes",
+    "sha256": "27b8b1feaaaa51f2b01de423cfa4824d4f351613650f5b2fe137295610237c3f",
+    "size_bytes": 16082
+  },
+  "reviewable": true,
+  "reviewed_at_utc": "2026-10-01T00:29:12.980911+00:00",
+  "reviewed_evidence": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-repair-v1/preedit-proposal-and-authorization.v1.json",
+      "sha256": "c379701c2eb4797ba97f415a8f7547640ccf7c47dbc5094c5ac02f9470e1f371",
+      "size_bytes": 156733
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-repair-v1/attributes-apply.v1.json",
+      "sha256": "8528032d292f7059ff395ea67fc7b563c67e992359b7096502ccd20703499565",
+      "size_bytes": 2478
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-repair-v1/source-input-read-inventory.v1.json",
+      "sha256": "8f30c21b3fd6bfb44b3b21546fa02609bb90c950a1fda84944d9cbd69f9a1a5f",
+      "size_bytes": 86918
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-repair-v1/controlled_git_red_green_v1.py",
+      "sha256": "de9aa600b388903e3dff5d915d3d1f1f3b47153b912e49fa9c8f4880b6da85f0",
+      "size_bytes": 9059
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-repair-v1/controlled-original-attempt01/execution.v1.json",
+      "sha256": "e66d943779006ba732aa63b2e62da4c59a361c7bdd93ade21ad47b9668ca7714",
+      "size_bytes": 203616
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/forensic-raw-json-attributes-repair-v1/author-review.v1.json",
+      "sha256": "18d4314cc317880cc9ee373875e3c36a074aa2fe8ebebc3f7dc550ef3ae89de4",
+      "size_bytes": 224525
+    }
+  ],
+  "reviewer": "adversarial_review",
+  "reviewer_actions": {
+    "Git_test_helper_or_workload_execution": false,
+    "method": "Inline Windows CPython pure file/JSON/hash inspection; no physical dispatch wrapper fabricated.",
+    "model_engine_native_namespace_policy_queries": false,
+    "new_artifact_only": true,
+    "source_or_attributes_mutation": false
+  },
+  "schema_version": 1,
+  "source_effect": {
+    "actual_15_status_paths_equal_proposed_and_final_paths": true,
+    "current_effective_text_unset_eol_unspecified_rows": 30,
+    "exact_anchored_rules": 15,
+    "exact_append_bytes": 1810,
+    "no_payload_normalization_or_rewrite": true,
+    "rule_form": "/<exact retained forensic JSON path> -text !eol",
+    "unchanged_original_LF_rule_lines": 45,
+    "unchanged_original_prefix_bytes": 14272,
+    "wildcards_or_additional_paths": false
+  }
+}

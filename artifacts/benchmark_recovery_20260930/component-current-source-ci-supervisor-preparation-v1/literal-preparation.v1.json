@@ -1,0 +1,34 @@
+{
+  "all_original_functions_AST_equal": true,
+  "benchmark_root_commit_required_still_0ad": true,
+  "files": [
+    {
+      "name": "recipe.v1.json",
+      "sha256": "dbab6a639cb0bbcf3f76312a6a7e45862b49ba7cce15c5ed16f37ebb31e42fda",
+      "size_bytes": 6974
+    },
+    {
+      "name": "setup_original_current_ci_v1.py",
+      "sha256": "0951dacf74c17fab49de6799375234c45dacfb778dcc22c7b4c9ae4a861b3b25",
+      "size_bytes": 12547
+    }
+  ],
+  "full_ci_bounds_s": [
+    5400,
+    10
+  ],
+  "hardware_or_ci_acceptance": false,
+  "literal_changes_only": [
+    "new CI source commit",
+    "fresh checkout/output namespace",
+    "recipe integrity pin"
+  ],
+  "original95_metadata_holds_preserved": true,
+  "scope": "prepared exact CI checkout only; run before selected benchmark root renewal",
+  "setup_bounds_s": [
+    300,
+    10
+  ],
+  "source_commit": "e897514dbefe3015756995d05f924aa44dd39552",
+  "status": "prepared_unexecuted"
+}

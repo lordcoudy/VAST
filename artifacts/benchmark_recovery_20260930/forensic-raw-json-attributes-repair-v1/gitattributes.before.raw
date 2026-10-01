@@ -215,20 +215,3 @@ deploy/native_gst_probe/vast_native_gst_probe.cpp text eol=lf
 /tests/test_kpp_frozen_reconstruction_v1_dataset_integration.py text eol=lf
 /tests/test_kpp_iss_publication_v3_dataset_integration.py text eol=lf
 /tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py text eol=lf
-
-# Preserve these exact retained forensic JSON blobs; automatic clean must not normalize them.
-/artifacts/benchmark_recovery_20260930/component-ext4-bind-preparation-v1/pre-edit.v1.json -text !eol
-/artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/before-source-review-v1/preparation.v1.json -text !eol
-/artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/preparation.v1.json -text !eol
-/artifacts/benchmark_recovery_20260930/component-held-session-dispatch-independent-review-v1/execution.capture.v1.json -text !eol
-/artifacts/benchmark_recovery_20260930/component-held-session-independent-review-v1/preparation-review.v1.json -text !eol
-/artifacts/benchmark_recovery_20260930/component-held-session-independent-review-v1/preparation-review.v2.json -text !eol
-/artifacts/benchmark_recovery_20260930/component-held-session-independent-review-v1/review.v1.json -text !eol
-/artifacts/benchmark_recovery_20260930/component-host-image-binding-renewal-v3/test-renewal.v1.json -text !eol
-/artifacts/benchmark_recovery_20260930/component-runbook-independent-review-v1/review.v1.json -text !eol
-/artifacts/benchmark_recovery_20260930/component-runbook-independent-review-v1/review.v2.json -text !eol
-/artifacts/benchmark_recovery_20260930/component-selected-packaging-pre-edit-v1/inventory.v1.json -text !eol
-/artifacts/benchmark_recovery_20260930/cpu-ci-065-source-forensics-v1/inspector-attempt-01.failed.json -text !eol
-/artifacts/benchmark_recovery_20260930/decision24-ci-userns-profile-v1/guard-repair-v1/pre-edit.v1.json -text !eol
-/artifacts/benchmark_recovery_20260930/decision25-planning-originals-v1/manifest.v1.json -text !eol
-/artifacts/benchmark_recovery_20260930/decision27-planning-originals-v1/inventory.json -text !eol

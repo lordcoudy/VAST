@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "vast_component_runbook_independent_source_review_v1",
+  "disposition": "approved_current_pending_status_and_source_commands",
+  "reviewed_at_utc": "2026-09-30T17:33:15.3123417Z",
+  "document": {
+    "path": "docs/gstreamer-component-benchmark-runbook.md",
+    "size_bytes": 8271,
+    "sha256": "9aaae042ead953dddf87253fe8c87dffe520d842eb1a2662df634becc31c9220"
+  },
+  "source_checkpoint": "8fefa4ba0c5b135c66f85a6eb7f4fd1aaebfdc21",
+  "reviewed_sources": [
+    {
+      "path": "scripts/publication_gstreamer_component_cli_v1.py",
+      "size_bytes": 40969,
+      "sha256": "4cce487a0f224a90b14c9c83a2fd47b1712d20d1631ec3a67766ed6f515b426b"
+    },
+    {
+      "path": "scripts/publication_gstreamer_component_runtime_v1.py",
+      "size_bytes": 69372,
+      "sha256": "aecd556db7f1485eec79ea2971362e88da2d5a49fd3ea797cb5ad7d787b72014"
+    },
+    {
+      "path": "scripts/publication_gstreamer_component_authority_v1.py",
+      "size_bytes": 27355,
+      "sha256": "9f0e0e56a238ad26f8ab525bc9f3bc0ebdd0e136b7bc0f8853ab3a0745342c6f"
+    },
+    {
+      "path": "scripts/benchmark_contract.py",
+      "size_bytes": 344569,
+      "sha256": "04cd9c75a7c405e960bdb7e4f2dea9759d839a333d43f79bd9b2b4aacaace17b"
+    },
+    {
+      "path": "configs/experiments.yaml",
+      "size_bytes": 23078,
+      "sha256": "18b69285690cdb6ad2f8e9fa528122a05fd3e4abe647a776e60c8e5eed4344e0"
+    }
+  ],
+  "actual_v6": {
+    "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/host/execution-code-closure.v6.json",
+    "size_bytes": 30986,
+    "sha256": "fedf5d8c85c5e435d4bfab21b4c8851db1e07fd9a982f428f91621314b3a8805"
+  },
+  "findings": [
+    {
+      "document_lines": [
+        45,
+        46
+      ],
+      "result": "correct",
+      "detail": "The isolated -I -B -c entry inserts the fixed original ROOT/scripts and removes the positional ROOT before runpy/argparse. All supplied flags exist in production main: project/output/scratch, resource, engine/socket and exact six input-role paths. Default production dependencies are used; no fixture option or partial authority appears."
+    },
+    {
+      "document_lines": [
+        39,
+        55
+      ],
+      "result": "correct",
+      "detail": "The retained v6 hash/30986 size and actual source epoch validity match the independently approved actual dispatch gate. Repetition requires an unused output name and still-valid original source/interpreter/input/image authority; a new source epoch requires a new exclusive closure. The concrete fixed controllers additionally bind exact HEAD and95 simultaneous files, and are not generic retries."
+    },
+    {
+      "document_lines": [
+        13,
+        15,
+        17
+      ],
+      "result": "correct",
+      "detail": "The selected source fixes H264, six streams, four branches, seed20260323,100ms and30/180/10; forced CPU/GPU affects analytics inference while NVDEC remains in the video path. Actual reserve20GiB plus free-floor20GiB and original2100/2250/15 limits are accurately stated. A short canonical scratch path avoids the Unix108-byte limit."
+    },
+    {
+      "document_lines": [
+        61,
+        63,
+        65,
+        67
+      ],
+      "result": "correct_with_explicit_limits",
+      "detail": "Exit0 plus original successful CLI cleanup and full cold pair is required. The published paths match runtime output; ECDF/quantiles apply only to completed measured frames and accompany absolute dropped/censored/deadline/coverage counts and null ratio reasons. C_obs requires a separately held stock reduction and remains partial elapsed-stage attribution. No quality, compute, busy-time, energy, population, multi-backend/full-run or CI/archive acceptance is claimed."
+    }
+  ],
+  "blockers": [],
+  "execution_claims": [
+    "CPU05/GPU01 acceptance remains explicitly pending in this reviewed document.",
+    "No CLI, stock closure capture, model/engine/native/guardian, test, namespace or raw benchmark output was executed or inspected in this runbook review.",
+    "No source FDs or producer inputs were held across the review."
+  ],
+  "scope_limits": [
+    "The command is validated against actual production source and argv semantics; reviewer did not launch it.",
+    "Zero100ms successes can be reported descriptively once original cold and independent raw reduction pass. It does not prove policy discrimination, explain decoder causality or generalize to another intake/regime.",
+    "Update the pending-status sentence only from the actual original terminal/cold audit; this source review is not a paired result."
+  ],
+  "benchmark_accepted": false
+}

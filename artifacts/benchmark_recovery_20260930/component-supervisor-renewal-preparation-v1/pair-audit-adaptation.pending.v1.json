@@ -1,0 +1,167 @@
+{
+  "actual_terminal_binding": {
+    "acquisition": "Use the original closed observer terminal physical SHA/size and exact actual CLI PID. The reader joins full original owner dict to authentic launch/prelaunch/argv/boot/startticks/UID/GID and sourcecommit. No future PID, startticks or terminal supplied by preparation.",
+    "arguments": [
+      "ORIGINAL_TERMINAL_SHA256",
+      "ORIGINAL_TERMINAL_SIZE",
+      "ORIGINAL_CLI_PID"
+    ],
+    "failure": "Original timeout/signals/late companion/nonzero CLI cannot be accepted even when cold metadata exists. Preserve failed report and release only genuinely closed FDs/processes.",
+    "full_owner_required": [
+      "pid",
+      "ppid",
+      "pgid",
+      "startticks",
+      "uid",
+      "gid",
+      "boot_id"
+    ]
+  },
+  "artifact_kind": "vast_component_supervisor_pair_audit_adaptation_pending_v1",
+  "authentic_original_sources": {
+    "cpu_dispatch": {
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu06-ext4-postterminal-audit-preparation-v1/dispatch_v2.py",
+      "sha256": "2264e57b2b012b6a4ed6b5b7bf8935939b1ba2a9086e1fe175b77b02ee67f33a",
+      "size_bytes": 1998
+    },
+    "cpu_postterminal": {
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu06-ext4-postterminal-audit-preparation-v1/audit_v2.py",
+      "sha256": "e8e7e72280d2971d677763f512b0bede8710550c7a9518b6f19e779ad12e1d98",
+      "size_bytes": 17876
+    },
+    "gpu_dispatch": {
+      "path": "artifacts/benchmark_recovery_20260930/component-gpu01-ext4-postterminal-audit-preparation-v1/dispatch_v1.py",
+      "sha256": "7eb5ad62673ca3cfd947fe0d28b1273f2153a1c41b1e4a482f1e011216cb4bc6",
+      "size_bytes": 1998
+    },
+    "gpu_postterminal": {
+      "path": "artifacts/benchmark_recovery_20260930/component-gpu01-ext4-postterminal-audit-preparation-v1/audit_v1.py",
+      "sha256": "033a597766a461c8f1b1e2be43bb775ec27e3085202bb384e4ba2c15261d43f8",
+      "size_bytes": 17876
+    },
+    "gpu_predispatch": {
+      "path": "artifacts/benchmark_recovery_20260930/component-gpu01-ext4-readiness-v1/audit_v1.py",
+      "sha256": "df393f25ac43245279147fd18cca71bbbe97ea45b1a4db6b83e93bd6236f20be",
+      "size_bytes": 12986
+    }
+  },
+  "benchmark_root": "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+  "controllers": {
+    "cpu07": {
+      "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/run_original_cpu_component_pair_ext4_supervisor_v2.py",
+      "sha256": "b4488d87a4c0feb500d7fdbca77af76e4745efeafb4927003ea1e932227ec8fd",
+      "size_bytes": 15100
+    },
+    "gpu02": {
+      "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/run_original_gpu_component_pair_ext4_supervisor_v4.py",
+      "sha256": "4c37f05c80777ffa4b9932441a1301cef66a8fd38fbb986e4f1eae40e6b00831",
+      "size_bytes": 15100
+    }
+  },
+  "execution_claim": {
+    "auditors_readiness_or_tests_executed": false,
+    "checkout_or_Git_mutation": false,
+    "engine_native_or_hardware": false,
+    "model_media_or_producer_payloads_read": false
+  },
+  "future_cpu07_original_owner": null,
+  "future_cpu07_original_terminal": null,
+  "future_gpu02_original_owner": null,
+  "future_gpu02_original_terminal": null,
+  "future_host_closure_descriptor": null,
+  "future_source_commit": null,
+  "original_functions": {
+    "cpu_postterminal": [
+      "clock",
+      "epoch",
+      "hold",
+      "doc",
+      "desc",
+      "sealed",
+      "content",
+      "write",
+      "scan",
+      "recheck_all"
+    ],
+    "gpu_postterminal": [
+      "clock",
+      "epoch",
+      "hold",
+      "doc",
+      "desc",
+      "sealed",
+      "content",
+      "write",
+      "scan",
+      "recheck_all"
+    ],
+    "gpu_predispatch": [
+      "clock",
+      "epoch",
+      "pin",
+      "record",
+      "write",
+      "git",
+      "scan"
+    ]
+  },
+  "postterminal_literal_adaptation": {
+    "both": {
+      "execution-code-closure.ext4.v1.json": "execution-code-closure.ext4-supervisor.v2.json",
+      "original_closure_SHA_literal": "replace only with physically completed new stock87 closureSHA",
+      "original_commit_literal": "replace only with actual newly reviewed/checked-out exact40hex",
+      "original_functions": "retain exact function ASTs and all owner/95/raw/seal/daemon/guardian/reserve predicates; only listed tuple/path literals change",
+      "outputs": "new exclusive CPU07/GPU02 audit namespaces; preserve historical readers/results"
+    },
+    "cpu": {
+      "CPU06": "CPU07",
+      "controller_sha256": "b4488d87a4c0feb500d7fdbca77af76e4745efeafb4927003ea1e932227ec8fd",
+      "controller_size_bytes": 15100,
+      "cpu-pair-06": "cpu-pair-07",
+      "run_original_cpu_component_pair_ext4_v1.py": "run_original_cpu_component_pair_ext4_supervisor_v2.py",
+      "vast_cpu06_": "vast_cpu07_"
+    },
+    "gpu": {
+      "GPU01": "GPU02",
+      "controller_sha256": "4c37f05c80777ffa4b9932441a1301cef66a8fd38fbb986e4f1eae40e6b00831",
+      "controller_size_bytes": 15100,
+      "gpu-pair-01": "gpu-pair-02",
+      "run_original_gpu_component_pair_ext4_v3.py": "run_original_gpu_component_pair_ext4_supervisor_v4.py",
+      "vast_gpu01_": "vast_gpu02_"
+    }
+  },
+  "predispatch_recipe": {
+    "cpu07": "After actual renewal/current87 closure are closed, root checks actual6 inputs+87 closure source snapshots+CP interpreter+the15100B CPU07 controller=95 current physical descriptors/epochs, exact current closure stock loader and module coverage, fresh output absent, root/UID/ext4/scratch/socket. OriginalCPU06/GPU01 closed proofs are historical quiescence inputs0ad only; never require their source_commit to equal the new source or relabel them as new-source readiness. No device/image/model replay by this pure gate; unchanged actual CLI performs those gates.",
+    "gpu02": "Literal adapt authentic GPU01 readiness to GPU02/current closure/current controller. Use a physically completed CPU07 accepted-and-released proof with the SAME new commit (future proof descriptor remains null). Replace hardcoded historical PID scan list with actual CPU07/its guardian/auditor owners observed in its authentic records; require two fresh empty scans, do not reuse old PID literals. Retain source95 FD/hash/epoch/module/namespace-absence/scratch/socket checks.",
+    "source_gate": "Once exact commit+closure+CPU07 proof exist, save finite actual literal delta/pins and peer-check before each reader dispatch. This pending recipe itself is not executable."
+  },
+  "preserved_bounds": {
+    "held_file_bytes": 67108864,
+    "metadata_bytes": 1048576,
+    "pair_cleanup_s": 15,
+    "pair_cli_s": 2100,
+    "pair_outer_s": 2250,
+    "postterminal_audit_work_s": 120,
+    "postterminal_dispatch_backstop_s": 135,
+    "postterminal_dispatch_cleanup_s": 5,
+    "predispatch_backstop_cleanup_s": 10,
+    "predispatch_work_s": 120
+  },
+  "preserved_output_truth": [
+    "Actual95 fullbyte/name/epoch7 recheck and all FD retirement before release.",
+    "Original guardian authenticated clientPID/startticks stop/lifecycle/reserve release.",
+    "Both original arm CLI0/1080 ingress/same schedule/resource/cold CSV+SVG physical descriptor joins.",
+    "Actual daemon terminal fields only when retained; exact --rm CID NotFound remains explicit absent-state evidence, no invented ExitCode/OOM.",
+    "Full/Q4/publication/qualification readiness false; no raw reducer or allphase cold replay by metadata auditor.",
+    "Final report/FD-close120s clock and original dispatchrc0 plus no late companion required."
+  ],
+  "remaining_parent_gates": [
+    "Exact new checkpoint/PR/source peer.",
+    "Fresh separate CI root/setup before benchmark checkout renewal.",
+    "Original one-root renewal and new stock87 capture with physical current hashes/epochs/FD/process closure.",
+    "Root oneCPU07 grant; actual terminal+successful original audit.",
+    "Root oneGPU02 grant; actual terminal+successful original audit."
+  ],
+  "schema_version": 1,
+  "status": "prepared_recipe_only_no_reader_or_hardware_execution"
+}
