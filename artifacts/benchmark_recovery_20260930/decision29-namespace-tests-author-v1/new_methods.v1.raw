@@ -1,0 +1,187 @@
+    @staticmethod
+    def coarse_fixture_stock(unshare, opened):
+        """Synthetic delegates only; no namespace, control-file or policy I/O."""
+        stock_os = types.SimpleNamespace(
+            unshare=unshare, open=opened, write=mock.Mock(return_value=1),
+            close=mock.Mock(), pipe2=mock.Mock(return_value=(901, 902)),
+            fork=mock.Mock(return_value=903))
+        return types.SimpleNamespace(os=stock_os, _linux_mount_v3=mock.Mock())
+
+    def assert_coarse_fixture_sample(self, sample, *, phase, available, value=None):
+        self.assertIs(sample['available'], available)
+        self.assertEqual(sample['clock_id'], 5)
+        self.assertEqual(sample['clock_name'], 'CLOCK_REALTIME_COARSE')
+        self.assertEqual(sample['phase'], phase)
+        self.assertEqual(sample['original_pid'], os.getpid())
+        self.assertEqual(sample['boot_id'], '00000000-0000-0000-0000-000000000029')
+        if available:
+            for field in ('started_monotonic_ns', 'terminal_monotonic_ns'):
+                self.assertIs(type(sample[field]), int)
+                self.assertGreater(sample[field], 0)
+            self.assertLessEqual(sample['started_monotonic_ns'], sample['terminal_monotonic_ns'])
+            self.assertIs(type(sample['value_ns']), int)
+            self.assertEqual(sample['value_ns'], value)
+        else:
+            self.assertIs(type(sample['started_monotonic_ns']), int)
+            self.assertGreater(sample['started_monotonic_ns'], 0)
+            self.assertIsNone(sample.get('value_ns'))
+            self.assertIn('OSError', repr(sample))
+
+    def test_coarse_samples_enclose_original_user_unshare_and_failed_setgroups_once(self):
+        helper = self.helper()
+        import itertools
+        events, order = [], []
+        returned = object()
+        denial = PermissionError(13, 'synthetic original setgroups denial')
+        def unshare(flags):
+            order.append('unshare')
+            return returned
+        def opened(path, flags):
+            order.append('open')
+            raise denial
+        values = iter((10_000_000_123, 10_001_000_456))
+        def sampled(clock_id):
+            order.append(('clock', clock_id))
+            return next(values)
+        original_unshare, original_open = mock.Mock(side_effect=unshare), mock.Mock(side_effect=opened)
+        stock = self.coarse_fixture_stock(original_unshare, original_open)
+        monotonic = itertools.count(1_000_000, 10)
+        with mock.patch.object(helper.time, 'clock_gettime_ns', side_effect=sampled) as clock:
+            with mock.patch.object(helper.time, 'monotonic_ns', side_effect=lambda: next(monotonic)):
+                with mock.patch.object(helper.Path, 'read_text', return_value='00000000-0000-0000-0000-000000000029\n'):
+                    with helper.instrument_namespace_calls(stock, events.append, original_pid=os.getpid()):
+                        self.assertIs(stock.os.unshare(0x10000000), returned)
+                        with self.assertRaises(PermissionError) as caught:
+                            stock.os.open('/proc/self/setgroups', os.O_WRONLY)
+        self.assertIs(caught.exception, denial)
+        original_unshare.assert_called_once_with(0x10000000)
+        original_open.assert_called_once_with('/proc/self/setgroups', os.O_WRONLY)
+        self.assertEqual(clock.call_args_list, [mock.call(5), mock.call(5)])
+        self.assertEqual(order, [('clock', 5), 'unshare', 'open', ('clock', 5)])
+        self.assertEqual([(e['event'], e['syscall']) for e in events], [
+            ('syscall_started', 'unshare'), ('syscall_completed', 'unshare'),
+            ('syscall_started', 'open'), ('syscall_failed', 'open')])
+        before = events[0]['audit_coarse_before']
+        self.assertEqual(events[1]['audit_coarse_before'], before)
+        after = events[3]['audit_coarse_after']
+        self.assert_coarse_fixture_sample(before, phase='before_unshare', available=True, value=10_000_000_123)
+        self.assert_coarse_fixture_sample(after, phase='after_failed_setgroups_open', available=True, value=10_001_000_456)
+        self.assertLessEqual(before['terminal_monotonic_ns'], events[0]['monotonic_ns'])
+        self.assertLessEqual(events[0]['monotonic_ns'], events[1]['terminal_monotonic_ns'])
+        self.assertLessEqual(events[1]['terminal_monotonic_ns'], events[2]['monotonic_ns'])
+        self.assertLessEqual(events[3]['terminal_monotonic_ns'], after['started_monotonic_ns'])
+        self.assertEqual(events[3]['errno'], 13)
+        self.assertIs(stock.os.unshare, original_unshare)
+        self.assertIs(stock.os.open, original_open)
+
+    def test_failed_user_unshare_retains_pre_sample_and_same_original_exception(self):
+        helper = self.helper()
+        events = []
+        denial = PermissionError(13, 'synthetic original unshare denial')
+        original_unshare = mock.Mock(side_effect=denial)
+        original_open = mock.Mock()
+        stock = self.coarse_fixture_stock(original_unshare, original_open)
+        with mock.patch.object(helper.time, 'clock_gettime_ns', return_value=10_000_000_123) as clock:
+            with mock.patch.object(helper.Path, 'read_text', return_value='00000000-0000-0000-0000-000000000029\n'):
+                with helper.instrument_namespace_calls(stock, events.append, original_pid=os.getpid()):
+                    with self.assertRaises(PermissionError) as caught:
+                        stock.os.unshare(0x10000000)
+        self.assertIs(caught.exception, denial)
+        original_unshare.assert_called_once_with(0x10000000)
+        original_open.assert_not_called()
+        clock.assert_called_once_with(5)
+        self.assertEqual([e['event'] for e in events], ['syscall_started', 'syscall_failed'])
+        self.assertEqual(events[0]['audit_coarse_before'], events[1]['audit_coarse_before'])
+        self.assert_coarse_fixture_sample(events[1]['audit_coarse_before'], phase='before_unshare',
+                                         available=True, value=10_000_000_123)
+        self.assertEqual(events[1]['errno'], 13)
+        self.assertTrue(all('audit_coarse_after' not in e for e in events))
+
+    def test_coarse_sampling_oserror_is_unavailable_without_replacing_original_denial(self):
+        helper = self.helper()
+        events = []
+        denial = PermissionError(13, 'synthetic original open survives two clock faults')
+        original_unshare = mock.Mock(return_value=None)
+        original_open = mock.Mock(side_effect=denial)
+        stock = self.coarse_fixture_stock(original_unshare, original_open)
+        with mock.patch.object(helper.time, 'clock_gettime_ns', side_effect=[
+                OSError(22, 'synthetic pre clock unavailable'), OSError(5, 'synthetic post clock unavailable')]) as clock:
+            with mock.patch.object(helper.Path, 'read_text', return_value='00000000-0000-0000-0000-000000000029\n'):
+                with helper.instrument_namespace_calls(stock, events.append, original_pid=os.getpid()):
+                    stock.os.unshare(0x10000000)
+                    with self.assertRaises(PermissionError) as caught:
+                        stock.os.open('/proc/self/setgroups', os.O_WRONLY)
+        self.assertIs(caught.exception, denial)
+        original_unshare.assert_called_once_with(0x10000000)
+        original_open.assert_called_once_with('/proc/self/setgroups', os.O_WRONLY)
+        self.assertEqual(clock.call_args_list, [mock.call(5), mock.call(5)])
+        self.assertEqual(events[0]['audit_coarse_before'], events[1]['audit_coarse_before'])
+        self.assert_coarse_fixture_sample(events[0]['audit_coarse_before'], phase='before_unshare', available=False)
+        self.assert_coarse_fixture_sample(events[-1]['audit_coarse_after'], phase='after_failed_setgroups_open', available=False)
+        self.assertEqual((events[-1]['event'], events[-1]['errno'], events[-1]['error_type']),
+                         ('syscall_failed', 13, 'PermissionError'))
+        self.assertIn('original open survives', events[-1]['error'])
+
+    def test_coarse_pre_sample_cancellation_propagates_and_restores_original_delegates(self):
+        helper = self.helper()
+        for cancelled in (KeyboardInterrupt('synthetic pre cancellation'), SystemExit(29)):
+            with self.subTest(kind=type(cancelled).__name__):
+                events = []
+                original_unshare, original_open = mock.Mock(), mock.Mock()
+                stock = self.coarse_fixture_stock(original_unshare, original_open)
+                with mock.patch.object(helper.time, 'clock_gettime_ns', side_effect=cancelled) as clock:
+                    with mock.patch.object(helper.Path, 'read_text', return_value='00000000-0000-0000-0000-000000000029\n'):
+                        with self.assertRaises(type(cancelled)) as caught:
+                            with helper.instrument_namespace_calls(stock, events.append, original_pid=os.getpid()):
+                                stock.os.unshare(0x10000000)
+                self.assertIs(caught.exception, cancelled)
+                clock.assert_called_once_with(5)
+                original_unshare.assert_not_called()
+                original_open.assert_not_called()
+                self.assertEqual(events, [])
+                self.assertIs(stock.os.unshare, original_unshare)
+                self.assertIs(stock.os.open, original_open)
+
+    def test_coarse_post_sample_cancellation_keeps_original_open_error_in_context(self):
+        helper = self.helper()
+        for cancelled in (KeyboardInterrupt('synthetic post cancellation'), SystemExit(29)):
+            with self.subTest(kind=type(cancelled).__name__):
+                events = []
+                denial = PermissionError(13, 'synthetic original denial before cancellation')
+                original_unshare, original_open = mock.Mock(return_value=None), mock.Mock(side_effect=denial)
+                stock = self.coarse_fixture_stock(original_unshare, original_open)
+                with mock.patch.object(helper.time, 'clock_gettime_ns', side_effect=[10_000_000_123, cancelled]) as clock:
+                    with mock.patch.object(helper.Path, 'read_text', return_value='00000000-0000-0000-0000-000000000029\n'):
+                        with helper.instrument_namespace_calls(stock, events.append, original_pid=os.getpid()):
+                            stock.os.unshare(0x10000000)
+                            with self.assertRaises(type(cancelled)) as caught:
+                                stock.os.open('/proc/self/setgroups', os.O_WRONLY)
+                self.assertIs(caught.exception, cancelled)
+                self.assertIs(caught.exception.__context__, denial)
+                original_unshare.assert_called_once_with(0x10000000)
+                original_open.assert_called_once_with('/proc/self/setgroups', os.O_WRONLY)
+                self.assertEqual(clock.call_args_list, [mock.call(5), mock.call(5)])
+                self.assertIs(stock.os.unshare, original_unshare)
+                self.assertIs(stock.os.open, original_open)
+
+    def test_unrelated_unshare_control_files_and_successful_open_add_no_coarse_samples(self):
+        helper = self.helper()
+        events = []
+        original_unshare = mock.Mock(return_value='synthetic nonuser result')
+        original_open = mock.Mock(return_value=904)
+        stock = self.coarse_fixture_stock(original_unshare, original_open)
+        with mock.patch.object(helper.time, 'clock_gettime_ns') as clock:
+            with helper.instrument_namespace_calls(stock, events.append, original_pid=os.getpid()):
+                self.assertEqual(stock.os.unshare(0x00020000), 'synthetic nonuser result')
+                self.assertEqual(stock.os.open('/proc/self/uid_map', os.O_WRONLY), 904)
+                self.assertEqual(stock.os.open('/proc/self/setgroups', os.O_WRONLY), 904)
+                self.assertEqual(stock.os.open('/synthetic/unrelated', os.O_RDONLY), 904)
+                self.assertEqual(stock.os.pipe2(0), (901, 902))
+                stock._linux_mount_v3(None, b'/', None, 16384)
+        clock.assert_not_called()
+        original_unshare.assert_called_once_with(0x00020000)
+        self.assertEqual(original_open.call_args_list, [mock.call('/proc/self/uid_map', os.O_WRONLY),
+            mock.call('/proc/self/setgroups', os.O_WRONLY), mock.call('/synthetic/unrelated', os.O_RDONLY)])
+        self.assertTrue(events)
+        self.assertTrue(all('audit_coarse_before' not in e and 'audit_coarse_after' not in e for e in events))
+

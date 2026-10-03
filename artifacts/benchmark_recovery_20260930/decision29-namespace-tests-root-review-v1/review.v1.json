@@ -1,0 +1,25 @@
+{
+  "all_original_method_ASTs_unchanged": true,
+  "blocking_findings": [],
+  "disposition": "source_review_pass",
+  "full_new_source_read": true,
+  "future_original_test_result": null,
+  "new_tests": 6,
+  "original_methods": 18,
+  "original_tests": 16,
+  "reviewed": [
+    "exact original pre/post timing ordering and clockid5 sample fields",
+    "original result/exception identity and once-only delegates/restoration",
+    "ordinary sample errors explicitly unavailable without masking original",
+    "pre/post cancellation propagation with original error context",
+    "unrelated syscalls/successful opens have no samples"
+  ],
+  "reviewer": "/root",
+  "schema_version": 1,
+  "source": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\tests\\test_ci_namespace_diagnostic_v1.py",
+    "sha256": "5c8519ff1a1d600ba6ed72051498dd0da62f68d89e29b48079f546315bb7ac64",
+    "size_bytes": 33264
+  },
+  "synthetic_delegates_clock_boot_only": true
+}

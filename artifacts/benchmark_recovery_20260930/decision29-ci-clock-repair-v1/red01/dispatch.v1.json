@@ -1,0 +1,95 @@
+{
+  "argv": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-clock-repair-v1/run_focused_v1.py",
+    "child",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-clock-repair-v1/red01",
+    "red"
+  ],
+  "cleanup_s": 10,
+  "execution_s": 120,
+  "original_scope": "red",
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 84025,
+    "pid": 84025,
+    "ppid": 84024,
+    "startticks": 50079964,
+    "uid": 1000
+  },
+  "source_before": [
+    {
+      "epoch": [
+        69,
+        2533274792818481,
+        33279,
+        1,
+        23980,
+        1790804617823763700,
+        1790804617823763700
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/ci_namespace_diagnostic_v1.py",
+      "sha256": "4f7e10d2decd1411f4c31281ceda4374d4d8cf1971fcb36497d11cfca10d8cc0",
+      "size_bytes": 23980
+    },
+    {
+      "epoch": [
+        69,
+        1407374885977088,
+        33279,
+        1,
+        25945,
+        1790804617836836400,
+        1790804617836836400
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/ci_userns_profile_v1.py",
+      "sha256": "2b268daa1f6b1c7095e2ad35aa333cfc88998dfc7f024e39cee04d178334a578",
+      "size_bytes": 25945
+    },
+    {
+      "epoch": [
+        69,
+        2533274792818468,
+        33279,
+        1,
+        20805,
+        1790791967454610100,
+        1790791967454610100
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_namespace_diagnostic_v1.py",
+      "sha256": "37d771d553a76cbbaf6d878ab10cc2a7f409bb054c41ada8f36daba16da91223",
+      "size_bytes": 20805
+    },
+    {
+      "epoch": [
+        69,
+        1407374885977064,
+        33279,
+        1,
+        38932,
+        1791018335338110300,
+        1791018335338110300
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_userns_profile_v1.py",
+      "sha256": "48c7145a31691297672b224a41d84ff97ec9736a2ebe942a22b4395ca23ac802",
+      "size_bytes": 38932
+    },
+    {
+      "epoch": [
+        69,
+        1407374885979672,
+        33279,
+        1,
+        6901,
+        1791018459109371300,
+        1791018459109371300
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-clock-repair-v1/run_focused_v1.py",
+      "sha256": "03d722b05e54eaaf2149a29043b36aed3b86e7e3ccd3a4055da9f62ec2cf41a5",
+      "size_bytes": 6901
+    }
+  ]
+}

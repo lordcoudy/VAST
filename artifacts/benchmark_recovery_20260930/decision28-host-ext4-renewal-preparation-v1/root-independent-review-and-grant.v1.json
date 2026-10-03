@@ -1,0 +1,27 @@
+{
+  "argv": [
+    "setsid",
+    "--wait",
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-host-ext4-renewal-preparation-v1/renew_host_binding_ext4_checkout_v1.py",
+    "a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+    "83d27f58d5e54f1ae48c2df98bf2fa61c8f8f8e39a530bf49fbf91084166d9eb"
+  ],
+  "blocking_findings": [],
+  "committed132_and_selected73_proof_sha256": "a9fc57b97fb43ade223bd5e133ef9a3ddd4bfc68fd56903c59f8489007a239bc",
+  "full_source_read_and_literal_delta_review_completed": true,
+  "future_original_owner": null,
+  "future_original_result": null,
+  "hardware_acceptance": false,
+  "host_peer_sha256": "83d27f58d5e54f1ae48c2df98bf2fa61c8f8f8e39a530bf49fbf91084166d9eb",
+  "independent_peer_sha256": "8605b8c47799f7aacb17f0ca7ff66c4ffd8132c3df6db07b6af5bcd614202864",
+  "one_original_grant": true,
+  "pushed_remote_ref": "a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+  "reviewable": true,
+  "reviewer": "/root",
+  "schema_version": 1,
+  "source_checkpoint_A": "2a6a42c924ae3447ceda4bd9d1b6db33765c6466",
+  "source_commit_B": "a00aa57f7d9534f8e7920f14f70d6a75a23570ed"
+}

@@ -1,0 +1,49 @@
+{
+  "changes": [
+    "Separate GPU output/controller namespace and labels",
+    "Original CLI resource literalcpu becomesgpu"
+  ],
+  "future_dispatch_grant": null,
+  "future_original_owner_and_outcome": null,
+  "future_root_copy_descriptor": null,
+  "literal_replacements": [
+    {
+      "after": "GPU02",
+      "before": "CPU08",
+      "count": 1
+    },
+    {
+      "after": "gpu-pair-02",
+      "before": "cpu-pair-08",
+      "count": 2
+    },
+    {
+      "after": "GPU",
+      "before": "CPU",
+      "count": 4
+    },
+    {
+      "after": "original_gpu_component_",
+      "before": "original_cpu_component_",
+      "count": 3
+    },
+    {
+      "after": "'--resource','gpu'",
+      "before": "'--resource','cpu'",
+      "count": 1
+    }
+  ],
+  "no_target_import_compile_execution_engine_operation_or_test": true,
+  "schema_version": 1,
+  "scope": "Prepared unexecuted corresponding separately owned GPU02 original stock pair; same image/host/roles/87 sources and95 holds, CLI2100/outer2250/cleanup15/channel1MiB, no scientific intake/deadline change",
+  "source": {
+    "path": "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-final-binding-v1/run_original_cpu_component_pair_ext4_decision28_v4.py",
+    "sha256": "445535a2ea9176effbe97e5de1db53aae614645e40db65bc1debf74489371f36",
+    "size_bytes": 23631
+  },
+  "successor": {
+    "path": "artifacts/benchmark_recovery_20260930/decision28-gpu02-preparation-v1/run_original_gpu_component_pair_ext4_decision28_v4.py",
+    "sha256": "fa4bb696e20ac179557096525ad8eebfa0febae388f3e3033d8890eb7416f938",
+    "size_bytes": 23631
+  }
+}

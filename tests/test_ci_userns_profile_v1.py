@@ -62,14 +62,18 @@ def denial_fixture():
 class UsernsProfileTests(unittest.TestCase):
     def physical_metadata_fixture(self,module,directory):
         """Original-format metadata fixtures, never a real denial or policy grant."""
-        capture,rows,record,identity,boot,job_start,_=denial_fixture()
+        capture,rows,record,identity,boot,job_start,_=coarse_denial_fixture()
         for key in ('started_wall_time_ns','terminal_wall_time_ns'):
             capture[key]-=20_000_000
-        for key in ('started_monotonic_ns','cleanup_deadline_ns'):
+        for key in ('started_monotonic_ns','terminal_monotonic_ns','cleanup_deadline_ns'):
             capture[key]-=20_000_000
         for row in rows:
             for key in ('wall_time_ns','terminal_wall_time_ns','monotonic_ns','terminal_monotonic_ns'):
                 if key in row:row[key]-=20_000_000
+            for key in ('audit_coarse_before','audit_coarse_after'):
+                if key in row:
+                    for clock in ('value_ns','started_monotonic_ns','terminal_monotonic_ns'):
+                        row[key][clock]-=20_000_000
         for key in ('__REALTIME_TIMESTAMP','__MONOTONIC_TIMESTAMP'):
             record[key]=str(int(record[key])-20_000)
         audit=record['MESSAGE'].split('audit(')[1].split(':')[0]
@@ -320,7 +324,7 @@ class UsernsProfileTests(unittest.TestCase):
     def test_original_shape_joins_only_exact_interpreter_pid_boot_operation_and_time(self):
         module = helper()
         args = denial_fixture()
-        proof = module.join_original_userns_denial_v1(*args)
+        proof = module.join_original_userns_denial_v1(*args,expected_clock_contract_version=1)
         self.assertEqual(proof['pid'], os.getpid())
         self.assertEqual(proof['failed_operation'], 'open:/proc/self/setgroups')
         self.assertEqual(proof['denied_capability'], 'sys_admin')
@@ -347,7 +351,7 @@ class UsernsProfileTests(unittest.TestCase):
         bad=list(copy.deepcopy(args));bad[6]=bad[0]['cleanup_deadline_ns']+1;variants.append(bad)
         for bad in variants:
             with self.subTest(bad=bad[2]):
-                with self.assertRaises(RuntimeError): module.join_original_userns_denial_v1(*bad)
+                with self.assertRaises(RuntimeError): module.join_original_userns_denial_v1(*bad,expected_clock_contract_version=1)
 
     def test_profile_has_only_exact_attachment_and_userns_permission(self):
         module=helper()
@@ -463,6 +467,154 @@ class UsernsProfileTests(unittest.TestCase):
                                      ('stdout.raw','stderr.raw')),8192)
         with self.assertRaises(ValueError):
             module._diagnostic.capture_original_child([],Path('/unused'),10**30,raw_limit=16385)
+
+
+def coarse_denial_fixture():
+    """Synthetic v2 clocks with an8ms coarse lag; no real policy authority."""
+    args=list(denial_fixture());capture,rows,record,_,boot,_,_=args
+    start,failed=rows[1],rows[4]
+    audit_ns=(start['wall_time_ns']//1_000_000-8)*1_000_000
+    audit=record['MESSAGE'].split('audit(')[1].split(':')[0]
+    record['MESSAGE']=record['MESSAGE'].replace(audit,
+        f'{audit_ns//1_000_000_000}.{audit_ns//1_000_000%1000:03d}')
+    rows[0]['namespace_clock_contract_version']=2
+    def sample(phase,value,start_ns,end_ns):
+        return {'available':True,'clock_id':5,'clock_name':'CLOCK_REALTIME_COARSE',
+                'phase':phase,'value_ns':value,'original_pid':capture['owner']['pid'],
+                'boot_id':boot,'started_monotonic_ns':start_ns,'terminal_monotonic_ns':end_ns}
+    before=sample('before_unshare',audit_ns+123456,
+                  start['monotonic_ns']-80000,start['monotonic_ns']-70000)
+    start['audit_coarse_before']=before
+    rows[2]['audit_coarse_before']=copy.deepcopy(before)
+    failed['audit_coarse_after']=sample('after_failed_setgroups_open',audit_ns+456789,
+                  failed['terminal_monotonic_ns']+50000,failed['terminal_monotonic_ns']+60000)
+    capture['terminal_monotonic_ns']=failed['terminal_monotonic_ns']+400000
+    return tuple(args)
+
+
+class AuditClockTests(unittest.TestCase):
+    def test_coarse_lag_beyond_original_fine_tolerance_joins_actual_clock_bins(self):
+        module=helper();args=coarse_denial_fixture()
+        proof=module.join_original_userns_denial_v1(*args)
+        self.assertGreater(args[1][1]['wall_time_ns']-proof['audit_wall_time_ns'],2000000)
+        self.assertEqual(proof['audit_clock_basis'],'CLOCK_REALTIME_COARSE')
+        self.assertEqual(proof['audit_clock_bracket_ns'],[proof['audit_wall_time_ns']]*2)
+
+    def test_equal_and_inclusive_boundary_bins_accept_but_adjacent_bins_fail(self):
+        module=helper()
+        for offset in (0,1000000,-1000000,2000000):
+            args=list(coarse_denial_fixture());rows=args[1];record=args[2]
+            first=rows[1]['audit_coarse_before']['value_ns']//1000000*1000000
+            rows[4]['audit_coarse_after']['value_ns']=first+1999999
+            audit=record['MESSAGE'].split('audit(')[1].split(':')[0];value=first+offset
+            record['MESSAGE']=record['MESSAGE'].replace(audit,
+                f'{value//1000000000}.{value//1000000%1000:03d}')
+            with self.subTest(offset=offset):
+                if offset in (0,1000000):module.join_original_userns_denial_v1(*args)
+                else:
+                    with self.assertRaises(RuntimeError):module.join_original_userns_denial_v1(*args)
+
+    def test_missing_and_malformed_new_clock_evidence_cannot_downgrade(self):
+        module=helper()
+        def remove_all(args):
+            args[1][0].pop('namespace_clock_contract_version')
+            for row in args[1]:
+                row.pop('audit_coarse_before',None);row.pop('audit_coarse_after',None)
+        cases={'all_removed':remove_all,
+            'missing_after':lambda a:a[1][4].pop('audit_coarse_after'),
+            'unknown_version':lambda a:a[1][0].update(namespace_clock_contract_version=3),
+            'boolean_version':lambda a:a[1][0].update(namespace_clock_contract_version=True),
+            'unavailable':lambda a:a[1][4]['audit_coarse_after'].update(available=False),
+            'wrong_clock':lambda a:a[1][4]['audit_coarse_after'].update(clock_id=0),
+            'boolean_clock':lambda a:a[1][4]['audit_coarse_after'].update(clock_id=True),
+            'wrong_name':lambda a:a[1][4]['audit_coarse_after'].update(clock_name='CLOCK_REALTIME'),
+            'boolean_value':lambda a:a[1][4]['audit_coarse_after'].update(value_ns=True),
+            'negative_value':lambda a:a[1][4]['audit_coarse_after'].update(value_ns=-1),
+            'foreign_pid':lambda a:a[1][4]['audit_coarse_after'].update(original_pid=os.getpid()+1),
+            'foreign_boot':lambda a:a[1][4]['audit_coarse_after'].update(boot_id='foreign'),
+            'wrong_phase':lambda a:a[1][4]['audit_coarse_after'].update(phase='before_unshare'),
+            'reversed_value':lambda a:a[1][4]['audit_coarse_after'].update(value_ns=a[1][1]['audit_coarse_before']['value_ns']-1),
+            'late_before':lambda a:a[1][1]['audit_coarse_before'].update(terminal_monotonic_ns=a[1][1]['monotonic_ns']+1),
+            'early_after':lambda a:a[1][4]['audit_coarse_after'].update(started_monotonic_ns=a[1][4]['terminal_monotonic_ns']-1),
+            'reversed_sample':lambda a:a[1][4]['audit_coarse_after'].update(terminal_monotonic_ns=a[1][4]['audit_coarse_after']['started_monotonic_ns']-1),
+            'out_of_capture':lambda a:a[0].update(terminal_monotonic_ns=a[1][4]['audit_coarse_after']['terminal_monotonic_ns']-1),
+            'future_capture':lambda a:a[0].update(terminal_monotonic_ns=a[-1]+1)}
+        for name,mutate in cases.items():
+            args=list(coarse_denial_fixture());mutate(args)
+            if 'audit_coarse_before' in args[1][1]:
+                args[1][2]['audit_coarse_before']=copy.deepcopy(args[1][1]['audit_coarse_before'])
+            with self.subTest(case=name),self.assertRaises(RuntimeError):
+                module.join_original_userns_denial_v1(*args)
+
+    def test_explicit_legacy_retains_original_strict_rejection_and_cannot_take_v2(self):
+        module=helper();legacy=denial_fixture()
+        proof=module.join_original_userns_denial_v1(*legacy,expected_clock_contract_version=1)
+        self.assertEqual(proof['wall_clock_quantization_allowance_ns'],2000000)
+        current=list(coarse_denial_fixture())
+        with self.assertRaises(RuntimeError):
+            module.join_original_userns_denial_v1(*current,expected_clock_contract_version=1)
+        current[1][0].pop('namespace_clock_contract_version')
+        for row in current[1]:row.pop('audit_coarse_before',None);row.pop('audit_coarse_after',None)
+        with self.assertRaisesRegex(RuntimeError,'clock interval'):
+            module.join_original_userns_denial_v1(*current,expected_clock_contract_version=1)
+        with self.assertRaises(RuntimeError):module.join_original_userns_denial_v1(*legacy)
+
+    def test_original_B_clock_operands_stay_rejected_in_explicit_legacy_context(self):
+        module=helper();args=list(denial_fixture());capture,rows,record=args[:3]
+        # Synthetic current ownership with the immutable original B relative clock operands.
+        audit=record['MESSAGE'].split('audit(')[1].split(':')[0]
+        stamp=(int(audit.split('.')[0])*1000+int(audit.split('.')[1]))*1000000
+        capture.update(started_wall_time_ns=stamp-1000000,terminal_wall_time_ns=stamp+5000000)
+        for row in rows[1:3]:row['wall_time_ns']=stamp+2187040
+        for row in rows[3:5]:row['wall_time_ns']=stamp+2286847
+        rows[4]['terminal_wall_time_ns']=stamp+2338743
+        record['__REALTIME_TIMESTAMP']=str((stamp+2640000)//1000)
+        self.assertEqual(rows[1]['wall_time_ns']-2000000-stamp,187040)
+        with self.assertRaisesRegex(RuntimeError,'clock interval'):
+            module.join_original_userns_denial_v1(*args,expected_clock_contract_version=1)
+
+    def test_unknown_expected_clock_contract_is_never_inferred_from_record(self):
+        module=helper()
+        for version in (0,3,True,'2',None):
+            with self.subTest(version=version),self.assertRaises(RuntimeError):
+                module.join_original_userns_denial_v1(*coarse_denial_fixture(),
+                    expected_clock_contract_version=version)
+
+    def test_original_journal_and_owner_predicates_still_reject_v2(self):
+        module=helper()
+        for mutate in (lambda a:a[2].update(__REALTIME_TIMESTAMP=str((a[0]['terminal_wall_time_ns']+1_000_000)//1000)),
+                       lambda a:a[2].update(__MONOTONIC_TIMESTAMP=str((a[1][4]['terminal_monotonic_ns']+3_000_000)//1000)),
+                       lambda a:a[0]['owner'].update(boot_id='foreign')):
+            args=list(coarse_denial_fixture());mutate(args)
+            with self.assertRaises(RuntimeError):module.join_original_userns_denial_v1(*args)
+
+    def test_live_missing_contract_fails_before_any_profile_command(self):
+        module=helper();fixtures=UsernsProfileTests();state,capture=fixtures.policy_command_fixture(module)
+        with tempfile.TemporaryDirectory() as directory:
+            kwargs=fixtures.physical_metadata_fixture(module,directory)
+            path=kwargs['diagnostic_dir']/'stdout.raw';rows=[json.loads(line) for line in path.read_text().splitlines()]
+            for row in rows:
+                row.pop('namespace_clock_contract_version',None)
+                row.pop('audit_coarse_before',None);row.pop('audit_coarse_after',None)
+            path.write_text(''.join(json.dumps(row)+'\n' for row in rows))
+            # Make the stripped record pass legacy timing, so this tests the live version gate.
+            query_raw=kwargs['diagnostic_dir']/'kernel-query/stdout.raw'
+            record=json.loads(query_raw.read_bytes())
+            old=record['MESSAGE'].split('audit(')[1].split(':')[0]
+            fine=rows[4]['terminal_wall_time_ns']//1000000
+            record['MESSAGE']=record['MESSAGE'].replace(old,f'{fine//1000}.{fine%1000:03d}')
+            query_raw.write_text(json.dumps(record)+'\n')
+            (kwargs['diagnostic_dir']/'kernel-denial.json').write_text(json.dumps(
+                {'records':[{'original_journal_record':record}]})+'\n')
+            original_capture=json.loads((kwargs['diagnostic_dir']/'capture.json').read_bytes())
+            identity={'path':kwargs['python'],'stat':original_capture['owner']['executable_stat']}
+            module.join_original_userns_denial_v1(original_capture,rows,record,identity,
+                original_capture['owner']['boot_id'],kwargs['job_start_ns'],time.monotonic_ns(),
+                expected_clock_contract_version=1)
+            with mock.patch.object(module._diagnostic,'capture_original_child',capture):
+                with self.assertRaises(RuntimeError):
+                    with module.held_ci_userns_profile_v1(**kwargs):self.fail('missing contract yielded')
+            self.assertEqual(state['commands'],[])
 
 
 if __name__=='__main__': unittest.main()

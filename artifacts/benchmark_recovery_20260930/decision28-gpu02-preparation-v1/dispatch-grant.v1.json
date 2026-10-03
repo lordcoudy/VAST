@@ -1,0 +1,44 @@
+{
+  "CPU08_actual_independent_closure": {
+    "original_tool_returncode": 0,
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision28-cpu08-independent-audit-v1\\review.v1.json",
+    "sha256": "1f5abb9e8b2c5c2fdd9898bd121ab365a9719513b361486833612e4fca151330",
+    "size_bytes": 51656
+  },
+  "argv": [
+    "/usr/bin/setsid",
+    "--wait",
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/decision28-gpu02-preparation-v1/run_original_gpu_component_pair_ext4_decision28_v4.py",
+    "a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+    "3c91339d43f6154dd76afe8a89c02d82f60a4b1e5da16623039f691fdc6701f2"
+  ],
+  "created_ns": 1791017641837877900,
+  "future_owner_and_outcome": null,
+  "grant": "one original separately owned GPU02 stock component pair",
+  "host_closure_sha256": "3c91339d43f6154dd76afe8a89c02d82f60a4b1e5da16623039f691fdc6701f2",
+  "independent_source_review": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision28-gpu02-independent-source-review-v1\\review.v1.json",
+    "sha256": "877e38c04d208f6c086e5630c19716a794478977c430dc43e1b21ce701abcf88",
+    "size_bytes": 5750
+  },
+  "no_new_image_or_scientific_setting": true,
+  "original_bounds": {
+    "CLI_s": 2100,
+    "channel_bytes": 1048576,
+    "cleanup_s": 15,
+    "outer_s": 2250
+  },
+  "schema_version": 1,
+  "source_commit": "a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+  "source_copy": {
+    "Linux_epochs_required_by_actual_driver": true,
+    "exact_exclusive_unc_copy_rehashed": true,
+    "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/decision28-gpu02-preparation-v1/run_original_gpu_component_pair_ext4_decision28_v4.py",
+    "sha256": "fa4bb696e20ac179557096525ad8eebfa0febae388f3e3033d8890eb7416f938",
+    "size_bytes": 23631
+  },
+  "standing_user_authorization": "autonomous until benchmark operable; all changes approved"
+}

@@ -1,0 +1,18 @@
+{
+  "actual_failed_staging_tool": "b8af8e",
+  "after": {
+    "sha256": "2ae4160476c2c3c973b35b9d908975f09e77a3a44d23eebbf1c5020b4874fbc9",
+    "size_bytes": 125266
+  },
+  "before": {
+    "sha256": "44525ce227c4a8f2bff165f4d52e11e5278c06fbf5d1fcf38a8825e4b63e910f",
+    "size_bytes": 125280
+  },
+  "index_remained_empty": true,
+  "only_helper_literal_change": "prospective-filter-failure.v1.json to v2.json",
+  "production_or_test_source_changed": false,
+  "reason": "Only authored durable plan contained mixed checkout CRLF/LF; prospective core.autocrlf=true would normalize it. No object/index mutation occurred.",
+  "repair": "Preserve exact prior plan raw snapshot, canonicalize authored plan to LF without changing any logical line. Preserve original failed staging source/result and run separately named v2 staging helper.",
+  "same_logical_lines": true,
+  "schema_version": 1
+}

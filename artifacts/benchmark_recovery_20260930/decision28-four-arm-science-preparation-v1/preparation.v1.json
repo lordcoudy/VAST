@@ -1,0 +1,103 @@
+{
+  "author": "/root",
+  "bounds": {
+    "channel_bytes": 1048576,
+    "cleanup_s": 10,
+    "document_bytes": 1048576,
+    "execution_s": 110,
+    "held_files": 512,
+    "leaf_bytes": 67108864
+  },
+  "future_original_owner_and_outcome": null,
+  "independent_source_review_required_before_execution": true,
+  "ordered_exact_raw_replacements": {
+    "reduce.py": [
+      {
+        "after": "CPU08/GPU02",
+        "before": "CPU06/GPU01",
+        "count": 2
+      },
+      {
+        "after": "a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+        "before": "0ad78d6abdb3c526544a17185af7fe8094716735",
+        "count": 1
+      },
+      {
+        "after": "AUTHENTIC = {'cpu': {'terminal': (94894, '32a034c535e98adf13fdbcb3005414c24d3ab3c03da885ec24da464a0e74b185'), 'cli': '3f2db482347c210f58cdcad95bcedd79d9b2c8063dc4439d61e0736c4688c600', 'cold': '63a0826fb419d3023f56c81bed8dc1b7afbef167c42f7091fe0563ba5c987213', 'pid': 73802, 'ppid': 73800, 'startticks': 49797196}, 'gpu': {'terminal': (94879, '7272120d78ae1d851a46cee48cf1f51267da504b4550a7a434d86c2db8cda062'), 'cli': '34d2b825a86ccba5974a6a1db4d6bff3a4c6f2c08eadfed504ab17b9bf4ea323', 'cold': '80b8d063ebfbc146eec837e4733398d7d7d28373dbbad0f0952f5a5b9c6b7130', 'pid': 78946, 'ppid': 78944, 'startticks': 49999029}}",
+        "before": "AUTHENTIC = {\n 'cpu': {'terminal': (88066,'e87c878c725f309cf344f27926cb6e12647e839a8f5745084b69619c090d3db9'),\n         'cli': '325b61a733baaa6b304131d6b45e4b612d29d7e4212521d0f7d4a0ef231f5b99',\n         'cold': 'a44e07d2f943de47789ce2fd7eb6f20610da1849268a18603aed5a6a80251841',\n         'pid':42153,'ppid':42151,'startticks':28495618},\n 'gpu': {'terminal': (88102,'4c0e3fd34fb8ac8255bffab52fec7a310601eb4d29211a40f6948e882cbf3fc9'),\n         'cli': 'abea1a00a5cb5c68e56657b78bea0683461bed121cce61afb11f2f1cd046460e',\n         'cold': 'a28af5697096df8a468be6c04cf6307c4a425778a3b9b83f6dfae1c54025562d',\n         'pid':47763,'ppid':47761,'startticks':28764548},\n}",
+        "count": 1
+      },
+      {
+        "after": "cpu-pair-08",
+        "before": "cpu-pair-06",
+        "count": 1
+      },
+      {
+        "after": "gpu-pair-02",
+        "before": "gpu-pair-01",
+        "count": 1
+      },
+      {
+        "after": "execution-code-closure.ext4-decision28.v4.json",
+        "before": "execution-code-closure.ext4.v1.json",
+        "count": 2
+      },
+      {
+        "after": "3c91339d43f6154dd76afe8a89c02d82f60a4b1e5da16623039f691fdc6701f2",
+        "before": "adbcb638a5f104e43c95b84e4d16388a8111d39321afb3e8e7a26f2ef537b498",
+        "count": 1
+      }
+    ],
+    "render.py": [],
+    "run.py": [
+      {
+        "after": "CPU08/GPU02",
+        "before": "CPU06/GPU01",
+        "count": 1
+      },
+      {
+        "after": "a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+        "before": "0ad78d6abdb3c526544a17185af7fe8094716735",
+        "count": 1
+      }
+    ]
+  },
+  "original_receipts": {
+    "cpu": {
+      "independent_audit_sha256": "1f5abb9e8b2c5c2fdd9898bd121ab365a9719513b361486833612e4fca151330",
+      "original_terminal_path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08-original-controller/original.terminal.v1.json",
+      "sha256": "32a034c535e98adf13fdbcb3005414c24d3ab3c03da885ec24da464a0e74b185",
+      "size_bytes": 94894
+    },
+    "gpu": {
+      "independent_audit_sha256": "a125010eae25262ead16a37ae4b47f6e21e637cc15da89399242f824e5b21283",
+      "original_terminal_path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02-original-controller/original.terminal.v1.json",
+      "sha256": "7272120d78ae1d851a46cee48cf1f51267da504b4550a7a434d86c2db8cda062",
+      "size_bytes": 94879
+    }
+  },
+  "original_source_namespace": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1",
+  "renderer_byte_identical": true,
+  "schema_version": 1,
+  "scope": "One unchanged stock raw-sidecar four-arm reduction/render, actual closed CPU08/GPU02 at B; no model/engine/measurement/cold replay or scientific setting change",
+  "source_pins": [
+    {
+      "all_function_ASTs_equal": true,
+      "name": "run.py",
+      "sha256": "2fade68fb199777f71e4e210e101a0a394725bd2570976f4ad33665d321d65fe",
+      "size_bytes": 7853
+    },
+    {
+      "all_function_ASTs_equal": true,
+      "name": "reduce.py",
+      "sha256": "6fe50289ce88225a39fdc7721b23449a01b6dd54e966375571b8982d69e75610",
+      "size_bytes": 24239
+    },
+    {
+      "all_function_ASTs_equal": true,
+      "name": "render.py",
+      "sha256": "fbf411a550617f24634de711f1bcd93a5c4889d50fc1f5c4ac78291b248301f1",
+      "size_bytes": 9184
+    }
+  ]
+}

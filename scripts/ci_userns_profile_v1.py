@@ -118,8 +118,36 @@ def kernel_profile_present_v1(raw,name):
     return bool(matches)
 
 
-def join_original_userns_denial_v1(capture,rows,record,python_identity,boot_id,job_start_ns,now_ns):
+def _coarse_audit_bracket_v2(capture,ready,started,entered,failed,pid,boot_id,now_ns):
+    before=started.get('audit_coarse_before');after=failed.get('audit_coarse_after')
+    _require(type(ready.get('namespace_clock_contract_version')) is int and
+             ready['namespace_clock_contract_version']==2,
+             'missing/unknown expected original namespace clock contract2')
+    for sample,phase in ((before,'before_unshare'),(after,'after_failed_setgroups_open')):
+        _require(type(sample) is dict and sample.get('available') is True and
+                 type(sample.get('clock_id')) is int and sample['clock_id']==5 and
+                 sample.get('clock_name')=='CLOCK_REALTIME_COARSE' and sample.get('phase')==phase and
+                 type(sample.get('original_pid')) is int and sample['original_pid']==pid and
+                 sample.get('boot_id')==boot_id and all(type(sample.get(key)) is int and sample[key]>0
+                 for key in ('value_ns','started_monotonic_ns','terminal_monotonic_ns')),
+                 'original audit coarse sample missing/unavailable/malformed/foreign')
+    terminal=capture.get('terminal_monotonic_ns')
+    _require(type(terminal) is int and terminal>0 and
+             entered.get('audit_coarse_before')==before and
+             capture['started_monotonic_ns']<=ready['monotonic_ns']<=
+             before['started_monotonic_ns']<=before['terminal_monotonic_ns']<=started['monotonic_ns'] and
+             failed['terminal_monotonic_ns']<=after['started_monotonic_ns']<=
+             after['terminal_monotonic_ns']<=terminal<=now_ns and
+             before['value_ns']<=after['value_ns'],
+             'original audit coarse samples reversed/outside operation or capture')
+    return [sample['value_ns']//1_000_000*1_000_000 for sample in (before,after)]
+
+
+def join_original_userns_denial_v1(capture,rows,record,python_identity,boot_id,job_start_ns,now_ns,
+                                 *,expected_clock_contract_version=2):
     """Pure strict join; the caller separately holds/re-reads all original leaves."""
+    _require(type(expected_clock_contract_version) is int and expected_clock_contract_version in (1,2),
+             'unknown expected namespace clock contract')
     _require(capture.get('capture_completed') is True and type(capture.get('returncode')) is int and capture.get('returncode')==1 and
              capture.get('failure') is None and not capture.get('timed_out') and
              not capture.get('capture_exceeded') and capture.get('eof')=={'stdout':True,'stderr':True}
@@ -165,13 +193,25 @@ def join_original_userns_denial_v1(capture,rows,record,python_identity,boot_id,j
     try:wall_ns=int(record['__REALTIME_TIMESTAMP'])*1000;mono_ns=int(record['__MONOTONIC_TIMESTAMP'])*1000
     except (KeyError,ValueError,TypeError) as error:raise RuntimeError('original kernel clocks missing') from error
     _require(capture['started_wall_time_ns']<=wall_ns<=capture['terminal_wall_time_ns'] and
-             started['wall_time_ns']-2_000_000<=audit_ns<=failed['terminal_wall_time_ns']+2_000_000 and
              started['monotonic_ns']-2_000_000<=mono_ns<=failed['terminal_monotonic_ns']+2_000_000,
              'original kernel denial outside exact syscall/clock interval')
+    if expected_clock_contract_version==2:
+        bracket=_coarse_audit_bracket_v2(capture,ready,started,entered,failed,pid,boot_id,now_ns)
+        _require(bracket[0]<=audit_ns<=bracket[1],
+                 'original audit denial outside observed coarse clock bins')
+        clock_proof={'namespace_clock_contract_version':2,'audit_clock_basis':'CLOCK_REALTIME_COARSE',
+                     'audit_clock_bracket_ns':bracket}
+    else:
+        _require('namespace_clock_contract_version' not in ready and all(
+                 'audit_coarse_before' not in row and 'audit_coarse_after' not in row for row in rows),
+                 'explicit legacy context cannot downgrade a declared new clock record')
+        _require(started['wall_time_ns']-2_000_000<=audit_ns<=failed['terminal_wall_time_ns']+2_000_000,
+                 'original kernel denial outside exact syscall/clock interval')
+        clock_proof={'wall_clock_quantization_allowance_ns':2_000_000}
     return {'pid':pid,'boot_id':boot_id,'python':python,'initial_label':'unconfined',
             'failed_operation':'open:/proc/self/setgroups','denied_capability':'sys_admin',
             'denied_profile':'unprivileged_userns','audit_wall_time_ns':audit_ns,
-            'wall_clock_quantization_allowance_ns':2_000_000}
+            **clock_proof}
 
 
 def _decode(raw):
@@ -291,7 +331,8 @@ def held_ci_userns_profile_v1(*,diagnostic_dir,diagnostic,python,output_dir,job_
                 _diagnostic._relevant_original_denial(entry['original_journal_record'].get('MESSAGE'),pid)]
         _require(len(joined)==1 and records.count(joined[0])==1,'original denial absent/ambiguous/not in raw kernel output')
         boot=Path('/proc/sys/kernel/random/boot_id').read_text().strip()
-        proof=join_original_userns_denial_v1(capture,rows,joined[0],py_identity,boot,job_start_ns,time.monotonic_ns())
+        proof=join_original_userns_denial_v1(capture,rows,joined[0],py_identity,boot,job_start_ns,
+                                           time.monotonic_ns(),expected_clock_contract_version=2)
         output.mkdir(parents=True,mode=0o700,exist_ok=False)
         _save(output/'joined-denial.json',{'join':proof,'inputs':[
             {key:identity[key] for key in ('path','size_bytes','sha256')}

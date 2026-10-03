@@ -1,0 +1,216 @@
+{
+  "channels": {
+    "stderr": {
+      "epoch": [
+        69,
+        1407374885979721,
+        33279,
+        1,
+        10435,
+        1791020002832018200,
+        1791020002832018200
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-clock-repair-v1/green01/stderr.raw",
+      "sha256": "4a648c08f8a50e38c5b2c141a85776d45b596b1eadb078a7a42cdbbcb891c650",
+      "size_bytes": 10435
+    },
+    "stdout": {
+      "epoch": [
+        69,
+        1407374885979720,
+        33279,
+        1,
+        0,
+        1791020000496412100,
+        1791020000496412100
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-clock-repair-v1/green01/stdout.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    }
+  },
+  "elapsed_s": 2.4176866699708626,
+  "eof": {
+    "stderr": true,
+    "stdout": true
+  },
+  "failure": null,
+  "fd_after": 6,
+  "fd_before": 6,
+  "flags": {
+    "overflow": false,
+    "reader_errors": [],
+    "timed_out": false
+  },
+  "hardware_acceptance": false,
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 84741,
+    "pid": 84741,
+    "ppid": 84740,
+    "startticks": 50233028,
+    "uid": 1000
+  },
+  "process_scans": [
+    {
+      "monotonic_ns": 502332658118604,
+      "original_pid_absent": true,
+      "owned_group_members": [],
+      "read_errors": []
+    },
+    {
+      "monotonic_ns": 502332671726275,
+      "original_pid_absent": true,
+      "owned_group_members": [],
+      "read_errors": []
+    }
+  ],
+  "readers_alive": false,
+  "returncode": 0,
+  "source_after": [
+    {
+      "epoch": [
+        69,
+        2533274792818481,
+        33279,
+        1,
+        25359,
+        1791018597694363400,
+        1791018597694363400
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/ci_namespace_diagnostic_v1.py",
+      "sha256": "bc69cdd5db314b7421d87fdaeb3a88d9411ae0f2e29713f75bc8909dfe8b0292",
+      "size_bytes": 25359
+    },
+    {
+      "epoch": [
+        69,
+        1407374885977088,
+        33279,
+        1,
+        28890,
+        1791018597698398800,
+        1791018597698398800
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/ci_userns_profile_v1.py",
+      "sha256": "5bd7622130c41d8bef03d2da87f87c987738478a5b77412857fd85f24c73cf43",
+      "size_bytes": 28890
+    },
+    {
+      "epoch": [
+        69,
+        2533274792818468,
+        33279,
+        1,
+        33264,
+        1791018720762364100,
+        1791018720762364100
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_namespace_diagnostic_v1.py",
+      "sha256": "5c8519ff1a1d600ba6ed72051498dd0da62f68d89e29b48079f546315bb7ac64",
+      "size_bytes": 33264
+    },
+    {
+      "epoch": [
+        69,
+        1407374885977064,
+        33279,
+        1,
+        41955,
+        1791019249256416600,
+        1791019249256416600
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_userns_profile_v1.py",
+      "sha256": "dbcea702679255fd64bb223875385fc1800ed0946958e83ceefda59a0fdc2695",
+      "size_bytes": 41955
+    },
+    {
+      "epoch": [
+        69,
+        1407374885979672,
+        33279,
+        1,
+        6901,
+        1791018459109371300,
+        1791018459109371300
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-clock-repair-v1/run_focused_v1.py",
+      "sha256": "03d722b05e54eaaf2149a29043b36aed3b86e7e3ccd3a4055da9f62ec2cf41a5",
+      "size_bytes": 6901
+    }
+  ],
+  "source_before": [
+    {
+      "epoch": [
+        69,
+        2533274792818481,
+        33279,
+        1,
+        25359,
+        1791018597694363400,
+        1791018597694363400
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/ci_namespace_diagnostic_v1.py",
+      "sha256": "bc69cdd5db314b7421d87fdaeb3a88d9411ae0f2e29713f75bc8909dfe8b0292",
+      "size_bytes": 25359
+    },
+    {
+      "epoch": [
+        69,
+        1407374885977088,
+        33279,
+        1,
+        28890,
+        1791018597698398800,
+        1791018597698398800
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/ci_userns_profile_v1.py",
+      "sha256": "5bd7622130c41d8bef03d2da87f87c987738478a5b77412857fd85f24c73cf43",
+      "size_bytes": 28890
+    },
+    {
+      "epoch": [
+        69,
+        2533274792818468,
+        33279,
+        1,
+        33264,
+        1791018720762364100,
+        1791018720762364100
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_namespace_diagnostic_v1.py",
+      "sha256": "5c8519ff1a1d600ba6ed72051498dd0da62f68d89e29b48079f546315bb7ac64",
+      "size_bytes": 33264
+    },
+    {
+      "epoch": [
+        69,
+        1407374885977064,
+        33279,
+        1,
+        41955,
+        1791019249256416600,
+        1791019249256416600
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_userns_profile_v1.py",
+      "sha256": "dbcea702679255fd64bb223875385fc1800ed0946958e83ceefda59a0fdc2695",
+      "size_bytes": 41955
+    },
+    {
+      "epoch": [
+        69,
+        1407374885979672,
+        33279,
+        1,
+        6901,
+        1791018459109371300,
+        1791018459109371300
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-clock-repair-v1/run_focused_v1.py",
+      "sha256": "03d722b05e54eaaf2149a29043b36aed3b86e7e3ccd3a4055da9f62ec2cf41a5",
+      "size_bytes": 6901
+    }
+  ],
+  "source_stable": true
+}

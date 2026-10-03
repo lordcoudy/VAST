@@ -1,0 +1,1063 @@
+{
+  "all_close_attempts_finished": true,
+  "all_collection_fds_released": true,
+  "cleanup_s": 10,
+  "close_errors": [],
+  "commands": [
+    {
+      "EOF": [
+        "stderr",
+        "stdout"
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-C",
+        "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+        "rev-parse",
+        "HEAD"
+      ],
+      "failure": null,
+      "label": "before",
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 73733,
+        "pid": 73733,
+        "ppid": 73732,
+        "startticks": 49765171,
+        "uid": 1000
+      },
+      "process_scans": [
+        {
+          "error_overflow": 0,
+          "errors": [],
+          "finished_at_ns": 1791015322161353827,
+          "member_overflow": 0,
+          "members": [],
+          "original_pgid": 73733,
+          "original_pid": 73733,
+          "original_pid_identity": "absent",
+          "original_startticks": 49765171,
+          "started_at_ns": 1791015322157427522,
+          "vanished_during_scan": 0
+        },
+        {
+          "error_overflow": 0,
+          "errors": [],
+          "finished_at_ns": 1791015322162677471,
+          "member_overflow": 0,
+          "members": [],
+          "original_pgid": 73733,
+          "original_pid": 73733,
+          "original_pid_identity": "absent",
+          "original_startticks": 49765171,
+          "started_at_ns": 1791015322161358457,
+          "vanished_during_scan": 0
+        }
+      ],
+      "reaped": true,
+      "returncode": 0,
+      "stderr_hex": "",
+      "stdout_ascii": "a00aa57f7d9534f8e7920f14f70d6a75a23570ed\n"
+    },
+    {
+      "EOF": [
+        "stderr",
+        "stdout"
+      ],
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-C",
+        "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+        "rev-parse",
+        "HEAD"
+      ],
+      "failure": null,
+      "label": "after",
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 73734,
+        "pid": 73734,
+        "ppid": 73732,
+        "startticks": 49765351,
+        "uid": 1000
+      },
+      "process_scans": [
+        {
+          "error_overflow": 0,
+          "errors": [],
+          "finished_at_ns": 1791015323954878504,
+          "member_overflow": 0,
+          "members": [],
+          "original_pgid": 73734,
+          "original_pid": 73734,
+          "original_pid_identity": "absent",
+          "original_startticks": 49765351,
+          "started_at_ns": 1791015323953309940,
+          "vanished_during_scan": 0
+        },
+        {
+          "error_overflow": 0,
+          "errors": [],
+          "finished_at_ns": 1791015323956150128,
+          "member_overflow": 0,
+          "members": [],
+          "original_pgid": 73734,
+          "original_pid": 73734,
+          "original_pid_identity": "absent",
+          "original_startticks": 49765351,
+          "started_at_ns": 1791015323954882127,
+          "vanished_during_scan": 0
+        }
+      ],
+      "reaped": true,
+      "returncode": 0,
+      "stderr_hex": "",
+      "stdout_ascii": "a00aa57f7d9534f8e7920f14f70d6a75a23570ed\n"
+    }
+  ],
+  "directory_closes": [
+    {
+      "closed": true,
+      "path": "/"
+    },
+    {
+      "closed": true,
+      "path": "/mnt"
+    },
+    {
+      "closed": true,
+      "path": "/mnt/e"
+    },
+    {
+      "closed": true,
+      "path": "/mnt/e/STUDY"
+    },
+    {
+      "closed": true,
+      "path": "/mnt/e/STUDY/VAST"
+    },
+    {
+      "closed": true,
+      "path": "/mnt/e/STUDY/VAST/tmp"
+    },
+    {
+      "closed": true,
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review"
+    },
+    {
+      "closed": true,
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec"
+    },
+    {
+      "closed": true,
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts"
+    },
+    {
+      "closed": true,
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930"
+    },
+    {
+      "closed": true,
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-current95-preparation-v1"
+    },
+    {
+      "closed": true,
+      "path": "/home"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g/candidate"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g/bootstrap"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/configs"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/decision28-gstreamer-build-2a6a42c9-v1"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/fix_benchmark_preparations_20260928g"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/fix_benchmark_preparations_20260928g/worker_images"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/host"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/.local"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/.local/state"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/.local/state/vast"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/.local/state/vast/publication"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/decision28-host-cpu08-final-binding-v1"
+    }
+  ],
+  "elapsed_before_final_report_s": 1.8588094970327802,
+  "error_overflow": 0,
+  "error_records": [],
+  "fd_after": 4,
+  "fd_before": 4,
+  "first_error": null,
+  "held_ancestor_count": 35,
+  "held_input_count": 96,
+  "manifest": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-current95-preparation-v1/decision28-current95-original-attempt01/current95-inputs.v1.json",
+    "sha256": "3c9b7eca9c9b33e01624764b7ccfccb9d748c3ac9623389f7e12447f0085b150",
+    "size_bytes": 44579
+  },
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 73731,
+    "pid": 73732,
+    "ppid": 73731,
+    "startticks": 49765168,
+    "uid": 1000
+  },
+  "pin_closes": [
+    {
+      "closed": true,
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-current95-preparation-v1/collection.bound.v1.json"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g/candidate/checkpoint_policy_capability_candidate_manifest.json"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g/bootstrap/checkpoint_policy_qualification_bootstrap_calibration.gstreamer_custom.v2.json"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260928g.accepted.acceptance_receipt.json"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/decision28-gstreamer-build-2a6a42c9-v1/gstreamer_custom.runtime.freeze.json"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/fix_benchmark_preparations_20260928g/worker_images/analytics-worker.freeze.json"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/host/execution-code-closure.ext4-decision28.v4.json"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/analytics_execution_bindings.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/analytics_execution_capability.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/analytics_execution_endpoint.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/analytics_execution_protocol.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/analytics_execution_worker.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/analytics_model_contract.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_publication_dispatch.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_publication_dispatch_v3.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_publication_launcher_invocation_v3.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_publication_output_receipt.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_publication_process_supervisor_v3.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_publication_runtime_authority.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_runtime_grant.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_runtime_qualification_v3.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/benchmark_contract.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_acceptance_metadata_binding.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_admission.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_deepstream_protocol_bridge.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_deepstream_publication_runtime_v3.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_deepstream_qualification_fragment_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_gstreamer_analytics_bridge.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_gstreamer_analytics_sidecar.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_gstreamer_publication_runtime_v3.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_gstreamer_runtime.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_model_parity.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_model_parity_acceptance.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_model_parity_acceptance_v4.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_model_parity_v4.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_native_policy_runtime.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_openvino_gva_publication_runtime_v3.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_publication_launcher_adapter_v3.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_publication_launcher_guard_v3.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_publication_runtime.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_qualification_pilot_acceptance_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_runtime.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_runtime_plan.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_savant_publication_runtime_v3.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/collect_metrics.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/extract_kpp_legacy_iss.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/formal_aw_heft_reference.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/freeze_kpp_frozen_reconstruction_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/freeze_kpp_iss_publication_v3.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/freeze_kpp_legacy_iss_v2_transcodes.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/full_resource_contract.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/kpp_frozen_reconstruction_v1_dataset.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/kpp_iss_publication_v3_dataset.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/kpp_legacy_iss_v2_manifest.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/model_parity_grant.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/production_arm_evidence_finalizer_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_acceptance_evidence.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_benchmark_native_diagnostic_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_child_evidence_materializer_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_gstreamer_component_authority_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_gstreamer_component_cli_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_gstreamer_component_inputs_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_gstreamer_component_runtime_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_guardian_component_preprocessing_contract_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_guardian_operational_recorder_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_guardian_preprocessing_contract_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_guardian_runtime_expectations_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_image_build_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_immutable_directory_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_operational_capture_plan_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_operational_container_custody_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_operational_process_custody_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_operational_request_domain_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_operational_request_reconciliation_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_operational_runtime_context_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_operational_stock_operations_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_owned_staging_cleanup_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_physical_io_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_contract.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_frozen_replay_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_projection_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_bootstrap_v2.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_execution_closure_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_execution_code_closure_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_fragments_from_authority_v2.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_index_v2.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_pilot_executor_v2.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_runtime_inputs_v2.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_transaction_v2.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_qualification_image_refreeze_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/resource_interval_contract.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/topology_contract.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/decision28-host-cpu08-final-binding-v1/run_original_cpu_component_pair_ext4_decision28_v4.py"
+    }
+  ],
+  "schema_version": 1,
+  "source_checks": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-current95-preparation-v1/collection.bound.v1.json",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g/candidate/checkpoint_policy_capability_candidate_manifest.json",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g/bootstrap/checkpoint_policy_qualification_bootstrap_calibration.gstreamer_custom.v2.json",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260928g.accepted.acceptance_receipt.json",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/decision28-gstreamer-build-2a6a42c9-v1/gstreamer_custom.runtime.freeze.json",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/fix_benchmark_preparations_20260928g/worker_images/analytics-worker.freeze.json",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/host/execution-code-closure.ext4-decision28.v4.json",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/analytics_execution_bindings.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/analytics_execution_capability.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/analytics_execution_endpoint.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/analytics_execution_protocol.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/analytics_execution_worker.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/analytics_model_contract.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_publication_dispatch.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_publication_dispatch_v3.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_publication_launcher_invocation_v3.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_publication_output_receipt.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_publication_process_supervisor_v3.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_publication_runtime_authority.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_runtime_grant.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_runtime_qualification_v3.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/benchmark_contract.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_acceptance_metadata_binding.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_admission.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_deepstream_protocol_bridge.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_deepstream_publication_runtime_v3.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_deepstream_qualification_fragment_v1.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_gstreamer_analytics_bridge.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_gstreamer_analytics_sidecar.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_gstreamer_runtime.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_model_parity.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_model_parity_acceptance.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_model_parity_acceptance_v4.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_model_parity_v4.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_native_policy_runtime.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_openvino_gva_publication_runtime_v3.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_publication_launcher_adapter_v3.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_publication_launcher_guard_v3.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_publication_runtime.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_qualification_pilot_acceptance_v1.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_runtime.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_runtime_plan.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_savant_publication_runtime_v3.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/collect_metrics.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/extract_kpp_legacy_iss.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/formal_aw_heft_reference.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/freeze_kpp_frozen_reconstruction_v1.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/freeze_kpp_iss_publication_v3.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/freeze_kpp_legacy_iss_v2_transcodes.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/full_resource_contract.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/kpp_frozen_reconstruction_v1_dataset.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/kpp_iss_publication_v3_dataset.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/kpp_legacy_iss_v2_manifest.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/model_parity_grant.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/production_arm_evidence_finalizer_v1.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_acceptance_evidence.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_benchmark_native_diagnostic_v1.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_child_evidence_materializer_v1.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_gstreamer_component_authority_v1.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_gstreamer_component_cli_v1.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_gstreamer_component_inputs_v1.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_gstreamer_component_runtime_v1.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_guardian_component_preprocessing_contract_v1.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_guardian_operational_recorder_v1.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_guardian_preprocessing_contract_v1.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_guardian_runtime_expectations_v1.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_image_build_v1.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_immutable_directory_v1.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_operational_capture_plan_v1.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_operational_container_custody_v1.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_operational_process_custody_v1.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_operational_request_domain_v1.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_operational_request_reconciliation_v1.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_operational_runtime_context_v1.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_operational_stock_operations_v1.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_owned_staging_cleanup_v1.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_physical_io_v1.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_contract.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_frozen_replay_v1.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_projection_v1.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_bootstrap_v2.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_execution_closure_v1.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_execution_code_closure_v1.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_fragments_from_authority_v2.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_index_v2.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_pilot_executor_v2.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_runtime_inputs_v2.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_transaction_v2.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_qualification_image_refreeze_v1.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/resource_interval_contract.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/topology_contract.py",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+      "verified": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/decision28-host-cpu08-final-binding-v1/run_original_cpu_component_pair_ext4_decision28_v4.py",
+      "verified": true
+    }
+  ],
+  "status": "current95_collected",
+  "work_limit_s": 120
+}

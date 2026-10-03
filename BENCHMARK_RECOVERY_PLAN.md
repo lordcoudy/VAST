@@ -1,3 +1,52 @@
+Current execution plan - 2026-10-03 09:38 UTC
+
+Current selected GStreamer component at benchmark source B=a00aa57f7d9534f8e7920f14f70d6a75a23570ed has independently closed genuine CPU08 and GPU02 pairs. Both authenticated guardian cleanups, released20GiB reserves, all95 full hashes/seven epochs, original CLI0/all-phase cold results and process/FD/EOF closure are verified. No full qualification/Q4/publication campaign is claimed.
+
+Decision29 reviewed planning56dd56b/PR5967478840 precedes the two CI-only production edits and regressions. Original meaningful RED57c09e remains failed. Original focused GREEN1275e9 now passed51 tests (37 original+14 new), zero failures/errors/skips, balanced FDs and stable source; root closureb5bc6e4c joins the originals. Exact source835bf6c7 plus namespace testd15fe7a7 preserve policy/bounds/all95/selected73/native-three/worker-two. Task23.4 and24.2/24.3 now actually close; current active progress63/74.
+
+Remaining ordered work:
+1. Join the one original reviewed four-arm stock reduction/render now running (science tool078c83/session22601), preserve any failure without replacement, verify exact original summaries/CSV/SVG/custody/terminal/late closure; do not rerun model/engine measurements.
+2. Commit finite CI-only C checkpoint and reviewed evidence, prospective raw/autocrlf false+true before index mutation, physical/index/commit byte equality; push same branch/PR.
+3. Review and bind fresh ext4 full-CI setup with separate CI sourceC and unchanged benchmark sourceB (peer source-only preparation pending); verify full95 bytes/epochs, actual clean C checkout/prerequisites, then one original unchanged5400+10 suite. Preserve original output and required builds/native/full selection/skip/source facts. Retain and independently review actual latest hosted CI originals.
+4. Update current README/runbook and repeatable command from actual science/source/image/host observations; preserve negative deadline results/completed-only latency/drop denominator/C_obs/one-pair/replica limitations.
+5. Complete20requirements/118scenarios conformance and all original campaign register states, own-thought reassessment and fresh adversarial final review; close only actual complete tasks.
+6. Supported same-change sync/archive, preserve unaffected specs/.openspec.yaml/legacy register; commit/push same PR, latest archived-commit checks, exact final delegated review, authorized merge. No premature completion/archive/merge.
+
+All earlier plan entries remain historical below; actual failure originals are never overwritten.
+
+## Current execution plan — 2026-10-03 09:23 UTC
+
+CPU08 and GPU02 are genuinely closed0 at sourceB a00aa57f7d9534f8e7920f14f70d6a75a23570ed under the same actual image222a/stock-host-v4. Original outer durations814.727s and841.889s; each two-arm pair completes its original all-phase cold validation. Independent actual CPU c62308/review1f5abb9e and GPU9ef9ab/reviewa125010e each closes157 holds/FD6-to6, rechecks all95 fresh physical descriptors/fullSHA/sevenepochs, authentic guardian stop/cleanup, reserve absence and two error-free current original-process absence scans. ROOT independently joins each true0 tool outcome and late-companion absence. No active measurement process remains.
+
+Decision29 planning56dd56bcc80519b99357546a49dbd65377e0db22 is pushed after exact peer ebd0e516; PR5967478840 records delegated review and standing authorization before CI implementation. Current implementation60/74:24.1 actually complete,24.2-.4 pending. A single meaningful pure RED57c09e reproduced the original fine2ms rejection before code:1 original test/error at the intended predicate,0.230s complete bounded capture, stable source/FD6/EOF/scans. The scoped coarse-clock implementation and14 regressions are authored; final independent source review and original GREEN have not yet closed. Original A success and B failure remain preserved. The new four-arm science preparation is source-only and awaiting independent review.
+
+Remaining: close source review and focused GREEN; execute one unchanged raw four-arm science reduction and retain honest outputs; checkpoint/push actual CI-only repair with runtime95/image/native/worker source-impact proof; finish latest-source hosted and full ext4 CI/native/source/selection/skip evidence; update usable README/runbook and complete20-requirement118-scenario conformance; final own and fresh critical reviews; supported same-PR sync/archive/push/latest checks/exact final review/authorized merge. All unexecuted broad campaigns retain their original scope. Earlier dated plan sections below remain historical.
+
+## Current execution plan — 2026-10-03 08:49 UTC
+
+CPU08 original closed0: one complete CPU baseline/shared pair,814.727s outer, genuine authenticated guardian stop and reserve release,95 inputs unchanged and closed, FD6/6, EOF/reaped and two error-free absence scans. Root has fully reviewed the independent read-only CPU08 auditor source; actual current95/process/reserve audit is next. GPU02 source is prepared and under independent review; no GPU dispatch yet. Original hosted B remains failed before tests. Decision29 four-artifact amendment explicitly requires the new clock version from the live trusted producer/capture context, preventing a missing-record downgrade; strict OpenSpec format validation passes, independent exact planning review/commit/PR authorization precede CI implementation. Original observations and earlier dated plan sections remain history.
+
+Remaining: close CPU08 independent audit; once dispatch reviewed GPU02; complete four-arm raw science and retention; implement/review/test the scoped CI clock repair and finish current hosted/ext4 full checks; update usable documentation,20-requirement118-scenario conformance, own/fresh review; same-PR sync/archive/latest checks/final review/merge. All unfinished broad campaigns retain their original scope.
+
+## Current execution plan — 2026-10-03 08:16 UTC
+
+User authorization remains autonomous work until the benchmark is operable and scientifically meaningful. Same branch, Draft PR2 and OpenSpec change `fix-benchmark-preparations-spec`; original broad campaigns and failures remain preserved at their original scope. Earlier dated plan sections below are history.
+
+Current source is pushed commit `a00aa57f7d9534f8e7920f14f70d6a75a23570ed`. Both ordinary ext4 transitions closed successfully. The genuine selected image is `sha256:222a0003661e8229a431c69a513d7352294e6a38028abeb5b133aab45b3945a1`; all73 image inputs are byte-identical between source checkpointsA/B. The actual stock87 host capture closed0 atB. The fresh current95 observation just closed0 in1.94s:95 unique inputs,96 collector holds including binding, all held SHA/epoch/close checks passed, collectorFD4/4 and captureFD6/6, original commands EOF/reaped/two error-free absence scans. ROOT independently joined the original outcome; metadata is not benchmark acceptance. A current read-only engine observation found no running or stopped containers for either old CPU07 worker-image ID.
+
+Hosted A run36 succeeded according to fresh provider metadata. Hosted B run37 failed its CPU-check step; its independent diagnostic job succeeded. Original ZIPs/logs and first actual cause are being retained and inspected. No workflow rerun/cancellation or success relabeling. Source-only review, staging and bookkeeping failures remain retained, including the failed prior grant writer; no retrospective approval claim.
+
+Remaining sequence:
+
+1. Close original B CI diagnosis. Repair any actual regression within approved scope, with focused behavioral evidence and current bindings renewed only if affected. Do not infer a runtime defect from an infrastructure or source-check failure.
+2. Execute the already independently reviewed, exact bound CPU08 controller once against actualB/stock-host-v4 after the first failure is understood. Preserve full original cold, measurement, guardian, reserve, native raw, operational,95-file and process/FD outcomes. Diagnose actual failure before another attempt; no tuning of scientific intake or deadlines to manufacture success.
+3. When CPU closes and measurement processes are quiescent, prepare and execute the corresponding separately owned GPU pair, then reduce all four current arms from raw evidence and retain outputs. Verify completion/drop/censor/deadline accounting, replicas, actual intake and cost-attribution limits. Negative100ms results stay negative; one descriptive baseline-first pair does not imply significance, accuracy or causal improvement.
+4. Finish genuine current full localCI/native builds and hostedCI verification on the exact final code, preserving original logs, source equality, explicit selected/deferred/skipped test identities and cleanup evidence. Heavy local checks wait while scientific measurements run.
+5. Update README and the component runbook around one usable benchmark command and actual current results. Complete20-requirement115-scenario conformance, review my own architectural/causal assumptions, and obtain a fresh critical review of the final implementation and evidence. Correct findings before completion.
+6. Perform supported same-PR spec sync/archive after verified implementation, commit/push it, require actual latest-commitCI and exact final delegated review, then authorized merge. No future checkbox, full-campaign acceptance, final approval or successful archive is assumed.
+
+Current evidence: `decision28-stock-host-original-copy-v1/`, `decision28-current95-preparation-v1/`, and `decision28-current95-independent-review-v1/original-observation-closure.v1.json` under `artifacts/benchmark_recovery_20260930/`. Current CPU08 source is the committed23631B/445535a2 controller in `decision28-host-cpu08-final-binding-v1/`. Its original CPU08 run launched once at08:20 UTC (ROOT4b981d/session52233; CLI PID/PGID73802/start49797196, controller73800). The final outcome is pending; no active run is restarted.
+
 # VAST benchmark recovery plan
 
 Owner: this chat. Authorization: user carte-blanche, including necessary changes, review, implementation and benchmark execution. One change/branch/PR: `fix-benchmark-preparations-spec`, `codex/fix-benchmark-preparations-spec`, https://github.com/lordcoudy/VAST/pull/2 (Draft, unmerged). Authoritative checkout: `E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec`.

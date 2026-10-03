@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "observer": "/root",
+  "observed_at_utc": "2026-10-03 07:59:17 UTC",
+  "original_cpu07_guardian_status": "failed_stop_nonpublication",
+  "historical_authenticated_stop": false,
+  "historical_container_cleanup_verified": false,
+  "worker_image_ids": {
+    "cpu": "sha256:ce138982695ea6d8218a9137bb858090a782e83e687be8fc252a32dc0bd9d5f9",
+    "gpu": "sha256:e0af692307f5edebcfb768d6805cb2e76f32948e77144fbf5f10fcdac85b2870"
+  },
+  "original_readonly_tool_results": [
+    {
+      "status": "fulfilled",
+      "value": {
+        "chunk_id": "f93914",
+        "wall_time_seconds": 0.2052355,
+        "exit_code": 0,
+        "original_token_count": 65,
+        "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000"
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "chunk_id": "37bcf7",
+        "wall_time_seconds": 0.1875025,
+        "exit_code": 0,
+        "original_token_count": 65,
+        "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000"
+      }
+    }
+  ],
+  "operation": "Two original read-only docker ps --all --quiet --no-trunc --filter ancestor=<exact readiness worker image ID>, timeout30+kill-after5",
+  "current_matching_running_or_stopped_container_identifier_rows": [],
+  "scope": "Current absence across both original worker image IDs; no historical authenticated stop or hidden cleanup causation is retroactively established.",
+  "engine_or_process_mutation": false,
+  "hardware_measurement_acceptance": false
+}

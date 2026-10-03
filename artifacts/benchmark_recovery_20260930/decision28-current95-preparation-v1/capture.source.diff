@@ -1,0 +1,287 @@
+--- immutable-original-current95
++++ decision28-custody-successor
+@@ -1,53 +1,243 @@
+-import hashlib,json,os,signal,stat,subprocess,sys,time
++import hashlib,json,os,selectors,signal,stat,subprocess,sys,time
+ from pathlib import Path
+-here=Path('/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-current95-ci-successor-preparation-v1')
++here=Path('/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-current95-preparation-v1')
+ source=here/'collect_current95_v1.py';python='/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python'
+ assert len(sys.argv)==3,'usage: capture ACTUAL_RECIPE_SIZE ACTUAL_RECIPE_SHA256'
+ argv=['/usr/bin/timeout','--signal=TERM','--kill-after=10s','120s',python,'-I','-B',str(source),*sys.argv[1:]]
+-def descriptor(p):
+- raw=p.read_bytes();s=p.lstat();assert stat.S_ISREG(s.st_mode) and s.st_nlink==1
+- return {'path':str(p),'size_bytes':len(raw),'sha256':hashlib.sha256(raw).hexdigest(),'epoch7':[s.st_dev,s.st_ino,s.st_mode,s.st_nlink,s.st_size,s.st_mtime_ns,s.st_ctime_ns]}
+-def save(name,value):
+- with (here/name).open('x') as out:json.dump(value,out,sort_keys=True,indent=2);out.write('\n');out.flush();os.fsync(out.fileno())
++START=time.monotonic();HARD=START+130
++failure=None;cleanup_errors=[];error_overflow=0;pins=[];fd_before=fd_after=None
++def error(exc):return {'type':type(exc).__name__,'message':str(exc)[:4096]}
++def fail(phase,exc):
++ global failure,error_overflow
++ if failure is None:failure=error(exc)
++ if len(cleanup_errors)<64:cleanup_errors.append({'phase':phase,**error(exc)})
++ else:error_overflow+=1
++def fd_count():return len(os.listdir('/proc/self/fd'))
++def clock():
++ if time.monotonic()>=HARD:raise TimeoutError('original current95 capture130s envelope')
++def descriptor(p,maximum=16*1048576):
++ clock();fd=None;failed=None;info=p.lstat();digest=hashlib.sha256();count=0
++ epoch=lambda s:[s.st_dev,s.st_ino,s.st_mode,s.st_nlink,s.st_size,s.st_mtime_ns,s.st_ctime_ns]
++ assert stat.S_ISREG(info.st_mode) and info.st_nlink==1 and p.resolve(strict=True)==p and info.st_size<=maximum
++ try:
++  fd=os.open(p,os.O_RDONLY|os.O_NOFOLLOW|os.O_CLOEXEC|os.O_NONBLOCK)
++  assert epoch(info)==epoch(os.fstat(fd))
++  while raw:=os.read(fd,65536):clock();count+=len(raw);assert count<=maximum;digest.update(raw)
++  assert count==info.st_size and epoch(info)==epoch(os.fstat(fd))==epoch(p.lstat())
++ except BaseException as exc:failed=exc;fail('descriptor:'+str(p),exc)
++ finally:
++  if fd is not None:
++   try:os.close(fd)
++   except BaseException as exc:
++    fail('descriptor_close:'+str(p),exc)
++    if failed is None:failed=exc
++ if failed is not None:raise failed
++ return {'path':str(p),'size_bytes':count,'sha256':digest.hexdigest(),'epoch7':epoch(info)}
++def hold(p,expected=None,maximum=16*1048576):
++ p=Path(p);assert p.is_absolute() and p.resolve(strict=True)==p
++ row={'path':p,'fd':None,'descriptor':None,'maximum':maximum};pins.append(row)
++ row['fd']=os.open(p,os.O_RDONLY|os.O_NOFOLLOW|os.O_CLOEXEC|os.O_NONBLOCK)
++ row['descriptor']=descriptor(p,maximum)
++ if expected is not None:
++  assert row['descriptor']['size_bytes']==expected[0] and row['descriptor']['sha256']==expected[1],'exact capture source/binding descriptor differs'
++ s=os.fstat(row['fd']);assert row['descriptor']['epoch7']==[s.st_dev,s.st_ino,s.st_mode,s.st_nlink,s.st_size,s.st_mtime_ns,s.st_ctime_ns]
++ return row
++def save(name,value,late_metadata=False):
++ if not late_metadata:clock()
++ raw=(json.dumps(value,sort_keys=True,indent=2)+'\n').encode();assert len(raw)<=(65536 if late_metadata else 1048576)
++ stream=None;failed=None
++ try:
++  stream=(here/name).open('xb');assert stream.write(raw)==len(raw);stream.flush();os.fsync(stream.fileno())
++ except BaseException as exc:failed=exc;fail('save:'+name,exc)
++ finally:
++  if stream is not None:
++   try:stream.close()
++   except BaseException as exc:
++    fail('save_close:'+name,exc)
++    if failed is None:failed=exc
++ if failed is not None:raise failed
++ if not late_metadata:clock()
++ return {'path':str(here/name),'size_bytes':len(raw),'sha256':hashlib.sha256(raw).hexdigest()}
+ def owner(pid):
+  p=Path('/proc',str(pid));v=(p/'stat').read_text().rsplit(')',1)[1].split();status=dict(l.split(':',1) for l in (p/'status').read_text().splitlines() if ':' in l)
+  return {'pid':pid,'ppid':int(v[1]),'pgid':int(v[2]),'session':int(v[3]),'startticks':int(v[19]),'state':v[0],'uid':int(status['Uid'].split()[0]),'gid':int(status['Gid'].split()[0]),'boot_id':Path('/proc/sys/kernel/random/boot_id').read_text().strip(),'argv':(p/'cmdline').read_bytes().rstrip(b'\0').decode().split('\0')}
+-def scan(ids):
+- rows=[];errors=[]
+- for p in Path('/proc').iterdir():
+-  if not p.name.isdigit():continue
+-  try:
+-   v=(p/'stat').read_text().rsplit(')',1)[1].split()
+-   if int(p.name) in ids or int(v[2]) in ids:rows.append(owner(int(p.name)))
+-  except FileNotFoundError:pass
+-  except (OSError,ValueError) as exc:errors.append({'pid':int(p.name),'type':type(exc).__name__,'errno':getattr(exc,'errno',None)})
+- return {'at_ns':time.time_ns(),'members':rows,'errors':errors,'pids_absent':{str(p):not Path('/proc',str(p)).exists() for p in sorted(ids)}}
+-before=descriptor(source);assert before['size_bytes']==10238 and before['sha256']=='c372d0ffb25405512c5cb662950cb902b54461bc89c87dd855241463caf15047'
+-start=time.monotonic();started=time.time_ns();child=None;actual=None;failure=None;signals=[]
+-with (here/'original-current95.stdout.raw').open('xb') as stdout,(here/'original-current95.stderr.raw').open('xb') as stderr:
+- child=subprocess.Popen(argv,stdout=stdout,stderr=stderr,start_new_session=True)
+- timeout_owner=owner(child.pid);save('original-current95.capture-launch.v1.json',{'argv':argv,'capture_owner':owner(os.getpid()),'timeout_owner':timeout_owner,'source_before':before,'started_at_ns':started,'work_s':120,'cleanup_s':10})
+- try:
+-  while child.poll() is None:
+-   for pid in (Path('/proc',str(child.pid),'task',str(child.pid),'children').read_text().split() if Path('/proc',str(child.pid)).exists() else []):
++def scan_original_group(original, cleanup_deadline):
++    observed = {'original_pid':original['pid'],'original_pgid':original['pgid'],
++        'original_startticks':original.get('startticks'),'original_pid_identity':'absent',
++        'members':[],'member_overflow':0,'errors':[],'error_overflow':0,
++        'vanished_during_scan':0,'started_at_ns':time.time_ns()}
++    def scan_error(phase, exc):
++        if len(observed['errors']) < 64:
++            observed['errors'].append({'phase':phase,'error':error(exc)})
++        else:
++            observed['error_overflow'] += 1
++    try:
++        entries = os.listdir('/proc')
++    except BaseException as exc:
++        scan_error('enumeration',exc)
++        entries = []
++    for entry in entries:
++        if not entry.isdigit():
++            continue
++        if time.monotonic() >= cleanup_deadline:
++            scan_error('deadline',TimeoutError('original bounded cleanup deadline during group scan'))
++            break
++        try:
++            parts = Path('/proc',entry,'stat').read_text().rsplit(')',1)[1].split()
++            pid, pgid, startticks = int(entry), int(parts[2]), int(parts[19])
++            if pid == original['pid']:
++                observed['original_pid_identity'] = (
++                    'original_present' if startticks==original.get('startticks') else 'different_startticks')
++            if pgid == original['pgid']:
++                if len(observed['members']) < 64:
++                    observed['members'].append({'pid':pid,'startticks':startticks,'state':parts[0]})
++                else:
++                    observed['member_overflow'] += 1
++        except (FileNotFoundError,ProcessLookupError):
++            observed['vanished_during_scan'] += 1
++        except BaseException as exc:
++            scan_error('pid:'+entry,exc)
++    observed['finished_at_ns'] = time.time_ns()
++    return observed
++streams={};selector=None;child=None;actual=None;timeout_owner=None;signals=[];code=None;reaped=False
++EOF={'stdout':False,'stderr':False};counts={'stdout':0,'stderr':0};process_scans=[];before=after=None;started=time.time_ns();capture_owned=False;capture_owner=None
++try:
++ fd_before=fd_count();capture_owner=owner(os.getpid())
++ assert here.resolve(strict=True)==here
++ assert not any(os.path.lexists(here/name) for name in ('original-current95.stdout.raw','original-current95.stderr.raw','original-current95.capture-launch.v1.json','original-current95.child-owner.v1.json','original-current95.capture-terminal.v1.json','original-current95.failure.v1.json','original-current95.late.v1.json')),'original current95 capture namespace occupied'
++ for name in ('stdout','stderr'):
++  streams[name]=(here/('original-current95.'+name+'.raw')).open('xb');capture_owned=True
++ selector=selectors.DefaultSelector()
++ source_pin=hold(source,(20616,'7492e2d836dd0ed0f9192923a8cb3b7060ac0d1afc834aacaf730245dc1b2749'))
++ hold(Path(__file__))
++ hold(Path(python).resolve(strict=True))
++ assert len(sys.argv)==3 and 0<int(sys.argv[1])<=1048576 and len(sys.argv[2])==64 and all(c in '0123456789abcdef' for c in sys.argv[2])
++ hold(here/'collection.bound.v1.json',(int(sys.argv[1]),sys.argv[2]),1048576)
++ before=source_pin['descriptor']
++ child=subprocess.Popen(argv,stdout=subprocess.PIPE,stderr=subprocess.PIPE,start_new_session=True)
++ timeout_owner=owner(child.pid)
++ save('original-current95.capture-launch.v1.json',{'argv':argv,'capture_owner':capture_owner,'timeout_owner':timeout_owner,'source_before':before,'started_at_ns':started,'work_s':120,'cleanup_s':10})
++ for name,pipe in (('stdout',child.stdout),('stderr',child.stderr)):
++  os.set_blocking(pipe.fileno(),False);selector.register(pipe,selectors.EVENT_READ,name)
++ child_owner_written=False
++ while selector.get_map() or child.poll() is None:
++  clock()
++  if actual is None and Path('/proc',str(child.pid)).exists():
++   for pid in Path('/proc',str(child.pid),'task',str(child.pid),'children').read_text().split():
+     try:
+      candidate=owner(int(pid))
+      if str(source) in candidate['argv']:actual=candidate
+     except FileNotFoundError:pass
+-   if actual is not None and not (here/'original-current95.child-owner.v1.json').exists():save('original-current95.child-owner.v1.json',actual)
+-   if time.monotonic()-start>=130:raise TimeoutError('original outer130s')
+-   if os.fstat(stdout.fileno()).st_size>1048576 or os.fstat(stderr.fileno()).st_size>1048576:raise RuntimeError('original capture exceeds1MiB')
+-   time.sleep(.02)
+-  code=child.wait();assert actual is not None,'original collector owner not observed'
+- except BaseException as exc:
+-  failure={'type':type(exc).__name__,'message':str(exc)[:4096]}
+-  if child.poll() is None:signals.append('SIGKILL');os.killpg(child.pid,signal.SIGKILL)
+-  code=child.wait(timeout=5)
+- finally:stdout.flush();os.fsync(stdout.fileno());stderr.flush();os.fsync(stderr.fileno())
+-after=descriptor(source);assert after==before
+-ids={child.pid}
+-if actual is not None:ids.add(actual['pid'])
+-scans=[scan(ids),scan(ids)]
+-terminal={'schema_version':1,'kind':'original_current95_collection_capture_v1','argv':argv,'source_before':before,'source_after':after,'capture_owner':owner(os.getpid()),'timeout_owner':timeout_owner,'collector_owner':actual,'started_at_ns':started,'terminal_at_ns':time.time_ns(),'elapsed_s':time.monotonic()-start,'returncode':code,'original_child_reaped':True,'failure':failure,'signals':signals,'stdout':descriptor(here/'original-current95.stdout.raw'),'stderr':descriptor(here/'original-current95.stderr.raw'),'process_scans':scans,'late_failure_absent':not os.path.lexists(here/'current95-original-attempt01/late-failure.v1.json'),'capture_fds_closed':True}
+-save('original-current95.capture-terminal.v1.json',terminal);print(json.dumps(descriptor(here/'original-current95.capture-terminal.v1.json')),flush=True)
+-assert failure is None and code==0 and terminal['elapsed_s']<130 and terminal['late_failure_absent'] and all(not s['members'] and not s['errors'] and all(s['pids_absent'].values()) for s in scans)+  if actual is not None and not child_owner_written:
++   save('original-current95.child-owner.v1.json',actual);child_owner_written=True
++  for key,_ in selector.select(.02):
++   raw=os.read(key.fd,65536)
++   if not raw:EOF[key.data]=True;selector.unregister(key.fileobj);continue
++   assert counts[key.data]+len(raw)<=1048576,'original capture exceeds1MiB'
++   assert streams[key.data].write(raw)==len(raw),'short original current95 capture write'
++   counts[key.data]+=len(raw)
++ code=child.wait(timeout=max(.001,HARD-time.monotonic()));reaped=True
++ assert actual is not None,'original collector owner not observed'
++ assert code==0,'original collector returned nonzero'
++except BaseException as exc:fail('capture_body',exc)
++finally:
++ if child is not None:
++  try:
++   if child.poll() is None:signals.append('SIGKILL');os.killpg(child.pid,signal.SIGKILL)
++  except ProcessLookupError:pass
++  except BaseException as exc:fail('original_group_kill',exc)
++  try:code=child.wait(timeout=max(.001,min(5,HARD-time.monotonic())));reaped=True
++  except BaseException as exc:fail('original_reap',exc)
++ if selector is not None:
++  try:
++   while selector.get_map() and time.monotonic()<HARD:
++    for key,_ in selector.select(.02):
++     raw=os.read(key.fd,65536)
++     if not raw:EOF[key.data]=True;selector.unregister(key.fileobj);continue
++     assert counts[key.data]+len(raw)<=1048576,'original capture exceeds1MiB during drain'
++     assert streams[key.data].write(raw)==len(raw);counts[key.data]+=len(raw)
++  except BaseException as exc:fail('original_drain',exc)
++  try:selector.close()
++  except BaseException as exc:fail('selector_close',exc)
++ if child is not None:
++  for name,pipe in (('stdout',child.stdout),('stderr',child.stderr)):
++   if pipe is not None:
++    try:pipe.close()
++    except BaseException as exc:fail(name+'_pipe_close',exc)
++ for name,stream in streams.items():
++  for action in (stream.flush,lambda stream=stream:os.fsync(stream.fileno()),stream.close):
++   try:action()
++   except BaseException as exc:fail(name+'_capture_close',exc)
++ if child is not None:
++  if not reaped:fail('original_reap',RuntimeError('original timeout child not reaped'))
++  if not all(EOF.values()):fail('original_EOF',RuntimeError('original capture EOF not observed'))
++  originals=[timeout_owner or {'pid':child.pid,'pgid':child.pid,'startticks':None}]
++  if timeout_owner is None:fail('original_owner',RuntimeError('original timeout owner not observed'))
++  if actual is not None:originals.append(actual)
++  else:fail('collector_owner',RuntimeError('original collector owner not observed'))
++  for index in range(2):
++   scans=[]
++   for original in originals:
++    try:
++     scan=scan_original_group(original,HARD);scans.append(scan)
++     assert not scan['members'] and not scan['member_overflow'] and not scan['errors'] and not scan['error_overflow'] and scan['original_pid_identity']=='absent','original timeout/collector PID/group uncertain'
++    except BaseException as exc:fail('process_scan'+str(index),exc)
++   process_scans.append(scans)
++ source_checks=[];pin_closes=[]
++ for row in pins:
++  try:
++   assert row['fd'] is not None and row['descriptor'] is not None,'capture source acquisition incomplete'
++   current=descriptor(row['path'],row['maximum']);info=os.fstat(row['fd'])
++   assert current==row['descriptor'] and current['epoch7']==[info.st_dev,info.st_ino,info.st_mode,info.st_nlink,info.st_size,info.st_mtime_ns,info.st_ctime_ns]
++   source_checks.append({'path':str(row['path']),'verified':True})
++   if row['path']==source:after=current
++  except BaseException as exc:source_checks.append({'path':str(row['path']),'verified':False});fail('source_final:'+str(row['path']),exc)
++ channels={}
++ for name in ('stdout','stderr'):
++  try:channels[name]=descriptor(here/('original-current95.'+name+'.raw'),1048576)
++  except BaseException as exc:channels[name]=None;fail(name+'_channel_descriptor',exc)
++ for row in pins:
++  if row['fd'] is None:continue
++  try:os.close(row['fd']);row['fd']=None;pin_closes.append({'path':str(row['path']),'closed':True})
++  except BaseException as exc:pin_closes.append({'path':str(row['path']),'closed':False});fail('pin_close:'+str(row['path']),exc)
++ try:
++  fd_after=fd_count();assert fd_before is not None and fd_after==fd_before,'capture FD baseline not restored'
++ except BaseException as exc:fail('capture_FD_baseline',exc)
++ collector_companions_absent=not any(os.path.lexists(here/('decision28-current95-original-attempt01/'+name)) for name in ('failure.v1.json','late-failure.v1.json'))
++ if not collector_companions_absent:fail('collector_failure_companion',RuntimeError('original collector failure/late companion present'))
++ late=time.monotonic()>=HARD
++ if late:fail('whole130s_before_terminal',TimeoutError('original current95 capture130s elapsed'))
++ terminal_ref=None;terminal_failure=failure;terminal_count=len(cleanup_errors);terminal_overflow=error_overflow
++ if capture_owned:
++  try:
++   terminal_ref=save('original-current95.capture-terminal.v1.json',{'schema_version':1,'kind':'original_current95_collection_capture_v1','argv':argv,
++    'source_before':before,'source_after':after,'capture_owner':capture_owner,'timeout_owner':timeout_owner,'collector_owner':actual,'started_at_ns':started,'terminal_at_ns':time.time_ns(),
++    'elapsed_s':time.monotonic()-START,'returncode':code,'original_child_reaped':reaped,'failure':failure,'cleanup_errors':cleanup_errors,'error_overflow':error_overflow,
++    'signals':signals,'stdout':channels['stdout'],'stderr':channels['stderr'],'EOF':EOF,'process_scans':process_scans,
++    'late_failure_absent':collector_companions_absent,
++    'source_checks':source_checks,'pin_closes':pin_closes,'fd_before':fd_before,'fd_after':fd_after,'all_close_attempts_finished':True,
++    'capture_fds_closed':fd_before is not None and fd_after==fd_before,'metadata_only_no_model_image_runtime_acceptance':True})
++   print(json.dumps(terminal_ref),flush=True)
++  except BaseException as exc:fail('capture_terminal_persist_or_report',exc)
++ try:
++  fd_after=fd_count();assert fd_before is not None and fd_after==fd_before,'capture final metadata FD baseline not restored'
++ except BaseException as exc:fail('capture_post_terminal_FD',exc)
++ if time.monotonic()>=HARD:
++  if not late:fail('whole130s_after_terminal',TimeoutError('original current95 capture130s closed late'))
++  late=True
++ if capture_owned and (failure is not None or terminal_ref is None or failure!=terminal_failure or len(cleanup_errors)!=terminal_count or error_overflow!=terminal_overflow or late):
++  try:save('original-current95.failure.v1.json',{'status':'failed_no_current95_grant','failure':failure,'terminal':terminal_ref,'late':late,
++   'terminal_path':str(here/'original-current95.capture-terminal.v1.json'),'recent_errors':cleanup_errors[-8:],'error_overflow':error_overflow,
++   'fd_before':fd_before,'fd_after':fd_after,'all_close_attempts_finished':True},late_metadata=True)
++  except BaseException as exc:
++   fail('capture_failure_companion',exc)
++   try:print(json.dumps({'status':'failed_no_current95_grant','failure':failure,'companion_error':error(exc)}),file=sys.stderr,flush=True)
++   except BaseException as report_exc:fail('capture_failure_report',report_exc)
++ if capture_owned and time.monotonic()>=HARD and not late:
++  late=True;fail('whole130s_after_companion',TimeoutError('original current95 capture130s final metadata elapsed'))
++  try:save('original-current95.late.v1.json',{'status':'failed_no_current95_grant','failure':failure,'terminal':terminal_ref,'late':True},late_metadata=True)
++  except BaseException as exc:fail('capture_late_companion',exc)
++ if not capture_owned:
++  try:print(json.dumps({'status':'failed_no_current95_grant','failure':failure,'capture_namespace_owned':False}),file=sys.stderr,flush=True)
++  except BaseException as exc:fail('capture_unowned_report',exc)
++sys.exit(0 if failure is None and code==0 and not late else 1)

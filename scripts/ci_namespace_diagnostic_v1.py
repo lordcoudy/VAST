@@ -43,6 +43,21 @@ def _errno(error):
     return None
 
 
+def _audit_coarse_sample(phase, original_pid):
+    """Observe the original Linux audit clock; unavailable never grants policy."""
+    sample = {'available': False, 'clock_id': 5, 'clock_name': 'CLOCK_REALTIME_COARSE',
+              'phase': phase, 'original_pid': original_pid}
+    try:
+        sample['boot_id'] = Path('/proc/sys/kernel/random/boot_id').read_text().strip()
+        sample['started_monotonic_ns'] = time.monotonic_ns()
+        sample['value_ns'] = time.clock_gettime_ns(5)
+        sample['terminal_monotonic_ns'] = time.monotonic_ns()
+        sample['available'] = True
+    except Exception as error:
+        sample['unavailable'] = f'{type(error).__name__}: {error}'[:240]
+    return sample
+
+
 @contextmanager
 def instrument_namespace_calls(stock, emit, *, original_pid):
     """Wrappers delegate original calls exactly once and restore every binding."""
@@ -52,17 +67,26 @@ def instrument_namespace_calls(stock, emit, *, original_pid):
     mapped_fds = {}
 
     def call(syscall, function, *args, **facts):
+        coarse_before = (_audit_coarse_sample('before_unshare', original_pid)
+                         if syscall == 'unshare' and facts.get('flags') == 268435456 else None)
         base = {'syscall': syscall, 'original_pid': original_pid, 'pid': os.getpid(),
                 'wall_time_ns': time.time_ns(), 'monotonic_ns': time.monotonic_ns(), **facts}
+        if coarse_before is not None:
+            base['audit_coarse_before'] = coarse_before
         emit({'event': 'syscall_started', **base})
         try:
             result = function(*args)
         except BaseException as error:
-            emit({'event': 'syscall_failed', **base, 'terminal_wall_time_ns': time.time_ns(),
+            failed = {'event': 'syscall_failed', **base, 'terminal_wall_time_ns': time.time_ns(),
                   'terminal_monotonic_ns': time.monotonic_ns(), 'errno': _errno(error),
                   'error_type': type(error).__name__, 'error': str(error)[:240],
                   'stock_tolerated_missing_setgroups': syscall == 'open'
-                    and facts.get('path') == '/proc/self/setgroups' and isinstance(error, FileNotFoundError)})
+                    and facts.get('path') == '/proc/self/setgroups' and isinstance(error, FileNotFoundError)}
+            if (syscall == 'open' and facts.get('path') == '/proc/self/setgroups'
+                    and failed['errno'] == 13):
+                failed['audit_coarse_after'] = _audit_coarse_sample(
+                    'after_failed_setgroups_open', original_pid)
+            emit(failed)
             raise
         emit({'event': 'syscall_completed', **base,
               'terminal_monotonic_ns': time.monotonic_ns()})
@@ -266,6 +290,7 @@ def capture_original_child(argv, output_dir, absolute_deadline_ns, *, execution_
               'failure': error, 'eof': eof, 'original_group_members': remaining,
               'original_group_absent': remaining == [], 'started_monotonic_ns': began,
               'started_wall_time_ns': began_wall, 'terminal_wall_time_ns': time.time_ns(),
+              'terminal_monotonic_ns': time.monotonic_ns(),
               'execution_deadline_ns': execution_deadline, 'cleanup_deadline_ns': final_deadline,
               'elapsed_s': (time.monotonic_ns()-began)/1e9,
               'capture_completed': not error and not timed_out and not capture_exceeded
@@ -306,6 +331,7 @@ def namespace_worker(start_gate_fd):
         if original_write(1, raw) != len(raw):
             raise RuntimeError('incomplete original syscall observation')
     emit({'event':'original_ready', 'original_pid':original_pid,
+          'namespace_clock_contract_version':2,
           'executable':str(Path(sys.executable).resolve(strict=True)), 'label':_label(),
           'wall_time_ns':time.time_ns(), 'monotonic_ns':time.monotonic_ns()})
     try:

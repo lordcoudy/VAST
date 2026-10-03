@@ -1,0 +1,459 @@
+{
+  "classification": "explicit synthetic original-denial clocks and ordinary original-wrapper/file/pipe/process fixtures; no live namespace/profile/journal",
+  "errors": [],
+  "failures": [],
+  "fd_timing_facts": [
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_userns_profile_v1.AuditClockTests.test_coarse_lag_beyond_original_fine_tolerance_joins_actual_clock_bins",
+      "start_monotonic_ns": 502330391651666,
+      "terminal_monotonic_ns": 502330408627948
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_userns_profile_v1.AuditClockTests.test_equal_and_inclusive_boundary_bins_accept_but_adjacent_bins_fail",
+      "start_monotonic_ns": 502330409738957,
+      "terminal_monotonic_ns": 502330423194565
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_userns_profile_v1.AuditClockTests.test_explicit_legacy_retains_original_strict_rejection_and_cannot_take_v2",
+      "start_monotonic_ns": 502330424399821,
+      "terminal_monotonic_ns": 502330439148396
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_userns_profile_v1.AuditClockTests.test_live_missing_contract_fails_before_any_profile_command",
+      "start_monotonic_ns": 502330440363255,
+      "terminal_monotonic_ns": 502330481510319
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_userns_profile_v1.AuditClockTests.test_missing_and_malformed_new_clock_evidence_cannot_downgrade",
+      "start_monotonic_ns": 502330482653589,
+      "terminal_monotonic_ns": 502330499101164
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_userns_profile_v1.AuditClockTests.test_original_B_clock_operands_stay_rejected_in_explicit_legacy_context",
+      "start_monotonic_ns": 502330500435321,
+      "terminal_monotonic_ns": 502330514269374
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_userns_profile_v1.AuditClockTests.test_original_journal_and_owner_predicates_still_reject_v2",
+      "start_monotonic_ns": 502330515454132,
+      "terminal_monotonic_ns": 502330529598260
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_userns_profile_v1.AuditClockTests.test_unknown_expected_clock_contract_is_never_inferred_from_record",
+      "start_monotonic_ns": 502330530693234,
+      "terminal_monotonic_ns": 502330543815851
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_userns_profile_v1.UsernsProfileTests.test_absent_foreign_ambiguous_or_generic_denial_is_not_a_profile_grant",
+      "start_monotonic_ns": 502330544988130,
+      "terminal_monotonic_ns": 502330560704663
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_userns_profile_v1.UsernsProfileTests.test_actual_gate_handoff_withholds_original_child_if_owner_acquisition_consumes_budget",
+      "start_monotonic_ns": 502330561860047,
+      "terminal_monotonic_ns": 502330603033589
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_userns_profile_v1.UsernsProfileTests.test_capture_retains_permission_failure_and_original_eof_without_success",
+      "start_monotonic_ns": 502330604277584,
+      "terminal_monotonic_ns": 502330715850049
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_userns_profile_v1.UsernsProfileTests.test_collision_and_load_nonzero_never_execute_or_remove_a_foreign_profile",
+      "start_monotonic_ns": 502330717110688,
+      "terminal_monotonic_ns": 502330825183964
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_userns_profile_v1.UsernsProfileTests.test_failed_capture_with_original_zero_and_observed_owned_profile_still_cleans",
+      "start_monotonic_ns": 502330826469627,
+      "terminal_monotonic_ns": 502330914030513
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_userns_profile_v1.UsernsProfileTests.test_held_lifecycle_uses_original_fixed_add_and_owned_remove_with_actual_file_bytes",
+      "start_monotonic_ns": 502330915273977,
+      "terminal_monotonic_ns": 502331006770101
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_userns_profile_v1.UsernsProfileTests.test_kernel_inventory_requires_exact_named_unconfined_profile",
+      "start_monotonic_ns": 502331007951559,
+      "terminal_monotonic_ns": 502331021308894
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_userns_profile_v1.UsernsProfileTests.test_nonzero_or_persistence_failure_with_proved_owned_effect_never_runs_suite_and_cleans",
+      "start_monotonic_ns": 502331022468479,
+      "terminal_monotonic_ns": 502331178227690
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_userns_profile_v1.UsernsProfileTests.test_only_add_remove_and_root_owned_timeout_are_valid_command_shapes",
+      "start_monotonic_ns": 502331179406832,
+      "terminal_monotonic_ns": 502331193896751
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_userns_profile_v1.UsernsProfileTests.test_original_body_error_survives_unload_and_receipt_failure_with_fds_retired",
+      "start_monotonic_ns": 502331195100761,
+      "terminal_monotonic_ns": 502331274554478
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_userns_profile_v1.UsernsProfileTests.test_original_shape_joins_only_exact_interpreter_pid_boot_operation_and_time",
+      "start_monotonic_ns": 502331275839223,
+      "terminal_monotonic_ns": 502331293500148
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_userns_profile_v1.UsernsProfileTests.test_phase_capture_smaller_limit_preserves_overflow_prefix_and_failure",
+      "start_monotonic_ns": 502331294692685,
+      "terminal_monotonic_ns": 502331324699514
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_userns_profile_v1.UsernsProfileTests.test_physically_foreign_kernel_query_command_cannot_activate_profile",
+      "start_monotonic_ns": 502331325913434,
+      "terminal_monotonic_ns": 502331358929584
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_userns_profile_v1.UsernsProfileTests.test_post_verify_budget_guard_never_dispatches_a_root_command_past_original_deadline",
+      "start_monotonic_ns": 502331360192794,
+      "terminal_monotonic_ns": 502331575785377
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_userns_profile_v1.UsernsProfileTests.test_privileged_minimum_budget_accepts_only_two_original_fixed_command_shapes",
+      "start_monotonic_ns": 502331577202370,
+      "terminal_monotonic_ns": 502331593538720
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_userns_profile_v1.UsernsProfileTests.test_profile_has_only_exact_attachment_and_userns_permission",
+      "start_monotonic_ns": 502331594756050,
+      "terminal_monotonic_ns": 502331608343802
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_userns_profile_v1.UsernsProfileTests.test_real_fresh_child_rejects_wrong_profile_before_discovery",
+      "start_monotonic_ns": 502331609936559,
+      "terminal_monotonic_ns": 502331700627450
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_userns_profile_v1.UsernsProfileTests.test_real_held_profile_detects_named_substitution_and_same_size_mutation",
+      "start_monotonic_ns": 502331701930050,
+      "terminal_monotonic_ns": 502331716032429
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_userns_profile_v1.UsernsProfileTests.test_real_root_timeout_shape_is_tested_without_sudo_or_policy",
+      "start_monotonic_ns": 502331717489675,
+      "terminal_monotonic_ns": 502331818505506
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_userns_profile_v1.UsernsProfileTests.test_real_single_link_and_bounded_source_predicates_are_not_waived",
+      "start_monotonic_ns": 502331819830496,
+      "terminal_monotonic_ns": 502331834084047
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_userns_profile_v1.UsernsProfileTests.test_receipt_last_cannot_escape_original_unload_cleanup_deadline",
+      "start_monotonic_ns": 502331835437033,
+      "terminal_monotonic_ns": 502331932047257
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_actual_journalctl_parser_accepts_original_query_options_without_reading_journals",
+      "start_monotonic_ns": 502331933301875,
+      "terminal_monotonic_ns": 502331968148932
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_coarse_post_sample_cancellation_keeps_original_open_error_in_context",
+      "start_monotonic_ns": 502331969463371,
+      "terminal_monotonic_ns": 502331979813691
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_coarse_pre_sample_cancellation_propagates_and_restores_original_delegates",
+      "start_monotonic_ns": 502331981277192,
+      "terminal_monotonic_ns": 502331991894452
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_coarse_samples_enclose_original_user_unshare_and_failed_setgroups_once",
+      "start_monotonic_ns": 502331993153395,
+      "terminal_monotonic_ns": 502332001717459
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_coarse_sampling_oserror_is_unavailable_without_replacing_original_denial",
+      "start_monotonic_ns": 502332002922062,
+      "terminal_monotonic_ns": 502332011400046
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_exact_first_unshare_failure_delegates_once_and_retains_original_errno",
+      "start_monotonic_ns": 502332012698763,
+      "terminal_monotonic_ns": 502332020875451
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_failed_user_unshare_retains_pre_sample_and_same_original_exception",
+      "start_monotonic_ns": 502332022107134,
+      "terminal_monotonic_ns": 502332030580350
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_kernel_query_explicitly_captures_capability_denials_without_claiming_cause",
+      "start_monotonic_ns": 502332031777461,
+      "terminal_monotonic_ns": 502332045581825
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_kernel_query_is_read_only_once_and_rejects_foreign_pid_prefix",
+      "start_monotonic_ns": 502332047015343,
+      "terminal_monotonic_ns": 502332059394918
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_mapping_open_failure_identifies_actual_path_and_flags",
+      "start_monotonic_ns": 502332060709547,
+      "terminal_monotonic_ns": 502332068536502
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_namespace_denial_candidate_retains_original_pid_capability_and_case",
+      "start_monotonic_ns": 502332069729144,
+      "terminal_monotonic_ns": 502332078224260
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_original_capture_flush_failure_closes_fd_and_preserves_failed_status",
+      "start_monotonic_ns": 502332079413629,
+      "terminal_monotonic_ns": 502332104327946
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_original_child_exit_does_not_extend_descendant_pipe_cleanup_to_execution_budget",
+      "start_monotonic_ns": 502332105547840,
+      "terminal_monotonic_ns": 502332151225276
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_original_cleanup_deadline_includes_capture_close",
+      "start_monotonic_ns": 502332152504053,
+      "terminal_monotonic_ns": 502332361902792
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_original_mount_cause_and_flags_are_retained_without_policy_inference",
+      "start_monotonic_ns": 502332363089728,
+      "terminal_monotonic_ns": 502332373014493
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_original_pidfd_failure_contains_exact_child_and_leaves_no_parent_fds",
+      "start_monotonic_ns": 502332374216315,
+      "terminal_monotonic_ns": 502332394381138
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_prepared_namespace_and_kernel_capture_share_the_reviewed_64kib_domain",
+      "start_monotonic_ns": 502332395593767,
+      "terminal_monotonic_ns": 502332430611957
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_real_gated_exec_keeps_original_pid_and_truthful_initial_owner",
+      "start_monotonic_ns": 502332431822111,
+      "terminal_monotonic_ns": 502332466539402
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_real_ordinary_child_nonzero_and_raw_eof_are_preserved",
+      "start_monotonic_ns": 502332467757431,
+      "terminal_monotonic_ns": 502332494551458
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_real_ordinary_child_overflow_retains_bounded_prefix_and_fails",
+      "start_monotonic_ns": 502332495768218,
+      "terminal_monotonic_ns": 502332521174078
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_real_ordinary_child_timeout_reaps_original_and_never_reports_success",
+      "start_monotonic_ns": 502332522722133,
+      "terminal_monotonic_ns": 502332606963059
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_unrelated_unshare_control_files_and_successful_open_add_no_coarse_samples",
+      "start_monotonic_ns": 502332608207680,
+      "terminal_monotonic_ns": 502332616723095
+    }
+  ],
+  "ids": [
+    "test_ci_userns_profile_v1",
+    "test_ci_namespace_diagnostic_v1"
+  ],
+  "skips": [],
+  "source_after": [
+    {
+      "epoch": [
+        69,
+        1407374885979672,
+        33279,
+        1,
+        6901,
+        1791018459109371300,
+        1791018459109371300
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-clock-repair-v1/run_focused_v1.py",
+      "sha256": "03d722b05e54eaaf2149a29043b36aed3b86e7e3ccd3a4055da9f62ec2cf41a5",
+      "size_bytes": 6901
+    },
+    {
+      "epoch": [
+        69,
+        1407374885977064,
+        33279,
+        1,
+        41955,
+        1791019249256416600,
+        1791019249256416600
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_userns_profile_v1.py",
+      "sha256": "dbcea702679255fd64bb223875385fc1800ed0946958e83ceefda59a0fdc2695",
+      "size_bytes": 41955
+    },
+    {
+      "epoch": [
+        69,
+        2533274792818468,
+        33279,
+        1,
+        33264,
+        1791018720762364100,
+        1791018720762364100
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_namespace_diagnostic_v1.py",
+      "sha256": "5c8519ff1a1d600ba6ed72051498dd0da62f68d89e29b48079f546315bb7ac64",
+      "size_bytes": 33264
+    }
+  ],
+  "source_before": [
+    {
+      "epoch": [
+        69,
+        1407374885979672,
+        33279,
+        1,
+        6901,
+        1791018459109371300,
+        1791018459109371300
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-clock-repair-v1/run_focused_v1.py",
+      "sha256": "03d722b05e54eaaf2149a29043b36aed3b86e7e3ccd3a4055da9f62ec2cf41a5",
+      "size_bytes": 6901
+    },
+    {
+      "epoch": [
+        69,
+        1407374885977064,
+        33279,
+        1,
+        41955,
+        1791019249256416600,
+        1791019249256416600
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_userns_profile_v1.py",
+      "sha256": "dbcea702679255fd64bb223875385fc1800ed0946958e83ceefda59a0fdc2695",
+      "size_bytes": 41955
+    },
+    {
+      "epoch": [
+        69,
+        2533274792818468,
+        33279,
+        1,
+        33264,
+        1791018720762364100,
+        1791018720762364100
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_namespace_diagnostic_v1.py",
+      "sha256": "5c8519ff1a1d600ba6ed72051498dd0da62f68d89e29b48079f546315bb7ac64",
+      "size_bytes": 33264
+    }
+  ],
+  "source_stable": true,
+  "tests_run": 51
+}
