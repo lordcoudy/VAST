@@ -1,0 +1,366 @@
+--- immutable-pending-v3
++++ custody-successor-v4
+@@ -2,7 +2,7 @@
+ import hashlib,json,os,selectors,signal,stat,subprocess,sys,time
+ from pathlib import Path
+ ROOT=Path('/home/s-a-balashov/work/vast-component-release-20260930-d27')
+-assert len(sys.argv)==3,'usage: driver SOURCE_COMMIT HOST_CLOSURE_EXT4_DECISION28_V3_SHA256'
++assert len(sys.argv)==3,'usage: driver SOURCE_COMMIT HOST_CLOSURE_EXT4_DECISION28_V4_SHA256'
+ COMMIT=sys.argv[1]
+ CLOSURE_SHA256=sys.argv[2]
+ assert len(COMMIT)==40 and all(char in '0123456789abcdef' for char in COMMIT)
+@@ -17,12 +17,57 @@
+  'model_parity_receipt_path':('configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260928g.accepted.acceptance_receipt.json','6f50d92e74ab7750f262d2697b0fceeb979d4f221eda90a0223cce4d5ff7a169'),
+  'runtime_image_receipt_path':(None,None),
+  'worker_freeze_receipt_path':('artifacts/fix_benchmark_preparations_20260928g/worker_images/analytics-worker.freeze.json','ff7dca7f25ffa9856cf0afdf97569e9ced3292866251e2523db00aa23875ef96'),
+- 'execution_code_closure_path':('artifacts/gstreamer_component_release_20260930_a4e145b7/host/execution-code-closure.ext4-decision28.v3.json',CLOSURE_SHA256)}
++ 'execution_code_closure_path':('artifacts/gstreamer_component_release_20260930_a4e145b7/host/execution-code-closure.ext4-decision28.v4.json',CLOSURE_SHA256)}
+ assert IMAGE is not None and all(value is not None for value in EXPECTED['runtime_image_receipt_path']), 'prepared CPU08 has no genuine new image/runtime-receipt binding; ROOT must bind actual stock capture before dispatch'
+ START=time.monotonic();DEADLINE=START+2250
+ pins=[];source_pins=[];input_pins={};primary=None;cleanup_errors=[];timed_out=False;exceeded=False
+ child=None;child_owner=None;argv=None;signals=[];before=[];after=[];group_members=[]
+-counts={'stdout':0,'stderr':0};streams={};selector=selectors.DefaultSelector();closure=None
++counts={'stdout':0,'stderr':0};streams={};selector=None;closure=None
++EOF={'stdout':False,'stderr':False};process_scans=[];pin_closes=[];reaped=False
++fd_before=fd_after=None;dest_owned=False;error_overflow=0
++
++def fd_count():
++    return len(os.listdir('/proc/self/fd'))
++
++def scan_original_group(original, cleanup_deadline):
++    observed = {'original_pid':original['pid'],'original_pgid':original['pgid'],
++        'original_startticks':original.get('startticks'),'original_pid_identity':'absent',
++        'members':[],'member_overflow':0,'errors':[],'error_overflow':0,
++        'vanished_during_scan':0,'started_at_ns':time.time_ns()}
++    def scan_error(phase, exc):
++        if len(observed['errors']) < 64:
++            observed['errors'].append({'phase':phase,'error':error(exc)})
++        else:
++            observed['error_overflow'] += 1
++    try:
++        entries = os.listdir('/proc')
++    except BaseException as exc:
++        scan_error('enumeration',exc)
++        entries = []
++    for entry in entries:
++        if not entry.isdigit():
++            continue
++        if time.monotonic() >= cleanup_deadline:
++            scan_error('deadline',TimeoutError('original bounded cleanup deadline during group scan'))
++            break
++        try:
++            parts = Path('/proc',entry,'stat').read_text().rsplit(')',1)[1].split()
++            pid, pgid, startticks = int(entry), int(parts[2]), int(parts[19])
++            if pid == original['pid']:
++                observed['original_pid_identity'] = (
++                    'original_present' if startticks==original.get('startticks') else 'different_startticks')
++            if pgid == original['pgid']:
++                if len(observed['members']) < 64:
++                    observed['members'].append({'pid':pid,'startticks':startticks,'state':parts[0]})
++                else:
++                    observed['member_overflow'] += 1
++        except (FileNotFoundError,ProcessLookupError):
++            observed['vanished_during_scan'] += 1
++        except BaseException as exc:
++            scan_error('pid:'+entry,exc)
++    observed['finished_at_ns'] = time.time_ns()
++    return observed
++
+ 
+ def epoch(info):return [info.st_dev,info.st_ino,info.st_mode,info.st_nlink,info.st_size,info.st_mtime_ns,info.st_ctime_ns]
+ def error(exc):return {'type':type(exc).__name__,'message':str(exc)[:4096]}
+@@ -30,25 +75,54 @@
+     if time.monotonic()>=DEADLINE:raise TimeoutError('original outer2250s elapsed')
+ def descriptor(path):
+     p=Path(path);info=p.lstat();assert stat.S_ISREG(info.st_mode) and info.st_nlink==1 and not p.is_symlink()
+-    digest=hashlib.sha256();size=0
+-    with p.open('rb') as f:
+-        while block:=f.read(1048576):clock();digest.update(block);size+=len(block)
+-    assert epoch(info)==epoch(p.lstat()) and size==info.st_size
++    digest=hashlib.sha256();size=0;fd=None;failed=None
++    try:
++        fd=os.open(p,os.O_RDONLY|os.O_NOFOLLOW|os.O_CLOEXEC|os.O_NONBLOCK)
++        assert epoch(info)==epoch(os.fstat(fd))
++        while block:=os.read(fd,1048576):clock();digest.update(block);size+=len(block)
++        assert epoch(info)==epoch(os.fstat(fd))==epoch(p.lstat()) and size==info.st_size
++    except BaseException as exc:
++        failed=exc;latch(exc)
++    finally:
++        if fd is not None:
++            try:os.close(fd)
++            except BaseException as exc:
++                latch(exc)
++                if failed is None:failed=exc
++    if failed is not None:raise failed
+     return {'path':str(p),'size_bytes':size,'sha256':digest.hexdigest()}
+-def write(name,value):
+-    raw=(json.dumps(value,sort_keys=True,indent=2)+'\n').encode();assert len(raw)<=1048576
+-    with (DEST/name).open('xb') as f:f.write(raw);f.flush();os.fsync(f.fileno())
++def write(name,value,late_metadata=False):
++    if not late_metadata:clock()
++    raw=(json.dumps(value,sort_keys=True,indent=2)+'\n').encode();assert len(raw)<=(65536 if late_metadata else 1048576)
++    stream=None;failed=None
++    try:
++        assert dest_owned,'controller does not own exclusive destination'
++        stream=(DEST/name).open('xb')
++        assert stream.write(raw)==len(raw),'short metadata write'
++        stream.flush();os.fsync(stream.fileno())
++    except BaseException as exc:failed=exc;latch(exc)
++    finally:
++        if stream is not None:
++            try:stream.close()
++            except BaseException as exc:
++                latch(exc)
++                if failed is None:failed=exc
++    if failed is not None:raise failed
++    if not late_metadata:clock()
+     return {'path':str(DEST/name),'size_bytes':len(raw),'sha256':hashlib.sha256(raw).hexdigest()}
+ def pin(path,expected=None):
+-    p=Path(path).resolve(strict=True);fd=os.open(p,os.O_RDONLY|os.O_NOFOLLOW)
+-    try:
+-        desc=descriptor(p);info=epoch(os.fstat(fd));assert info==epoch(p.lstat())
+-        if expected is not None:assert desc['sha256']==expected,'original expected input bytes mismatch: '+str(p)
+-        row={'descriptor':desc,'epoch':info,'fd':fd};pins.append(row);return row
+-    except BaseException:os.close(fd);raise
++    p=Path(path).resolve(strict=True)
++    row={'descriptor':None,'epoch':None,'fd':None,'path':str(p)};pins.append(row)
++    row['fd']=os.open(p,os.O_RDONLY|os.O_NOFOLLOW|os.O_CLOEXEC|os.O_NONBLOCK)
++    row['epoch']=epoch(os.fstat(row['fd']))
++    row['descriptor']=descriptor(p)
++    assert row['epoch']==epoch(os.fstat(row['fd']))==epoch(p.lstat())
++    if expected is not None:assert row['descriptor']['sha256']==expected,'original expected input bytes mismatch: '+str(p)
++    return row
+ def observe(row):
+     p=Path(row['descriptor']['path']);assert epoch(os.fstat(row['fd']))==row['epoch']==epoch(p.lstat())
+     current=descriptor(p);assert current==row['descriptor'],'original held input changed: '+str(p)
++    assert epoch(os.fstat(row['fd']))==row['epoch']==epoch(p.lstat())
+     return {'descriptor':current,'epoch':epoch(p.lstat())}
+ def owner(pid):
+     values=Path(f'/proc/{pid}/stat').read_text().rsplit(')',1)[1].split()
+@@ -57,14 +131,17 @@
+         'uid':int(ids['Uid'].split()[0]),'gid':int(ids['Gid'].split()[0]),
+         'boot_id':Path('/proc/sys/kernel/random/boot_id').read_text().strip()}
+ def latch(exc):
+-    global primary
++    global primary,error_overflow
+     if primary is None:primary=error(exc)
+-    else:cleanup_errors.append(error(exc))
+-
+-assert not os.path.lexists(PAIR) and not os.path.lexists(DEST),'original CPU namespaces already occupied'
+-DEST.mkdir(mode=0o700)
+-for name in ('stdout','stderr'):streams[name]=(DEST/('original.'+name+'.raw')).open('xb')
++    elif len(cleanup_errors)<64:cleanup_errors.append(error(exc))
++    else:error_overflow+=1
++
+ try:
++    fd_before=fd_count()
++    assert not os.path.lexists(PAIR) and not os.path.lexists(DEST),'original CPU namespaces already occupied'
++    DEST.mkdir(mode=0o700);dest_owned=True
++    selector=selectors.DefaultSelector()
++    for name in ('stdout','stderr'):streams[name]=(DEST/('original.'+name+'.raw')).open('xb')
+     git=['/usr/bin/git','-c','core.longpaths=true','--git-dir='+str(ROOT/'.git'),'--work-tree='+str(ROOT),'rev-parse','HEAD']
+     head=subprocess.check_output(git,timeout=10,text=True).strip();assert head==COMMIT,'sourceHEAD changed before original CPU'
+     for role,(relative,sha) in EXPECTED.items():input_pins[role]=pin(ROOT/relative,sha)
+@@ -104,11 +181,13 @@
+         for key,_ in selector.select(.1):
+             try:raw=os.read(key.fd,65536)
+             except OSError as exc:latch(exc);selector.unregister(key.fileobj);continue
+-            if not raw:selector.unregister(key.fileobj);continue
++            if not raw:EOF[key.data]=True;selector.unregister(key.fileobj);continue
+             available=1048576-counts[key.data]
+             if available>0:
+                 retained=raw[:available]
+-                try:streams[key.data].write(retained);counts[key.data]+=len(retained)
++                try:
++                    assert streams[key.data].write(retained)==len(retained),'short original channel write'
++                    counts[key.data]+=len(retained)
+                 except OSError as exc:latch(exc);counts[key.data]=1048576
+             if len(raw)>available:
+                 exceeded=True
+@@ -116,7 +195,7 @@
+         if time.monotonic()>=next_update:
+             print(json.dumps({'phase':'original_cpu_component_running','pid':child.pid,'elapsed_s':round(time.monotonic()-START,1),'channels':counts}),flush=True)
+             next_update=time.monotonic()+30
+-    child.wait(timeout=max(0,DEADLINE-time.monotonic()))
++    child.wait(timeout=max(0,DEADLINE-time.monotonic()));reaped=True
+     if child.returncode!=0:latch(RuntimeError('original stock CPU CLI nonzero: '+str(child.returncode)))
+ except BaseException as exc:
+     latch(exc)
+@@ -129,68 +208,139 @@
+             if time.monotonic()<DEADLINE:
+                 # A post-Popen observer failure must not interrupt valid stock
+                 # cleanup early; retain failed observation and wait original.
+-                try:child.wait(timeout=max(0,DEADLINE-time.monotonic()))
++                try:child.wait(timeout=max(0,DEADLINE-time.monotonic()));reaped=True
+                 except subprocess.TimeoutExpired:timed_out=True
+                 cleanup_deadline=time.monotonic()+15
+             if child.poll() is None:
+                 timed_out=True
+                 child.send_signal(signal.SIGINT);signals.append({'signal':'SIGINT','at_ns':time.time_ns()})
+-                try:child.wait(timeout=min(10,max(0,cleanup_deadline-time.monotonic())))
++                try:child.wait(timeout=min(10,max(0,cleanup_deadline-time.monotonic())));reaped=True
+                 except subprocess.TimeoutExpired:
+-                    child.kill();signals.append({'signal':'SIGKILL','at_ns':time.time_ns()});child.wait(timeout=max(0,cleanup_deadline-time.monotonic()))
++                    child.kill();signals.append({'signal':'SIGKILL','at_ns':time.time_ns()});child.wait(timeout=max(0,cleanup_deadline-time.monotonic()));reaped=True
+     except BaseException as exc:latch(exc)
+     finally:
+         # Retain remaining available original pipe bytes under this same teardown
+         # clock; no successful EOF/cleanup inference after forced termination.
+         try:
+-            while selector.get_map() and time.monotonic()<cleanup_deadline:
++            while selector is not None and selector.get_map() and time.monotonic()<cleanup_deadline:
+                 for key,_ in selector.select(.1):
+                     raw=os.read(key.fd,65536)
+-                    if not raw:selector.unregister(key.fileobj);continue
++                    if not raw:EOF[key.data]=True;selector.unregister(key.fileobj);continue
+                     available=1048576-counts[key.data]
+-                    if available>0:streams[key.data].write(raw[:available]);counts[key.data]+=min(len(raw),available)
++                    if available>0:
++                        retained=raw[:available]
++                        assert streams[key.data].write(retained)==len(retained),'short original drain write'
++                        counts[key.data]+=len(retained)
+                     if len(raw)>available:exceeded=True;latch(RuntimeError('original drain channel cap'))
+-            if selector.get_map():latch(RuntimeError('original channel EOF unavailable at bounded teardown'))
++            if selector is not None and selector.get_map():latch(RuntimeError('original channel EOF unavailable at bounded teardown'))
+         except BaseException as exc:latch(exc)
+         finally:
+-            selector.close()
++            if selector is not None:
++                try:selector.close()
++                except BaseException as exc:latch(exc)
+             if child is not None:
+-                for pipe in (child.stdout,child.stderr):pipe.close()
++                for pipe in (child.stdout,child.stderr):
++                    if pipe is not None:
++                        try:pipe.close()
++                        except BaseException as exc:latch(exc)
++                try:
++                    if child.poll() is not None:
++                        child.wait(timeout=max(0,cleanup_deadline-time.monotonic()));reaped=True
++                except BaseException as exc:latch(exc)
+             for stream in streams.values():
+-                try:stream.flush();os.fsync(stream.fileno())
+-                except OSError as exc:latch(exc)
+-                finally:stream.close()
++                for action in (stream.flush,lambda stream=stream:os.fsync(stream.fileno()),stream.close):
++                    try:action()
++                    except BaseException as exc:latch(exc)
+     for row in pins:
+-        try:after.append(observe(row))
++        try:
++            assert row['fd'] is not None and row['descriptor'] is not None and row['epoch'] is not None,'held source acquisition incomplete'
++            after.append(observe(row))
+         except BaseException as exc:after.append({'original_descriptor':row['descriptor'],'observation_error':error(exc)});latch(exc)
+-    if child_owner is not None:
+-        for path in Path('/proc').iterdir():
+-            if path.name.isdigit():
+-                try:
+-                    vals=(path/'stat').read_text().rsplit(')',1)[1].split()
+-                    if int(vals[2])==child_owner['pgid']:group_members.append({'pid':int(path.name),'startticks':int(vals[19]),'state':vals[0]})
+-                except (OSError,ValueError):pass
+-    if group_members:latch(RuntimeError('original CLI process group remains; container cleanup unknown'))
++    if child is not None:
++        original=child_owner or {'pid':child.pid,'pgid':child.pid,'startticks':None}
++        if child_owner is None:latch(RuntimeError('original owner identity unavailable'))
++        for scan_index in range(2):
++            try:
++                scan=scan_original_group(original,cleanup_deadline);process_scans.append(scan)
++                if scan['errors'] or scan['error_overflow'] or scan['members'] or scan['member_overflow'] or scan['original_pid_identity']!='absent':
++                    latch(RuntimeError('original CLI PID/group absence uncertain or not absent'))
++            except BaseException as exc:latch(exc)
++        group_members=process_scans[-1]['members'] if process_scans else []
++        if not reaped:latch(RuntimeError('original child reap not observed'))
++        if not all(EOF.values()):latch(RuntimeError('original channel EOF not observed'))
+     def raw_desc(path):
+-        info=path.lstat();raw=path.read_bytes();assert len(raw)<=1048576
+-        return {'path':str(path),'size_bytes':len(raw),'sha256':hashlib.sha256(raw).hexdigest()}
+-    cli_terminal=PAIR/'component_cli_terminal.v1.json';original_cli=None
++        info=path.lstat();assert stat.S_ISREG(info.st_mode) and info.st_nlink==1 and not path.is_symlink() and info.st_size<=1048576
++        fd=None;failed=None;digest=hashlib.sha256();size=0
++        try:
++            fd=os.open(path,os.O_RDONLY|os.O_NOFOLLOW|os.O_CLOEXEC|os.O_NONBLOCK)
++            assert epoch(info)==epoch(os.fstat(fd))
++            while raw:=os.read(fd,65536):
++                assert time.monotonic()<cleanup_deadline,'original15s cleanup deadline'
++                size+=len(raw);assert size<=1048576;digest.update(raw)
++            assert epoch(info)==epoch(os.fstat(fd))==epoch(path.lstat()) and size==info.st_size
++        except BaseException as exc:failed=exc;latch(exc)
++        finally:
++            if fd is not None:
++                try:os.close(fd)
++                except BaseException as exc:
++                    latch(exc)
++                    if failed is None:failed=exc
++        if failed is not None:raise failed
++        return {'path':str(path),'size_bytes':size,'sha256':digest.hexdigest(),'epoch':epoch(info)}
++    cli_terminal=PAIR/'component_cli_terminal.v1.json';original_cli=None;channels={}
+     if cli_terminal.exists():
+         try:original_cli=raw_desc(cli_terminal)
+         except BaseException as exc:latch(exc)
+-    try:
+-        terminal=write('original.terminal.v1.json',{'source_commit':COMMIT,'image_id':IMAGE,'argv':argv,'owner':child_owner,
+-            'original_child_pid':None if child is None else child.pid,'original_returncode':None if child is None else child.returncode,
+-            'timed_out':timed_out,'capture_exceeded':exceeded,'failure':primary,'additional_errors':cleanup_errors,'signals':signals,
+-            'elapsed_s':time.monotonic()-START,'pins_before':before,'pins_after':after,'source_count':len(source_pins),'input_count':len(input_pins),
+-            'stdout':raw_desc(DEST/'original.stdout.raw'),'stderr':raw_desc(DEST/'original.stderr.raw'),
+-            'original_cli_terminal':original_cli,'original_cli_process_group_members':group_members,'accepted':False,'publication_ready':False,
+-            'container_quiescence':'not inferred from CLI/group status; use original CLI authenticated shutdown and original container receipts'})
+-        print(json.dumps({'phase':'original_cpu_component_terminal','returncode':None if child is None else child.returncode,'failure':primary,'receipt':terminal}),flush=True)
+-    finally:
+-        for row in pins:os.close(row['fd'])
++    for name in ('stdout','stderr'):
++        try:channels[name]=raw_desc(DEST/('original.'+name+'.raw'))
++        except BaseException as exc:channels[name]=None;latch(exc)
++    for index,row in enumerate(pins):
++        if row['fd'] is None:continue
++        try:
++            os.close(row['fd']);row['fd']=None;pin_closes.append({'pin_index':index,'closed':True})
++        except BaseException as exc:pin_closes.append({'pin_index':index,'closed':False});latch(exc)
++    try:
++        fd_after=fd_count()
++        assert fd_before is not None and fd_after==fd_before,'owned FD baseline not restored'
++        assert time.monotonic()<cleanup_deadline,'original15s cleanup deadline elapsed'
++    except BaseException as exc:latch(exc)
++    late=time.monotonic()>=DEADLINE
++    if late:latch(TimeoutError('original outer2250s closed late'))
++    terminal=None;terminal_failure=primary;terminal_error_count=len(cleanup_errors);terminal_overflow=error_overflow
++    if dest_owned:
++        try:
++            terminal=write('original.terminal.v1.json',{'source_commit':COMMIT,'image_id':IMAGE,'argv':argv,'owner':child_owner,
++                'original_child_pid':None if child is None else child.pid,'original_returncode':None if child is None else child.returncode,
++                'timed_out':timed_out,'capture_exceeded':exceeded,'failure':primary,'additional_errors':cleanup_errors,'error_overflow':error_overflow,'signals':signals,
++                'elapsed_s':time.monotonic()-START,'pins_before':before,'pins_after':after,'source_count':len(source_pins),'input_count':len(input_pins),
++                'stdout':channels['stdout'],'stderr':channels['stderr'],'EOF':EOF,'reaped':reaped,
++                'original_cli_terminal':original_cli,'original_cli_process_group_members':group_members,'process_group_scans':process_scans,
++                'pin_closes':pin_closes,'all_pin_close_attempts_finished':True,'fd_before':fd_before,'fd_after':fd_after,'accepted':False,'publication_ready':False,
++                'container_quiescence':'not inferred from CLI/group status; use original CLI authenticated shutdown and original container receipts'})
++            print(json.dumps({'phase':'original_cpu_component_terminal','returncode':None if child is None else child.returncode,'failure':primary,'receipt':terminal}),flush=True)
++        except BaseException as exc:latch(exc)
++    try:
++        fd_after=fd_count()
++        assert fd_before is not None and fd_after==fd_before,'final metadata FD baseline not restored'
++    except BaseException as exc:latch(exc)
+     if time.monotonic()>=DEADLINE:
+-        write('late-limit-failure.v1.json',{'source_commit':COMMIT,'status':'failed','elapsed_s':time.monotonic()-START,'original_terminal':terminal,
+-            'reason':'whole outer2250s closed late; any forced containment is failed and container cleanup remains separately observed'})
+-        if primary is None:primary={'type':'TimeoutError','message':'original outer2250s closed late'}
++        if not late:latch(TimeoutError('original outer2250s closed late after terminal'))
++        late=True
++    if dest_owned and (terminal is None or primary!=terminal_failure or len(cleanup_errors)!=terminal_error_count or error_overflow!=terminal_overflow or late):
++        try:
++            write('failure.v4.json',{'source_commit':COMMIT,'image_id':IMAGE,'status':'failed','failure':primary,'original_terminal':terminal,
++                'terminal_path':str(DEST/'original.terminal.v1.json'),'late':late,'recent_errors':cleanup_errors[-8:],'error_overflow':error_overflow,
++                'fd_before':fd_before,'fd_after':fd_after,'all_pin_close_attempts_finished':True,'accepted':False,'publication_ready':False,
++                'record_kind':'exclusive bounded finalization failure companion'},late_metadata=True)
++        except BaseException as exc:
++            latch(exc)
++            try:print(json.dumps({'phase':'original_cpu_failed_finalization','failure':primary,'companion_error':error(exc)}),file=sys.stderr,flush=True)
++            except BaseException as report_exc:latch(report_exc)
++    if dest_owned and time.monotonic()>=DEADLINE and not late:
++        late=True;latch(TimeoutError('original outer2250s closed late after final metadata'))
++        try:write('late.v4.json',{'source_commit':COMMIT,'status':'failed','failure':primary,'late':True,'accepted':False,'publication_ready':False},late_metadata=True)
++        except BaseException as exc:latch(exc)
++    if not dest_owned:
++        try:print(json.dumps({'phase':'original_cpu_failed_acquisition','failure':primary,'output_namespace_owned':False}),file=sys.stderr,flush=True)
++        except BaseException as exc:latch(exc)
+ sys.exit(0 if child is not None and child.returncode==0 and primary is None and not timed_out and not exceeded else 78)

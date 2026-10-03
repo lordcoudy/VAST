@@ -1,0 +1,24 @@
+{
+  "argv": [
+    "/proc/self/fd/94",
+    "container",
+    "ls",
+    "--all",
+    "--filter",
+    "ancestor=sha256:222a0003661e8229a431c69a513d7352294e6a38028abeb5b133aab45b3945a1",
+    "--format",
+    "{{json .}}"
+  ],
+  "commit": "2a6a42c924ae3447ceda4bd9d1b6db33765c6466",
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "executable_realpath": "/usr/bin/docker",
+    "gid": 1000,
+    "pgid": 73067,
+    "pid": 73067,
+    "ppid": 72344,
+    "startticks": 49386944,
+    "uid": 1000
+  },
+  "started_at_ns": 1791011540059035177
+}

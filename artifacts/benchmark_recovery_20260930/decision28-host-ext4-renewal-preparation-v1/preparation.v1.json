@@ -1,0 +1,36 @@
+{
+  "all_original_function_ASTs_unchanged": true,
+  "author": "/root",
+  "bounds": {
+    "cleanup_s": 10,
+    "work_s": 600
+  },
+  "current_six_production_peer_pins_still_required": true,
+  "executed": false,
+  "expected_transitions": [
+    "scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+    "tests/test_checkpoint_gstreamer_custom_publication_runtime_v3.py"
+  ],
+  "future_commit_B": null,
+  "future_host_peer_sha256": null,
+  "future_original_owner": null,
+  "future_original_result": null,
+  "hardware_acceptance": false,
+  "independent_review_pending": true,
+  "literal_inverse_to_original": true,
+  "literal_replacement_count": 10,
+  "old_commit": "2a6a42c924ae3447ceda4bd9d1b6db33765c6466",
+  "original2693_changed_path": "scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+  "original_source": {
+    "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/renew_existing_ext4_checkout_v1.py",
+    "sha256": "91e85e9a0733abd175bea854fe9ad8456f2d7918c57c59fab2501dfd3c297c04",
+    "size_bytes": 26173
+  },
+  "schema_version": 1,
+  "source": {
+    "path": "artifacts/benchmark_recovery_20260930/decision28-host-ext4-renewal-preparation-v1/renew_host_binding_ext4_checkout_v1.py",
+    "sha256": "8ed63b07b02f74e3be1d7b66e8453f239ae598291a6a4dadb04a238db2108ab2",
+    "size_bytes": 27066
+  },
+  "unchanged_selected73_and_native3_worker2_required": true
+}

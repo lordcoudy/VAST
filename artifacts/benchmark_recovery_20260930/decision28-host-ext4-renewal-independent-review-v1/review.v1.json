@@ -1,0 +1,233 @@
+{
+  "blocking_findings": [],
+  "closure_and_bounds": {
+    "actual_controller_FD_baseline_restoration_required": true,
+    "all_Git_calls_gc_auto0_maintenance_auto_false": true,
+    "channel_EOF_and_original_reap_required": true,
+    "cleanup_s": 10,
+    "every_close_attempt_independent": true,
+    "exclusive_late_failure_companion_retained": true,
+    "failure_companion_cap_bytes": 65536,
+    "file_cap_bytes": 2147483648,
+    "first_error_latched_before_cleanup": true,
+    "metadata_and_ordinary_channels_bytes": 8388608,
+    "partial_source_directory_selector_channel_acquisition_registered": true,
+    "source_full_SHA_epoch7_verified_before_release": true,
+    "terminal_after_all_pin_directory_close_attempts": true,
+    "tracked_file_cap_bytes": 268435456,
+    "two_error_aware_zero_error_original_process_absence_scans_required": true,
+    "work_s": 600
+  },
+  "current_candidate_pins": [
+    {
+      "path": "scripts/checkpoint_gstreamer_analytics_sidecar.py",
+      "sha256": "4a853d79fe4296882d1f3e28774ccabb458e030c55d474b1bf34918b897f7fd6",
+      "size_bytes": 299261
+    },
+    {
+      "path": "scripts/publication_operational_process_custody_v1.py",
+      "sha256": "dc92e20512cc2e3e7265e75bfd3c01de0146f29cfd4720e1a6f1b199ceb52d97",
+      "size_bytes": 51141
+    },
+    {
+      "path": "tests/test_checkpoint_gstreamer_analytics_sidecar.py",
+      "sha256": "47f74ffd43d81dff567b7f04576446fab9f246fb3937d6c97a92b73bff90a78d",
+      "size_bytes": 138071
+    },
+    {
+      "path": "tests/test_publication_operational_process_custody_v1.py",
+      "sha256": "690212c96e47cb2a037e5b26ed24de9637e349515df3fb99b3ddc7d49c7b04c8",
+      "size_bytes": 40344
+    },
+    {
+      "path": "tests/test_publication_worker_termination_facts_v1.py",
+      "sha256": "149127245376786f398234edefbb197e03656cb11f98a6e7f6f86cb1ce98afd3",
+      "size_bytes": 6599
+    },
+    {
+      "path": ".gitattributes",
+      "sha256": "109eef60f5ed87e35b18a663c0e112cfc4040fe898dc09d38923d16de803c392",
+      "size_bytes": 17102
+    },
+    {
+      "path": "scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+      "sha256": "0fee418bfa0c7e0e89f9c74210f107fa950d14cf65844d82b1a91330a398aa1c",
+      "size_bytes": 59624
+    },
+    {
+      "path": "tests/test_checkpoint_gstreamer_custom_publication_runtime_v3.py",
+      "sha256": "b6bc88d91a11eda378cb079ade41e473164db39f2dcb224e29f607dc106fd02c",
+      "size_bytes": 25066
+    }
+  ],
+  "evidence_pins": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-host-ext4-renewal-preparation-v1/preparation.v1.json",
+      "sha256": "a7f4c7152d1939e1770caff8a49ba2ead7fc59635497ef38e1fa01dd5f639d30",
+      "size_bytes": 1404
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-host-ext4-renewal-preparation-v1/literal-replacements.v1.json",
+      "sha256": "b6d342a983f0db460730c6e74f90e101b16077fbd771d2f0fe89d774c8296eee",
+      "size_bytes": 3063
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-host-ext4-renewal-preparation-v1/source.diff",
+      "sha256": "d0f47686f552b33ce6a09fb5e020db0b963f04b42413bc9215947a85eb3c7438",
+      "size_bytes": 7344
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/renew_existing_ext4_checkout_v1.py",
+      "sha256": "91e85e9a0733abd175bea854fe9ad8456f2d7918c57c59fab2501dfd3c297c04",
+      "size_bytes": 26173
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-host-image-independent-review-v1/review.v1.json",
+      "sha256": "83d27f58d5e54f1ae48c2df98bf2fa61c8f8f8e39a530bf49fbf91084166d9eb",
+      "size_bytes": 30902
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-feasibility-v1/inventory.v1.json",
+      "sha256": "8a03751c4f3e18a2590d04874496559cc77dab7ffebc8184269c0b9bb81dc364",
+      "size_bytes": 2087679
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-feasibility-v1/git-input-classification.v1.json",
+      "sha256": "ed2858413c0dca784f05bff2ca4551b0d6f7879baf6624d07a54c1227a320e3c",
+      "size_bytes": 469891
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-source-independent-review-v2/review.v2.json",
+      "sha256": "7de1386fc628424e90af3cbc21aea5ecdf6e433e9f9e594a86f9f83bf1c4e662",
+      "size_bytes": 26462
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-source-independent-review-v2/count-correction.v1.json",
+      "sha256": "fb038ad8bba5b92346f377c635c4f6a7a61522a98746df7a2e57ca643ad37343",
+      "size_bytes": 12623
+    },
+    {
+      "path": "deploy/gstreamer_custom/publication/runtime-source-allowlist.txt",
+      "sha256": "111c8d3a517a4ab350fbb2753a3c01965e6645eeaad72c24f1b9f1266659e600",
+      "size_bytes": 3538
+    }
+  ],
+  "exact_inverse": {
+    "added_functions": [],
+    "all_function_node_ASTs_equal_count": 20,
+    "all_original_Git_argv_capture_and_cleanup_function_bodies_unchanged": true,
+    "all_replacements_single_occurrence": true,
+    "changed_function_ASTs": [],
+    "module_function_ASTs_equal_count": 18,
+    "nested_functions_included": true,
+    "original_source": {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/renew_existing_ext4_checkout_v1.py",
+      "sha256": "91e85e9a0733abd175bea854fe9ad8456f2d7918c57c59fab2501dfd3c297c04",
+      "size_bytes": 26173
+    },
+    "raw_pending_successor_inverse_equals_original_source": true,
+    "replacement_count": 10
+  },
+  "findings": [
+    "Ten literal-only changes relocate the original renewal from9d47\u2192A toA\u2192futureB and narrow the intentional protected source transition to the host wrapper. All18 module functions, plus both nested functions, remain identical.",
+    "The exact host/test candidate pins are joined to the independently owned closed host image review with reviewed_commitA. The previous six production pins and count correction remain mandatory.",
+    "The finite original inventory confirms the host wrapper affects onlyhost87. All four runtime, native3 and worker2 source groups must remain strictly unchanged; selected73 is a subset of the unchanged gstreamer group.",
+    "No unexpected untracked leaf adoption or protected original blob/mode drift is allowed. Current empty lock epochs use fresh before/after observations."
+  ],
+  "future_facts": {
+    "checkout_result": null,
+    "checkpoint_B": null,
+    "current95_manifest": null,
+    "host_peer_dispatch_argument": null,
+    "new_stock_host_closure": null,
+    "original_owner": null,
+    "original_terminal": null
+  },
+  "guards": {
+    "candidate_transitions": [
+      "scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+      "tests/test_checkpoint_gstreamer_custom_publication_runtime_v3.py"
+    ],
+    "future_commit_B": null,
+    "future_commit_argument": "exact40 lowercase hex and different fromA; commit existence andA ancestry required",
+    "host_peer_argument": "exact64 lowercase hex full physical review receipt SHA",
+    "host_peer_closed_receipt": {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-host-image-independent-review-v1/review.v1.json",
+      "sha256": "83d27f58d5e54f1ae48c2df98bf2fa61c8f8f8e39a530bf49fbf91084166d9eb",
+      "size_bytes": 30902
+    },
+    "host_peer_exact_two_current_pin_join_required": true,
+    "host_peer_reviewed_commit_required": true,
+    "old_commit": "2a6a42c924ae3447ceda4bd9d1b6db33765c6466",
+    "protected_original_input_changed_path": [
+      "scripts/checkpoint_gstreamer_publication_runtime_v3.py"
+    ],
+    "six_production_pins_and53_21_count_addendum_still_exact": true
+  },
+  "limits": [
+    "Static source review only; actualB commit/push and literal reviewed dispatch arguments remain ROOT obligations.",
+    "No original checkout owner/terminal, freshhost/current95, model/device/worker acceptance, benchmark result, full CI or GPU readiness is invented.",
+    "The original renewal helper was authored by this reviewer; the reviewed successor delta is ROOT-authored and its independent full-source review preserves the separately reviewed baseline."
+  ],
+  "operations": {
+    "Git_or_checkout": false,
+    "production_existing_artifact_mutation": false,
+    "target_import_compile_execute": false,
+    "tests_engines_models_hardware": false
+  },
+  "owned_source_pins": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-host-ext4-renewal-preparation-v1/renew_host_binding_ext4_checkout_v1.py",
+      "sha256": "8ed63b07b02f74e3be1d7b66e8453f239ae598291a6a4dadb04a238db2108ab2",
+      "size_bytes": 27066
+    }
+  ],
+  "physical_pins_stable_after_review": true,
+  "planning_commit": "958a036bc5a55821c712204577fdf4c51c2181c7",
+  "preservation": {
+    "actual_group_path_intersections": {
+      "analytics_worker_openvino": [],
+      "analytics_worker_tensorrt": [],
+      "deepstream": [],
+      "gstreamer_custom": [],
+      "host87": [
+        "scripts/checkpoint_gstreamer_publication_runtime_v3.py"
+      ],
+      "native_probe_deepstream": [],
+      "native_probe_openvino": [],
+      "native_probe_savant": [],
+      "openvino_gva": [],
+      "savant": []
+    },
+    "affected_groups": [
+      "host87"
+    ],
+    "all_old_new_tracked_raw_Git_blob_SHA1_and_modes_required": true,
+    "all_other_original_inputs_models_numeric_corpus_and_untracked_outputs_strict_full_SHA_epoch7_held_FD": true,
+    "broker124707_and99f_sha_guard_retained": true,
+    "current_fresh_empty_lock_before_after_full_SHA_epoch7": true,
+    "force_reset_clean_prune_filter_bypass_absent": true,
+    "historical_inventory_used_only_for_paths": true,
+    "new_tree_untracked_leaf_adoption_refused": true,
+    "original_input_paths": 2693,
+    "selected73_subset_of_unchanged_gstreamer_group": true,
+    "sibling_runtime_images_current_eligible": false,
+    "source_scope_union_paths": 180,
+    "unchanged_groups": [
+      "analytics_worker_openvino",
+      "analytics_worker_tensorrt",
+      "deepstream",
+      "gstreamer_custom",
+      "native_probe_deepstream",
+      "native_probe_openvino",
+      "native_probe_savant",
+      "openvino_gva",
+      "savant"
+    ]
+  },
+  "reviewable": true,
+  "reviewed_commit": "2a6a42c924ae3447ceda4bd9d1b6db33765c6466",
+  "reviewer_handles_released": true,
+  "schema_version": 1,
+  "scope": "Independent static source review of ROOT-authored checkpointA-to-futureB ext4 host-binding renewal successor; no checkout/execution."
+}

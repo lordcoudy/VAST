@@ -1,0 +1,54 @@
+{
+  "exact_diff": {
+    "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/source.diff",
+    "sha256": "b10ad398bcb0b5efebb4ad1d3d636cc5f8d875f08ac2d92b8c4a394c60ee2e5c",
+    "size_bytes": 29967
+  },
+  "exact_inverse": true,
+  "immutable_recovery_reference": {
+    "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-recovery-preparation-v1/recover_existing_ext4_checkout_v2.py",
+    "sha256": "897f2fb5082d1a3521bc99f8aeed6db94c5bb9c8061c2343fa1b92dfdae86b23",
+    "size_bytes": 18538
+  },
+  "literal_replacements": {
+    "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/literal-replacements.v1.json",
+    "sha256": "afd8f3329ad97f6820936b8077390e3c856106cc5282891645fa7e89b4ad3e48",
+    "size_bytes": 29949
+  },
+  "new_module_functions": [
+    "fail",
+    "fd_count",
+    "scan_group"
+  ],
+  "old_function_ASTs_changed": [
+    "ancestors",
+    "pin",
+    "write",
+    "git",
+    "raw_tracked"
+  ],
+  "old_function_ASTs_unchanged": [
+    "clock",
+    "epoch",
+    "identity",
+    "error",
+    "relative",
+    "digest",
+    "doc",
+    "owner",
+    "objects",
+    "members"
+  ],
+  "original": {
+    "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/renew_existing_ext4_checkout_v1.py",
+    "sha256": "9d60472768809a770b2a3056aa83b19c3f8e6e50882879e60ffd33425553d77c",
+    "size_bytes": 14035
+  },
+  "replacement_count": 15,
+  "source": {
+    "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/renew_existing_ext4_checkout_v1.py",
+    "sha256": "91e85e9a0733abd175bea854fe9ad8456f2d7918c57c59fab2501dfd3c297c04",
+    "size_bytes": 26173
+  },
+  "target_executed": false
+}

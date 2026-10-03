@@ -1,0 +1,359 @@
+[
+    {
+        "Id": "sha256:222a0003661e8229a431c69a513d7352294e6a38028abeb5b133aab45b3945a1",
+        "RepoTags": [
+            "vast/gstreamer-custom-publication-runtime-v3:decision28-2a6a42c9",
+            "vast/gstreamer-custom-publication-runtime-v3:decision28-2a6a42c9-determinism-a",
+            "vast/gstreamer-custom-publication-runtime-v3:decision28-2a6a42c9-determinism-b"
+        ],
+        "RepoDigests": [
+            "vast/gstreamer-custom-publication-runtime-v3@sha256:222a0003661e8229a431c69a513d7352294e6a38028abeb5b133aab45b3945a1"
+        ],
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "1970-01-01T00:00:00Z",
+        "Config": {
+            "User": "dlstreamer",
+            "Env": [
+                "PATH=/opt/intel/dlstreamer/gstreamer/bin:/opt/intel/dlstreamer/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "LIBVA_DRIVER_NAME=iHD",
+                "GST_PLUGIN_PATH=/opt/vast/lib/gstreamer-1.0:/opt/intel/dlstreamer/lib:/opt/intel/dlstreamer/gstreamer/lib/gstreamer-1.0:/opt/intel/dlstreamer/gstreamer/lib/",
+                "LD_LIBRARY_PATH=/opt/intel/dlstreamer/gstreamer/lib:/opt/intel/dlstreamer/lib:/opt/intel/dlstreamer/lib/gstreamer-1.0:/opt/opencv:/opt/rdkafka:/opt/librealsense:/usr/local/lib/gstreamer-1.0:/usr/local/lib",
+                "LIBVA_DRIVERS_PATH=/usr/lib/x86_64-linux-gnu/dri",
+                "GST_VA_ALL_DRIVERS=1",
+                "MODEL_PROC_PATH=/opt/intel/dlstreamer/samples/gstreamer/model_proc",
+                "PYTHONPATH=/opt/vast/checkpoint:/opt/vast/python",
+                "TERM=xterm",
+                "GI_TYPELIB_PATH=/opt/intel/dlstreamer/gstreamer/lib/girepository-1.0:/opt/intel/dlstreamer/lib/girepository-1.0:/usr/lib/x86_64-linux-gnu/girepository-1.0",
+                "NVIDIA_DRIVER_CAPABILITIES=compute,utility,video",
+                "VAST_NATIVE_PYTHONPATH=/opt/intel/dlstreamer/gstreamer/lib/python3/dist-packages:/opt/intel/dlstreamer/python",
+                "VAST_GST_REGISTRY_TEMPLATE=/opt/vast/share/gstreamer-registry.bin",
+                "PYTHONDONTWRITEBYTECODE=1",
+                "PYTHONNOUSERSITE=1"
+            ],
+            "Entrypoint": [
+                "/usr/local/bin/vast_gstreamer_custom_publication_runtime_v3"
+            ],
+            "WorkingDir": "/home/dlstreamer",
+            "Labels": {
+                "org.opencontainers.image.version": "24.04",
+                "org.vast.base-image-id": "sha256:b102aafc0f88f8cfad92349e6a55d0f9755a3f5bff109a70ebdb8936d4a8e84c",
+                "org.vast.claim-status": "deterministic-image-awaiting-exact-kpp-v3-gpu-pilots",
+                "org.vast.component": "gstreamer-custom-checkpoint-publication-runtime",
+                "org.vast.native_probe.kind": "openvino-dlstreamer",
+                "org.vast.native_probe.source_sha": "b9b350163f4d030ee4a182e06edd9b5f49ed809501d5e64de632dcff24ca8fab",
+                "org.vast.publication-image.base-image-id": "sha256:355435d2bdb986fe1d51f443d366da3ac1eb0c7175aa03ce2b31e4485f36b3bd",
+                "org.vast.publication-image.build-context-sha256": "02e42c6a712a2f19a32c7631d0e1a74d24b306eceb91e432402ef374560104b9",
+                "org.vast.publication-image.build-image-id": "sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759",
+                "org.vast.publication-image.dependency-set-sha256": "82fd616a980231cc98ffdd62e1d04536b9a0de845341b32287f94213a7679577",
+                "org.vast.publication-image.source-set-sha256": "a902001a6538fe82b59eb8a7112116dc17086e11320fda0b4134ac7fccf5c5d4",
+                "org.vast.publication-runtime-abi": "3",
+                "org.vast.runtime-dependency-set-sha256": "0f338b3aeca6756d31dccdbbc8caeb6239e8e07fec0541c1df3fea91dfc1963e",
+                "org.vast.runtime-source-sha256": "91a6ffb57c0bac38b567f3a84823b9ec8e1e209731abf59c5993f0c0a93bb65e"
+            },
+            "ArgsEscaped": true,
+            "Healthcheck": {
+                "Test": [
+                    "CMD",
+                    "bash",
+                    "-c",
+                    "pgrep bash > /dev/null || exit 1"
+                ],
+                "Interval": 30000000000,
+                "Timeout": 10000000000,
+                "StartPeriod": 5000000000,
+                "Retries": 3
+            },
+            "Shell": [
+                "/bin/bash",
+                "-xo",
+                "pipefail",
+                "-c"
+            ]
+        },
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 864925095,
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:98effb2dfe85d4c431f97d90482075f19e5fc3a57c2dd423d8bdfd4813620043",
+                "sha256:a4922c786e99cabdeaaf6c0bc22c4ae0be1a106d2d345a46f5489bf24e1b9a3b",
+                "sha256:60ca64b01c88f6f3cf417c4729fc8dbe5d48449879af9bb7ad4ba4274d0393e5",
+                "sha256:f675eb9fbdc4811cc829247eb4ead5e3cc492c4f43be6ba70c8a49674d556460",
+                "sha256:f083a96678cac66e9edd158fd4a9e4f5db6c8a7fae781296f0b8d7f03a5011e3",
+                "sha256:9c5189838dc70f5f288df20f834055cdf9579cc3a0fd7b1bc60b21744dc27828",
+                "sha256:7810e2d98f6fb5f9ed7034b8c43352a5604043d8e764746c784b8e46a52fa86f",
+                "sha256:a736af9ca6c2e9a8234eb318dc4de351e86f124738a017bbe27a7106cf7ce8e8",
+                "sha256:59a33391f2cd5d174ead6c215179ee79a8ca058dd377fd157860f961dcd9c5e9",
+                "sha256:d0f1042332e16d96c87ce91db92ef18b49f91b05e55b8db484f28bfdcd2818ed",
+                "sha256:f75989a1efc719010f77a68a8a2d05d291b2959e57dd0ec949a09a83649b5710",
+                "sha256:b30d478f8ffa1230227eebb73fbd5ea3462529c01543a14ae42c2c9bbcc2dae2",
+                "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+                "sha256:56366b0d5b99f3193f90ba23226fcbcc881f873be300505660d4ae94b1e1afdf",
+                "sha256:272e4fa9da6f4d116fbd4c1ef6d6d79821ec74dd4e19a25a723c4a13e0700d29",
+                "sha256:87c9e56583a01baba9bfa3f3a48a2d9a7565a7cf16b4795492548652d3980c45"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2026-10-03T07:12:15.513250105Z"
+        },
+        "Descriptor": {
+            "mediaType": "application/vnd.oci.image.manifest.v1+json",
+            "digest": "sha256:222a0003661e8229a431c69a513d7352294e6a38028abeb5b133aab45b3945a1",
+            "size": 3347,
+            "annotations": {
+                "config.digest": "sha256:f599d9bf2dc84b80c2662ead2266b0f9b42baeafa84fba71cf2d691f44d04991"
+            }
+        },
+        "Identity": {
+            "Build": [
+                {
+                    "Ref": "h8hyz5facuz7z2wil8jbzp02d",
+                    "CreatedAt": "2026-10-03T07:11:59.070073953Z"
+                },
+                {
+                    "Ref": "kmcuzkca7r86n3mo6jo6fhrj8",
+                    "CreatedAt": "2026-10-03T07:12:13.690163686Z"
+                }
+            ]
+        }
+    },
+    {
+        "Id": "sha256:222a0003661e8229a431c69a513d7352294e6a38028abeb5b133aab45b3945a1",
+        "RepoTags": [
+            "vast/gstreamer-custom-publication-runtime-v3:decision28-2a6a42c9",
+            "vast/gstreamer-custom-publication-runtime-v3:decision28-2a6a42c9-determinism-a",
+            "vast/gstreamer-custom-publication-runtime-v3:decision28-2a6a42c9-determinism-b"
+        ],
+        "RepoDigests": [
+            "vast/gstreamer-custom-publication-runtime-v3@sha256:222a0003661e8229a431c69a513d7352294e6a38028abeb5b133aab45b3945a1"
+        ],
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "1970-01-01T00:00:00Z",
+        "Config": {
+            "User": "dlstreamer",
+            "Env": [
+                "PATH=/opt/intel/dlstreamer/gstreamer/bin:/opt/intel/dlstreamer/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "LIBVA_DRIVER_NAME=iHD",
+                "GST_PLUGIN_PATH=/opt/vast/lib/gstreamer-1.0:/opt/intel/dlstreamer/lib:/opt/intel/dlstreamer/gstreamer/lib/gstreamer-1.0:/opt/intel/dlstreamer/gstreamer/lib/",
+                "LD_LIBRARY_PATH=/opt/intel/dlstreamer/gstreamer/lib:/opt/intel/dlstreamer/lib:/opt/intel/dlstreamer/lib/gstreamer-1.0:/opt/opencv:/opt/rdkafka:/opt/librealsense:/usr/local/lib/gstreamer-1.0:/usr/local/lib",
+                "LIBVA_DRIVERS_PATH=/usr/lib/x86_64-linux-gnu/dri",
+                "GST_VA_ALL_DRIVERS=1",
+                "MODEL_PROC_PATH=/opt/intel/dlstreamer/samples/gstreamer/model_proc",
+                "PYTHONPATH=/opt/vast/checkpoint:/opt/vast/python",
+                "TERM=xterm",
+                "GI_TYPELIB_PATH=/opt/intel/dlstreamer/gstreamer/lib/girepository-1.0:/opt/intel/dlstreamer/lib/girepository-1.0:/usr/lib/x86_64-linux-gnu/girepository-1.0",
+                "NVIDIA_DRIVER_CAPABILITIES=compute,utility,video",
+                "VAST_NATIVE_PYTHONPATH=/opt/intel/dlstreamer/gstreamer/lib/python3/dist-packages:/opt/intel/dlstreamer/python",
+                "VAST_GST_REGISTRY_TEMPLATE=/opt/vast/share/gstreamer-registry.bin",
+                "PYTHONDONTWRITEBYTECODE=1",
+                "PYTHONNOUSERSITE=1"
+            ],
+            "Entrypoint": [
+                "/usr/local/bin/vast_gstreamer_custom_publication_runtime_v3"
+            ],
+            "WorkingDir": "/home/dlstreamer",
+            "Labels": {
+                "org.opencontainers.image.version": "24.04",
+                "org.vast.base-image-id": "sha256:b102aafc0f88f8cfad92349e6a55d0f9755a3f5bff109a70ebdb8936d4a8e84c",
+                "org.vast.claim-status": "deterministic-image-awaiting-exact-kpp-v3-gpu-pilots",
+                "org.vast.component": "gstreamer-custom-checkpoint-publication-runtime",
+                "org.vast.native_probe.kind": "openvino-dlstreamer",
+                "org.vast.native_probe.source_sha": "b9b350163f4d030ee4a182e06edd9b5f49ed809501d5e64de632dcff24ca8fab",
+                "org.vast.publication-image.base-image-id": "sha256:355435d2bdb986fe1d51f443d366da3ac1eb0c7175aa03ce2b31e4485f36b3bd",
+                "org.vast.publication-image.build-context-sha256": "02e42c6a712a2f19a32c7631d0e1a74d24b306eceb91e432402ef374560104b9",
+                "org.vast.publication-image.build-image-id": "sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759",
+                "org.vast.publication-image.dependency-set-sha256": "82fd616a980231cc98ffdd62e1d04536b9a0de845341b32287f94213a7679577",
+                "org.vast.publication-image.source-set-sha256": "a902001a6538fe82b59eb8a7112116dc17086e11320fda0b4134ac7fccf5c5d4",
+                "org.vast.publication-runtime-abi": "3",
+                "org.vast.runtime-dependency-set-sha256": "0f338b3aeca6756d31dccdbbc8caeb6239e8e07fec0541c1df3fea91dfc1963e",
+                "org.vast.runtime-source-sha256": "91a6ffb57c0bac38b567f3a84823b9ec8e1e209731abf59c5993f0c0a93bb65e"
+            },
+            "ArgsEscaped": true,
+            "Healthcheck": {
+                "Test": [
+                    "CMD",
+                    "bash",
+                    "-c",
+                    "pgrep bash > /dev/null || exit 1"
+                ],
+                "Interval": 30000000000,
+                "Timeout": 10000000000,
+                "StartPeriod": 5000000000,
+                "Retries": 3
+            },
+            "Shell": [
+                "/bin/bash",
+                "-xo",
+                "pipefail",
+                "-c"
+            ]
+        },
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 864925095,
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:98effb2dfe85d4c431f97d90482075f19e5fc3a57c2dd423d8bdfd4813620043",
+                "sha256:a4922c786e99cabdeaaf6c0bc22c4ae0be1a106d2d345a46f5489bf24e1b9a3b",
+                "sha256:60ca64b01c88f6f3cf417c4729fc8dbe5d48449879af9bb7ad4ba4274d0393e5",
+                "sha256:f675eb9fbdc4811cc829247eb4ead5e3cc492c4f43be6ba70c8a49674d556460",
+                "sha256:f083a96678cac66e9edd158fd4a9e4f5db6c8a7fae781296f0b8d7f03a5011e3",
+                "sha256:9c5189838dc70f5f288df20f834055cdf9579cc3a0fd7b1bc60b21744dc27828",
+                "sha256:7810e2d98f6fb5f9ed7034b8c43352a5604043d8e764746c784b8e46a52fa86f",
+                "sha256:a736af9ca6c2e9a8234eb318dc4de351e86f124738a017bbe27a7106cf7ce8e8",
+                "sha256:59a33391f2cd5d174ead6c215179ee79a8ca058dd377fd157860f961dcd9c5e9",
+                "sha256:d0f1042332e16d96c87ce91db92ef18b49f91b05e55b8db484f28bfdcd2818ed",
+                "sha256:f75989a1efc719010f77a68a8a2d05d291b2959e57dd0ec949a09a83649b5710",
+                "sha256:b30d478f8ffa1230227eebb73fbd5ea3462529c01543a14ae42c2c9bbcc2dae2",
+                "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+                "sha256:56366b0d5b99f3193f90ba23226fcbcc881f873be300505660d4ae94b1e1afdf",
+                "sha256:272e4fa9da6f4d116fbd4c1ef6d6d79821ec74dd4e19a25a723c4a13e0700d29",
+                "sha256:87c9e56583a01baba9bfa3f3a48a2d9a7565a7cf16b4795492548652d3980c45"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2026-10-03T07:12:15.513250105Z"
+        },
+        "Descriptor": {
+            "mediaType": "application/vnd.oci.image.manifest.v1+json",
+            "digest": "sha256:222a0003661e8229a431c69a513d7352294e6a38028abeb5b133aab45b3945a1",
+            "size": 3347,
+            "annotations": {
+                "config.digest": "sha256:f599d9bf2dc84b80c2662ead2266b0f9b42baeafa84fba71cf2d691f44d04991"
+            }
+        },
+        "Identity": {
+            "Build": [
+                {
+                    "Ref": "h8hyz5facuz7z2wil8jbzp02d",
+                    "CreatedAt": "2026-10-03T07:11:59.070073953Z"
+                },
+                {
+                    "Ref": "kmcuzkca7r86n3mo6jo6fhrj8",
+                    "CreatedAt": "2026-10-03T07:12:13.690163686Z"
+                }
+            ]
+        }
+    },
+    {
+        "Id": "sha256:222a0003661e8229a431c69a513d7352294e6a38028abeb5b133aab45b3945a1",
+        "RepoTags": [
+            "vast/gstreamer-custom-publication-runtime-v3:decision28-2a6a42c9",
+            "vast/gstreamer-custom-publication-runtime-v3:decision28-2a6a42c9-determinism-a",
+            "vast/gstreamer-custom-publication-runtime-v3:decision28-2a6a42c9-determinism-b"
+        ],
+        "RepoDigests": [
+            "vast/gstreamer-custom-publication-runtime-v3@sha256:222a0003661e8229a431c69a513d7352294e6a38028abeb5b133aab45b3945a1"
+        ],
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "1970-01-01T00:00:00Z",
+        "Config": {
+            "User": "dlstreamer",
+            "Env": [
+                "PATH=/opt/intel/dlstreamer/gstreamer/bin:/opt/intel/dlstreamer/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "LIBVA_DRIVER_NAME=iHD",
+                "GST_PLUGIN_PATH=/opt/vast/lib/gstreamer-1.0:/opt/intel/dlstreamer/lib:/opt/intel/dlstreamer/gstreamer/lib/gstreamer-1.0:/opt/intel/dlstreamer/gstreamer/lib/",
+                "LD_LIBRARY_PATH=/opt/intel/dlstreamer/gstreamer/lib:/opt/intel/dlstreamer/lib:/opt/intel/dlstreamer/lib/gstreamer-1.0:/opt/opencv:/opt/rdkafka:/opt/librealsense:/usr/local/lib/gstreamer-1.0:/usr/local/lib",
+                "LIBVA_DRIVERS_PATH=/usr/lib/x86_64-linux-gnu/dri",
+                "GST_VA_ALL_DRIVERS=1",
+                "MODEL_PROC_PATH=/opt/intel/dlstreamer/samples/gstreamer/model_proc",
+                "PYTHONPATH=/opt/vast/checkpoint:/opt/vast/python",
+                "TERM=xterm",
+                "GI_TYPELIB_PATH=/opt/intel/dlstreamer/gstreamer/lib/girepository-1.0:/opt/intel/dlstreamer/lib/girepository-1.0:/usr/lib/x86_64-linux-gnu/girepository-1.0",
+                "NVIDIA_DRIVER_CAPABILITIES=compute,utility,video",
+                "VAST_NATIVE_PYTHONPATH=/opt/intel/dlstreamer/gstreamer/lib/python3/dist-packages:/opt/intel/dlstreamer/python",
+                "VAST_GST_REGISTRY_TEMPLATE=/opt/vast/share/gstreamer-registry.bin",
+                "PYTHONDONTWRITEBYTECODE=1",
+                "PYTHONNOUSERSITE=1"
+            ],
+            "Entrypoint": [
+                "/usr/local/bin/vast_gstreamer_custom_publication_runtime_v3"
+            ],
+            "WorkingDir": "/home/dlstreamer",
+            "Labels": {
+                "org.opencontainers.image.version": "24.04",
+                "org.vast.base-image-id": "sha256:b102aafc0f88f8cfad92349e6a55d0f9755a3f5bff109a70ebdb8936d4a8e84c",
+                "org.vast.claim-status": "deterministic-image-awaiting-exact-kpp-v3-gpu-pilots",
+                "org.vast.component": "gstreamer-custom-checkpoint-publication-runtime",
+                "org.vast.native_probe.kind": "openvino-dlstreamer",
+                "org.vast.native_probe.source_sha": "b9b350163f4d030ee4a182e06edd9b5f49ed809501d5e64de632dcff24ca8fab",
+                "org.vast.publication-image.base-image-id": "sha256:355435d2bdb986fe1d51f443d366da3ac1eb0c7175aa03ce2b31e4485f36b3bd",
+                "org.vast.publication-image.build-context-sha256": "02e42c6a712a2f19a32c7631d0e1a74d24b306eceb91e432402ef374560104b9",
+                "org.vast.publication-image.build-image-id": "sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759",
+                "org.vast.publication-image.dependency-set-sha256": "82fd616a980231cc98ffdd62e1d04536b9a0de845341b32287f94213a7679577",
+                "org.vast.publication-image.source-set-sha256": "a902001a6538fe82b59eb8a7112116dc17086e11320fda0b4134ac7fccf5c5d4",
+                "org.vast.publication-runtime-abi": "3",
+                "org.vast.runtime-dependency-set-sha256": "0f338b3aeca6756d31dccdbbc8caeb6239e8e07fec0541c1df3fea91dfc1963e",
+                "org.vast.runtime-source-sha256": "91a6ffb57c0bac38b567f3a84823b9ec8e1e209731abf59c5993f0c0a93bb65e"
+            },
+            "ArgsEscaped": true,
+            "Healthcheck": {
+                "Test": [
+                    "CMD",
+                    "bash",
+                    "-c",
+                    "pgrep bash > /dev/null || exit 1"
+                ],
+                "Interval": 30000000000,
+                "Timeout": 10000000000,
+                "StartPeriod": 5000000000,
+                "Retries": 3
+            },
+            "Shell": [
+                "/bin/bash",
+                "-xo",
+                "pipefail",
+                "-c"
+            ]
+        },
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 864925095,
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:98effb2dfe85d4c431f97d90482075f19e5fc3a57c2dd423d8bdfd4813620043",
+                "sha256:a4922c786e99cabdeaaf6c0bc22c4ae0be1a106d2d345a46f5489bf24e1b9a3b",
+                "sha256:60ca64b01c88f6f3cf417c4729fc8dbe5d48449879af9bb7ad4ba4274d0393e5",
+                "sha256:f675eb9fbdc4811cc829247eb4ead5e3cc492c4f43be6ba70c8a49674d556460",
+                "sha256:f083a96678cac66e9edd158fd4a9e4f5db6c8a7fae781296f0b8d7f03a5011e3",
+                "sha256:9c5189838dc70f5f288df20f834055cdf9579cc3a0fd7b1bc60b21744dc27828",
+                "sha256:7810e2d98f6fb5f9ed7034b8c43352a5604043d8e764746c784b8e46a52fa86f",
+                "sha256:a736af9ca6c2e9a8234eb318dc4de351e86f124738a017bbe27a7106cf7ce8e8",
+                "sha256:59a33391f2cd5d174ead6c215179ee79a8ca058dd377fd157860f961dcd9c5e9",
+                "sha256:d0f1042332e16d96c87ce91db92ef18b49f91b05e55b8db484f28bfdcd2818ed",
+                "sha256:f75989a1efc719010f77a68a8a2d05d291b2959e57dd0ec949a09a83649b5710",
+                "sha256:b30d478f8ffa1230227eebb73fbd5ea3462529c01543a14ae42c2c9bbcc2dae2",
+                "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+                "sha256:56366b0d5b99f3193f90ba23226fcbcc881f873be300505660d4ae94b1e1afdf",
+                "sha256:272e4fa9da6f4d116fbd4c1ef6d6d79821ec74dd4e19a25a723c4a13e0700d29",
+                "sha256:87c9e56583a01baba9bfa3f3a48a2d9a7565a7cf16b4795492548652d3980c45"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2026-10-03T07:12:15.513250105Z"
+        },
+        "Descriptor": {
+            "mediaType": "application/vnd.oci.image.manifest.v1+json",
+            "digest": "sha256:222a0003661e8229a431c69a513d7352294e6a38028abeb5b133aab45b3945a1",
+            "size": 3347,
+            "annotations": {
+                "config.digest": "sha256:f599d9bf2dc84b80c2662ead2266b0f9b42baeafa84fba71cf2d691f44d04991"
+            }
+        },
+        "Identity": {
+            "Build": [
+                {
+                    "Ref": "h8hyz5facuz7z2wil8jbzp02d",
+                    "CreatedAt": "2026-10-03T07:11:59.070073953Z"
+                },
+                {
+                    "Ref": "kmcuzkca7r86n3mo6jo6fhrj8",
+                    "CreatedAt": "2026-10-03T07:12:13.690163686Z"
+                }
+            ]
+        }
+    }
+]

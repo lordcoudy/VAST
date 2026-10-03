@@ -1,0 +1,71 @@
+{
+  "hardware_acceptance": false,
+  "host_module_outside_selected73": true,
+  "new_host_closure_required": true,
+  "nonbinding_AST_unchanged": true,
+  "old_host_closure_invalidated": true,
+  "publication_ready": false,
+  "receipt": {
+    "path": "artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/gstreamer_custom.runtime.freeze.json",
+    "sha256": "0b8a34e67773572a27885b931c50427de8bbd59b23eba837c5d2319ea7e9abca",
+    "size_bytes": 7001
+  },
+  "renewed_constants": {
+    "EXPECTED_EMBEDDED_ARTIFACTS": {
+      "/opt/vast/checkpoint/checkpoint_gstreamer_custom_container_coordinator_v3.py": "7f70138de1e87ab43dfab1e37674979c551dd24ee02fba205cd9905790b060c5",
+      "/opt/vast/checkpoint/checkpoint_gstreamer_runtime.py": "36cbd08613a4420f8b1aa516f297f0019d05ce7df58b17e4ca8e5f2bac498f97",
+      "/opt/vast/lib/gstreamer-1.0/libgstadaptivescheduler.so": "d36642c99d55fac7d834c75b500c7ffd086f022e671cb2b38aecaf38b8d0ad9f",
+      "/opt/vast/lib/gstreamer-1.0/libgstvastanalyticsqueue.so": "9909f2b19adc3f7e82dcf8923a3e719f8546cd4e5126663deafdce04121d2258",
+      "/opt/vast/lib/gstreamer-1.0/libgstvastanalyticsterminal.so": "04962e14523cc570ce1b24735e76334820ed730b5aee72beac0685a4704f9e45",
+      "/opt/vast/lib/gstreamer-1.0/libgstvastcheckpointprefixqueue.so": "797a9311f06cc60ce3768dfc2b3a191525a8577dd8ce2a4eca057aa4fcefdabf",
+      "/opt/vast/runtime-source-allowlist.txt": "111c8d3a517a4ab350fbb2753a3c01965e6645eeaad72c24f1b9f1266659e600",
+      "/opt/vast/share/gstreamer-registry.bin": "18b3fb289de3a7c101b12854beaabb38a8edb72c1ecaf6fc5deea39d307508bc",
+      "/usr/local/bin/vast_checkpoint_source": "7501479ccb90dc1e322386126c372a7650f40e5c7b76bfb29f4495470bd185df",
+      "/usr/local/bin/vast_gstreamer_custom_publication_runtime_v3": "2f241d0fbf8e250d09f3dc8c6c97999910991c8649c44e56ee69d4f1cb38b8e7",
+      "/usr/local/bin/vast_native_gst_probe": "ead77a6b055e6ebe5ecb4a5876496652c58d1e47df699e61c691d06362869de6"
+    },
+    "EXPECTED_IMAGE_ID": "sha256:222a0003661e8229a431c69a513d7352294e6a38028abeb5b133aab45b3945a1",
+    "EXPECTED_IMAGE_INSPECT_PROJECTION_SHA256": "65af20e2fc8a6089cade6026a1e1ee98f66a24508a1c76ddcb4699df0a50061c",
+    "EXPECTED_IMAGE_LABELS": {
+      "org.opencontainers.image.version": "24.04",
+      "org.vast.base-image-id": "sha256:b102aafc0f88f8cfad92349e6a55d0f9755a3f5bff109a70ebdb8936d4a8e84c",
+      "org.vast.claim-status": "deterministic-image-awaiting-exact-kpp-v3-gpu-pilots",
+      "org.vast.component": "gstreamer-custom-checkpoint-publication-runtime",
+      "org.vast.native_probe.kind": "openvino-dlstreamer",
+      "org.vast.native_probe.source_sha": "b9b350163f4d030ee4a182e06edd9b5f49ed809501d5e64de632dcff24ca8fab",
+      "org.vast.publication-runtime-abi": "3",
+      "org.vast.runtime-dependency-set-sha256": "0f338b3aeca6756d31dccdbbc8caeb6239e8e07fec0541c1df3fea91dfc1963e",
+      "org.vast.runtime-source-sha256": "91a6ffb57c0bac38b567f3a84823b9ec8e1e209731abf59c5993f0c0a93bb65e"
+    },
+    "EXPECTED_IMAGE_REFERENCE": "vast/gstreamer-custom-publication-runtime-v3:decision28-2a6a42c9",
+    "EXPECTED_REPOSITORY_DIGEST": "vast/gstreamer-custom-publication-runtime-v3@sha256:222a0003661e8229a431c69a513d7352294e6a38028abeb5b133aab45b3945a1"
+  },
+  "schema_version": 1,
+  "selected73_before_after_equal": true,
+  "source_after": {
+    "path": "scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+    "sha256": "0fee418bfa0c7e0e89f9c74210f107fa950d14cf65844d82b1a91330a398aa1c",
+    "size_bytes": 59624
+  },
+  "source_before": {
+    "path": "scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+    "sha256": "ee0476b574e012b213bdc603a7a930234c0bb27d929859ef03acfdb99eb7a241",
+    "size_bytes": 59640
+  },
+  "test_after": {
+    "path": "tests/test_checkpoint_gstreamer_custom_publication_runtime_v3.py",
+    "sha256": "b6bc88d91a11eda378cb079ade41e473164db39f2dcb224e29f607dc106fd02c",
+    "size_bytes": 25066
+  },
+  "test_before": {
+    "path": "tests/test_checkpoint_gstreamer_custom_publication_runtime_v3.py",
+    "sha256": "5013163d54512a48702198b4778bf9d7eaf047a6f3d94a5d3f4cb1091d8c5910",
+    "size_bytes": 25082
+  },
+  "test_literal_changes": {
+    "c2eea6d503a758860f9c40fef9164ce01f40084ee541dc6e89ca61a21d4ccb05": "65af20e2fc8a6089cade6026a1e1ee98f66a24508a1c76ddcb4699df0a50061c",
+    "sha256:e474867043f1a74387573140cb2bfd69825df2672edad0acda0d28954af84cb6": "sha256:222a0003661e8229a431c69a513d7352294e6a38028abeb5b133aab45b3945a1",
+    "vast/gstreamer-custom-publication-runtime-v3:component-release-20260930-a4e145b7": "vast/gstreamer-custom-publication-runtime-v3:decision28-2a6a42c9"
+  },
+  "test_literal_inverse_restores_original": true
+}

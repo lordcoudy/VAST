@@ -1,0 +1,54 @@
+{
+  "author": "/root/decision28_source_peer",
+  "blocking_findings": [],
+  "executed": false,
+  "execution_authorization": {
+    "argv": [
+      "setsid",
+      "--wait",
+      "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+      "-I",
+      "-B",
+      "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/renew_existing_ext4_checkout_v1.py",
+      "2a6a42c924ae3447ceda4bd9d1b6db33765c6466"
+    ],
+    "one_original": true
+  },
+  "findings": [
+    "Full helper and preparation/author source read independently. Six exact reviewed source/test/attribute transitions, precisely two changed original inputs; unchanged source domains and all other original/untracked leaves remain strict.",
+    "Original ordinary detach checkout only, actual clean 9d47 plus raw blob/mode checks before and after, no untracked collision/adoption, no force/reset/clean or filter waiver.",
+    "Fresh held full SHA/7epoch/name/ancestor checks, original metadata lock remains strict; native three and worker two groups must have zero source changes.",
+    "First error sticky; partial acquisition registered; independent closes, genuine EOF, original child reap and two error-aware absent process scans, actual FD baseline before receipt, late/finalization companions block success. Original 600+10 and all byte caps preserved."
+  ],
+  "future_original_owner": null,
+  "future_original_result": null,
+  "hardware_acceptance": false,
+  "physical_index_commit_proof": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision28-source-checkpoint-v1\\committed-checkpoint-proof.v1.json",
+    "sha256": "2acd6a8ddd2cb15c86e6dc684fe4b2cc7f763422e2beb3af689730b97172813a",
+    "size_bytes": 53112
+  },
+  "publication_ready": false,
+  "pushed_remote_ref": "2a6a42c924ae3447ceda4bd9d1b6db33765c6466",
+  "reviewable": true,
+  "reviewed_source_commit": "2a6a42c924ae3447ceda4bd9d1b6db33765c6466",
+  "reviewer": "/root",
+  "schema_version": 1,
+  "source_and_preparation": [
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision28-ext4-renewal-preparation-v1\\renew_existing_ext4_checkout_v1.py",
+      "sha256": "91e85e9a0733abd175bea854fe9ad8456f2d7918c57c59fab2501dfd3c297c04",
+      "size_bytes": 26173
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision28-ext4-renewal-preparation-v1\\preparation.v1.json",
+      "sha256": "d8d325d2ad735ab9d184afc648fcc38c738f9ca9bcf000ef26fc6b6dc613143c",
+      "size_bytes": 8150
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision28-ext4-renewal-preparation-v1\\author-review.v1.json",
+      "sha256": "3f603a3d16423d5e62990b084abf0efbc7b176df07965dc8f435cd40691b4df4",
+      "size_bytes": 8582
+    }
+  ]
+}

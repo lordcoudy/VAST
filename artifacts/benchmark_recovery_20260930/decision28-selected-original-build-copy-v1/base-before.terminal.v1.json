@@ -1,0 +1,64 @@
+{
+  "argv": [
+    "/proc/self/fd/94",
+    "image",
+    "inspect",
+    "vast/openvino-native-probe:dlstreamer-2026.1"
+  ],
+  "capture_exceeded": false,
+  "cleanup_errors": [],
+  "elapsed_s": 0.04716220498085022,
+  "engine_backend_quiescence": "not inferred from original CLI status",
+  "failure": null,
+  "finished_at_ns": 1791011490866018488,
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "executable_realpath": "/usr/bin/docker",
+    "gid": 1000,
+    "pgid": 72519,
+    "pid": 72519,
+    "ppid": 72344,
+    "startticks": 49382019,
+    "uid": 1000
+  },
+  "process_group_members_at_terminal": [],
+  "process_group_scans": [
+    {
+      "error_overflow": 0,
+      "errors": [],
+      "finished_at_ns": 1791011490864703035,
+      "members": [],
+      "original_pgid": 72519,
+      "original_pid": 72519,
+      "original_pid_identity": "absent",
+      "original_startticks": 49382019,
+      "started_at_ns": 1791011490863094063,
+      "vanished_during_scan": 0
+    },
+    {
+      "error_overflow": 0,
+      "errors": [],
+      "finished_at_ns": 1791011490865933597,
+      "members": [],
+      "original_pgid": 72519,
+      "original_pid": 72519,
+      "original_pid_identity": "absent",
+      "original_startticks": 49382019,
+      "started_at_ns": 1791011490864707613,
+      "vanished_during_scan": 0
+    }
+  ],
+  "returncode": 0,
+  "started_at_ns": 1791011490818856980,
+  "stderr": {
+    "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/decision28-gstreamer-build-2a6a42c9-v1/base-before.stderr.raw",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size_bytes": 0
+  },
+  "stdout": {
+    "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/decision28-gstreamer-build-2a6a42c9-v1/base-before.stdout.raw",
+    "sha256": "2009f1976196e4183b86563d702c3a88257ac0026c751abdccf54687573dda32",
+    "size_bytes": 7371
+  },
+  "timed_out": false
+}

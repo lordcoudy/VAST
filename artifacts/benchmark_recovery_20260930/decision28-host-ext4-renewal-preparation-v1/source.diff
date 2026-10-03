@@ -1,0 +1,80 @@
+--- artifacts\benchmark_recovery_20260930\decision28-ext4-renewal-preparation-v1\renew_existing_ext4_checkout_v1.py
++++ artifacts\benchmark_recovery_20260930\decision28-host-ext4-renewal-preparation-v1\renew_host_binding_ext4_checkout_v1.py
+@@ -1,16 +1,16 @@
+-"""One future clean9d47 to reviewedDecision28 checkout; original inputs remain strict. No hardware."""
++"""One future clean checkpointA to reviewed host-bindingB checkout; original inputs remain strict. No hardware."""
+ import hashlib,json,os,resource,selectors,signal,stat,subprocess,sys,time
+ from pathlib import Path,PurePosixPath
+ START=time.monotonic();END=START+600;HARD=END+10
+ ROOT=Path('/home/s-a-balashov/work/vast-component-release-20260930-d27')
+ WINDOWS=Path('/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec')
+-HERE=Path(__file__).resolve().parent;OUT=HERE/'original-decision28-checkout-renewal-attempt01'
+-OLD='9d47e99b623df44816f7b0a0b73b249a940f7723'
++HERE=Path(__file__).resolve().parent;OUT=HERE/'original-host-binding-checkout-renewal-attempt01'
++OLD='2a6a42c924ae3447ceda4bd9d1b6db33765c6466'
+ PLANNING='958a036bc5a55821c712204577fdf4c51c2181c7'
+ EXPECTED_BOOT='dde50e69-39bf-45bd-bdb7-bc33c9adcb0b'
+ BROKER='scripts/backend_publication_process_supervisor_v3.py'
+-CHANGED={'scripts/checkpoint_gstreamer_analytics_sidecar.py','scripts/publication_operational_process_custody_v1.py'}
+-EXPECTED_CANDIDATES={
++CHANGED={'scripts/checkpoint_gstreamer_publication_runtime_v3.py'}
++PRODUCTION_CANDIDATES={
+  'scripts/checkpoint_gstreamer_analytics_sidecar.py':(299261,'4a853d79fe4296882d1f3e28774ccabb458e030c55d474b1bf34918b897f7fd6'),
+  'scripts/publication_operational_process_custody_v1.py':(51141,'dc92e20512cc2e3e7265e75bfd3c01de0146f29cfd4720e1a6f1b199ceb52d97'),
+  'tests/test_checkpoint_gstreamer_analytics_sidecar.py':(138071,'47f74ffd43d81dff567b7f04576446fab9f246fb3937d6c97a92b73bff90a78d'),
+@@ -18,19 +18,25 @@
+  'tests/test_publication_worker_termination_facts_v1.py':(6599,'149127245376786f398234edefbb197e03656cb11f98a6e7f6f86cb1ce98afd3'),
+  '.gitattributes':(17102,'109eef60f5ed87e35b18a663c0e112cfc4040fe898dc09d38923d16de803c392'),
+ }
++EXPECTED_CANDIDATES={
++ 'scripts/checkpoint_gstreamer_publication_runtime_v3.py':(59624,'0fee418bfa0c7e0e89f9c74210f107fa950d14cf65844d82b1a91330a398aa1c'),
++ 'tests/test_checkpoint_gstreamer_custom_publication_runtime_v3.py':(25066,'b6bc88d91a11eda378cb079ade41e473164db39f2dcb224e29f607dc106fd02c'),
++}
++HOST_PEER=WINDOWS/'artifacts/benchmark_recovery_20260930/decision28-host-image-independent-review-v1/review.v1.json'
+ SOURCE_PEER=WINDOWS/'artifacts/benchmark_recovery_20260930/decision28-source-independent-review-v2/review.v2.json'
+ SOURCE_PEER_SHA='7de1386fc628424e90af3cbc21aea5ecdf6e433e9f9e594a86f9f83bf1c4e662'
+ COUNT_PEER=SOURCE_PEER.with_name('count-correction.v1.json')
+ COUNT_PEER_SHA='fb038ad8bba5b92346f377c635c4f6a7a61522a98746df7a2e57ca643ad37343'
+ LOCK='.publication-atomic-staging-v1/.lock'
+-AFFECTED_GROUPS={'host87','deepstream','gstreamer_custom','openvino_gva','savant'}
+-UNCHANGED_GROUPS={'native_probe_deepstream','native_probe_openvino','native_probe_savant','analytics_worker_openvino','analytics_worker_tensorrt'}
++AFFECTED_GROUPS={'host87'}
++UNCHANGED_GROUPS={'deepstream','gstreamer_custom','openvino_gva','savant','native_probe_deepstream','native_probe_openvino','native_probe_savant','analytics_worker_openvino','analytics_worker_tensorrt'}
+ EXPECTED_BROKER='99f772665d0d271b24d98f2393a50a0f9e0bbfe5c2840e5ccce65d89a84ed13e'
+ INVENTORY=WINDOWS/'artifacts/benchmark_recovery_20260930/component-ext4-relocation-feasibility-v1/inventory.v1.json'
+ INVENTORY_SHA='8a03751c4f3e18a2590d04874496559cc77dab7ffebc8184269c0b9bb81dc364'
+ CLASSIFICATION=INVENTORY.with_name('git-input-classification.v1.json')
+ CLASSIFICATION_SHA='ed2858413c0dca784f05bff2ca4551b0d6f7879baf6624d07a54c1227a320e3c'
+-assert len(sys.argv)==2,'renewal FUTURE_SOURCE_COMMIT'
++assert len(sys.argv)==3,'renewal FUTURE_SOURCE_COMMIT CLOSED_HOST_PEER_SHA256'
++HOST_PEER_SHA=sys.argv[2];assert len(HOST_PEER_SHA)==64 and all(c in '0123456789abcdef' for c in HOST_PEER_SHA)
+ COMMIT=sys.argv[1];assert len(COMMIT)==40 and all(c in '0123456789abcdef' for c in COMMIT) and COMMIT!=OLD
+ commands=[];dirs={};pins={};primary=None;close_errors=[];facts={};owner_ids=[];output_owned=False
+ error_records=[];error_overflow=0;fd_before=None;fd_after=None
+@@ -255,8 +261,11 @@
+  assert counts_peer['parent_independent_review']=={'path':SOURCE_PEER.relative_to(WINDOWS).as_posix(),'size_bytes':26462,'sha256':SOURCE_PEER_SHA}
+  assert counts_peer['focused_original_sidecar_plus_termination_methods']==53 and counts_peer['original_native_methods']==21
+  declared={r['path']:(r['size_bytes'],r['sha256']) for r in peer['owned_source_pins']}
+- assert declared==EXPECTED_CANDIDATES and counts_peer['owned_source_pins']==peer['owned_source_pins']
+- for n,wanted in EXPECTED_CANDIDATES.items():
++ assert declared==PRODUCTION_CANDIDATES and counts_peer['owned_source_pins']==peer['owned_source_pins']
++ host_peer=doc(HOST_PEER,HOST_PEER_SHA)
++ assert host_peer['reviewable'] and not host_peer['blocking_findings'] and host_peer['reviewer_handles_released'] and host_peer['reviewed_commit']==OLD
++ assert {r['path']:(r['size_bytes'],r['sha256']) for r in host_peer['owned_source_pins']}==EXPECTED_CANDIDATES
++ for n,wanted in (PRODUCTION_CANDIDATES|EXPECTED_CANDIDATES).items():
+   row=pin(WINDOWS/n);assert (row['size_bytes'],row['sha256'])==wanted
+  pin(Path(__file__).resolve(),8*1024*1024)
+  original_members={r['path'] for r in inventory['copy_inputs']};assert len(original_members)==2693 and len(classification['untracked_inputs'])==2504
+@@ -312,10 +321,10 @@
+  facts={'preserved_file_count':len(protected),'preserved_bytes':sum(r['size_bytes'] for r in before.values()),'original_untracked_names_retained':True,'original_input_presence_count':2693,
+   'raw_tracked_old_count':len(old_raw),'raw_tracked_new_count':len(new_raw),'raw_byte_Git_blob_mode_equality':True,'protected_full_sha_and_epoch7_before_after_equal':True,
+   'intentional_reviewed_candidate_transitions':transitions,'source180_changed_paths':scope_changes,'source_group_changes':group_changes,'affected_source_groups':sorted(AFFECTED_GROUPS),'unchanged_source_groups':sorted(UNCHANGED_GROUPS),
+-  'native_three_worker_two_source_groups_unchanged':True,'sibling_runtime_images_current_eligible':False,'selected_runtime_image_renewal_required':True,
++  'native_three_worker_two_source_groups_unchanged':True,'sibling_runtime_images_current_eligible':False,'selected_runtime_image_renewal_required':False,'selected73_A_to_B_unchanged':True,
+   'fresh_current_empty_lock':{'before':before[LOCK],'after':after[LOCK],'historical_epoch_reused':False},
+   'root_filesystem':'ext4','root_identity':identity(ROOT.lstat()),'shared_git_objects':'/mnt/e/STUDY/VAST/.git/objects','historical_inventory_used_only_for_finite_paths_not_new_authority':True,
+-  'only_two_original_input_transitions':sorted(CHANGED),'original_models_numeric_corpus_other_inputs_and_untracked_outputs_preserved':True}
++  'only_host_binding_original_input_transition':sorted(CHANGED),'original_models_numeric_corpus_other_inputs_and_untracked_outputs_preserved':True}
+ except BaseException as e:fail('operation_body',e)
+ finally:
+  source_checks=[];pin_closes=[];directory_closes=[]

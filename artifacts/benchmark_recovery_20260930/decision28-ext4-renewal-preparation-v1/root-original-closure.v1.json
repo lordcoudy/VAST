@@ -1,0 +1,292 @@
+{
+  "blocking_findings": [],
+  "checkout_released": true,
+  "commands_closed": 10,
+  "elapsed_s": 35.82974529900821,
+  "fd_after": 6,
+  "fd_before": 6,
+  "held_directories_closed": 1625,
+  "held_files_closed": 3143,
+  "held_sources_verified": 3143,
+  "original_execution": {
+    "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/execution.v1.json",
+    "sha256": "95354cc8fa451f0de79bc02c25e8372470e7d52cbf086dde40599f9104cf3347",
+    "size_bytes": 2107738
+  },
+  "original_hardware_acceptance": false,
+  "original_receipt_and_raw_pins": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/ancestry.launch.v1.json",
+      "sha256": "428da01e4f8d04f78b1dbbd33f05db38a0a89b9e78dcfe91bd5239b3d73b4ced",
+      "size_bytes": 609
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/ancestry.stderr.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/ancestry.stdout.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/ancestry.terminal.v1.json",
+      "sha256": "9a61f09fc821599c94fc7c68bb022bc01a9b40d274e313c207c70a3cc251e752",
+      "size_bytes": 2686
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/checkout.launch.v1.json",
+      "sha256": "2c14d834e9c5ae637b8a955604f6b695d3cfd954b11aa0ab3083da45252f97a8",
+      "size_bytes": 554
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/checkout.stderr.raw",
+      "sha256": "b81c300f10aa380e548606fa181879a7e25b3a11e47b384dcd1c1cab51b95fbe",
+      "size_bytes": 170
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/checkout.stdout.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/checkout.terminal.v1.json",
+      "sha256": "a5f7b7d810bc5d375bc0313bca89955f6f6768a43d264d313147643555bc5033",
+      "size_bytes": 2637
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/dispatch.v1.json",
+      "sha256": "745f3ffdb0e9cf290a77c87680a7a7ae3e2305ebd27d0fbf33e2e05939c09b23",
+      "size_bytes": 426
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/execution.v1.json",
+      "sha256": "95354cc8fa451f0de79bc02c25e8372470e7d52cbf086dde40599f9104cf3347",
+      "size_bytes": 2107738
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/future-tree.launch.v1.json",
+      "sha256": "702e8cf273a6fd571d2dda6374f72b18cd28ba9e1f3b7caaa1992ec542f85bd1",
+      "size_bytes": 557
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/future-tree.stderr.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/future-tree.stdout.raw",
+      "sha256": "5709a1c8f1e7f8cbb312452fac1386b044106a9be92e9aeb20a0274994a20e65",
+      "size_bytes": 858573
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/future-tree.terminal.v1.json",
+      "sha256": "76964d9e03c7f3acd67db8c3d1bc054c6e5a789682c476769560f29e1cbe9841",
+      "size_bytes": 2655
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/intentional-reviewed-transitions.v1.json",
+      "sha256": "f4be70331a73966e23cabba1c73827bfa6bfee6112beef78ff2469e6b78a2d23",
+      "size_bytes": 7382
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/new-head.launch.v1.json",
+      "sha256": "61ac9157630585752971d6c164dc1072536d94f8fdad6fbd2203940d96749f7a",
+      "size_bytes": 503
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/new-head.stderr.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/new-head.stdout.raw",
+      "sha256": "a19c4bd8a2afd29aec770a3900b25eee49b4ec9d3e6ad16d7cfe0872dfc4a6b0",
+      "size_bytes": 41
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/new-head.terminal.v1.json",
+      "sha256": "64e7774aa4438f5eb2fff99409d5fc61e9fd7e35538ea4c53fbf0708381e97eb",
+      "size_bytes": 2583
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/new-object.launch.v1.json",
+      "sha256": "25ab6faad197678093ed766713d81eb9594240830e51967fa6154f020e0776c7",
+      "size_bytes": 557
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/new-object.stderr.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/new-object.stdout.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/new-object.terminal.v1.json",
+      "sha256": "26936fc7c3d11d70c1d07749f493100df18beb2e7baa0bc28a644b3b11941076",
+      "size_bytes": 2638
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/new-status.launch.v1.json",
+      "sha256": "f8bafcded230d3d903757c2294646bc7df3eead6d397bd365c90f557b7c7c556",
+      "size_bytes": 548
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/new-status.stderr.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/new-status.stdout.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/new-status.terminal.v1.json",
+      "sha256": "c955317b0ed65ecf922867327ca0b934a01bbf38a3a2184d0ecf06fd780ababf",
+      "size_bytes": 2629
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/new-tree.launch.v1.json",
+      "sha256": "e18bcdea79baa118504ab00df26779a18004ecdeba1d9af1ac60e514cde366cb",
+      "size_bytes": 557
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/new-tree.stderr.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/new-tree.stdout.raw",
+      "sha256": "5709a1c8f1e7f8cbb312452fac1386b044106a9be92e9aeb20a0274994a20e65",
+      "size_bytes": 858573
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/new-tree.terminal.v1.json",
+      "sha256": "20924551516d38c225dabbd7bb258c9565cb5bedd2ab2ad163819f66dfb2d89d",
+      "size_bytes": 2649
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/old-head.launch.v1.json",
+      "sha256": "47a8489a70a5619b7964e59eaf0b906ac91c159c2c7f977e5ad8adc4a7b8bcd8",
+      "size_bytes": 503
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/old-head.stderr.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/old-head.stdout.raw",
+      "sha256": "6b0e5dd1ac7a6b80f97350c25c5d687076dbf5e27987cdd6e448e7688884be27",
+      "size_bytes": 41
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/old-head.terminal.v1.json",
+      "sha256": "403b1a4ea1514a43c028cb35022ed65f3a094f4237a97c137545c75ff5fa6ce1",
+      "size_bytes": 2583
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/old-status.launch.v1.json",
+      "sha256": "8dc6e76decec9c4b580e00d4b722c881d42e79bfcefffd45ea782a59b25ce687",
+      "size_bytes": 548
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/old-status.stderr.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/old-status.stdout.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/old-status.terminal.v1.json",
+      "sha256": "1b16250edea26a4785106b057db12137fa372ad16086e747a78161b3cff795bd",
+      "size_bytes": 2629
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/old-tree.launch.v1.json",
+      "sha256": "b47af1490d3aa76360772ef5f52138278d0b6a090a8e766943b8a523b6da8638",
+      "size_bytes": 557
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/old-tree.stderr.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/old-tree.stdout.raw",
+      "sha256": "bb86498454f01959bb873ac260c5310f08cc3caa2b27f1623f76c174ad54777e",
+      "size_bytes": 824157
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/old-tree.terminal.v1.json",
+      "sha256": "6d8284c64ef73ac636d4f976c8a4e3d121e3b6e4a3d3e4a8a2dead133df72da3",
+      "size_bytes": 2649
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/preserved-after.v1.json",
+      "sha256": "e79fb582cd5d8e1b48167371aff32df9727d0e081e28424381830f08971f7a02",
+      "size_bytes": 2014039
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/preserved-before.v1.json",
+      "sha256": "e79fb582cd5d8e1b48167371aff32df9727d0e081e28424381830f08971f7a02",
+      "size_bytes": 2014039
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/tracked-after.v1.json",
+      "sha256": "df49fc1f296adb78448316aba53e9433fd5019614ce93fbbf117ac62ecfee4b4",
+      "size_bytes": 2901661
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/tracked-before.v1.json",
+      "sha256": "03c8101aec854cb927e0aad5af1ea4bb55697b0c8ca0d13558948b0b2b4430ec",
+      "size_bytes": 2787538
+    }
+  ],
+  "original_tool_exit_code": 0,
+  "original_tool_session": 62079,
+  "preserved_bytes": 4907796939,
+  "preserved_file_count": 3104,
+  "raw_tracked_new_count": 5239,
+  "raw_tracked_old_count": 5039,
+  "reviewable": true,
+  "reviewer": "/root",
+  "schema_version": 1,
+  "selected_stock_build_next": true,
+  "source_commit": "2a6a42c924ae3447ceda4bd9d1b6db33765c6466",
+  "source_groups": {
+    "analytics_worker_openvino": [],
+    "analytics_worker_tensorrt": [],
+    "deepstream": [
+      "scripts/checkpoint_gstreamer_analytics_sidecar.py",
+      "scripts/publication_operational_process_custody_v1.py"
+    ],
+    "gstreamer_custom": [
+      "scripts/checkpoint_gstreamer_analytics_sidecar.py",
+      "scripts/publication_operational_process_custody_v1.py"
+    ],
+    "host87": [
+      "scripts/checkpoint_gstreamer_analytics_sidecar.py",
+      "scripts/publication_operational_process_custody_v1.py"
+    ],
+    "native_probe_deepstream": [],
+    "native_probe_openvino": [],
+    "native_probe_savant": [],
+    "openvino_gva": [
+      "scripts/checkpoint_gstreamer_analytics_sidecar.py",
+      "scripts/publication_operational_process_custody_v1.py"
+    ],
+    "savant": [
+      "scripts/checkpoint_gstreamer_analytics_sidecar.py",
+      "scripts/publication_operational_process_custody_v1.py"
+    ]
+  }
+}

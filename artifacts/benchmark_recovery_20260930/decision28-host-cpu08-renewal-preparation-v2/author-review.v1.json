@@ -1,0 +1,89 @@
+{
+  "checks": [
+    {
+      "added_functions": [
+        "latch",
+        "fd_count",
+        "scan_original_group",
+        "pin",
+        "observe",
+        "scan_error",
+        "command_error"
+      ],
+      "changed_original_functions": [
+        "facts",
+        "write",
+        "command"
+      ],
+      "core_argv_assignments_unchanged": true,
+      "exact_raw_inverse_to_pending_v3": true,
+      "kind": "host",
+      "literal_replacements": 15,
+      "original_subprocess_call_ASTs_unchanged": true,
+      "unchanged_original_functions": [
+        "clock",
+        "hard_clock",
+        "error",
+        "canonical_directory",
+        "owner"
+      ]
+    },
+    {
+      "added_functions": [
+        "fd_count",
+        "scan_original_group",
+        "scan_error"
+      ],
+      "changed_original_functions": [
+        "descriptor",
+        "write",
+        "pin",
+        "observe",
+        "latch",
+        "raw_desc"
+      ],
+      "core_argv_assignments_unchanged": true,
+      "exact_raw_inverse_to_pending_v3": true,
+      "kind": "cpu",
+      "literal_replacements": 14,
+      "original_subprocess_call_ASTs_unchanged": true,
+      "unchanged_original_functions": [
+        "epoch",
+        "error",
+        "clock",
+        "owner"
+      ]
+    }
+  ],
+  "literal_inverse_receipt": {
+    "path": "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v2/literal-replacements.v1.json",
+    "sha256": "893367c3b7f412fded2115828a24781bfb9e4be90adffe5b47610ffe5297e217",
+    "size_bytes": 42366
+  },
+  "metadata_handles_released": true,
+  "original_scientific_argv_and_bounds_preserved": true,
+  "peer_review": "required; author cannot certify independent approval",
+  "preparation": {
+    "path": "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v2/preparation.v1.json",
+    "sha256": "d783ad662720fe087b44898de33f777d51cc0dcdab33a26d6e69f0013c4342a8",
+    "size_bytes": 5580
+  },
+  "runtime_image_and_receipt_and_B_and_newhost_unknown": true,
+  "schema_version": 1,
+  "scope": "Finite author static AST/raw-literal audit; not independent approval.",
+  "source_checkpoint_A": "2a6a42c924ae3447ceda4bd9d1b6db33765c6466",
+  "source_descriptors": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v2/capture_selected_host_closure_ext4_decision28_v4.py",
+      "sha256": "d0cf043a71ebbc19d23f2bccf5f7a6abc5cfeb0452af7dcb4e1d21db61998e82",
+      "size_bytes": 21481
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v2/run_original_cpu_component_pair_ext4_decision28_v4.pending.py",
+      "sha256": "741ba26e2f04e970cc51be5a4dff93798e369f2d6d3dd53566f27be976cb77ec",
+      "size_bytes": 23389
+    }
+  ],
+  "target_helpers_imported_compiled_or_executed": false,
+  "tests_engine_Git_models_hardware_operations": false
+}

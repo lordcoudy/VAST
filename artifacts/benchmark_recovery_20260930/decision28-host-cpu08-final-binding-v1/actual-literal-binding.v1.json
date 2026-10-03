@@ -1,0 +1,36 @@
+{
+  "all_function_ASTs_unchanged": true,
+  "author": "/root",
+  "dispatch_grant": false,
+  "executed": false,
+  "future_B": null,
+  "future_current95": null,
+  "future_host_SHA256_argument": null,
+  "future_original_owner": null,
+  "future_original_result": null,
+  "hardware_acceptance": false,
+  "image_id": "sha256:222a0003661e8229a431c69a513d7352294e6a38028abeb5b133aab45b3945a1",
+  "independent_pending_v4_source_review": {
+    "path": "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-independent-source-review-v2/review.v1.json",
+    "sha256": "e51563b124182dc6c5341ca4d0ea00bcc858fa93d1559483de6dfda7e7fc1405",
+    "size_bytes": 3028
+  },
+  "literal_inverse_restores_full_reviewed_source": true,
+  "literal_replacement_count": 2,
+  "original_Popen_and_CLI_arguments_unchanged_except_exact_runtime_receipt_role": true,
+  "original_runtime_receipt_path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/decision28-gstreamer-build-2a6a42c9-v1/gstreamer_custom.runtime.freeze.json",
+  "runtime_receipt_sealed_sha256": "8dbd48381495beddc23abab774055ebb3ce89af7f8d56901580da2612092e093",
+  "runtime_receipt_sha256": "0b8a34e67773572a27885b931c50427de8bbd59b23eba837c5d2319ea7e9abca",
+  "runtime_receipt_size_bytes": 7001,
+  "schema_version": 1,
+  "source_after": {
+    "path": "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-final-binding-v1/run_original_cpu_component_pair_ext4_decision28_v4.py",
+    "sha256": "445535a2ea9176effbe97e5de1db53aae614645e40db65bc1debf74489371f36",
+    "size_bytes": 23631
+  },
+  "source_before": {
+    "path": "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v2/run_original_cpu_component_pair_ext4_decision28_v4.pending.py",
+    "sha256": "741ba26e2f04e970cc51be5a4dff93798e369f2d6d3dd53566f27be976cb77ec",
+    "size_bytes": 23389
+  }
+}
