@@ -1,0 +1,54 @@
+{
+  "argv": [
+    "/usr/bin/git",
+    "-c",
+    "core.longpaths=true",
+    "-C",
+    "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+    "rev-parse",
+    "HEAD"
+  ],
+  "child_reaped": true,
+  "cwd": null,
+  "elapsed_s": 0.013762860966380686,
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 95665,
+    "pid": 95693,
+    "ppid": 95666,
+    "startticks": 50682650,
+    "state": "R",
+    "uid": 1000
+  },
+  "returncode": 0,
+  "started_at_ns": 1791024496382420867,
+  "stderr": {
+    "epoch7": [
+      69,
+      1407374885980217,
+      33279,
+      1,
+      0,
+      1791024496381046300,
+      1791024496381046300
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/original-setup-attempt01/13-benchmark-head.stderr.raw",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size_bytes": 0
+  },
+  "stdout": {
+    "epoch7": [
+      69,
+      1407374885980216,
+      33279,
+      1,
+      41,
+      1791024496382495100,
+      1791024496382495100
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/original-setup-attempt01/13-benchmark-head.stdout.raw",
+    "sha256": "40400ec4a92b244401f6f9130b03a78f4c866798d9d845df0ed273487af783fa",
+    "size_bytes": 41
+  }
+}

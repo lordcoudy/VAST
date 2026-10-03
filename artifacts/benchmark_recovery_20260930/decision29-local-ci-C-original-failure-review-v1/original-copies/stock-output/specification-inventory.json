@@ -1,0 +1,233 @@
+{
+  "behavior_conformance": "requires reviewed evidence map",
+  "hardware_gaps": [
+    "Hosted CPU tests do not execute NVIDIA decode or the packaged SDK runtimes.",
+    "Skipped hardware/data tests do not prove model parity, native paired execution, qualification, Q4, storage or the full benchmark.",
+    "Final scientific conformance and archived completion require separately reviewed physical evidence bound to the actual source closure."
+  ],
+  "inventory": [
+    {
+      "path": "openspec/changes/fix-benchmark-preparations-spec/specs/benchmark-launch-preparation/spec.md",
+      "requirements": [
+        {
+          "name": "Benchmark recovery has explicit execution and completion gates",
+          "scenarios": [
+            "Preparation succeeds",
+            "Readiness ages or inputs change"
+          ]
+        },
+        {
+          "name": "Native payload descriptors match immutable bytes",
+          "scenarios": [
+            "Correct payload and reuse",
+            "Incorrect digest",
+            "Payload bounds"
+          ]
+        },
+        {
+          "name": "Guardian preserves rejection and diagnostic evidence",
+          "scenarios": [
+            "Routed sealed wrong-content request",
+            "Invalid attribution or descriptor",
+            "Concurrent failures or diagnostic persistence error",
+            "Historical lifecycle",
+            "Preflight library rejection retains original structured facts"
+          ]
+        },
+        {
+          "name": "Retry and recovery policy is predictable",
+          "scenarios": [
+            "Retry option omitted",
+            "Transient offload or low storage",
+            "Remote integrity mismatch"
+          ]
+        },
+        {
+          "name": "Baselines and affected evidence are reproducible",
+          "scenarios": [
+            "Existing working tree differs from clean checkout",
+            "Packaged source changes",
+            "Deterministic planning replay",
+            "Exact source identity depends on inherited line endings",
+            "Stock build controller requires canonical LF metadata",
+            "Peer-observer unit runs on a non-WSL Linux CI host",
+            "Portable unit fixture preserves non-WSL rejection"
+          ]
+        },
+        {
+          "name": "Native-probe qualification path is integrated before qualification",
+          "scenarios": [
+            "Mixed-width queue properties",
+            "Branch identifier shorter than eight bytes",
+            "Policy decision names a manifest identity",
+            "Loaded path differs from manifest backend",
+            "Qualification bundle supplies a copied engine client",
+            "Postdecode prefix queue overflows before policy entry",
+            "Pre-detector queue overflows before policy entry",
+            "Queue-drop identity or ordering is invalid",
+            "Preprocessing evidence is missing without a verified prefix drop",
+            "Independent and shared prefix-drop coverage",
+            "Native stage resource sidecar",
+            "Pre-check fails"
+          ]
+        },
+        {
+          "name": "Published policy decisions preserve canonical linkage and actual runtime history",
+          "scenarios": [
+            "Worker traces and runtime sequence gaps enter a measurement cohort",
+            "Publication preserves live decision and feedback authority",
+            "Excluded feedback influences a measured adaptive decision",
+            "Nonadaptive publication preserves strict closure without adaptive history",
+            "Publication mapping or original proof is corrupt",
+            "Runtime history or projected ordering is incomplete",
+            "History input exceeds its bound or is malformed",
+            "Existing strict historical records are read",
+            "Independent Q4 reader runs under its isolated loader",
+            "Original producer success has rejected cold evidence"
+          ]
+        },
+        {
+          "name": "Qualification reconciles the complete operational request domain",
+          "scenarios": [
+            "Allowed predecessor and pilot traffic completes",
+            "Unknown traffic preserves aggregate totals",
+            "Separate invocations repeat a wire identity",
+            "A measurement request finishes during drain",
+            "Request or terminal capture is incomplete",
+            "Operational evidence exceeds bounds or cannot persist",
+            "Domain custody or schema is invalid",
+            "Only legacy aggregate evidence exists",
+            "Source accounting defect is found before pilots",
+            "Component pair reconciles all phases"
+          ]
+        },
+        {
+          "name": "Qualification and Q4 are complete before full launch readiness",
+          "scenarios": [
+            "A269 has eight historical cells",
+            "Fresh qualification and Q4 succeed",
+            "A prerequisite is missing or fails"
+          ]
+        },
+        {
+          "name": "Cloud admission uses an actual dated guarantee",
+          "scenarios": [
+            "Confirmation missing",
+            "Sizing or readback exceeds the guarantee"
+          ]
+        },
+        {
+          "name": "Launch handoff preserves the full experiment",
+          "scenarios": [
+            "Unstarted package validates",
+            "Altered matrix or malformed command"
+          ]
+        },
+        {
+          "name": "Documentation and conformance are truthful",
+          "scenarios": [
+            "Documentation reviewed",
+            "Required CI is unavailable",
+            "Clean checkout lacks the frozen model assets",
+            "Hosted test failure or interruption occurs before the suite report"
+          ]
+        },
+        {
+          "name": "Recovery first proves a bounded genuine native pair",
+          "scenarios": [
+            "Forced-resource diagnostic pair completes",
+            "Static-hybrid inputs are not yet materialized",
+            "Diagnostic authority or accounting is incomplete",
+            "Selected component authority materializes",
+            "Selected physical or declaration row drifts",
+            "Component authority reaches a full entrypoint",
+            "Component request is outside its original pair"
+          ]
+        },
+        {
+          "name": "Operations retain bounded ownership and worker termination facts",
+          "scenarios": [
+            "Worker exits during a diagnostic",
+            "Historical guardian already failed",
+            "Original launcher terminates during container ID publication",
+            "Early broker setup fails with a validated durable journal",
+            "Quiescent broker has no durable terminal response",
+            "Validated worker transport fails before frontend exit is visible",
+            "Worker history contains frequent health-check events",
+            "Original native measurement has a failed captured terminal"
+          ]
+        },
+        {
+          "name": "Scientific interpretation matches the executed workload",
+          "scenarios": [
+            "Relative quality passes despite absolute deadline misses",
+            "Only proxy or partial resource evidence exists",
+            "Frozen policy labels are placement aliases",
+            "Deadline and attributed elapsed measurements are saturated or confounded",
+            "Decoder mechanism research precedes an adopted regime",
+            "Research fails before source or decoder admission",
+            "A strict research file pin fails without original path facts",
+            "A mapped library has several hard links",
+            "Reviewed mapped-input correction precedes another research attempt",
+            "Unchanged intake runs before mechanism research completes"
+          ]
+        },
+        {
+          "name": "Component release closes durable results and repository evidence",
+          "scenarios": [
+            "Full benchmark finishes with valid negative results",
+            "Accepted pairs exist when transient offload fails",
+            "Completion or final repository gate is missing",
+            "Selected component release finishes"
+          ]
+        },
+        {
+          "name": "CPU CI observation preserves native process invariants",
+          "scenarios": [
+            "Full-suite worker enters strict native containment",
+            "Scheduled stack request is late or absent",
+            "Trace channel overflows or persistence fails",
+            "Full-suite child crashes or is interrupted",
+            "Namespace setup emits a generic denial",
+            "Exact executable userns policy denial is observed",
+            "Observer repair passes focused checks",
+            "Original audit clock differs from the fine syscall clock",
+            "New coarse-clock evidence is missing or inconsistent",
+            "A legacy denial record has no new clock contract"
+          ]
+        },
+        {
+          "name": "CI executes explicit portable contracts and preserves physical integration obligations",
+          "scenarios": [
+            "Hosted executable is an alias and repository imports are isolated",
+            "Native build succeeds but a runtime factory is absent",
+            "Shared imports reach new component helpers in a sibling image",
+            "Pure contract tests depend on ignored historical fixture files",
+            "Manifest omits a portable test or hides a mandatory failure",
+            "Actual physical integration prerequisites are unavailable or historical",
+            "Portable lane succeeds with remaining campaign obligations"
+          ]
+        },
+        {
+          "name": "Selected pair owns one physically held validation session",
+          "scenarios": [
+            "Borrowed context is foreign or closed",
+            "One original pair traverses repeated runtime stages",
+            "Public validator runs independently",
+            "Held source or live engine facts drift",
+            "Cold consumer fails after real native arms",
+            "Runtime improvement is assessed"
+          ]
+        },
+        {
+          "name": "Relocated selected execution preserves genuine physical validation",
+          "scenarios": [
+            "Genuine finite inputs are copied to a new root",
+            "A historical closure or execution receipt is reused after relocation",
+            "A relocated pair completes or exceeds its original deadline"
+          ]
+        }
+      ]
+    }
+  ]
+}

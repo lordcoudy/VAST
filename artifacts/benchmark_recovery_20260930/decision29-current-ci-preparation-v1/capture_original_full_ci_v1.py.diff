@@ -1,0 +1,24 @@
+--- capture_original_full_ci_v1.py original
++++ capture_original_full_ci_v1.py Decision29
+@@ -12,8 +12,8 @@
+ 
+ HERE = Path(__file__).parent
+ OUT = HERE / 'original-full-ci-attempt01'
+-ROOT = Path('/home/s-a-balashov/work/vast-current-source-ci-20261001-current95')
+-RESULT = Path('/home/s-a-balashov/work/vast-current-source-ci-20261001-current95-original-output')
++ROOT = Path('/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29')
++RESULT = Path('/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-original-output')
+ assert len(sys.argv) == 4, 'usage: capture ACTUAL_COMMIT ACTUAL_RECIPE_SIZE ACTUAL_RECIPE_SHA256'
+ COMMIT = sys.argv[1]
+ assert len(COMMIT) == 40 and all(c in '0123456789abcdef' for c in COMMIT)
+@@ -122,6 +122,10 @@
+     assert len(recipe_raw) == RECIPE_SIZE and hashlib.sha256(recipe_raw).hexdigest() == RECIPE_SHA
+     recipe = json.loads(recipe_raw)
+     assert recipe['source_commit'] == COMMIT and recipe['checkout'] == str(ROOT) and recipe['output'] == str(RESULT)
++    assert recipe['benchmark_root_commit_untouched'] == 'a00aa57f7d9534f8e7920f14f70d6a75a23570ed' and COMMIT != recipe['benchmark_root_commit_untouched']
++    assert recipe['benchmark_source_impact_review']=={'path': '/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-clock-independent-source-review-v1/review.v1.json', 'size_bytes': 9951, 'sha256': '835bf6c7c991c78062adc39459b34f51eab7c598c71185a7b00fe777f62f9d6d'}
++    assert recipe['benchmark_source_impact_inventory']=={'path': '/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-clock-independent-source-review-v1/source-impact.v1.json', 'size_bytes': 160709, 'sha256': 'dcdc63621620f579653574d0a1380baac2d683c117d83b8b194b46e67abb2a41'}
++    assert recipe['reviewed_ci_path_pins']=={'scripts/ci_namespace_diagnostic_v1.py': {'size_bytes': 25359, 'sha256': 'bc69cdd5db314b7421d87fdaeb3a88d9411ae0f2e29713f75bc8909dfe8b0292'}, 'scripts/ci_userns_profile_v1.py': {'size_bytes': 28890, 'sha256': '5bd7622130c41d8bef03d2da87f87c987738478a5b77412857fd85f24c73cf43'}, 'tests/test_ci_namespace_diagnostic_v1.py': {'size_bytes': 33264, 'sha256': '5c8519ff1a1d600ba6ed72051498dd0da62f68d89e29b48079f546315bb7ac64'}, 'tests/test_ci_userns_profile_v1.py': {'size_bytes': 41955, 'sha256': 'dbcea702679255fd64bb223875385fc1800ed0946958e83ceefda59a0fdc2695'}}
+     for relative, expected in recipe['source_pins'].items():
+         actual = pin(ROOT / relative)
+         assert actual['size_bytes'] == expected['size_bytes'] and actual['sha256'] == expected['sha256']

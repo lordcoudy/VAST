@@ -1,0 +1,2683 @@
+{
+  "CPU_job_id": 111184814376,
+  "all_2992_unique_start_terminal_and_outcome_joins": true,
+  "all_eight_hosted_model_assets_downloaded_and_verified": true,
+  "all_four_original_leaves": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-D-original-retention-v1/job-111184814376.original.log",
+      "sha256": "756d0a37db153a01dd233c7f0aa547cc309c4b145d530af9935a730c07352565",
+      "size_bytes": 91777
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-D-original-retention-v1/job-111184814522.original.log",
+      "sha256": "189329d8a7f62b95e9dc2fea7685307f220de9d4f7f5fa6a90847e3829052fea",
+      "size_bytes": 33976
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-D-original-retention-v1/artifact-11271763780.original.zip",
+      "sha256": "7a4893cb85b710b015e279c04e144de0867f4707a89a33bcbcaa746572039ccb",
+      "size_bytes": 2101204
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-D-original-retention-v1/artifact-11271642095.original.zip",
+      "sha256": "fe3fa55f71fd4d0fecad4a5dfbc71be88bf544e629016fbd7e20f358ed1a21ad",
+      "size_bytes": 480204
+    }
+  ],
+  "all_portable_skips_exactly_allowlisted": true,
+  "blocking_findings": [],
+  "both_job_conclusions": "success",
+  "clock_policy_join": {
+    "after_original": {
+      "available": true,
+      "boot_id": "50e4da5d-b2da-4e8e-96df-17a57a4c2a67",
+      "clock_id": 5,
+      "clock_name": "CLOCK_REALTIME_COARSE",
+      "original_pid": 3758,
+      "phase": "after_failed_setgroups_open",
+      "started_monotonic_ns": 121833688903,
+      "terminal_monotonic_ns": 121833689574,
+      "value_ns": 1791023604417620537
+    },
+    "audit_ns": 1791023604417000000,
+    "before_original": {
+      "available": true,
+      "boot_id": "50e4da5d-b2da-4e8e-96df-17a57a4c2a67",
+      "clock_id": 5,
+      "clock_name": "CLOCK_REALTIME_COARSE",
+      "original_pid": 3758,
+      "phase": "before_unshare",
+      "started_monotonic_ns": 121833482718,
+      "terminal_monotonic_ns": 121833484700,
+      "value_ns": 1791023604417620537
+    },
+    "observed_millisecond_bins": [
+      1791023604417000000,
+      1791023604417000000
+    ],
+    "version": 2
+  },
+  "decoded_original_controls": [
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-D-original-independent-review-v1/cpu.report.original.json",
+        "sha256": "41b71c1dd134148b346eda2a7215e6d643793d3b0c2b32d334f5e11ec8e34724",
+        "size_bytes": 1833210
+      },
+      "original_member": {
+        "crc32": 2324546001,
+        "name": "report.json",
+        "sha256": "41b71c1dd134148b346eda2a7215e6d643793d3b0c2b32d334f5e11ec8e34724",
+        "size_bytes": 1833210
+      },
+      "original_zip": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-D-original-retention-v1/artifact-11271763780.original.zip",
+        "sha256": "7a4893cb85b710b015e279c04e144de0867f4707a89a33bcbcaa746572039ccb",
+        "size_bytes": 2101204
+      },
+      "raw_member_bytes_unchanged": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-D-original-independent-review-v1/cpu.source-before.original.json",
+        "sha256": "105568f276b37f57aad59b81efaa6524c816b4e595679da56807a1087daba0ea",
+        "size_bytes": 1270968
+      },
+      "original_member": {
+        "crc32": 862290501,
+        "name": "tracked-source.before.json",
+        "sha256": "105568f276b37f57aad59b81efaa6524c816b4e595679da56807a1087daba0ea",
+        "size_bytes": 1270968
+      },
+      "original_zip": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-D-original-retention-v1/artifact-11271763780.original.zip",
+        "sha256": "7a4893cb85b710b015e279c04e144de0867f4707a89a33bcbcaa746572039ccb",
+        "size_bytes": 2101204
+      },
+      "raw_member_bytes_unchanged": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-D-original-independent-review-v1/cpu.source-after.original.json",
+        "sha256": "105568f276b37f57aad59b81efaa6524c816b4e595679da56807a1087daba0ea",
+        "size_bytes": 1270968
+      },
+      "original_member": {
+        "crc32": 862290501,
+        "name": "tracked-source.after.json",
+        "sha256": "105568f276b37f57aad59b81efaa6524c816b4e595679da56807a1087daba0ea",
+        "size_bytes": 1270968
+      },
+      "original_zip": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-D-original-retention-v1/artifact-11271763780.original.zip",
+        "sha256": "7a4893cb85b710b015e279c04e144de0867f4707a89a33bcbcaa746572039ccb",
+        "size_bytes": 2101204
+      },
+      "raw_member_bytes_unchanged": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-D-original-independent-review-v1/cpu.unittest-child.report.original.json",
+        "sha256": "add39657ba85d0e2ceaee4d3175789545321dadba70e5439963631d361236042",
+        "size_bytes": 1762733
+      },
+      "original_member": {
+        "crc32": 2424389912,
+        "name": "unittest-child.report.json",
+        "sha256": "add39657ba85d0e2ceaee4d3175789545321dadba70e5439963631d361236042",
+        "size_bytes": 1762733
+      },
+      "original_zip": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-D-original-retention-v1/artifact-11271763780.original.zip",
+        "sha256": "7a4893cb85b710b015e279c04e144de0867f4707a89a33bcbcaa746572039ccb",
+        "size_bytes": 2101204
+      },
+      "raw_member_bytes_unchanged": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-D-original-independent-review-v1/cpu.observer-terminal.original.json",
+        "sha256": "c98b171d8f8d1de5984495e5ae99c7f9246482eaf21cdebcd2f95c055809a565",
+        "size_bytes": 1484
+      },
+      "original_member": {
+        "crc32": 4177950327,
+        "name": "external-test-observer/terminal.v1.json",
+        "sha256": "c98b171d8f8d1de5984495e5ae99c7f9246482eaf21cdebcd2f95c055809a565",
+        "size_bytes": 1484
+      },
+      "original_zip": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-D-original-retention-v1/artifact-11271763780.original.zip",
+        "sha256": "7a4893cb85b710b015e279c04e144de0867f4707a89a33bcbcaa746572039ccb",
+        "size_bytes": 2101204
+      },
+      "raw_member_bytes_unchanged": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-D-original-independent-review-v1/cpu.joined-denial.original.json",
+        "sha256": "3209eb10ee429ecaf817e7afaeb45f6328c12114d90e18a952ae22000b5db7b7",
+        "size_bytes": 1564
+      },
+      "original_member": {
+        "crc32": 901755781,
+        "name": "namespace-profile/joined-denial.json",
+        "sha256": "3209eb10ee429ecaf817e7afaeb45f6328c12114d90e18a952ae22000b5db7b7",
+        "size_bytes": 1564
+      },
+      "original_zip": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-D-original-retention-v1/artifact-11271763780.original.zip",
+        "sha256": "7a4893cb85b710b015e279c04e144de0867f4707a89a33bcbcaa746572039ccb",
+        "size_bytes": 2101204
+      },
+      "raw_member_bytes_unchanged": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-D-original-independent-review-v1/cpu.profile-lifecycle.original.json",
+        "sha256": "8fcc62677a95c52c5292cc14eeb8c54c555dd2b6c46b4a60c48a553531a93ddb",
+        "size_bytes": 975
+      },
+      "original_member": {
+        "crc32": 3906617008,
+        "name": "namespace-profile/profile-lifecycle.json",
+        "sha256": "8fcc62677a95c52c5292cc14eeb8c54c555dd2b6c46b4a60c48a553531a93ddb",
+        "size_bytes": 975
+      },
+      "original_zip": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-D-original-retention-v1/artifact-11271763780.original.zip",
+        "sha256": "7a4893cb85b710b015e279c04e144de0867f4707a89a33bcbcaa746572039ccb",
+        "size_bytes": 2101204
+      },
+      "raw_member_bytes_unchanged": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-D-original-independent-review-v1/cpu.model-acquisition.original.json",
+        "sha256": "09b69cf7ccc19f8e7892ae91c5bb5dfaa8b5a2e04e0875980b13243a8d5ffe32",
+        "size_bytes": 3472
+      },
+      "original_member": {
+        "crc32": 3735944538,
+        "name": "model-acquisition/report.json",
+        "sha256": "09b69cf7ccc19f8e7892ae91c5bb5dfaa8b5a2e04e0875980b13243a8d5ffe32",
+        "size_bytes": 3472
+      },
+      "original_zip": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-D-original-retention-v1/artifact-11271763780.original.zip",
+        "sha256": "7a4893cb85b710b015e279c04e144de0867f4707a89a33bcbcaa746572039ccb",
+        "size_bytes": 2101204
+      },
+      "raw_member_bytes_unchanged": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-D-original-independent-review-v1/host.report.original.json",
+        "sha256": "0bde089dfa9740bcec8474bc0e8fdb5824935c90b07e213671a5d3ac3bdc4f9b",
+        "size_bytes": 1486
+      },
+      "original_member": {
+        "crc32": 3199131345,
+        "name": "report.json",
+        "sha256": "0bde089dfa9740bcec8474bc0e8fdb5824935c90b07e213671a5d3ac3bdc4f9b",
+        "size_bytes": 1486
+      },
+      "original_zip": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-D-original-retention-v1/artifact-11271642095.original.zip",
+        "sha256": "fe3fa55f71fd4d0fecad4a5dfbc71be88bf544e629016fbd7e20f358ed1a21ad",
+        "size_bytes": 480204
+      },
+      "raw_member_bytes_unchanged": true
+    }
+  ],
+  "elapsed_s": 0.3052333419909701,
+  "hardware_acceptance": false,
+  "host_job_id": 111184814522,
+  "joined_denial_original": {
+    "inputs": [
+      {
+        "path": "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python3.12",
+        "sha256": "2ce74da59bd24c1301a77e90b94abfe52bc14d54c0f79f565665b5a59d62734b",
+        "size_bytes": 17744
+      },
+      {
+        "path": "/home/runner/work/_temp/vast-cpu-checks/namespace-diagnostic/capture.json",
+        "sha256": "987fdd68a9d6bd42eaec4e815c756fae76585c378aa19dccacdab9c931e8f342",
+        "size_bytes": 984
+      },
+      {
+        "path": "/home/runner/work/_temp/vast-cpu-checks/namespace-diagnostic/stdout.raw",
+        "sha256": "8336e19a8ce018a7af93c27576be3c7f0f62c2781fb05a423b00ae68c9ccea07",
+        "size_bytes": 2326
+      },
+      {
+        "path": "/home/runner/work/_temp/vast-cpu-checks/namespace-diagnostic/kernel-denial.json",
+        "sha256": "c49650b1cb6c4efeeefe0b5e8c4a1661390e139daf037640831f612173732aad",
+        "size_bytes": 1553
+      },
+      {
+        "path": "/home/runner/work/_temp/vast-cpu-checks/namespace-diagnostic/kernel-query/capture.json",
+        "sha256": "8b300cf5447d43237c8e87f8262eeed0353e97093a49ecb5835b1818231c4bcf",
+        "size_bytes": 1297
+      },
+      {
+        "path": "/home/runner/work/_temp/vast-cpu-checks/namespace-diagnostic/kernel-query/stdout.raw",
+        "sha256": "b3763592a255f28ea5927edd7ab711da8f509789fc572a4d01583aa93e034d7f",
+        "size_bytes": 772
+      }
+    ],
+    "join": {
+      "audit_clock_basis": "CLOCK_REALTIME_COARSE",
+      "audit_clock_bracket_ns": [
+        1791023604417000000,
+        1791023604417000000
+      ],
+      "audit_wall_time_ns": 1791023604417000000,
+      "boot_id": "50e4da5d-b2da-4e8e-96df-17a57a4c2a67",
+      "denied_capability": "sys_admin",
+      "denied_profile": "unprivileged_userns",
+      "failed_operation": "open:/proc/self/setgroups",
+      "initial_label": "unconfined",
+      "namespace_clock_contract_version": 2,
+      "pid": 3758,
+      "python": "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python3.12"
+    }
+  },
+  "limits": [
+    "No hosted command, tests, builds, profile or query was replayed; every archive member was streamed and SHA/CRC/path checked.",
+    "Original source inventory equality and commit match are provider facts; the hosted checkout itself is not locally accessible.",
+    "Hosted interpreter bytes are not in the ZIP; the first joined executable descriptor was not freshly rehashed.",
+    "The observer explicitly does not establish descendant quiescence from original child status; no numeric FD count or global process absence is invented.",
+    "88 allowlisted portable skips and 9 deferred integrations do not prove their behavior or hardware/scientific acceptance.",
+    "Local D full CI and scientific release evidence are independent; historical P/C failures remain unchanged."
+  ],
+  "local_ext4_full_CI_acceptance": null,
+  "mandatory_hosted_CPU_CI_pass_for_exact_commit": true,
+  "nine_deferred_integration_declarations": [
+    {
+      "reason": "Verifies exact historical image, dependency bytes and real frozen fragment, rather than a unit schema predicate",
+      "required_capabilities": [
+        "exact original DeepStream physical image evidence/dependency source scope"
+      ],
+      "source": {
+        "line": 59,
+        "path": "tests/test_checkpoint_deepstream_runtime_image_evidence_v1.py"
+      },
+      "test_id": "test_checkpoint_deepstream_runtime_image_evidence_v1.DeepStreamRuntimeImageEvidenceV1Tests.test_exact_materialized_image_evidence_and_qualification_fragment"
+    },
+    {
+      "reason": "Actual historical all-system parity/model/image materialization chain",
+      "required_capabilities": [
+        "original physical full qualification/model/image inputs with matching source scope"
+      ],
+      "source": {
+        "line": 178,
+        "path": "tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py"
+      },
+      "test_id": "test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_exact_accepted_parity_preprocessing_and_runtime_images_are_bound"
+    },
+    {
+      "reason": "Actual historical all-system parity/model/image materialization chain",
+      "required_capabilities": [
+        "original physical full qualification/model/image inputs with matching source scope"
+      ],
+      "source": {
+        "line": 81,
+        "path": "tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py"
+      },
+      "test_id": "test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_phase_one_materializes_exact_physical_binding_fragment"
+    },
+    {
+      "reason": "Explicit actual Docker run over held inputs, with real exact image/GPU requirements",
+      "required_capabilities": [
+        "exact live pinned Docker/socket/image/GPU"
+      ],
+      "source": {
+        "line": 900,
+        "path": "tests/test_checkpoint_openvino_gva_publication_runtime_v3.py"
+      },
+      "test_id": "test_checkpoint_openvino_gva_publication_runtime_v3.OpenVINOGVAPublicationRuntimeV3Tests.test_live_daemon_reads_private_held_fd_copy"
+    },
+    {
+      "reason": "Actual require_files=True rehashes original complete media/receipt graph",
+      "required_capabilities": [
+        "exact original complete corpus and receipt graph"
+      ],
+      "source": {
+        "line": 65,
+        "path": "tests/test_kpp_frozen_reconstruction_v1_dataset_integration.py"
+      },
+      "test_id": "test_kpp_frozen_reconstruction_v1_dataset_integration.KppFrozenReconstructionV1DatasetIntegrationTests.test_full_on_disk_corpus_and_receipt_graph_validate"
+    },
+    {
+      "reason": "Actual require_files=True rehashes original complete media/receipt graph",
+      "required_capabilities": [
+        "exact original complete corpus and receipt graph"
+      ],
+      "source": {
+        "line": 126,
+        "path": "tests/test_kpp_iss_publication_v3_dataset_integration.py"
+      },
+      "test_id": "test_kpp_iss_publication_v3_dataset_integration.KppIssPublicationV3DatasetIntegrationTests.test_require_files_rehashes_the_complete_exact_corpus"
+    },
+    {
+      "reason": "Actual full patch/receipt/module equality; old g cannot become current selected equality by copying metadata",
+      "required_capabilities": [
+        "matching current full qualification source/receipt domain; live method additionally exact Docker/worker/model grant"
+      ],
+      "source": {
+        "line": 83,
+        "path": "tests/test_publication_runtime_frozen_identity_constants_v1.py"
+      },
+      "test_id": "test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_current_qualification_fragments_match_physical_receipts"
+    },
+    {
+      "reason": "Actual full patch/receipt/module equality; old g cannot become current selected equality by copying metadata",
+      "required_capabilities": [
+        "matching current full qualification source/receipt domain; live method additionally exact Docker/worker/model grant"
+      ],
+      "source": {
+        "line": 67,
+        "path": "tests/test_publication_runtime_frozen_identity_constants_v1.py"
+      },
+      "test_id": "test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_fix_benchmark_patch_matches_exact_runtime_constants"
+    },
+    {
+      "reason": "Actual full patch/receipt/module equality; old g cannot become current selected equality by copying metadata",
+      "required_capabilities": [
+        "matching current full qualification source/receipt domain; live method additionally exact Docker/worker/model grant"
+      ],
+      "source": {
+        "line": 406,
+        "path": "tests/test_publication_runtime_frozen_identity_constants_v1.py"
+      },
+      "test_id": "test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_live_fix_benchmark_preflight_matches_runtime_materializer"
+    }
+  ],
+  "no_provider_or_target_action": true,
+  "observer_original": {
+    "absolute_deadline_ns": 5396854245469,
+    "argv": [
+      "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python3.12",
+      "-I",
+      "-B",
+      "/home/runner/work/VAST/VAST/scripts/run_ci_checks.py",
+      "--suite-child",
+      "--output-dir",
+      "/home/runner/work/_temp/vast-cpu-checks",
+      "--trace-fd",
+      "12",
+      "--event-fd",
+      "14",
+      "--stop-fd",
+      "15",
+      "--expected-profile",
+      "vast-ci-userns-22aa1245cf0741c3afa11aec42f88af1 (unconfined)"
+    ],
+    "cleanup_deadline_ns": 1332039233020,
+    "clock": "same_kernel_monotonic_ns",
+    "descendant_quiescence": "not established by original-child status",
+    "failure": null,
+    "finished_monotonic_ns": 1317039472135,
+    "forced_sigkill": false,
+    "forced_sigterm": false,
+    "kind": "vast_external_ci_test_observer_v1",
+    "owner": {
+      "boot_id": "50e4da5d-b2da-4e8e-96df-17a57a4c2a67",
+      "executable_realpath": "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python3.12",
+      "executable_stat": {
+        "st_dev": 66305,
+        "st_gid": 1001,
+        "st_ino": 2439317,
+        "st_mode": 33261,
+        "st_nlink": 1,
+        "st_size": 17744,
+        "st_uid": 1001
+      },
+      "gid": 1001,
+      "pgid": 3769,
+      "pid": 3769,
+      "ppid": 3452,
+      "startticks": 12201,
+      "uid": 1001
+    },
+    "pidfd_acquisition_failed": false,
+    "pidfd_failure": null,
+    "pipe_eof": {
+      "control": true,
+      "trace": true
+    },
+    "ready": true,
+    "requests_sent": 19,
+    "requests_stopped_before_disposition_restore": true,
+    "response_channel_bytes": 3939,
+    "response_matching": "ordinary signals may coalesce; no one-to-one or timely claim",
+    "responses_completed": 19,
+    "responses_started": 19,
+    "returncode": 0,
+    "signal": null,
+    "started_monotonic_ns": 122019397934,
+    "successful": true,
+    "trace_bytes": 45671,
+    "unmatched_or_coalesced_requests_possible": 0
+  },
+  "original_host_report": {
+    "changed_tracked_paths": [],
+    "commit": "3c025b29b3c1d5275c2ec693410e4b83700583de",
+    "diagnostic_passed": true,
+    "diagnostic_tests_only": true,
+    "full_ci_successful": false,
+    "hardware_acceptance": false,
+    "kind": "vast_cpu_host_diagnostics_v1",
+    "original_process": {
+      "argv": [
+        "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python",
+        "-I",
+        "-B",
+        "-c",
+        "import sys,unittest; sys.path[:0]=sys.argv[1:3]; import run_ci_checks as checks; suite=unittest.defaultTestLoader.loadTestsFromNames(sys.argv[3:]); result=unittest.TextTestRunner(verbosity=2,resultclass=checks.RecordedResult).run(suite); sys.exit(0 if result.wasSuccessful() and result.testsRun==2 and set(sys.argv[3:])<=set(result.successes) else 1)",
+        "/home/runner/work/VAST/VAST/tests",
+        "/home/runner/work/VAST/VAST/scripts",
+        "test_analytics_model_contract.AnalyticsModelContractTests.test_repository_manifest_is_complete_and_hash_bound",
+        "test_analytics_peer_identity.AnalyticsPeerIdentityAuthorityTests.test_observer_reads_exact_proc_file_and_small_docker_projection"
+      ],
+      "cleanup_error": null,
+      "elapsed_s": 1.369504615999972,
+      "returncode": 0,
+      "timed_out": false
+    },
+    "test_ids": [
+      "test_analytics_model_contract.AnalyticsModelContractTests.test_repository_manifest_is_complete_and_hash_bound",
+      "test_analytics_peer_identity.AnalyticsPeerIdentityAuthorityTests.test_observer_reads_exact_proc_file_and_small_docker_projection"
+    ]
+  },
+  "original_kernel_record": {
+    "MESSAGE": "audit: type=1400 audit(1791023604.417:128): apparmor=\"DENIED\" operation=\"capable\" class=\"cap\" profile=\"unprivileged_userns\" pid=3758 comm=\"python3.12\" capability=21  capname=\"sys_admin\"",
+    "PRIORITY": "5",
+    "SYSLOG_FACILITY": "0",
+    "SYSLOG_IDENTIFIER": "kernel",
+    "_BOOT_ID": "50e4da5db2da4e8e96df17a57a4c2a67",
+    "_HOSTNAME": "runnervm8df0l",
+    "_MACHINE_ID": "bb9ebc7b4ed8498385fd3b7f0a389054",
+    "_RUNTIME_SCOPE": "system",
+    "_SOURCE_MONOTONIC_TIMESTAMP": "121896047",
+    "_TRANSPORT": "kernel",
+    "__CURSOR": "s=34c041d7a60c4faa8b912215cb20de21;i=4815;b=50e4da5db2da4e8e96df17a57a4c2a67;m=7430ab2;t=65ced2db9ca6c;x=c644ce4bcb02bda6",
+    "__MONOTONIC_TIMESTAMP": "121834162",
+    "__REALTIME_TIMESTAMP": "1791023604419180",
+    "__SEQNUM": "18453",
+    "__SEQNUM_ID": "34c041d7a60c4faa8b912215cb20de21"
+  },
+  "original_provider_metadata": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-D-original-retention-v1/original-provider-metadata.v1.json",
+    "sha256": "55eb51bb16e0ba16425eeac1714e777fb119948427862aefaaaeb9ad132110ea",
+    "size_bytes": 26804
+  },
+  "original_retention_terminal": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-D-original-retention-v1/original-retention-terminal.v1.json",
+    "sha256": "b5e23b2b1dc053b92e27ec6f528dca54f64ac9f94c35bbc7090818cac5eadaba",
+    "size_bytes": 59801
+  },
+  "original_test_counts": {
+    "deferred_integration": 9,
+    "discovered": 3001,
+    "error": 0,
+    "failure": 0,
+    "missing_required_success": 0,
+    "selected": 2992,
+    "skip": 88,
+    "success": 2904
+  },
+  "owned_retainer_source": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-D-original-retention-v1/retain_originals_v1.py",
+    "sha256": "fd64baad9301accae368f8316c22bf87ea7420d94d7b37562ba2a3b584b2c276",
+    "size_bytes": 5915
+  },
+  "profile_child_observation": {
+    "actual_label": {
+      "path": "/proc/self/attr/current",
+      "value": "vast-ci-userns-22aa1245cf0741c3afa11aec42f88af1 (unconfined)"
+    },
+    "boot_id": "50e4da5d-b2da-4e8e-96df-17a57a4c2a67",
+    "executable": "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python3.12",
+    "expected_profile": "vast-ci-userns-22aa1245cf0741c3afa11aec42f88af1 (unconfined)",
+    "pid": 3769
+  },
+  "profile_original": {
+    "attempted": true,
+    "held_fds_released": true,
+    "load_phase": {
+      "cleanup_deadline_ns": 151908939439,
+      "execution_deadline_ns": 141908939439,
+      "started_monotonic_ns": 121908939439
+    },
+    "load_terminal": {
+      "capture_completed": true,
+      "failure": null,
+      "returncode": 0,
+      "timed_out": false
+    },
+    "load_verified": true,
+    "name": "vast-ci-userns-22aa1245cf0741c3afa11aec42f88af1",
+    "profile": {
+      "epoch": [
+        66305,
+        9446341,
+        33152,
+        1,
+        158,
+        1791023604493109060,
+        1791023604493109060
+      ],
+      "path": "/home/runner/work/_temp/vast-cpu-checks/namespace-profile/owned.profile",
+      "sha256": "3e448d76985e61fbbcfad61e3cd68c7c059b9858773b1f0e8d184b25b05c3d34",
+      "size_bytes": 158,
+      "stat": {
+        "st_dev": 66305,
+        "st_gid": 1001,
+        "st_ino": 9446341,
+        "st_mode": 33152,
+        "st_nlink": 1,
+        "st_size": 158,
+        "st_uid": 1001
+      }
+    },
+    "status": "completed",
+    "unload_phase": {
+      "cleanup_deadline_ns": 1347040312651,
+      "execution_deadline_ns": 1337040312651,
+      "started_monotonic_ns": 1317040312651
+    },
+    "unload_terminal": {
+      "capture_completed": true,
+      "failure": null,
+      "returncode": 0,
+      "timed_out": false
+    },
+    "unload_verified": true
+  },
+  "provider_conclusion": "success",
+  "provider_status": "completed",
+  "raw_checkout_bytes_match_commit": true,
+  "raw_test_start_terminal_log": {
+    "crc32": 2974670335,
+    "name": "unittest.original.log",
+    "sha256": "40d1b7da00e8c9318ef6af919ca5ecf4656b3d8fb4159994442294f24da6dbb8",
+    "size_bytes": 2007295
+  },
+  "required_native_test_ids_successful": [
+    "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_client_regression",
+    "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_policy_topology_regression",
+    "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_reset_queue_level_regression"
+  ],
+  "reviewable": true,
+  "reviewer": "/root/architecture_review",
+  "reviewer_handles_released": true,
+  "root_reported_original_retention_tool": {
+    "elapsed_s": 8.209994062955957,
+    "returncode": 0,
+    "tool_id": "afeea9"
+  },
+  "run_id": 37116707816,
+  "schema_version": 1,
+  "selection_manifest_path": ".ci/integration-test-selection.v1.json",
+  "selection_manifest_sha256": "09e9268069e88b957f9ae54a827960bc18ee13a00d4319994d108d3cb81a0805",
+  "six_built_targets": [
+    "vast_native_gst_probe",
+    "vast_checkpoint_source",
+    "gstadaptivescheduler",
+    "gstvastanalyticsterminal",
+    "gstvastanalyticsqueue",
+    "gstvastcheckpointprefixqueue"
+  ],
+  "skip_audit": [
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "DrvFS hard-link recovery requires WSL workspace",
+      "test_id": "test_backend_pair_archive_sizing_receipts_v1.BackendPairArchiveSizingReceiptsV1ContractTests.test_pair_archive_fd_anchored_hardlink_recovers_on_drvfs"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "canonical WSL publication venv is not installed",
+      "test_id": "test_backend_publication_output_transaction_production_v3.BackendPublicationOutputTransactionProductionV3Tests.test_canonical_wsl_venv_requires_plain_copied_python"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows directory custody attack",
+      "test_id": "test_backend_publication_output_transaction_v3.BackendPublicationOutputTransactionV3Tests.test_windows_directory_swap_before_native_custody_is_rejected"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows handle semantics only",
+      "test_id": "test_backend_publication_runtime_authority.RuntimeAuthorityTest.test_windows_native_query_failure_is_fail_closed"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows handle semantics only",
+      "test_id": "test_backend_publication_runtime_authority.RuntimeAuthorityTest.test_windows_parent_handles_deny_directory_replacement"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows handle semantics only",
+      "test_id": "test_backend_publication_runtime_authority.RuntimeAuthorityTest.test_windows_reparse_volume_and_duplicate_ids_are_fail_closed"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows handle semantics only",
+      "test_id": "test_backend_publication_runtime_authority.RuntimeAuthorityTest.test_windows_rewalk_file_id_mismatch_is_fail_closed"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows handle semantics only",
+      "test_id": "test_backend_runtime_validator_authority.BackendRuntimeValidatorAuthorityTest.test_windows_fresh_final_reopen_rejects_hardlink_drift"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows handle semantics only",
+      "test_id": "test_backend_runtime_validator_authority.BackendRuntimeValidatorAuthorityTest.test_windows_native_query_failure_is_fail_closed_and_cleans_handle"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows handle semantics only",
+      "test_id": "test_backend_runtime_validator_authority.BackendRuntimeValidatorAuthorityTest.test_windows_outer_root_identity_mismatch_is_fail_closed"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows handle semantics only",
+      "test_id": "test_backend_runtime_validator_authority.BackendRuntimeValidatorAuthorityTest.test_windows_parent_handle_denies_directory_replacement"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows handle semantics only",
+      "test_id": "test_backend_runtime_validator_authority.BackendRuntimeValidatorAuthorityTest.test_windows_reparse_volume_and_duplicate_ids_are_fail_closed"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows handle semantics only",
+      "test_id": "test_backend_runtime_validator_authority.BackendRuntimeValidatorAuthorityTest.test_windows_rewalk_file_id_mismatch_is_fail_closed"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows handle semantics only",
+      "test_id": "test_backend_runtime_validator_authority.BackendRuntimeValidatorAuthorityTest.test_windows_root_handle_denies_directory_replacement"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "real KPP AVI files are not present",
+      "test_id": "test_benchmark_contract.BenchmarkContractTests.test_kpp_real_avi_manifest_validates_real_files_and_fps_policy"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "existing_retired_schema_migration",
+      "reason": "schema-v1 fixture retained only as migration history",
+      "test_id": "test_checkpoint_model_parity.AssessmentTests.test_calibration_and_evaluation_sample_ids_must_be_disjoint"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "existing_retired_schema_migration",
+      "reason": "schema-v1 fixture retained only as migration history",
+      "test_id": "test_checkpoint_model_parity.AssessmentTests.test_calibration_minimum_and_numeric_tolerances_are_enforced"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "existing_retired_schema_migration",
+      "reason": "schema-v1 fixture retained only as migration history",
+      "test_id": "test_checkpoint_model_parity.AssessmentTests.test_complete_common_source_contract_passes"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "existing_retired_schema_migration",
+      "reason": "schema-v1 fixture retained only as migration history",
+      "test_id": "test_checkpoint_model_parity.AssessmentTests.test_image_command_cannot_pull_or_run"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "existing_retired_schema_migration",
+      "reason": "schema-v1 fixture retained only as migration history",
+      "test_id": "test_checkpoint_model_parity.AssessmentTests.test_lineage_preprocessing_and_toolchain_drift_fail_closed"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "existing_retired_schema_migration",
+      "reason": "schema-v1 fixture retained only as migration history",
+      "test_id": "test_checkpoint_model_parity.AssessmentTests.test_non_finite_tolerance_is_rejected"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "existing_retired_schema_migration",
+      "reason": "schema-v1 fixture retained only as migration history",
+      "test_id": "test_checkpoint_model_parity.AssessmentTests.test_openvino_gpu_execution_evidence_is_not_cuda"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "existing_retired_schema_migration",
+      "reason": "schema-v1 fixture retained only as migration history",
+      "test_id": "test_checkpoint_model_parity.AssessmentTests.test_repository_state_is_honestly_blocked"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "existing_retired_schema_migration",
+      "reason": "schema-v1 fixture retained only as migration history",
+      "test_id": "test_checkpoint_model_parity.AssessmentTests.test_symlinked_model_artifact_is_not_accepted"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "existing_retired_schema_migration",
+      "reason": "schema-v1 fixture retained only as migration history",
+      "test_id": "test_checkpoint_model_parity.AssessmentTests.test_verified_equivalent_derivations_can_replace_a_local_source"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows share-mode custody only",
+      "test_id": "test_checkpoint_model_parity.ManifestContractTests.test_manifest_ancestor_custody_blocks_parent_rename_aba"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows share-mode custody only",
+      "test_id": "test_checkpoint_model_parity.ManifestContractTests.test_manifest_custody_blocks_same_size_in_place_rewrite_with_restored_mtime"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows pre-custody drift only",
+      "test_id": "test_checkpoint_model_parity.ManifestContractTests.test_manifest_rejects_same_size_rewrite_before_native_custody"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows ctime views only",
+      "test_id": "test_checkpoint_model_parity.ManifestContractTests.test_windows_cross_view_ignores_only_ctime_and_each_view_binds_it"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows path-view ctime only",
+      "test_id": "test_checkpoint_model_parity.ManifestContractTests.test_windows_same_view_callsites_reject_ctime_only_drift"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "local physical attempt2 evidence is unavailable",
+      "test_id": "test_checkpoint_model_parity_v4.ModelParityV4Test.test_actual_attempt2_patch_allows_exact_refrozen_base_producers"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows handle semantics only",
+      "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_windows_oversized_component_is_rejected_before_ntcreatefile"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows handle semantics only",
+      "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_windows_root_parent_final_reparse_and_rewalk_drift_are_fail_closed"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows handle semantics only",
+      "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_windows_verification_handle_cleanup_failure_is_fail_closed"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows retained failure candidate only",
+      "test_id": "test_extract_kpp_legacy_iss.ExtractKppLegacyIssTests.test_authoritative_failure_retains_custodied_private_candidate"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows reparse-point rejection only",
+      "test_id": "test_extract_kpp_legacy_iss.ExtractKppLegacyIssTests.test_windows_custody_rejects_directory_link_swap_candidate"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows directory-handle custody only",
+      "test_id": "test_extract_kpp_legacy_iss.ExtractKppLegacyIssTests.test_windows_directory_handles_hold_custody_and_publish_no_replace"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows rollback fail-safe only",
+      "test_id": "test_extract_kpp_legacy_iss.ExtractKppLegacyIssTests.test_windows_private_create_retains_explicitly_when_disposition_fails"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows atomic private create only",
+      "test_id": "test_extract_kpp_legacy_iss.ExtractKppLegacyIssTests.test_windows_private_create_returns_custody_without_create_open_gap"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows exact-handle rollback only",
+      "test_id": "test_extract_kpp_legacy_iss.ExtractKppLegacyIssTests.test_windows_private_create_rolls_back_every_post_create_validation_failure"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows retained failure candidate only",
+      "test_id": "test_freeze_kpp_legacy_iss_v2_transcodes.FreezeKppLegacyIssV2TranscodesTests.test_authoritative_freeze_failure_retains_private_candidate"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows custody negatives only",
+      "test_id": "test_freeze_kpp_legacy_iss_v2_transcodes.FreezeKppLegacyIssV2TranscodesTests.test_windows_freeze_custody_blocks_rename_and_preserves_collision"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "bounded cleanup retry targets WinError 145",
+      "test_id": "test_kpp_legacy_iss_v2_offline_image_intake.OfflineImageIntakeTests.test_windows_temporary_directory_cleanup_retries_only_directory_not_empty"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "workspace filesystem is already native Linux ext",
+      "test_id": "test_kpp_legacy_iss_v2_secondary_sensitivity_executor.KppLegacyIssV2SecondarySensitivityExecutorTests.test_default_watchdog_provisioner_rejects_non_native_workspace_filesystem"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows rename custody attack",
+      "test_id": "test_kpp_legacy_iss_v2_secondary_sensitivity_pilot.KppLegacyIssV2SecondarySensitivityPilotTests.test_windows_candidate_rename_out_back_metadata_restore_is_denied"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows custody route only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_each_unpublished_bootstrap_failure_leaves_no_random_orphan"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows custody route only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_windows_bootstrap_failure_closes_every_locally_acquired_handle"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows NtCreateFile route only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_windows_bootstrap_never_path_creates_a_destination_component"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows custody route only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_windows_exact_rerun_holds_target_custody_without_creating"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows ACL route only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_windows_rerun_rechecks_target_acl_after_long_verification"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows ACL route only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_windows_rerun_rejects_permissive_target_acl_untouched"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows custody route only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_windows_route_bootstraps_and_holds_full_destination_custody"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows authoritative marker only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_authoritative_failure_marker_is_absent_or_exact_on_stage_faults"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows authoritative quarantine only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_authoritative_prepublish_failure_is_quarantined_with_marker"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows authoritative quarantine only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_authoritative_quarantine_collision_never_overwrites"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows authoritative sentinel only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_commit_pending_removal_is_last_exact_handle_success_operation"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows semantic commit only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_committed_candidate_validator_rejects_record_drift_and_extra_leaf"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows committed resume only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_committed_resume_holds_every_validated_leaf_through_terminal_scan"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows authoritative guards only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_duplicate_guards_quarantine_same_file_id_after_originals_close"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows committed resume only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_existing_candidate_size_caps_reject_before_oversized_leaf_read"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows authoritative resume only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_existing_output_drift_or_collision_fails_untouched"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows authoritative sentinel only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_failed_quarantine_leaves_canonical_namespace_commit_pending"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows authoritative quarantine only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_failure_immediately_after_canonical_rename_moves_exact_file_id_to_quarantine"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows semantic commit only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_fault_immediately_after_native_true_is_postcommit_success"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows authoritative resume only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_identical_public_call_resumes_existing_committed_candidate_read_only"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows semantic commit only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_native_commit_false_keeps_canonical_child_guard"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows semantic commit only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_native_true_then_python_gap_is_resolved_by_permanent_record"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows native capture reopen only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_parent_drained_capture_blocks_native_same_token_reopen_and_growth"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows semantic commit only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_persistent_postcommit_close_failure_releases_canonical_namespace"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows semantic commit only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_postcommit_close_and_observer_faults_cannot_become_failed_publication"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows authoritative quarantine only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_postpublish_verification_failure_releases_leaf_then_quarantines"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows semantic commit only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_pre_native_commit_failure_keeps_canonical_child_guard"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows committed resume only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_resealed_materializer_and_preprocessor_role_drift_is_rejected"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows committed resume only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_resealed_receipt_core_or_schema_drift_is_rejected"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows authoritative guards only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_second_guard_duplicate_failure_leaves_original_custody_usable"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows directory custody only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_windows_directory_identity_custody_requires_old_write_handle_close"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "canonical publication evidence mount is not materialized",
+      "test_id": "test_mount_publication_evidence_wsl.MountPublicationEvidenceWslTests.test_check_only_accepts_the_canonical_writable_mount"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "canonical publication runtime mounts are not materialized",
+      "test_id": "test_mount_publication_runtime_wsl.MountPublicationRuntimeWslTests.test_check_only_accepts_the_canonical_read_only_mounts"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "canonical publication socket mount is not materialized",
+      "test_id": "test_mount_publication_sockets_wsl.MountPublicationSocketsWslTests.test_check_only_accepts_the_canonical_writable_mount"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows custody route only",
+      "test_id": "test_normalize_kpp_iss_metadata.NormalizeKppIssMetadataTests.test_authoritative_failure_retains_custodied_private_candidate"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows custody route only",
+      "test_id": "test_normalize_kpp_iss_metadata.NormalizeKppIssMetadataTests.test_authoritative_route_holds_root_staging_and_working_custody"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows custody route only",
+      "test_id": "test_normalize_kpp_iss_metadata.NormalizeKppIssMetadataTests.test_post_publication_tamper_fails_without_deleting_output"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "live post-rename descriptor loss requires the WSL DrvFS workspace",
+      "test_id": "test_publication_owned_staging_cleanup_v1.OwnedStagingCleanupV1Tests.test_drvfs_post_rename_fd_loss_uses_final_inode_and_tree_anchors"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "DrvFS replacement visibility is WSL workspace-specific",
+      "test_id": "test_publication_physical_io_v1.PublicationPhysicalIoV1Tests.test_drvfs_atomic_replace_closes_staging_fd_before_verification"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "DrvFS hard-link fallback is WSL workspace-specific",
+      "test_id": "test_publication_physical_io_v1.PublicationPhysicalIoV1Tests.test_drvfs_unsupported_rename_recovers_two_link_publish"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "live no-replace fallback requires the WSL DrvFS workspace",
+      "test_id": "test_publication_policy_qualification_pilot_executor_v2.QualificationPilotExecutorV2ContractTests.test_drvfs_directory_commit_does_not_depend_on_ambient_cwd"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "live no-replace fallback requires the WSL DrvFS workspace",
+      "test_id": "test_publication_policy_qualification_pilot_executor_v2.QualificationPilotExecutorV2ContractTests.test_drvfs_directory_commit_succeeds_and_never_overwrites_collision"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "live no-replace race requires the WSL DrvFS workspace",
+      "test_id": "test_publication_policy_qualification_runtime_inputs_v2.QualificationRuntimeInputsV2Tests.test_drvfs_runtime_directory_commit_race_has_exactly_one_winner"
+    }
+  ],
+  "source_before_after_bytes_identical": true,
+  "source_commit": "3c025b29b3c1d5275c2ec693410e4b83700583de",
+  "source_table_shape": "dict keyed repository-relative path; each value exact size_bytes/sha256",
+  "tracked_file_count": 5577,
+  "verified_archives": [
+    {
+      "all_CRC_full_SHA_and_safe_paths_verified": true,
+      "decoded_size_bytes": 11081177,
+      "member_count": 197,
+      "members": [
+        {
+          "crc32": 3954000672,
+          "name": "build/CMakeCache.txt",
+          "sha256": "d2ededdfaa2e7f33e224fcbd4aae891daba779f11006c609bd4eb0ee85cb0821",
+          "size_bytes": 45482
+        },
+        {
+          "crc32": 1534526427,
+          "name": "build/CMakeFiles/3.31.6/CMakeCXXCompiler.cmake",
+          "sha256": "1cbc1944c6301020e36a76cb7ffa595f6d4c564d2e46dc61abf9c1fb7e68abe3",
+          "size_bytes": 6079
+        },
+        {
+          "crc32": 227362031,
+          "name": "build/CMakeFiles/3.31.6/CMakeCCompiler.cmake",
+          "sha256": "c09db21c84070e0acbba45d1989fc6a4c4e3c405fd34ec4a3d613bee2285a60d",
+          "size_bytes": 2779
+        },
+        {
+          "crc32": 224645080,
+          "name": "build/CMakeFiles/3.31.6/CMakeDetermineCompilerABI_C.bin",
+          "sha256": "ba6646aa78bf3dd0a7997f89bcc1154630fcb86d28103e0bfcd5200b21f54c7c",
+          "size_bytes": 15968
+        },
+        {
+          "crc32": 2059205181,
+          "name": "build/CMakeFiles/3.31.6/CMakeDetermineCompilerABI_CXX.bin",
+          "sha256": "879b5d31eac14d7b0ca6cd3b96320041ad8d87b538fea24a17e8707f0656bc96",
+          "size_bytes": 15992
+        },
+        {
+          "crc32": 1590785989,
+          "name": "build/CMakeFiles/3.31.6/CMakeSystem.cmake",
+          "sha256": "bfeaa5fe49380c89811a9327e0338dd7e0edeba818521fc8f514550f44275ca8",
+          "size_bytes": 402
+        },
+        {
+          "crc32": 4086081708,
+          "name": "build/CMakeFiles/3.31.6/CompilerIdC/CMakeCCompilerId.c",
+          "sha256": "60d0dc2f177f0317302cef41d454988d9d49759ad3e011365bd6f6c544dfd126",
+          "size_bytes": 27620
+        },
+        {
+          "crc32": 2814821843,
+          "name": "build/CMakeFiles/3.31.6/CompilerIdC/a.out",
+          "sha256": "88aa2744b35746a2f6464f0d7f31c3991c8fdb255d08727ecfbf676478e051b8",
+          "size_bytes": 16088
+        },
+        {
+          "crc32": 1273236300,
+          "name": "build/CMakeFiles/3.31.6/CompilerIdCXX/CMakeCXXCompilerId.cpp",
+          "sha256": "911d6deb85661272b2ddc7a8e26810febd726944c61e1d9495e6a1abb11d9eff",
+          "size_bytes": 28457
+        },
+        {
+          "crc32": 3687390983,
+          "name": "build/CMakeFiles/CMakeConfigureLog.yaml",
+          "sha256": "a84e33ada1b143b4cd333421ad84b1453d4f7e34c8816d1d748981340f6a8b24",
+          "size_bytes": 62593
+        },
+        {
+          "crc32": 316925261,
+          "name": "build/CMakeFiles/3.31.6/CompilerIdCXX/a.out",
+          "sha256": "a3d366f5f634a9cc0d9340115704a2d978e930f75ce0aceac02d7177849a8a1a",
+          "size_bytes": 16096
+        },
+        {
+          "crc32": 3108741500,
+          "name": "build/CMakeFiles/CMakeDirectoryInformation.cmake",
+          "sha256": "f18c0d0b74335ce7ef6846b6f9ea94189773d954c45b805fb97221130eee5308",
+          "size_bytes": 648
+        },
+        {
+          "crc32": 3804168455,
+          "name": "build/CMakeFiles/Makefile.cmake",
+          "sha256": "4dd60f275686dd370c7ba432da64fc3d35187e5db258d95e2579ef22a6dfb6b7",
+          "size_bytes": 9851
+        },
+        {
+          "crc32": 3330903810,
+          "name": "build/CMakeFiles/Makefile2",
+          "sha256": "8f0e1733a23cb552cac045c1f904663e6f5fe7a3303491974eb976708c5a5331",
+          "size_bytes": 15236
+        },
+        {
+          "crc32": 325564569,
+          "name": "build/CMakeFiles/TargetDirectories.txt",
+          "sha256": "d5dd8219db94df9ff98174f251623fbbc6c3f4c02f6f06e5812776dcfd3cd97d",
+          "size_bytes": 655
+        },
+        {
+          "crc32": 1045741580,
+          "name": "build/CMakeFiles/cmake.check_cache",
+          "sha256": "a26189e394421da57f45706a07713c5720acd200a41711b0c0c590c3c63371c4",
+          "size_bytes": 85
+        },
+        {
+          "crc32": 1538589134,
+          "name": "build/CMakeFiles/gstadaptivescheduler.dir/DependInfo.cmake",
+          "sha256": "59e6222b9cea8c6bc85f9eb9bf0865096529a2a553b0d4ce4336e3e41c86e74a",
+          "size_bytes": 968
+        },
+        {
+          "crc32": 2663495438,
+          "name": "build/CMakeFiles/gstadaptivescheduler.dir/build.make",
+          "sha256": "388aac7840f9873cc9346844bc51bda2cb08c73ec64664c2359b0a8fc3e16a4c",
+          "size_bytes": 6468
+        },
+        {
+          "crc32": 1419273216,
+          "name": "build/CMakeFiles/gstadaptivescheduler.dir/cmake_clean.cmake",
+          "sha256": "8b50b9480ce03b0dff09aced65a13c99b27d9073f94eddc346b5cf0b516afb1e",
+          "size_bytes": 507
+        },
+        {
+          "crc32": 1224996136,
+          "name": "build/CMakeFiles/gstadaptivescheduler.dir/compiler_depend.make",
+          "sha256": "ad58e3ef468326dc026f280f148b1ba70b31aef3a190a251c83fb01a477284e3",
+          "size_bytes": 123
+        },
+        {
+          "crc32": 3376902943,
+          "name": "build/CMakeFiles/gstadaptivescheduler.dir/compiler_depend.ts",
+          "sha256": "138e1b950b4f4824d221f8f4e8f507c321ddbbd5e376c5bc129a256de0470264",
+          "size_bytes": 127
+        },
+        {
+          "crc32": 3301089059,
+          "name": "build/CMakeFiles/gstadaptivescheduler.dir/depend.make",
+          "sha256": "8c89991fb69cae6702cae14a72523bf2ed6af9daa6602489ad83021ebdd389e6",
+          "size_bytes": 104
+        },
+        {
+          "crc32": 2303237190,
+          "name": "build/CMakeFiles/gstadaptivescheduler.dir/deploy/gstreamer_adaptivescheduler/gstadaptivescheduler.c.o",
+          "sha256": "8110269f643a344638e80d1b54f56b26db98f2fb4840d83d6e0a2ab69965f3f6",
+          "size_bytes": 13360
+        },
+        {
+          "crc32": 1207060246,
+          "name": "build/CMakeFiles/gstadaptivescheduler.dir/deploy/gstreamer_adaptivescheduler/gstadaptivescheduler.c.o.d",
+          "sha256": "9b558a906c3af6726fd699b48653ccfe2c6cc6c5bc18d21314d4e3d518e8b715",
+          "size_bytes": 16045
+        },
+        {
+          "crc32": 4166587256,
+          "name": "build/CMakeFiles/gstadaptivescheduler.dir/flags.make",
+          "sha256": "df01326bba7290d665db6251eab73bf0c8ebc713195e3deef7da57be36570b6a",
+          "size_bytes": 405
+        },
+        {
+          "crc32": 3514995169,
+          "name": "build/CMakeFiles/gstadaptivescheduler.dir/link.d",
+          "sha256": "2f0760c8f4653e64342a1d174c7939f53f4cadeec4850ef85b9920555805c3f3",
+          "size_bytes": 3048
+        },
+        {
+          "crc32": 107858600,
+          "name": "build/CMakeFiles/gstadaptivescheduler.dir/link.txt",
+          "sha256": "141638d2b4b45a8311f8843b7c5ce69d36b6462eeb0cfac32c099becd90b8ce0",
+          "size_bytes": 456
+        },
+        {
+          "crc32": 1940841730,
+          "name": "build/CMakeFiles/gstadaptivescheduler.dir/progress.make",
+          "sha256": "c06e644090b09d41eaddf59d10bcf03c6db6499eb51fa0d03e5128e5a165cc3c",
+          "size_bytes": 43
+        },
+        {
+          "crc32": 1528966612,
+          "name": "build/CMakeFiles/gstvastanalyticsqueue.dir/DependInfo.cmake",
+          "sha256": "22c8ccf355c1974b47a333ae575aa93be3c55bda346688fb7962cbd6ed121ecb",
+          "size_bytes": 984
+        },
+        {
+          "crc32": 1089851166,
+          "name": "build/CMakeFiles/gstvastanalyticsqueue.dir/build.make",
+          "sha256": "384d388f5759bf40c27b8bb9c4e7dcf6ae9b38b8f88e4c41f26c7066e7132d34",
+          "size_bytes": 6623
+        },
+        {
+          "crc32": 420910381,
+          "name": "build/CMakeFiles/gstvastanalyticsqueue.dir/cmake_clean.cmake",
+          "sha256": "b8c286de3a8944e61c6f65a64d47f2572bf78e475cc8781974845983c896c662",
+          "size_bytes": 523
+        },
+        {
+          "crc32": 133985475,
+          "name": "build/CMakeFiles/gstvastanalyticsqueue.dir/compiler_depend.make",
+          "sha256": "91b3c5a108c1bbd528f410d72b1bb70eb58c83c1cbc0a03ab60a4fe69f0b9f31",
+          "size_bytes": 124
+        },
+        {
+          "crc32": 483291978,
+          "name": "build/CMakeFiles/gstvastanalyticsqueue.dir/compiler_depend.ts",
+          "sha256": "a0b62daa04eeaf3c9c9d4b5854f7ffa7af3111b2b75108b433f2728b653587b2",
+          "size_bytes": 128
+        },
+        {
+          "crc32": 2426629153,
+          "name": "build/CMakeFiles/gstvastanalyticsqueue.dir/depend.make",
+          "sha256": "d7cdaf1e740a94c5fc72bdb4cf2e77b7b91a2215ad984f3bd1dd292e36eec5f1",
+          "size_bytes": 105
+        },
+        {
+          "crc32": 163615952,
+          "name": "build/CMakeFiles/gstvastanalyticsqueue.dir/deploy/gstreamer_analytics_terminal/gstvastanalyticsqueue.cpp.o",
+          "sha256": "ff4dd950579e0c619e1aa9a4bf4d69d7ad17e3e4e0072f2aa83ec23d4dbca71e",
+          "size_bytes": 76976
+        },
+        {
+          "crc32": 740240381,
+          "name": "build/CMakeFiles/gstvastanalyticsqueue.dir/deploy/gstreamer_analytics_terminal/gstvastanalyticsqueue.cpp.o.d",
+          "sha256": "b6d24a0b1757e85e2be893f3e4175da26618e226283730d838fd9f5ba6bac61e",
+          "size_bytes": 21207
+        },
+        {
+          "crc32": 47174377,
+          "name": "build/CMakeFiles/gstvastanalyticsqueue.dir/flags.make",
+          "sha256": "d211fb6574df7d46d4da9e3eddd498666f8a6691fb5f7ff98e3f6f28a539e673",
+          "size_bytes": 537
+        },
+        {
+          "crc32": 1468921382,
+          "name": "build/CMakeFiles/gstvastanalyticsqueue.dir/link.d",
+          "sha256": "8e54734921828f1c14515ebc05ee147c353d1ba24f9a6806c88efc4563e98206",
+          "size_bytes": 3543
+        },
+        {
+          "crc32": 2920830399,
+          "name": "build/CMakeFiles/gstvastanalyticsqueue.dir/progress.make",
+          "sha256": "2c0c69e4af70b4caed2b8e1bd9f161f3ee9eb525d5f041631eee6d0661e5a02f",
+          "size_bytes": 43
+        },
+        {
+          "crc32": 3928581979,
+          "name": "build/CMakeFiles/gstvastanalyticsqueue.dir/link.txt",
+          "sha256": "f0692a58fd96297671e89e96ff30b6614ba697ce4ba7e525ee75563eb9883bfc",
+          "size_bytes": 464
+        },
+        {
+          "crc32": 1455271330,
+          "name": "build/CMakeFiles/gstvastanalyticsterminal.dir/DependInfo.cmake",
+          "sha256": "8663da15c302c206936fdedc8dc6362af556abb4586d823074154e4bf185604f",
+          "size_bytes": 1005
+        },
+        {
+          "crc32": 22863681,
+          "name": "build/CMakeFiles/gstvastanalyticsterminal.dir/build.make",
+          "sha256": "57a64b69e0287d6f4d398229998ecc4aefc4354d9ef167103318944aadc7843b",
+          "size_bytes": 6830
+        },
+        {
+          "crc32": 2566860742,
+          "name": "build/CMakeFiles/gstvastanalyticsterminal.dir/cmake_clean.cmake",
+          "sha256": "17e51ecc71a6058842d595f910457ea58ef35011006c17b7e75e619d582bc362",
+          "size_bytes": 547
+        },
+        {
+          "crc32": 419836742,
+          "name": "build/CMakeFiles/gstvastanalyticsterminal.dir/compiler_depend.make",
+          "sha256": "be70deb0092bb5a57a573ab331a18e97981629d43a3d43be7581833999912a9a",
+          "size_bytes": 127
+        },
+        {
+          "crc32": 4214050162,
+          "name": "build/CMakeFiles/gstvastanalyticsterminal.dir/compiler_depend.ts",
+          "sha256": "0b2f13f111e6175c91dc8d0f69aef00eb9d86b6785517143d9c6e007c50e37d1",
+          "size_bytes": 131
+        },
+        {
+          "crc32": 3400524579,
+          "name": "build/CMakeFiles/gstvastanalyticsterminal.dir/depend.make",
+          "sha256": "0fe24ab4dd9c640b1550ad9b6c9d1f434fce6a5532586209e363a31d46c56f6d",
+          "size_bytes": 108
+        },
+        {
+          "crc32": 1986291825,
+          "name": "build/CMakeFiles/gstvastanalyticsterminal.dir/deploy/gstreamer_analytics_terminal/gstvastanalyticsterminal.cpp.o",
+          "sha256": "5e2c6ab1bf8d39e2154d8a77ca5a90e5826a01420296d8c2469a8f4dbe59ef81",
+          "size_bytes": 75192
+        },
+        {
+          "crc32": 2496618892,
+          "name": "build/CMakeFiles/gstvastanalyticsterminal.dir/deploy/gstreamer_analytics_terminal/gstvastanalyticsterminal.cpp.o.d",
+          "sha256": "f7c41593cb19152217cfece14687510b42a5212d1fe2e3571f0ace28fb0c2cf9",
+          "size_bytes": 23642
+        },
+        {
+          "crc32": 3888010811,
+          "name": "build/CMakeFiles/gstvastanalyticsterminal.dir/link.d",
+          "sha256": "226b0ab4280ae7066af3d7e895fe228f44ab62aa3abb7d063b1d1029115a8eca",
+          "size_bytes": 3558
+        },
+        {
+          "crc32": 1258508032,
+          "name": "build/CMakeFiles/gstvastanalyticsterminal.dir/flags.make",
+          "sha256": "f9a0b79173ce6a9a09a0f2463747148293d54b0619bf2e0f09a59f9dc947e8b7",
+          "size_bytes": 474
+        },
+        {
+          "crc32": 2125456502,
+          "name": "build/CMakeFiles/gstvastanalyticsterminal.dir/link.txt",
+          "sha256": "89c86262f379138070816391c42c99c62232df0f4de3b4287fe960942c3ababe",
+          "size_bytes": 476
+        },
+        {
+          "crc32": 497144705,
+          "name": "build/CMakeFiles/gstvastanalyticsterminal.dir/progress.make",
+          "sha256": "a3194f88ef5ae65b7a30877bdb3f7ab384e043aa110d7219d72f1e666ac6246b",
+          "size_bytes": 43
+        },
+        {
+          "crc32": 3155725799,
+          "name": "build/CMakeFiles/gstvastcheckpointprefixqueue.dir/DependInfo.cmake",
+          "sha256": "3d0dd03c315bd805a62c32d30a20fed725787b0b1ac9ea405dd19969e82bb588",
+          "size_bytes": 1033
+        },
+        {
+          "crc32": 2329808523,
+          "name": "build/CMakeFiles/gstvastcheckpointprefixqueue.dir/build.make",
+          "sha256": "c00c31094179f8096848397889c255669a22337583662e8379e0a6716f306ec0",
+          "size_bytes": 7106
+        },
+        {
+          "crc32": 978658590,
+          "name": "build/CMakeFiles/gstvastcheckpointprefixqueue.dir/cmake_clean.cmake",
+          "sha256": "f2efc22b881acaf78bb190a4a772487db4da6e0bbc898c654d66157b23ce3601",
+          "size_bytes": 579
+        },
+        {
+          "crc32": 3206133229,
+          "name": "build/CMakeFiles/gstvastcheckpointprefixqueue.dir/compiler_depend.make",
+          "sha256": "2870d3865ec02a63c3f975bff4485808c61782e20822be3e9d4c117c5f560f5c",
+          "size_bytes": 131
+        },
+        {
+          "crc32": 2209979315,
+          "name": "build/CMakeFiles/gstvastcheckpointprefixqueue.dir/compiler_depend.ts",
+          "sha256": "6ef77d34e7225c0faf49cc155cb2ff7009df03136072ddbfd7be7962b4dbff86",
+          "size_bytes": 135
+        },
+        {
+          "crc32": 1584857890,
+          "name": "build/CMakeFiles/gstvastcheckpointprefixqueue.dir/depend.make",
+          "sha256": "0b42d5f100bc3452f925272306b543124dd2274eaf80b667546625e869c79c3f",
+          "size_bytes": 112
+        },
+        {
+          "crc32": 626389460,
+          "name": "build/CMakeFiles/gstvastcheckpointprefixqueue.dir/deploy/gstreamer_analytics_terminal/gstvastcheckpointprefixqueue.cpp.o",
+          "sha256": "516a2faace6275a52355eaa645ecd9095c0ebe2e7a71d36f1c9734fa413d82f7",
+          "size_bytes": 64808
+        },
+        {
+          "crc32": 1855362360,
+          "name": "build/CMakeFiles/gstvastcheckpointprefixqueue.dir/deploy/gstreamer_analytics_terminal/gstvastcheckpointprefixqueue.cpp.o.d",
+          "sha256": "ef5eeff0c3721797664baba20a6551f1ee996302df40c75ef4c5b157fc5a6d7b",
+          "size_bytes": 20076
+        },
+        {
+          "crc32": 3882879138,
+          "name": "build/CMakeFiles/gstvastcheckpointprefixqueue.dir/flags.make",
+          "sha256": "4dfe36afcdea36bb3700bbb4193988ccae33711130996bcf1fe8972b5c94b5f1",
+          "size_bytes": 478
+        },
+        {
+          "crc32": 1311006433,
+          "name": "build/CMakeFiles/gstvastcheckpointprefixqueue.dir/link.d",
+          "sha256": "f8a9c1af41a61c46ad66a2a773d5626e7434f4285df101ffdc8a5d6fda710a92",
+          "size_bytes": 3578
+        },
+        {
+          "crc32": 3456381572,
+          "name": "build/CMakeFiles/gstvastcheckpointprefixqueue.dir/progress.make",
+          "sha256": "d07ef668326a9a562e0a72f93d199267d5a0b8fb4172c2286a56a2cb5ef77dd0",
+          "size_bytes": 43
+        },
+        {
+          "crc32": 4278028232,
+          "name": "build/CMakeFiles/gstvastcheckpointprefixqueue.dir/link.txt",
+          "sha256": "ee62fe02d4446745539178940925b2b264eb0fee387faa9a0c4d20755e09ee39",
+          "size_bytes": 492
+        },
+        {
+          "crc32": 3612208090,
+          "name": "build/CMakeFiles/progress.marks",
+          "sha256": "a1fb50e6c86fae1679ef3351296fd6713411a08cf8dd1790a4fd05fae8688164",
+          "size_bytes": 3
+        },
+        {
+          "crc32": 89790738,
+          "name": "build/CMakeFiles/vast_checkpoint_source.dir/DependInfo.cmake",
+          "sha256": "7c8397b538fd74ba54e2fa81b2df314458942e8d6eedc7814f0b9b1298ac0e3e",
+          "size_bytes": 970
+        },
+        {
+          "crc32": 306040753,
+          "name": "build/CMakeFiles/vast_checkpoint_source.dir/build.make",
+          "sha256": "1355bed229cc32df2ce890679c86daee27f9af64b42424fc3501921b13a76e67",
+          "size_bytes": 6670
+        },
+        {
+          "crc32": 1922308211,
+          "name": "build/CMakeFiles/vast_checkpoint_source.dir/cmake_clean.cmake",
+          "sha256": "eab73600400f130ebcd7d998727e14ebf933f2423cc9745eb4eee59ae987cfee",
+          "size_bytes": 512
+        },
+        {
+          "crc32": 3250409675,
+          "name": "build/CMakeFiles/vast_checkpoint_source.dir/compiler_depend.make",
+          "sha256": "ca27a12c6481a740caf0f829fc1fbdba11b705ad566acaf32233af03a8bb4db0",
+          "size_bytes": 125
+        },
+        {
+          "crc32": 843949793,
+          "name": "build/CMakeFiles/vast_checkpoint_source.dir/compiler_depend.ts",
+          "sha256": "2d1737567e894b82a4f3d294c779b654a5a950ea4888546a62206d3208f02483",
+          "size_bytes": 129
+        },
+        {
+          "crc32": 2402192519,
+          "name": "build/CMakeFiles/vast_checkpoint_source.dir/depend.make",
+          "sha256": "92ee78b8fdce42b919f0fdf52de9f90730767af2e31087e1c53f7def39d7d351",
+          "size_bytes": 106
+        },
+        {
+          "crc32": 3287887730,
+          "name": "build/CMakeFiles/vast_checkpoint_source.dir/deploy/native_gst_probe/checkpoint_source_coordinator.cpp.o",
+          "sha256": "2b605d2b9e5756aab17d1adf5787f894860d8e4b19c6e5e85cf4c57661b705af",
+          "size_bytes": 162296
+        },
+        {
+          "crc32": 3473807311,
+          "name": "build/CMakeFiles/vast_checkpoint_source.dir/deploy/native_gst_probe/checkpoint_source_coordinator.cpp.o.d",
+          "sha256": "1b2dac2912d11f3fe41476e282539c85a232db1b3ace7d0c5a20e4babd88ace6",
+          "size_bytes": 22380
+        },
+        {
+          "crc32": 1064422381,
+          "name": "build/CMakeFiles/vast_checkpoint_source.dir/flags.make",
+          "sha256": "951f09e28753228627a7bb56d2b621a8313bb3cc850d3700af08d0bfd78956b9",
+          "size_bytes": 367
+        },
+        {
+          "crc32": 1117022326,
+          "name": "build/CMakeFiles/vast_checkpoint_source.dir/link.d",
+          "sha256": "08f4b15ef803d29f07f6f52b5ea123ae0b9c37c6f9c3d1200c359bf9a5886255",
+          "size_bytes": 5034
+        },
+        {
+          "crc32": 3079996579,
+          "name": "build/CMakeFiles/vast_checkpoint_source.dir/link.txt",
+          "sha256": "d8dd877d8e186cd45bdc06d17375483253a33ed40d15ce172f85c1fbe52a473a",
+          "size_bytes": 528
+        },
+        {
+          "crc32": 3421017413,
+          "name": "build/CMakeFiles/vast_checkpoint_source.dir/progress.make",
+          "sha256": "ed3daec5b65a9ed4ecd23ef55e215b9ba204c1e5e0226807abaec0693c6df14c",
+          "size_bytes": 44
+        },
+        {
+          "crc32": 4137373686,
+          "name": "build/CMakeFiles/vast_native_gst_probe.dir/DependInfo.cmake",
+          "sha256": "24ed1a6feb7b9ca085566c704ad69955a1f66e5d9337d43ab8b77cc7bc17cfaf",
+          "size_bytes": 942
+        },
+        {
+          "crc32": 554654955,
+          "name": "build/CMakeFiles/vast_native_gst_probe.dir/build.make",
+          "sha256": "f6a2f094b4c01a8da3fd03dccc0df482156396768935fcd8064fa91126ccb7d3",
+          "size_bytes": 6466
+        },
+        {
+          "crc32": 151343928,
+          "name": "build/CMakeFiles/vast_native_gst_probe.dir/cmake_clean.cmake",
+          "sha256": "5efaaa0d28b844437d87da937aff4c487e8eefccb0c6e6f603a56c981b01b80d",
+          "size_bytes": 490
+        },
+        {
+          "crc32": 1254850292,
+          "name": "build/CMakeFiles/vast_native_gst_probe.dir/compiler_depend.make",
+          "sha256": "4379081cb4da0174fa752985cc26eacc966c9d3c6248d5db056c5c1d28feb988",
+          "size_bytes": 124
+        },
+        {
+          "crc32": 343439426,
+          "name": "build/CMakeFiles/vast_native_gst_probe.dir/compiler_depend.ts",
+          "sha256": "735e60c306cb3f78d7c874fa2ce00ab8b9c69582cd59f1da2eaf3f83b473230f",
+          "size_bytes": 128
+        },
+        {
+          "crc32": 3717490198,
+          "name": "build/CMakeFiles/vast_native_gst_probe.dir/depend.make",
+          "sha256": "640b9e4cfcdd004702303a8eef7688fcff90471c1230ca8eba8efdcd0c07c955",
+          "size_bytes": 105
+        },
+        {
+          "crc32": 3629042023,
+          "name": "build/CMakeFiles/vast_native_gst_probe.dir/deploy/native_gst_probe/vast_native_gst_probe.cpp.o",
+          "sha256": "95553ee66aafcafbd08ab883ea829d82066087b12dfc87984a1a17464f2c7206",
+          "size_bytes": 971072
+        },
+        {
+          "crc32": 32317429,
+          "name": "build/CMakeFiles/vast_native_gst_probe.dir/deploy/native_gst_probe/vast_native_gst_probe.cpp.o.d",
+          "sha256": "9387b82be30c70f75ae28b465446022d2029989890f5e08753adbaf8e4d09126",
+          "size_bytes": 29780
+        },
+        {
+          "crc32": 1064422381,
+          "name": "build/CMakeFiles/vast_native_gst_probe.dir/flags.make",
+          "sha256": "951f09e28753228627a7bb56d2b621a8313bb3cc850d3700af08d0bfd78956b9",
+          "size_bytes": 367
+        },
+        {
+          "crc32": 3102147310,
+          "name": "build/CMakeFiles/vast_native_gst_probe.dir/link.d",
+          "sha256": "4381cda4da3daf88d62ca0ee1cdeb0c7e1b8a188a8239553bf0520ca0bf5aabc",
+          "size_bytes": 5097
+        },
+        {
+          "crc32": 1858892286,
+          "name": "build/CMakeFiles/vast_native_gst_probe.dir/progress.make",
+          "sha256": "b2cd0974e570a8a9216e89228e7d0c65225f2b2ccd9be7d685a1f2ee210a2a4b",
+          "size_bytes": 45
+        },
+        {
+          "crc32": 3375207974,
+          "name": "build/CMakeFiles/vast_native_gst_probe.dir/link.txt",
+          "sha256": "f21678aef9320599f3a2cbb8f6ac2201af90c7320f528b57d546c933a2b270f2",
+          "size_bytes": 517
+        },
+        {
+          "crc32": 4093323579,
+          "name": "build/Makefile",
+          "sha256": "724e44d6d468e9506985f56c12710024a322d9eca79b83ff2edbef51a17f718e",
+          "size_bytes": 18538
+        },
+        {
+          "crc32": 2140167653,
+          "name": "build/bin/vast_checkpoint_source",
+          "sha256": "73651ca72a01c2c4ff8439ff4dfca30f59fe3ce7c90fe7382a070b96c46d4ac0",
+          "size_bytes": 120152
+        },
+        {
+          "crc32": 68919131,
+          "name": "build/bin/vast_native_gst_probe",
+          "sha256": "d0b4916761da431828fd81bd48a0b4199abf6ee6ba5073bb3cecbb5ba195f991",
+          "size_bytes": 552288
+        },
+        {
+          "crc32": 2466457505,
+          "name": "build/cmake_install.cmake",
+          "sha256": "e084754bf42c3e3164514743b5b17785ee5301c519ff2d2845ccdc21ece0ab0d",
+          "size_bytes": 2126
+        },
+        {
+          "crc32": 3761037558,
+          "name": "build/lib/libgstadaptivescheduler.so",
+          "sha256": "e62dfcae29e884da7448029a0b4a47a20a7d2c81a07e5cb10a540b10664e716a",
+          "size_bytes": 26584
+        },
+        {
+          "crc32": 4032287820,
+          "name": "build/lib/libgstvastanalyticsqueue.so",
+          "sha256": "6f3f6d573aa8b22862bfd28192687deeedec2dc1bc99dc9d9949f2e962ed9bcc",
+          "size_bytes": 71224
+        },
+        {
+          "crc32": 3616808021,
+          "name": "build/lib/libgstvastcheckpointprefixqueue.so",
+          "sha256": "31942055b6ff49253a0593f43b62296789328435ae56341779c115f228a20ab7",
+          "size_bytes": 62016
+        },
+        {
+          "crc32": 3760028597,
+          "name": "build/lib/libgstvastanalyticsterminal.so",
+          "sha256": "21928d8937de8e8bdf4742d7eb870d18e37c6a7b71eaa3edda6196d9fd61095e",
+          "size_bytes": 65784
+        },
+        {
+          "crc32": 634832857,
+          "name": "external-test-observer/events.original.jsonl",
+          "sha256": "f0bab0b6f75e2c91639c42de4bff9b00d199a1f54ae16b55edb35acee8e27dbd",
+          "size_bytes": 19192
+        },
+        {
+          "crc32": 3451280342,
+          "name": "external-test-observer/launch.v1.json",
+          "sha256": "4e5073df5516ec476c6237055ccb225d436d4c633387cbda79d6b8cfb5a4d1be",
+          "size_bytes": 789
+        },
+        {
+          "crc32": 576464185,
+          "name": "external-test-observer/responses.original.jsonl",
+          "sha256": "0f89d87e1051a3dff1203a116d1bea4f50479c36a0c97a343dc4e270422891ae",
+          "size_bytes": 3939
+        },
+        {
+          "crc32": 4177950327,
+          "name": "external-test-observer/terminal.v1.json",
+          "sha256": "c98b171d8f8d1de5984495e5ae99c7f9246482eaf21cdebcd2f95c055809a565",
+          "size_bytes": 1484
+        },
+        {
+          "crc32": 1711212534,
+          "name": "external-test-observer/trace.original.log",
+          "sha256": "68044fe354e1746a91ae3925bccedcd2ed4ec963358fa4a99b70a1b2fd528c8b",
+          "size_bytes": 45671
+        },
+        {
+          "crc32": 3882522305,
+          "name": "factory-appsrc.json",
+          "sha256": "2d988627bdf3a186cb75868ef98d04e229b26c939599ea3deca18b1b6d98dfd5",
+          "size_bytes": 167
+        },
+        {
+          "crc32": 0,
+          "name": "factory-appsrc.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 3413401097,
+          "name": "factory-appsrc.stdout",
+          "sha256": "f856c19875dd3f4e9db164fbfca71639fc4e2c7c60c7bed1643c1d9c23f34f91",
+          "size_bytes": 9007
+        },
+        {
+          "crc32": 2283060007,
+          "name": "factory-queue.json",
+          "sha256": "e1dcf77eebb43a79675aa0c58ada806aa769b0caee7b131796a82ff041359f0b",
+          "size_bytes": 167
+        },
+        {
+          "crc32": 0,
+          "name": "factory-queue.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 3150396858,
+          "name": "factory-queue.stdout",
+          "sha256": "f73affca7c13abc0843dc576660c929b2b3a29b25aaad608e1a5ddd583af8147",
+          "size_bytes": 5218
+        },
+        {
+          "crc32": 3375734073,
+          "name": "factory-videoconvert.json",
+          "sha256": "5d86c4aea2513aaaf54d8c96df62a0acb59852d32a119f5011867355940251d7",
+          "size_bytes": 172
+        },
+        {
+          "crc32": 0,
+          "name": "factory-videoconvert.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 266514936,
+          "name": "factory-videoconvert.stdout",
+          "sha256": "8b01aef76679ca1743624ef160857330a4c95c9fa2a4dcce73d3ddae8ee6f019",
+          "size_bytes": 17518
+        },
+        {
+          "crc32": 3781283886,
+          "name": "gstreamer-packages.json",
+          "sha256": "1ddb34720f190585cef02be2d7daf582e1adce7eeb5fdf6e047d175883de047a",
+          "size_bytes": 243
+        },
+        {
+          "crc32": 0,
+          "name": "gstreamer-packages.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 1667758596,
+          "name": "gstreamer-packages.stdout",
+          "sha256": "21b23bf6fb7a3e6c97a5745c52c3f81a90f7030b2d3eabd0495a43682b26432a",
+          "size_bytes": 81
+        },
+        {
+          "crc32": 1844971714,
+          "name": "host-facts.original.json",
+          "sha256": "2bae73d14875c6b8153380ef97906c5dde6060f469855b6be629562e0ec86af6",
+          "size_bytes": 1275
+        },
+        {
+          "crc32": 2597116267,
+          "name": "model-acquisition/asset-00.dispatch.json",
+          "sha256": "2b6a16a0c8f3c43909d0c5904e9822bcb4913a0fdcde0fd56e86b11c9bf71d16",
+          "size_bytes": 845
+        },
+        {
+          "crc32": 887859545,
+          "name": "model-acquisition/asset-00.json",
+          "sha256": "e5a50b9db7553a76a9c2187f8ac523fd54e1a7f9651f356dea0568f1e6eb2fa8",
+          "size_bytes": 1822
+        },
+        {
+          "crc32": 0,
+          "name": "model-acquisition/asset-00.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 3204977485,
+          "name": "model-acquisition/asset-00.stdout",
+          "sha256": "7fd8ab37a19d096f5c3483103d1279829e0678b7ece6cc6bab2bb0039092517e",
+          "size_bytes": 37
+        },
+        {
+          "crc32": 225787603,
+          "name": "model-acquisition/asset-00.terminal.json",
+          "sha256": "f791c610a52a932110213e335ddde7b4fc504d17e922eb28e96c42d9f2f693c8",
+          "size_bytes": 601
+        },
+        {
+          "crc32": 631391672,
+          "name": "model-acquisition/asset-01.dispatch.json",
+          "sha256": "e7b620cc4cf07b6f7666fc7f8290be54fe7213fbec14e13879dbf37205058a30",
+          "size_bytes": 845
+        },
+        {
+          "crc32": 1927482582,
+          "name": "model-acquisition/asset-01.json",
+          "sha256": "38edd1285be21e10a0fe95492ab165cae9433f66a5ca895db3415fe255afb705",
+          "size_bytes": 1839
+        },
+        {
+          "crc32": 0,
+          "name": "model-acquisition/asset-01.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 3200940410,
+          "name": "model-acquisition/asset-01.stdout",
+          "sha256": "74a6c4418dd0054274c48620b45ffb0322e7e8c669e5198297bbcc528c72a430",
+          "size_bytes": 37
+        },
+        {
+          "crc32": 2841048068,
+          "name": "model-acquisition/asset-01.terminal.json",
+          "sha256": "8cac603ff01883eac48f106b7888ec0d042de26c52dff2f7a7949f84acf6e847",
+          "size_bytes": 593
+        },
+        {
+          "crc32": 3650898669,
+          "name": "model-acquisition/asset-02.dispatch.json",
+          "sha256": "f00723eaeed594e510b1e4ab2e66c5973909e4f9eeb4f9d13e9a074a0d13b23d",
+          "size_bytes": 845
+        },
+        {
+          "crc32": 3881405441,
+          "name": "model-acquisition/asset-02.json",
+          "sha256": "dfca68b27c73588549169fd8978025f1ee890881b4577417ad36b4684ad9079f",
+          "size_bytes": 1909
+        },
+        {
+          "crc32": 0,
+          "name": "model-acquisition/asset-02.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 3163342627,
+          "name": "model-acquisition/asset-02.stdout",
+          "sha256": "00118c14d4b199bf04b13888564cb710ca7dc534e84d04f43cd0a61c001f587c",
+          "size_bytes": 37
+        },
+        {
+          "crc32": 2807540654,
+          "name": "model-acquisition/asset-02.terminal.json",
+          "sha256": "dd5aaea5114262fec9e2a6b7b1e24775595cbf45ba64c9cf20a71a18799c14f2",
+          "size_bytes": 600
+        },
+        {
+          "crc32": 172653966,
+          "name": "model-acquisition/asset-03.dispatch.json",
+          "sha256": "50ddaa2831a1705589f2b25c33d3b9b5d5f32eeceaef398515c1ae23a26b6b68",
+          "size_bytes": 835
+        },
+        {
+          "crc32": 2867434398,
+          "name": "model-acquisition/asset-03.json",
+          "sha256": "13f45ee0dab6aa7fe65bc2d67e284c5a02bb4d90fc8346021c6299c83bb9b037",
+          "size_bytes": 1926
+        },
+        {
+          "crc32": 0,
+          "name": "model-acquisition/asset-03.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 3176049940,
+          "name": "model-acquisition/asset-03.stdout",
+          "sha256": "894e4005e4f4be608717721b08e1f98f56fd8d5eb4c1026f30d643e07e29119d",
+          "size_bytes": 37
+        },
+        {
+          "crc32": 3115282328,
+          "name": "model-acquisition/asset-03.terminal.json",
+          "sha256": "dda833e899833bbec707c43e98e1961ab3e97b438a13e289724bc9df004b839e",
+          "size_bytes": 600
+        },
+        {
+          "crc32": 2518881066,
+          "name": "model-acquisition/asset-04.dispatch.json",
+          "sha256": "7f5185a552e5309a46d7d7f32adfce7ee052a0d7b99c846f903903d158751a02",
+          "size_bytes": 835
+        },
+        {
+          "crc32": 3722504324,
+          "name": "model-acquisition/asset-04.json",
+          "sha256": "a85289b93c418734fd074d3e7600d91a38f0abe1580751ac76a985499f62efed",
+          "size_bytes": 1907
+        },
+        {
+          "crc32": 0,
+          "name": "model-acquisition/asset-04.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 3087121297,
+          "name": "model-acquisition/asset-04.stdout",
+          "sha256": "4728d51e5350c5bdb02169744c3ca4574a83762cc12f1896ca383ca58875a5fd",
+          "size_bytes": 37
+        },
+        {
+          "crc32": 2150905615,
+          "name": "model-acquisition/asset-04.terminal.json",
+          "sha256": "e824dc4695e50be8fcfb541ffa5bd54107033eb63a5e40f80fea6bbf28021955",
+          "size_bytes": 600
+        },
+        {
+          "crc32": 887262680,
+          "name": "model-acquisition/asset-05.dispatch.json",
+          "sha256": "747e971034854ea0560ddd82c530dd54b139e327f76ab248ec6766fb023ff3ad",
+          "size_bytes": 835
+        },
+        {
+          "crc32": 4073845268,
+          "name": "model-acquisition/asset-05.json",
+          "sha256": "a79f9a5ae5cabc0d1f7d778d9fe0c5f774752051b77c81262bd6e2e98f6671b5",
+          "size_bytes": 1925
+        },
+        {
+          "crc32": 0,
+          "name": "model-acquisition/asset-05.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 3116618150,
+          "name": "model-acquisition/asset-05.stdout",
+          "sha256": "67162acd026e397d5ee7be315ea8733065d59fdcace293ce4a71e08f3f649e16",
+          "size_bytes": 37
+        },
+        {
+          "crc32": 2712396436,
+          "name": "model-acquisition/asset-05.terminal.json",
+          "sha256": "32c89a5ff9375f6755c1fbe79005e3dd3a48647962795db59ac8eae574f98b78",
+          "size_bytes": 600
+        },
+        {
+          "crc32": 1242212700,
+          "name": "model-acquisition/asset-06.dispatch.json",
+          "sha256": "220db65d2f2f3b90f384608c04ba7102a6af4e3dd77d0dbe92444c17e49cb2a7",
+          "size_bytes": 846
+        },
+        {
+          "crc32": 2294563350,
+          "name": "model-acquisition/asset-06.json",
+          "sha256": "d7b5e97052bbbfa0e803b994d3e94111d9987b401566bcfdd85a137244794c41",
+          "size_bytes": 1734
+        },
+        {
+          "crc32": 0,
+          "name": "model-acquisition/asset-06.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 3146084351,
+          "name": "model-acquisition/asset-06.stdout",
+          "sha256": "448b6bad1025cc9c60c633959f8410626f1d336e472f8392127779adcbf66650",
+          "size_bytes": 37
+        },
+        {
+          "crc32": 2100304813,
+          "name": "model-acquisition/asset-07.dispatch.json",
+          "sha256": "805bc7ac3b75ccddd360436d9638c1cfb5a729b6297a36b55251d9ca4a7c1a4d",
+          "size_bytes": 836
+        },
+        {
+          "crc32": 2744755511,
+          "name": "model-acquisition/asset-06.terminal.json",
+          "sha256": "1d4d7ab01d6c791ef33594fcc93cc9ca0da0f26f958faf296e430fd96e58c662",
+          "size_bytes": 601
+        },
+        {
+          "crc32": 1956614164,
+          "name": "model-acquisition/asset-07.json",
+          "sha256": "911ae2dfcea7f773f583a2a1995c45a8053008dea6400dc42994109b826d18bb",
+          "size_bytes": 1749
+        },
+        {
+          "crc32": 0,
+          "name": "model-acquisition/asset-07.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 3125216712,
+          "name": "model-acquisition/asset-07.stdout",
+          "sha256": "ad5bd0d870140b3ea9f39fc02a864e54877d1d67e07367c495ec5c0b8f0d08d3",
+          "size_bytes": 37
+        },
+        {
+          "crc32": 3086346095,
+          "name": "model-acquisition/asset-07.terminal.json",
+          "sha256": "b69fcfb968c8c74b713d61cbe21ee9827f827d13ec22b69e7850c7296eb2affe",
+          "size_bytes": 600
+        },
+        {
+          "crc32": 3735944538,
+          "name": "model-acquisition/report.json",
+          "sha256": "09b69cf7ccc19f8e7892ae91c5bb5dfaa8b5a2e04e0875980b13243a8d5ffe32",
+          "size_bytes": 3472
+        },
+        {
+          "crc32": 0,
+          "name": "model-assets.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 547514150,
+          "name": "model-assets.json",
+          "sha256": "de22a5241a913122d0dcc056b7b02b954b67f6c8b3236fbfbb698208f9e32313",
+          "size_bytes": 356
+        },
+        {
+          "crc32": 1046524475,
+          "name": "model-assets.stdout",
+          "sha256": "e6e545ea0ad9fa9d97a587917f06b3526c484047cd4f7a57c13eb8cbaf04d134",
+          "size_bytes": 36
+        },
+        {
+          "crc32": 188508796,
+          "name": "namespace-diagnostic/capture.json",
+          "sha256": "987fdd68a9d6bd42eaec4e815c756fae76585c378aa19dccacdab9c931e8f342",
+          "size_bytes": 984
+        },
+        {
+          "crc32": 1372595633,
+          "name": "namespace-diagnostic/kernel-denial.json",
+          "sha256": "c49650b1cb6c4efeeefe0b5e8c4a1661390e139daf037640831f612173732aad",
+          "size_bytes": 1553
+        },
+        {
+          "crc32": 2825805800,
+          "name": "namespace-diagnostic/kernel-query/capture.json",
+          "sha256": "8b300cf5447d43237c8e87f8262eeed0353e97093a49ecb5835b1818231c4bcf",
+          "size_bytes": 1297
+        },
+        {
+          "crc32": 0,
+          "name": "namespace-diagnostic/kernel-query/stderr.raw",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 3976301493,
+          "name": "namespace-diagnostic/kernel-query/stdout.raw",
+          "sha256": "b3763592a255f28ea5927edd7ab711da8f509789fc572a4d01583aa93e034d7f",
+          "size_bytes": 772
+        },
+        {
+          "crc32": 0,
+          "name": "namespace-diagnostic/stderr.raw",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 1032905553,
+          "name": "namespace-diagnostic/stdout.raw",
+          "sha256": "8336e19a8ce018a7af93c27576be3c7f0f62c2781fb05a423b00ae68c9ccea07",
+          "size_bytes": 2326
+        },
+        {
+          "crc32": 901755781,
+          "name": "namespace-profile/joined-denial.json",
+          "sha256": "3209eb10ee429ecaf817e7afaeb45f6328c12114d90e18a952ae22000b5db7b7",
+          "size_bytes": 1564
+        },
+        {
+          "crc32": 3078811010,
+          "name": "namespace-profile/load/capture.json",
+          "sha256": "34e0ea7022a2d6177d1ab034c50a37576f72ff5436bd3e9732e8d922ad2270ef",
+          "size_bytes": 1344
+        },
+        {
+          "crc32": 0,
+          "name": "namespace-profile/load/stderr.raw",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 0,
+          "name": "namespace-profile/load/stdout.raw",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 1172713188,
+          "name": "namespace-profile/load-after/capture.json",
+          "sha256": "4e1553f32403b48d1e8c2afad9f52a5dc53e46f39dae9edd12e91af5426256cf",
+          "size_bytes": 1314
+        },
+        {
+          "crc32": 0,
+          "name": "namespace-profile/load-after/stderr.raw",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 1010786071,
+          "name": "namespace-profile/load-after/stdout.raw",
+          "sha256": "2877f12703cd0d3c647c1be6a5b34a9b646e9c1358a3b6f0444740d8ca128272",
+          "size_bytes": 3195
+        },
+        {
+          "crc32": 1505598574,
+          "name": "namespace-profile/load-before/capture.json",
+          "sha256": "3cbfef2e8dda33819fc71fd3bc13adff02cc9d37f5a229baa78261015f9e1f21",
+          "size_bytes": 1314
+        },
+        {
+          "crc32": 0,
+          "name": "namespace-profile/load-before/stderr.raw",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 782587590,
+          "name": "namespace-profile/load-before/stdout.raw",
+          "sha256": "97945b1ad8828716fa19dc4c3c3564354a2c9a7e0faa911cb45f6efe2980daf8",
+          "size_bytes": 3134
+        },
+        {
+          "crc32": 2078675236,
+          "name": "namespace-profile/load-intent.json",
+          "sha256": "269bf55af08f5b8126c246b800d0a624a0ac13eb1fd270914d7b6334bb22dab4",
+          "size_bytes": 601
+        },
+        {
+          "crc32": 1127897373,
+          "name": "namespace-profile/owned.profile",
+          "sha256": "3e448d76985e61fbbcfad61e3cd68c7c059b9858773b1f0e8d184b25b05c3d34",
+          "size_bytes": 158
+        },
+        {
+          "crc32": 3906617008,
+          "name": "namespace-profile/profile-lifecycle.json",
+          "sha256": "8fcc62677a95c52c5292cc14eeb8c54c555dd2b6c46b4a60c48a553531a93ddb",
+          "size_bytes": 975
+        },
+        {
+          "crc32": 4078792268,
+          "name": "namespace-profile/unload/capture.json",
+          "sha256": "53dd37efc0d3d1d4221d6215cbf4b90c190b51b0d39fa8723aafcc908ed6922a",
+          "size_bytes": 1353
+        },
+        {
+          "crc32": 0,
+          "name": "namespace-profile/unload/stderr.raw",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 0,
+          "name": "namespace-profile/unload/stdout.raw",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 2434450467,
+          "name": "namespace-profile/unload-after/capture.json",
+          "sha256": "f856fa8c43959833c59685f835dde20d233c3d91a8594b630458313536d343e3",
+          "size_bytes": 1319
+        },
+        {
+          "crc32": 0,
+          "name": "namespace-profile/unload-after/stderr.raw",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 782587590,
+          "name": "namespace-profile/unload-after/stdout.raw",
+          "sha256": "97945b1ad8828716fa19dc4c3c3564354a2c9a7e0faa911cb45f6efe2980daf8",
+          "size_bytes": 3134
+        },
+        {
+          "crc32": 2683761615,
+          "name": "native-build.json",
+          "sha256": "2b4fdf515066b273b5551815a8be8bae2882962b5e3d15c57156adcb71fb0a80",
+          "size_bytes": 428
+        },
+        {
+          "crc32": 0,
+          "name": "native-build.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 1602369800,
+          "name": "native-build.stdout",
+          "sha256": "d199d7043f067508672c15822c174770e27228a090367801414cde5cddf47003",
+          "size_bytes": 1408
+        },
+        {
+          "crc32": 662803966,
+          "name": "native-configure.json",
+          "sha256": "1a05285d2fc9903e183db3c841ddbb3396e9a77d5e57a55212ecef905b795b16",
+          "size_bytes": 493
+        },
+        {
+          "crc32": 0,
+          "name": "native-configure.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 3285531352,
+          "name": "native-configure.stdout",
+          "sha256": "9a0930d90ca88f752af64c03ec9580d4326ef279044b708b1987a0f21f13f72b",
+          "size_bytes": 760
+        },
+        {
+          "crc32": 2324546001,
+          "name": "report.json",
+          "sha256": "41b71c1dd134148b346eda2a7215e6d643793d3b0c2b32d334f5e11ec8e34724",
+          "size_bytes": 1833210
+        },
+        {
+          "crc32": 1948580253,
+          "name": "specification-inventory.json",
+          "sha256": "eb3d307e9cb97ca8d3c873e4724a314d0e28cd622f21f2dfa698b3f81dd4e5e7",
+          "size_bytes": 10511
+        },
+        {
+          "crc32": 862290501,
+          "name": "tracked-source.after.json",
+          "sha256": "105568f276b37f57aad59b81efaa6524c816b4e595679da56807a1087daba0ea",
+          "size_bytes": 1270968
+        },
+        {
+          "crc32": 862290501,
+          "name": "tracked-source.before.json",
+          "sha256": "105568f276b37f57aad59b81efaa6524c816b4e595679da56807a1087daba0ea",
+          "size_bytes": 1270968
+        },
+        {
+          "crc32": 2424389912,
+          "name": "unittest-child.report.json",
+          "sha256": "add39657ba85d0e2ceaee4d3175789545321dadba70e5439963631d361236042",
+          "size_bytes": 1762733
+        },
+        {
+          "crc32": 2974670335,
+          "name": "unittest.original.log",
+          "sha256": "40d1b7da00e8c9318ef6af919ca5ecf4656b3d8fb4159994442294f24da6dbb8",
+          "size_bytes": 2007295
+        }
+      ],
+      "original_zip": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-D-original-retention-v1/artifact-11271763780.original.zip",
+        "sha256": "7a4893cb85b710b015e279c04e144de0867f4707a89a33bcbcaa746572039ccb",
+        "size_bytes": 2101204
+      },
+      "provider_digest_matched": true
+    },
+    {
+      "all_CRC_full_SHA_and_safe_paths_verified": true,
+      "decoded_size_bytes": 2577375,
+      "member_count": 51,
+      "members": [
+        {
+          "crc32": 2964317464,
+          "name": "host-facts.original.json",
+          "sha256": "8845c0113253e7950abaa0dd21fbb3f58340767e4c40c77b1bbbbb3f5b4aa2e3",
+          "size_bytes": 1274
+        },
+        {
+          "crc32": 3332014682,
+          "name": "host-prerequisites.json",
+          "sha256": "1a29e98f68349fef6518d48691e30988ca096504d2fe12319a678c04b3c15ce5",
+          "size_bytes": 901
+        },
+        {
+          "crc32": 4041456000,
+          "name": "host-prerequisites.stderr",
+          "sha256": "d85b1b66bc7672e61d3070a8732f09fe0fd26905c1d8c23c686f6991b8f881ee",
+          "size_bytes": 1349
+        },
+        {
+          "crc32": 0,
+          "name": "host-prerequisites.stdout",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 2541293869,
+          "name": "model-acquisition/asset-00.dispatch.json",
+          "sha256": "a5ce41ef7c13d1b31398701964f8003202bcda209847645c3f5f143bd2aa6550",
+          "size_bytes": 834
+        },
+        {
+          "crc32": 2110305046,
+          "name": "model-acquisition/asset-00.json",
+          "sha256": "14b9023d0e4d57c3a92c6d7f3657e9b2c0ce94aa410081670ec0789c18bfbdcf",
+          "size_bytes": 1823
+        },
+        {
+          "crc32": 0,
+          "name": "model-acquisition/asset-00.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 3204977485,
+          "name": "model-acquisition/asset-00.stdout",
+          "sha256": "7fd8ab37a19d096f5c3483103d1279829e0678b7ece6cc6bab2bb0039092517e",
+          "size_bytes": 37
+        },
+        {
+          "crc32": 1824203158,
+          "name": "model-acquisition/asset-00.terminal.json",
+          "sha256": "ee531a5921f388cd9318522d7f6bcc403ac283a12fdb2fa6c441fe66d8e4d6fc",
+          "size_bytes": 596
+        },
+        {
+          "crc32": 3052912591,
+          "name": "model-acquisition/asset-01.dispatch.json",
+          "sha256": "205a58c82294e068fd7291512637dc1561b87a8f01f9266ac56de72244dc9228",
+          "size_bytes": 836
+        },
+        {
+          "crc32": 132427251,
+          "name": "model-acquisition/asset-01.json",
+          "sha256": "d9d05d5633ba3a16598b29f49414245f888a1fa23e206939fd2c22b3e957c44a",
+          "size_bytes": 1839
+        },
+        {
+          "crc32": 0,
+          "name": "model-acquisition/asset-01.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 3200940410,
+          "name": "model-acquisition/asset-01.stdout",
+          "sha256": "74a6c4418dd0054274c48620b45ffb0322e7e8c669e5198297bbcc528c72a430",
+          "size_bytes": 37
+        },
+        {
+          "crc32": 3243435253,
+          "name": "model-acquisition/asset-01.terminal.json",
+          "sha256": "0d42626a87a90df1ebf04fa4a5314511fa195926e181c1dbea5a60ef2eca0a11",
+          "size_bytes": 597
+        },
+        {
+          "crc32": 1454227972,
+          "name": "model-acquisition/asset-02.json",
+          "sha256": "c5afd2c5f04a0217441454ae54d43477bde45a41344562a27694c29c646e0fc7",
+          "size_bytes": 1909
+        },
+        {
+          "crc32": 1663600512,
+          "name": "model-acquisition/asset-02.dispatch.json",
+          "sha256": "36854170b011eecb849c0dd655b7f9427cc16a507cfbc5d17c1ed3059c98237b",
+          "size_bytes": 836
+        },
+        {
+          "crc32": 0,
+          "name": "model-acquisition/asset-02.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 3163342627,
+          "name": "model-acquisition/asset-02.stdout",
+          "sha256": "00118c14d4b199bf04b13888564cb710ca7dc534e84d04f43cd0a61c001f587c",
+          "size_bytes": 37
+        },
+        {
+          "crc32": 2963880079,
+          "name": "model-acquisition/asset-02.terminal.json",
+          "sha256": "b4c35f5c650d24f6e6ee54b77aaee9e3931614fc4aa7dbd6730309ddf784dd3b",
+          "size_bytes": 597
+        },
+        {
+          "crc32": 3941330309,
+          "name": "model-acquisition/asset-03.dispatch.json",
+          "sha256": "6b768be8b4bc1ed394eb9e9cf48145073b12e1bd445dc8e5aabeba2e8522ba2a",
+          "size_bytes": 836
+        },
+        {
+          "crc32": 3668314004,
+          "name": "model-acquisition/asset-03.json",
+          "sha256": "86eea8a6715b01fe44209a357985cd30cb473351a6179b872d5c06d703131a69",
+          "size_bytes": 1926
+        },
+        {
+          "crc32": 0,
+          "name": "model-acquisition/asset-03.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 3176049940,
+          "name": "model-acquisition/asset-03.stdout",
+          "sha256": "894e4005e4f4be608717721b08e1f98f56fd8d5eb4c1026f30d643e07e29119d",
+          "size_bytes": 37
+        },
+        {
+          "crc32": 1654259134,
+          "name": "model-acquisition/asset-03.terminal.json",
+          "sha256": "ddacffd0a9717ee1cdb8844a071ce4fd1ade664021fe2cff6a870962c61cec07",
+          "size_bytes": 597
+        },
+        {
+          "crc32": 3524443342,
+          "name": "model-acquisition/asset-04.dispatch.json",
+          "sha256": "ea836586484b96fbfd7252060b6d13a749d3c2b5867ddcd49bbd22fc616dfe6c",
+          "size_bytes": 834
+        },
+        {
+          "crc32": 503750488,
+          "name": "model-acquisition/asset-04.json",
+          "sha256": "7ddaf4e8779957587e5b5cdd6120b39f81673b6c16436247609015c5ce3bebda",
+          "size_bytes": 1909
+        },
+        {
+          "crc32": 0,
+          "name": "model-acquisition/asset-04.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 3087121297,
+          "name": "model-acquisition/asset-04.stdout",
+          "sha256": "4728d51e5350c5bdb02169744c3ca4574a83762cc12f1896ca383ca58875a5fd",
+          "size_bytes": 37
+        },
+        {
+          "crc32": 3427633764,
+          "name": "model-acquisition/asset-04.terminal.json",
+          "sha256": "e5a0c25badca5b350806c8db3a8e332fd6046259d8f9a4d92895acceddcbc33c",
+          "size_bytes": 597
+        },
+        {
+          "crc32": 865901953,
+          "name": "model-acquisition/asset-05.dispatch.json",
+          "sha256": "e0d5b6f87355ff531d990da787ea445fe8efeefc38e5f10796909c033d0b5fe7",
+          "size_bytes": 836
+        },
+        {
+          "crc32": 4137916866,
+          "name": "model-acquisition/asset-05.json",
+          "sha256": "2299b33d9eb8a9ff942cbeb4b680d798afb4115320c21e08dc38c3d91abd615b",
+          "size_bytes": 1924
+        },
+        {
+          "crc32": 0,
+          "name": "model-acquisition/asset-05.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 3116618150,
+          "name": "model-acquisition/asset-05.stdout",
+          "sha256": "67162acd026e397d5ee7be315ea8733065d59fdcace293ce4a71e08f3f649e16",
+          "size_bytes": 37
+        },
+        {
+          "crc32": 1710892417,
+          "name": "model-acquisition/asset-05.terminal.json",
+          "sha256": "ab17a659921f71c1bcceb305f5136ff5282251bced7fefe3137f79b6726e01b4",
+          "size_bytes": 597
+        },
+        {
+          "crc32": 683930893,
+          "name": "model-acquisition/asset-06.dispatch.json",
+          "sha256": "bfbcbf445a406fccf434cbf092d83b4bf7c3ef4c411ae424ff9a072173d11a48",
+          "size_bytes": 836
+        },
+        {
+          "crc32": 630316691,
+          "name": "model-acquisition/asset-06.json",
+          "sha256": "b023b1cf405d345d998ebea5c50b82b6570a200c4faba9eed1bc6af4b18668e5",
+          "size_bytes": 1733
+        },
+        {
+          "crc32": 0,
+          "name": "model-acquisition/asset-06.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 3146084351,
+          "name": "model-acquisition/asset-06.stdout",
+          "sha256": "448b6bad1025cc9c60c633959f8410626f1d336e472f8392127779adcbf66650",
+          "size_bytes": 37
+        },
+        {
+          "crc32": 4205391765,
+          "name": "model-acquisition/asset-06.terminal.json",
+          "sha256": "d68e7525ef85c9203d7f3144cddf8ef617f079b00de9ced1d0cb4eb4f8fe365d",
+          "size_bytes": 597
+        },
+        {
+          "crc32": 533351058,
+          "name": "model-acquisition/asset-07.dispatch.json",
+          "sha256": "9964ae8e0c5608c084eb3ef00bb3a85c84accc3773e9e4cbb0cd759fec0f3023",
+          "size_bytes": 836
+        },
+        {
+          "crc32": 0,
+          "name": "model-acquisition/asset-07.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 277221021,
+          "name": "model-acquisition/asset-07.json",
+          "sha256": "ed53cbe20899899e88139f17a6c6c7c4bc948228df3f9e67b6944b2600cfbd48",
+          "size_bytes": 1749
+        },
+        {
+          "crc32": 3125216712,
+          "name": "model-acquisition/asset-07.stdout",
+          "sha256": "ad5bd0d870140b3ea9f39fc02a864e54877d1d67e07367c495ec5c0b8f0d08d3",
+          "size_bytes": 37
+        },
+        {
+          "crc32": 1282046651,
+          "name": "model-acquisition/asset-07.terminal.json",
+          "sha256": "d627356600251b3e17bc6ca915ef945e1ad62ce532820988a94edc2b0234a414",
+          "size_bytes": 597
+        },
+        {
+          "crc32": 3553690397,
+          "name": "model-acquisition/report.json",
+          "sha256": "49d2cc036c08a651d66f00ceaa734d901e296b1d54a7e814c534d77168a46af2",
+          "size_bytes": 3469
+        },
+        {
+          "crc32": 3536128673,
+          "name": "model-assets.json",
+          "sha256": "0667f66a07c1be54e7741ac2e35c775287d52ecede93a8b9e643ddef7dba5613",
+          "size_bytes": 357
+        },
+        {
+          "crc32": 0,
+          "name": "model-assets.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 1046524475,
+          "name": "model-assets.stdout",
+          "sha256": "e6e545ea0ad9fa9d97a587917f06b3526c484047cd4f7a57c13eb8cbaf04d134",
+          "size_bytes": 36
+        },
+        {
+          "crc32": 3199131345,
+          "name": "report.json",
+          "sha256": "0bde089dfa9740bcec8474bc0e8fdb5824935c90b07e213671a5d3ac3bdc4f9b",
+          "size_bytes": 1486
+        },
+        {
+          "crc32": 862290501,
+          "name": "tracked-source.after.json",
+          "sha256": "105568f276b37f57aad59b81efaa6524c816b4e595679da56807a1087daba0ea",
+          "size_bytes": 1270968
+        },
+        {
+          "crc32": 862290501,
+          "name": "tracked-source.before.json",
+          "sha256": "105568f276b37f57aad59b81efaa6524c816b4e595679da56807a1087daba0ea",
+          "size_bytes": 1270968
+        }
+      ],
+      "original_zip": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-D-original-retention-v1/artifact-11271642095.original.zip",
+        "sha256": "fe3fa55f71fd4d0fecad4a5dfbc71be88bf544e629016fbd7e20f358ed1a21ad",
+        "size_bytes": 480204
+      },
+      "provider_digest_matched": true
+    }
+  ]
+}

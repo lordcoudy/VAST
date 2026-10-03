@@ -1,0 +1,39 @@
+{
+  "actual_C_push_tool": "53acb0",
+  "actual_source_C_commit_tool": "6bb8b7",
+  "author": "/root",
+  "benchmark_B_untouched": "a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+  "bound_recipe": {
+    "path": "artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/recipe.bound.v1.json",
+    "sha256": "7507d429ba5a57fa25e5fd1fcf9d106d9b743c53f84346366230569d9b7c938b",
+    "size_bytes": 10644
+  },
+  "exact_C_commit": "04a5d1c7b90274af71f4ff2456ec3013107c2bb3",
+  "full_CI_requires_separate_post_setup_full95_and_original_setup_join": true,
+  "future_setup_outcome": null,
+  "independent_source_review": {
+    "path": "artifacts/benchmark_recovery_20260930/decision29-current-ci-root-source-review-v1/review.v1.json",
+    "sha256": "1c7e93fd8e56bc6e6dc6135874a795a9cea9b17d5bc2618f40b0d932b64a46f8",
+    "size_bytes": 3070
+  },
+  "schema_version": 1,
+  "scope": "One original300+10 exclusive ext4 C checkout/prerequisite setup only; no benchmark/model/engine measurement or full CI dispatch",
+  "source_pins": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/setup_original_current_ci_v2.py",
+      "sha256": "9aca35df5b1d4c87a555ac3d32d99c1a05b4772cf5bd841d778fec4e330ed3d3",
+      "size_bytes": 16786
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/capture_original_setup_v2.py",
+      "sha256": "60de16c4355b60636c85f1630eb00722a958f625b73f7326b367a3e373f45406",
+      "size_bytes": 4931
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/capture_original_full_ci_v1.py",
+      "sha256": "a37fecbaa6fb4a560bb7c44897a39a9f3c0e294d5fb4b75c0cb2412ec465c9ac",
+      "size_bytes": 12429
+    }
+  ],
+  "standing_user_authorization": "carte-blanche; approve every change; proceed autonomously"
+}

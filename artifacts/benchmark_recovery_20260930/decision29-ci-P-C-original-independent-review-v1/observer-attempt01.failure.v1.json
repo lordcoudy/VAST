@@ -1,0 +1,25 @@
+{
+  "all_retainer_CI_model_engine_sources_unchanged": true,
+  "concrete_api_difference": {
+    "FD_and_named_other_six_fields_equal": true,
+    "FD_ctime_ns": 1791022688857098000,
+    "named_ctime_ns": 1791022688855322000,
+    "original_tool": "4ee65d"
+  },
+  "correction": "Keep all seven fields stable within each Windows stat API; cross-API equality covers six fields because Windows fstat/named ctime differs. Full bytes/hash joins retained. No fresh Linux seven-epoch claim.",
+  "first_error": "AssertionError in read() joining FD and named Windows st_ctime_ns",
+  "narrow_metadata_observer_v2": {
+    "path": "artifacts\\benchmark_recovery_20260930\\decision29-ci-P-C-original-independent-review-v1\\review_retained_originals_v2.py",
+    "sha256": "a5ad6d5c60135be6930ba7ac30f0d2131b9cef65d92b212ff7f581d85db59316",
+    "size_bytes": 21041
+  },
+  "original_provider_or_local_attempt_outcome_changed": false,
+  "own_static_observer_attempt01_returncode": 1,
+  "own_static_observer_attempt01_tool": "856fe5",
+  "preserved_failed_metadata_observer_source": {
+    "path": "artifacts\\benchmark_recovery_20260930\\decision29-ci-P-C-original-independent-review-v1\\review_retained_originals_v1.py",
+    "sha256": "9b2e08750ed999c3a5d115c07b8d44d23ca5856626502bb1525ed1005915a98c",
+    "size_bytes": 20962
+  },
+  "schema_version": 1
+}

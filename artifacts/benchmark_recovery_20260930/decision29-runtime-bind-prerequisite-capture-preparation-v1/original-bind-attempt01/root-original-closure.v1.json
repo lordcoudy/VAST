@@ -1,0 +1,145 @@
+{
+  "actual_outer_and_helper_owners": [
+    {
+      "argv": [
+        "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+        "-I",
+        "-B",
+        "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-prerequisite-capture-preparation-v1/capture_stock_runtime_bind_v2.py"
+      ],
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 0,
+      "observed_parent": {
+        "argv": [
+          "/usr/bin/timeout",
+          "--signal=TERM",
+          "--kill-after=10s",
+          "120s",
+          "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+          "-I",
+          "-B",
+          "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-prerequisite-capture-preparation-v1/capture_stock_runtime_bind_v2.py"
+        ],
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 0,
+        "pgid": 6530,
+        "pid": 6530,
+        "ppid": 6529,
+        "session": 6530,
+        "startticks": 51155127,
+        "state": "S",
+        "uid": 0
+      },
+      "pgid": 6530,
+      "pid": 6531,
+      "ppid": 6530,
+      "session": 6530,
+      "startticks": 51155127,
+      "state": "R",
+      "uid": 0
+    },
+    {
+      "argv": [
+        "/usr/bin/timeout",
+        "--signal=TERM",
+        "--kill-after=10s",
+        "120s",
+        "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+        "-I",
+        "-B",
+        "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-prerequisite-capture-preparation-v1/capture_stock_runtime_bind_v2.py"
+      ],
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 0,
+      "pgid": 6530,
+      "pid": 6530,
+      "ppid": 6529,
+      "session": 6530,
+      "startticks": 51155127,
+      "state": "S",
+      "uid": 0
+    }
+  ],
+  "actual_source_and_target_rows": [
+    {
+      "device": "8:48",
+      "filesystem": "ext4",
+      "mount_id": 331,
+      "optional": [],
+      "options": [
+        "ro",
+        "relatime"
+      ],
+      "original_line": "331 80 8:48 /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1 /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1 ro,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered",
+      "parent_mount_id": 80,
+      "root": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1",
+      "source": "/dev/sdd",
+      "superblock_options": [
+        "rw",
+        "discard",
+        "errors=remount-ro",
+        "data=ordered"
+      ],
+      "target": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1"
+    },
+    {
+      "device": "8:48",
+      "filesystem": "ext4",
+      "mount_id": 2708,
+      "optional": [],
+      "options": [
+        "ro",
+        "relatime"
+      ],
+      "original_line": "2708 80 8:48 /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1 /home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/.publication-runtime/full-publication-cp312-v1 ro,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered",
+      "parent_mount_id": 80,
+      "root": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1",
+      "source": "/dev/sdd",
+      "superblock_options": [
+        "rw",
+        "discard",
+        "errors=remount-ro",
+        "data=ordered"
+      ],
+      "target": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/.publication-runtime/full-publication-cp312-v1"
+    }
+  ],
+  "all_raw_command_hashes_and_closures_joined": true,
+  "current_mount_namespace": "mnt:[4026532217]",
+  "execution": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-prerequisite-capture-preparation-v1/original-bind-attempt01/execution.v1.json",
+    "sha256": "829110b9b75faf53fcce812d188fe318540422c1c7d12acd2019257b6aaa9dea",
+    "size_bytes": 19078
+  },
+  "focused_canonical_test_pending": true,
+  "fresh95_pending": true,
+  "full_CI_acceptance": false,
+  "late_companion_absent": true,
+  "numeric_capture_FD": [
+    6,
+    6
+  ],
+  "original_actual_elapsed_s": 0.1762407630449161,
+  "original_exec_tool_cell": "8cdd3e",
+  "original_true_exit_code": 0,
+  "two_current_process_scans": [
+    {
+      "actual_owner_pid_paths_absent": {
+        "6530": true,
+        "6531": true
+      },
+      "at_monotonic_ns": 511618215057984,
+      "errors": [],
+      "members": []
+    },
+    {
+      "actual_owner_pid_paths_absent": {
+        "6530": true,
+        "6531": true
+      },
+      "at_monotonic_ns": 511618216439610,
+      "errors": [],
+      "members": []
+    }
+  ]
+}

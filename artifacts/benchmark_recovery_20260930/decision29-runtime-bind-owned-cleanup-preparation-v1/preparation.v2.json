@@ -1,0 +1,302 @@
+{
+  "absolute_bounds_s": {
+    "external_KILL_after": 10,
+    "external_TERM": 30,
+    "whole_and_cleanup": 40,
+    "work": 30
+  },
+  "acceptance_claim": false,
+  "accepted_capture_original": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-runtime-bind-prerequisite-capture-preparation-v1\\capture_stock_runtime_bind_v2.py",
+    "sha256": "aa0beeff2f3d6057cd2e5f99bebd311845db0a162757bf5590b39ba6b5d79dff",
+    "size_bytes": 20895
+  },
+  "actual_AST_checks": {
+    "exact_unchanged_primitives": [
+      "epoch",
+      "fault",
+      "raw"
+    ],
+    "new_functions": [
+      "authentic_owners",
+      "command",
+      "digest",
+      "epoch",
+      "evidence",
+      "fault",
+      "gate",
+      "hold",
+      "identity",
+      "interrupted",
+      "mount_observation",
+      "owner",
+      "raw",
+      "read_control",
+      "require_absent",
+      "save",
+      "scan",
+      "verify_holds"
+    ],
+    "no_directory_or_payload_deletion_calls": true,
+    "old_functions": [
+      "command",
+      "digest_fd",
+      "epoch",
+      "fault",
+      "gate_time",
+      "hold",
+      "interrupted",
+      "mount_observation",
+      "owner",
+      "raw",
+      "save",
+      "scan",
+      "source_row"
+    ],
+    "one_fixed_Popen_only": true,
+    "parse": true
+  },
+  "actual_creator_boot_and_namespace": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "namespace": "mnt:[4026532217]",
+    "namespace_stat7": [
+      4,
+      4026532217,
+      33060,
+      1,
+      0,
+      1790517703668223409,
+      1790517703668223409
+    ]
+  },
+  "actual_creator_mount_rows": [
+    {
+      "device": "8:48",
+      "filesystem": "ext4",
+      "mount_id": 331,
+      "optional": [],
+      "options": [
+        "ro",
+        "relatime"
+      ],
+      "original_line": "331 80 8:48 /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1 /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1 ro,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered",
+      "parent_mount_id": 80,
+      "root": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1",
+      "source": "/dev/sdd",
+      "superblock_options": [
+        "rw",
+        "discard",
+        "errors=remount-ro",
+        "data=ordered"
+      ],
+      "target": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1"
+    },
+    {
+      "device": "8:48",
+      "filesystem": "ext4",
+      "mount_id": 2708,
+      "optional": [],
+      "options": [
+        "ro",
+        "relatime"
+      ],
+      "original_line": "2708 80 8:48 /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1 /home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/.publication-runtime/full-publication-cp312-v1 ro,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered",
+      "parent_mount_id": 80,
+      "root": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1",
+      "source": "/dev/sdd",
+      "superblock_options": [
+        "rw",
+        "discard",
+        "errors=remount-ro",
+        "data=ordered"
+      ],
+      "target": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/.publication-runtime/full-publication-cp312-v1"
+    }
+  ],
+  "actual_owner_shape_basis": {
+    "CI_result": {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-local-ci-D-prerequisite-result-review-preparation-v1\\original-prerequisite-review-attempt01\\review.v1.json",
+      "sha256": "5a58508acf35f71d3c2934a022de1bff2e60eb44a39b6f85bd48cc3715ab7c60",
+      "size_bytes": 119285
+    },
+    "current_owner_late_peer": {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-local-ci-D-prerequisite-result-review-preparation-v1\\independent-owner-late-closure-v1\\actual-tool-and-owner-closure-supplement.v1.json",
+      "sha256": "45957c4900ec9edd6d0712bfbb8cf94c07401a01457bea09106938e95f1ccd45",
+      "size_bytes": 5410
+    },
+    "observer6999": "Actual PID/PGID/startticks/UID/GID/boot observed; original session absent.",
+    "reader10965": "Only original reader PID observed; unknown birth/group/session/UID/GID/boot remain null."
+  },
+  "byte_bounds": {
+    "all_control_bytes": 33554432,
+    "canonical_python_exact": 8020928,
+    "each_control": 4194304,
+    "each_mountinfo": 4194304,
+    "each_stdout_stderr": 65536,
+    "umount_executable_max": 4194304
+  },
+  "canonical_interpreter_original": {
+    "epoch7": [
+      2096,
+      87545,
+      33261,
+      1,
+      8020928,
+      1787574148546271435,
+      1787574148546271435
+    ],
+    "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/.publication-runtime/full-publication-cp312-v1/bin/python",
+    "sha256": "1643dacd9feaedc58f3cc581e4d22577dfe25c09b10282936186ccf0f2e61118",
+    "size_bytes": 8020928
+  },
+  "capture_runtime_args": [
+    "BOUND_CLOSURE_SIZE",
+    "BOUND_CLOSURE_SHA256",
+    "e4321413fb7a9613a362bd544347de8d552c1ebd50615beb78d3b82dbce98921"
+  ],
+  "cleanup_granted_by_preparation": false,
+  "code_path_checks": [
+    "Original mount2708/source331, parent80/device8:48/ext4/read-only/raw rows, boot and full mount namespace identity are joined to exact original creator proofs before mutation.",
+    "Canonical Python keeps its actual original full SHA and seven epochs before/after. Global source331 row and source-directory epoch remain exact.",
+    "Temporary target/bin/python and all target-side ancestor/leaf FDs close independently before Popen; persistent holds explicitly reject any path below target.",
+    "Only fixed umount argv; no force/lazy/recursive flags, root source unmount, remount, rmdir/delete, model/native/engine or test/CI invocation.",
+    "Quick actual child zombie may expose empty cmdline; actual unreaped PID/stat/status identity and intended argv remain distinct. No executable observation fabricated.",
+    "Real exit, reap, both EOFs, bounded raw channel full stored hashes/epochs, two error-free owned-group scans and independent retirement/FD balance are mandatory.",
+    "First error remains latched; partial stored raw digest is not labeled complete. Command failure can retain post-mount facts but never pass cleanup.",
+    "Receipt is exclusive, after independent FD retirements; final40s post-save/post-flush check publishes sticky failure companion/nonzero without rewriting original execution."
+  ],
+  "complete_source_diff": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-runtime-bind-owned-cleanup-preparation-v1\\complete-source.delta.v1.patch",
+    "sha256": "06fd68645bade8e4bb976b654d106a5b1bce0942a7199b1a3b72134eda973f5c",
+    "size_bytes": 44634
+  },
+  "creator_execution": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-runtime-bind-prerequisite-capture-preparation-v1\\original-bind-attempt01\\execution.v1.json",
+    "sha256": "829110b9b75faf53fcce812d188fe318540422c1c7d12acd2019257b6aaa9dea",
+    "size_bytes": 19078
+  },
+  "creator_root_closure": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-runtime-bind-prerequisite-capture-preparation-v1\\original-bind-attempt01\\root-original-closure.v1.json",
+    "sha256": "3cf93ba8891604fdaddb2689ed3400ab5ce4ae50a8c6eac723466bff6815275b",
+    "size_bytes": 5037
+  },
+  "current_source_AST": {
+    "changed_functions": [
+      "authentic_owners",
+      "read_control",
+      "scan"
+    ],
+    "exact_unchanged_functions": [
+      "command",
+      "digest",
+      "epoch",
+      "evidence",
+      "fault",
+      "gate",
+      "hold",
+      "identity",
+      "interrupted",
+      "mount_observation",
+      "owner",
+      "raw",
+      "require_absent",
+      "save",
+      "verify_holds"
+    ],
+    "new_functions": [
+      "normalize_owner"
+    ],
+    "parse": true
+  },
+  "future_binding_requirements": [
+    "Create a NEW concrete consumer-closure.bound.v1.json and exact size/SHA after all D consumers, full CI and conformance have genuinely closed; preserve this pending template.",
+    "Root independently reviews concrete binding and exact source, records one grant, and ensures no new D consumers start between closure and unmount.",
+    "Pin actual root-owned /usr/bin/umount regular executable with current full SHA/size/seven epochs; template carries no invented executable facts.",
+    "Full-CI dispatch and terminal must be original prerequisite-output paths; result reader must have verified complete original evidence, actual FD release/balance, and SUCCESS or FAILED disposition retained honestly.",
+    "Pin actual conformance generator terminal, independent review, and process closure; generator terminal must report all FD closes. Metadata generation itself is not conformance/release acceptance.",
+    "Supply normalized actual named consumer records with every missing field null. All required actual CI actors and current conformance mapper/reader PIDs must be included. No session, PGID or birth is inferred.",
+    "Two current error-free PID/group/session absence scans must pass before the sole command; unknown ownership or a reused PID refuses execution.",
+    "Independent root postterminal observation must close this capture and its actual timeout parent as well as verify late companion absence. The live helper never claims its own process absent."
+  ],
+  "future_external_argv": [
+    "/usr/bin/timeout",
+    "--verbose",
+    "--signal=TERM",
+    "--kill-after=10s",
+    "30s",
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-owned-cleanup-preparation-v1/capture_owned_runtime_bind_cleanup_v2.py",
+    "BOUND_CLOSURE_SIZE",
+    "BOUND_CLOSURE_SHA256",
+    "e4321413fb7a9613a362bd544347de8d552c1ebd50615beb78d3b82dbce98921"
+  ],
+  "future_external_owner_uid_gid": [
+    0,
+    0
+  ],
+  "future_root_review_and_one_grant_required": true,
+  "inverse_claim": "Explicit two-behavior correction plus necessary leaf bindings. No whole-source literal-only claim; all other15 original v1 function ASTs remain exact.",
+  "limitations": [
+    "Underlying target-directory identity before mount was never recorded. No old inode/epoch is invented or compared; post-unmount observation is explicitly new, empty directories retained.",
+    "Completeness of the declared D consumer set requires the exact independent root binding review and closure record; scans prove only the named original owners/groups/sessions, not global absence.",
+    "Preparation is source/AST/metadata authoring only. No subprocess, namespace/mount inspection, unmount, target import, test, CI, engine, model or hardware operation was performed.",
+    "Original D CI failure and all benchmark/scientific/CI negative outcomes remain unchanged. Resource cleanup is not acceptance, conformance, archive or merge."
+  ],
+  "metadata_author": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-runtime-bind-owned-cleanup-preparation-v1\\prepare_cleanup_v2_metadata.py",
+    "sha256": "83e243f18bb7ff48cdab7e4e51d51117a2f84b530f90a7c876aa46a40e988b39",
+    "size_bytes": 10408
+  },
+  "pending_binding": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-runtime-bind-owned-cleanup-preparation-v1\\consumer-closure.pending.v2.json",
+    "sha256": "31cdbe94eed418fbd6a4463b7571886884c6cc64921c197c16549cdcf543e2cc",
+    "size_bytes": 776
+  },
+  "prepared_only": true,
+  "preserved_accepted_source": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-runtime-bind-owned-cleanup-preparation-v1\\accepted-bind-capture.before.raw",
+    "sha256": "aa0beeff2f3d6057cd2e5f99bebd311845db0a162757bf5590b39ba6b5d79dff",
+    "size_bytes": 20895
+  },
+  "preserved_author_failure": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-runtime-bind-owned-cleanup-preparation-v1\\metadata-authoring-attempt01-failure.v1.json",
+    "sha256": "330455f0fc11dd80280ba4f52c8441a619eb7c4a322bff52b68a147a356fa473",
+    "size_bytes": 639
+  },
+  "preserved_cleanup_source_v1": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-runtime-bind-owned-cleanup-preparation-v1\\capture_owned_runtime_bind_cleanup_v1.py",
+    "sha256": "f12f742c63c332f4c700a9a607626346020d05255d66e95474c3281184703e88",
+    "size_bytes": 29381
+  },
+  "preserved_preparation_v1": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-runtime-bind-owned-cleanup-preparation-v1\\preparation.v1.json",
+    "sha256": "c805c39a4845d57d2b56d8ac5639406a46ec51091e9759427b0abca772a7df7e",
+    "size_bytes": 12100
+  },
+  "schema_version": 1,
+  "scope": "ONE exact owned-mount unmount after all D consumer/full-CI/conformance originals and owner closures genuinely close. No target dispatch now.",
+  "sole_subprocess_argv": [
+    "/usr/bin/umount",
+    "--",
+    "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/.publication-runtime/full-publication-cp312-v1"
+  ],
+  "source": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-runtime-bind-owned-cleanup-preparation-v1\\capture_owned_runtime_bind_cleanup_v2.py",
+    "sha256": "e4321413fb7a9613a362bd544347de8d552c1ebd50615beb78d3b82dbce98921",
+    "size_bytes": 31423
+  },
+  "target_execution_performed": false,
+  "v1_v2_complete_source_diff": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-runtime-bind-owned-cleanup-preparation-v1\\v1-v2.complete-source.delta.patch",
+    "sha256": "b3f0b9a0af05bc7de62c4489aec244b0520238e4b1352a4fe525276976851d25",
+    "size_bytes": 11345
+  },
+  "v2_changes": [
+    "Bounded repeated64KiB pread until exact held control size; original cap/deadline/SHA/full7epoch guards unchanged. Actual earlier peer demonstrated DrvFS short read65512 for127794.",
+    "Normalize only actual owner fields with missing values null. Scan only observed positive PID/PGID/session; no original birth/session/group inferred.",
+    "Require actual CI controller/original/observer and named result-reader PID plus genuine conformance mapper and reader PID when available; source rows join actual dispatch/result/closure bodies.",
+    "Necessary reviewed v2 source leaf literal and self-SHA argv updates; sole fixed umount, originalcreatorproofs, physicalmount/interpreter/FD/error/30+10clock gates unchanged."
+  ]
+}

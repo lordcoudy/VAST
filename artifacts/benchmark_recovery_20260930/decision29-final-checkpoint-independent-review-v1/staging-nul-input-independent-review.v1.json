@@ -1,0 +1,86 @@
+{
+  "AST_only_one_Constant_in_stage_changed": {
+    "after": "NUL",
+    "before": "LF",
+    "other10_function_raw_and_AST_identical": true
+  },
+  "ROOT_reported_correct_readonly_probe": {
+    "basis": "Parent genuine tool notification; no new Git probe executed by this reviewer",
+    "filters": "unspecified or unset",
+    "paths": 613,
+    "stderr_bytes": 0,
+    "stdout_bytes": 87808,
+    "triplet_cardinality_verified": true
+  },
+  "actual_preserved_failure_scope": {
+    "before_objects_and_index_mutation": true,
+    "close_errors": [],
+    "diagnosis_ref": {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-final-checkpoint-preparation-v1/first-staging-failure-and-diagnosis.v1.json",
+      "sha256": "8e5443827fa14a3d1a11c2e729c8768e6452d0ae40a352df71cd24e969a98dbf",
+      "size_bytes": 2040
+    },
+    "exact_consecutive_chunks_independently_reconstructed": true,
+    "lossless_complete_chunk_refs": [
+      {
+        "offset_bytes": 0,
+        "path": "artifacts/benchmark_recovery_20260930/decision29-final-checkpoint-preparation-v1/check-attr.actual-stderr.part01.raw",
+        "sha256": "4a6ee21ea08d69fe02e2c9f63f04f1c063387343964f2a4d1c37e10ebcba4283",
+        "size_bytes": 4194304
+      },
+      {
+        "offset_bytes": 4194304,
+        "path": "artifacts/benchmark_recovery_20260930/decision29-final-checkpoint-preparation-v1/check-attr.actual-stderr.part02.raw",
+        "sha256": "7f63fb5840cdf1f7669ed10dc84d20a05a555fc61d879b3d20bf4b1aa33aa484",
+        "size_bytes": 4194304
+      },
+      {
+        "offset_bytes": 8388608,
+        "path": "artifacts/benchmark_recovery_20260930/decision29-final-checkpoint-preparation-v1/check-attr.actual-stderr.part03.raw",
+        "sha256": "f8ce1b8e856c2f1cd68093438f57f772c8991834dff77cb7b7456b2ee0597f13",
+        "size_bytes": 299005
+      }
+    ],
+    "no_truncation_normalization_or_leaf_cap_widening": true,
+    "open_read_FDs": 0,
+    "original8687613_bytes_and_fullSHA_independently_verified": true,
+    "original_first_stage_exit": 1,
+    "stderr_original_ref": {
+      "path": "tmp/final-checkpoint-over-bound-originals/check-attr.actual-stderr.v1.raw",
+      "retained_unmodified": true,
+      "sha256": "7c33bdcfe46b6d165d6fcb33ae27033f8b2f5e3dfc568156bf7824ed1eb0c2d1",
+      "size_bytes": 8687613,
+      "uncommitted_reason": "Original exceeds private8MiB leaf bound; complete lossless consecutive chunks fit unchanged bound."
+    }
+  },
+  "artifact_kind": "independent_staging_NUL_input_fix_source_review_v1",
+  "blocking_findings": [],
+  "limits": [
+    "Independent source/AST and retained physical-byte review only; no helper import/compile/staging/sealing/Git execution.",
+    "First-stage failure/HEAD/index notifications and corrected readonly probe are attributed to ROOT; no duplicate raw tool terminal is invented.",
+    "Closed CI/conformance/archive/cleanup are retained separate gates; this review does not claim a successful corrected stage or future commit/CI/merge."
+  ],
+  "owned_source_pins": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-final-checkpoint-preparation-v1/stage_final_checkpoint_v6.py",
+      "sha256": "8c60846476a726236a06e415fe85b4f1710423f6b8500c2ff0b77b3a8542c66a",
+      "size_bytes": 21709
+    }
+  ],
+  "primary_source": {
+    "independently_read": true,
+    "supports": "With both --stdin and -z, input pathnames use NUL separators; output triples also use NUL delimiters.",
+    "url": "https://git-scm.com/docs/git-check-attr"
+  },
+  "raw_inverse_exact_v5": true,
+  "reviewable": true,
+  "reviewed_prior_source_pin": {
+    "path": "artifacts/benchmark_recovery_20260930/decision29-final-checkpoint-preparation-v1/stage_final_checkpoint_v5.py",
+    "sha256": "4157fb7edcdbf6c1c0f243a34857e35eef19114809e18319ab78a714c7e930e8",
+    "size_bytes": 21709
+  },
+  "reviewer": "/root/decision28_source_peer",
+  "reviewer_handles_released": true,
+  "schema_version": 1,
+  "source_guard_scope": "Only check-attr input separator changed. Canonical paths,35 namespaces,640 combined-path/638-listed-row rule,300s whole/15s each Git call,8MiB leaf/64MiB total/1MiB JSON/16MiB stdout/64KiB stderr, output cardinality/filter guard, prospective conversions before mutation and all Git/index/receipt primitives are unchanged."
+}

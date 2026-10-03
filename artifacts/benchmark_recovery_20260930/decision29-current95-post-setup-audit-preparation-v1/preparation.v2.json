@@ -1,0 +1,113 @@
+{
+  "CI_checkpoint_C": "04a5d1c7b90274af71f4ff2456ec3013107c2bb3",
+  "actual_original_inputs": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/recipe.bound.v1.json",
+      "sha256": "7507d429ba5a57fa25e5fd1fcf9d106d9b743c53f84346366230569d9b7c938b",
+      "size_bytes": 10644
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/original-setup.capture-terminal.v1.json",
+      "sha256": "274e44f624c8356fda99a4132ae9d30e062987d9cae510210d12c2f31669abd2",
+      "size_bytes": 4610
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/original-setup-attempt01/execution.v1.json",
+      "sha256": "a14e8d81871fd24ce16910526a031c9aeab2aa0a30ccb387871291fa5babd69e",
+      "size_bytes": 28880
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-current95-preparation-v1/decision28-current95-original-attempt01/current95-inputs.v1.json",
+      "sha256": "3c9b7eca9c9b33e01624764b7ccfccb9d748c3ac9623389f7e12447f0085b150",
+      "size_bytes": 44579
+    }
+  ],
+  "author": "/root/decision28_source_peer",
+  "author_handles_released": true,
+  "benchmark_checkpoint_B": "a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+  "considered_original_custody_sources": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-current95-preparation-v1/collect_current95_v1.py",
+      "sha256": "7492e2d836dd0ed0f9192923a8cb3b7060ac0d1afc834aacaf730245dc1b2749",
+      "size_bytes": 20616
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-current95-ci-successor-preparation-v1/setup_original_current_ci_v1.py",
+      "sha256": "8bddfb1ceccd736ebf1ab260b0f83637e950995666ced6db63167eff98234571",
+      "size_bytes": 15174
+    }
+  ],
+  "future_dispatch_only": [
+    "/usr/bin/timeout",
+    "--signal=TERM",
+    "--kill-after=10s",
+    "120s",
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current95-post-setup-audit-preparation-v1/audit_actual95_post_setup_v2.py"
+  ],
+  "future_fresh95_outcome": null,
+  "future_original_owner": null,
+  "future_original_tool_returncode": null,
+  "independent_source_review_required_before_execution": true,
+  "new_observer_source_not_an_AST_identical_collector": "Only fresh read-only post-setup95 custody and sealed setup metadata are observed. The genuine collector/stock loader/Git commands are not replayed. New functions explicitly implement this narrower metadata observer.",
+  "new_target_functions": [
+    "epoch",
+    "identity",
+    "clock",
+    "fail",
+    "fd_count",
+    "owner",
+    "hold_ancestors",
+    "digest",
+    "hold",
+    "doc",
+    "scan_originals",
+    "save"
+  ],
+  "preserved_v1_preparation": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-current95-post-setup-audit-preparation-v1\\preparation.v1.json",
+    "sha256": "e35eee4aff086dbee427bc4ad2a3570602ceb718d949e8dd592176adbdec80b2",
+    "size_bytes": 5543
+  },
+  "preserved_v1_source": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-current95-post-setup-audit-preparation-v1\\audit_actual95_post_setup_v1.py",
+    "sha256": "f2b09d5b8336b9276bfb4da459bbcb7fc1e8cf18b77199f48eb8b56916e21eeb",
+    "size_bytes": 15057
+  },
+  "retained_bounds": {
+    "cleanup_s": 10,
+    "each_regular_leaf_bytes": 16777216,
+    "error_records": 64,
+    "failure_companion_bytes": 65536,
+    "finite_held_leaf_count": 128,
+    "metadata_or_report_bytes": 1048576,
+    "total_original95_bytes": 67108864,
+    "work_s": 120
+  },
+  "schema_version": 1,
+  "scope_limits": [
+    "Original C5561 raw Git equality and prerequisite checks are sealed setup metadata, not fresh Git or prerequisite replay.",
+    "Only original95 bytes/epochs and metadata are observed; no new stock closure/cold/benchmark/runtime or CI acceptance.",
+    "Original timeout initial argv empty remains explicit; no later executable claim is inferred.",
+    "Review receipt requires actual tool rc0, final FD baseline and no failure companion before full-CI grant."
+  ],
+  "source": {
+    "path": "artifacts/benchmark_recovery_20260930/decision29-current95-post-setup-audit-preparation-v1/audit_actual95_post_setup_v2.py",
+    "sha256": "0cc5510cc406b5848c41089818027163b88a8b92d5acf4434af3ce50131de86d",
+    "size_bytes": 15422
+  },
+  "source_guard_details": [
+    "Original B95 manifest full SHA and original Linux epochs; distinct source-C bound recipe; genuine original setup capture4610/274e and setup execution28880/a14e; all14 commands original0/reaped, original two scans and released holds.",
+    "EveryFD is registered immediately after acquisition and before fstat/hash/type checks; partial acquisitions remain independently closeable. Ancestor directories are held and rechecked by device/inode/mode/UID/GID.",
+    "Fresh full original95 hashes use positional real FD reads, expected full SHA/size and seven Linux epochs, with named/FD identity equality before/after. All held metadata/self/source and95 leaves are rehashed before independent leaf+ancestor close attempts.",
+    "The first failure is sticky. Every close is attempted despite later errors/deadlines. FD baseline is observed before/after closes, final receipt and stdout. Receipt/late/stdout failure attempts an exclusive bounded nonauthorizing companion; nonzero prevents acceptance even if companion publication fails.",
+    "Two error-aware post-close scans require all17 original setup/capture/timeout/command PIDs and their groups absent. Permission/malformed/read/deadline/overflow errors are uncertainty and block. No processes are signalled.",
+    "Exclusive unused output original-audit-attempt01. Original collector16MiB leaf/64MiB95/120+10 limits retained; no Git, loader, benchmark, model, engine, native, test or policy operation."
+  ],
+  "status": "source_only_v2_prepared_unexecuted_after_genuine_setup",
+  "targets_imported_compiled_or_executed": false,
+  "v1_review_limit": "V1 is preserved and unexecuted. A late stdout exception would produce nonzero but lack a retained first-cause companion; v2 is the proposed dispatch source.",
+  "v2_narrow_change": "Guard the final summary stdout write with the existing sticky first-error and exclusive bounded failure-companion attempt. All12 module function ASTs and every other source byte are unchanged by the exact inverse."
+}

@@ -1,0 +1,39 @@
+{
+  "Git_staging_sync_archive_target_execution": false,
+  "actual_current_suffix_equals_original_raw_bytes": true,
+  "all_metadata_read_handles_closed": true,
+  "artifact_kind": "sealed_progress_original_suffix_preservation_v1",
+  "current_full_progress_ref": {
+    "path": "progress.md",
+    "sha256": "e93049786410beff6d512b9ebac515c74368a5f8b25e37097abd3424a4826f2e",
+    "size_bytes": 1239979
+  },
+  "meaning": "Exact current progress suffix from the physically retained earliest before-document raw snapshot. No line normalization, historical rewriting or future result is implied.",
+  "nested_before_v4_suffix_witness": {
+    "exact_current_suffix": true,
+    "offset_bytes": 1415,
+    "raw_ref": {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-current-docs-v1/before-v4/progress.md.raw",
+      "sha256": "633a4ce024903c3b84697ac99f460da15d50bf8d4814f0d49c1d580f96370feb",
+      "size_bytes": 1238564
+    }
+  },
+  "new_current_prefix_size_bytes": 3918,
+  "observed_progress_and_plan_unchanged": true,
+  "original_suffix_CRLF_sequences": 0,
+  "original_suffix_offset_bytes": 3918,
+  "original_suffix_raw_ref": {
+    "path": "artifacts/benchmark_recovery_20260930/decision29-current-docs-v1/progress.md.before.raw",
+    "sha256": "dcb65fcfd5bd2fa912e4939cd5dc815b5d39a967fa9d42e1509aacf10ded9124",
+    "size_bytes": 1236061
+  },
+  "original_suffix_sha256": "dcb65fcfd5bd2fa912e4939cd5dc815b5d39a967fa9d42e1509aacf10ded9124",
+  "original_suffix_size_bytes": 1236061,
+  "plan_unchanged_ref": {
+    "path": "BENCHMARK_RECOVERY_PLAN.md",
+    "sha256": "2677e85865bd63dee5de24fb9017c7abd716396355a22a2d5d63af5cb9bdb987",
+    "size_bytes": 137502
+  },
+  "schema_version": 1,
+  "source": "progress.md"
+}

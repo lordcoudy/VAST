@@ -1,0 +1,43 @@
+{
+  "channel_bytes": {
+    "stderr": 3336,
+    "stdout": 3194
+  },
+  "close_errors": [],
+  "elapsed_s": 2115.37338894,
+  "eof": [
+    "stderr",
+    "stdout"
+  ],
+  "first_error": null,
+  "full_stock_report": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-prerequisite-original-output/report.json",
+  "hardware_acceptance": false,
+  "held_descriptors_released": true,
+  "original": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 6687,
+    "pid": 6687,
+    "ppid": 6673,
+    "session": 6687,
+    "startticks": 51238236,
+    "uid": 1000
+  },
+  "process_scans": [
+    {
+      "at_ns": 1791032167041265662,
+      "errors": [],
+      "members": []
+    },
+    {
+      "at_ns": 1791032167042729936,
+      "errors": [],
+      "members": []
+    }
+  ],
+  "returncode": 0,
+  "signals": [],
+  "source_before_after_equal": true,
+  "source_commit": "3c025b29b3c1d5275c2ec693410e4b83700583de",
+  "status": "success"
+}

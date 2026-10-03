@@ -1,0 +1,8 @@
+
+# Exact physically observed originals: preserve raw bytes under both autocrlf settings.
+/BENCHMARK_RECOVERY_PLAN.md -text !eol
+/artifacts/benchmark_recovery_20260930/decision29-current-docs-v1/current-docs.v4.diff -text !eol
+/artifacts/benchmark_recovery_20260930/decision29-release-fresh-critique-v1/current-docs.review.v2.json -text !eol
+/artifacts/benchmark_recovery_20260930/decision29-release-fresh-critique-v1/review.v1.json -text !eol
+/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-owned-cleanup-preparation-v1/metadata-authoring-attempt01-failure.v1.json -text !eol
+/progress.md -text !eol

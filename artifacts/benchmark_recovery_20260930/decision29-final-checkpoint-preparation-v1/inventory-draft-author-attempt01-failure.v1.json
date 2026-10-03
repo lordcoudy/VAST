@@ -1,0 +1,33 @@
+{
+  "Git_or_staging_mutation": false,
+  "actual_subsequent_read_only_diagnostic": {
+    "fstat_before_after": [
+      17601399781211216820,
+      1407374885979734,
+      33206,
+      1,
+      206365,
+      1791020178343618300,
+      1791020178343618300
+    ],
+    "lstat_before_after": [
+      17601399781211216820,
+      1407374885979734,
+      33206,
+      1,
+      206365,
+      1791020178343618300,
+      1791020178341616800
+    ]
+  },
+  "all_open_read_streams_closed": true,
+  "diagnosed_correction": "Use existing reviewed staging read() rule: dev/inode/size joins APIs; all seven epochs must remain stable within each API. Do not require unlike Windows ctime APIs to match. No helper/source mutation.",
+  "draft_written_by_failed_attempt": false,
+  "exact_tool_cell_unavailable": true,
+  "first_error": "AssertionError comparing full lstat and fstat epoch arrays across Windows APIs",
+  "kind": "unsealed_inventory_author_cross_Windows_API_epoch_comparison_failure",
+  "original_author_tool_cell": null,
+  "original_source_helper_fault": false,
+  "path": "artifacts/benchmark_recovery_20260930/decision28-four-arm-science-preparation-v1/attempt01/custody-and-comparison.v1.json",
+  "schema_version": 1
+}

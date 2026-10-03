@@ -1,0 +1,42 @@
+{
+  "8_setup_4_capture_original_function_ASTs_equal": true,
+  "actual_C_binding": null,
+  "actual_full_CI_result": null,
+  "actual_setup_result": null,
+  "all12_original_and_added_pin_predicates_preserved": true,
+  "author": "/root/decision28_source_peer",
+  "author_handles_released": true,
+  "execution_or_binding_performed": false,
+  "final_source_pins": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/setup_original_current_ci_v2.py",
+      "sha256": "9aca35df5b1d4c87a555ac3d32d99c1a05b4772cf5bd841d778fec4e330ed3d3",
+      "size_bytes": 16786
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/capture_original_setup_v2.py",
+      "sha256": "60de16c4355b60636c85f1630eb00722a958f625b73f7326b367a3e373f45406",
+      "size_bytes": 4931
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/capture_original_full_ci_v1.py",
+      "sha256": "a37fecbaa6fb4a560bb7c44897a39a9f3c0e294d5fb4b75c0cb2412ec465c9ac",
+      "size_bytes": 12429
+    }
+  ],
+  "independent_review": false,
+  "prepared_v2": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/preparation.v2.json",
+    "sha256": "47c8840346340ed24d384dff679a24d31442e326614095b80aeea4d9e5c17416",
+    "size_bytes": 11175
+  },
+  "recipe_template": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/recipe.template.v1.json",
+    "sha256": "dcda3e04500cb662a7011adea5460a9959be6d9bc831dbfd58937fe457310a3e",
+    "size_bytes": 10530
+  },
+  "schema_version": 1,
+  "source_v1_preserved_and_superseded": true,
+  "status": "source_only_corrected_before_any_dispatch",
+  "v1_concrete_author_finding": "Author v1 used a merged dict for8 recipe source predicates and4 reviewed CI predicates; duplicate script keys overrode2 original predicates. V2 iterates both item lists independently, preserving all12 validations. Source v1 and preparation v1 remain immutable and are ineligible for setup dispatch."
+}

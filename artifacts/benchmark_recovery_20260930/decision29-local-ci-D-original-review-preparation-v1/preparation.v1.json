@@ -1,0 +1,126 @@
+{
+  "actual_final_metadata_review": null,
+  "conformance_acceptance": false,
+  "limits": [
+    "Only prepared source and closed prerequisite evidence read; actual reader not dispatched yet.",
+    "The failed local D original stays failed although all test assertions and required native IDs reported success.",
+    "No fixture/selection change, canonical mount, source edit, retry, model inference, engine or policy operation is authorized by this artifact."
+  ],
+  "original_tool_final_notification": {
+    "actual_disposition": "FAILED",
+    "actual_wrapper_terminal": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/original-full-ci-attempt01/terminal.v1.json",
+      "sha256": "b78af4b4b6428f20f9d99c2a1e3966c8e313bf590d089b2cc33f69f8d1ae0c3f",
+      "size_bytes": 1055
+    },
+    "final_cell": "9d7cd5",
+    "returncode": 1,
+    "root_initial_cell": "ed413d",
+    "session": 68257
+  },
+  "planned_command": [
+    "wsl",
+    "-d",
+    "Ubuntu",
+    "--",
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-local-ci-D-original-review-preparation-v1/review_actual_local_D_v2.py",
+    "1055",
+    "b78af4b4b6428f20f9d99c2a1e3966c8e313bf590d089b2cc33f69f8d1ae0c3f",
+    "1",
+    "9d7cd5"
+  ],
+  "precedents_and_closed_prerequisites": {
+    "D_capture_source": {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-successor-ci-D-preparation-v1\\capture_original_full_ci_v1.py",
+      "sha256": "b41ab243053aea3be149f01801490e84623fa11efedcf0e706f2111090769b97",
+      "size_bytes": 12433
+    },
+    "accepted_C_reader": {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-local-ci-C-original-failure-review-v1\\review_original_failure_v3.py",
+      "sha256": "dfeee23f4c1807bc18b629e18abe066d87e2e973e7ddfb0c39706186908f86d1",
+      "size_bytes": 12187
+    },
+    "accepted_C_review": {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-local-ci-C-original-failure-review-v1\\review.v1.json",
+      "sha256": "62e1e864bc4aaaa05b4f55595c9ee817f888a6e00cc0da9e6e3f4be54a0a4f2d",
+      "size_bytes": 25609
+    },
+    "actual_D_setup": {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-successor-ci-D-preparation-v1\\original-setup-attempt01\\execution.v1.json",
+      "sha256": "96ed65f0d6e59acf5ee75400b43d11b5312741e446883fcdb64cf93d041043e4",
+      "size_bytes": 29015
+    },
+    "actual_D_setup95_review": {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-current95-post-D-setup-audit-preparation-v1\\original-audit-attempt01\\review.v1.json",
+      "sha256": "a4945b6dbe8ac466b3fbb4573f17bcb2408912803053772446fa500982c1a8f2",
+      "size_bytes": 127757
+    },
+    "actual_copy_review": {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-ext4-asset-cache-copy-actual-review-v1\\review.v1.json",
+      "sha256": "1c95e34e98acfd6f90194f17b0433dc3feb57fe5fae1525e98f233b550b5d76a",
+      "size_bytes": 21260
+    },
+    "hosted_D_review": {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-ci-D-original-independent-review-v1\\review.v1.json",
+      "sha256": "05019c9b277292ae29c4b60dee2839c9ae4c8d61456254da2796f89ca4cf4f98",
+      "size_bytes": 115481
+    },
+    "stock_reuse_review": {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-ext4-asset-cache-stock-reuse-review-v1\\review.v1.json",
+      "sha256": "890f5a0e0df96d846ba6a39f699c339c7dbce49e9662c37bb4c681a5c7327b78",
+      "size_bytes": 24571
+    }
+  },
+  "preliminary_original_facts_read_only": {
+    "actual_unapproved_reason": "canonical WSL publication venv bind is not mounted",
+    "all2992_outcomes_recorded": true,
+    "child_failure": "ValueError: unapproved portable skip identity/reason: test_backend_publication_output_transaction_production_v3.BackendPublicationOutputTransactionProductionV3Tests.test_canonical_wsl_venv_requires_plain_copied_python",
+    "metadata_cells": [
+      "592bc8",
+      "e07a1d"
+    ],
+    "missing_required_native": 0,
+    "skip": 88,
+    "success": 2904,
+    "test_errors": 0,
+    "test_failures": 0
+  },
+  "prior_unexecuted_preparation": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-local-ci-D-original-review-preparation-v1\\review_actual_local_D_v1.py",
+    "sha256": "3c26e464d6b60c32eb88fbdd72e24234e4ee5fe9caecf76ec9e484126fd35a7c",
+    "size_bytes": 18248
+  },
+  "reader": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-local-ci-D-original-review-preparation-v1\\review_actual_local_D_v2.py",
+    "sha256": "c73b28f1c56c1b04f1ca49ecc8eaef7e9894582c36bcb350c67896e9d309767b",
+    "size_bytes": 19769
+  },
+  "reviewer": "/root/architecture_review",
+  "schema_version": 1,
+  "source_commit": "3c025b29b3c1d5275c2ec693410e4b83700583de",
+  "source_guards": {
+    "actual_reader_FD_count": true,
+    "aggregate_cap_rationale": "Full child/parent reports, tables, original log and qualified copies are rehashed while held; this is a finite metadata review cap, not any CI or benchmark budget change.",
+    "aggregate_metadata_read_cap_bytes": 67108864,
+    "explicit_FAILED_original_assertions": true,
+    "individual_leaf_cap_bytes": 4194304,
+    "no_numeric_original_wrapper_FD_count_invented": true,
+    "no_target_import_subprocess_model_body_read_or_command": true,
+    "scoped120s_final_report_and_stdout_late_companion": true,
+    "seven_epoch_named_FD_identity_and_full_metadata_hash_through_release": true,
+    "six_v1_function_ASTs_unchanged": [
+      "clock",
+      "descriptor",
+      "epoch",
+      "preserve",
+      "read",
+      "scan"
+    ],
+    "terminal_descriptor_first_before_output_creation": true,
+    "two_current_owned_process_scans": true
+  },
+  "status": "prepared_not_executed"
+}

@@ -1,0 +1,22 @@
+{
+  "argv_arguments_supplied": [],
+  "correct_full_CI_outcome": null,
+  "correct_original_dispatch_tool_cell": "ed413d",
+  "correct_original_session": 68257,
+  "failed_tool_cell": "bfb628",
+  "failed_tool_returncode": 1,
+  "failure_precedes_START_NS_selector_output_or_child_initialization": true,
+  "no_original_CI_dispatched_by_this_failed_invocation": true,
+  "observed_at_ns": 1791024904049483300,
+  "original_exception": "AssertionError: usage: capture ACTUAL_COMMIT ACTUAL_RECIPE_SIZE ACTUAL_RECIPE_SHA256",
+  "original_owner_observed": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 95805,
+    "pid": 95805,
+    "startticks": 50718283,
+    "uid": 1000
+  },
+  "raw_failure_retention": "Original tool result in chat; this file is an observation summary, not a raw stdout/stderr capture.",
+  "source_line": 17
+}

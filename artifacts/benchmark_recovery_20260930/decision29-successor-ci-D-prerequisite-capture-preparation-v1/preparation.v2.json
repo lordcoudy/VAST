@@ -1,0 +1,519 @@
+{
+  "Windows_held_and_named_views": "Both full seven-field views independently stable; six identity fields joined. Windows FD/name ctime-view differences are recorded, not a Linux epoch waiver.",
+  "accepted_capture": {
+    "Windows_FD_named_ctime_views_equal": true,
+    "author_held_fd_epoch7": [
+      17601399781211216820,
+      1407374885980137,
+      33206,
+      1,
+      12433,
+      1791024018828069300,
+      1791024018828069300
+    ],
+    "authoring_view_epoch7": [
+      17601399781211216820,
+      1407374885980137,
+      33206,
+      1,
+      12433,
+      1791024018828069300,
+      1791024018828069300
+    ],
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-successor-ci-D-preparation-v1\\capture_original_full_ci_v1.py",
+    "sha256": "b41ab243053aea3be149f01801490e84623fa11efedcf0e706f2111090769b97",
+    "size_bytes": 12433
+  },
+  "accepted_recipe": {
+    "Windows_FD_named_ctime_views_equal": true,
+    "author_held_fd_epoch7": [
+      17601399781211216820,
+      1407374885980139,
+      33206,
+      1,
+      11220,
+      1791024018828069300,
+      1791024018828069300
+    ],
+    "authoring_view_epoch7": [
+      17601399781211216820,
+      1407374885980139,
+      33206,
+      1,
+      11220,
+      1791024018828069300,
+      1791024018828069300
+    ],
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-successor-ci-D-preparation-v1\\recipe.bound.v1.json",
+    "sha256": "e8df0e735c27bd282eee9692144fb0e42ab7491259bedb2626e1714fe64865c5",
+    "size_bytes": 11220
+  },
+  "all_eight_function_ASTs_identical": true,
+  "author": "/root/adversarial_review",
+  "author_before_after_epoch_identity_equal": true,
+  "author_elapsed_s_before_receipt": 0.025755900074727833,
+  "author_input_handles_released": true,
+  "authoring_interpreter": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+  "capture_byte_inverse_exact": true,
+  "capture_cli_argv_prepared_not_executed": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-prerequisite-capture-preparation-v1/capture_original_full_ci_v1.py",
+    "3c025b29b3c1d5275c2ec693410e4b83700583de",
+    "11246",
+    "9489cf0d5b8ff835bc7278f7261b63c4dd8c96d96b1ef8ac8e86870811e36edb"
+  ],
+  "capture_literal_pairs": [
+    [
+      "OUT = HERE / 'original-full-ci-attempt01'",
+      "OUT = HERE / 'original-full-ci-prerequisite-attempt01'"
+    ],
+    [
+      "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-original-output",
+      "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-prerequisite-original-output"
+    ]
+  ],
+  "checkout": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D",
+  "closed_evidence_references": {
+    "actual_D_runtime_bind_test_source": {
+      "Windows_FD_named_ctime_views_equal": true,
+      "author_held_fd_epoch7": [
+        0,
+        591388,
+        33206,
+        1,
+        54261,
+        1791024491702378100,
+        1791024491702378100
+      ],
+      "authoring_view_epoch7": [
+        0,
+        591388,
+        33206,
+        1,
+        54261,
+        1791024491702378100,
+        1791024491702378100
+      ],
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-current-source-ci-20261003-decision29-D\\tests\\test_backend_publication_output_transaction_production_v3.py",
+      "sha256": "f78c2fa070e672f3777aca28f5d5043a19fca63987afa5fd8300d1582334812d",
+      "size_bytes": 54261
+    },
+    "cache_copy_review": {
+      "Windows_FD_named_ctime_views_equal": false,
+      "author_held_fd_epoch7": [
+        17601399781211216820,
+        1407374885980235,
+        33206,
+        1,
+        21260,
+        1791024781885103500,
+        1791024781885103500
+      ],
+      "authoring_view_epoch7": [
+        17601399781211216820,
+        1407374885980235,
+        33206,
+        1,
+        21260,
+        1791024781885103500,
+        1791024781874799800
+      ],
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-ext4-asset-cache-copy-actual-review-v1\\review.v1.json",
+      "sha256": "1c95e34e98acfd6f90194f17b0433dc3feb57fe5fae1525e98f233b550b5d76a",
+      "size_bytes": 21260
+    },
+    "closed_failed_D_review": {
+      "Windows_FD_named_ctime_views_equal": false,
+      "author_held_fd_epoch7": [
+        17601399781211216820,
+        1407374885980354,
+        33206,
+        1,
+        89901,
+        1791027666274621300,
+        1791027666274621300
+      ],
+      "authoring_view_epoch7": [
+        17601399781211216820,
+        1407374885980354,
+        33206,
+        1,
+        89901,
+        1791027666274621300,
+        1791027666272982800
+      ],
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-local-ci-D-original-review-preparation-v1\\original-review-attempt01\\review.v1.json",
+      "sha256": "dea419acd6d73dcf486694314a290001a9325c47dca5d0c477342f89c71dc9bd",
+      "size_bytes": 89901
+    },
+    "failed_D_original_terminal": {
+      "Windows_FD_named_ctime_views_equal": true,
+      "author_held_fd_epoch7": [
+        17601399781211216820,
+        1407374885980327,
+        33206,
+        1,
+        1055,
+        1791026993965935300,
+        1791026993965935300
+      ],
+      "authoring_view_epoch7": [
+        17601399781211216820,
+        1407374885980327,
+        33206,
+        1,
+        1055,
+        1791026993965935300,
+        1791026993965935300
+      ],
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-successor-ci-D-preparation-v1\\original-full-ci-attempt01\\terminal.v1.json",
+      "sha256": "b78af4b4b6428f20f9d99c2a1e3966c8e313bf590d089b2cc33f69f8d1ae0c3f",
+      "size_bytes": 1055
+    },
+    "original_D_setup": {
+      "Windows_FD_named_ctime_views_equal": false,
+      "author_held_fd_epoch7": [
+        17601399781211216820,
+        1407374885980218,
+        33206,
+        1,
+        29015,
+        1791024496418861600,
+        1791024496418861600
+      ],
+      "authoring_view_epoch7": [
+        17601399781211216820,
+        1407374885980218,
+        33206,
+        1,
+        29015,
+        1791024496418861600,
+        1791024496417862500
+      ],
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-successor-ci-D-preparation-v1\\original-setup-attempt01\\execution.v1.json",
+      "sha256": "96ed65f0d6e59acf5ee75400b43d11b5312741e446883fcdb64cf93d041043e4",
+      "size_bytes": 29015
+    },
+    "original_D_tracked_raw": {
+      "Windows_FD_named_ctime_views_equal": false,
+      "author_held_fd_epoch7": [
+        17601399781211216820,
+        1407374885980205,
+        33206,
+        1,
+        2423045,
+        1791024496087310700,
+        1791024496087310700
+      ],
+      "authoring_view_epoch7": [
+        17601399781211216820,
+        1407374885980205,
+        33206,
+        1,
+        2423045,
+        1791024496087310700,
+        1791024496080392900
+      ],
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-successor-ci-D-preparation-v1\\original-setup-attempt01\\tracked-raw-source.v1.json",
+      "sha256": "2aa2d4a507a0e0676b0afaadbc2b6b269c038431dc9ea79228fdc8a9f6b7451d",
+      "size_bytes": 2423045
+    },
+    "original_post_D_setup95_audit": {
+      "Windows_FD_named_ctime_views_equal": false,
+      "author_held_fd_epoch7": [
+        17601399781211216820,
+        1407374885980238,
+        33206,
+        1,
+        127757,
+        1791024792768237800,
+        1791024792768237800
+      ],
+      "authoring_view_epoch7": [
+        17601399781211216820,
+        1407374885980238,
+        33206,
+        1,
+        127757,
+        1791024792768237800,
+        1791024792766801300
+      ],
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-current95-post-D-setup-audit-preparation-v1\\original-audit-attempt01\\review.v1.json",
+      "sha256": "a4945b6dbe8ac466b3fbb4573f17bcb2408912803053772446fa500982c1a8f2",
+      "size_bytes": 127757
+    },
+    "stock_existing_eight_review": {
+      "Windows_FD_named_ctime_views_equal": true,
+      "author_held_fd_epoch7": [
+        17601399781211216820,
+        1407374885980320,
+        33206,
+        1,
+        24571,
+        1791025980407195000,
+        1791025980407195000
+      ],
+      "authoring_view_epoch7": [
+        17601399781211216820,
+        1407374885980320,
+        33206,
+        1,
+        24571,
+        1791025980407195000,
+        1791025980407195000
+      ],
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-ext4-asset-cache-stock-reuse-review-v1\\review.v1.json",
+      "sha256": "890f5a0e0df96d846ba6a39f699c339c7dbce49e9662c37bb4c681a5c7327b78",
+      "size_bytes": 24571
+    }
+  },
+  "count_semantics": "88 is the unchanged allowed skip declaration set, not a required observed skip count. The mounted existing test must execute its original assertions; no expected count is forced.",
+  "epoch_view_limitation": "Authoring-view metadata is not the original Linux source95 epoch authority.",
+  "failed_original_counts": {
+    "deferred_integration": 9,
+    "discovered": 3001,
+    "error": 0,
+    "failure": 0,
+    "selected": 2992,
+    "skip": 88,
+    "success": 2904
+  },
+  "failed_original_disposition": "FAILED",
+  "failed_original_skip": [
+    {
+      "allowed_declaration": {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "canonical WSL publication venv is not installed",
+        "test_id": "test_backend_publication_output_transaction_production_v3.BackendPublicationOutputTransactionProductionV3Tests.test_canonical_wsl_venv_requires_plain_copied_python"
+      },
+      "original": {
+        "reason": "canonical WSL publication venv bind is not mounted",
+        "test_id": "test_backend_publication_output_transaction_production_v3.BackendPublicationOutputTransactionProductionV3Tests.test_canonical_wsl_venv_requires_plain_copied_python"
+      }
+    }
+  ],
+  "fresh_WSL_namespaces_absence_observation": null,
+  "fresh_capture_output": "original-full-ci-prerequisite-attempt01",
+  "fresh_stock_result": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-prerequisite-original-output",
+  "future_CI_success": null,
+  "future_original_owner": null,
+  "future_original_terminal": null,
+  "generator_or_capture_executed": false,
+  "hardware_acceptance": false,
+  "inherited_recipe_setup_fields": "The byte-exact inherited recipe describes the original initial setup contract. Its setup arrays/null clone fields are historical source-preparation fields; no clone/setup command is dispatched by this capture. Actual original setup refs above do not prove the missing bind or the required fresh95 audit.",
+  "limits": {
+    "channel_bytes_each": 4194304,
+    "held_capture_source_leaf_max_bytes": 1048576,
+    "original_cleanup_s": 10,
+    "original_job_s": 5400
+  },
+  "literal_diff": {
+    "Windows_FD_named_ctime_views_equal": false,
+    "author_held_fd_epoch7": [
+      17601399781211216820,
+      1407374885980364,
+      33206,
+      1,
+      3372,
+      1791028089185480500,
+      1791028089185480500
+    ],
+    "authoring_view_epoch7": [
+      17601399781211216820,
+      1407374885980364,
+      33206,
+      1,
+      3372,
+      1791028089185480500,
+      1791028089184480000
+    ],
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-successor-ci-D-prerequisite-capture-preparation-v1\\literal-only.delta.v1.patch",
+    "sha256": "7c7e42fde277ef537b80cf3c3241eab80999225d6b54f391cd05b9ed7cc3b1c3",
+    "size_bytes": 3372
+  },
+  "missing_prerequisite": {
+    "actual_D_test_method": "test_backend_publication_output_transaction_production_v3.BackendPublicationOutputTransactionProductionV3Tests.test_canonical_wsl_venv_requires_plain_copied_python",
+    "physical_mount_observed_by_author": false,
+    "physical_readonly_bind_setup_review": null,
+    "project_runtime_mount": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/.publication-runtime/full-publication-cp312-v1",
+    "required_entry": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/.publication-runtime/full-publication-cp312-v1/bin/python",
+    "source_lines": [
+      1088,
+      1124
+    ],
+    "source_runtime_root": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1",
+    "stock_contract_functions": [
+      "build_production_runtime_bind_mount_contract_v3",
+      "preflight_production_runtime_bind_mount_v3"
+    ]
+  },
+  "original_setup_14_commands_passed_reference_only_not_reexecuted": {
+    "Windows_FD_named_ctime_views_equal": false,
+    "author_held_fd_epoch7": [
+      17601399781211216820,
+      1407374885980218,
+      33206,
+      1,
+      29015,
+      1791024496418861600,
+      1791024496418861600
+    ],
+    "authoring_view_epoch7": [
+      17601399781211216820,
+      1407374885980218,
+      33206,
+      1,
+      29015,
+      1791024496418861600,
+      1791024496417862500
+    ],
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-successor-ci-D-preparation-v1\\original-setup-attempt01\\execution.v1.json",
+    "sha256": "96ed65f0d6e59acf5ee75400b43d11b5312741e446883fcdb64cf93d041043e4",
+    "size_bytes": 29015
+  },
+  "original_stock_argv_unchanged_except_fresh_output": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/run_ci_checks.py",
+    "--expected-commit",
+    "3c025b29b3c1d5275c2ec693410e4b83700583de",
+    "--output-dir",
+    "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-prerequisite-original-output",
+    "--job-started-monotonic-ns",
+    "ACTUAL_ORIGINAL_DISPATCH_MONOTONIC_NS"
+  ],
+  "originals_preserved": true,
+  "prepared_capture": {
+    "Windows_FD_named_ctime_views_equal": false,
+    "author_held_fd_epoch7": [
+      17601399781211216820,
+      1407374885980362,
+      33206,
+      1,
+      12459,
+      1791028089178482200,
+      1791028089178482200
+    ],
+    "authoring_view_epoch7": [
+      17601399781211216820,
+      1407374885980362,
+      33206,
+      1,
+      12459,
+      1791028089178482200,
+      1791028089177480900
+    ],
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-successor-ci-D-prerequisite-capture-preparation-v1\\capture_original_full_ci_v1.py",
+    "sha256": "ddd9145d3359c8b174cd4cdfd82bf38cbc01ae128761e3b910a57c1a825e691a",
+    "size_bytes": 12459
+  },
+  "prepared_recipe": {
+    "Windows_FD_named_ctime_views_equal": true,
+    "author_held_fd_epoch7": [
+      17601399781211216820,
+      1407374885980363,
+      33206,
+      1,
+      11246,
+      1791028089181479800,
+      1791028089181479800
+    ],
+    "authoring_view_epoch7": [
+      17601399781211216820,
+      1407374885980363,
+      33206,
+      1,
+      11246,
+      1791028089181479800,
+      1791028089181479800
+    ],
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-successor-ci-D-prerequisite-capture-preparation-v1\\recipe.bound.v1.json",
+    "sha256": "9489cf0d5b8ff835bc7278f7261b63c4dd8c96d96b1ef8ac8e86870811e36edb",
+    "size_bytes": 11246
+  },
+  "preserved_before": {
+    "capture": {
+      "Windows_FD_named_ctime_views_equal": true,
+      "author_held_fd_epoch7": [
+        17601399781211216820,
+        4785074606508232,
+        33206,
+        1,
+        12433,
+        1791028089170874500,
+        1791028089170874500
+      ],
+      "authoring_view_epoch7": [
+        17601399781211216820,
+        4785074606508232,
+        33206,
+        1,
+        12433,
+        1791028089170874500,
+        1791028089170874500
+      ],
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-successor-ci-D-prerequisite-capture-preparation-v1\\accepted-capture.before.raw",
+      "sha256": "b41ab243053aea3be149f01801490e84623fa11efedcf0e706f2111090769b97",
+      "size_bytes": 12433
+    },
+    "recipe": {
+      "Windows_FD_named_ctime_views_equal": false,
+      "author_held_fd_epoch7": [
+        17601399781211216820,
+        1407374885980361,
+        33206,
+        1,
+        11220,
+        1791028089175481200,
+        1791028089175481200
+      ],
+      "authoring_view_epoch7": [
+        17601399781211216820,
+        1407374885980361,
+        33206,
+        1,
+        11220,
+        1791028089175481200,
+        1791028089174480000
+      ],
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-successor-ci-D-prerequisite-capture-preparation-v1\\accepted-recipe.before.raw",
+      "sha256": "e8df0e735c27bd282eee9692144fb0e42ab7491259bedb2626e1714fe64865c5",
+      "size_bytes": 11220
+    }
+  },
+  "preserved_metadata_authoring_failure": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-successor-ci-D-prerequisite-capture-preparation-v1\\metadata-authoring-attempt01-failure.v1.json"
+  },
+  "recipe_byte_inverse_exact": true,
+  "recipe_only_changed_literal": [
+    "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-original-output",
+    "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-prerequisite-original-output"
+  ],
+  "release_acceptance": false,
+  "required_before_root_one_original_CI_grant": [
+    "Independent exact-source review of this capture/recipe; preserve failed original D output.",
+    "Separate approved stock read-only runtime bind setup and independently retained actual physical contract review.",
+    "One fresh 95 full SHA/size plus original Linux seven-epoch audit after prerequisite setup; verify all handles/processes closed.",
+    "Verify canonical D root, exact unchanged committed raw source D, interpreter and source95 epochs, and absent fresh output names.",
+    "Root exact original execution grant binds this source/recipe and actual prerequisite/audit refs. No cloned setup, test selection, skip reasons or source changes."
+  ],
+  "schema_version": 1,
+  "setup_command_arrays_all_stock_checks_source_pins_and_other_recipe_fields_unchanged": true,
+  "source_commit": "3c025b29b3c1d5275c2ec693410e4b83700583de",
+  "source_test_CI_model_engine_native_mount_or_Git_operation_performed": false,
+  "status": "prepared_unexecuted_requires_independent_source_review_and_prerequisites",
+  "unchanged_function_names": [
+    "clock",
+    "epoch",
+    "err",
+    "owner",
+    "write",
+    "digest",
+    "pin",
+    "scan"
+  ]
+}

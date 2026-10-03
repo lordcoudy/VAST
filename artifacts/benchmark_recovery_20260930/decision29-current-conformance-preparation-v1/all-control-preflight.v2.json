@@ -1,0 +1,1202 @@
+{
+  "execution_grant": false,
+  "historical_records": 53,
+  "missing_or_mismatched": [],
+  "records": [
+    {
+      "alias": "binding.pending.C.v5.json:documents:0",
+      "physical": {
+        "domain": "control",
+        "path": "docs/gstreamer-component-benchmark-runbook.md",
+        "sha256": "00b590d0b000ab1b3cade27b8618761d0f9cfc1042484f8e13879167148e0257",
+        "size_bytes": 12618
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.C.v5.json:documents:1",
+      "physical": {
+        "domain": "control",
+        "path": "README.md",
+        "sha256": "84a5dd70a679b49c034a345893cac6d07b8b21d906748f629e87c2014e3fcb25",
+        "size_bytes": 59084
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.C.v5.json:documents:2",
+      "physical": {
+        "domain": "control",
+        "path": "BENCHMARK_RECOVERY_PLAN.md",
+        "sha256": "16f7b3b721a0ff7951a2e764ab5f1fae976ce50b0d8f58c6c2fcb309969885c0",
+        "size_bytes": 128763
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.C.v5.json:evidence:ci_clock_closure",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decision29-ci-clock-repair-v1/green01/root-original-closure.v1.json",
+        "sha256": "b5bc6e4c3593f43bd4b7d247e0a4dfecb31510c16d9d1af57e19c7cf820f55d5",
+        "size_bytes": 1040
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.C.v5.json:evidence:ci_clock_green",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decision29-ci-clock-repair-v1/green01/execution.v1.json",
+        "sha256": "8cc733fe929b8d6d8efb5c6d00dcba5ca2c25d1e287d51384be46bd89b0478d9",
+        "size_bytes": 6020
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.C.v5.json:evidence:ci_clock_peer",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decision29-ci-clock-independent-source-review-v1/review.v1.json",
+        "sha256": "835bf6c7c991c78062adc39459b34f51eab7c598c71185a7b00fe777f62f9d6d",
+        "size_bytes": 9951
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.C.v5.json:evidence:ci_clock_unit",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decision29-ci-clock-repair-v1/green01/unit-result.v1.json",
+        "sha256": "7e04c13762aef0f6d5f40f26b4c8ab3e5a5a60464f7d2eab5a9084c595cfa8a5",
+        "size_bytes": 17487
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.C.v5.json:evidence:cpu08",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decision28-cpu08-independent-audit-v1/review.v1.json",
+        "sha256": "1f5abb9e8b2c5c2fdd9898bd121ab365a9719513b361486833612e4fca151330",
+        "size_bytes": 51656
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.C.v5.json:evidence:full_consumer_source_review",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decision29-current-conformance-preparation-v1/full-consumer-guard-order-review.v1.json",
+        "sha256": "254c5d6dd3cb59d6a9d1e606bfb1a40d3d846f6748033e3e2714b6b9117397e6",
+        "size_bytes": 23224
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.C.v5.json:evidence:gpu02",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decision28-gpu02-independent-audit-v1/review.v1.json",
+        "sha256": "a125010eae25262ead16a37ae4b47f6e21e637cc15da89399242f824e5b21283",
+        "size_bytes": 51657
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.C.v5.json:evidence:native_author",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decision28-native-failure-raw-repair-v1/author-review.v1.json",
+        "sha256": "9356d0f8d36af2e9c79b7ca87303bfafc6cbd3e60e900e8eb17a18917c38bad5",
+        "size_bytes": 10155
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.C.v5.json:evidence:science",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decision28-four-arm-science-independent-actual-review-v1/review.v1.json",
+        "sha256": "93acbd3a82afbaf6ca796d34ff1907dc868bd5605df9c0dcb4101d287350947b",
+        "size_bytes": 81663
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.C.v5.json:evidence:science_csv",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decision28-four-arm-science-preparation-v1/attempt01/four_arm_metrics.csv",
+        "sha256": "75e6346d518cc382003070e4c82dc2695b04bb4a5b6866fccf8d009ad2ecd0d4",
+        "size_bytes": 1914
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.C.v5.json:evidence:science_export",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decision28-four-arm-science-preparation-v1/attempt01/exports-and-interpretation.v1.json",
+        "sha256": "eec885d67f1d1aaf88ec932bf696790ea247e551caa0798341cc216f9eccf3bc",
+        "size_bytes": 11420
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.C.v5.json:evidence:science_root",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decision28-four-arm-science-preparation-v1/attempt01/root-original-science-closure.v1.json",
+        "sha256": "0d8c6dab6237e9e1d7b16197c9000bb4da2343bf2f61d8dcbd7e3d397e6da199",
+        "size_bytes": 7398
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.C.v5.json:evidence:science_svg",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decision28-four-arm-science-preparation-v1/attempt01/four_arm_latency_coverage_cobs.svg",
+        "sha256": "3e923b67105ae316d1a6bb18df3301770d83c3364b0d2fdfa247f310fca87744",
+        "size_bytes": 175581
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.C.v5.json:evidence:selected_image_test_closure",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decision29-selected-image-test-binding-v1/green01/root-original-closure.v1.json",
+        "sha256": "9cf694a570c3190f725a4c96e9f019264bdd3dd4a2caf12364847851792934ae",
+        "size_bytes": 853
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.C.v5.json:evidence:selected_image_test_peer",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decision29-selected-image-test-independent-review-v1/review.v1.json",
+        "sha256": "39b914dfc1ebf13f4bf80b370c8849894f257a6b82208ced56ee18dbb43f61e9",
+        "size_bytes": 38697
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.C.v5.json:evidence:selected_image_test_unit",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decision29-selected-image-test-binding-v1/green01/unit-result.v1.json",
+        "sha256": "9adff05dfe36f3c4c20ad07d8b169606f1310c4e133cf985084e53b314244c17",
+        "size_bytes": 50453
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.C.v5.json:evidence:sidecar_author",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decision28-sidecar-failure-observability-v1/author-review.v1.json",
+        "sha256": "a71d828c420a1935c7ff1b2e6c91f1d7f0977eb582d68c1bda84ed0055d4920e",
+        "size_bytes": 23576
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.C.v5.json:notes",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decision29-current-conformance-preparation-v1/scenario-notes.v5.json",
+        "sha256": "efc447f446120757e62d60b38659d938c3b104fc7e4a43537d7f9c418ff57715",
+        "size_bytes": 22113
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.C.v5.json:old_generators:0",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/current-conformance-preparation-v1/generate_mapping_v1.py",
+        "sha256": "d74411e3e5451ff278127c0b9325a92ed9a9372409f37b2b6f2e1b1585ea7a2c",
+        "size_bytes": 24148
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.C.v5.json:old_generators:1",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/current-conformance-preparation-v1/scenario_reviews_v1.py",
+        "sha256": "c71c8f88f3a9bdd09f6a8fa8d8c2dae15d75a1fb4bcc477ab721622840fa7224",
+        "size_bytes": 60253
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.C.v5.json:old_generators:2",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/current-conformance-preparation-v1/behavior_notes_v1.py",
+        "sha256": "4a48b1b168ae65a97567c91111fec0ae28b2f1a9530248e44e36372dd745c46d",
+        "size_bytes": 22347
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.C.v5.json:old_generators:3",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/current-conformance-preparation-v1/complete_mapping_v2.py",
+        "sha256": "92bda76023f627583923d41b753508c72a963c2e21ec5bda55fc27c4468b7fd0",
+        "size_bytes": 12298
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.C.v5.json:old_mapping",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/current-conformance-preparation-v1/mapping.v2.json",
+        "sha256": "0b184bfb7c7ebc88dd030a57ec7095dc61edc9123aaca8f50308ba5fbb875ec8",
+        "size_bytes": 3111449
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.C.v5.json:original_spec",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decision22-planning-originals-v1/spec.md",
+        "sha256": "02125ddcf5f49b356c69f77c84ec28c790fe36fcd5146a6522f8c772f31797a7",
+        "size_bytes": 50037
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.C.v5.json:original_tasks",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decision22-planning-originals-v1/tasks.md",
+        "sha256": "a504e7272e1a3fcad369a5b8f9430e438e91b7c6e42ac6b8c23cd8881c7a7e77",
+        "size_bytes": 46947
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.C.v5.json:planning:0",
+      "physical": {
+        "domain": "control",
+        "path": "openspec/changes/fix-benchmark-preparations-spec/proposal.md",
+        "sha256": "969aa4ac3bae9b742b268333070b1266c22abc5c7bce9b204a63b6f750c0f6d6",
+        "size_bytes": 17599
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.C.v5.json:planning:1",
+      "physical": {
+        "domain": "control",
+        "path": "openspec/changes/fix-benchmark-preparations-spec/design.md",
+        "sha256": "112ec56dca4445e3e753899ff116203604094b37ffafcac4f7e8d28ea350afce",
+        "size_bytes": 44659
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.C.v5.json:planning:2",
+      "physical": {
+        "domain": "control",
+        "path": "openspec/changes/fix-benchmark-preparations-spec/tasks.md",
+        "sha256": "ee2518562588198019189d8bbe6471e9bc93a0858c09dc8ecd8dd736dd09e0ab",
+        "size_bytes": 36740
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.C.v5.json:planning:3",
+      "physical": {
+        "domain": "control",
+        "path": "openspec/changes/fix-benchmark-preparations-spec/verification-plan.md",
+        "sha256": "b3db56c13e3a5c7157820f4e60f459455c5a83706b207c308f7af09716c8f73d",
+        "size_bytes": 48891
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.C.v5.json:planning:4",
+      "physical": {
+        "domain": "control",
+        "path": "openspec/changes/fix-benchmark-preparations-spec/specs/benchmark-launch-preparation/spec.md",
+        "sha256": "383e90694a5f4a2ed81ff8d53fc7ee4a35dc67767f17b35fd8e5bffde4751ed9",
+        "size_bytes": 75100
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.D.v2.json:documents:0",
+      "physical": {
+        "domain": "control",
+        "path": "docs/gstreamer-component-benchmark-runbook.md",
+        "sha256": "00b590d0b000ab1b3cade27b8618761d0f9cfc1042484f8e13879167148e0257",
+        "size_bytes": 12618
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.D.v2.json:documents:1",
+      "physical": {
+        "domain": "control",
+        "path": "README.md",
+        "sha256": "84a5dd70a679b49c034a345893cac6d07b8b21d906748f629e87c2014e3fcb25",
+        "size_bytes": 59084
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.D.v2.json:documents:2",
+      "physical": {
+        "domain": "control",
+        "path": "BENCHMARK_RECOVERY_PLAN.md",
+        "sha256": "16f7b3b721a0ff7951a2e764ab5f1fae976ce50b0d8f58c6c2fcb309969885c0",
+        "size_bytes": 128763
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.D.v2.json:evidence:ci_clock_closure",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decision29-ci-clock-repair-v1/green01/root-original-closure.v1.json",
+        "sha256": "b5bc6e4c3593f43bd4b7d247e0a4dfecb31510c16d9d1af57e19c7cf820f55d5",
+        "size_bytes": 1040
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.D.v2.json:evidence:ci_clock_green",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decision29-ci-clock-repair-v1/green01/execution.v1.json",
+        "sha256": "8cc733fe929b8d6d8efb5c6d00dcba5ca2c25d1e287d51384be46bd89b0478d9",
+        "size_bytes": 6020
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.D.v2.json:evidence:ci_clock_peer",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decision29-ci-clock-independent-source-review-v1/review.v1.json",
+        "sha256": "835bf6c7c991c78062adc39459b34f51eab7c598c71185a7b00fe777f62f9d6d",
+        "size_bytes": 9951
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.D.v2.json:evidence:ci_clock_unit",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decision29-ci-clock-repair-v1/green01/unit-result.v1.json",
+        "sha256": "7e04c13762aef0f6d5f40f26b4c8ab3e5a5a60464f7d2eab5a9084c595cfa8a5",
+        "size_bytes": 17487
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.D.v2.json:evidence:cpu08",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decision28-cpu08-independent-audit-v1/review.v1.json",
+        "sha256": "1f5abb9e8b2c5c2fdd9898bd121ab365a9719513b361486833612e4fca151330",
+        "size_bytes": 51656
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.D.v2.json:evidence:full_consumer_source_review",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decision29-current-conformance-preparation-v1/full-consumer-guard-order-review.v1.json",
+        "sha256": "254c5d6dd3cb59d6a9d1e606bfb1a40d3d846f6748033e3e2714b6b9117397e6",
+        "size_bytes": 23224
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.D.v2.json:evidence:gpu02",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decision28-gpu02-independent-audit-v1/review.v1.json",
+        "sha256": "a125010eae25262ead16a37ae4b47f6e21e637cc15da89399242f824e5b21283",
+        "size_bytes": 51657
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.D.v2.json:evidence:native_author",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decision28-native-failure-raw-repair-v1/author-review.v1.json",
+        "sha256": "9356d0f8d36af2e9c79b7ca87303bfafc6cbd3e60e900e8eb17a18917c38bad5",
+        "size_bytes": 10155
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.D.v2.json:evidence:science",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decision28-four-arm-science-independent-actual-review-v1/review.v1.json",
+        "sha256": "93acbd3a82afbaf6ca796d34ff1907dc868bd5605df9c0dcb4101d287350947b",
+        "size_bytes": 81663
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.D.v2.json:evidence:science_csv",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decision28-four-arm-science-preparation-v1/attempt01/four_arm_metrics.csv",
+        "sha256": "75e6346d518cc382003070e4c82dc2695b04bb4a5b6866fccf8d009ad2ecd0d4",
+        "size_bytes": 1914
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.D.v2.json:evidence:science_export",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decision28-four-arm-science-preparation-v1/attempt01/exports-and-interpretation.v1.json",
+        "sha256": "eec885d67f1d1aaf88ec932bf696790ea247e551caa0798341cc216f9eccf3bc",
+        "size_bytes": 11420
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.D.v2.json:evidence:science_root",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decision28-four-arm-science-preparation-v1/attempt01/root-original-science-closure.v1.json",
+        "sha256": "0d8c6dab6237e9e1d7b16197c9000bb4da2343bf2f61d8dcbd7e3d397e6da199",
+        "size_bytes": 7398
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.D.v2.json:evidence:science_svg",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decision28-four-arm-science-preparation-v1/attempt01/four_arm_latency_coverage_cobs.svg",
+        "sha256": "3e923b67105ae316d1a6bb18df3301770d83c3364b0d2fdfa247f310fca87744",
+        "size_bytes": 175581
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.D.v2.json:evidence:selected_image_test_closure",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decision29-selected-image-test-binding-v1/green01/root-original-closure.v1.json",
+        "sha256": "9cf694a570c3190f725a4c96e9f019264bdd3dd4a2caf12364847851792934ae",
+        "size_bytes": 853
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.D.v2.json:evidence:selected_image_test_peer",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decision29-selected-image-test-independent-review-v1/review.v1.json",
+        "sha256": "39b914dfc1ebf13f4bf80b370c8849894f257a6b82208ced56ee18dbb43f61e9",
+        "size_bytes": 38697
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.D.v2.json:evidence:selected_image_test_unit",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decision29-selected-image-test-binding-v1/green01/unit-result.v1.json",
+        "sha256": "9adff05dfe36f3c4c20ad07d8b169606f1310c4e133cf985084e53b314244c17",
+        "size_bytes": 50453
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.D.v2.json:evidence:sidecar_author",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decision28-sidecar-failure-observability-v1/author-review.v1.json",
+        "sha256": "a71d828c420a1935c7ff1b2e6c91f1d7f0977eb582d68c1bda84ed0055d4920e",
+        "size_bytes": 23576
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.D.v2.json:notes",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decision29-current-conformance-preparation-v1/scenario-notes.v5.json",
+        "sha256": "efc447f446120757e62d60b38659d938c3b104fc7e4a43537d7f9c418ff57715",
+        "size_bytes": 22113
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.D.v2.json:old_generators:0",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/current-conformance-preparation-v1/generate_mapping_v1.py",
+        "sha256": "d74411e3e5451ff278127c0b9325a92ed9a9372409f37b2b6f2e1b1585ea7a2c",
+        "size_bytes": 24148
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.D.v2.json:old_generators:1",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/current-conformance-preparation-v1/scenario_reviews_v1.py",
+        "sha256": "c71c8f88f3a9bdd09f6a8fa8d8c2dae15d75a1fb4bcc477ab721622840fa7224",
+        "size_bytes": 60253
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.D.v2.json:old_generators:2",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/current-conformance-preparation-v1/behavior_notes_v1.py",
+        "sha256": "4a48b1b168ae65a97567c91111fec0ae28b2f1a9530248e44e36372dd745c46d",
+        "size_bytes": 22347
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.D.v2.json:old_generators:3",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/current-conformance-preparation-v1/complete_mapping_v2.py",
+        "sha256": "92bda76023f627583923d41b753508c72a963c2e21ec5bda55fc27c4468b7fd0",
+        "size_bytes": 12298
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.D.v2.json:old_mapping",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/current-conformance-preparation-v1/mapping.v2.json",
+        "sha256": "0b184bfb7c7ebc88dd030a57ec7095dc61edc9123aaca8f50308ba5fbb875ec8",
+        "size_bytes": 3111449
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.D.v2.json:original_spec",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decision22-planning-originals-v1/spec.md",
+        "sha256": "02125ddcf5f49b356c69f77c84ec28c790fe36fcd5146a6522f8c772f31797a7",
+        "size_bytes": 50037
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.D.v2.json:original_tasks",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decision22-planning-originals-v1/tasks.md",
+        "sha256": "a504e7272e1a3fcad369a5b8f9430e438e91b7c6e42ac6b8c23cd8881c7a7e77",
+        "size_bytes": 46947
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.D.v2.json:planning:0",
+      "physical": {
+        "domain": "control",
+        "path": "openspec/changes/fix-benchmark-preparations-spec/proposal.md",
+        "sha256": "969aa4ac3bae9b742b268333070b1266c22abc5c7bce9b204a63b6f750c0f6d6",
+        "size_bytes": 17599
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.D.v2.json:planning:1",
+      "physical": {
+        "domain": "control",
+        "path": "openspec/changes/fix-benchmark-preparations-spec/design.md",
+        "sha256": "112ec56dca4445e3e753899ff116203604094b37ffafcac4f7e8d28ea350afce",
+        "size_bytes": 44659
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.D.v2.json:planning:2",
+      "physical": {
+        "domain": "control",
+        "path": "openspec/changes/fix-benchmark-preparations-spec/tasks.md",
+        "sha256": "ee2518562588198019189d8bbe6471e9bc93a0858c09dc8ecd8dd736dd09e0ab",
+        "size_bytes": 36740
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.D.v2.json:planning:3",
+      "physical": {
+        "domain": "control",
+        "path": "openspec/changes/fix-benchmark-preparations-spec/verification-plan.md",
+        "sha256": "b3db56c13e3a5c7157820f4e60f459455c5a83706b207c308f7af09716c8f73d",
+        "size_bytes": 48891
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "binding.pending.D.v2.json:planning:4",
+      "physical": {
+        "domain": "control",
+        "path": "openspec/changes/fix-benchmark-preparations-spec/specs/benchmark-launch-preparation/spec.md",
+        "sha256": "383e90694a5f4a2ed81ff8d53fc7ee4a35dc67767f17b35fd8e5bffde4751ed9",
+        "size_bytes": 75100
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:accounting_review",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260929/boundary-production-review.v1.json",
+        "sha256": "efaa34fea190ab7df7ed74aeab7bd20aff2a9630db9ac9f569397d3077d5cefc",
+        "size_bytes": 10646
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:asset_peer",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/ci-model-assets-independent-review-v1/review.v1.json",
+        "sha256": "be677bd604aa4ea83419c98eb276a98d431ea1fe7b66bcfc41113ac1b8f13506",
+        "size_bytes": 4264
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:broker_author",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/broker-terminal-owner-repair-v1/author-review.v1.json",
+        "sha256": "6d597bca035d385e0f03cad2a4a0481360db37701ae8337668bdc7f43562118c",
+        "size_bytes": 12165
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:broker_cleanup_green",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/broker-terminal-owner-repair-v1/attempt-03-observation-cleanup-green/execution.v1.json",
+        "sha256": "a0e393716e8fa979b1e1813da466033881206d7740ed4f823e089aaa28499346",
+        "size_bytes": 16285
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:broker_cleanup_green_stderr",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/broker-terminal-owner-repair-v1/attempt-03-observation-cleanup-green/stderr.raw",
+        "sha256": "109b948b765be35956e9a967f58ec0e94f25f753856a2be25c3f68351afc58b7",
+        "size_bytes": 552
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:broker_green",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/broker-terminal-owner-repair-v1/attempt-02-green/execution.v1.json",
+        "sha256": "5dfe8f71dc58457795612128f82451f5859e6ae64d56859b5a8d047ea7b559cf",
+        "size_bytes": 46915
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:broker_green_stderr",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/broker-terminal-owner-repair-v1/attempt-02-green/stderr.raw",
+        "sha256": "f138dbe4e89e62ed006e79d36b92ee72a02ec4a38afc66f770ab3b9e4cae0a0b",
+        "size_bytes": 2795
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:broker_peer",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/broker-terminal-owner-independent-review-v1/review.v1.json",
+        "sha256": "aeaa5070495f3fff014c87acdc518fb130d8ed9eb46fdb9aa30549db91de9beb",
+        "size_bytes": 5924
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:broker_supplement",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/broker-terminal-owner-repair-v1/author-review.v2.supplement.json",
+        "sha256": "2015d19722c8d500dc7efd3c9825daa126f8591443f4f285fad6d61cf145110f",
+        "size_bytes": 3017
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:budget_proof",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260929/operational-budget-proof.v1.json",
+        "sha256": "4d2aa0945fb0a6aeb55d90579efcdbe8f55c45033467afc5a3eb45a9d92d34ed",
+        "size_bytes": 46152
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:byte_freeze",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/checkout-byte-freeze-independent-review.v4.json",
+        "sha256": "a76d985d0d0bbf1c2e9c100209bf4c950841b3099d3e65b229586ca776fbc3c3",
+        "size_bytes": 4759
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:capacity_author",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/capacity-fixture-repair-v1/author-review.v1.json",
+        "sha256": "fea8e3f0e16e6a8c8cac229b1ed39b8babab9c993f7e1ec1aed47ba9c9d30193",
+        "size_bytes": 6086
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:capacity_green",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/capacity-fixture-focused-attempt02/terminal.v1.json",
+        "sha256": "ce03d8fd70705e2a1c0b17f9effc87eec6100e6976c101d2f9ae1fc30c0287b6",
+        "size_bytes": 6917
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:capacity_green_stderr",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/capacity-fixture-focused-attempt02/stderr.raw",
+        "sha256": "16eaf6eb0875011708588b5852c1fa6de824558f780c52ccf2f664d3aaf06caf",
+        "size_bytes": 1354
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:capacity_peer",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/capacity-fixture-independent-review-v1/review.v1.json",
+        "sha256": "1bc2bcdf226ddcd744e1176c71c7a8bbc28f6660d3c160dc4710c84edc49d16f",
+        "size_bytes": 7668
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:ci4cb",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/original-member-copies-v1/unittest-child.report.json.original.raw",
+        "sha256": "9085ff6b1ac107e1a3853922a8a0b412515be544387ec528d16ec9aff873b1df",
+        "size_bytes": 1745605
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:ci4cb_diagnosis",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/diagnosis.v1.json",
+        "sha256": "7fefc4c56bf55f704c5e2cd846baf17cb852f16683f7193f4827c5ad94e9a9ee",
+        "size_bytes": 13817
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:ci4cb_member_provenance",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/original-member-copies-v1/provenance.v1.json",
+        "sha256": "a4463ddd0077618533567b1347a1331288b282f7c8620252cc7d6a9214143fc8",
+        "size_bytes": 3316
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:ci4cb_native",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/original-member-copies-v1/native-build.json.original.raw",
+        "sha256": "04f8bd2915815f0e560fa5658b391980f483bce2d2a77fbc80fdd0e4419cfd19",
+        "size_bytes": 428
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:ci4cb_source_after",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/original-member-copies-v1/tracked-source.after.json.original.raw",
+        "sha256": "2bfeedc946da7429e417365224538bb48575df54878fffefd33b3f8f34293e1d",
+        "size_bytes": 867128
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:ci4cb_source_before",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/original-member-copies-v1/tracked-source.before.json.original.raw",
+        "sha256": "2bfeedc946da7429e417365224538bb48575df54878fffefd33b3f8f34293e1d",
+        "size_bytes": 867128
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:cpu04",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/component-cpu04-corrected-cold-reader-independent-review-v1/review.v1.json",
+        "sha256": "7b07e2ca92b47e0327c3256ad69179b16d162d13edfb9047a08edd9ef5f277e3",
+        "size_bytes": 8173
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:cpu05",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/component-cpu05-postterminal-audit-preparation-v1/review.v1.json",
+        "sha256": "d192102f51e1ab92652541c22ac7a532fcb9f656cd3ffb9af9f51d9ae4cadda8",
+        "size_bytes": 18217
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:cpu06",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/component-cpu06-ext4-actual-audit-closure-v1/review.v1.json",
+        "sha256": "20c896c126454b17f747d2b119b6a60444f7d8bc338184782eb68ec8ab37218a",
+        "size_bytes": 13097
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:ext4_bind",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/component-ext4-bind-actual-independent-review-v1/review.v1.json",
+        "sha256": "130790415f7287678ce5ffb4f50d6378f50d2371c18159b29bef1b862f914934",
+        "size_bytes": 24840
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:ext4_host",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/component-ext4-host-closure-physical-review-v1/review.v1.json",
+        "sha256": "7b619330e210eacd70fb19c6c5eef5c2b2e6c564599dc36d1638f02fab83bb22",
+        "size_bytes": 98976
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:ext4_setup",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/component-ext4-setup-physical-review-v2/review.v1.json",
+        "sha256": "dac36320f7c3ac15de2dd76f2a3dcefd53300117e1e548d5ea41d0632d75b024",
+        "size_bytes": 56063
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:fixture_author",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/author-review.v1.json",
+        "sha256": "d2472259e91df4571de8da0fa27195de5836f15f0fc7e810e2320bddfe29fdaf",
+        "size_bytes": 31669
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:fixture_peer",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-independent-review-v1/review.v1.json",
+        "sha256": "5294f169c4e29776e2fe7b1413ec6fc29c1a3ef78ddb8f042644aa3ce2854aba",
+        "size_bytes": 7406
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:g_failed",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260929/worker-stop-investigation.v1.json",
+        "sha256": "a2369f3548ae908313c984c86e1f3c7219d94ada2a95d16341e140688bef6eaf",
+        "size_bytes": 10917
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:g_lifecycle",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260929/original-g-service_lifecycle.v1.json",
+        "sha256": "3add3b849e0b5a3e491a1bf51d583202f88862f4c3f0f8db32151c85ce2f56ae",
+        "size_bytes": 9441
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:gpu01",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/component-gpu01-ext4-actual-audit-closure-v1/review.v1.json",
+        "sha256": "6c25127270763cf47a03291be9b2115671ea7d6df3d4d8c19fb7f59932b79768",
+        "size_bytes": 16564
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:held_peer",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/component-held-session-independent-review-v1/review.v1.json",
+        "sha256": "b8623147480662bd30fd6b721692d95a78c7930e8c6a6a88d7cd47dfd98089e8",
+        "size_bytes": 8562
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:historical_reader",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/component-cpu04-corrected-cold-reader-independent-review-v1/review.v1.json",
+        "sha256": "7b07e2ca92b47e0327c3256ad69179b16d162d13edfb9047a08edd9ef5f277e3",
+        "size_bytes": 8173
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:peer_unit",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/peer-unit-implementation-independent-review-v1/review.v1.json",
+        "sha256": "7e6faa02f8dc6cd1c018840a57ea16406c7736e80fa0cbdc20122443c1024807",
+        "size_bytes": 4279
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:policy_equivalence",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/policy-selection-equivalence-review.v1.json",
+        "sha256": "1559bc92101b908da7fcdad84fa8c94f85875c6dddf874b52ffd30d324af0364",
+        "size_bytes": 5176
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:profile_actual",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decision24-ci-userns-profile-actual-independent-review-v1/review.v1.json",
+        "sha256": "3a0a1c9c1aafe08a309c43c50c8042954a9b1f823105b42d08b5e055aeccbbea",
+        "size_bytes": 8164
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:research04",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decoder-attempt04-independent-failed-review-v1/review.v1.json",
+        "sha256": "53e4c97f828d44cae7bef1dd8be832243b3f84b61212a7efecbb945225c48fea",
+        "size_bytes": 8933
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:research05",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decoder-attempt05-independent-failed-review-v1/review.v1.json",
+        "sha256": "b0190bd4c9238aa98513b60806d4a0eef0037f626e88cf282db64f30ea292e05",
+        "size_bytes": 9099
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:research_v3_peer",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decoder-research-v3-independent-review-v1/review.v1.json",
+        "sha256": "fe23f1fac6ca95c0e863e7024dae3a1699da8a062fcfd329ec4aea26d9164a57",
+        "size_bytes": 6707
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:research_v4_peer",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decoder-research-v4-independent-review-v1/review.v1.json",
+        "sha256": "6f852886323583e6ecd0aa5c9859d561eb6ba88e150b23f372eb976e7d531bae",
+        "size_bytes": 9736
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:research_v5_peer",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decoder-research-v5-independent-review-v1/review.v1.json",
+        "sha256": "73de88a56aba395480f50c98143a10a30d795dfe67bbc137a43340209b7613ff",
+        "size_bytes": 9592
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:runbook",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/component-runbook-independent-review-v1/review.v3.json",
+        "sha256": "af462b020f25c129e7587d50137f0831f2f06822143d0493f72a2caad1a3d1cf",
+        "size_bytes": 8850
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:science",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-result-review-v1/review.v1.json",
+        "sha256": "21af3b2aefc8d1a8eb5c4785253843e0b950b94bcbd3536fda5e2e3f8346ddd7",
+        "size_bytes": 7344
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:science_csv",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/attempt01/four_arm_metrics.csv",
+        "sha256": "0926bc6bf324f7b4489f1ffbd0df25b16cbe6c0da0b96b3c244e43ef86350d34",
+        "size_bytes": 1913
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:science_export",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/attempt01/exports-and-interpretation.v1.json",
+        "sha256": "0700a387be61f1bbd6c8cb9f71d32d6b1182aa4e8ce79815037cdf10b07aa88c",
+        "size_bytes": 11407
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:science_svg",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/attempt01/four_arm_latency_coverage_cobs.svg",
+        "sha256": "73b4cf44a795e188fd9a1a9d2445005d184fc55dcac305d535267b5bfad463e2",
+        "size_bytes": 183708
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:seam2_peer",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/component-seam2-independent-review-v1/review.v1.json",
+        "sha256": "2ec2a04b9e88e1e545054615c5352b67d1ca82c2bcf844d52abc4f94717ef22f",
+        "size_bytes": 3672
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:selected_image",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/selected-gstreamer-build-a4e145b7-v1/gstreamer_custom.runtime.freeze.json",
+        "sha256": "61874c718d6140d0d5cf745988bc301b916077af8f80e96742184f80a0805db7",
+        "size_bytes": 7049
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:selected_packaged",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/selected-gstreamer-packaged-a4e145b7-v1/operation.terminal.v1.json",
+        "sha256": "093702f92948c5c595b622cded0f663ec399546226a54658adeaca948eb88eb6",
+        "size_bytes": 4020
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:sibling_packaging",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decision25-sibling-packaging-v1/green-01/terminal.v1.json",
+        "sha256": "2593850e7fd0022d38d7d4e3a1fe6055ff4ae4bb1f2b5694cc991b1859abf6ec",
+        "size_bytes": 5246
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:skip_peer",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decision25-ci-root-independent-review-v1/scope-review.v1.json",
+        "sha256": "2ea522f8d4e792c7e094c3c172d921851df7b40a097c6cde692fb1b99704d2b6",
+        "size_bytes": 4798
+      },
+      "raw_descriptor_equal": true
+    },
+    {
+      "alias": "historical:source_freeze",
+      "physical": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260929/initial-source-manifest.v1.json",
+        "sha256": "10f474845a4110296549b6fb46651f6272c5b6f83ec4afb18a717dfc20a5c333",
+        "size_bytes": 215582
+      },
+      "raw_descriptor_equal": true
+    }
+  ],
+  "restored_normalized_or_rebound_original_files": false,
+  "schema_version": 1,
+  "source_domain_limit": "All production/tests resolve only to actual clean ext4 D or retained C root. These controls are historical evidence/current document metadata, never Windows production equivalence.",
+  "status": "all_prepared_control_descriptors_present_raw_exact",
+  "unique_physical_files": 85
+}

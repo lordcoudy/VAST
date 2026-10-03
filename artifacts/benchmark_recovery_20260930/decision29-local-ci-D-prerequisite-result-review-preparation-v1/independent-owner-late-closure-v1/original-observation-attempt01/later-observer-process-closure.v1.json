@@ -1,0 +1,35 @@
+{
+  "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+  "elapsed_s": 0.004562008020002395,
+  "late_companion_absent": true,
+  "no_CI_test_reader_model_engine_replay": true,
+  "no_global_descendant_absence_claim": true,
+  "original_both_startticks": 51563532,
+  "original_observer_PID": 10983,
+  "original_timeout_PID_PGID_session": 10982,
+  "scanner_PID": 10998,
+  "scanner_fd_after": 6,
+  "scanner_fd_before": 6,
+  "schema_version": 1,
+  "status": "verified",
+  "two_later_actual_scans": [
+    {
+      "at_monotonic_ns": 515731179060722,
+      "errors": [],
+      "original_PID_paths_absent": {
+        "10982": true,
+        "10983": true
+      },
+      "owned_group_session_members": []
+    },
+    {
+      "at_monotonic_ns": 515731180717333,
+      "errors": [],
+      "original_PID_paths_absent": {
+        "10982": true,
+        "10983": true
+      },
+      "owned_group_session_members": []
+    }
+  ]
+}

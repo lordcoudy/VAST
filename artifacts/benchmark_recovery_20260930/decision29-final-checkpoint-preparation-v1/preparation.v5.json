@@ -1,0 +1,59 @@
+{
+  "actual_archive_gate": null,
+  "actual_cleanup_gate": null,
+  "actual_closed_metadata_namespace_witness": {
+    "path": "artifacts/benchmark_recovery_20260930/decision29-current-conformance-mapper-owner-closure-v1/actual-tool-and-owner-closure-supplement.v1.json",
+    "sha256": "c708bff2864de2b1ead9ff2f06d894d311f7174ef998034bac3e61d042e86e4e",
+    "size_bytes": 4763
+  },
+  "actual_conformance_gate": null,
+  "actual_final_inventory": null,
+  "actual_staging": null,
+  "actual_witness_scope": "Original mapper tool0, ownFD6\u21926/release, exact recorded mapperPID11034/knownparentPID-PGID11033 absent twice and late absent; witness explicitly does not accept semantic conformance/archive/cleanup. Unknown original birth/session/UID/GID/boot fields stay null.",
+  "all11_function_raw_and_AST_identical": true,
+  "all_Git_primitives_and_all_limits_unchanged": true,
+  "artifact_kind": "final_checkpoint_staging_actual_mapper_closure_namespace_addendum_v5",
+  "exact_added_namespace": "decision29-current-conformance-mapper-owner-closure-v1",
+  "explicit_draft_status": "Unsealed candidate physical paths only; final adoption requires genuine semantic/physical conformance, cleanup and supported archive closure. Final paths/count/bytes and two supplemental leaves remain subject to the unchanged hard caps.",
+  "independent_source_review": null,
+  "limits": {
+    "Git_call_s": 15,
+    "JSON_bytes": 1048576,
+    "leaf_bytes": 8388608,
+    "namespaces": 35,
+    "paths_including_two_supplements": 640,
+    "sealed_file_row_maximum": 638,
+    "total_bytes": 67108864,
+    "whole_s": 300
+  },
+  "namespace_count": 35,
+  "no_further_namespace_or_helper_iteration_without_actual_fault": true,
+  "only_Namespaces_literal_added": true,
+  "operations": {
+    "CI_test_engine_model_cleanup_archive": 0,
+    "Git": 0,
+    "prior_source_review_original_mutations": 0,
+    "target_import_compile_helper_execution": 0
+  },
+  "prior_v4_preparation": {
+    "path": "artifacts/benchmark_recovery_20260930/decision29-final-checkpoint-preparation-v1/preparation.v4.json",
+    "sha256": "3c0e0cc6f565e8316251c566f0cb6e9d77c94fb1252cc960839a1f643de92db3",
+    "size_bytes": 5735
+  },
+  "raw_inverse_remove_exact_one_literal_restores_v4": true,
+  "reviewer_handles_released": true,
+  "schema_version": 1,
+  "source_pins": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-final-checkpoint-preparation-v1/stage_final_checkpoint_v4.py",
+      "sha256": "f947fea05bdae89f25bcad686f422e3d59b869f6d160a86ee102700ff4c42fcf",
+      "size_bytes": 21647
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-final-checkpoint-preparation-v1/stage_final_checkpoint_v5.py",
+      "sha256": "4157fb7edcdbf6c1c0f243a34857e35eef19114809e18319ab78a714c7e930e8",
+      "size_bytes": 21709
+    }
+  ],
+  "status": "source_only_unexecuted_root_independent_review_pending"
+}

@@ -1,0 +1,276 @@
+{
+  "classification": "Existing unchanged canonical runtime bind test against actual read-only source/target mounts; no inference, engine, benchmark or whole CI acceptance",
+  "errors": [],
+  "failures": [],
+  "fd_timing_facts": [
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_backend_publication_output_transaction_production_v3.BackendPublicationOutputTransactionProductionV3Tests.test_canonical_wsl_venv_requires_plain_copied_python",
+      "start_monotonic_ns": 512156171061421,
+      "terminal_monotonic_ns": 512156223173087
+    }
+  ],
+  "ids": [
+    "test_backend_publication_output_transaction_production_v3.BackendPublicationOutputTransactionProductionV3Tests.test_canonical_wsl_venv_requires_plain_copied_python"
+  ],
+  "skips": [],
+  "source_after": [
+    {
+      "epoch": [
+        2096,
+        591122,
+        33188,
+        1,
+        7230,
+        1791024491662374761,
+        1791024491662374761
+      ],
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/backend_publication_launcher_invocation_v3.py",
+      "sha256": "ac10258c97fcdd58da02236f7a36974b2ba5060ce2f935955db05b5a9f422ba5",
+      "size_bytes": 7230
+    },
+    {
+      "epoch": [
+        2096,
+        591121,
+        33188,
+        1,
+        41765,
+        1791024491662374761,
+        1791024491662374761
+      ],
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/backend_publication_dispatch_v3.py",
+      "sha256": "b755230a19c8ab3e46dbe49aa2fa3e7054a79a7e7e4e98f91ceed560fada2740",
+      "size_bytes": 41765
+    },
+    {
+      "epoch": [
+        2096,
+        591298,
+        33188,
+        1,
+        132238,
+        1791024491694377361,
+        1791024491694377361
+      ],
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/publication_physical_io_v1.py",
+      "sha256": "bc8a28239d86f1913a66757a497d9d5398dd1b17757c6f17725ae72bc01961ed",
+      "size_bytes": 132238
+    },
+    {
+      "epoch": [
+        2096,
+        591127,
+        33188,
+        1,
+        124707,
+        1791024491662374761,
+        1791024491662374761
+      ],
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/backend_publication_process_supervisor_v3.py",
+      "sha256": "99f772665d0d271b24d98f2393a50a0f9e0bbfe5c2840e5ccce65d89a84ed13e",
+      "size_bytes": 124707
+    },
+    {
+      "epoch": [
+        2096,
+        591288,
+        33188,
+        1,
+        11639,
+        1791024491690377036,
+        1791024491690377036
+      ],
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/publication_immutable_directory_v1.py",
+      "sha256": "3154cae593782ca64adf7318d615c7c5185ff1d8b06098647e50f00940edcd42",
+      "size_bytes": 11639
+    },
+    {
+      "epoch": [
+        2096,
+        591126,
+        33188,
+        1,
+        108483,
+        1791024491662374761,
+        1791024491662374761
+      ],
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/backend_publication_output_transaction_v3.py",
+      "sha256": "5df9d564a4c175c1c07d4a311453a83e21b01815928622d535e31f5615cdab43",
+      "size_bytes": 108483
+    },
+    {
+      "epoch": [
+        2096,
+        591125,
+        33188,
+        1,
+        77939,
+        1791024491662374761,
+        1791024491662374761
+      ],
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/backend_publication_output_transaction_production_v3.py",
+      "sha256": "028b7bab8f2e860dc59eda9f2727e8f56230d353c69ab07d4943b4487cce5dee",
+      "size_bytes": 77939
+    },
+    {
+      "epoch": [
+        2096,
+        591271,
+        33188,
+        1,
+        23238,
+        1791024491690377036,
+        1791024491690377036
+      ],
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/production_parent_artifact_pin_store_v1.py",
+      "sha256": "509eccf336a4c9dfe8bf1b51dfb9e18985ece898c5dc1165c4322b9978e15f42",
+      "size_bytes": 23238
+    },
+    {
+      "epoch": [
+        2096,
+        591388,
+        33188,
+        1,
+        54261,
+        1791024491702378010,
+        1791024491702378010
+      ],
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/tests/test_backend_publication_output_transaction_production_v3.py",
+      "sha256": "f78c2fa070e672f3777aca28f5d5043a19fca63987afa5fd8300d1582334812d",
+      "size_bytes": 54261
+    }
+  ],
+  "source_before": [
+    {
+      "epoch": [
+        2096,
+        591122,
+        33188,
+        1,
+        7230,
+        1791024491662374761,
+        1791024491662374761
+      ],
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/backend_publication_launcher_invocation_v3.py",
+      "sha256": "ac10258c97fcdd58da02236f7a36974b2ba5060ce2f935955db05b5a9f422ba5",
+      "size_bytes": 7230
+    },
+    {
+      "epoch": [
+        2096,
+        591121,
+        33188,
+        1,
+        41765,
+        1791024491662374761,
+        1791024491662374761
+      ],
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/backend_publication_dispatch_v3.py",
+      "sha256": "b755230a19c8ab3e46dbe49aa2fa3e7054a79a7e7e4e98f91ceed560fada2740",
+      "size_bytes": 41765
+    },
+    {
+      "epoch": [
+        2096,
+        591298,
+        33188,
+        1,
+        132238,
+        1791024491694377361,
+        1791024491694377361
+      ],
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/publication_physical_io_v1.py",
+      "sha256": "bc8a28239d86f1913a66757a497d9d5398dd1b17757c6f17725ae72bc01961ed",
+      "size_bytes": 132238
+    },
+    {
+      "epoch": [
+        2096,
+        591127,
+        33188,
+        1,
+        124707,
+        1791024491662374761,
+        1791024491662374761
+      ],
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/backend_publication_process_supervisor_v3.py",
+      "sha256": "99f772665d0d271b24d98f2393a50a0f9e0bbfe5c2840e5ccce65d89a84ed13e",
+      "size_bytes": 124707
+    },
+    {
+      "epoch": [
+        2096,
+        591288,
+        33188,
+        1,
+        11639,
+        1791024491690377036,
+        1791024491690377036
+      ],
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/publication_immutable_directory_v1.py",
+      "sha256": "3154cae593782ca64adf7318d615c7c5185ff1d8b06098647e50f00940edcd42",
+      "size_bytes": 11639
+    },
+    {
+      "epoch": [
+        2096,
+        591126,
+        33188,
+        1,
+        108483,
+        1791024491662374761,
+        1791024491662374761
+      ],
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/backend_publication_output_transaction_v3.py",
+      "sha256": "5df9d564a4c175c1c07d4a311453a83e21b01815928622d535e31f5615cdab43",
+      "size_bytes": 108483
+    },
+    {
+      "epoch": [
+        2096,
+        591125,
+        33188,
+        1,
+        77939,
+        1791024491662374761,
+        1791024491662374761
+      ],
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/backend_publication_output_transaction_production_v3.py",
+      "sha256": "028b7bab8f2e860dc59eda9f2727e8f56230d353c69ab07d4943b4487cce5dee",
+      "size_bytes": 77939
+    },
+    {
+      "epoch": [
+        2096,
+        591271,
+        33188,
+        1,
+        23238,
+        1791024491690377036,
+        1791024491690377036
+      ],
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/production_parent_artifact_pin_store_v1.py",
+      "sha256": "509eccf336a4c9dfe8bf1b51dfb9e18985ece898c5dc1165c4322b9978e15f42",
+      "size_bytes": 23238
+    },
+    {
+      "epoch": [
+        2096,
+        591388,
+        33188,
+        1,
+        54261,
+        1791024491702378010,
+        1791024491702378010
+      ],
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/tests/test_backend_publication_output_transaction_production_v3.py",
+      "sha256": "f78c2fa070e672f3777aca28f5d5043a19fca63987afa5fd8300d1582334812d",
+      "size_bytes": 54261
+    }
+  ],
+  "source_stable": true,
+  "tests_run": 1
+}

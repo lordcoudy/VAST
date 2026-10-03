@@ -1,0 +1,49 @@
+primary_architecture_claim_state=blocked_missing_required_pairs_or_gates
+output_dir=/tmp/tmp8wqgev1d/report
+{
+  "artifact_kind": "vast_full_publication_supervisor_state",
+  "attempt_seq": 1,
+  "command_identity_sha256": "7e08e75e8299e2181855ee5a0c6d84801b9b789fd625c85f534e5d6792dd5d60",
+  "completed_at": null,
+  "last_artifact_kind": null,
+  "last_exit_code": null,
+  "last_payload_sha256": null,
+  "phase": "failed_permanent",
+  "schema_version": 1,
+  "transient_streak": 0,
+  "unexpected_streak": 1,
+  "updated_at": "2026-10-03T11:20:10.449880+00:00"
+}
+[dataset] would encode /tmp/tmp85a05fox/data/benchmark/uadetrac_mvi_20011.mp4 from /tmp/tmp85a05fox/data/videos/DETRAC-Images/MVI_20011 (missing)
+{"status": "downloaded", "index": 0}
+[hardware] detected GPU: unknown
+[hardware] detected CPU: Apple M4 Max
+[hardware] detected RAM: 64.0 GB
+[warning] hardware target mismatch: detected_gpu_model_missing, cpu_model_mismatch, ram_gb_mismatch
+[hardware] detected GPU: unknown
+[hardware] detected CPU: Apple M4 Max
+[hardware] detected RAM: 64.0 GB
+[done-primary-architecture] step=1/20 scenario=checkpoint_independent_processes_baseline rep=1
+[done-primary-architecture] step=2/20 scenario=checkpoint_video_dag_shared rep=1
+[done-primary-architecture] step=3/20 scenario=checkpoint_video_dag_shared rep=2
+[done-primary-architecture] step=4/20 scenario=checkpoint_independent_processes_baseline rep=2
+[done-primary-architecture] step=5/20 scenario=checkpoint_independent_processes_baseline rep=3
+[done-primary-architecture] step=6/20 scenario=checkpoint_video_dag_shared rep=3
+[done-primary-architecture] step=7/20 scenario=checkpoint_video_dag_shared rep=4
+[done-primary-architecture] step=8/20 scenario=checkpoint_independent_processes_baseline rep=4
+[done-primary-architecture] step=9/20 scenario=checkpoint_independent_processes_baseline rep=5
+[done-primary-architecture] step=10/20 scenario=checkpoint_video_dag_shared rep=5
+[done-primary-architecture] step=11/20 scenario=checkpoint_video_dag_shared rep=6
+[done-primary-architecture] step=12/20 scenario=checkpoint_independent_processes_baseline rep=6
+[done-primary-architecture] step=13/20 scenario=checkpoint_independent_processes_baseline rep=7
+[done-primary-architecture] step=14/20 scenario=checkpoint_video_dag_shared rep=7
+[done-primary-architecture] step=15/20 scenario=checkpoint_video_dag_shared rep=8
+[done-primary-architecture] step=16/20 scenario=checkpoint_independent_processes_baseline rep=8
+[done-primary-architecture] step=17/20 scenario=checkpoint_independent_processes_baseline rep=9
+[done-primary-architecture] step=18/20 scenario=checkpoint_video_dag_shared rep=9
+[done-primary-architecture] step=19/20 scenario=checkpoint_video_dag_shared rep=10
+[done-primary-architecture] step=20/20 scenario=checkpoint_independent_processes_baseline rep=10
+[result] primary architecture summary saved to /tmp/tmpq5vu9j7x/20261003_142948/summary.csv
+[strict-validation] removed /tmp/tmpos6_3gnk/repo/.cache/savant
+[strict-validation] removed /tmp/tmpos6_3gnk/repo/runs/strict_validation
+{"successful": false, "report": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-original-output/report.json"}

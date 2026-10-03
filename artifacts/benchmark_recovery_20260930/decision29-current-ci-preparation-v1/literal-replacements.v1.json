@@ -1,0 +1,68 @@
+{
+  "capture_original_full_ci_v1.py": [
+    {
+      "after": "ROOT = Path('/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29')",
+      "before": "ROOT = Path('/home/s-a-balashov/work/vast-current-source-ci-20261001-current95')",
+      "count": 1
+    },
+    {
+      "after": "RESULT = Path('/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-original-output')",
+      "before": "RESULT = Path('/home/s-a-balashov/work/vast-current-source-ci-20261001-current95-original-output')",
+      "count": 1
+    },
+    {
+      "after": "    assert recipe['source_commit'] == COMMIT and recipe['checkout'] == str(ROOT) and recipe['output'] == str(RESULT)\n    assert recipe['benchmark_root_commit_untouched'] == 'a00aa57f7d9534f8e7920f14f70d6a75a23570ed' and COMMIT != recipe['benchmark_root_commit_untouched']\n    assert recipe['benchmark_source_impact_review']=={'path': '/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-clock-independent-source-review-v1/review.v1.json', 'size_bytes': 9951, 'sha256': '835bf6c7c991c78062adc39459b34f51eab7c598c71185a7b00fe777f62f9d6d'}\n    assert recipe['benchmark_source_impact_inventory']=={'path': '/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-clock-independent-source-review-v1/source-impact.v1.json', 'size_bytes': 160709, 'sha256': 'dcdc63621620f579653574d0a1380baac2d683c117d83b8b194b46e67abb2a41'}\n    assert recipe['reviewed_ci_path_pins']=={'scripts/ci_namespace_diagnostic_v1.py': {'size_bytes': 25359, 'sha256': 'bc69cdd5db314b7421d87fdaeb3a88d9411ae0f2e29713f75bc8909dfe8b0292'}, 'scripts/ci_userns_profile_v1.py': {'size_bytes': 28890, 'sha256': '5bd7622130c41d8bef03d2da87f87c987738478a5b77412857fd85f24c73cf43'}, 'tests/test_ci_namespace_diagnostic_v1.py': {'size_bytes': 33264, 'sha256': '5c8519ff1a1d600ba6ed72051498dd0da62f68d89e29b48079f546315bb7ac64'}, 'tests/test_ci_userns_profile_v1.py': {'size_bytes': 41955, 'sha256': 'dbcea702679255fd64bb223875385fc1800ed0946958e83ceefda59a0fdc2695'}}",
+      "before": "    assert recipe['source_commit'] == COMMIT and recipe['checkout'] == str(ROOT) and recipe['output'] == str(RESULT)",
+      "count": 1
+    }
+  ],
+  "capture_original_setup_v1.py": [
+    {
+      "after": "decision29-current-ci-preparation-v1",
+      "before": "component-current95-ci-successor-preparation-v1",
+      "count": 1
+    },
+    {
+      "after": "before['size_bytes']==16780 and before['sha256']=='aee8876b15a54fbeb222ac6999536ef49be1eaa115e01ccd1a72f860021b547c'",
+      "before": "before['size_bytes']==15174 and before['sha256']=='8bddfb1ceccd736ebf1ab260b0f83637e950995666ced6db63167eff98234571'",
+      "count": 1
+    }
+  ],
+  "setup_original_current_ci_v1.py": [
+    {
+      "after": "RECIPE=HERE/'recipe.bound.v1.json';COMMIT=None;BENCHMARK_COMMIT='a00aa57f7d9534f8e7920f14f70d6a75a23570ed'",
+      "before": "RECIPE=HERE/'recipe.bound.v1.json';COMMIT=None",
+      "count": 1
+    },
+    {
+      "after": "    assert recipe['benchmark_root_commit_untouched']==BENCHMARK_COMMIT and COMMIT!=BENCHMARK_COMMIT\n    assert recipe['benchmark_source_impact_review']=={'path': '/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-clock-independent-source-review-v1/review.v1.json', 'size_bytes': 9951, 'sha256': '835bf6c7c991c78062adc39459b34f51eab7c598c71185a7b00fe777f62f9d6d'}\n    assert recipe['benchmark_source_impact_inventory']=={'path': '/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-clock-independent-source-review-v1/source-impact.v1.json', 'size_bytes': 160709, 'sha256': 'dcdc63621620f579653574d0a1380baac2d683c117d83b8b194b46e67abb2a41'}\n    assert recipe['reviewed_ci_path_pins']=={'scripts/ci_namespace_diagnostic_v1.py': {'size_bytes': 25359, 'sha256': 'bc69cdd5db314b7421d87fdaeb3a88d9411ae0f2e29713f75bc8909dfe8b0292'}, 'scripts/ci_userns_profile_v1.py': {'size_bytes': 28890, 'sha256': '5bd7622130c41d8bef03d2da87f87c987738478a5b77412857fd85f24c73cf43'}, 'tests/test_ci_namespace_diagnostic_v1.py': {'size_bytes': 33264, 'sha256': '5c8519ff1a1d600ba6ed72051498dd0da62f68d89e29b48079f546315bb7ac64'}, 'tests/test_ci_userns_profile_v1.py': {'size_bytes': 41955, 'sha256': 'dbcea702679255fd64bb223875385fc1800ed0946958e83ceefda59a0fdc2695'}}",
+      "before": "    assert recipe['benchmark_root_commit_untouched']==COMMIT",
+      "count": 1
+    },
+    {
+      "after": "    manifest_path=HERE.parent/'decision28-current95-preparation-v1/decision28-current95-original-attempt01/current95-inputs.v1.json'",
+      "before": "    manifest_path=HERE/'current95-original-attempt01/current95-inputs.v1.json'",
+      "count": 1
+    },
+    {
+      "after": "    assert current95['source_commit']==BENCHMARK_COMMIT and current95['project_root']==str(BENCH) and current95['all_collection_fds_released'] is True",
+      "before": "    assert current95['source_commit']==COMMIT and current95['project_root']==str(BENCH) and current95['all_collection_fds_released'] is True",
+      "count": 1
+    },
+    {
+      "after": "assert bench_head==BENCHMARK_COMMIT",
+      "before": "assert bench_head==COMMIT",
+      "count": 1
+    },
+    {
+      "after": "    for relative,pin in {**recipe['source_pins'],**recipe['reviewed_ci_path_pins']}.items():\n        found=next(row for row in raw_rows if row['path']==relative);assert found['size_bytes']==pin['size_bytes'] and found['sha256']==pin['sha256']",
+      "before": "    for relative,pin in recipe['source_pins'].items():\n        found=next(row for row in raw_rows if row['path']==relative);assert found['size_bytes']==pin['size_bytes'] and found['sha256']==pin['sha256']",
+      "count": 1
+    },
+    {
+      "after": "'benchmark_root_head_unchanged':bench_head,'benchmark_root_commit':BENCHMARK_COMMIT,'ci_checkpoint_distinct_from_benchmark':COMMIT!=BENCHMARK_COMMIT,'benchmark95_input_epochs_unchanged':True",
+      "before": "'benchmark_root_head_unchanged':bench_head,'benchmark95_input_epochs_unchanged':True",
+      "count": 1
+    }
+  ]
+}

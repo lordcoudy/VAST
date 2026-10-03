@@ -1,0 +1,14 @@
+{
+  "first_error": "KeyError: original early-failure report has python_syntax and bash_syntax, no python_tests field",
+  "original_C_attempt_remains_failed": true,
+  "own_static_observer_attempt02_returncode": 1,
+  "own_static_observer_attempt02_tool": "cdb7f2",
+  "preserved_failed_metadata_observer_source": {
+    "path": "artifacts\\benchmark_recovery_20260930\\decision29-local-ci-C-original-failure-review-v1\\review_original_failure_v2.py",
+    "sha256": "a58f093ad6d4ab4f081595dfcaeff2ec523b9e0d994e6ebc8508965f1b73d2b0",
+    "size_bytes": 12202
+  },
+  "schema_version": 1,
+  "target_or_model_or_network_execution": false,
+  "v3_narrow_change": "Report only the two original syntax counters; no discovery/test counter invented."
+}

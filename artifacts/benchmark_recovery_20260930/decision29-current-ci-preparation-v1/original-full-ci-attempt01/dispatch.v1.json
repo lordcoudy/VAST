@@ -1,0 +1,186 @@
+{
+  "argv": [
+    "/usr/bin/timeout",
+    "--verbose",
+    "--signal=TERM",
+    "--kill-after=10s",
+    "5400s",
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29/scripts/run_ci_checks.py",
+    "--expected-commit",
+    "04a5d1c7b90274af71f4ff2456ec3013107c2bb3",
+    "--output-dir",
+    "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-original-output",
+    "--job-started-monotonic-ns",
+    "504921909695775"
+  ],
+  "cleanup_deadline_ns": 510331909695775,
+  "controller": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 93998,
+    "pid": 93998,
+    "ppid": 93997,
+    "session": 93998,
+    "startticks": 50492188,
+    "uid": 1000
+  },
+  "deadline_ns": 510321909695775,
+  "hardware_acceptance": false,
+  "job_started_monotonic_ns": 504921909695775,
+  "original": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 94012,
+    "pid": 94012,
+    "ppid": 93998,
+    "session": 94012,
+    "startticks": 50492196,
+    "uid": 1000
+  },
+  "source_commit": "04a5d1c7b90274af71f4ff2456ec3013107c2bb3",
+  "source_pins": [
+    {
+      "epoch7": [
+        69,
+        1407374885979948,
+        33279,
+        1,
+        10644,
+        1791020956227429200,
+        1791020956227429200
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/recipe.bound.v1.json",
+      "sha256": "7507d429ba5a57fa25e5fd1fcf9d106d9b743c53f84346366230569d9b7c938b",
+      "size_bytes": 10644
+    },
+    {
+      "epoch7": [
+        2096,
+        578339,
+        33188,
+        1,
+        34014,
+        1791020972274885361,
+        1791020972274885361
+      ],
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29/.ci/integration-test-selection.v1.json",
+      "sha256": "09e9268069e88b957f9ae54a827960bc18ee13a00d4319994d108d3cb81a0805",
+      "size_bytes": 34014
+    },
+    {
+      "epoch7": [
+        2096,
+        578341,
+        33188,
+        1,
+        454,
+        1791020972274885361,
+        1791020972274885361
+      ],
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29/.ci/requirements.txt",
+      "sha256": "9972a44ffd57d27ff351d2ffc168043d688af6042a4c4a59f4f6c21a77adecef",
+      "size_bytes": 454
+    },
+    {
+      "epoch7": [
+        2096,
+        584472,
+        33188,
+        1,
+        20916,
+        1791020976952815874,
+        1791020976952815874
+      ],
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29/scripts/ci_external_test_observer_v1.py",
+      "sha256": "000ded0c9bd442983b54d224ce3041818af6e35e2e0d4f9c9b382b74db499c59",
+      "size_bytes": 20916
+    },
+    {
+      "epoch7": [
+        2096,
+        584473,
+        33188,
+        1,
+        25359,
+        1791020976952815874,
+        1791020976952815874
+      ],
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29/scripts/ci_namespace_diagnostic_v1.py",
+      "sha256": "bc69cdd5db314b7421d87fdaeb3a88d9411ae0f2e29713f75bc8909dfe8b0292",
+      "size_bytes": 25359
+    },
+    {
+      "epoch7": [
+        2096,
+        584474,
+        33188,
+        1,
+        9978,
+        1791020976956816148,
+        1791020976956816148
+      ],
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29/scripts/ci_test_selection_v1.py",
+      "sha256": "c9883b041ec2b52f1796677d0baeee6bdd64394c576ecdc4c8b48134ec6d7f1d",
+      "size_bytes": 9978
+    },
+    {
+      "epoch7": [
+        2096,
+        584475,
+        33188,
+        1,
+        28890,
+        1791020976956816148,
+        1791020976956816148
+      ],
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29/scripts/ci_userns_profile_v1.py",
+      "sha256": "5bd7622130c41d8bef03d2da87f87c987738478a5b77412857fd85f24c73cf43",
+      "size_bytes": 28890
+    },
+    {
+      "epoch7": [
+        2096,
+        584516,
+        33188,
+        1,
+        30314,
+        1791020976964816694,
+        1791020976964816694
+      ],
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29/scripts/prepare_ci_model_assets.py",
+      "sha256": "2f87df4f6d98239190c17b42bb7f43188fc2a12604f7b0f6aa0246f7df15b36c",
+      "size_bytes": 30314
+    },
+    {
+      "epoch7": [
+        2096,
+        584569,
+        33188,
+        1,
+        29477,
+        1791020976976817516,
+        1791020976976817516
+      ],
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29/scripts/run_ci_checks.py",
+      "sha256": "ce375eca51164a76ab6a88cf02b92804077f08c6b8401d68b48e293020c27a2c",
+      "size_bytes": 29477
+    },
+    {
+      "epoch7": [
+        69,
+        1407374885979896,
+        33279,
+        1,
+        12429,
+        1791020564263871900,
+        1791020564263871900
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/capture_original_full_ci_v1.py",
+      "sha256": "a37fecbaa6fb4a560bb7c44897a39a9f3c0e294d5fb4b75c0cb2412ec465c9ac",
+      "size_bytes": 12429
+    }
+  ]
+}

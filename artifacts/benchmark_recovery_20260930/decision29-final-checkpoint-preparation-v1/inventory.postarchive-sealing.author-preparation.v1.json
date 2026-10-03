@@ -1,0 +1,225 @@
+{
+  "Git_writes_sync_archive_staging_target_execution": false,
+  "actual_archive_ref": null,
+  "actual_cleanup_ref": null,
+  "actual_direct_eligible_conformance_ref": {
+    "path": "artifacts/benchmark_recovery_20260930/decision29-current-conformance-independent-review-v1/review.v1.json",
+    "sha256": "af861006d56d00e466648cf2479f1536925f7b33f5a246916e924c067abec202",
+    "size_bytes": 434057
+  },
+  "actual_sealed_inventory": null,
+  "actual_staging": null,
+  "all_author_metadata_handles_closed": true,
+  "archive_contract": {
+    "active_old_paths_physically_absent_after_archive": true,
+    "actual_archive_root": null,
+    "each_move_keys": [
+      "old_path",
+      "new_path",
+      "size_bytes",
+      "sha256",
+      "git_mode"
+    ],
+    "expected_move_rows_if_snapshot_present": 18,
+    "expected_tracked_old_deletions": 17,
+    "main_and_archived_delta_all20_requirement_names_bodies_and118_clauses_must_match": true,
+    "new_counterparts_byte_and_git_mode_identical_to_actual_before_archive_rows": true,
+    "optional_new_before_archive_suffix": "implementation-closure.md",
+    "original_tracked_active_suffixes": [
+      ".openspec.yaml",
+      "conformance-progress.md",
+      "design.md",
+      "image-invalidation.md",
+      "implementation-approval.md",
+      "implementation-baseline.json",
+      "implementation-evidence.md",
+      "implementation-validation.md",
+      "preparation-plan.md",
+      "proposal-validation.json",
+      "proposal.md",
+      "review-context.json",
+      "reviewed-runtime-reconciliation.json",
+      "reviewed-runtime-reconciliation.lf-check.json",
+      "specs/benchmark-launch-preparation/spec.md",
+      "tasks.md",
+      "verification-plan.md"
+    ],
+    "prearchive_manifest_kind": "sealed_prearchive_physical_move_inventory_v1",
+    "prearchive_observed_before_supported_archive_required": true,
+    "root_regex": "openspec/changes/archive/YYYY-MM-DD-fix-benchmark-preparations-spec/",
+    "unaffected_main_specs_and_openspec_yaml_preserved": true
+  },
+  "artifact_kind": "postarchive_final_inventory_sealing_author_contract_v1",
+  "current_unsealed_draft_ref": {
+    "path": "artifacts/benchmark_recovery_20260930/decision29-final-checkpoint-preparation-v1/inventory.draft.v3.json",
+    "sha256": "dcbd9bced2c6dad7b714819d710c1b51e14eea500ff86975cf76e6af8d7c83da",
+    "size_bytes": 426433
+  },
+  "draft_is_not_final_inventory": "Root must re-pin the postarchive physical names after actual closures. This author contract does not enumerate a mutable discovery set at staging time or grant a future receipt.",
+  "exact_template_ref": {
+    "path": "artifacts/benchmark_recovery_20260930/decision29-final-checkpoint-preparation-v1/inventory.postarchive-sealing.template.v1.json",
+    "sha256": "8efe9684b2d1cf38dde787fe5d873444fa0e2a7f76c8177d5ff77e74482f3ea3",
+    "size_bytes": 2230
+  },
+  "explicit_namespace_allowlist": [
+    "decision28-four-arm-science-preparation-v1",
+    "decision28-four-arm-science-independent-actual-review-v1",
+    "decision29-ci-P-C-original-independent-review-v1",
+    "decision29-local-ci-C-original-failure-review-v1",
+    "decision29-ci-D-original-retention-v1",
+    "decision29-ci-D-original-independent-review-v1",
+    "decision29-ci-P-original-retention-v1",
+    "decision29-ci-C-original-retention-v1",
+    "decision29-local-ci-D-prerequisite-result-review-preparation-v1",
+    "decision29-release-fresh-critique-v1",
+    "decision29-current-ci-preparation-v1",
+    "decision29-current-ci-root-source-review-v1",
+    "decision29-successor-ci-D-preparation-v1",
+    "decision29-successor-ci-D-prerequisite-capture-preparation-v1",
+    "decision29-current95-post-setup-audit-preparation-v1",
+    "decision29-current95-post-D-setup-audit-preparation-v1",
+    "decision29-current95-post-runtime-bind-audit-preparation-v1",
+    "decision29-ext4-asset-cache-diagnosis-v1",
+    "decision29-ext4-asset-cache-copy-actual-review-v1",
+    "decision29-ext4-asset-cache-stock-reuse-review-v1",
+    "decision29-runtime-bind-prerequisite-plan-v1",
+    "decision29-runtime-bind-prerequisite-capture-preparation-v1",
+    "decision29-runtime-bind-owned-cleanup-preparation-v1",
+    "decision29-runtime-bind-gates-independent-review-v1",
+    "decision29-local-ci-D-original-review-preparation-v1",
+    "decision29-r13-s6-manual-source-review-v1",
+    "decision29-current-conformance-preparation-v1",
+    "decision29-current-conformance-independent-preparation-v1",
+    "decision29-current-conformance-independent-review-v1",
+    "decision29-current-conformance-mapper-owner-closure-v1",
+    "decision29-current-docs-v1",
+    "decision29-fresh-architecture-critique-v1",
+    "decision29-final-checkpoint-preparation-v1",
+    "decision29-final-checkpoint-independent-review-v1",
+    "decision29-sync-archive-original-review-v1"
+  ],
+  "files_schema": {
+    "all_paths_explicit_canonical_unique_allowed": true,
+    "existing_mode_source": "Actual HEAD tree in accepted staging validation; no existing mode may be inferred from Windows stat mode",
+    "git_modes": [
+      "100644",
+      "100755"
+    ],
+    "include_all_selected_original_forensic_source_proof_leaves_without_unsafe_omission": true,
+    "include_every_closed_review_manifest_progress_ref_and_exact_helper": true,
+    "new_file_mode": "100644 unless genuinely existing tracked mode is preserved",
+    "row_exact_keys": [
+      "path",
+      "size_bytes",
+      "sha256",
+      "git_mode"
+    ],
+    "sealed_inventory_excluded_from_own_files_to_avoid_self_hash_cycle": true,
+    "two_additional_staged_leaves": [
+      "typed sealed inventory itself",
+      "generated physical/index equality freeze"
+    ]
+  },
+  "limits_unchanged": {
+    "JSON_bytes": 1048576,
+    "combined_bytes": 67108864,
+    "combined_paths_max": 640,
+    "each_Git_call_s": 15,
+    "leaf_bytes": 8388608,
+    "listed_file_rows_max": 638,
+    "whole_staging_s": 300
+  },
+  "mandatory_future_closures_before_sealing": [
+    "actual_supported_archive_and_all_counterpart_bytes",
+    "actual_owned_runtime_bind_cleanup_and_independent_review",
+    "truthful_normalized_closed_CI_docs_archive_review_joins",
+    "final_explicit_inventory_path_mode_size_SHA_review"
+  ],
+  "no_new_executor_or_general_proof_framework": true,
+  "original_closed_review_candidate_variants": {
+    "current_docs": {
+      "actual_original_fields_preserved": true,
+      "exact_stage_review_schema_ready": false,
+      "physical_ref": {
+        "path": "artifacts/benchmark_recovery_20260930/decision29-release-fresh-critique-v1/current-docs.review.v2.json",
+        "sha256": "0121117c569c7a003769eaf8a6604706d2705d04bde9129fc6cb46930ab08367",
+        "size_bytes": 10261
+      },
+      "requirement": "Root must provide a truthful independent closed-review join with reviewable=true,blocking_findings=[],reviewer_handles_released=true if the original uses variants; do not mutate the original or invent missing closure."
+    },
+    "hosted_CI": {
+      "actual_original_fields_preserved": true,
+      "exact_stage_review_schema_ready": true,
+      "physical_ref": {
+        "path": "artifacts/benchmark_recovery_20260930/decision29-ci-D-original-independent-review-v1/review.v1.json",
+        "sha256": "05019c9b277292ae29c4b60dee2839c9ae4c8d61456254da2796f89ca4cf4f98",
+        "size_bytes": 115481
+      },
+      "requirement": "Root must provide a truthful independent closed-review join with reviewable=true,blocking_findings=[],reviewer_handles_released=true if the original uses variants; do not mutate the original or invent missing closure."
+    },
+    "local_CI": {
+      "actual_original_fields_preserved": true,
+      "exact_stage_review_schema_ready": false,
+      "physical_ref": {
+        "path": "artifacts/benchmark_recovery_20260930/decision29-final-checkpoint-independent-review-v1/root-local-CI-acceptance.v1.json",
+        "sha256": "76fb5d70e68df9e4dabac3ec87a6ac4cb36896308aa544ca58cc617185b186f1",
+        "size_bytes": 3172
+      },
+      "requirement": "Root must provide a truthful independent closed-review join with reviewable=true,blocking_findings=[],reviewer_handles_released=true if the original uses variants; do not mutate the original or invent missing closure."
+    }
+  },
+  "progress_or_plan_writes": false,
+  "progress_preservation_ref": {
+    "path": "artifacts/benchmark_recovery_20260930/decision29-final-checkpoint-preparation-v1/progress-original-suffix-preservation.v1.json",
+    "sha256": "b5709c341243b8c75a01c95d743c14d763b2c292df6366f1327a9fa801cf2f69",
+    "size_bytes": 1719
+  },
+  "prospective_gate": "Accepted staging checks physical raw object IDs under autocrlf=false andtrue plus filter attributes BEFORE any Git object/index mutation. Keep exact current .gitattributes raw bytes and independently approved declarations; no normalization of originals.",
+  "required_exact_reviewer_fields": [
+    "reviewable:true",
+    "blocking_findings:[]",
+    "reviewer_handles_released:true"
+  ],
+  "required_fixed_final_paths": [
+    "README.md",
+    "docs/gstreamer-component-benchmark-runbook.md",
+    "progress.md",
+    "BENCHMARK_RECOVERY_PLAN.md",
+    ".gitattributes",
+    "openspec/specs/benchmark-launch-preparation/spec.md",
+    "artifacts/benchmark_recovery_20260930/decision29-final-checkpoint-preparation-v1/stage_final_checkpoint_v5.py"
+  ],
+  "required_review_labels": [
+    "hosted_CI",
+    "local_CI",
+    "conformance",
+    "sync_archive",
+    "current_docs",
+    "staging_source"
+  ],
+  "schema_version": 1,
+  "size_count_gate": "Count actual final file rows and bytes, typed inventory bytes, generated freeze bytes and2 supplemental paths. If the actual boundary fails, stop; no automatic widening or forensic omission.",
+  "source_expected_ref_candidates": {
+    "actual_current_gitattributes": {
+      "path": ".gitattributes",
+      "sha256": "80d55e9c5c60d69b8ad5cd5e1ab2c46bf3147a4fcc931dae44092a3f068c5f6c",
+      "size_bytes": 18364
+    },
+    "current_main_after_actual_sync": {
+      "path": "openspec/specs/benchmark-launch-preparation/spec.md",
+      "sha256": "d777fca9299def232e13c75e484c0863a639d4acdfdf5445e38e8a925873d36b",
+      "size_bytes": 75126
+    }
+  },
+  "stage_source_closed_peer_ref": {
+    "path": "artifacts/benchmark_recovery_20260930/decision29-final-checkpoint-independent-review-v1/root-staging-source-review.v3.json",
+    "sha256": "a56840f6eeb2392b67843c31ced6048c7953d608ee7a28ae4c73764ce33620f5",
+    "size_bytes": 949
+  },
+  "stage_source_ref": {
+    "path": "artifacts/benchmark_recovery_20260930/decision29-final-checkpoint-preparation-v1/stage_final_checkpoint_v5.py",
+    "sha256": "4157fb7edcdbf6c1c0f243a34857e35eef19114809e18319ab78a714c7e930e8",
+    "size_bytes": 21709
+  },
+  "status": "SOURCE_METADATA_PREPARATION_ONLY_UNSEALED_NO_DISPATCH"
+}

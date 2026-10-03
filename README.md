@@ -1,6 +1,8 @@
 # VAST Video Analytics Benchmark
 
-Follow the [benchmark preparation runbook](docs/benchmark-preparation-runbook.md) for the approved repair, qualification, Q4, capacity and preflight gates. It stops at a validated, unstarted service package. See [progress.md](progress.md) for current status; preparation does not authorize the full benchmark launch.
+Use the [GStreamer component benchmark runbook](docs/gstreamer-component-benchmark-runbook.md) to run the real six-stream baseline/shared pair on CPU or GPU analytics, validate the original run and interpret its raw results. Current CPU08/GPU02 pairs completed successfully at source `a00aa57f`; the [four-arm CSV](artifacts/benchmark_recovery_20260930/decision28-four-arm-science-preparation-v1/attempt01/four_arm_metrics.csv) and [figure](artifacts/benchmark_recovery_20260930/decision28-four-arm-science-preparation-v1/attempt01/four_arm_latency_coverage_cobs.svg) show completion, drops, completed-frame latency and partial attributed stage time. The100ms deadline is largely missed; successful execution does not mean the deadline is met. Implementation checkpoint,3 October2026,repository source D `3c025b29`: hosted and prerequisite-corrected local CI passed; current conformance, same-change archive, checks on the eventual archived commit and final review were pending at this snapshot. The [PR2 final process ledger](https://github.com/lordcoudy/VAST/pull/2) records subsequent repository closure.
+
+The broader qualification/Q4/full campaign retains its [preparation runbook](docs/benchmark-preparation-runbook.md) and original unexecuted obligations. See [progress.md](progress.md) and [the durable recovery plan](BENCHMARK_RECOVERY_PLAN.md) for their scope and current evidence.
 
 This project scaffolds the experimental study for task distribution in multi-stream KPP video analytics on the target platform:
 - GPU: NVIDIA RTX 3060
@@ -12,7 +14,7 @@ The default `benchmark` mode is strict: publishable runs require native
 per-frame telemetry schema v2. Runtime-derived synthetic rows are available
 only in explicit `smoke` mode and are excluded from scientific reports.
 
-Current checkpoint status is `blocked_topology`. The generic native probe and
+The legacy generic checkpoint entry point reports `blocked_topology`. The generic native probe and
 the local Savant module still do not implement the accepted comparison. A
 separate common-source engineering path now launches four independent
 process-per-detector workers per stream or one shared `decode -> preprocess ->
@@ -640,8 +642,9 @@ The runner also exports scenario context to templates:
   `stage_semantic_contract_complete`, `semantic_contract_version`, and
   `semantic_prefix_contract_sha256`, and
   `branch_analytics_contract_sha256`. Contract tests demonstrate validator
-  behavior only; no current checkpoint adapter has produced the four accepted
-  native checkpoint sidecars on the target stand.
+  behavior only. The selected component path has genuine native sidecars and
+  accepted CPU/GPU component pairs; these do not complete the broader
+  qualification/publication campaign.
 - Applied policy rows must link to exactly one native stage event with the same
   run/trace/frame/stage key, selected resource, decision-time queue depth, and
   selected score. This prevents an internally valid decision file from being

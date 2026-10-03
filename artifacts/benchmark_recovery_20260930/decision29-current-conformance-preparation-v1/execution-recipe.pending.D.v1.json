@@ -1,0 +1,43 @@
+{
+  "argv": [
+    "/usr/bin/setsid",
+    "--wait",
+    "/usr/bin/timeout",
+    "--verbose",
+    "--signal=TERM",
+    "--kill-after=10s",
+    "120s",
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-conformance-preparation-v1/generate_current_mapping_D_v3.py",
+    "binding.pending.D.v2.json",
+    "10942",
+    "e4ee7f24ce8c13b33e82a4a904da532a9e48f77e4432565ef3b6a0c8a56e21d6"
+  ],
+  "before_dispatch": "Actual closed hosted/ext4 report/source-before/source-after/terminal/closure refs and current docs/tasks exact pins must form an immutable successor binding, or root must explicitly grant pending metadata-only output. No conformance/archive acceptance follows either path.",
+  "binding_pending_review": {
+    "domain": "control",
+    "path": "artifacts/benchmark_recovery_20260930/decision29-current-conformance-preparation-v1/binding.pending.D.v2.json",
+    "sha256": "e4ee7f24ce8c13b33e82a4a904da532a9e48f77e4432565ef3b6a0c8a56e21d6",
+    "size_bytes": 10942
+  },
+  "capture_required": "Root retains original argv/actual PID/PPID/startticks/UID/GID/boot/PGID, raw channels/EOF, original status and two later owner/group absence scans. Timeout, signal, overflow, late/persistence companion, nonzero or unknown cleanup fails; no automatic retry. Recipe is not an executed wrapper or process witness.",
+  "generator": {
+    "domain": "control",
+    "path": "artifacts/benchmark_recovery_20260930/decision29-current-conformance-preparation-v1/generate_current_mapping_D_v3.py",
+    "sha256": "ce5aef28f825f716e1a9869c377e26023d9cb177234315d32a4ef8c167979e86",
+    "size_bytes": 37807
+  },
+  "limits": {
+    "aggregate_input_limit_bytes": 100663296,
+    "generator_absolute_execution_s": 120,
+    "outer_kill_after_s": 10,
+    "per_input_and_output_leaf_limit_bytes": 16777216,
+    "raw_stderr_limit_bytes": 1048576,
+    "raw_stdout_limit_bytes": 1048576
+  },
+  "schema_version": 1,
+  "status": "prepared_unexecuted_requires_root_review_and_exact_grant",
+  "target_operations": 0
+}

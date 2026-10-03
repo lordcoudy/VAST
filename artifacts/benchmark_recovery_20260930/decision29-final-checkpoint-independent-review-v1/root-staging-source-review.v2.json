@@ -1,0 +1,46 @@
+{
+  "all11_functions_raw_and_AST_identical": true,
+  "blocking": [],
+  "concrete_observed_boundary": {
+    "bytes": 55099819,
+    "largest_leaf_bytes": 4907163,
+    "namespace_leaves": 529,
+    "plus_five_docs": 534,
+    "root_counter_cells": [
+      "a6e7a6",
+      "d66d73"
+    ],
+    "unchanged_tracked_leaves": 19,
+    "untracked_leaves": 510
+  },
+  "exact34_namespaces_unchanged": true,
+  "inventory_file_row_maximum": 638,
+  "limits": {
+    "Git_call_s": 15,
+    "leaf_bytes": 8388608,
+    "paths_including_two_supplements": 640,
+    "total_bytes": 67108864,
+    "whole_s": 300
+  },
+  "limits_explanation": "Only the private final metadata file-count cap changes after the actual complete candidate set exceeded512. No runtime/test/measurement/source-authority/byte/time/EOF/process/cleanup guard changed. Actual final sealed inventory must still fit638 plus2; no automatic widening.",
+  "owned_source_pins": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-final-checkpoint-preparation-v1/stage_final_checkpoint_v4.py",
+      "sha256": "f947fea05bdae89f25bcad686f422e3d59b869f6d160a86ee102700ff4c42fcf",
+      "size_bytes": 21647
+    }
+  ],
+  "prior_source_review_ref": {
+    "path": "artifacts/benchmark_recovery_20260930/decision29-final-checkpoint-independent-review-v1/root-staging-source-review.v1.json",
+    "sha256": "bcc51d68017b2db487ab5e7c5471da5fc917212b42068a050f7c37d5ebbdc61f",
+    "size_bytes": 1179
+  },
+  "raw_inverse_one_MAX_PATHS_literal_returns_reviewed_v3": true,
+  "reviewable": true,
+  "reviewer": "/root",
+  "reviewer_handles_released": true,
+  "schema_version": 1,
+  "scope": "Source-only closed file reads; no Windows numeric OS handle balance observed. Actual CI/conformance/archive/doc closures and sealed exact physical inventory remain required.",
+  "staging_execution_authorized": false,
+  "staging_performed": false
+}

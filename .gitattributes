@@ -246,3 +246,18 @@ deploy/native_gst_probe/vast_native_gst_probe.cpp text eol=lf
 # Preserve the two immutable original sidecar source snapshots exactly.
 /artifacts/benchmark_recovery_20260930/decision28-sidecar-failure-observability-v1/before/scripts/checkpoint_gstreamer_analytics_sidecar.py -text !eol
 /artifacts/benchmark_recovery_20260930/decision28-sidecar-failure-observability-v1/before/tests/test_publication_worker_termination_facts_v1.py -text !eol
+
+# Exact original CRLF JSON archive counterparts; conditional on prospective byte checks.
+/openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/implementation-baseline.json -text !eol
+/openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/proposal-validation.json -text !eol
+/openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/review-context.json -text !eol
+/openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/reviewed-runtime-reconciliation.json -text !eol
+/openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/reviewed-runtime-reconciliation.lf-check.json -text !eol
+
+# Exact physically observed originals: preserve raw bytes under both autocrlf settings.
+/BENCHMARK_RECOVERY_PLAN.md -text !eol
+/artifacts/benchmark_recovery_20260930/decision29-current-docs-v1/current-docs.v4.diff -text !eol
+/artifacts/benchmark_recovery_20260930/decision29-release-fresh-critique-v1/current-docs.review.v2.json -text !eol
+/artifacts/benchmark_recovery_20260930/decision29-release-fresh-critique-v1/review.v1.json -text !eol
+/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-owned-cleanup-preparation-v1/metadata-authoring-attempt01-failure.v1.json -text !eol
+/progress.md -text !eol

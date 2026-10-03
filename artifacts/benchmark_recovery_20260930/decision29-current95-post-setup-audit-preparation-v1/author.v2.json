@@ -1,0 +1,48 @@
+{
+  "author": "/root/decision28_source_peer",
+  "author_handles_released": true,
+  "exact_forward_and_inverse": true,
+  "future_outcome": null,
+  "future_owner": null,
+  "independent_root_source_review_required_before_execution": true,
+  "module_function_count": 12,
+  "module_functions_ast_unchanged": [
+    "epoch",
+    "identity",
+    "clock",
+    "fail",
+    "fd_count",
+    "owner",
+    "hold_ancestors",
+    "digest",
+    "hold",
+    "doc",
+    "scan_originals",
+    "save"
+  ],
+  "new_target_functions": [],
+  "old_preparation": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-current95-post-setup-audit-preparation-v1\\preparation.v1.json",
+    "sha256": "e35eee4aff086dbee427bc4ad2a3570602ceb718d949e8dd592176adbdec80b2",
+    "size_bytes": 5543
+  },
+  "old_source": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-current95-post-setup-audit-preparation-v1\\audit_actual95_post_setup_v1.py",
+    "sha256": "f2b09d5b8336b9276bfb4da459bbcb7fc1e8cf18b77199f48eb8b56916e21eeb",
+    "size_bytes": 15057
+  },
+  "preparation": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-current95-post-setup-audit-preparation-v1\\preparation.v2.json",
+    "sha256": "6645995e16d36db49f7153d811bbc05a50492a241bef187f3624a4c3687253df",
+    "size_bytes": 6703
+  },
+  "replacement_occurrences": 1,
+  "schema_version": 1,
+  "scope": "Guard the final summary stdout write with the existing sticky first-error and exclusive bounded failure-companion attempt. All12 module function ASTs and every other source byte are unchanged by the exact inverse.",
+  "source": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-current95-post-setup-audit-preparation-v1\\audit_actual95_post_setup_v2.py",
+    "sha256": "0cc5510cc406b5848c41089818027163b88a8b92d5acf4434af3ce50131de86d",
+    "size_bytes": 15422
+  },
+  "target_imported_compiled_executed": false
+}

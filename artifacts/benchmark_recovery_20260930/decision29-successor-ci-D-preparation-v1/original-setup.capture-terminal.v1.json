@@ -1,0 +1,153 @@
+{
+  "argv": [
+    "/usr/bin/timeout",
+    "--signal=TERM",
+    "--kill-after=10s",
+    "300s",
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/setup_original_current_ci_v2.py",
+    "11220",
+    "e8df0e735c27bd282eee9692144fb0e42ab7491259bedb2626e1714fe64865c5"
+  ],
+  "capture_fds_closed": true,
+  "capture_owner": {
+    "argv": [
+      "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+      "-I",
+      "-B",
+      "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/capture_original_setup_v2.py",
+      "11220",
+      "e8df0e735c27bd282eee9692144fb0e42ab7491259bedb2626e1714fe64865c5"
+    ],
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 95664,
+    "pid": 95664,
+    "ppid": 95663,
+    "session": 95664,
+    "startticks": 50681901,
+    "state": "R",
+    "uid": 1000
+  },
+  "elapsed_s": 7.534511308011133,
+  "failure": null,
+  "kind": "original_current_source_ci_setup_capture_v1",
+  "late_failure_absent": true,
+  "original_child_reaped": true,
+  "process_scans": [
+    {
+      "at_ns": 1791024496446554474,
+      "errors": [],
+      "members": [],
+      "pids_absent": {
+        "95665": true,
+        "95666": true
+      }
+    },
+    {
+      "at_ns": 1791024496448036568,
+      "errors": [],
+      "members": [],
+      "pids_absent": {
+        "95665": true,
+        "95666": true
+      }
+    }
+  ],
+  "returncode": 0,
+  "schema_version": 1,
+  "setup_owner": {
+    "argv": [
+      "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+      "-I",
+      "-B",
+      "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/setup_original_current_ci_v2.py",
+      "11220",
+      "e8df0e735c27bd282eee9692144fb0e42ab7491259bedb2626e1714fe64865c5"
+    ],
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 95665,
+    "pid": 95666,
+    "ppid": 95665,
+    "session": 95665,
+    "startticks": 50681904,
+    "state": "D",
+    "uid": 1000
+  },
+  "signals": [],
+  "source_after": {
+    "epoch7": [
+      69,
+      1407374885980135,
+      33279,
+      1,
+      16786,
+      1791024018827066600,
+      1791024018827066600
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/setup_original_current_ci_v2.py",
+    "sha256": "9aca35df5b1d4c87a555ac3d32d99c1a05b4772cf5bd841d778fec4e330ed3d3",
+    "size_bytes": 16786
+  },
+  "source_before": {
+    "epoch7": [
+      69,
+      1407374885980135,
+      33279,
+      1,
+      16786,
+      1791024018827066600,
+      1791024018827066600
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/setup_original_current_ci_v2.py",
+    "sha256": "9aca35df5b1d4c87a555ac3d32d99c1a05b4772cf5bd841d778fec4e330ed3d3",
+    "size_bytes": 16786
+  },
+  "started_at_ns": 1791024488913629580,
+  "stderr": {
+    "epoch7": [
+      69,
+      1407374885980160,
+      33279,
+      1,
+      0,
+      1791024488914888600,
+      1791024488914888600
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/original-setup.stderr.raw",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size_bytes": 0
+  },
+  "stdout": {
+    "epoch7": [
+      69,
+      1407374885980159,
+      33279,
+      1,
+      303,
+      1791024496421365600,
+      1791024496421365600
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/original-setup.stdout.raw",
+    "sha256": "a9fd46a3205319cc7dce28a80315d550509e16ea7cc10a111ba2eef3137902bb",
+    "size_bytes": 303
+  },
+  "terminal_at_ns": 1791024496448140299,
+  "timeout_owner": {
+    "argv": [
+      ""
+    ],
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 95665,
+    "pid": 95665,
+    "ppid": 95664,
+    "session": 95665,
+    "startticks": 50681904,
+    "state": "D",
+    "uid": 1000
+  }
+}

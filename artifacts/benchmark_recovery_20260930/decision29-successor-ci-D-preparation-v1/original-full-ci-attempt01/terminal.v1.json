@@ -1,0 +1,46 @@
+{
+  "channel_bytes": {
+    "stderr": 3479,
+    "stdout": 3182
+  },
+  "close_errors": [],
+  "elapsed_s": 2141.43975775,
+  "eof": [
+    "stderr",
+    "stdout"
+  ],
+  "first_error": {
+    "message": "original full CI exit is failed; retain stock report",
+    "type": "AssertionError"
+  },
+  "full_stock_report": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-original-output/report.json",
+  "hardware_acceptance": false,
+  "held_descriptors_released": true,
+  "original": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 95805,
+    "pid": 95805,
+    "ppid": 95791,
+    "session": 95805,
+    "startticks": 50718283,
+    "uid": 1000
+  },
+  "process_scans": [
+    {
+      "at_ns": 1791026993964244351,
+      "errors": [],
+      "members": []
+    },
+    {
+      "at_ns": 1791026993965707035,
+      "errors": [],
+      "members": []
+    }
+  ],
+  "returncode": 1,
+  "signals": [],
+  "source_before_after_equal": true,
+  "source_commit": "3c025b29b3c1d5275c2ec693410e4b83700583de",
+  "status": "failed"
+}

@@ -1,6 +1,34 @@
+# Current CI checkpoint - 3 October2026,13:13 UTC
+
+Hosted D run37116707816 passed with3001 discovered tests,2992 selected,2904 successes and88 approved skips. The prerequisite-corrected original local D full CI also passed:3001 discovered,2992 selected,2906 successes,86 approved skips and9 deferred integrations, with zero failures/errors, all six native builds and the three required native regressions. Its original capture closed with exit0 after2115.37338894s; independent review5a58508a verified the original report, unchanged5577-source tables, observer/wrapper closure and reader FD6 to6. The local namespace diagnostic succeeded, so no temporary profile was required. These are distinct original lane outcomes; the two formerly skipped local checks ran successfully.
+
+Current CI source remains D3c025b29 and measured component source remains Ba00aa57f. The accepted CPU08/GPU02 originals and four-arm reduction are unchanged, including the largely negative100ms deadline result. Current20-requirement/118-scenario conformance is not yet generated or independently accepted. Same-change sync/archive, CI on the eventual archived commit and exact final review/merge remain pending. Final process closures belong in the same PR2 ledger; this is a dated implementation snapshot, not a claim of future success. Earlier dated snapshots and failed originals below retain their original bytes and outcomes.
+
+# Current CI checkpoint - 3 October2026,11:26 UTC
+
+Hosted D run37116707816 passed on commit3c025b29:3001 discovered,2992 selected,2904 successes,88 exact allowed skips, zero failures/errors, all six native targets and the three required native regressions. Independent original review05019c9b joins the raw report, source-before/after and observer/profile records. Genuine D ext4 setup verified5577 committed raw files, fresh95 audita4945b6d passed, and unchanged stock model acquisition accepted all8 verified assets as reused. The one original local full CI remains running; current conformance and final archive/latest-commit checks/review/merge remain pending. The accepted four-arm component and negative100ms result below remain unchanged. Earlier status snapshots are preserved.
+
+# Current selected component status - 3 October2026 UTC
+
+The genuine GStreamer component benchmark is operable at benchmark sourceB `a00aa57f7d9534f8e7920f14f70d6a75a23570ed`: CPU08 and GPU02 each returned0 with both native arms, full all-phase cold validation, authenticated guardian cleanup and reserve release. Independent95-file audits1f5abb9e/a125010e verified original source/input/output/process custody. The one unchanged stock four-arm reduction2414255a matched every carried field; root full-hash closure0d8c6dab verifies220 held originals and CSV/SVG.
+
+Each arm admitted1080 frames. CPU baseline/shared completed516/664, dropped564/416 and met100ms for0/0 frames. GPU completed1070/1075, dropped10/5 and met100ms for3/1 frames. Completed-frame medians5727.5/3621ms (CPU) and2127/2168ms (GPU) are descriptive for one baseline-first pair per resource and replicas of two recordings. `C_obs` remains partial attributed elapsed stage time, without work/energy/accuracy/causal-overload or population authority.
+
+CI-only sourceC `04a5d1c7b90274af71f4ff2456ec3013107c2bb3` is pushed in the same Draft PR2. Its51 focused clock tests passed (37original+14new); all95/73/native-three/worker-two inputs are unchanged. Fresh ext4 C setup verified5561 exact raw tracked files,17 pinned packages and native prerequisites. Full current hosted/ext4 CI, final conformance, own/fresh critique, same-PR sync/archive/latest checks/final review/merge remain pending. Active progress63/74.
+
+Use [the component runbook](docs/gstreamer-component-benchmark-runbook.md) for the actual repeatable command. Original32/1120/5600/Q4 campaigns remain unexecuted; every failed attempt and all earlier snapshots below remain historical.
+
 # VAST: текущий прогресс
 
-## Последнее наблюдение g — 28 сентября 2026, 08:29 UTC
+## Текущее планирование operational accounting — 28 сентября 2026, 09:31 UTC
+
+Выполнено **26/51** задач: amendment добавляет четыре задачи раздела 12 и повторно открывает 5.1–5.4, 6.1, 6.2 и 10.9 для новой цепочки source evidence. В той же OpenSpec change `fix-benchmark-preparations-spec` теперь 12 requirements / 55 scenarios. Source review доказал, что lifetime guardian counters и measurement-only closure описывают разные домены; g pilot не запускалась и её runtime failure не наблюдалась.
+
+Предлагается сохранить полные original native operational domains каждой producing invocation и bounded guardian front begin/terminal journals, затем строго сверить multiplicity всех identities отдельно от measurement projection. Проверка конечных budgets, exact planning commit/review, clean retirement original g, реализация и новая зависимая проверка ещё впереди. Production/test/config bytes остаются `81ebb8fe50113f2117bab478849d908d7bc6cb33`; все прежние g passes ниже сохраняют силу только для своих original bytes. Ничто не перепривязано к будущему коду.
+
+Same Draft PR #2 продолжается; подтверждённый delegated COMMENT на `674a4f800dd78929cabccdc21fc40ca131b37976` относится к шести прежним evidence documents, не к этой незакоммиченной поправке. Это не independent APPROVE и не configured CI. Qualification32, Q4 и downstream gates не приняты; `preparation_ready=false`, `publication_ready=false`, **0/5 600 full-run arms**. Archive/sync/merge не выполнены.
+
+## Историческое наблюдение g — 28 сентября 2026, 08:29 UTC
 
 Выполнено **33/47** задач: 6.2 закрыта после одного gated Savant diagnostic и одного stock terminal/cold audit. Original invocation `87d5f14c0a7f42ed95cd929edfde8f04` / PID `82336` / UID-GID 1000 завершилась с diagnostic outcome 0 и ровно одним successful container. Сохранён exact process terminal, затем root systemd successful deactivation в том же boot; collected unit defaults не использованы как доказательство. [Original terminal](artifacts/fix_benchmark_preparations_20260928g/qualification_control/savant-diagnostic.original-terminal.v1.json), SHA-256 `879ca8d52e50b767cf5547c47d8462788baa21a40d4c2f87240d01e6b957e8a8`.
 

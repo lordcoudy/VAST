@@ -1,0 +1,255 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "vast_release_fresh_architecture_science_critique_v1",
+  "reviewer": "/root/release_critique",
+  "created_at_utc": "2026-10-03T12:37:39.9237014Z",
+  "checkout": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec",
+  "openspec_change": "fix-benchmark-preparations-spec",
+  "pull_request": "https://github.com/lordcoudy/VAST/pull/2",
+  "repository_source_D": "3c025b29b3c1d5275c2ec693410e4b83700583de",
+  "measured_source_B": "a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+  "current_requirements": 20,
+  "current_scenarios": 118,
+  "review_mode": "read_only source/document/original retained metadata critique; only this exclusive receipt is written",
+  "source_checks": [
+    {
+      "path": "scripts/publication_gstreamer_component_authority_v1.py",
+      "original_D_size_sha_equal": true
+    },
+    {
+      "path": "scripts/publication_gstreamer_component_inputs_v1.py",
+      "original_D_size_sha_equal": true
+    },
+    {
+      "path": "scripts/publication_gstreamer_component_runtime_v1.py",
+      "original_D_size_sha_equal": true
+    },
+    {
+      "path": "scripts/publication_gstreamer_component_cli_v1.py",
+      "original_D_size_sha_equal": true
+    },
+    {
+      "path": "scripts/publication_guardian_component_preprocessing_contract_v1.py",
+      "original_D_size_sha_equal": true
+    },
+    {
+      "path": "scripts/publication_guardian_runtime_expectations_v1.py",
+      "original_D_size_sha_equal": true
+    },
+    {
+      "path": "tests/test_publication_gstreamer_component_cli_v1.py",
+      "original_D_size_sha_equal": true
+    },
+    {
+      "path": "tests/test_publication_gstreamer_component_inputs_v1.py",
+      "original_D_size_sha_equal": true
+    },
+    {
+      "path": "tests/test_publication_gstreamer_component_runtime_v1.py",
+      "original_D_size_sha_equal": true
+    }
+  ],
+  "new_material_blocking_findings": [],
+  "verdict": "scoped_architecture_and_scientific_reporting_adequate; final_release_verdict_pending_original_local_CI_and_current_conformance",
+  "merge_approval": false,
+  "hardware_or_measurement_grant": false,
+  "full_campaign_eligibility": false,
+  "positive_findings": [
+    {
+      "id": "R1",
+      "finding": "The component boundary resolves the original dependency coupling. The public CLI owns a fresh forced-resource baseline/shared pair, original source materialization, private held lifetime, one guardian, authenticated stop before cold, and receipt-last results. Broad qualification/Q4/publication campaigns remain strict future scopes.",
+      "source": "publication_gstreamer_component_cli_v1.py:483-720; runtime_v1.py:47-164,583-907; design.md:23-57"
+    },
+    {
+      "id": "R2",
+      "finding": "The private session is a justified local lifetime capability rather than a public trust shortcut: exact class/token, PID/root/authority/active checks, full held byte/epoch/engine/socket barriers and fresh four-image projections are retained. Public validators independently acquire complete input validation.",
+      "source": "publication_gstreamer_component_inputs_v1.py:391-509; held-session regression methods at629-761"
+    },
+    {
+      "id": "R3",
+      "finding": "The actual accepted CPU08/GPU02 and independent stock science receipts support operability and raw result reproduction. Each arm admits1080; CPU completes516/664 with0/0 on-time; GPU completes1070/1075 with3/1 on-time. Negative100ms results remain negative, with no inferred EPIPE or overload cause.",
+      "source": "CPU/GPU audit review.v1.json; four-arm science review.v1.json; current runbook"
+    },
+    {
+      "id": "R4",
+      "finding": "Reporting uses ingress denominators for completion/drop/deadline coverage, completed-only latency, null reasons for nonpositive baseline ratios and partial attributed C_obs. Different completed subsets, two-recording replicas, NVDEC in both analytics modes, baseline-first order and one pair/resource are explicitly disclosed. This is scientifically meaningful descriptive topology/load evidence, with no population, quality, CPU-decode comparison, processor-work or energy claim.",
+      "source": "runtime_v1.py:285-355,835-907; runbook:17-85; own-reassessment.v3.md"
+    },
+    {
+      "id": "R5",
+      "finding": "The concrete command names the preserved ext4 root, real interpreter, selected original input/image/worker/host receipts and every required CLI flag. Its isolated runpy import and project-relative conversion match the actual main/source code. Fresh output and scratch namespace rules, socket length, allocation/floor checks and source/epoch invalidation are present. This review did not execute that command or rerun syntax validation.",
+      "source": "runbook command; cli_v1.py:188-274,483-574,702-720"
+    }
+  ],
+  "existing_completion_blockers": [
+    "Original prerequisite-corrected local full CI is running by the durable plan; this reviewer read no live output. Original terminal/full selection, exact skips, all six builds/three native successes, source equality and process/descriptor closure must genuinely pass and be independently reviewed. The earlier local D skip-audit failure stays failed.",
+    "Current20-requirement118-scenario conformance is source-reviewed preparation but remains unexecuted. All actual mappings, unresolved/manual/direct-test gaps and preserved82-scenario72-task register need original generated evidence and independent review.",
+    "Supported same-change sync/archive with preserved main requirements,.openspec.yaml and historical register, finite same-PR commit/push, checks on the actual archived commit and exact final review are pending. This critique grants no future CI, archive or merge success."
+  ],
+  "nonblocking_limitations": [
+    {
+      "id": "L1",
+      "limitation": "One baseline-first pair/resource and replicas of two recordings establish one fixed descriptive case. Completion selection, order, thermal/shared-resource effects and partial overlapping stage elapsed prevent causal topology speedup, energy saving or broad KPP/backend conclusions.",
+      "disposition": "Retain current disclosure; separately specify any later controlled mechanism/performance study. No additional hardware run or changed workload is needed for this release."
+    },
+    {
+      "id": "L2",
+      "limitation": "Five component modules total2840 lines (authority413,inputs528,runtime907,CLI720,preprocessing272), plus214 runtime-expectation lines and many stock private-helper dependencies. Receipt and boundary reconstruction logic carry substantial maintenance load, although they preserve necessary ownership/physical/scientific predicates and match the accepted scope.",
+      "disposition": "Keep the usable public CLI stable. Finish the existing finite gate sequence; add no speculative wrapper, native rewrite or receipt without a concrete unresolved fact. Future consolidation should remove duplicate reconstruction/private coupling while preserving invariants, under a separate reviewed change."
+    },
+    {
+      "id": "L3",
+      "limitation": "Own reassessment openly reports incomplete direct negative regression coverage for every full consumer and some work-directory creation before wrong-kind rejection. The reviewed exact-kind/source guards provide evidence, but this reviewer did not execute every consumer and does not claim rejection with zero filesystem effects.",
+      "disposition": "Keep manual coverage and filesystem effects explicit in current conformance/final review. No newly demonstrated full-authority bypass or accepted result corruption was found in this bounded source review."
+    },
+    {
+      "id": "L4",
+      "limitation": "The retained command is reproducible on the exact preserved physical stand with original images and input bytes. It is not a self-provisioning command for an arbitrary machine; host closure binds physical epochs/root/interpreter, and the ext4 root depends on preserved shared Git objects.",
+      "disposition": "The runbook states these concrete prerequisites and the requirement for fresh authority after relocation/change. Broad portability or automated setup is outside this component release."
+    }
+  ],
+  "control_complexity_assessment": "Earlier preparation/qualification coupling did obstruct a useful first result. The new narrow component CLI and private held session address that coupling without weakening the scientific gates. Current remaining CI/conformance/archive/latest-review gates are finite legitimate release work; creating another speculative recovery layer or demanding full32/1120/5600 campaigns would recreate the original obstruction.",
+  "metadata_handle_closure": {
+    "all_reader_commands_completed": true,
+    "persistent_reader_handle": false,
+    "all_explicit_receipt_writer_streams_closed": true,
+    "numeric_Linux_fd_balance_measured": false,
+    "fresh_Linux_epoch_or_process_reconstruction": false
+  },
+  "execution_limits": {
+    "production_test_CI_engine_Git_execution": false,
+    "running_CI_outputs_read": false,
+    "originals_mutated": false,
+    "raw_reducer_or_model_execution": false,
+    "additional_reviewers_spawned": false,
+    "full_consumer_negative_test_execution": false
+  },
+  "review_scope": "Current proposal/design/delta requirement/scenario bodies and operating documents; selected component/session/CLI/cold/metrics and guardian dispatch source regions, relevant regression intent, and closed original reviewer receipts. This is not a second physical audit, fresh Git query, complete native source audit or executed final conformance.",
+  "reviewed_pins": [
+    {
+      "path": "README.md",
+      "size_bytes": 59084,
+      "sha256": "84a5dd70a679b49c034a345893cac6d07b8b21d906748f629e87c2014e3fcb25"
+    },
+    {
+      "path": "docs/gstreamer-component-benchmark-runbook.md",
+      "size_bytes": 13637,
+      "sha256": "d25262ad4be606f3acc545dbde6cb94d5f271742021e97569282c12b7800b770"
+    },
+    {
+      "path": "BENCHMARK_RECOVERY_PLAN.md",
+      "size_bytes": 134920,
+      "sha256": "ca1d4c84cafecd2e7e5038f746f4eed6169003b5dbefa2d2bff7f9317d7d6aa6"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-current-docs-v1/own-reassessment.v3.md",
+      "size_bytes": 6294,
+      "sha256": "8c01f37933744f2f2c324cbe96a5b92f387e77791ef610e6b7db015d799979dc"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-current-docs-v1/runbook-command.syntax-only.sh",
+      "size_bytes": 1698,
+      "sha256": "d8ffc290dc20550d7c44351f81e67767e620338fa1ce54bcab7926f32ea6cd62"
+    },
+    {
+      "path": "openspec/changes/fix-benchmark-preparations-spec/proposal.md",
+      "size_bytes": 17599,
+      "sha256": "969aa4ac3bae9b742b268333070b1266c22abc5c7bce9b204a63b6f750c0f6d6"
+    },
+    {
+      "path": "openspec/changes/fix-benchmark-preparations-spec/design.md",
+      "size_bytes": 44659,
+      "sha256": "112ec56dca4445e3e753899ff116203604094b37ffafcac4f7e8d28ea350afce"
+    },
+    {
+      "path": "openspec/changes/fix-benchmark-preparations-spec/specs/benchmark-launch-preparation/spec.md",
+      "size_bytes": 75100,
+      "sha256": "383e90694a5f4a2ed81ff8d53fc7ee4a35dc67767f17b35fd8e5bffde4751ed9"
+    },
+    {
+      "path": "openspec/changes/fix-benchmark-preparations-spec/tasks.md",
+      "size_bytes": 36740,
+      "sha256": "ee2518562588198019189d8bbe6471e9bc93a0858c09dc8ecd8dd736dd09e0ab"
+    },
+    {
+      "path": "scripts/publication_gstreamer_component_authority_v1.py",
+      "size_bytes": 27355,
+      "sha256": "9f0e0e56a238ad26f8ab525bc9f3bc0ebdd0e136b7bc0f8853ab3a0745342c6f"
+    },
+    {
+      "path": "scripts/publication_gstreamer_component_inputs_v1.py",
+      "size_bytes": 34510,
+      "sha256": "1390b429025478799a03065ebe031cb07dac2669f716f05f97f074735e5e75d1"
+    },
+    {
+      "path": "scripts/publication_gstreamer_component_runtime_v1.py",
+      "size_bytes": 69372,
+      "sha256": "aecd556db7f1485eec79ea2971362e88da2d5a49fd3ea797cb5ad7d787b72014"
+    },
+    {
+      "path": "scripts/publication_gstreamer_component_cli_v1.py",
+      "size_bytes": 40969,
+      "sha256": "4cce487a0f224a90b14c9c83a2fd47b1712d20d1631ec3a67766ed6f515b426b"
+    },
+    {
+      "path": "scripts/publication_guardian_component_preprocessing_contract_v1.py",
+      "size_bytes": 19178,
+      "sha256": "7aa52f62ddd5651559737f31dc75dadbefedd1759c8d528b185666262775c990"
+    },
+    {
+      "path": "scripts/publication_guardian_runtime_expectations_v1.py",
+      "size_bytes": 7872,
+      "sha256": "6ef8cca85130ea16c4b90dd9cdc1001955abaa73763e2436da8a3660ba84fa4f"
+    },
+    {
+      "path": "tests/test_publication_gstreamer_component_cli_v1.py",
+      "size_bytes": 27148,
+      "sha256": "f8204fe8b4c45ef4a0dce6cafc3bed8242dc33e67468e6e35767fd42e752e125"
+    },
+    {
+      "path": "tests/test_publication_gstreamer_component_inputs_v1.py",
+      "size_bytes": 54712,
+      "sha256": "678aee8e50b780950c86c13b8e76871d4e4b5496fadff5e2cc883af841b54368"
+    },
+    {
+      "path": "tests/test_publication_gstreamer_component_runtime_v1.py",
+      "size_bytes": 25105,
+      "sha256": "18d72265cbed3d4d88f013f83922f458053329a22b1a10c04b1aa5938c34ef50"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-cpu08-independent-audit-v1/review.v1.json",
+      "size_bytes": 51656,
+      "sha256": "1f5abb9e8b2c5c2fdd9898bd121ab365a9719513b361486833612e4fca151330"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-gpu02-independent-audit-v1/review.v1.json",
+      "size_bytes": 51657,
+      "sha256": "a125010eae25262ead16a37ae4b47f6e21e637cc15da89399242f824e5b21283"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-four-arm-science-independent-actual-review-v1/review.v1.json",
+      "size_bytes": 81663,
+      "sha256": "93acbd3a82afbaf6ca796d34ff1907dc868bd5605df9c0dcb4101d287350947b"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-ci-D-original-independent-review-v1/review.v1.json",
+      "size_bytes": 115481,
+      "sha256": "05019c9b277292ae29c4b60dee2839c9ae4c8d61456254da2796f89ca4cf4f98"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-ci-D-original-independent-review-v1/cpu.source-before.original.json",
+      "size_bytes": 1270968,
+      "sha256": "105568f276b37f57aad59b81efaa6524c816b4e595679da56807a1087daba0ea"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-runtime-bind-gates-independent-review-v1/review.v3.json",
+      "size_bytes": 26021,
+      "sha256": "524f12a1b3aabbabc39b580e8ed4b7ee3e56dd82bf9f3f8381dc8a9fc147203d"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-runtime-bind-gates-independent-review-v1/closed-reviewer-supplement.v1.json",
+      "size_bytes": 3843,
+      "sha256": "b07d7fc88c4362389bc2aa492f8bfd5c1b0f961a44f7ff855d0ddf0f5881e2d7"
+    }
+  ]
+}

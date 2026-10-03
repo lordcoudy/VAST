@@ -1,0 +1,572 @@
+{
+  "CI_success_claimed": false,
+  "all_reader_handles_released": true,
+  "close_errors": [],
+  "elapsed_s": 0.12076847394928336,
+  "error": null,
+  "facts": {
+    "asset_bytes": 15514597,
+    "asset_count": 8,
+    "assets": [
+      {
+        "index": 0,
+        "physical_full_hash_witnesses": [
+          {
+            "descriptor": {
+              "epoch": [
+                2096,
+                552828,
+                33188,
+                1,
+                254351,
+                1790800737204191547,
+                1790800737204191547
+              ],
+              "gid": 1000,
+              "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/models/openvino/public/intel/person-vehicle-bike-detection-2002/FP16/person-vehicle-bike-detection-2002.xml",
+              "sha256": "2630c4cc5a68d8b1f7f224741340ddf8f733e245252379c691083c7d3dc111ed",
+              "sha384": "f9f35961bc5cffbb0d663bfc1e8b02efab0fbc4c9270578dad2bedac2634bd33428acde64f2e080347c2417948a690ee",
+              "size_bytes": 254351,
+              "uid": 1000
+            },
+            "role": "donor"
+          },
+          {
+            "descriptor": {
+              "epoch": [
+                2096,
+                591634,
+                33060,
+                1,
+                254351,
+                1791024541142214607,
+                1791024541142214607
+              ],
+              "gid": 1000,
+              "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/models/openvino/public/intel/person-vehicle-bike-detection-2002/FP16/person-vehicle-bike-detection-2002.xml",
+              "sha256": "2630c4cc5a68d8b1f7f224741340ddf8f733e245252379c691083c7d3dc111ed",
+              "sha384": "f9f35961bc5cffbb0d663bfc1e8b02efab0fbc4c9270578dad2bedac2634bd33428acde64f2e080347c2417948a690ee",
+              "size_bytes": 254351,
+              "uid": 1000
+            },
+            "role": "destination"
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "physical_full_hash_witnesses": [
+          {
+            "descriptor": {
+              "epoch": [
+                2096,
+                552827,
+                33188,
+                1,
+                3691778,
+                1790800737172189667,
+                1790800737172189667
+              ],
+              "gid": 1000,
+              "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/models/openvino/public/intel/person-vehicle-bike-detection-2002/FP16/person-vehicle-bike-detection-2002.bin",
+              "sha256": "7f9344e41167d14179a0da136f87f2570a30ac5399e0363fd6787a9ae18d0fa0",
+              "sha384": "5f76bab11f3fd97d4313fa6e9d9f1fce0fc669aacfba9e688161c90c89baeb5f9a89a9f68e4ace49c180af35133fbda3",
+              "size_bytes": 3691778,
+              "uid": 1000
+            },
+            "role": "donor"
+          },
+          {
+            "descriptor": {
+              "epoch": [
+                2096,
+                591635,
+                33060,
+                1,
+                3691778,
+                1791024541150215260,
+                1791024541154215587
+              ],
+              "gid": 1000,
+              "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/models/openvino/public/intel/person-vehicle-bike-detection-2002/FP16/person-vehicle-bike-detection-2002.bin",
+              "sha256": "7f9344e41167d14179a0da136f87f2570a30ac5399e0363fd6787a9ae18d0fa0",
+              "sha384": "5f76bab11f3fd97d4313fa6e9d9f1fce0fc669aacfba9e688161c90c89baeb5f9a89a9f68e4ace49c180af35133fbda3",
+              "size_bytes": 3691778,
+              "uid": 1000
+            },
+            "role": "destination"
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "physical_full_hash_witnesses": [
+          {
+            "descriptor": {
+              "epoch": [
+                2096,
+                552832,
+                33188,
+                1,
+                292640,
+                1790800737264195076,
+                1790800737264195076
+              ],
+              "gid": 1000,
+              "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/models/openvino/public/intel/person-vehicle-bike-detection-crossroad-1016/FP16/person-vehicle-bike-detection-crossroad-1016.xml",
+              "sha256": "baed27b9dde81b75590a382d2aa458d63391cdb146e7ef20c12577c4cb0617d8",
+              "sha384": "812a89ced16938bb32c6648f5278cb4a34940912199de4c9644bbb0e63d5b0728f7f0e0e0f1c0bae6eab36c28b724c3b",
+              "size_bytes": 292640,
+              "uid": 1000
+            },
+            "role": "donor"
+          },
+          {
+            "descriptor": {
+              "epoch": [
+                2096,
+                591638,
+                33060,
+                1,
+                292640,
+                1791024541170216893,
+                1791024541174217219
+              ],
+              "gid": 1000,
+              "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/models/openvino/public/intel/person-vehicle-bike-detection-crossroad-1016/FP16/person-vehicle-bike-detection-crossroad-1016.xml",
+              "sha256": "baed27b9dde81b75590a382d2aa458d63391cdb146e7ef20c12577c4cb0617d8",
+              "sha384": "812a89ced16938bb32c6648f5278cb4a34940912199de4c9644bbb0e63d5b0728f7f0e0e0f1c0bae6eab36c28b724c3b",
+              "size_bytes": 292640,
+              "uid": 1000
+            },
+            "role": "destination"
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "physical_full_hash_witnesses": [
+          {
+            "descriptor": {
+              "epoch": [
+                2096,
+                552831,
+                33188,
+                1,
+                5774062,
+                1790800737240193666,
+                1790800737240193666
+              ],
+              "gid": 1000,
+              "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/models/openvino/public/intel/person-vehicle-bike-detection-crossroad-1016/FP16/person-vehicle-bike-detection-crossroad-1016.bin",
+              "sha256": "a7f04e3243aae3099a00c5276074bdbe57bc8bf91986093dfeafb3b065843f45",
+              "sha384": "fc945d7885733f86cef916b91e2791761abaa56bc005f6426ec48e7aa573e1529f479f723713944d4a81773a9140df9f",
+              "size_bytes": 5774062,
+              "uid": 1000
+            },
+            "role": "donor"
+          },
+          {
+            "descriptor": {
+              "epoch": [
+                2096,
+                591639,
+                33060,
+                1,
+                5774062,
+                1791024541178217547,
+                1791024541186218199
+              ],
+              "gid": 1000,
+              "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/models/openvino/public/intel/person-vehicle-bike-detection-crossroad-1016/FP16/person-vehicle-bike-detection-crossroad-1016.bin",
+              "sha256": "a7f04e3243aae3099a00c5276074bdbe57bc8bf91986093dfeafb3b065843f45",
+              "sha384": "fc945d7885733f86cef916b91e2791761abaa56bc005f6426ec48e7aa573e1529f479f723713944d4a81773a9140df9f",
+              "size_bytes": 5774062,
+              "uid": 1000
+            },
+            "role": "destination"
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "physical_full_hash_witnesses": [
+          {
+            "descriptor": {
+              "epoch": [
+                2096,
+                552840,
+                33188,
+                1,
+                325452,
+                1790800737356200487,
+                1790800737356200487
+              ],
+              "gid": 1000,
+              "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/models/openvino/public/intel/vehicle-license-plate-detection-barrier-0106/FP16/vehicle-license-plate-detection-barrier-0106.xml",
+              "sha256": "69ed174cee70e19b098215f53d1fe6f27edc5b417790bbc44cde7f37cc082fae",
+              "sha384": "b0a70cfc4ccbe85dd5ba5549c2d142d7f922a0a1116657cdcc9f48cb6afc7cc40a596a655b9e6566396c48b72232ff65",
+              "size_bytes": 325452,
+              "uid": 1000
+            },
+            "role": "donor"
+          },
+          {
+            "descriptor": {
+              "epoch": [
+                2096,
+                591642,
+                33060,
+                1,
+                325452,
+                1791024541206219832,
+                1791024541210220158
+              ],
+              "gid": 1000,
+              "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/models/openvino/public/intel/vehicle-license-plate-detection-barrier-0106/FP16/vehicle-license-plate-detection-barrier-0106.xml",
+              "sha256": "69ed174cee70e19b098215f53d1fe6f27edc5b417790bbc44cde7f37cc082fae",
+              "sha384": "b0a70cfc4ccbe85dd5ba5549c2d142d7f922a0a1116657cdcc9f48cb6afc7cc40a596a655b9e6566396c48b72232ff65",
+              "size_bytes": 325452,
+              "uid": 1000
+            },
+            "role": "destination"
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "physical_full_hash_witnesses": [
+          {
+            "descriptor": {
+              "epoch": [
+                2096,
+                552839,
+                33188,
+                1,
+                1286772,
+                1790800737336199311,
+                1790800737336199311
+              ],
+              "gid": 1000,
+              "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/models/openvino/public/intel/vehicle-license-plate-detection-barrier-0106/FP16/vehicle-license-plate-detection-barrier-0106.bin",
+              "sha256": "7f96bfaa0ac3af65d136f6a185d1d78d68d03bab2e1f2faafe1d27ccd94b0dc1",
+              "sha384": "0406e296c9822f4a5e8ee300ad40e5c0a0eeeaf9206f829556cb836cb8f10a4f8a4dd94d1bb16a60562bf1568fd12618",
+              "size_bytes": 1286772,
+              "uid": 1000
+            },
+            "role": "donor"
+          },
+          {
+            "descriptor": {
+              "epoch": [
+                2096,
+                591643,
+                33060,
+                1,
+                1286772,
+                1791024541214220486,
+                1791024541218220811
+              ],
+              "gid": 1000,
+              "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/models/openvino/public/intel/vehicle-license-plate-detection-barrier-0106/FP16/vehicle-license-plate-detection-barrier-0106.bin",
+              "sha256": "7f96bfaa0ac3af65d136f6a185d1d78d68d03bab2e1f2faafe1d27ccd94b0dc1",
+              "sha384": "0406e296c9822f4a5e8ee300ad40e5c0a0eeeaf9206f829556cb836cb8f10a4f8a4dd94d1bb16a60562bf1568fd12618",
+              "size_bytes": 1286772,
+              "uid": 1000
+            },
+            "role": "destination"
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "physical_full_hash_witnesses": [
+          {
+            "descriptor": {
+              "epoch": [
+                2096,
+                552836,
+                33188,
+                1,
+                254888,
+                1790800737316198135,
+                1790800737316198135
+              ],
+              "gid": 1000,
+              "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/models/openvino/public/intel/vehicle-detection-0202/FP16/vehicle-detection-0202.xml",
+              "sha256": "08b844a402a615605a626261fd9e27161a044845426ece5aa0872203c50bb5a2",
+              "sha384": "397543ce3a53c629df7794fc13b919092a9e788003fb6bdf8ef1dafa77392b72732fe408c9d0d13e05ce4af4a7833b74",
+              "size_bytes": 254888,
+              "uid": 1000
+            },
+            "role": "donor"
+          },
+          {
+            "descriptor": {
+              "epoch": [
+                2096,
+                591646,
+                33060,
+                1,
+                254888,
+                1791024541226221464,
+                1791024541230221791
+              ],
+              "gid": 1000,
+              "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/models/openvino/public/intel/vehicle-detection-0202/FP16/vehicle-detection-0202.xml",
+              "sha256": "08b844a402a615605a626261fd9e27161a044845426ece5aa0872203c50bb5a2",
+              "sha384": "397543ce3a53c629df7794fc13b919092a9e788003fb6bdf8ef1dafa77392b72732fe408c9d0d13e05ce4af4a7833b74",
+              "size_bytes": 254888,
+              "uid": 1000
+            },
+            "role": "destination"
+          }
+        ]
+      },
+      {
+        "index": 7,
+        "physical_full_hash_witnesses": [
+          {
+            "descriptor": {
+              "epoch": [
+                2096,
+                552835,
+                33188,
+                1,
+                3634654,
+                1790800737292196722,
+                1790800737292196722
+              ],
+              "gid": 1000,
+              "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/models/openvino/public/intel/vehicle-detection-0202/FP16/vehicle-detection-0202.bin",
+              "sha256": "c0a602428cfd71ac63a533c23b7cdb8c83e144f118a81001420246701daf0c78",
+              "sha384": "467802734ab235cf653d13707501fa3c44fb025a7ad02921ea958b3032865fce43bbafe4dfabbb2acfb18b0bcd6c0180",
+              "size_bytes": 3634654,
+              "uid": 1000
+            },
+            "role": "donor"
+          },
+          {
+            "descriptor": {
+              "epoch": [
+                2096,
+                591647,
+                33060,
+                1,
+                3634654,
+                1791024541234222119,
+                1791024541242222771
+              ],
+              "gid": 1000,
+              "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/models/openvino/public/intel/vehicle-detection-0202/FP16/vehicle-detection-0202.bin",
+              "sha256": "c0a602428cfd71ac63a533c23b7cdb8c83e144f118a81001420246701daf0c78",
+              "sha384": "467802734ab235cf653d13707501fa3c44fb025a7ad02921ea958b3032865fce43bbafe4dfabbb2acfb18b0bcd6c0180",
+              "size_bytes": 3634654,
+              "uid": 1000
+            },
+            "role": "destination"
+          }
+        ]
+      }
+    ],
+    "ci_acceptance": false,
+    "copy_rerun": false,
+    "current_full_asset_read_bytes": 31029194,
+    "detached_HEAD": {
+      "epoch": [
+        2096,
+        591626,
+        33188,
+        1,
+        41,
+        1791024492306427071,
+        1791024492306427071
+      ],
+      "gid": 1000,
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/.git/HEAD",
+      "sha256": "33b3c32b7cd1f722f6eeaf2bff0e7ee83a9e2f01bcaa902a4d72f96558b507af",
+      "sha384": "c54bfb95ba94ea5ee05fb4e32a0f9f037183b34a3c687cf6b97ea4aef22ace74b4930978cf3362288d49d61b200fb163",
+      "size_bytes": 41,
+      "uid": 1000
+    },
+    "hardware_acceptance": false,
+    "inputs": [
+      {
+        "epoch": [
+          69,
+          1407374885980088,
+          33279,
+          1,
+          33294,
+          1791023366356522700,
+          1791023366356522700
+        ],
+        "gid": 1000,
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ext4-asset-cache-diagnosis-v1/inventory.v1.json",
+        "sha256": "c99b1402c4c909cb0a47421b0a0d2f872cc932e26ee99de76c9539f192684f3b",
+        "sha384": "93e0de282d9f339361e5aa72fdeeef7c8c924c0a4af587eca623319468f53169edc447452baed9e47889c85919e972ed",
+        "size_bytes": 33294,
+        "uid": 1000
+      },
+      {
+        "epoch": [
+          69,
+          2251799816111908,
+          33279,
+          1,
+          16532,
+          1791023660644805300,
+          1791023660644805300
+        ],
+        "gid": 1000,
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ext4-asset-cache-diagnosis-v1/copy_existing_ci_model_assets_v1.py",
+        "sha256": "fd8ce70c6e84bc29481c75aaa1071f0b3b89cd0084ab1e7830a621a8b6f384ae",
+        "sha384": "0fb2731ff2598e5b39dbd191eca3f6b76e101ad19ca0be312f85fba876c5b15aac680e4551a3450d5ab114cdb57a73ba",
+        "size_bytes": 16532,
+        "uid": 1000
+      },
+      {
+        "epoch": [
+          2096,
+          591627,
+          33024,
+          1,
+          1077,
+          1791024541134213955,
+          1791024541134213955
+        ],
+        "gid": 1000,
+        "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-model-cache-copy-output/dispatch.v1.json",
+        "sha256": "09e0431dbd0cfe39367f043de997df0bb7025f553a077ef38f575a481433453d",
+        "sha384": "3b9c260825cc0c10dd237aacf0573376ab613002bbebbbd426e02011dc2e467fd9816eb223a07680dfcb8a6136ab3acd",
+        "size_bytes": 1077,
+        "uid": 1000
+      },
+      {
+        "epoch": [
+          2096,
+          591648,
+          33024,
+          1,
+          13866,
+          1791024541258224078,
+          1791024541258224078
+        ],
+        "gid": 1000,
+        "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-model-cache-copy-output/execution.v1.json",
+        "sha256": "edd18fe1ea79b25355c17d21e18dbe910035f00f400df03fdb591d3eb969780e",
+        "sha384": "f0c6798ef7b2525ef18f61645cefa0492dbb90033fa1a4daf052924db98238eb0cd2619a932740d4d71f7e16b8c226c8",
+        "size_bytes": 13866,
+        "uid": 1000
+      }
+    ],
+    "late_failure_absent": true,
+    "network_or_test_or_engine_executed": false,
+    "original_tool_observation": {
+      "elapsed_s": 0.16081799,
+      "exit_code": 0,
+      "provenance": "ROOT original closed tool observation; not a newly reconstructed raw capture",
+      "tool": "10b1e9"
+    },
+    "source_and_destination_full_SHA256_SHA384_size_epochs_match": true,
+    "source_pins": [
+      {
+        "epoch": [
+          2096,
+          591269,
+          33188,
+          1,
+          30314,
+          1791024491690377036,
+          1791024491690377036
+        ],
+        "gid": 1000,
+        "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/prepare_ci_model_assets.py",
+        "sha256": "2f87df4f6d98239190c17b42bb7f43188fc2a12604f7b0f6aa0246f7df15b36c",
+        "sha384": "94593b5339e1414b4927756c231304622fa48f7b2651fb4479e089ff0ba08fff1ae4a73c966147671bdfe3e4f30005d6",
+        "size_bytes": 30314,
+        "uid": 1000
+      },
+      {
+        "epoch": [
+          2096,
+          591322,
+          33188,
+          1,
+          29477,
+          1791024491698377685,
+          1791024491698377685
+        ],
+        "gid": 1000,
+        "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/run_ci_checks.py",
+        "sha256": "ce375eca51164a76ab6a88cf02b92804077f08c6b8401d68b48e293020c27a2c",
+        "sha384": "ac394ee954a1699f698ca07baeb6b3fbfb17e48e8bdc856826726349f92c26311df00e3d8a693a5c0b7027730964d99c",
+        "size_bytes": 29477,
+        "uid": 1000
+      },
+      {
+        "epoch": [
+          2096,
+          585014,
+          33188,
+          1,
+          5124,
+          1791024489318184365,
+          1791024489318184365
+        ],
+        "gid": 1000,
+        "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/.ci/model-assets.v1.json",
+        "sha256": "225db21da5943a34d35c41e61c4fcda9623dd4e5eb973d7975d450ff421edab7",
+        "sha384": "01e1fc4567647a4de4c3d2cb380c6f9274d093c17a781d63398f11ad818214625ec1a3a168a4edb249235780d98e721f",
+        "size_bytes": 5124,
+        "uid": 1000
+      },
+      {
+        "epoch": [
+          2096,
+          590937,
+          33188,
+          1,
+          7885,
+          1791024491334348119,
+          1791024491334348119
+        ],
+        "gid": 1000,
+        "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/configs/checkpoint_analytics_models_openvino.yaml",
+        "sha256": "48de16da0ea290518053349556671ff08c309fa01b6d502845f233b7e136eeca",
+        "sha384": "53828f67af048cd5eced6f8d0181937b1da6a948a085a0b0ef7ebdb01b4ea178206094a1216cdd041843d21e5a5922a5",
+        "size_bytes": 7885,
+        "uid": 1000
+      }
+    ],
+    "stock_full_CI_outcome": null,
+    "stock_reuse_evidence": null,
+    "two_original_process_scans": [
+      {
+        "at_ns": 1791024781819134685,
+        "errors": [],
+        "members": [],
+        "original_pid_paths_absent": {
+          "95705": true,
+          "95706": true
+        }
+      },
+      {
+        "at_ns": 1791024781871638465,
+        "errors": [],
+        "members": [],
+        "original_pid_paths_absent": {
+          "95705": true,
+          "95706": true
+        }
+      }
+    ]
+  },
+  "fd_after": 6,
+  "fd_before": 6,
+  "kind": "decision29_actual_exact_eight_cache_copy_physical_review_v1",
+  "original_reader_proc_stat": "95761 (python) R 95757 95761 95761 34846 95761 4194560 1896 0 82 0 6 3 0 0 20 0 1 0 50711184 23490560 3976 18446744073709551615 4325376 7352317 140733676936624 0 0 0 0 16781312 2 0 0 0 17 14 0 0 0 0 0 10653128 12216448 334622720 140733676944363 140733676944646 140733676944646 140733676949402 0\n",
+  "reader_pid": 95761,
+  "schema_version": 1,
+  "status": "copy_setup_physically_verified"
+}

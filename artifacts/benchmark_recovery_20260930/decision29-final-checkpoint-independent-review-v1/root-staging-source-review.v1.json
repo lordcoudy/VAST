@@ -1,0 +1,35 @@
+{
+  "all11_functions_AST_identical": true,
+  "blocking": [],
+  "fresh_source_head_and_tail_reads": [
+    "0ae203",
+    "93dbbe"
+  ],
+  "fully_read_prior_v1_tool_cell": "396a74",
+  "inventory_file_row_maximum": 510,
+  "limits": [
+    "Source review only; closed actual CI/conformance/archive/doc reviews and sealed physical inventory remain separate required inputs.",
+    "All source bytes were read with closed Python file contexts; no Windows numeric OS handle count was observed here."
+  ],
+  "limits_unchanged": {
+    "Git_call_s": 15,
+    "leaf_bytes": 8388608,
+    "paths_including_two_supplements": 512,
+    "total_bytes": 67108864,
+    "whole_s": 300
+  },
+  "owned_source_pins": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-final-checkpoint-preparation-v1/stage_final_checkpoint_v3.py",
+      "sha256": "449eb1ca438865de62b95e2cfcd35fc389f38006bbaf56aeb8809722a6452f38",
+      "size_bytes": 21647
+    }
+  ],
+  "raw_inverse_exact5_literals_returns_reviewed_v1": true,
+  "reviewable": true,
+  "reviewer": "/root",
+  "reviewer_handles_released": true,
+  "schema_version": 1,
+  "staging_execution_authorized": false,
+  "staging_performed": false
+}

@@ -1,0 +1,2232 @@
+{
+  "all_reader_handles_released": true,
+  "close_errors": [],
+  "elapsed_s": 0.28086404502391815,
+  "error": null,
+  "facts": {
+    "actual_counts": {
+      "deferred_integration": 9,
+      "discovered": 3001,
+      "error": 0,
+      "failure": 0,
+      "selected": 2992,
+      "skip": 88,
+      "success": 2904
+    },
+    "actual_namespace_diagnostic": {
+      "argv": [
+        "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+        "-I",
+        "-B",
+        "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/ci_namespace_diagnostic_v1.py",
+        "--worker",
+        "--start-gate-fd",
+        "4"
+      ],
+      "capture_completed": true,
+      "capture_exceeded": false,
+      "cleanup_deadline_ns": 507208414714060,
+      "elapsed_s": 0.089655753,
+      "eof": {
+        "stderr": true,
+        "stdout": true
+      },
+      "execution_deadline_ns": 507218331677022,
+      "failure": null,
+      "first_failed_syscall": null,
+      "hardware_acceptance": false,
+      "namespace_succeeded": true,
+      "original_group_absent": true,
+      "original_group_members": [],
+      "original_setup_observations": [
+        {
+          "event": "original_ready",
+          "executable": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+          "label": {
+            "path": "/proc/self/attr/current",
+            "value": "kernel\u0000"
+          },
+          "monotonic_ns": 507198385468457,
+          "namespace_clock_contract_version": 2,
+          "original_pid": 96113,
+          "wall_time_ns": 1791024868226963651
+        },
+        {
+          "audit_coarse_before": {
+            "available": true,
+            "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+            "clock_id": 5,
+            "clock_name": "CLOCK_REALTIME_COARSE",
+            "original_pid": 96113,
+            "phase": "before_unshare",
+            "started_monotonic_ns": 507198385574400,
+            "terminal_monotonic_ns": 507198385575102,
+            "value_ns": 1791024868223879802
+          },
+          "event": "syscall_started",
+          "flags": 268435456,
+          "monotonic_ns": 507198385575792,
+          "original_pid": 96113,
+          "pid": 96113,
+          "syscall": "unshare",
+          "wall_time_ns": 1791024868227071253
+        },
+        {
+          "audit_coarse_before": {
+            "available": true,
+            "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+            "clock_id": 5,
+            "clock_name": "CLOCK_REALTIME_COARSE",
+            "original_pid": 96113,
+            "phase": "before_unshare",
+            "started_monotonic_ns": 507198385574400,
+            "terminal_monotonic_ns": 507198385575102,
+            "value_ns": 1791024868223879802
+          },
+          "event": "syscall_completed",
+          "flags": 268435456,
+          "monotonic_ns": 507198385575792,
+          "original_pid": 96113,
+          "pid": 96113,
+          "syscall": "unshare",
+          "terminal_monotonic_ns": 507198386133819,
+          "wall_time_ns": 1791024868227071253
+        },
+        {
+          "event": "syscall_started",
+          "flags": 655361,
+          "monotonic_ns": 507198386172579,
+          "original_pid": 96113,
+          "path": "/proc/self/setgroups",
+          "pid": 96113,
+          "syscall": "open",
+          "wall_time_ns": 1791024868227667950
+        },
+        {
+          "event": "syscall_completed",
+          "flags": 655361,
+          "monotonic_ns": 507198386172579,
+          "original_pid": 96113,
+          "path": "/proc/self/setgroups",
+          "pid": 96113,
+          "syscall": "open",
+          "terminal_monotonic_ns": 507198386193145,
+          "wall_time_ns": 1791024868227667950
+        },
+        {
+          "event": "syscall_started",
+          "monotonic_ns": 507198386202436,
+          "original_pid": 96113,
+          "path": "/proc/self/setgroups",
+          "payload_size_bytes": 5,
+          "pid": 96113,
+          "syscall": "write",
+          "wall_time_ns": 1791024868227697872
+        },
+        {
+          "event": "syscall_completed",
+          "monotonic_ns": 507198386202436,
+          "original_pid": 96113,
+          "path": "/proc/self/setgroups",
+          "payload_size_bytes": 5,
+          "pid": 96113,
+          "syscall": "write",
+          "terminal_monotonic_ns": 507198386208600,
+          "wall_time_ns": 1791024868227697872
+        },
+        {
+          "event": "syscall_started",
+          "flags": 655361,
+          "monotonic_ns": 507198386217830,
+          "original_pid": 96113,
+          "path": "/proc/self/uid_map",
+          "pid": 96113,
+          "syscall": "open",
+          "wall_time_ns": 1791024868227713299
+        },
+        {
+          "event": "syscall_completed",
+          "flags": 655361,
+          "monotonic_ns": 507198386217830,
+          "original_pid": 96113,
+          "path": "/proc/self/uid_map",
+          "pid": 96113,
+          "syscall": "open",
+          "terminal_monotonic_ns": 507198386232860,
+          "wall_time_ns": 1791024868227713299
+        },
+        {
+          "event": "syscall_started",
+          "monotonic_ns": 507198386243093,
+          "original_pid": 96113,
+          "path": "/proc/self/uid_map",
+          "payload_size_bytes": 9,
+          "pid": 96113,
+          "syscall": "write",
+          "wall_time_ns": 1791024868227738549
+        },
+        {
+          "event": "syscall_completed",
+          "monotonic_ns": 507198386243093,
+          "original_pid": 96113,
+          "path": "/proc/self/uid_map",
+          "payload_size_bytes": 9,
+          "pid": 96113,
+          "syscall": "write",
+          "terminal_monotonic_ns": 507198386250210,
+          "wall_time_ns": 1791024868227738549
+        },
+        {
+          "event": "syscall_started",
+          "flags": 655361,
+          "monotonic_ns": 507198386265315,
+          "original_pid": 96113,
+          "path": "/proc/self/gid_map",
+          "pid": 96113,
+          "syscall": "open",
+          "wall_time_ns": 1791024868227760763
+        },
+        {
+          "event": "syscall_completed",
+          "flags": 655361,
+          "monotonic_ns": 507198386265315,
+          "original_pid": 96113,
+          "path": "/proc/self/gid_map",
+          "pid": 96113,
+          "syscall": "open",
+          "terminal_monotonic_ns": 507198386274853,
+          "wall_time_ns": 1791024868227760763
+        },
+        {
+          "event": "syscall_started",
+          "monotonic_ns": 507198386287995,
+          "original_pid": 96113,
+          "path": "/proc/self/gid_map",
+          "payload_size_bytes": 9,
+          "pid": 96113,
+          "syscall": "write",
+          "wall_time_ns": 1791024868227783448
+        },
+        {
+          "event": "syscall_completed",
+          "monotonic_ns": 507198386287995,
+          "original_pid": 96113,
+          "path": "/proc/self/gid_map",
+          "payload_size_bytes": 9,
+          "pid": 96113,
+          "syscall": "write",
+          "terminal_monotonic_ns": 507198386295420,
+          "wall_time_ns": 1791024868227783448
+        },
+        {
+          "event": "syscall_started",
+          "flags": 537001984,
+          "monotonic_ns": 507198386302406,
+          "original_pid": 96113,
+          "pid": 96113,
+          "syscall": "unshare",
+          "wall_time_ns": 1791024868227797881
+        },
+        {
+          "event": "syscall_completed",
+          "flags": 537001984,
+          "monotonic_ns": 507198386302406,
+          "original_pid": 96113,
+          "pid": 96113,
+          "syscall": "unshare",
+          "terminal_monotonic_ns": 507198386545905,
+          "wall_time_ns": 1791024868227797881
+        },
+        {
+          "event": "syscall_started",
+          "filesystem": null,
+          "flags": 278528,
+          "monotonic_ns": 507198386564916,
+          "original_pid": 96113,
+          "pid": 96113,
+          "source": null,
+          "syscall": "mount",
+          "target": "/",
+          "wall_time_ns": 1791024868228060352
+        },
+        {
+          "event": "syscall_completed",
+          "filesystem": null,
+          "flags": 278528,
+          "monotonic_ns": 507198386564916,
+          "original_pid": 96113,
+          "pid": 96113,
+          "source": null,
+          "syscall": "mount",
+          "target": "/",
+          "terminal_monotonic_ns": 507198386612891,
+          "wall_time_ns": 1791024868228060352
+        },
+        {
+          "event": "syscall_started",
+          "flags": 524288,
+          "monotonic_ns": 507198386628307,
+          "original_pid": 96113,
+          "pid": 96113,
+          "syscall": "pipe2",
+          "wall_time_ns": 1791024868228123751
+        },
+        {
+          "event": "syscall_completed",
+          "flags": 524288,
+          "monotonic_ns": 507198386628307,
+          "original_pid": 96113,
+          "pid": 96113,
+          "syscall": "pipe2",
+          "terminal_monotonic_ns": 507198386640916,
+          "wall_time_ns": 1791024868228123751
+        },
+        {
+          "event": "syscall_started",
+          "monotonic_ns": 507198386653735,
+          "original_pid": 96113,
+          "pid": 96113,
+          "syscall": "fork",
+          "wall_time_ns": 1791024868228149186
+        },
+        {
+          "event": "syscall_completed",
+          "monotonic_ns": 507198386653735,
+          "original_pid": 96113,
+          "pid": 96113,
+          "syscall": "fork",
+          "terminal_monotonic_ns": 507198387119310,
+          "wall_time_ns": 1791024868228149186
+        },
+        {
+          "event": "syscall_completed",
+          "monotonic_ns": 507198386653735,
+          "original_pid": 96113,
+          "pid": 96113,
+          "syscall": "fork",
+          "terminal_monotonic_ns": 507198387474777,
+          "wall_time_ns": 1791024868228149186
+        },
+        {
+          "event": "syscall_started",
+          "filesystem": "proc",
+          "flags": 14,
+          "monotonic_ns": 507198387741221,
+          "original_pid": 96113,
+          "pid": 1,
+          "source": "proc",
+          "syscall": "mount",
+          "target": "/proc",
+          "wall_time_ns": 1791024868229236573
+        },
+        {
+          "event": "syscall_completed",
+          "filesystem": "proc",
+          "flags": 14,
+          "monotonic_ns": 507198387741221,
+          "original_pid": 96113,
+          "pid": 1,
+          "source": "proc",
+          "syscall": "mount",
+          "target": "/proc",
+          "terminal_monotonic_ns": 507198387906801,
+          "wall_time_ns": 1791024868229236573
+        },
+        {
+          "event": "namespace_init_verified",
+          "monotonic_ns": 507198388265461,
+          "original_pid": 96113,
+          "pid": 1
+        },
+        {
+          "event": "namespace_original_terminal",
+          "monotonic_ns": 507198388561958,
+          "namespace_init_pid": 96114,
+          "namespace_init_wait_status": 0,
+          "original_pid": 96113
+        }
+      ],
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "executable_realpath": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+        "executable_stat": {
+          "st_dev": 2096,
+          "st_gid": 1000,
+          "st_ino": 87545,
+          "st_mode": 33261,
+          "st_nlink": 1,
+          "st_size": 8020928,
+          "st_uid": 1000
+        },
+        "gid": 1000,
+        "pgid": 96113,
+        "pid": 96113,
+        "ppid": 95806,
+        "startticks": 50719833,
+        "uid": 1000
+      },
+      "policy_denial": {
+        "bounded_interval_only": true,
+        "consumed_bytes": 0,
+        "original_kernel_query": {
+          "capture_completed": true,
+          "command_after_original_start_gate": [
+            "/usr/bin/journalctl",
+            "--dmesg",
+            "--since",
+            "@1791024867",
+            "--until",
+            "@1791024869",
+            "--no-pager",
+            "--output=json",
+            "--lines=32",
+            "--case-sensitive=no",
+            "--grep=apparmor=.*DENIED.*(userns|unshare|capable)"
+          ],
+          "gate_owner_executable_is_initial_python": true,
+          "path": "kernel-query/capture.json",
+          "post_exec_executable_observed": false,
+          "returncode": 1,
+          "started_wall_time_ns": 1791024868265868714,
+          "terminal_wall_time_ns": 1791024868413655323
+        },
+        "path": "/dev/kmsg",
+        "policy_denial_proven": false,
+        "query_credential_transition": false,
+        "query_supplementary_groups": [
+          4,
+          24,
+          27,
+          30,
+          46,
+          100,
+          1000,
+          1001
+        ],
+        "query_uid": 1000,
+        "records": [],
+        "unavailable": "Original read-only kernel query failed or capture was incomplete; see original channels/status."
+      },
+      "returncode": 0,
+      "signal_failures": [],
+      "started_monotonic_ns": 507198331677022,
+      "started_wall_time_ns": 1791024868173173101,
+      "terminal_monotonic_ns": 507198421332376,
+      "terminal_wall_time_ns": 1791024868262827570,
+      "timed_out": false
+    },
+    "actual_namespace_profile": {
+      "attempted": false,
+      "load_verified": false,
+      "status": "not_required",
+      "unload_verified": false
+    },
+    "actual_observer": {
+      "absolute_deadline_ns": 512582803410613,
+      "argv": [
+        "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+        "-I",
+        "-B",
+        "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/run_ci_checks.py",
+        "--suite-child",
+        "--output-dir",
+        "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-original-output",
+        "--trace-fd",
+        "5",
+        "--event-fd",
+        "7",
+        "--stop-fd",
+        "8"
+      ],
+      "cleanup_deadline_ns": 509338456519771,
+      "clock": "same_kernel_monotonic_ns",
+      "descendant_quiescence": "not established by original-child status",
+      "failure": "original suite child did not exit zero",
+      "finished_monotonic_ns": 509323456680093,
+      "forced_sigkill": false,
+      "forced_sigterm": false,
+      "kind": "vast_external_ci_test_observer_v1",
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "executable_realpath": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+        "executable_stat": {
+          "st_dev": 2096,
+          "st_gid": 1000,
+          "st_ino": 87545,
+          "st_mode": 33261,
+          "st_nlink": 1,
+          "st_size": 8020928,
+          "st_uid": 1000
+        },
+        "gid": 1000,
+        "pgid": 96116,
+        "pid": 96116,
+        "ppid": 95806,
+        "startticks": 50719857,
+        "uid": 1000
+      },
+      "pidfd_acquisition_failed": false,
+      "pidfd_failure": null,
+      "pipe_eof": {
+        "control": true,
+        "trace": true
+      },
+      "ready": true,
+      "requests_sent": 35,
+      "requests_stopped_before_disposition_restore": true,
+      "response_channel_bytes": 7203,
+      "response_matching": "ordinary signals may coalesce; no one-to-one or timely claim",
+      "responses_completed": 35,
+      "responses_started": 35,
+      "returncode": 1,
+      "signal": null,
+      "started_monotonic_ns": 507198577049495,
+      "successful": false,
+      "trace_bytes": 89780,
+      "unmatched_or_coalesced_requests_possible": 0
+    },
+    "actual_wrapper_dispatch": {
+      "argv": [
+        "/usr/bin/timeout",
+        "--verbose",
+        "--signal=TERM",
+        "--kill-after=10s",
+        "5400s",
+        "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+        "-I",
+        "-B",
+        "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/run_ci_checks.py",
+        "--expected-commit",
+        "3c025b29b3c1d5275c2ec693410e4b83700583de",
+        "--output-dir",
+        "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-original-output",
+        "--job-started-monotonic-ns",
+        "507182803410613"
+      ],
+      "cleanup_deadline_ns": 512592803410613,
+      "controller": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 95791,
+        "pid": 95791,
+        "ppid": 95790,
+        "session": 95791,
+        "startticks": 50718278,
+        "uid": 1000
+      },
+      "deadline_ns": 512582803410613,
+      "hardware_acceptance": false,
+      "job_started_monotonic_ns": 507182803410613,
+      "original": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 95805,
+        "pid": 95805,
+        "ppid": 95791,
+        "session": 95805,
+        "startticks": 50718283,
+        "uid": 1000
+      },
+      "source_commit": "3c025b29b3c1d5275c2ec693410e4b83700583de",
+      "source_pins": [
+        {
+          "epoch7": [
+            69,
+            1407374885980141,
+            33279,
+            1,
+            11220,
+            1791024018828069300,
+            1791024018828069300
+          ],
+          "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/recipe.bound.v1.json",
+          "sha256": "e8df0e735c27bd282eee9692144fb0e42ab7491259bedb2626e1714fe64865c5",
+          "size_bytes": 11220
+        },
+        {
+          "epoch7": [
+            2096,
+            585013,
+            33188,
+            1,
+            34014,
+            1791024489318184365,
+            1791024489318184365
+          ],
+          "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/.ci/integration-test-selection.v1.json",
+          "sha256": "09e9268069e88b957f9ae54a827960bc18ee13a00d4319994d108d3cb81a0805",
+          "size_bytes": 34014
+        },
+        {
+          "epoch7": [
+            2096,
+            585015,
+            33188,
+            1,
+            454,
+            1791024489318184365,
+            1791024489318184365
+          ],
+          "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/.ci/requirements.txt",
+          "sha256": "9972a44ffd57d27ff351d2ffc168043d688af6042a4c4a59f4f6c21a77adecef",
+          "size_bytes": 454
+        },
+        {
+          "epoch7": [
+            2096,
+            591225,
+            33188,
+            1,
+            20916,
+            1791024491678376061,
+            1791024491678376061
+          ],
+          "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/ci_external_test_observer_v1.py",
+          "sha256": "000ded0c9bd442983b54d224ce3041818af6e35e2e0d4f9c9b382b74db499c59",
+          "size_bytes": 20916
+        },
+        {
+          "epoch7": [
+            2096,
+            591226,
+            33188,
+            1,
+            25359,
+            1791024491678376061,
+            1791024491678376061
+          ],
+          "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/ci_namespace_diagnostic_v1.py",
+          "sha256": "bc69cdd5db314b7421d87fdaeb3a88d9411ae0f2e29713f75bc8909dfe8b0292",
+          "size_bytes": 25359
+        },
+        {
+          "epoch7": [
+            2096,
+            591227,
+            33188,
+            1,
+            9978,
+            1791024491678376061,
+            1791024491678376061
+          ],
+          "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/ci_test_selection_v1.py",
+          "sha256": "c9883b041ec2b52f1796677d0baeee6bdd64394c576ecdc4c8b48134ec6d7f1d",
+          "size_bytes": 9978
+        },
+        {
+          "epoch7": [
+            2096,
+            591228,
+            33188,
+            1,
+            28890,
+            1791024491682376386,
+            1791024491682376386
+          ],
+          "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/ci_userns_profile_v1.py",
+          "sha256": "5bd7622130c41d8bef03d2da87f87c987738478a5b77412857fd85f24c73cf43",
+          "size_bytes": 28890
+        },
+        {
+          "epoch7": [
+            2096,
+            591269,
+            33188,
+            1,
+            30314,
+            1791024491690377036,
+            1791024491690377036
+          ],
+          "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/prepare_ci_model_assets.py",
+          "sha256": "2f87df4f6d98239190c17b42bb7f43188fc2a12604f7b0f6aa0246f7df15b36c",
+          "size_bytes": 30314
+        },
+        {
+          "epoch7": [
+            2096,
+            591322,
+            33188,
+            1,
+            29477,
+            1791024491698377685,
+            1791024491698377685
+          ],
+          "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/run_ci_checks.py",
+          "sha256": "ce375eca51164a76ab6a88cf02b92804077f08c6b8401d68b48e293020c27a2c",
+          "size_bytes": 29477
+        },
+        {
+          "epoch7": [
+            69,
+            1407374885980139,
+            33279,
+            1,
+            12433,
+            1791024018828069300,
+            1791024018828069300
+          ],
+          "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/capture_original_full_ci_v1.py",
+          "sha256": "b41ab243053aea3be149f01801490e84623fa11efedcf0e706f2111090769b97",
+          "size_bytes": 12433
+        }
+      ]
+    },
+    "actual_wrapper_terminal": {
+      "channel_bytes": {
+        "stderr": 3479,
+        "stdout": 3182
+      },
+      "close_errors": [],
+      "elapsed_s": 2141.43975775,
+      "eof": [
+        "stderr",
+        "stdout"
+      ],
+      "first_error": {
+        "message": "original full CI exit is failed; retain stock report",
+        "type": "AssertionError"
+      },
+      "full_stock_report": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-original-output/report.json",
+      "hardware_acceptance": false,
+      "held_descriptors_released": true,
+      "original": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 95805,
+        "pid": 95805,
+        "ppid": 95791,
+        "session": 95805,
+        "startticks": 50718283,
+        "uid": 1000
+      },
+      "process_scans": [
+        {
+          "at_ns": 1791026993964244351,
+          "errors": [],
+          "members": []
+        },
+        {
+          "at_ns": 1791026993965707035,
+          "errors": [],
+          "members": []
+        }
+      ],
+      "returncode": 1,
+      "signals": [],
+      "source_before_after_equal": true,
+      "source_commit": "3c025b29b3c1d5275c2ec693410e4b83700583de",
+      "status": "failed"
+    },
+    "all_2992_unique_original_start_terminal_joins": true,
+    "all_qualified_original_copies": [
+      {
+        "original": {
+          "epoch7": [
+            69,
+            1407374885980329,
+            33279,
+            1,
+            1055,
+            1791026993965935300,
+            1791026993965935300
+          ],
+          "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/original-full-ci-attempt01/terminal.v1.json",
+          "sha256": "b78af4b4b6428f20f9d99c2a1e3966c8e313bf590d089b2cc33f69f8d1ae0c3f",
+          "size_bytes": 1055
+        },
+        "qualified_raw_copy": {
+          "epoch7": [
+            69,
+            1407374885980340,
+            33279,
+            1,
+            1055,
+            1791027666012409500,
+            1791027666012409500
+          ],
+          "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-local-ci-D-original-review-preparation-v1/original-review-attempt01/original-copies/wrapper/terminal.v1.json",
+          "sha256": "b78af4b4b6428f20f9d99c2a1e3966c8e313bf590d089b2cc33f69f8d1ae0c3f",
+          "size_bytes": 1055
+        },
+        "raw_bytes_unchanged": true
+      },
+      {
+        "original": {
+          "epoch7": [
+            69,
+            1407374885980245,
+            33279,
+            1,
+            5379,
+            1791024852681284600,
+            1791024852681284600
+          ],
+          "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/original-full-ci-attempt01/dispatch.v1.json",
+          "sha256": "e28d12d7a1dde16fe6a9987958739d235953fc01cbad2917e3765de292e4467f",
+          "size_bytes": 5379
+        },
+        "qualified_raw_copy": {
+          "epoch7": [
+            69,
+            1407374885980341,
+            33279,
+            1,
+            5379,
+            1791027666021790800,
+            1791027666021790800
+          ],
+          "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-local-ci-D-original-review-preparation-v1/original-review-attempt01/original-copies/wrapper/dispatch.v1.json",
+          "sha256": "e28d12d7a1dde16fe6a9987958739d235953fc01cbad2917e3765de292e4467f",
+          "size_bytes": 5379
+        },
+        "raw_bytes_unchanged": true
+      },
+      {
+        "original": {
+          "epoch7": [
+            69,
+            1407374885980243,
+            33279,
+            1,
+            3182,
+            1791026993943731500,
+            1791026993943731500
+          ],
+          "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/original-full-ci-attempt01/stdout.raw",
+          "sha256": "554f9268ab40f73985770a4cc4f9be0def44ac2575af38b1de22df190d676991",
+          "size_bytes": 3182
+        },
+        "qualified_raw_copy": {
+          "epoch7": [
+            69,
+            1407374885980342,
+            33279,
+            1,
+            3182,
+            1791027666028348000,
+            1791027666028348000
+          ],
+          "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-local-ci-D-original-review-preparation-v1/original-review-attempt01/original-copies/wrapper/stdout.raw",
+          "sha256": "554f9268ab40f73985770a4cc4f9be0def44ac2575af38b1de22df190d676991",
+          "size_bytes": 3182
+        },
+        "raw_bytes_unchanged": true
+      },
+      {
+        "original": {
+          "epoch7": [
+            69,
+            1407374885980244,
+            33279,
+            1,
+            3479,
+            1791026993950793900,
+            1791026993950793900
+          ],
+          "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/original-full-ci-attempt01/stderr.raw",
+          "sha256": "ca25618a0dbc5c2059d83e0c6febf02b23fe2e8df84359b7606115d064f7670b",
+          "size_bytes": 3479
+        },
+        "qualified_raw_copy": {
+          "epoch7": [
+            69,
+            1407374885980343,
+            33279,
+            1,
+            3479,
+            1791027666034300500,
+            1791027666034300500
+          ],
+          "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-local-ci-D-original-review-preparation-v1/original-review-attempt01/original-copies/wrapper/stderr.raw",
+          "sha256": "ca25618a0dbc5c2059d83e0c6febf02b23fe2e8df84359b7606115d064f7670b",
+          "size_bytes": 3479
+        },
+        "raw_bytes_unchanged": true
+      },
+      {
+        "original": {
+          "epoch7": [
+            2096,
+            591848,
+            33188,
+            1,
+            1807275,
+            1791026993830137707,
+            1791026993830137707
+          ],
+          "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-original-output/report.json",
+          "sha256": "0e2491737080d7041ac1a3528ee56bfa4d28cb273b59ea2e46c27a51308e475a",
+          "size_bytes": 1807275
+        },
+        "qualified_raw_copy": {
+          "epoch7": [
+            69,
+            1407374885980345,
+            33279,
+            1,
+            1807275,
+            1791027666049775900,
+            1791027666049775900
+          ],
+          "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-local-ci-D-original-review-preparation-v1/original-review-attempt01/original-copies/stock/report.json",
+          "sha256": "0e2491737080d7041ac1a3528ee56bfa4d28cb273b59ea2e46c27a51308e475a",
+          "size_bytes": 1807275
+        },
+        "raw_bytes_unchanged": true
+      },
+      {
+        "original": {
+          "epoch7": [
+            2096,
+            591654,
+            33188,
+            1,
+            1270968,
+            1791024853902623771,
+            1791024853902623771
+          ],
+          "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-original-output/tracked-source.before.json",
+          "sha256": "105568f276b37f57aad59b81efaa6524c816b4e595679da56807a1087daba0ea",
+          "size_bytes": 1270968
+        },
+        "qualified_raw_copy": {
+          "epoch7": [
+            69,
+            2533274792822970,
+            33279,
+            1,
+            1270968,
+            1791027666078813700,
+            1791027666078813700
+          ],
+          "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-local-ci-D-original-review-preparation-v1/original-review-attempt01/original-copies/stock/tracked-source.before.json",
+          "sha256": "105568f276b37f57aad59b81efaa6524c816b4e595679da56807a1087daba0ea",
+          "size_bytes": 1270968
+        },
+        "raw_bytes_unchanged": true
+      },
+      {
+        "original": {
+          "epoch7": [
+            2096,
+            591651,
+            33188,
+            1,
+            1270968,
+            1791026993826137496,
+            1791026993826137496
+          ],
+          "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-original-output/tracked-source.after.json",
+          "sha256": "105568f276b37f57aad59b81efaa6524c816b4e595679da56807a1087daba0ea",
+          "size_bytes": 1270968
+        },
+        "qualified_raw_copy": {
+          "epoch7": [
+            69,
+            1407374885980347,
+            33279,
+            1,
+            1270968,
+            1791027666103307200,
+            1791027666103307200
+          ],
+          "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-local-ci-D-original-review-preparation-v1/original-review-attempt01/original-copies/stock/tracked-source.after.json",
+          "sha256": "105568f276b37f57aad59b81efaa6524c816b4e595679da56807a1087daba0ea",
+          "size_bytes": 1270968
+        },
+        "raw_bytes_unchanged": true
+      },
+      {
+        "original": {
+          "epoch7": [
+            2096,
+            591981,
+            33188,
+            1,
+            1734578,
+            1791026992934090314,
+            1791026992934090314
+          ],
+          "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-original-output/unittest-child.report.json",
+          "sha256": "93c23027abbca094608fb480c5f230cc99ba3d6a832aefa8abf3a8d3e2fe48c9",
+          "size_bytes": 1734578
+        },
+        "qualified_raw_copy": {
+          "epoch7": [
+            69,
+            1407374885980348,
+            33279,
+            1,
+            1734578,
+            1791027666132256100,
+            1791027666132256100
+          ],
+          "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-local-ci-D-original-review-preparation-v1/original-review-attempt01/original-copies/stock/unittest-child.report.json",
+          "sha256": "93c23027abbca094608fb480c5f230cc99ba3d6a832aefa8abf3a8d3e2fe48c9",
+          "size_bytes": 1734578
+        },
+        "raw_bytes_unchanged": true
+      },
+      {
+        "original": {
+          "epoch7": [
+            2096,
+            591829,
+            33188,
+            1,
+            2024488,
+            1791026992930090102,
+            1791026992930090102
+          ],
+          "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-original-output/unittest.original.log",
+          "sha256": "4912fc7baddb0c39bcdb8284eae2c8af4c6b29bc16566edfe4cd47929f433d96",
+          "size_bytes": 2024488
+        },
+        "qualified_raw_copy": {
+          "epoch7": [
+            69,
+            1407374885980349,
+            33279,
+            1,
+            2024488,
+            1791027666161627800,
+            1791027666161627800
+          ],
+          "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-local-ci-D-original-review-preparation-v1/original-review-attempt01/original-copies/stock/unittest.original.log",
+          "sha256": "4912fc7baddb0c39bcdb8284eae2c8af4c6b29bc16566edfe4cd47929f433d96",
+          "size_bytes": 2024488
+        },
+        "raw_bytes_unchanged": true
+      },
+      {
+        "original": {
+          "epoch7": [
+            2096,
+            591669,
+            33188,
+            1,
+            483,
+            1791024855402753142,
+            1791024855402753142
+          ],
+          "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-original-output/model-assets.json",
+          "sha256": "4e829bb934424d8bf455b569edb7bf98ea74a90b1be5baa67480d56832ba1de4",
+          "size_bytes": 483
+        },
+        "qualified_raw_copy": {
+          "epoch7": [
+            69,
+            1407374885980350,
+            33279,
+            1,
+            483,
+            1791027666195063400,
+            1791027666195063400
+          ],
+          "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-local-ci-D-original-review-preparation-v1/original-review-attempt01/original-copies/stock/model-assets.json",
+          "sha256": "4e829bb934424d8bf455b569edb7bf98ea74a90b1be5baa67480d56832ba1de4",
+          "size_bytes": 483
+        },
+        "raw_bytes_unchanged": true
+      },
+      {
+        "original": {
+          "epoch7": [
+            2096,
+            591778,
+            33188,
+            1,
+            670,
+            1791024857922973191,
+            1791024857922973191
+          ],
+          "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-original-output/native-configure.json",
+          "sha256": "fe66edee476898b25e86734f41599e0330330b42ed8f9cba0a3442ab63e5edae",
+          "size_bytes": 670
+        },
+        "qualified_raw_copy": {
+          "epoch7": [
+            69,
+            1407374885980351,
+            33279,
+            1,
+            670,
+            1791027666203292400,
+            1791027666203292400
+          ],
+          "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-local-ci-D-original-review-preparation-v1/original-review-attempt01/original-copies/stock/native-configure.json",
+          "sha256": "fe66edee476898b25e86734f41599e0330330b42ed8f9cba0a3442ab63e5edae",
+          "size_bytes": 670
+        },
+        "raw_bytes_unchanged": true
+      },
+      {
+        "original": {
+          "epoch7": [
+            2096,
+            591781,
+            33188,
+            1,
+            472,
+            1791024867911852153,
+            1791024867911852153
+          ],
+          "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-original-output/native-build.json",
+          "sha256": "3f2bf06e118317b83c87c8107a4bf41206995d62c082e4b3e3f7819e8b2cc898",
+          "size_bytes": 472
+        },
+        "qualified_raw_copy": {
+          "epoch7": [
+            69,
+            1407374885980352,
+            33279,
+            1,
+            472,
+            1791027666211884800,
+            1791027666211884800
+          ],
+          "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-local-ci-D-original-review-preparation-v1/original-review-attempt01/original-copies/stock/native-build.json",
+          "sha256": "3f2bf06e118317b83c87c8107a4bf41206995d62c082e4b3e3f7819e8b2cc898",
+          "size_bytes": 472
+        },
+        "raw_bytes_unchanged": true
+      },
+      {
+        "original": {
+          "epoch7": [
+            2096,
+            591668,
+            33024,
+            1,
+            3437,
+            1791024855366750036,
+            1791024855366750036
+          ],
+          "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-original-output/model-acquisition/report.json",
+          "sha256": "cb5c0fa2eeb1ddcf1083f27b1e5b6879f146cebf65bb4f65fa7fbb168db66f58",
+          "size_bytes": 3437
+        },
+        "qualified_raw_copy": {
+          "epoch7": [
+            69,
+            1407374885980354,
+            33279,
+            1,
+            3437,
+            1791027666218262000,
+            1791027666218262000
+          ],
+          "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-local-ci-D-original-review-preparation-v1/original-review-attempt01/original-copies/stock/model-acquisition/report.json",
+          "sha256": "cb5c0fa2eeb1ddcf1083f27b1e5b6879f146cebf65bb4f65fa7fbb168db66f58",
+          "size_bytes": 3437
+        },
+        "raw_bytes_unchanged": true
+      },
+      {
+        "original": {
+          "epoch7": [
+            2096,
+            591650,
+            33188,
+            1,
+            1614,
+            1791026993178103220,
+            1791026993178103220
+          ],
+          "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-original-output/external-test-observer/terminal.v1.json",
+          "sha256": "b00fa59b6f1f3b0f4d5c84cec57ccb767889477415418fbd19c62f76627d3cd5",
+          "size_bytes": 1614
+        },
+        "qualified_raw_copy": {
+          "epoch7": [
+            69,
+            1407374885980355,
+            33279,
+            1,
+            1614,
+            1791027666225260200,
+            1791027666225260200
+          ],
+          "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-local-ci-D-original-review-preparation-v1/original-review-attempt01/original-copies/stock/observer-terminal.v1.json",
+          "sha256": "b00fa59b6f1f3b0f4d5c84cec57ccb767889477415418fbd19c62f76627d3cd5",
+          "size_bytes": 1614
+        },
+        "raw_bytes_unchanged": true
+      }
+    ],
+    "approved_skips": [
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "DrvFS hard-link recovery requires WSL workspace",
+        "test_id": "test_backend_pair_archive_sizing_receipts_v1.BackendPairArchiveSizingReceiptsV1ContractTests.test_pair_archive_fd_anchored_hardlink_recovers_on_drvfs"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows directory custody attack",
+        "test_id": "test_backend_publication_output_transaction_v3.BackendPublicationOutputTransactionV3Tests.test_windows_directory_swap_before_native_custody_is_rejected"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows handle semantics only",
+        "test_id": "test_backend_publication_runtime_authority.RuntimeAuthorityTest.test_windows_native_query_failure_is_fail_closed"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows handle semantics only",
+        "test_id": "test_backend_publication_runtime_authority.RuntimeAuthorityTest.test_windows_parent_handles_deny_directory_replacement"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows handle semantics only",
+        "test_id": "test_backend_publication_runtime_authority.RuntimeAuthorityTest.test_windows_reparse_volume_and_duplicate_ids_are_fail_closed"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows handle semantics only",
+        "test_id": "test_backend_publication_runtime_authority.RuntimeAuthorityTest.test_windows_rewalk_file_id_mismatch_is_fail_closed"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows handle semantics only",
+        "test_id": "test_backend_runtime_validator_authority.BackendRuntimeValidatorAuthorityTest.test_windows_fresh_final_reopen_rejects_hardlink_drift"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows handle semantics only",
+        "test_id": "test_backend_runtime_validator_authority.BackendRuntimeValidatorAuthorityTest.test_windows_native_query_failure_is_fail_closed_and_cleans_handle"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows handle semantics only",
+        "test_id": "test_backend_runtime_validator_authority.BackendRuntimeValidatorAuthorityTest.test_windows_outer_root_identity_mismatch_is_fail_closed"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows handle semantics only",
+        "test_id": "test_backend_runtime_validator_authority.BackendRuntimeValidatorAuthorityTest.test_windows_parent_handle_denies_directory_replacement"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows handle semantics only",
+        "test_id": "test_backend_runtime_validator_authority.BackendRuntimeValidatorAuthorityTest.test_windows_reparse_volume_and_duplicate_ids_are_fail_closed"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows handle semantics only",
+        "test_id": "test_backend_runtime_validator_authority.BackendRuntimeValidatorAuthorityTest.test_windows_rewalk_file_id_mismatch_is_fail_closed"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows handle semantics only",
+        "test_id": "test_backend_runtime_validator_authority.BackendRuntimeValidatorAuthorityTest.test_windows_root_handle_denies_directory_replacement"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "real KPP AVI files are not present",
+        "test_id": "test_benchmark_contract.BenchmarkContractTests.test_kpp_real_avi_manifest_validates_real_files_and_fps_policy"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "existing_retired_schema_migration",
+        "reason": "schema-v1 fixture retained only as migration history",
+        "test_id": "test_checkpoint_model_parity.AssessmentTests.test_calibration_and_evaluation_sample_ids_must_be_disjoint"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "existing_retired_schema_migration",
+        "reason": "schema-v1 fixture retained only as migration history",
+        "test_id": "test_checkpoint_model_parity.AssessmentTests.test_calibration_minimum_and_numeric_tolerances_are_enforced"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "existing_retired_schema_migration",
+        "reason": "schema-v1 fixture retained only as migration history",
+        "test_id": "test_checkpoint_model_parity.AssessmentTests.test_complete_common_source_contract_passes"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "existing_retired_schema_migration",
+        "reason": "schema-v1 fixture retained only as migration history",
+        "test_id": "test_checkpoint_model_parity.AssessmentTests.test_image_command_cannot_pull_or_run"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "existing_retired_schema_migration",
+        "reason": "schema-v1 fixture retained only as migration history",
+        "test_id": "test_checkpoint_model_parity.AssessmentTests.test_lineage_preprocessing_and_toolchain_drift_fail_closed"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "existing_retired_schema_migration",
+        "reason": "schema-v1 fixture retained only as migration history",
+        "test_id": "test_checkpoint_model_parity.AssessmentTests.test_non_finite_tolerance_is_rejected"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "existing_retired_schema_migration",
+        "reason": "schema-v1 fixture retained only as migration history",
+        "test_id": "test_checkpoint_model_parity.AssessmentTests.test_openvino_gpu_execution_evidence_is_not_cuda"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "existing_retired_schema_migration",
+        "reason": "schema-v1 fixture retained only as migration history",
+        "test_id": "test_checkpoint_model_parity.AssessmentTests.test_repository_state_is_honestly_blocked"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "existing_retired_schema_migration",
+        "reason": "schema-v1 fixture retained only as migration history",
+        "test_id": "test_checkpoint_model_parity.AssessmentTests.test_symlinked_model_artifact_is_not_accepted"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "existing_retired_schema_migration",
+        "reason": "schema-v1 fixture retained only as migration history",
+        "test_id": "test_checkpoint_model_parity.AssessmentTests.test_verified_equivalent_derivations_can_replace_a_local_source"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows share-mode custody only",
+        "test_id": "test_checkpoint_model_parity.ManifestContractTests.test_manifest_ancestor_custody_blocks_parent_rename_aba"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows share-mode custody only",
+        "test_id": "test_checkpoint_model_parity.ManifestContractTests.test_manifest_custody_blocks_same_size_in_place_rewrite_with_restored_mtime"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows pre-custody drift only",
+        "test_id": "test_checkpoint_model_parity.ManifestContractTests.test_manifest_rejects_same_size_rewrite_before_native_custody"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows ctime views only",
+        "test_id": "test_checkpoint_model_parity.ManifestContractTests.test_windows_cross_view_ignores_only_ctime_and_each_view_binds_it"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows path-view ctime only",
+        "test_id": "test_checkpoint_model_parity.ManifestContractTests.test_windows_same_view_callsites_reject_ctime_only_drift"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "local physical attempt2 evidence is unavailable",
+        "test_id": "test_checkpoint_model_parity_v4.ModelParityV4Test.test_actual_attempt2_patch_allows_exact_refrozen_base_producers"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows handle semantics only",
+        "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_windows_oversized_component_is_rejected_before_ntcreatefile"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows handle semantics only",
+        "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_windows_root_parent_final_reparse_and_rewalk_drift_are_fail_closed"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows handle semantics only",
+        "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_windows_verification_handle_cleanup_failure_is_fail_closed"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows retained failure candidate only",
+        "test_id": "test_extract_kpp_legacy_iss.ExtractKppLegacyIssTests.test_authoritative_failure_retains_custodied_private_candidate"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows reparse-point rejection only",
+        "test_id": "test_extract_kpp_legacy_iss.ExtractKppLegacyIssTests.test_windows_custody_rejects_directory_link_swap_candidate"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows directory-handle custody only",
+        "test_id": "test_extract_kpp_legacy_iss.ExtractKppLegacyIssTests.test_windows_directory_handles_hold_custody_and_publish_no_replace"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows rollback fail-safe only",
+        "test_id": "test_extract_kpp_legacy_iss.ExtractKppLegacyIssTests.test_windows_private_create_retains_explicitly_when_disposition_fails"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows atomic private create only",
+        "test_id": "test_extract_kpp_legacy_iss.ExtractKppLegacyIssTests.test_windows_private_create_returns_custody_without_create_open_gap"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows exact-handle rollback only",
+        "test_id": "test_extract_kpp_legacy_iss.ExtractKppLegacyIssTests.test_windows_private_create_rolls_back_every_post_create_validation_failure"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows retained failure candidate only",
+        "test_id": "test_freeze_kpp_legacy_iss_v2_transcodes.FreezeKppLegacyIssV2TranscodesTests.test_authoritative_freeze_failure_retains_private_candidate"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows custody negatives only",
+        "test_id": "test_freeze_kpp_legacy_iss_v2_transcodes.FreezeKppLegacyIssV2TranscodesTests.test_windows_freeze_custody_blocks_rename_and_preserves_collision"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "bounded cleanup retry targets WinError 145",
+        "test_id": "test_kpp_legacy_iss_v2_offline_image_intake.OfflineImageIntakeTests.test_windows_temporary_directory_cleanup_retries_only_directory_not_empty"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "workspace filesystem is already native Linux ext",
+        "test_id": "test_kpp_legacy_iss_v2_secondary_sensitivity_executor.KppLegacyIssV2SecondarySensitivityExecutorTests.test_default_watchdog_provisioner_rejects_non_native_workspace_filesystem"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows rename custody attack",
+        "test_id": "test_kpp_legacy_iss_v2_secondary_sensitivity_pilot.KppLegacyIssV2SecondarySensitivityPilotTests.test_windows_candidate_rename_out_back_metadata_restore_is_denied"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows custody route only",
+        "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_each_unpublished_bootstrap_failure_leaves_no_random_orphan"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows custody route only",
+        "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_windows_bootstrap_failure_closes_every_locally_acquired_handle"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows NtCreateFile route only",
+        "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_windows_bootstrap_never_path_creates_a_destination_component"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows custody route only",
+        "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_windows_exact_rerun_holds_target_custody_without_creating"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows ACL route only",
+        "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_windows_rerun_rechecks_target_acl_after_long_verification"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows ACL route only",
+        "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_windows_rerun_rejects_permissive_target_acl_untouched"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows custody route only",
+        "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_windows_route_bootstraps_and_holds_full_destination_custody"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows authoritative marker only",
+        "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_authoritative_failure_marker_is_absent_or_exact_on_stage_faults"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows authoritative quarantine only",
+        "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_authoritative_prepublish_failure_is_quarantined_with_marker"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows authoritative quarantine only",
+        "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_authoritative_quarantine_collision_never_overwrites"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows authoritative sentinel only",
+        "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_commit_pending_removal_is_last_exact_handle_success_operation"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows semantic commit only",
+        "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_committed_candidate_validator_rejects_record_drift_and_extra_leaf"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows committed resume only",
+        "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_committed_resume_holds_every_validated_leaf_through_terminal_scan"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows authoritative guards only",
+        "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_duplicate_guards_quarantine_same_file_id_after_originals_close"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows committed resume only",
+        "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_existing_candidate_size_caps_reject_before_oversized_leaf_read"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows authoritative resume only",
+        "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_existing_output_drift_or_collision_fails_untouched"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows authoritative sentinel only",
+        "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_failed_quarantine_leaves_canonical_namespace_commit_pending"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows authoritative quarantine only",
+        "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_failure_immediately_after_canonical_rename_moves_exact_file_id_to_quarantine"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows semantic commit only",
+        "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_fault_immediately_after_native_true_is_postcommit_success"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows authoritative resume only",
+        "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_identical_public_call_resumes_existing_committed_candidate_read_only"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows semantic commit only",
+        "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_native_commit_false_keeps_canonical_child_guard"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows semantic commit only",
+        "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_native_true_then_python_gap_is_resolved_by_permanent_record"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows native capture reopen only",
+        "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_parent_drained_capture_blocks_native_same_token_reopen_and_growth"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows semantic commit only",
+        "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_persistent_postcommit_close_failure_releases_canonical_namespace"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows semantic commit only",
+        "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_postcommit_close_and_observer_faults_cannot_become_failed_publication"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows authoritative quarantine only",
+        "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_postpublish_verification_failure_releases_leaf_then_quarantines"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows semantic commit only",
+        "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_pre_native_commit_failure_keeps_canonical_child_guard"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows committed resume only",
+        "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_resealed_materializer_and_preprocessor_role_drift_is_rejected"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows committed resume only",
+        "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_resealed_receipt_core_or_schema_drift_is_rejected"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows authoritative guards only",
+        "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_second_guard_duplicate_failure_leaves_original_custody_usable"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows directory custody only",
+        "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_windows_directory_identity_custody_requires_old_write_handle_close"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "canonical publication evidence mount is not materialized",
+        "test_id": "test_mount_publication_evidence_wsl.MountPublicationEvidenceWslTests.test_check_only_accepts_the_canonical_writable_mount"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "canonical publication runtime mounts are not materialized",
+        "test_id": "test_mount_publication_runtime_wsl.MountPublicationRuntimeWslTests.test_check_only_accepts_the_canonical_read_only_mounts"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "canonical publication socket mount is not materialized",
+        "test_id": "test_mount_publication_sockets_wsl.MountPublicationSocketsWslTests.test_check_only_accepts_the_canonical_writable_mount"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows custody route only",
+        "test_id": "test_normalize_kpp_iss_metadata.NormalizeKppIssMetadataTests.test_authoritative_failure_retains_custodied_private_candidate"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows custody route only",
+        "test_id": "test_normalize_kpp_iss_metadata.NormalizeKppIssMetadataTests.test_authoritative_route_holds_root_staging_and_working_custody"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "Windows custody route only",
+        "test_id": "test_normalize_kpp_iss_metadata.NormalizeKppIssMetadataTests.test_post_publication_tamper_fails_without_deleting_output"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "live post-rename descriptor loss requires the WSL DrvFS workspace",
+        "test_id": "test_publication_owned_staging_cleanup_v1.OwnedStagingCleanupV1Tests.test_drvfs_post_rename_fd_loss_uses_final_inode_and_tree_anchors"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "DrvFS replacement visibility is WSL workspace-specific",
+        "test_id": "test_publication_physical_io_v1.PublicationPhysicalIoV1Tests.test_drvfs_atomic_replace_closes_staging_fd_before_verification"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "DrvFS hard-link fallback is WSL workspace-specific",
+        "test_id": "test_publication_physical_io_v1.PublicationPhysicalIoV1Tests.test_drvfs_unsupported_rename_recovers_two_link_publish"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "live no-replace fallback requires the WSL DrvFS workspace",
+        "test_id": "test_publication_policy_qualification_pilot_executor_v2.QualificationPilotExecutorV2ContractTests.test_drvfs_directory_commit_does_not_depend_on_ambient_cwd"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "live no-replace fallback requires the WSL DrvFS workspace",
+        "test_id": "test_publication_policy_qualification_pilot_executor_v2.QualificationPilotExecutorV2ContractTests.test_drvfs_directory_commit_succeeds_and_never_overwrites_collision"
+      },
+      {
+        "acceptance_claim": false,
+        "classification": "platform_or_explicit_physical_prerequisite",
+        "reason": "live no-replace race requires the WSL DrvFS workspace",
+        "test_id": "test_publication_policy_qualification_runtime_inputs_v2.QualificationRuntimeInputsV2Tests.test_drvfs_runtime_directory_commit_race_has_exactly_one_winner"
+      }
+    ],
+    "child_failure": "ValueError: unapproved portable skip identity/reason: test_backend_publication_output_transaction_production_v3.BackendPublicationOutputTransactionProductionV3Tests.test_canonical_wsl_venv_requires_plain_copied_python",
+    "fresh_owned_process_scans": [
+      {
+        "at_monotonic_ns": 509996553361994,
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "errors": [],
+        "matched_owned_PID_PGID_session_members": [],
+        "original_PID_paths_absent": {
+          "95791": true,
+          "95805": true,
+          "96116": true
+        }
+      },
+      {
+        "at_monotonic_ns": 509996554792498,
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "errors": [],
+        "matched_owned_PID_PGID_session_members": [],
+        "original_PID_paths_absent": {
+          "95791": true,
+          "95805": true,
+          "96116": true
+        }
+      }
+    ],
+    "model_copy_and_reuse_review": {
+      "epoch7": [
+        69,
+        1407374885980322,
+        33279,
+        1,
+        24571,
+        1791025980407195000,
+        1791025980407195000
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ext4-asset-cache-stock-reuse-review-v1/review.v1.json",
+      "sha256": "890f5a0e0df96d846ba6a39f699c339c7dbce49e9662c37bb4c681a5c7327b78",
+      "size_bytes": 24571
+    },
+    "nine_deferred_integrations": [
+      {
+        "reason": "Verifies exact historical image, dependency bytes and real frozen fragment, rather than a unit schema predicate",
+        "required_capabilities": [
+          "exact original DeepStream physical image evidence/dependency source scope"
+        ],
+        "source": {
+          "line": 59,
+          "path": "tests/test_checkpoint_deepstream_runtime_image_evidence_v1.py"
+        },
+        "test_id": "test_checkpoint_deepstream_runtime_image_evidence_v1.DeepStreamRuntimeImageEvidenceV1Tests.test_exact_materialized_image_evidence_and_qualification_fragment"
+      },
+      {
+        "reason": "Actual historical all-system parity/model/image materialization chain",
+        "required_capabilities": [
+          "original physical full qualification/model/image inputs with matching source scope"
+        ],
+        "source": {
+          "line": 178,
+          "path": "tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py"
+        },
+        "test_id": "test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_exact_accepted_parity_preprocessing_and_runtime_images_are_bound"
+      },
+      {
+        "reason": "Actual historical all-system parity/model/image materialization chain",
+        "required_capabilities": [
+          "original physical full qualification/model/image inputs with matching source scope"
+        ],
+        "source": {
+          "line": 81,
+          "path": "tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py"
+        },
+        "test_id": "test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_phase_one_materializes_exact_physical_binding_fragment"
+      },
+      {
+        "reason": "Explicit actual Docker run over held inputs, with real exact image/GPU requirements",
+        "required_capabilities": [
+          "exact live pinned Docker/socket/image/GPU"
+        ],
+        "source": {
+          "line": 900,
+          "path": "tests/test_checkpoint_openvino_gva_publication_runtime_v3.py"
+        },
+        "test_id": "test_checkpoint_openvino_gva_publication_runtime_v3.OpenVINOGVAPublicationRuntimeV3Tests.test_live_daemon_reads_private_held_fd_copy"
+      },
+      {
+        "reason": "Actual require_files=True rehashes original complete media/receipt graph",
+        "required_capabilities": [
+          "exact original complete corpus and receipt graph"
+        ],
+        "source": {
+          "line": 65,
+          "path": "tests/test_kpp_frozen_reconstruction_v1_dataset_integration.py"
+        },
+        "test_id": "test_kpp_frozen_reconstruction_v1_dataset_integration.KppFrozenReconstructionV1DatasetIntegrationTests.test_full_on_disk_corpus_and_receipt_graph_validate"
+      },
+      {
+        "reason": "Actual require_files=True rehashes original complete media/receipt graph",
+        "required_capabilities": [
+          "exact original complete corpus and receipt graph"
+        ],
+        "source": {
+          "line": 126,
+          "path": "tests/test_kpp_iss_publication_v3_dataset_integration.py"
+        },
+        "test_id": "test_kpp_iss_publication_v3_dataset_integration.KppIssPublicationV3DatasetIntegrationTests.test_require_files_rehashes_the_complete_exact_corpus"
+      },
+      {
+        "reason": "Actual full patch/receipt/module equality; old g cannot become current selected equality by copying metadata",
+        "required_capabilities": [
+          "matching current full qualification source/receipt domain; live method additionally exact Docker/worker/model grant"
+        ],
+        "source": {
+          "line": 83,
+          "path": "tests/test_publication_runtime_frozen_identity_constants_v1.py"
+        },
+        "test_id": "test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_current_qualification_fragments_match_physical_receipts"
+      },
+      {
+        "reason": "Actual full patch/receipt/module equality; old g cannot become current selected equality by copying metadata",
+        "required_capabilities": [
+          "matching current full qualification source/receipt domain; live method additionally exact Docker/worker/model grant"
+        ],
+        "source": {
+          "line": 67,
+          "path": "tests/test_publication_runtime_frozen_identity_constants_v1.py"
+        },
+        "test_id": "test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_fix_benchmark_patch_matches_exact_runtime_constants"
+      },
+      {
+        "reason": "Actual full patch/receipt/module equality; old g cannot become current selected equality by copying metadata",
+        "required_capabilities": [
+          "matching current full qualification source/receipt domain; live method additionally exact Docker/worker/model grant"
+        ],
+        "source": {
+          "line": 406,
+          "path": "tests/test_publication_runtime_frozen_identity_constants_v1.py"
+        },
+        "test_id": "test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_live_fix_benchmark_preflight_matches_runtime_materializer"
+      }
+    ],
+    "original_commands": {
+      "model-assets": {
+        "argv": [
+          "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+          "-I",
+          "-B",
+          "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/prepare_ci_model_assets.py",
+          "--output-dir",
+          "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-original-output/model-acquisition"
+        ],
+        "cleanup_error": null,
+        "elapsed_s": 0.16399364703102037,
+        "returncode": 0,
+        "timed_out": false
+      },
+      "native-build": {
+        "argv": [
+          "cmake",
+          "--build",
+          "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-original-output/build",
+          "--parallel",
+          "2",
+          "--target",
+          "vast_native_gst_probe",
+          "vast_checkpoint_source",
+          "gstadaptivescheduler",
+          "gstvastanalyticsterminal",
+          "gstvastanalyticsqueue",
+          "gstvastcheckpointprefixqueue"
+        ],
+        "cleanup_error": null,
+        "elapsed_s": 9.985924470995087,
+        "returncode": 0,
+        "timed_out": false
+      },
+      "native-configure": {
+        "argv": [
+          "cmake",
+          "-S",
+          "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D",
+          "-B",
+          "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-original-output/build",
+          "-DCMAKE_BUILD_TYPE=Release",
+          "-DVAST_BUILD_CUSTOM_CUDA_QT=OFF",
+          "-DCMAKE_RUNTIME_OUTPUT_DIRECTORY=/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-original-output/build/bin",
+          "-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-original-output/build/lib"
+        ],
+        "cleanup_error": null,
+        "elapsed_s": 2.5202777149970643,
+        "returncode": 0,
+        "timed_out": false
+      }
+    },
+    "required_native_success_ids": [
+      "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_client_regression",
+      "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_policy_topology_regression",
+      "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_reset_queue_level_regression"
+    ],
+    "six_built_targets": [
+      "vast_native_gst_probe",
+      "vast_checkpoint_source",
+      "gstadaptivescheduler",
+      "gstvastanalyticsterminal",
+      "gstvastanalyticsqueue",
+      "gstvastcheckpointprefixqueue"
+    ],
+    "source_capture_current_joins": [
+      {
+        "current_held_pin": {
+          "epoch7": [
+            69,
+            1407374885980141,
+            33279,
+            1,
+            11220,
+            1791024018828069300,
+            1791024018828069300
+          ],
+          "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/recipe.bound.v1.json",
+          "sha256": "e8df0e735c27bd282eee9692144fb0e42ab7491259bedb2626e1714fe64865c5",
+          "size_bytes": 11220
+        },
+        "original_capture_pin": {
+          "epoch7": [
+            69,
+            1407374885980141,
+            33279,
+            1,
+            11220,
+            1791024018828069300,
+            1791024018828069300
+          ],
+          "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/recipe.bound.v1.json",
+          "sha256": "e8df0e735c27bd282eee9692144fb0e42ab7491259bedb2626e1714fe64865c5",
+          "size_bytes": 11220
+        }
+      },
+      {
+        "current_held_pin": {
+          "epoch7": [
+            2096,
+            585013,
+            33188,
+            1,
+            34014,
+            1791024489318184365,
+            1791024489318184365
+          ],
+          "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/.ci/integration-test-selection.v1.json",
+          "sha256": "09e9268069e88b957f9ae54a827960bc18ee13a00d4319994d108d3cb81a0805",
+          "size_bytes": 34014
+        },
+        "original_capture_pin": {
+          "epoch7": [
+            2096,
+            585013,
+            33188,
+            1,
+            34014,
+            1791024489318184365,
+            1791024489318184365
+          ],
+          "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/.ci/integration-test-selection.v1.json",
+          "sha256": "09e9268069e88b957f9ae54a827960bc18ee13a00d4319994d108d3cb81a0805",
+          "size_bytes": 34014
+        }
+      },
+      {
+        "current_held_pin": {
+          "epoch7": [
+            2096,
+            585015,
+            33188,
+            1,
+            454,
+            1791024489318184365,
+            1791024489318184365
+          ],
+          "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/.ci/requirements.txt",
+          "sha256": "9972a44ffd57d27ff351d2ffc168043d688af6042a4c4a59f4f6c21a77adecef",
+          "size_bytes": 454
+        },
+        "original_capture_pin": {
+          "epoch7": [
+            2096,
+            585015,
+            33188,
+            1,
+            454,
+            1791024489318184365,
+            1791024489318184365
+          ],
+          "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/.ci/requirements.txt",
+          "sha256": "9972a44ffd57d27ff351d2ffc168043d688af6042a4c4a59f4f6c21a77adecef",
+          "size_bytes": 454
+        }
+      },
+      {
+        "current_held_pin": {
+          "epoch7": [
+            2096,
+            591225,
+            33188,
+            1,
+            20916,
+            1791024491678376061,
+            1791024491678376061
+          ],
+          "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/ci_external_test_observer_v1.py",
+          "sha256": "000ded0c9bd442983b54d224ce3041818af6e35e2e0d4f9c9b382b74db499c59",
+          "size_bytes": 20916
+        },
+        "original_capture_pin": {
+          "epoch7": [
+            2096,
+            591225,
+            33188,
+            1,
+            20916,
+            1791024491678376061,
+            1791024491678376061
+          ],
+          "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/ci_external_test_observer_v1.py",
+          "sha256": "000ded0c9bd442983b54d224ce3041818af6e35e2e0d4f9c9b382b74db499c59",
+          "size_bytes": 20916
+        }
+      },
+      {
+        "current_held_pin": {
+          "epoch7": [
+            2096,
+            591226,
+            33188,
+            1,
+            25359,
+            1791024491678376061,
+            1791024491678376061
+          ],
+          "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/ci_namespace_diagnostic_v1.py",
+          "sha256": "bc69cdd5db314b7421d87fdaeb3a88d9411ae0f2e29713f75bc8909dfe8b0292",
+          "size_bytes": 25359
+        },
+        "original_capture_pin": {
+          "epoch7": [
+            2096,
+            591226,
+            33188,
+            1,
+            25359,
+            1791024491678376061,
+            1791024491678376061
+          ],
+          "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/ci_namespace_diagnostic_v1.py",
+          "sha256": "bc69cdd5db314b7421d87fdaeb3a88d9411ae0f2e29713f75bc8909dfe8b0292",
+          "size_bytes": 25359
+        }
+      },
+      {
+        "current_held_pin": {
+          "epoch7": [
+            2096,
+            591227,
+            33188,
+            1,
+            9978,
+            1791024491678376061,
+            1791024491678376061
+          ],
+          "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/ci_test_selection_v1.py",
+          "sha256": "c9883b041ec2b52f1796677d0baeee6bdd64394c576ecdc4c8b48134ec6d7f1d",
+          "size_bytes": 9978
+        },
+        "original_capture_pin": {
+          "epoch7": [
+            2096,
+            591227,
+            33188,
+            1,
+            9978,
+            1791024491678376061,
+            1791024491678376061
+          ],
+          "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/ci_test_selection_v1.py",
+          "sha256": "c9883b041ec2b52f1796677d0baeee6bdd64394c576ecdc4c8b48134ec6d7f1d",
+          "size_bytes": 9978
+        }
+      },
+      {
+        "current_held_pin": {
+          "epoch7": [
+            2096,
+            591228,
+            33188,
+            1,
+            28890,
+            1791024491682376386,
+            1791024491682376386
+          ],
+          "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/ci_userns_profile_v1.py",
+          "sha256": "5bd7622130c41d8bef03d2da87f87c987738478a5b77412857fd85f24c73cf43",
+          "size_bytes": 28890
+        },
+        "original_capture_pin": {
+          "epoch7": [
+            2096,
+            591228,
+            33188,
+            1,
+            28890,
+            1791024491682376386,
+            1791024491682376386
+          ],
+          "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/ci_userns_profile_v1.py",
+          "sha256": "5bd7622130c41d8bef03d2da87f87c987738478a5b77412857fd85f24c73cf43",
+          "size_bytes": 28890
+        }
+      },
+      {
+        "current_held_pin": {
+          "epoch7": [
+            2096,
+            591269,
+            33188,
+            1,
+            30314,
+            1791024491690377036,
+            1791024491690377036
+          ],
+          "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/prepare_ci_model_assets.py",
+          "sha256": "2f87df4f6d98239190c17b42bb7f43188fc2a12604f7b0f6aa0246f7df15b36c",
+          "size_bytes": 30314
+        },
+        "original_capture_pin": {
+          "epoch7": [
+            2096,
+            591269,
+            33188,
+            1,
+            30314,
+            1791024491690377036,
+            1791024491690377036
+          ],
+          "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/prepare_ci_model_assets.py",
+          "sha256": "2f87df4f6d98239190c17b42bb7f43188fc2a12604f7b0f6aa0246f7df15b36c",
+          "size_bytes": 30314
+        }
+      },
+      {
+        "current_held_pin": {
+          "epoch7": [
+            2096,
+            591322,
+            33188,
+            1,
+            29477,
+            1791024491698377685,
+            1791024491698377685
+          ],
+          "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/run_ci_checks.py",
+          "sha256": "ce375eca51164a76ab6a88cf02b92804077f08c6b8401d68b48e293020c27a2c",
+          "size_bytes": 29477
+        },
+        "original_capture_pin": {
+          "epoch7": [
+            2096,
+            591322,
+            33188,
+            1,
+            29477,
+            1791024491698377685,
+            1791024491698377685
+          ],
+          "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/run_ci_checks.py",
+          "sha256": "ce375eca51164a76ab6a88cf02b92804077f08c6b8401d68b48e293020c27a2c",
+          "size_bytes": 29477
+        }
+      },
+      {
+        "current_held_pin": {
+          "epoch7": [
+            69,
+            1407374885980139,
+            33279,
+            1,
+            12433,
+            1791024018828069300,
+            1791024018828069300
+          ],
+          "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/capture_original_full_ci_v1.py",
+          "sha256": "b41ab243053aea3be149f01801490e84623fa11efedcf0e706f2111090769b97",
+          "size_bytes": 12433
+        },
+        "original_capture_pin": {
+          "epoch7": [
+            69,
+            1407374885980139,
+            33279,
+            1,
+            12433,
+            1791024018828069300,
+            1791024018828069300
+          ],
+          "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/capture_original_full_ci_v1.py",
+          "sha256": "b41ab243053aea3be149f01801490e84623fa11efedcf0e706f2111090769b97",
+          "size_bytes": 12433
+        }
+      }
+    ],
+    "source_table_rows": 5577,
+    "source_tables_equal": true,
+    "unapproved_original_skip": [
+      {
+        "allowed_declaration": {
+          "acceptance_claim": false,
+          "classification": "platform_or_explicit_physical_prerequisite",
+          "reason": "canonical WSL publication venv is not installed",
+          "test_id": "test_backend_publication_output_transaction_production_v3.BackendPublicationOutputTransactionProductionV3Tests.test_canonical_wsl_venv_requires_plain_copied_python"
+        },
+        "original": {
+          "reason": "canonical WSL publication venv bind is not mounted",
+          "test_id": "test_backend_publication_output_transaction_production_v3.BackendPublicationOutputTransactionProductionV3Tests.test_canonical_wsl_venv_requires_plain_copied_python"
+        }
+      }
+    ]
+  },
+  "fd_after": 6,
+  "fd_before": 6,
+  "hardware_acceptance": false,
+  "limits": [
+    "Only after authentic parent completion are final originals read and copied with full hashes and held seven-epoch/name checks.",
+    "Original wrapper reports release and two scans, but no numeric FD count; only this reader has an observed FD before/after count.",
+    "Fresh scans cover the recorded owned PIDs/groups/sessions. They do not assert global process quiescence or prove unrelated descendants.",
+    "Portable skips and deferred integrations do not certify those scenarios or scientific/hardware acceptance.",
+    "Failure of this finite review remains failure and never changes or reruns the original CI."
+  ],
+  "mandatory_local_CI_pass": false,
+  "metadata_review_status_is_not_CI_acceptance": true,
+  "metadata_streamed_bytes": 32968499,
+  "no_target_imports_queries_tests_model_body_reads_or_dispatch": true,
+  "original_full_CI_disposition": "FAILED",
+  "original_tool_session": 68257,
+  "reader_pid": 4655,
+  "reviewer": "/root/architecture_review",
+  "root_reported_original_tool_closure": {
+    "basis": "Parent explicit genuine terminal notification",
+    "returncode": 1,
+    "terminal_cell": "9d7cd5"
+  },
+  "schema_version": 1,
+  "source_commit": "3c025b29b3c1d5275c2ec693410e4b83700583de",
+  "status": "verified"
+}

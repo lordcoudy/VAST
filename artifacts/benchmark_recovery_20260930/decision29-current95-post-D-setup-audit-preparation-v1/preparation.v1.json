@@ -1,0 +1,330 @@
+{
+  "accepted_C_source": {
+    "path": "artifacts/benchmark_recovery_20260930/decision29-current95-post-setup-audit-preparation-v1/audit_actual95_post_setup_v2.py",
+    "sha256": "0cc5510cc406b5848c41089818027163b88a8b92d5acf4434af3ce50131de86d",
+    "size_bytes": 15422
+  },
+  "actual_D_commit": "3c025b29b3c1d5275c2ec693410e4b83700583de",
+  "actual_D_original_owners_for_two_unchanged_error_aware_scans": [
+    {
+      "argv": [
+        "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+        "-I",
+        "-B",
+        "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/capture_original_setup_v2.py",
+        "11220",
+        "e8df0e735c27bd282eee9692144fb0e42ab7491259bedb2626e1714fe64865c5"
+      ],
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 95664,
+      "pid": 95664,
+      "ppid": 95663,
+      "session": 95664,
+      "startticks": 50681901,
+      "state": "R",
+      "uid": 1000
+    },
+    {
+      "argv": [
+        ""
+      ],
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 95665,
+      "pid": 95665,
+      "ppid": 95664,
+      "session": 95665,
+      "startticks": 50681904,
+      "state": "D",
+      "uid": 1000
+    },
+    {
+      "argv": [
+        "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+        "-I",
+        "-B",
+        "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/setup_original_current_ci_v2.py",
+        "11220",
+        "e8df0e735c27bd282eee9692144fb0e42ab7491259bedb2626e1714fe64865c5"
+      ],
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 95665,
+      "pid": 95666,
+      "ppid": 95665,
+      "session": 95665,
+      "startticks": 50681904,
+      "state": "D",
+      "uid": 1000
+    },
+    {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 95665,
+      "pid": 95667,
+      "ppid": 95666,
+      "startticks": 50681911,
+      "state": "D",
+      "uid": 1000
+    },
+    {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 95665,
+      "pid": 95668,
+      "ppid": 95666,
+      "startticks": 50681913,
+      "state": "R",
+      "uid": 1000
+    },
+    {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 95665,
+      "pid": 95669,
+      "ppid": 95666,
+      "startticks": 50681918,
+      "state": "R",
+      "uid": 1000
+    },
+    {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 95665,
+      "pid": 95672,
+      "ppid": 95666,
+      "startticks": 50681927,
+      "state": "R",
+      "uid": 1000
+    },
+    {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 95665,
+      "pid": 95673,
+      "ppid": 95666,
+      "startticks": 50681928,
+      "state": "R",
+      "uid": 1000
+    },
+    {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 95665,
+      "pid": 95674,
+      "ppid": 95666,
+      "startticks": 50681930,
+      "state": "R",
+      "uid": 1000
+    },
+    {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 95665,
+      "pid": 95675,
+      "ppid": 95666,
+      "startticks": 50682249,
+      "state": "R",
+      "uid": 1000
+    },
+    {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 95665,
+      "pid": 95676,
+      "ppid": 95666,
+      "startticks": 50682252,
+      "state": "R",
+      "uid": 1000
+    },
+    {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 95665,
+      "pid": 95688,
+      "ppid": 95666,
+      "startticks": 50682254,
+      "state": "R",
+      "uid": 1000
+    },
+    {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 95665,
+      "pid": 95689,
+      "ppid": 95666,
+      "startticks": 50682256,
+      "state": "R",
+      "uid": 1000
+    },
+    {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 95665,
+      "pid": 95690,
+      "ppid": 95666,
+      "startticks": 50682289,
+      "state": "R",
+      "uid": 1000
+    },
+    {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 95665,
+      "pid": 95691,
+      "ppid": 95666,
+      "startticks": 50682624,
+      "state": "R",
+      "uid": 1000
+    },
+    {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 95665,
+      "pid": 95692,
+      "ppid": 95666,
+      "startticks": 50682648,
+      "state": "D",
+      "uid": 1000
+    },
+    {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 95665,
+      "pid": 95693,
+      "ppid": 95666,
+      "startticks": 50682650,
+      "state": "R",
+      "uid": 1000
+    }
+  ],
+  "actual_D_setup_tracked_bytes": 280799517,
+  "actual_D_setup_tracked_count": 5577,
+  "actual_sealed_D_setup_inputs": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/recipe.bound.v1.json",
+      "sha256": "e8df0e735c27bd282eee9692144fb0e42ab7491259bedb2626e1714fe64865c5",
+      "size_bytes": 11220
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/original-setup.capture-terminal.v1.json",
+      "sha256": "7d3ed43ad2ae5d4a60b8ae2e6ae47ae36338f3b147cf39a8ca278e280a8e622c",
+      "size_bytes": 4639
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/original-setup-attempt01/execution.v1.json",
+      "sha256": "96ed65f0d6e59acf5ee75400b43d11b5312741e446883fcdb64cf93d041043e4",
+      "size_bytes": 29015
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/original-setup-attempt01/tracked-raw-source.v1.json",
+      "sha256": "2aa2d4a507a0e0676b0afaadbc2b6b269c038431dc9ea79228fdc8a9f6b7451d",
+      "size_bytes": 2423045
+    }
+  ],
+  "all_functions_ASTs_unchanged": [
+    "epoch",
+    "identity",
+    "clock",
+    "fail",
+    "fd_count",
+    "owner",
+    "hold_ancestors",
+    "digest",
+    "hold",
+    "doc",
+    "scan_originals",
+    "save",
+    "problem"
+  ],
+  "all_twelve_module_function_ASTs_unchanged": true,
+  "author": "/root/decision28_source_peer",
+  "author_handles_released": true,
+  "benchmark_B_unchanged": "a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+  "closure": "Same full95 positional real-FD hashes and seven original Linux epochs, immediate acquisition registration, all held source/metadata rehashes, independent leaf/ancestor closes, observed FD restoration, two error-aware17-original-PID/group absence scans and guarded receipt/final stdout/late companion. New D owners are derived from the exact sealed original D captures, not invented.",
+  "exact_raw_forward_and_inverse": true,
+  "future_fresh95_result": null,
+  "future_original_observer_owner": null,
+  "future_original_observer_terminal": null,
+  "genuine_B95_manifest_unchanged": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-current95-preparation-v1/decision28-current95-original-attempt01/current95-inputs.v1.json",
+    "sha256": "3c9b7eca9c9b33e01624764b7ccfccb9d748c3ac9623389f7e12447f0085b150",
+    "size_bytes": 44579
+  },
+  "independent_root_source_review_required_before_execution": true,
+  "limits": [
+    "Source-only successor. Parent original D setup closed0 is retained; this author action does not rerun setup, cache copy, Git, stock loader, CI, tests, model or engine.",
+    "Original D raw5577/280799517 equality is retained sealed setup metadata; the narrow observer does not repeat raw Git equality or import the stock driver.",
+    "Genuine B95/host87/current controller and all scientific inputs stay unchanged. Actual observer outcome/owner remain null until a distinct independently reviewed once-only observation."
+  ],
+  "literal_occurrences": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+  ],
+  "literal_pairs_in_order": [
+    [
+      "SETUP=BASE/'decision29-current-ci-preparation-v1'",
+      "SETUP=BASE/'decision29-successor-ci-D-preparation-v1'"
+    ],
+    [
+      "C='04a5d1c7b90274af71f4ff2456ec3013107c2bb3'",
+      "C='3c025b29b3c1d5275c2ec693410e4b83700583de'"
+    ],
+    [
+      "recipe=doc(SETUP/'recipe.bound.v1.json',10644,'7507d429ba5a57fa25e5fd1fcf9d106d9b743c53f84346366230569d9b7c938b')",
+      "recipe=doc(SETUP/'recipe.bound.v1.json',11220,'e8df0e735c27bd282eee9692144fb0e42ab7491259bedb2626e1714fe64865c5')"
+    ],
+    [
+      "capture=doc(SETUP/'original-setup.capture-terminal.v1.json',4610,'274e44f624c8356fda99a4132ae9d30e062987d9cae510210d12c2f31669abd2')",
+      "capture=doc(SETUP/'original-setup.capture-terminal.v1.json',4639,'7d3ed43ad2ae5d4a60b8ae2e6ae47ae36338f3b147cf39a8ca278e280a8e622c')"
+    ],
+    [
+      "setup=doc(SETUP/'original-setup-attempt01/execution.v1.json',28880,'a14e8d81871fd24ce16910526a031c9aeab2aa0a30ccb387871291fa5babd69e')",
+      "setup=doc(SETUP/'original-setup-attempt01/execution.v1.json',29015,'96ed65f0d6e59acf5ee75400b43d11b5312741e446883fcdb64cf93d041043e4')"
+    ],
+    [
+      "setup['tracked_count']==5561 and setup['tracked_bytes']==280645127",
+      "setup['tracked_count']==5577 and setup['tracked_bytes']==280799517"
+    ],
+    [
+      "'CI_checkpoint_C':C",
+      "'CI_checkpoint_D':C"
+    ],
+    [
+      "Original setup raw5561/280645127 equality",
+      "Original setup raw5577/280799517 equality"
+    ]
+  ],
+  "new_functions": [],
+  "original_bounds_and_closure_guards_unchanged": true,
+  "preserved_accepted_C_source": {
+    "path": "artifacts/benchmark_recovery_20260930/decision29-current95-post-D-setup-audit-preparation-v1/accepted-C-observer.v2.raw",
+    "sha256": "0cc5510cc406b5848c41089818027163b88a8b92d5acf4434af3ce50131de86d",
+    "size_bytes": 15422
+  },
+  "schema_version": 1,
+  "source": {
+    "path": "artifacts/benchmark_recovery_20260930/decision29-current95-post-D-setup-audit-preparation-v1/audit_actual95_post_setup_v1.py",
+    "sha256": "b754a2dd850d2b921cb4d3348d06e5c70ac8b3c4cd43b06f1b999943f97bc1fc",
+    "size_bytes": 15426
+  },
+  "status": "source_only_prepared_after_genuine_D_setup_unexecuted",
+  "target_imported_compiled_executed": false,
+  "unchanged_bounds": {
+    "cleanup_s": 10,
+    "each_regular_leaf_bytes": 16777216,
+    "error_records": 64,
+    "exclusive_failure_companion_bytes": 65536,
+    "held_leaf_count": 128,
+    "metadata_or_report_bytes": 1048576,
+    "total95_bytes": 67108864,
+    "work_s": 120
+  }
+}

@@ -1,0 +1,149 @@
+{
+  "controller": {
+    "argv": [
+      "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+      "-I",
+      "-B",
+      "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-prerequisite-capture-preparation-v1/capture_stock_runtime_bind_v2.py"
+    ],
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 0,
+    "observed_parent": {
+      "argv": [
+        "/usr/bin/timeout",
+        "--signal=TERM",
+        "--kill-after=10s",
+        "120s",
+        "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+        "-I",
+        "-B",
+        "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-prerequisite-capture-preparation-v1/capture_stock_runtime_bind_v2.py"
+      ],
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 0,
+      "pgid": 6530,
+      "pid": 6530,
+      "ppid": 6529,
+      "session": 6530,
+      "startticks": 51155127,
+      "state": "S",
+      "uid": 0
+    },
+    "pgid": 6530,
+    "pid": 6531,
+    "ppid": 6530,
+    "session": 6530,
+    "startticks": 51155127,
+    "state": "R",
+    "uid": 0
+  },
+  "limits": {
+    "capture_cleanup_s": 10,
+    "capture_work_s": 120,
+    "channel_bytes": 1048576,
+    "command_cleanup_s": 10,
+    "command_work_s": 30,
+    "mountinfo_bytes": 4194304
+  },
+  "mount_before": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "mountinfo_sha256": "183a650671892866df981c34d6bee93c1ae6518a57af41b19d0221dd9dbbe17a",
+    "mountinfo_size_bytes": 70364,
+    "namespace": "mnt:[4026532217]",
+    "namespace_stat": [
+      4,
+      4026532217,
+      33060,
+      1,
+      0,
+      1790517703668223409,
+      1790517703668223409
+    ],
+    "rows": [
+      {
+        "device": "8:48",
+        "filesystem": "ext4",
+        "mount_id": 331,
+        "optional": [],
+        "options": [
+          "ro",
+          "relatime"
+        ],
+        "original_line": "331 80 8:48 /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1 /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1 ro,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered",
+        "parent_mount_id": 80,
+        "root": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1",
+        "source": "/dev/sdd",
+        "superblock_options": [
+          "rw",
+          "discard",
+          "errors=remount-ro",
+          "data=ordered"
+        ],
+        "target": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1"
+      }
+    ]
+  },
+  "root_epoch7": [
+    2096,
+    584902,
+    16877,
+    21,
+    4096,
+    1791026991526015833,
+    1791026991526015833
+  ],
+  "source_commit": "3c025b29b3c1d5275c2ec693410e4b83700583de",
+  "source_directory_epoch7": [
+    2096,
+    71429,
+    16877,
+    6,
+    4096,
+    1787574172142255844,
+    1787574242675793871
+  ],
+  "source_pins": [
+    {
+      "epoch7": [
+        2096,
+        591264,
+        33188,
+        1,
+        6112,
+        1791024491690377036,
+        1791024491690377036
+      ],
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/mount_publication_runtime_wsl.sh",
+      "sha256": "5f68ab843ba5022b78242ce50de708f9b387bc817ee3a81cc2cc6f37096a0e6c",
+      "size_bytes": 6112
+    },
+    {
+      "epoch7": [
+        2096,
+        591626,
+        33188,
+        1,
+        41,
+        1791024492306427071,
+        1791024492306427071
+      ],
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/.git/HEAD",
+      "sha256": "33b3c32b7cd1f722f6eeaf2bff0e7ee83a9e2f01bcaa902a4d72f96558b507af",
+      "size_bytes": 41
+    },
+    {
+      "epoch7": [
+        2096,
+        87545,
+        33261,
+        1,
+        8020928,
+        1787574148546271435,
+        1787574148546271435
+      ],
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+      "sha256": "1643dacd9feaedc58f3cc581e4d22577dfe25c09b10282936186ccf0f2e61118",
+      "size_bytes": 8020928
+    }
+  ]
+}

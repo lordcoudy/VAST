@@ -1,3 +1,70 @@
+Current execution plan - 2026-10-03 13:13 UTC
+
+Hosted D run37116707816 passed with3001 discovered tests,2992 selected,2904 successes and88 approved skips. The prerequisite-corrected original local D full CI also passed:3001 discovered,2992 selected,2906 successes,86 approved skips and9 deferred integrations, with zero failures/errors, all six native builds and the three required native regressions. Its original capture closed with exit0 after2115.37338894s; independent review5a58508a verified the original report, unchanged5577-source tables, observer/wrapper closure and reader FD6 to6. The local namespace diagnostic succeeded, so no temporary profile was required. These are distinct original lane outcomes; the two formerly skipped local checks ran successfully.
+
+The selected GStreamer component benchmark and independent four-arm reduction remain accepted at measured source Ba00aa57f. The operating path preserves the original workload and false qualification/publication/full-run eligibility; its100ms scientific result remains largely negative. CI source D3c025b29 changed no benchmark95/image/native/worker inputs. Earlier local D failed its final missing-bind skip audit and remains failed. The corrected prerequisite used the stock read-only bind contract and a fresh full-CI output, with no allowance widening or benchmark replay.
+
+Ordered remaining work:
+1. Freeze current documentation and actual CI bindings; execute the already reviewed metadata generator once, then independently compare all20 requirement bodies,118 scenarios and the original82-scenario/72-task register. Preserve manual checks, per-scenario evidence limits and the direct every-full-consumer negative-test gap.
+2. Resolve material final critique findings and close actual implementation gates. Sync and archive this same OpenSpec change with all requirements, original files and .openspec.yaml preserved; make one finite byte-verified checkpoint and push to the same PR2.
+3. Require CI on the actual archived commit and exact final review. Record future process outcomes in the PR ledger, remove Draft and perform only the user-authorized merge after those gates actually close. Do not create a bookkeeping commit loop or mark future checks complete in this dated snapshot.
+4. Retire only the owned temporary D runtime bind after its consumers close, using its exact boot, namespace and mount identity; preserve the global canonical runtime and measured benchmark root. Cleanup remains pending.
+
+Earlier dated entries below retain their complete original bytes and outcomes.
+
+Current execution plan - 2026-10-03 12:22 UTC
+
+The selected GStreamer component benchmark is operating: CPU08 and GPU02 each completed baseline/shared arms, cleanup and cold validation; the independent four-arm reduction reproduced all results. The scientific outcome is valid and largely negative against the unchanged 100 ms deadline. Broad qualification, 32-arm, 1120-operation, 5600-operation and Q4 campaigns remain unexecuted at their original scope.
+
+Current repository source is D 3c025b29b3c1d5275c2ec693410e4b83700583de; the measured source remains B a00aa57f7d9534f8e7920f14f70d6a75a23570ed. Hosted D CI passed and its originals are independently retained. The original local D CI remains failed because the real installed interpreter lacked the project read-only bind; its failed report has not been changed. The exact stock bind and check-only commands now succeeded. The unchanged canonical-runtime test ran once with one success and zero skips, and the fresh 95-input audit verified all full hashes, original Linux identities and resource closure.
+
+One prerequisite-corrected original full CI is running: root e7322f/session90022, stock PID/PGID/session6687, startticks51238236, UID/GID1000, original boot dde50e69-39bf-45bd-bdb7-bc33c9adcb0b. It uses the unchanged 5400+10 second envelope, source D and a fresh exclusive output. Do not restart it or infer its result. Original failed runs stay failed.
+
+Ordered remaining work:
+1. Obtain its original terminal and independently review raw selection/outcomes/skips, six builds, three required native regressions, source equality, observer/wrapper EOF, process and descriptor closure. Diagnose any failure before another action.
+2. Freeze the final documentation, task snapshot and my own reassessment. Bind both current CI lanes, then run the already reviewed metadata generator once and independently review all 20 requirement bodies, 118 scenarios and the preserved original 82-scenario/72-task register. Keep manual checks and direct-test gaps visible.
+3. Obtain fresh final critique and resolve material findings. Close actual implementation gates; sync and archive this same OpenSpec change with all requirements and .openspec.yaml preserved. Make one finite, byte-verified commit and push to the same PR.
+4. Require CI on the actual archived commit and an exact final review. Update PR evidence, remove Draft and perform the user-authorized merge. Do not create a bookkeeping commit loop or mark a future result complete.
+5. Retire only the owned temporary D runtime bind after its consumers close, using its exact boot, namespace and mount identity. Preserve the global canonical runtime and measured benchmark root.
+
+Earlier dated entries below remain historical.
+
+Current execution plan - 2026-10-03 11:36 UTC
+
+Original local D fullCI ed413d/session68257 genuinely closedFAILED9d7cd5 after2141.443891322s. Its source remains exactD, six native targets and allthree requirednative regressions passed;2992 selected tests finished,2904successes,88skips, zero testcase failures/errors. Finalselectionaudit rejects the exact local reason 'canonical WSL publication venv bind is not mounted' for the unchangedcanonicalvenv test. HostedD passed on its own absent-venv classification. This failed original stays failed; no reportisrelabeled.
+
+Diagnosed remaining prerequisite: the new ext4CIroot has the real plain canonical3.12.3 interpreter installed externally but lacks its required project read-only bind. Independently inspect the stock mountcontract and prepare a finite exact source/target mount+verification+cleanup plan. After concrete review, establish the actual read-only bind, execute the existing meaningful test without changingassertions/skips, then one separately owned original fullCI against unchangedD. Preserve any failure and diagnoseit before new work. No global policy, selection, native, benchmarkB,95/image or scientific workload change.
+
+After true currentlocalCI: bindbothCIlanes, freeze docs/own/task snapshot, once execute andindependentlyreview20/118conformance andlegacy82/72register; freshcritique; actualimplementationclosure; samechange sync/archive/finitecommitpush; latestarchivedCI andexactfinalreview; authorizedmerge. Earlierdatedsectionsarehistorical.
+
+Current execution plan - 2026-10-03 11:26 UTC
+
+The operating CPU08/GPU02 component and independent four-arm science are complete at benchmarkB; the100ms deadline remains overwhelmingly missed. Hosted current-code D run37116707816 passed and its original four provider leaves, ZIP members, report/source/selection/native/profile/observer joins are independently retained and accepted05019c9b. No measurement replay is needed for CI-only D. Original P/C failures stay failed.
+
+The one original D local full CI is running (capture95791, stock95805, session68257) after genuine5577-file setup, fresh95 audit, exact8-asset copy and stock size/SHA256/SHA384 reuse validation. Do not restart it. Prepared current20-requirement118-scenario generator is independently source-reviewed but unexecuted; no final CI or conformance is inferred from preparation.
+
+Ordered remaining work:
+1. Obtain actual local CI terminal, preserve original outputs and independently join full selection/88 skips/native3/six builds/source-before-after/observer/wrapper cleanup.
+2. Freeze current docs/own reassessment/task snapshot and final binding to both original D CI lanes. Run the reviewed metadata-only conformance generator once, then independently review every current scenario and the preserved legacy82-scenario/72-task register, explicit manual source evidence and direct-test gaps.
+3. Obtain fresh exact final critique; close only actual prearchive implementation gates. Sync the20/118 main spec with supported OpenSpec instructions, archive the same change with metadata preserved, and make one finite same-PR commit/push.
+4. Require actual latest archived-commit checks and exact final review, update final PR evidence without a bookkeeping commit loop, then perform authorized merge. Repository process tasks remain truthful snapshots until their named actions occur.
+
+Earlier dated sections remain historical.
+
+Current execution plan - 2026-10-03 10:50 UTC
+
+Actual benchmark CPU08/GPU02 and independent four-arm science remain closed at B with truthful negative100ms results. Existing selected-image test repair was independently reviewed and passed its original focused test, then committed/pushed as D3c025b29 in the same PR. Hosted D40 run37116707816 is still executing; independent host diagnostics succeeded, and full-suite acceptance remains pending.
+
+Genuine fresh D ext4 setup80e2aa closed0:5577 committed raw files/280799517B,14 original commands0, original95 epochs unchanged and all handles released/two clean process scans. Exact separately reviewed eight-file cache copy10b1e9 closed0:15514597B/SHA256/SHA384, FD6-to6, no network/inference/CI. The unchanged stock verifier still must validate all8 existing assets. Historical C local timeout and P/C stale-test failures are preserved.
+
+Ordered remaining work:
+1. Independently review/bind peer post-D fresh95 source; execute once and join genuine95 full hashes/seven epochs/final process and FD closure. Then execute the original5400+10 full CI once against D; preserve any failure and diagnose it.
+2. Retain original hosted D logs/ZIPs/report and independently review complete source/build/native/selection/88 exact skips/profile/test/terminal evidence alongside local D.
+3. Finalize current20-requirement118-scenario conformance, documenting direct-test/manual/campaign limitations and preserving the82-entry original register. Update runbook/README/progress and own reassessment from actual results, then fresh independent critique.
+4. Close actual implementation gates, supported same-change sync/archive with unaffected specs and .openspec.yaml retained, finite same-PR commit/push, exact latest CI and final review, then authorized merge. No future gate is marked complete.
+
+Earlier dated sections remain historical.
+
 Current execution plan - 2026-10-03 10:24 UTC
 
 Actual CPU08/GPU02 and current four-arm stock reduction are closed and independently accepted at benchmarkB; genuine science is descriptive and the100ms target remains overwhelmingly missed. CI-only checkpointC04a5d1c7 is pushed. Fresh actual95 post-setup v2 audit6cf623/rootccbe854a passed fullSHA/sevenepochs/allcloses/FD6/6/6/two error-free17-owner scans.

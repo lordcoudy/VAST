@@ -1,0 +1,17 @@
+{
+  "successor_author": "prepare_source_metadata_v2.py",
+  "kind": "metadata_author_only_failure",
+  "cleanup_target_execution_performed": false,
+  "preparation_written": false,
+  "original_author_numeric_PID_and_FD": "not observed",
+  "original_tool_exit_code": 1,
+  "source_changed_to_repair_failure": false,
+  "schema_version": 1,
+  "first_error": {
+    "type": "AssertionError",
+    "location": "line42",
+    "reason": "String replace calls in mount escape decoder were incorrectly included in file-replacement prohibition"
+  },
+  "original_tool_chunk": "6b001f",
+  "original_author": "prepare_source_metadata_v1.py"
+}

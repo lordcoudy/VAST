@@ -1,0 +1,68 @@
+{
+  "all121_static_D_source_SHA_size_join_original_hosted_table": true,
+  "binding": {
+    "domain": "control",
+    "path": "artifacts/benchmark_recovery_20260930/decision29-current-conformance-preparation-v1/binding.partial.D.v3.json",
+    "sha256": "775dfdb09ec0c29d985191a96df51f89175594cf708b38b0f645cb2ac5007909",
+    "size_bytes": 12798
+  },
+  "counts": {
+    "discovered": 3001,
+    "errors": 0,
+    "failures": 0,
+    "skips": 88,
+    "successes": 2904
+  },
+  "finalization": {
+    "archive": "pending",
+    "conformance_review": "pending",
+    "latest_final_review": "pending",
+    "merge": "user_authorized_pending_required_checks_and_exact_final_review"
+  },
+  "limits": [
+    "Original hosted observer descendant quiescence/numeric FD limits remain unchanged in the pinned originals.",
+    "D ext4 original is still unbound/live as last reported; no local acceptance inferred.",
+    "Generator, target imports, tests, Git, model/engine/native not executed."
+  ],
+  "original_hosted_refs": {
+    "closure": {
+      "domain": "control",
+      "path": "artifacts/benchmark_recovery_20260930/decision29-ci-D-original-independent-review-v1/review.v1.json",
+      "sha256": "05019c9b277292ae29c4b60dee2839c9ae4c8d61456254da2796f89ca4cf4f98",
+      "size_bytes": 115481
+    },
+    "report": {
+      "domain": "control",
+      "path": "artifacts/benchmark_recovery_20260930/decision29-ci-D-original-independent-review-v1/cpu.report.original.json",
+      "sha256": "41b71c1dd134148b346eda2a7215e6d643793d3b0c2b32d334f5e11ec8e34724",
+      "size_bytes": 1833210
+    },
+    "source_after": {
+      "domain": "control",
+      "path": "artifacts/benchmark_recovery_20260930/decision29-ci-D-original-independent-review-v1/cpu.source-after.original.json",
+      "sha256": "105568f276b37f57aad59b81efaa6524c816b4e595679da56807a1087daba0ea",
+      "size_bytes": 1270968
+    },
+    "source_before": {
+      "domain": "control",
+      "path": "artifacts/benchmark_recovery_20260930/decision29-ci-D-original-independent-review-v1/cpu.source-before.original.json",
+      "sha256": "105568f276b37f57aad59b81efaa6524c816b4e595679da56807a1087daba0ea",
+      "size_bytes": 1270968
+    },
+    "terminal": {
+      "domain": "control",
+      "path": "artifacts/benchmark_recovery_20260930/decision29-ci-D-original-independent-review-v1/cpu.observer-terminal.original.json",
+      "sha256": "c98b171d8f8d1de5984495e5ae99c7f9246482eaf21cdebcd2f95c055809a565",
+      "size_bytes": 1484
+    }
+  },
+  "original_source_before_after_exact": true,
+  "original_tests": {
+    "missing_required_successes": [],
+    "successful": true,
+    "tests_run": 2992
+  },
+  "schema_version": 1,
+  "source_commit": "3c025b29b3c1d5275c2ec693410e4b83700583de",
+  "status": "source_and_original_hosted_metadata_preflight_no_generator_execution"
+}

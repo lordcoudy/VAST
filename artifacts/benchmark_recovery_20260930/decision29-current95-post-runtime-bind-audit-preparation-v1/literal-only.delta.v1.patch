@@ -1,0 +1,11 @@
+--- accepted-post-D-setup/audit_actual95_post_setup_v1.py
++++ prepared-post-runtime-bind/audit_actual95_post_runtime_bind_v1.py
+@@ -10,7 +10,7 @@
+ HERE=Path(__file__).resolve().parent
+ BASE=HERE.parent
+ SETUP=BASE/'decision29-successor-ci-D-preparation-v1'
+-OUT=HERE/'original-audit-attempt01'
++OUT=HERE/'original-post-runtime-bind-audit-attempt01'
+ BENCH=Path('/home/s-a-balashov/work/vast-component-release-20260930-d27')
+ B='a00aa57f7d9534f8e7920f14f70d6a75a23570ed'
+ C='3c025b29b3c1d5275c2ec693410e4b83700583de'

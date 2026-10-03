@@ -1,0 +1,47 @@
+{
+  "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+  "closure_observer_PID": 4717,
+  "closure_observer_fd_after": 6,
+  "closure_observer_fd_before": 6,
+  "late_failure_companion_observed_absent": true,
+  "mandatory_local_CI_pass": false,
+  "no_numeric_original_wrapper_FD_count_or_global_quiescence_claim": true,
+  "original_CI_disposition": "FAILED",
+  "original_reader_tool": {
+    "basis": "Metadata review verified an original failed CI; it did not rerun or pass CI.",
+    "chunk": "f41e2c",
+    "returncode": 0
+  },
+  "prior_reader_FD6_to6": true,
+  "prior_reader_pid": 4655,
+  "review": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-local-ci-D-original-review-preparation-v1/original-review-attempt01/review.v1.json",
+    "sha256": "dea419acd6d73dcf486694314a290001a9325c47dca5d0c477342f89c71dc9bd",
+    "size_bytes": 89901
+  },
+  "schema_version": 1,
+  "two_fresh_process_scans": [
+    {
+      "at_monotonic_ns": 510234357436439,
+      "errors": [],
+      "original_PID_paths_absent": {
+        "4655": true,
+        "95791": true,
+        "95805": true,
+        "96116": true
+      },
+      "owned_group_session_members": []
+    },
+    {
+      "at_monotonic_ns": 510234358966034,
+      "errors": [],
+      "original_PID_paths_absent": {
+        "4655": true,
+        "95791": true,
+        "95805": true,
+        "96116": true
+      },
+      "owned_group_session_members": []
+    }
+  ]
+}

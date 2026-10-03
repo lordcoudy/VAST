@@ -1,0 +1,14 @@
+{
+  "first_error": "ValueError: ast.literal_eval does not support original CHUNK_BYTES=64*1024 AST",
+  "original_C_attempt_remains_failed": true,
+  "own_static_observer_attempt01_returncode": 1,
+  "own_static_observer_attempt01_tool": "9618ee",
+  "preserved_failed_metadata_observer_source": {
+    "path": "artifacts\\benchmark_recovery_20260930\\decision29-local-ci-C-original-failure-review-v1\\review_original_failure_v1.py",
+    "sha256": "81929c8c054339f044d7185c5b1ddac72149cab412fa2f777b849245a4e97687",
+    "size_bytes": 11936
+  },
+  "schema_version": 1,
+  "target_or_model_or_network_execution": false,
+  "v2_narrow_change": "Check exact original constant multiplication AST without compiling/evaluating source. Join already exclusively preserved raw copies by byte equality rather than rewrite them."
+}

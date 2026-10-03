@@ -1,0 +1,511 @@
+{
+  "accepted_failed_D_reader": {
+    "author_fd_epoch7": [
+      17601399781211216820,
+      1407374885980330,
+      33206,
+      1,
+      19769,
+      1791027464494818900,
+      1791027464494818900
+    ],
+    "author_named_epoch7": [
+      17601399781211216820,
+      1407374885980330,
+      33206,
+      1,
+      19769,
+      1791027464494818900,
+      1791027464485097500
+    ],
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-local-ci-D-original-review-preparation-v1\\review_actual_local_D_v2.py",
+    "sha256": "c73b28f1c56c1b04f1ca49ecc8eaef7e9894582c36bcb350c67896e9d309767b",
+    "size_bytes": 19769
+  },
+  "all_author_input_handles_released": true,
+  "all_six_primitive_function_ASTs_unchanged": true,
+  "author": "/root/adversarial_review",
+  "author_elapsed_s_before_receipt": 0.01984319998882711,
+  "author_epoch_view_limitation": "Windows author FD and named views recorded separately and independently stable; no original Linux source95 epoch or future target output is asserted.",
+  "closed_capture_namespace": "decision29-successor-ci-D-prerequisite-capture-preparation-v1/original-full-ci-prerequisite-attempt01",
+  "complete_declared_inverse_reconstructs_accepted_bytes": true,
+  "complete_source_diff": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-local-ci-D-prerequisite-result-review-preparation-v1\\complete-source.delta.v2.patch",
+    "sha256": "9101ecf27ad4200137d98f29ee894f89cd3b9a20d726f2cf7abb09d6eb311873",
+    "size_bytes": 23768
+  },
+  "conformance_acceptance": false,
+  "count_and_history_rules": [
+    "Original failed D stays failed. Its exact full discovery/declaration and raw source tables are historical static inventories only.",
+    "Future successes, failures, errors, expected failures, unexpected successes and skips are derived from original starts/terminals/report. No fixed old88 observed skip count.",
+    "88 allowed skip declarations remain unchanged and all source-attested reasons audited. An existing mounted case may execute successfully instead of skipping.",
+    "Current owners derive only from the actual future wrapper dispatch/terminal and original observer. No old PID, starttick or session is rebound.",
+    "Exact8 asset descriptors may join the closed supported-reuse metadata; old command owner/timing/report is never relabeled as the new acquisition.",
+    "A metadata review can verify a failed original. Full CI pass requires the strict coherent original report/child/observer/wrapper0, required native successes, source equality, skip audit and original deadline."
+  ],
+  "current_CI_started_parent_notification_only": {
+    "root_tool_cell": "e7322f",
+    "session": 90022
+  },
+  "explicit_limits": [
+    "Reader requires complete final stock reports/log/source tables and clean retained capture closure to seal all-scope evidence. Missing or inconsistent failure-stage evidence stays a failed/incomplete reader review, with available raw copies retained.",
+    "Command JSON and raw build/factory channels do not expose original command numeric PID/FD identities; none are invented. Fresh scans cover only authenticated recorded controller/stock/suite owners and their PGIDs/sessions.",
+    "Factory plugin descriptors are original stock observations; this reader never reopens plugin/model bodies or performs a new query.",
+    "Primitive scanner/custody/caps and final report/flush/close/late logic remain inherited. Actual clean one-shot writes/FD restoration and independent reader-owner postterminal closure remain required.",
+    "No local/hosted job, target, test, mount, Git, stock loader, engine, model or policy operation is performed by source preparation."
+  ],
+  "fresh_reader_output": "original-prerequisite-review-attempt01",
+  "fresh_stock_root": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-prerequisite-original-output",
+  "function_names": [
+    "clock",
+    "epoch",
+    "descriptor",
+    "read",
+    "preserve",
+    "scan"
+  ],
+  "future_actual_reader_outcome": null,
+  "future_original_terminal_cell": null,
+  "future_original_tool_returncode": null,
+  "future_wrapper_terminal": null,
+  "hardware_acceptance": false,
+  "limits": {
+    "aggregate_streamed_metadata_bytes": 67108864,
+    "each_leaf_bytes": 4194304,
+    "outer_cleanup_s": 10,
+    "reader_work_s": 120
+  },
+  "ordered_reversible_changes": [
+    {
+      "after": "\"\"\"Finite postterminal original prerequisite-D review; retain success or failure without replay.\"\"\"",
+      "before": "\"\"\"Finite postterminal FAILED local D review. Never turn reviewed failure into CI acceptance.\"\"\"",
+      "purpose": "Scope label"
+    },
+    {
+      "after": "CI = BASE / 'decision29-successor-ci-D-prerequisite-capture-preparation-v1'",
+      "before": "CI = BASE / 'decision29-successor-ci-D-preparation-v1'",
+      "purpose": "Fresh capture preparation"
+    },
+    {
+      "after": "OUTPUT = CHECKOUT.with_name(CHECKOUT.name + '-prerequisite-original-output')",
+      "before": "OUTPUT = CHECKOUT.with_name(CHECKOUT.name + '-original-output')",
+      "purpose": "Fresh stock output"
+    },
+    {
+      "after": "WRAPPER = CI / 'original-full-ci-prerequisite-attempt01'",
+      "before": "WRAPPER = CI / 'original-full-ci-attempt01'",
+      "purpose": "Fresh closed wrapper"
+    },
+    {
+      "after": "OUT = HERE / 'original-prerequisite-review-attempt01'",
+      "before": "OUT = HERE / 'original-review-attempt01'",
+      "purpose": "Fresh exclusive reader output"
+    },
+    {
+      "after": "facts = {}\noriginal_disposition = 'UNKNOWN'\noriginal_pass = False\nwrapper_late = None",
+      "before": "facts = {}",
+      "purpose": "Unknown future outcome until observed"
+    },
+    {
+      "after": "    if os.path.lexists(WRAPPER / 'late-failure.v1.json'):\n        wrapper_late = json.loads(preserve(WRAPPER / 'late-failure.v1.json', 'wrapper/late-failure.v1.json'))\n    assert terminal['status'] in ('success', 'failed')\n    original_disposition = 'SUCCESS' if terminal['status'] == 'success' and TOOL_RC == 0 and wrapper_late is None else 'FAILED'\n    facts = {'actual_wrapper_terminal': terminal, 'actual_wrapper_dispatch': dispatch,\n             'wrapper_late_companion': wrapper_late, 'stock_evidence_complete': False,\n             'all_qualified_original_copies': copies}",
+      "before": "    assert not os.path.lexists(WRAPPER / 'late-failure.v1.json')",
+      "purpose": "Preserve late-failed original and partial wrapper evidence"
+    },
+    {
+      "after": "    assert terminal['original']['pid'] == terminal['original']['pgid'] > 0\n    assert terminal['original']['startticks'] > 0 and dispatch['controller']['pid'] > 0\n    assert terminal['original']['uid'] == terminal['original']['gid'] == 1000\n    assert dispatch['controller']['uid'] == dispatch['controller']['gid'] == 1000\n    assert terminal['original']['boot_id'] == dispatch['controller']['boot_id'] == Path('/proc/sys/kernel/random/boot_id').read_text().strip()",
+      "before": "    assert terminal['original']['pid'] == terminal['original']['pgid'] == 95805 and terminal['original']['startticks'] == 50718283\n    assert dispatch['controller']['pid'] == 95791",
+      "purpose": "Derive genuine current owner identities, never reuse old PIDs"
+    },
+    {
+      "after": "    assert terminal['elapsed_s'] < 5410 and dispatch['deadline_ns'] - dispatch['job_started_monotonic_ns'] == 5400*10**9",
+      "before": "    assert terminal['elapsed_s'] < 5400 and dispatch['deadline_ns'] - dispatch['job_started_monotonic_ns'] == 5400*10**9",
+      "purpose": "Metadata may retain an original deadline failure; original success still requires5400"
+    },
+    {
+      "after": "    tracking = json.loads(before_raw)\n    after_tracking = json.loads(after_raw)\n    actual_changed = sorted(k for k in set(tracking) | set(after_tracking) if tracking.get(k) != after_tracking.get(k))\n    prior_table_path = BASE / 'decision29-local-ci-D-original-review-preparation-v1/original-review-attempt01/original-copies/stock/tracked-source.before.json'\n    prior_table_raw = read(prior_table_path)\n    assert json.loads(prior_table_raw) == tracking\n    source_equal = before_raw == after_raw",
+      "before": "    assert before_raw == after_raw\n    tracking = json.loads(before_raw)",
+      "purpose": "Retain actual source drift on failure and join original committed D table"
+    },
+    {
+      "after": "    assert report['commit'] == COMMIT and report['raw_checkout_bytes_match_commit'] is True and report['changed_tracked_paths'] == actual_changed",
+      "before": "    assert report['commit'] == COMMIT and report['raw_checkout_bytes_match_commit'] is True and report['changed_tracked_paths'] == []",
+      "purpose": "Verify actual source-change report rather than force failure or success"
+    },
+    {
+      "after": "    prior_child_path = BASE / 'decision29-local-ci-D-original-review-preparation-v1/original-review-attempt01/original-copies/stock/unittest-child.report.json'\n    prior_child_raw = read(prior_child_path)\n    assert len(prior_child_raw) == 1734578 and hashlib.sha256(prior_child_raw).hexdigest() == '93c23027abbca094608fb480c5f230cc99ba3d6a832aefa8abf3a8d3e2fe48c9'\n    prior_child = json.loads(prior_child_raw)\n    # Historical D is an exact discovery/declaration inventory, never current execution authority.\n    assert child['discovered_ids'] == prior_child['discovered_ids']\n    assert len(child['discovered_ids']) == len(set(child['discovered_ids']))\n    for key in ('portable_ids', 'integration_declarations', 'allowed_portable_skips', 'manifest_path', 'manifest_sha256'):\n        assert selection[key] == prior_child['selection'][key]\n    assert selection['counts'] == {'discovered': len(child['discovered_ids']), 'portable': len(portable),\n                                   'integration': len(selection['integration_declarations'])}\n    assert selection['discovered_ids'] == child['discovered_ids'] and selection['integration_executed'] is False\n    assert child['tests_run'] == len(portable) == len(starts) == len(finishes)\n    assert set(starts) == set(finishes) == portable\n    assert len(success) == len(child['successful_test_ids']) and len(skipped) == len(child['skips'])\n    outcome_sets = {name: {k for k, v in finishes.items() if v['outcome'] == name}\n                    for name in ('success', 'skip', 'failure', 'error', 'expected_failure', 'unexpected_success')}\n    assert set().union(*outcome_sets.values()) == portable\n    assert outcome_sets['success'] == success and outcome_sets['skip'] == skipped\n    assert outcome_sets['expected_failure'] == set(child['expected_failures'])\n    assert outcome_sets['unexpected_success'] == set(child['unexpected_successes'])\n    failure_parents, error_parents = set(), set()\n    original_trace_id_joins = []\n    for category, target in (('failures', failure_parents), ('errors', error_parents)):\n        for row in child[category]:\n            exact = [k for k in portable if row['test_id'] == k or row['test_id'].startswith(k + ' (')]\n            assert len(exact) == 1, 'Original failure/subtest ID cannot uniquely join its discovered parent'\n            target.add(exact[0])\n            original_trace_id_joins.append({'category': category, 'original_test_id': row['test_id'], 'parent_test_id': exact[0]})\n    assert failure_parents <= outcome_sets['failure'] | outcome_sets['error']\n    assert outcome_sets['failure'] <= failure_parents\n    assert error_parents == outcome_sets['error']\n    assert all(starts[k]['monotonic_ns'] <= finishes[k]['monotonic_ns'] for k in starts)\n    allowed = {r['test_id']: r for r in selection['allowed_portable_skips']}\n    assert len(allowed) == len(selection['allowed_portable_skips'])\n    skip_audit, skip_mismatches = [], []\n    for row in child['skips']:\n        if row['test_id'] not in allowed or row['reason'] != allowed[row['test_id']]['reason']:\n            skip_mismatches.append({'original': row, 'allowed_declaration': allowed.get(row['test_id'])})\n        else:\n            skip_audit.append(allowed[row['test_id']])\n    if 'portable_skip_audit' in child:\n        assert child['portable_skip_audit'] == skip_audit and not skip_mismatches\n    else:\n        assert child['successful'] is False and child.get('child_failure')\n    assert all(row['acceptance_claim'] is False for row in allowed.values())\n    assert tracking[selection['manifest_path']]['sha256'] == selection['manifest_sha256']\n    assert len(selection['integration_declarations']) == 9\n    assert set(REQUIRED) - success <= set(child['missing_required_successes'])",
+      "before": "    assert len(child['discovered_ids']) == len(set(child['discovered_ids'])) == 3001\n    assert selection['counts'] == {'discovered': 3001, 'portable': 2992, 'integration': 9}\n    assert selection['discovered_ids'] == child['discovered_ids'] and selection['integration_executed'] is False\n    assert child['tests_run'] == len(portable) == len(starts) == len(finishes) == 2992\n    assert set(starts) == set(finishes) == portable\n    assert len(success) == 2904 and len(skipped) == len(child['skips']) == 88\n    assert child['failures'] == child['errors'] == child['expected_failures'] == child['unexpected_successes'] == child['missing_required_successes'] == []\n    assert {k for k, v in finishes.items() if v['outcome'] == 'success'} == success\n    assert {k for k, v in finishes.items() if v['outcome'] == 'skip'} == skipped\n    assert success.isdisjoint(skipped) and success | skipped == portable\n    assert all(starts[k]['monotonic_ns'] <= finishes[k]['monotonic_ns'] for k in starts)\n    allowed = {r['test_id']: r for r in selection['allowed_portable_skips']}\n    skip_audit, skip_mismatches = [], []\n    for row in child['skips']:\n        assert row['test_id'] in allowed\n        if row['reason'] != allowed[row['test_id']]['reason']:\n            skip_mismatches.append({'original': row, 'allowed_declaration': allowed[row['test_id']]})\n        else:\n            skip_audit.append(allowed[row['test_id']])\n    expected_unapproved = 'test_backend_publication_output_transaction_production_v3.BackendPublicationOutputTransactionProductionV3Tests.test_canonical_wsl_venv_requires_plain_copied_python'\n    assert len(skip_mismatches) == 1 and skip_mismatches[0]['original'] == {'test_id': expected_unapproved, 'reason': 'canonical WSL publication venv bind is not mounted'}\n    assert child['child_failure'] == 'ValueError: unapproved portable skip identity/reason: ' + expected_unapproved\n    assert 'portable_skip_audit' not in child and all(row['acceptance_claim'] is False for row in allowed.values())\n    assert tracking[selection['manifest_path']]['sha256'] == selection['manifest_sha256'] and len(selection['integration_declarations']) == 9",
+      "purpose": "Actual dynamic outcomes and exact unchanged inventory; no forced88 skips or old failure"
+    },
+    {
+      "after": "    assert report['built_targets'] == TARGETS\n    actual_native_successes = sorted(set(REQUIRED) & success)",
+      "before": "    assert set(REQUIRED) <= success and report['built_targets'] == TARGETS",
+      "purpose": "Observe actual native results; require all only for original success"
+    },
+    {
+      "after": "        assert commands[name]['returncode'] == 0 and commands[name]['timed_out'] is False and commands[name]['cleanup_error'] is None\n        for channel in ('stdout', 'stderr'):\n            preserve(OUTPUT / (name + '.' + channel), 'stock/' + name + '.' + channel)\n    factories = report['gstreamer_factories']\n    assert set(factories) == {'appsrc', 'queue', 'videoconvert'}\n    for factory, row in factories.items():\n        observed = json.loads(preserve(OUTPUT / ('factory-' + factory + '.json'), 'stock/factory-' + factory + '.json'))\n        assert observed == row['command'] and observed['returncode'] == 0 and observed['timed_out'] is False and observed['cleanup_error'] is None\n        factory_raw = preserve(OUTPUT / ('factory-' + factory + '.stdout'), 'stock/factory-' + factory + '.stdout')\n        preserve(OUTPUT / ('factory-' + factory + '.stderr'), 'stock/factory-' + factory + '.stderr')\n        assert len(factory_raw) == row['stdout_size_bytes'] and hashlib.sha256(factory_raw).hexdigest() == row['stdout_sha256']\n        assert len(factory_raw) <= 65536 and b'Factory Details:' in factory_raw and b'Plugin Details:' in factory_raw\n    packages = json.loads(preserve(OUTPUT / 'gstreamer-packages.json', 'stock/gstreamer-packages.json'))\n    assert packages == report['gstreamer_packages'] and packages['returncode'] == 0\n    for channel in ('stdout', 'stderr'):\n        preserve(OUTPUT / ('gstreamer-packages.' + channel), 'stock/gstreamer-packages.' + channel)",
+      "before": "        assert commands[name]['returncode'] == 0 and commands[name]['timed_out'] is False and commands[name]['cleanup_error'] is None",
+      "purpose": "Join original build/tool raw channels and loaded native prerequisite facts"
+    },
+    {
+      "after": "    reuse = json.loads(reuse_raw); assert reuse['facts']['closed_stock_report']['assets'] == acquisition['assets'] and reuse['error'] is None",
+      "before": "    reuse = json.loads(reuse_raw); assert reuse['facts']['closed_stock_report'] == acquisition and reuse['error'] is None",
+      "purpose": "Join exact8 static asset descriptors without rebinding old acquisition owner/timing"
+    },
+    {
+      "after": "    assert report['observer'] == observer\n    assert observer['successful'] == (observer['returncode'] == 0 and observer['failure'] is None)\n    assert observer['owner']['pid'] > 0 and observer['owner']['startticks'] > 0\n    assert observer['owner']['boot_id'] == terminal['original']['boot_id']",
+      "before": "    assert report['observer'] == observer and observer['returncode'] == 1 and observer['successful'] is False\n    assert observer['failure'] == 'original suite child did not exit zero'",
+      "purpose": "Observe genuine current suite-child outcome and owner"
+    },
+    {
+      "after": "    assert report['hardware_acceptance'] is False\n    original_pass = (terminal['status'] == 'success' and terminal['returncode'] == TOOL_RC == 0\n                     and terminal['first_error'] is None and wrapper_late is None\n                     and report['successful'] is True and child['successful'] is True\n                     and observer['successful'] is True and source_equal\n                     and terminal['elapsed_s'] < 5400)\n    if original_pass:\n        assert not child['failures'] and not child['errors'] and not child['unexpected_successes']\n        assert not child['missing_required_successes'] and not skip_mismatches\n        assert not child.get('child_failure') and not child.get('observer_failure')\n        assert set(REQUIRED) <= success and report.get('failure') is None\n        assert report.get('deadline_failure') is None and report.get('source_integrity_failure') is None\n    else:\n        assert TOOL_RC != 0 or terminal['status'] == 'failed' or wrapper_late is not None or report['successful'] is False\n    original_disposition = 'SUCCESS' if original_pass else 'FAILED'",
+      "before": "    assert terminal['status'] == 'failed' and terminal['returncode'] == TOOL_RC == 1\n    assert terminal['first_error'] == {'type': 'AssertionError', 'message': 'original full CI exit is failed; retain stock report'}\n    assert report['successful'] is False and child['successful'] is False and report['hardware_acceptance'] is False\n    assert report['failure'] == 'RuntimeError: original full-suite child/observer failed; see original lifecycle/trace'",
+      "purpose": "Strict success branch and separate authentic failure disposition"
+    },
+    {
+      "after": "             'source_tables_equal': source_equal, 'source_table_rows': len(tracking), 'source_capture_current_joins': source_joins,\n             'actual_changed_source_paths': actual_changed,\n             'actual_counts': {'discovered': len(child['discovered_ids']), 'selected': len(portable), 'success': len(success),\n                               'skip': len(child['skips']), 'failure': len(child['failures']), 'error': len(child['errors']),\n                               'expected_failure': len(child['expected_failures']), 'unexpected_success': len(child['unexpected_successes']),\n                               'deferred_integration': len(selection['integration_declarations'])},\n             'all_selected_unique_original_start_terminal_joins': True, 'approved_skips': skip_audit,\n             'unapproved_original_skip': skip_mismatches, 'child_failure': child.get('child_failure'),\n             'original_trace_id_joins': original_trace_id_joins, 'terminal_outcome_counts': {k: len(v) for k, v in outcome_sets.items()},\n             'stock_evidence_complete': True, 'actual_native_success_ids': actual_native_successes,\n             'loaded_factory_originals': factories, 'wrapper_late_companion': wrapper_late,",
+      "before": "             'source_tables_equal': True, 'source_table_rows': 5577, 'source_capture_current_joins': source_joins,\n             'actual_counts': {'discovered': 3001, 'selected': 2992, 'success': 2904, 'skip': 88, 'failure': 0, 'error': 0, 'deferred_integration': 9},\n             'all_2992_unique_original_start_terminal_joins': True, 'approved_skips': skip_audit, 'unapproved_original_skip': skip_mismatches, 'child_failure': child['child_failure'],",
+      "purpose": "Export actual counts, failures, native and raw facts"
+    },
+    {
+      "after": "'reviewer': '/root/adversarial_review'",
+      "before": "'reviewer': '/root/architecture_review'",
+      "purpose": "Current reader author attribution"
+    },
+    {
+      "after": "'all_reader_handles_released': not close_errors, 'reader_pid': os.getpid(), 'original_tool_session': 'not observed by reader; terminal cell supplied by parent',",
+      "before": "'all_reader_handles_released': not close_errors, 'reader_pid': os.getpid(), 'original_tool_session': 68257,",
+      "purpose": "No stale original session"
+    },
+    {
+      "after": "'original_full_CI_disposition': original_disposition, 'mandatory_local_CI_pass': original_pass and error is None and not close_errors and fd_before == fd_after,",
+      "before": "'original_full_CI_disposition': 'FAILED', 'mandatory_local_CI_pass': False,",
+      "purpose": "Actual CI result remains distinct from metadata-reader status"
+    },
+    {
+      "after": "'original_CI_disposition': original_disposition",
+      "before": "'original_CI_disposition': 'FAILED'",
+      "purpose": "Dynamic printed disposition"
+    },
+    {
+      "after": "    assert len(prior_table_raw) == 1270968 and hashlib.sha256(prior_table_raw).hexdigest() == '105568f276b37f57aad59b81efaa6524c816b4e595679da56807a1087daba0ea'\n    assert json.loads(prior_table_raw) == tracking",
+      "before": "    assert json.loads(prior_table_raw) == tracking",
+      "purpose": "Hard-pin the historical raw-D inventory without execution-authority rebinding"
+    },
+    {
+      "after": "    assert report['observer'] == observer\n    observer_launch = json.loads(preserve(OUTPUT / 'external-test-observer/launch.v1.json', 'stock/observer-launch.v1.json'))\n    assert observer_launch['owner'] == observer['owner'] and observer_launch['argv'] == observer['argv']\n    observer_trace = preserve(OUTPUT / 'external-test-observer/trace.original.log', 'stock/observer-trace.original.log')\n    observer_responses = preserve(OUTPUT / 'external-test-observer/responses.original.jsonl', 'stock/observer-responses.original.jsonl')\n    preserve(OUTPUT / 'external-test-observer/events.original.jsonl', 'stock/observer-events.original.jsonl')\n    assert len(observer_trace) == observer['trace_bytes'] and len(observer_responses) == observer['response_channel_bytes']\n    observer_late = None\n    if os.path.lexists(OUTPUT / 'external-test-observer/late-finalization.failure.json'):\n        observer_late = json.loads(preserve(OUTPUT / 'external-test-observer/late-finalization.failure.json', 'stock/observer-late-finalization.failure.json'))",
+      "before": "    assert report['observer'] == observer",
+      "purpose": "Retain original observer raw trace/response/event channels and authenticated launch, with no one-to-one or descendant claims"
+    },
+    {
+      "after": "                     and observer['successful'] is True and source_equal and observer_late is None",
+      "before": "                     and observer['successful'] is True and source_equal",
+      "purpose": "Observer late failure cannot grant original CI pass"
+    },
+    {
+      "after": "             'loaded_factory_originals': factories, 'wrapper_late_companion': wrapper_late,\n             'observer_launch': observer_launch, 'observer_late_companion': observer_late,",
+      "before": "             'loaded_factory_originals': factories, 'wrapper_late_companion': wrapper_late,",
+      "purpose": "Retain observer launch and late facts in report"
+    }
+  ],
+  "outer_envelope_required": "Pinned CPython3.12.3 -I -B; /usr/bin/timeout --signal=TERM --kill-after=10s 120s; actual outer original status/EOF/reap/FD/process closure independently retained.",
+  "preserved_original": {
+    "author_fd_epoch7": [
+      17601399781211216820,
+      1970324839401738,
+      33206,
+      1,
+      19769,
+      1791030629221148400,
+      1791030629221148400
+    ],
+    "author_named_epoch7": [
+      17601399781211216820,
+      1970324839401738,
+      33206,
+      1,
+      19769,
+      1791030629221148400,
+      1791030629217643300
+    ],
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-local-ci-D-prerequisite-result-review-preparation-v1\\accepted-failed-D-reader.before.raw",
+    "sha256": "c73b28f1c56c1b04f1ca49ecc8eaef7e9894582c36bcb350c67896e9d309767b",
+    "size_bytes": 19769
+  },
+  "reader": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-local-ci-D-prerequisite-result-review-preparation-v1\\review_actual_prerequisite_local_D_v2.py",
+    "sha256": "0c1f8c58fe619895b16feb04e494daf7b664a1dc58c1defd7fc441f10dbbe183",
+    "size_bytes": 27097
+  },
+  "reader_imported_compiled_or_executed": false,
+  "references": {
+    "actual_bind_execution": {
+      "author_fd_epoch7": [
+        17601399781211216820,
+        1407374885980397,
+        33206,
+        1,
+        19078,
+        1791029221042541100,
+        1791029221042541100
+      ],
+      "author_named_epoch7": [
+        17601399781211216820,
+        1407374885980397,
+        33206,
+        1,
+        19078,
+        1791029221042541100,
+        1791029221042541100
+      ],
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-runtime-bind-prerequisite-capture-preparation-v1\\original-bind-attempt01\\execution.v1.json",
+      "sha256": "829110b9b75faf53fcce812d188fe318540422c1c7d12acd2019257b6aaa9dea",
+      "size_bytes": 19078
+    },
+    "actual_bind_physical_and_owner_closure": {
+      "author_fd_epoch7": [
+        17601399781211216820,
+        1407374885980398,
+        33206,
+        1,
+        5037,
+        1791029287775413400,
+        1791029287775413400
+      ],
+      "author_named_epoch7": [
+        17601399781211216820,
+        1407374885980398,
+        33206,
+        1,
+        5037,
+        1791029287775413400,
+        1791029287774410700
+      ],
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-runtime-bind-prerequisite-capture-preparation-v1\\original-bind-attempt01\\root-original-closure.v1.json",
+      "sha256": "3cf93ba8891604fdaddb2689ed3400ab5ce4ae50a8c6eac723466bff6815275b",
+      "size_bytes": 5037
+    },
+    "actual_focused_runtime_test": {
+      "author_fd_epoch7": [
+        17601399781211216820,
+        1407374885980406,
+        33206,
+        1,
+        8336,
+        1791029825734944000,
+        1791029825734944000
+      ],
+      "author_named_epoch7": [
+        17601399781211216820,
+        1407374885980406,
+        33206,
+        1,
+        8336,
+        1791029825734944000,
+        1791029825733940800
+      ],
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-runtime-bind-prerequisite-capture-preparation-v1\\original-focused-test-attempt01\\unit-result.v1.json",
+      "sha256": "9c328ba749686acd9c35511da33e9ff0321b5f0baafa6e619ddd2751185eae89",
+      "size_bytes": 8336
+    },
+    "actual_fresh95_audit": {
+      "author_fd_epoch7": [
+        17601399781211216820,
+        1970324839401721,
+        33206,
+        1,
+        127794,
+        1791029848395029200,
+        1791029848395029200
+      ],
+      "author_named_epoch7": [
+        17601399781211216820,
+        1970324839401721,
+        33206,
+        1,
+        127794,
+        1791029848395029200,
+        1791029848393671600
+      ],
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-current95-post-runtime-bind-audit-preparation-v1\\original-post-runtime-bind-audit-attempt01\\review.v1.json",
+      "sha256": "56de11220a59b9138488210713d9ee58a3ba60fd9b9f1dd06bafda6ffd871e37",
+      "size_bytes": 127794
+    },
+    "actual_prerequisite_and_dispatch_grant": {
+      "author_fd_epoch7": [
+        17601399781211216820,
+        1407374885980410,
+        33206,
+        1,
+        2847,
+        1791030041236784200,
+        1791030041236784200
+      ],
+      "author_named_epoch7": [
+        17601399781211216820,
+        1407374885980410,
+        33206,
+        1,
+        2847,
+        1791030041236784200,
+        1791030041236784200
+      ],
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-successor-ci-D-prerequisite-capture-preparation-v1\\root-actual-prerequisite-and-dispatch-grant.v1.json",
+      "sha256": "de285ca600231a2f87efe6260127a5dbd7e709e78d4365e33276a4487827eb3c",
+      "size_bytes": 2847
+    },
+    "actual_runtime_bind_gates_independent_review": {
+      "author_fd_epoch7": [
+        17601399781211216820,
+        1407374885980421,
+        33206,
+        1,
+        26021,
+        1791030273594449800,
+        1791030273594449800
+      ],
+      "author_named_epoch7": [
+        17601399781211216820,
+        1407374885980421,
+        33206,
+        1,
+        26021,
+        1791030273594449800,
+        1791030273593048600
+      ],
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-runtime-bind-gates-independent-review-v1\\review.v3.json",
+      "sha256": "524f12a1b3aabbabc39b580e8ed4b7ee3e56dd82bf9f3f8381dc8a9fc147203d",
+      "size_bytes": 26021
+    },
+    "original_failed_D_child_discovery_inventory": {
+      "author_fd_epoch7": [
+        17601399781211216820,
+        1407374885980346,
+        33206,
+        1,
+        1734578,
+        1791027666132256100,
+        1791027666132256100
+      ],
+      "author_named_epoch7": [
+        17601399781211216820,
+        1407374885980346,
+        33206,
+        1,
+        1734578,
+        1791027666132256100,
+        1791027666126186700
+      ],
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-local-ci-D-original-review-preparation-v1\\original-review-attempt01\\original-copies\\stock\\unittest-child.report.json",
+      "sha256": "93c23027abbca094608fb480c5f230cc99ba3d6a832aefa8abf3a8d3e2fe48c9",
+      "size_bytes": 1734578
+    },
+    "original_failed_D_metadata_review": {
+      "author_fd_epoch7": [
+        17601399781211216820,
+        1407374885980354,
+        33206,
+        1,
+        89901,
+        1791027666274621300,
+        1791027666274621300
+      ],
+      "author_named_epoch7": [
+        17601399781211216820,
+        1407374885980354,
+        33206,
+        1,
+        89901,
+        1791027666274621300,
+        1791027666272982800
+      ],
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-local-ci-D-original-review-preparation-v1\\original-review-attempt01\\review.v1.json",
+      "sha256": "dea419acd6d73dcf486694314a290001a9325c47dca5d0c477342f89c71dc9bd",
+      "size_bytes": 89901
+    },
+    "original_failed_D_tracked_raw_table": {
+      "author_fd_epoch7": [
+        17601399781211216820,
+        2533274792822968,
+        33206,
+        1,
+        1270968,
+        1791027666078813700,
+        1791027666078813700
+      ],
+      "author_named_epoch7": [
+        17601399781211216820,
+        2533274792822968,
+        33206,
+        1,
+        1270968,
+        1791027666078813700,
+        1791027666074813700
+      ],
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-local-ci-D-original-review-preparation-v1\\original-review-attempt01\\original-copies\\stock\\tracked-source.before.json",
+      "sha256": "105568f276b37f57aad59b81efaa6524c816b4e595679da56807a1087daba0ea",
+      "size_bytes": 1270968
+    },
+    "reviewed_fresh_capture_preparation": {
+      "author_fd_epoch7": [
+        17601399781211216820,
+        1407374885980368,
+        33206,
+        1,
+        19616,
+        1791028220872451000,
+        1791028220872451000
+      ],
+      "author_named_epoch7": [
+        17601399781211216820,
+        1407374885980368,
+        33206,
+        1,
+        19616,
+        1791028220872451000,
+        1791028220872451000
+      ],
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-successor-ci-D-prerequisite-capture-preparation-v1\\preparation.v2.json",
+      "sha256": "17e89696bdb7a684e7791238377ed616673eab690a6bc5bbe63a51a679df4d39",
+      "size_bytes": 19616
+    }
+  },
+  "release_acceptance": false,
+  "runtime_args": [
+    "ACTUAL_WRAPPER_TERMINAL_SIZE",
+    "ACTUAL_WRAPPER_TERMINAL_SHA256",
+    "ACTUAL_ORIGINAL_TOOL_FINAL_RC",
+    "ACTUAL_TERMINAL_CELL"
+  ],
+  "schema_version": 1,
+  "source_change_scope": "Declared path retarget plus explicit top-level outcome/owner/report generalization; not a literal-only entire-source adaptation.",
+  "source_commit": "3c025b29b3c1d5275c2ec693410e4b83700583de",
+  "source_only_inspection": "No active CI output was read. Only the frozen accepted reader, clean-D runner source and closed prerequisite/original controls were inspected.",
+  "source_schema_basis": {
+    "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/run_ci_checks.py",
+    "reviewed_lines": [
+      [
+        95,
+        128
+      ],
+      [
+        225,
+        281
+      ],
+      [
+        340,
+        391
+      ],
+      [
+        394,
+        420
+      ],
+      [
+        465,
+        577
+      ]
+    ],
+    "sha256": "ce375eca51164a76ab6a88cf02b92804077f08c6b8401d68b48e293020c27a2c",
+    "size_bytes": 29477
+  },
+  "status": "prepared_unexecuted_while_original_CI_is_active"
+}

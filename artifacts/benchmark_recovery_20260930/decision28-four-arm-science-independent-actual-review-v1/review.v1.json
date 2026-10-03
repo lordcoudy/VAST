@@ -1,0 +1,1434 @@
+{
+  "Linux_fresh_seven_epoch_reconstruction_by_Windows_reviewer": false,
+  "actual_original_tool_cells": {
+    "completion": "b666cd",
+    "dispatch": "078c83",
+    "reported_original_tool_returncode": 0
+  },
+  "all220_original_full_physical_hashes_current_equal": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-four-arm-science-preparation-v1/reduce.py",
+      "physical_full_bytes_match": true,
+      "sha256": "6fe50289ce88225a39fdc7721b23449a01b6dd54e966375571b8982d69e75610",
+      "size_bytes": 24239
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-four-arm-science-preparation-v1/run.py",
+      "physical_full_bytes_match": true,
+      "sha256": "2fade68fb199777f71e4e210e101a0a394725bd2570976f4ad33665d321d65fe",
+      "size_bytes": 7853
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-four-arm-science-preparation-v1/render.py",
+      "physical_full_bytes_match": true,
+      "sha256": "fbf411a550617f24634de711f1bcd93a5c4889d50fc1f5c4ac78291b248301f1",
+      "size_bytes": 9184
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08-original-controller/original.terminal.v1.json",
+      "physical_full_bytes_match": true,
+      "sha256": "32a034c535e98adf13fdbcb3005414c24d3ab3c03da885ec24da464a0e74b185",
+      "size_bytes": 94894
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/component_cli_terminal.v1.json",
+      "physical_full_bytes_match": true,
+      "sha256": "3f2db482347c210f58cdcad95bcedd79d9b2c8063dc4439d61e0736c4688c600",
+      "size_bytes": 8849
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08-original-controller/original.stdout.raw",
+      "physical_full_bytes_match": true,
+      "sha256": "fd0f00f36fe304c176cba69544fae1327862ce44d675537a9e4a52ac75b445c8",
+      "size_bytes": 460
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08-original-controller/original.stderr.raw",
+      "physical_full_bytes_match": true,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02-original-controller/original.terminal.v1.json",
+      "physical_full_bytes_match": true,
+      "sha256": "7272120d78ae1d851a46cee48cf1f51267da504b4550a7a434d86c2db8cda062",
+      "size_bytes": 94879
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/component_cli_terminal.v1.json",
+      "physical_full_bytes_match": true,
+      "sha256": "34d2b825a86ccba5974a6a1db4d6bff3a4c6f2c08eadfed504ab17b9bf4ea323",
+      "size_bytes": 8849
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02-original-controller/original.stdout.raw",
+      "physical_full_bytes_match": true,
+      "sha256": "8e69fb894f35f8b7f8174e890f243aecd3ed1d68e60c343364c2fbf832b051ca",
+      "size_bytes": 460
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02-original-controller/original.stderr.raw",
+      "physical_full_bytes_match": true,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/host/execution-code-closure.ext4-decision28.v4.json",
+      "physical_full_bytes_match": true,
+      "sha256": "3c91339d43f6154dd76afe8a89c02d82f60a4b1e5da16623039f691fdc6701f2",
+      "size_bytes": 30266
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/kpp_legacy_iss_v2_manifest.py",
+      "physical_full_bytes_match": true,
+      "sha256": "c5a2c67a6a5f1293f0b5939980534d87f7089dd221542c88eed4bf95650cfc42",
+      "size_bytes": 29663
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/extract_kpp_legacy_iss.py",
+      "physical_full_bytes_match": true,
+      "sha256": "4a491283963629f6c3ed2f1649d62b1a2945241edeb1e735b90144eb3f41f6fe",
+      "size_bytes": 73654
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/freeze_kpp_legacy_iss_v2_transcodes.py",
+      "physical_full_bytes_match": true,
+      "sha256": "d4ab7bf4497e48d4e04f4cd49f0b97606a46457ac516fabfc456dd09a3f64c33",
+      "size_bytes": 69386
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/freeze_kpp_iss_publication_v3.py",
+      "physical_full_bytes_match": true,
+      "sha256": "73cb1726532df1c4fdd4249673c471cceb035906f78bf68e250f1706c08dcffa",
+      "size_bytes": 43081
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/kpp_iss_publication_v3_dataset.py",
+      "physical_full_bytes_match": true,
+      "sha256": "6ad62418f36f5e0dcfee55d43c117a9faa7e82f82c3388f53b1e7bf85049909d",
+      "size_bytes": 23901
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/freeze_kpp_frozen_reconstruction_v1.py",
+      "physical_full_bytes_match": true,
+      "sha256": "44c3cbf660aac5db5a29556e7cbc717acc01acd26f115c4c5591d3ded7f2d4f1",
+      "size_bytes": 28006
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/kpp_frozen_reconstruction_v1_dataset.py",
+      "physical_full_bytes_match": true,
+      "sha256": "d4d0dfe352249316c9c5b72136bea326947b77b7952ce1ff5add5ab502bad19d",
+      "size_bytes": 15206
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_publication_dispatch.py",
+      "physical_full_bytes_match": true,
+      "sha256": "f065d22176edcd37cbf7ba68983119d3871362f9d01ee6a112976941d7c405d0",
+      "size_bytes": 17104
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_publication_launcher_invocation_v3.py",
+      "physical_full_bytes_match": true,
+      "sha256": "ac10258c97fcdd58da02236f7a36974b2ba5060ce2f935955db05b5a9f422ba5",
+      "size_bytes": 7230
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_runtime_grant.py",
+      "physical_full_bytes_match": true,
+      "sha256": "c90c726c00f14d5a198304ec8b74fecff8d1a4a21c41afd266073b80733b4c9f",
+      "size_bytes": 51402
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/model_parity_grant.py",
+      "physical_full_bytes_match": true,
+      "sha256": "bb5598b8917e0662d7cb933196be43c332c4fec6363691d971b64ae1a53127bb",
+      "size_bytes": 14740
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_acceptance_evidence.py",
+      "physical_full_bytes_match": true,
+      "sha256": "fdd2491e874e21b02586f13d6a4f0c1c34ca3b78ce837ede1779ac7d964ea8d6",
+      "size_bytes": 2263
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_publication_output_receipt.py",
+      "physical_full_bytes_match": true,
+      "sha256": "159e307319d8e6f41e1684cd9ba871097de54747bd9013cb7b71e370e1b0cec5",
+      "size_bytes": 34431
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_acceptance_metadata_binding.py",
+      "physical_full_bytes_match": true,
+      "sha256": "9429cc4843d085e54daa7023b8bab9a5e9361a20204d20ba4e2dad0f1c2a3908",
+      "size_bytes": 20605
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/formal_aw_heft_reference.py",
+      "physical_full_bytes_match": true,
+      "sha256": "812c18bdd6fe648d8939de8e00e0dd864cba84d4e96b1f6bcbc753f932d4fa34",
+      "size_bytes": 70898
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/benchmark_contract.py",
+      "physical_full_bytes_match": true,
+      "sha256": "04cd9c75a7c405e960bdb7e4f2dea9759d839a333d43f79bd9b2b4aacaace17b",
+      "size_bytes": 344569
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/topology_contract.py",
+      "physical_full_bytes_match": true,
+      "sha256": "b7ec477419946c1cd0102ffb0eaacca5e54ed04cb5e60f9d0802a9c46c72ef2a",
+      "size_bytes": 18707
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_admission.py",
+      "physical_full_bytes_match": true,
+      "sha256": "4db82ea10118d942457901393f447ebcf7602577b77fd1c0be9084f54366b7f7",
+      "size_bytes": 19971
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_runtime_plan.py",
+      "physical_full_bytes_match": true,
+      "sha256": "1de5f88c0939f3d9c38744e8248e5c0268159909393a4712af0e25e6d8462890",
+      "size_bytes": 30727
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_runtime.py",
+      "physical_full_bytes_match": true,
+      "sha256": "fb91d24e69385d37fc59b68c116829163cc3e29ed6b1403276b0b0676af90135",
+      "size_bytes": 94557
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/resource_interval_contract.py",
+      "physical_full_bytes_match": true,
+      "sha256": "c004770b75f07ca929877c1034eb34bdef00f0fdb9b37d2dfeef0f70ff4d1f7a",
+      "size_bytes": 33557
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/full_resource_contract.py",
+      "physical_full_bytes_match": true,
+      "sha256": "2eb73e379287e65776049e3a98c530a5c3a0e9e81749a7a9f2ae8d4c80b52a7c",
+      "size_bytes": 21340
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_publication_runtime.py",
+      "physical_full_bytes_match": true,
+      "sha256": "8d389885bf48aedfcdcc65519db41ee2a962da3e77c2ca224c477b8d7742b055",
+      "size_bytes": 55785
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_operational_request_domain_v1.py",
+      "physical_full_bytes_match": true,
+      "sha256": "5df1071402080957c312acddb85e0285c589c4a7d1948d51e9bf5e274727f0b9",
+      "size_bytes": 25997
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/source/gstreamer-component-authority.v1.json",
+      "physical_full_bytes_match": true,
+      "sha256": "24cad31a72809ca429a13269981106d28d5ab111a7a6e22cc53a551b911d6971",
+      "size_bytes": 128295
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/configs/experiments.yaml",
+      "physical_full_bytes_match": true,
+      "sha256": "18b69285690cdb6ad2f8e9fa528122a05fd3e4abe647a776e60c8e5eed4344e0",
+      "size_bytes": 23078
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/capture-plan/capture_plan_index.v1.json",
+      "physical_full_bytes_match": true,
+      "sha256": "50965953d0352a20f54c3c4b309f6c223d827fc2f95531ce43309bd5c0a000d2",
+      "size_bytes": 2133
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/capture-plan/original_operations.v1.json",
+      "physical_full_bytes_match": true,
+      "sha256": "7cf138d15fd87bded22189814a87743c66508cc33d05e9c120e960a319c4a522",
+      "size_bytes": 11952
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/cold-pair/component_pair_result.v1.json",
+      "physical_full_bytes_match": true,
+      "sha256": "63a0826fb419d3023f56c81bed8dc1b7afbef167c42f7091fe0563ba5c987213",
+      "size_bytes": 18461
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/cold-pair/component_pair_metrics.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "213aaee2850e80e43e735e3b0887c51039409dca180803db7a62135ddaa2f0f5",
+      "size_bytes": 618
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/cold-pair/component_pair_latency_ecdf.svg",
+      "physical_full_bytes_match": true,
+      "sha256": "c2ce6f8d634a74b1da655efc7f0195e57c12f9a14f8a079dcd28f3701d898d3c",
+      "size_bytes": 86736
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/source/baseline.source-plan.json",
+      "physical_full_bytes_match": true,
+      "sha256": "92be745b09933ad938da7302ec5ad3dc7aceae60b67df51f3d87dae4283573ac",
+      "size_bytes": 39843
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/original-operations/component-gstreamer_custom-cpu-h264-independent-processes.original.json",
+      "physical_full_bytes_match": true,
+      "sha256": "6cc01947d3962c65bc1b5a9438fa2dd8be18218cc9fbd772ab850b6301242e03",
+      "size_bytes": 7232
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/branch_terminals.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "425558c03c0abeefd823e741e3bebeffbb2a3016fe28a984312f4584dff0243a",
+      "size_bytes": 2839161
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/checkpoint_publication_candidate.json",
+      "physical_full_bytes_match": true,
+      "sha256": "523a6a369ec4a5a5930e4802f9e866ceefc0a9260573814743c06394528fb489",
+      "size_bytes": 8163
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/drop_counters.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "40745015fa7e271037dff7a35e63c03ba1113c38cced85070ca59f30f2e12a5b",
+      "size_bytes": 1362
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/fanout_work_counters.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "de21bdce6ed25a676ca271f7b8544664b11fae5a8a3cd39573a817c98da5f818",
+      "size_bytes": 206
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/frame_events.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "08636bd285d170fbc4b7fc6d48bd0f3fca8bbc802b8082334085c812335967b3",
+      "size_bytes": 5771832
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/frames.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "9bfcb7ed4e67b0f29a37bdb19156b817112b62e927a13491f3052ba245121145",
+      "size_bytes": 136512
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/hardware_resource_samples.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "02ec53990159ce71b4bba2c518090a8d0f225f288217330903a68fbb56b4fa56",
+      "size_bytes": 1038244
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/ingress_ledger.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "68cb1ec93a68034fc98edb67b4b7f5d28dfb6bd4584061fddd54ce10536e09b8",
+      "size_bytes": 751336
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/policy_decisions.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "9e87709130a0fb0b094d8f0eee49ac2cf1f8f93a8993fa0ac1a7648a014b07bd",
+      "size_bytes": 6439065
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/publication_policy_decisions.jsonl",
+      "physical_full_bytes_match": true,
+      "sha256": "1e36877ae2831d705b7301000107636219f9d8727232f5e300bc6d542528afad",
+      "size_bytes": 17037969
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/reset_evidence.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "a63b4962bf0e7c86cef5ae0228ca393499c1d56337f3bc2612af5bc22b5a247a",
+      "size_bytes": 15250
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/resource_events.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "f8d79255b45a9d22ac3b52a4856ce41361528c35b5a6fb41ffc1a629f8a1cf77",
+      "size_bytes": 5603381
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/resource_intervals.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "7a1ab2781f4bbb4805ce1e8de468047ddb740ac31016aa65f02347fcb94286d0",
+      "size_bytes": 1233189
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/stage_contracts.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "7916dbe90cd3267fcfa74dd61586757e93d0d0f4a2481baf557d4a31a46970a1",
+      "size_bytes": 79680
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/topology_events.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "fc60e212705b24ff48a0c7d686b75807e3374ad1b71180cf3b23ebae9768a52d",
+      "size_bytes": 7727583
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/component_arm_result.v1.json",
+      "physical_full_bytes_match": true,
+      "sha256": "e64ce220185e62a6f41509ac63ac5d7d723111ac6a0f612102669dac9c4fcee1",
+      "size_bytes": 15380
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/source/shared.source-plan.json",
+      "physical_full_bytes_match": true,
+      "sha256": "1c14e9be8aadf91a3e53938e973e55bf1336c63509594b280d71d787f942f0f1",
+      "size_bytes": 28097
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/original-operations/component-gstreamer_custom-cpu-h264-shared-video-dag.original.json",
+      "physical_full_bytes_match": true,
+      "sha256": "89fdced4af8ae59a83c2a52501714ea72eab600db56275144031963eb3d81af2",
+      "size_bytes": 7082
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/branch_terminals.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "8a141bab3d67cb94c1139ccbdc49ec37b790b10c2a2b80e5635946ac0a5bf152",
+      "size_bytes": 2756398
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/checkpoint_publication_candidate.json",
+      "physical_full_bytes_match": true,
+      "sha256": "5871ad006cefef4296854fdfe8998302b4b42031d7a41f1d3afd43747fe57587",
+      "size_bytes": 6886
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/drop_counters.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "502f7af12d673274e3e81a0dc4f9358d6d56555e5d24f2c228d47bc63587e65a",
+      "size_bytes": 1330
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/fanout_work_counters.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "6d9c58f41fb350dc11b933d5a536f9956d0514d33b3b52e02c461724848de827",
+      "size_bytes": 1106845
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/frame_events.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "ed9c746d2caa0f5978ef678c74353a2ffc9d33951f504fa1b9efe351f0ba0143",
+      "size_bytes": 3464477
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/frames.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "ad873819e62f5abd176ea88da9a18fb94b41e15a59f0c794c292a46e4672ba23",
+      "size_bytes": 168947
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/hardware_resource_samples.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "5f90e2439766b07afa14fcc50b9bf901a7d4ab47a99b1f81540fb1c70a153ee3",
+      "size_bytes": 985930
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/ingress_ledger.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "fb4f2c9680a4d99672f7f8b7356d625b44016c70e5266713f731b145c451b80a",
+      "size_bytes": 734631
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/policy_decisions.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "530ae251bf32d77421f2d286faa8bf4594cd095f20ae64bf22077ae925b68b64",
+      "size_bytes": 5982412
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/publication_policy_decisions.jsonl",
+      "physical_full_bytes_match": true,
+      "sha256": "e07f2088f24b158852f862ce5011c9f30bb6f55bf468ea9a0eaded52f8b0b329",
+      "size_bytes": 15914290
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/reset_evidence.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "c3e94efda8ac6a234990cd4c91147b1c7fa9e7e22e75c5f896f09fab80be28f0",
+      "size_bytes": 6420
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/resource_events.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "fac29777a8a307925ec1a89bb45b0b1bfa53e162d5e2fa2c096439c274110602",
+      "size_bytes": 3268847
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/resource_intervals.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "5b7c25d70adc28a6ca9bdea20176e904dda4c76fc12f30e4cb1b9c2cb8e4d330",
+      "size_bytes": 1865396
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/stage_contracts.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "fd360e69af8f1568bfb8c681b0bd91cea774a9190ac8924bbb7e8fe1fd6d1aaf",
+      "size_bytes": 19770
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/topology_events.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "187cd876d36c59f7975222bb10b07b7e9782c965435de35d7e12ba8d1095727d",
+      "size_bytes": 7669149
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/component_arm_result.v1.json",
+      "physical_full_bytes_match": true,
+      "sha256": "520608749cb0f27df3c5645948237f5e74e94a320fce4e6db2c7449c04eea661",
+      "size_bytes": 14095
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/source/gstreamer-component-authority.v1.json",
+      "physical_full_bytes_match": true,
+      "sha256": "40ea9f05de49c83e30e821f51158ef802a2da3093e96f6ce1972eedd672a791a",
+      "size_bytes": 128295
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/capture-plan/capture_plan_index.v1.json",
+      "physical_full_bytes_match": true,
+      "sha256": "b41927738c5f0e78e3ce8c99466c0135e17d4030c543d1f4b6019f5231465d1d",
+      "size_bytes": 2133
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/capture-plan/original_operations.v1.json",
+      "physical_full_bytes_match": true,
+      "sha256": "cbf5bb35c35b79ededb1666a0a2ee3a0060649695e2ac497b8dfe99469356819",
+      "size_bytes": 11952
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/cold-pair/component_pair_result.v1.json",
+      "physical_full_bytes_match": true,
+      "sha256": "80b8d063ebfbc146eec837e4733398d7d7d28373dbbad0f0952f5a5b9c6b7130",
+      "size_bytes": 18451
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/cold-pair/component_pair_metrics.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "c5a2334fa19f8c46592829f2148252ac2a47c4f7c818c2a7e37966ff7e9d17f9",
+      "size_bytes": 616
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/cold-pair/component_pair_latency_ecdf.svg",
+      "physical_full_bytes_match": true,
+      "sha256": "a80ac562dc471b50c4f1ebac22e58e6b2f978a1398e2caeab5fad01413aa65ad",
+      "size_bytes": 71035
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/source/baseline.source-plan.json",
+      "physical_full_bytes_match": true,
+      "sha256": "92be745b09933ad938da7302ec5ad3dc7aceae60b67df51f3d87dae4283573ac",
+      "size_bytes": 39843
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/original-operations/component-gstreamer_custom-gpu-h264-independent-processes.original.json",
+      "physical_full_bytes_match": true,
+      "sha256": "f1b4e655b757134c688e4404059d678bd44e0cb9a7d1c67a90c97b13fc0b9dcc",
+      "size_bytes": 7232
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-independent-processes/evidence/branch_terminals.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "8a6364e28e9087c83ad6c902b08cd588767a2a0662e6fb197c3efddd96891ab7",
+      "size_bytes": 3035390
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-independent-processes/evidence/checkpoint_publication_candidate.json",
+      "physical_full_bytes_match": true,
+      "sha256": "5eeec972e47993e17a6349564b856dee7c5b02565b4dd3600d1a76b3fd7abcd4",
+      "size_bytes": 8187
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-independent-processes/evidence/drop_counters.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "22898e8ee0541bb129e7144c05222c6a46884dcfdb17754d0017ec60c1b31e6a",
+      "size_bytes": 1359
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-independent-processes/evidence/fanout_work_counters.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "de21bdce6ed25a676ca271f7b8544664b11fae5a8a3cd39573a817c98da5f818",
+      "size_bytes": 206
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-independent-processes/evidence/frame_events.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "729a46e61d0b694250ed273ea3b708868e0ce978a3515e8b8a0ef8b7bb78d458",
+      "size_bytes": 6663972
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-independent-processes/evidence/frames.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "dafab9add58d980a88ac35e09c44219b95968b09cb32550caa94734a728a848e",
+      "size_bytes": 282852
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-independent-processes/evidence/hardware_resource_samples.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "e1309e780087c31ae3177bfd7427f1988f12de50576afdeb767385a429807792",
+      "size_bytes": 1054285
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-independent-processes/evidence/ingress_ledger.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "218203ecaff1fea88e9865237428ebcdfe94f08640cb0b5d2f4a1513184e73f5",
+      "size_bytes": 749622
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-independent-processes/evidence/policy_decisions.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "b97e198b1ef05ead4b9d22861e30498ef5ae2a1bf3b4a7ef94ce8f42e1a35cd2",
+      "size_bytes": 7827936
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-independent-processes/evidence/publication_policy_decisions.jsonl",
+      "physical_full_bytes_match": true,
+      "sha256": "f0f4160be6f1f9fddbdd62d3f77d6c19e264ff59baaffee65ae3df0441dbfec8",
+      "size_bytes": 20723574
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-independent-processes/evidence/reset_evidence.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "b9188acdee670a7dd42849de4331a2d1614046bbf335e3b1dd6186139185404f",
+      "size_bytes": 15250
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-independent-processes/evidence/resource_events.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "cef7a9561c8c886953e65f0494b79a1e7e320074e04896d17317ac6f15146823",
+      "size_bytes": 6518798
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-independent-processes/evidence/resource_intervals.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "f042293e925a87418f55c2ec2d3503a6f303e9065abaf1cf6126acd6d61779fc",
+      "size_bytes": 7760539
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-independent-processes/evidence/stage_contracts.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "c06361b119c09c20e2488a508deb9d89dd155db561ecc94c83bf3ff9d7cb01aa",
+      "size_bytes": 79680
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-independent-processes/evidence/topology_events.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "8fedf531fdb5d15e69f3389fe367806c3ea340457537450ce9bf972b0f98180a",
+      "size_bytes": 16021650
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-independent-processes/component_arm_result.v1.json",
+      "physical_full_bytes_match": true,
+      "sha256": "5333873bad5a8db46124d300a68d27efca2d3184422c6acd971e97450fb87417",
+      "size_bytes": 15442
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/source/shared.source-plan.json",
+      "physical_full_bytes_match": true,
+      "sha256": "1c14e9be8aadf91a3e53938e973e55bf1336c63509594b280d71d787f942f0f1",
+      "size_bytes": 28097
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/original-operations/component-gstreamer_custom-gpu-h264-shared-video-dag.original.json",
+      "physical_full_bytes_match": true,
+      "sha256": "f5ed78f912b1c0d8955e3432c8aafb61bb34117ebd1968a3a70560622541b15b",
+      "size_bytes": 7082
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-shared-video-dag/evidence/branch_terminals.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "3c60c993a60b090909880090d30ee1923db10695720d476f5ee9a2b970eb82f0",
+      "size_bytes": 2971211
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-shared-video-dag/evidence/checkpoint_publication_candidate.json",
+      "physical_full_bytes_match": true,
+      "sha256": "313fb4cc74fd566b24f378b6c257e534e4ef52d4093dc0c246f17a82538ee616",
+      "size_bytes": 6905
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-shared-video-dag/evidence/drop_counters.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "62971721820bbe864d79e0428a9aa9d179b16d05110d6b663e5812f53b312806",
+      "size_bytes": 1324
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-shared-video-dag/evidence/fanout_work_counters.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "313ce9db01d90c17fb5740471a7ec3e594860838949224842381cbbc90475d51",
+      "size_bytes": 1791857
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-shared-video-dag/evidence/frame_events.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "20b43079100ec18a4dcf3ac9bd0c16c148f293e8440cb02b0a166cf2a71eb02e",
+      "size_bytes": 4372641
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-shared-video-dag/evidence/frames.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "5174a4da28bf3f38e203ef4d77b28ee6ef2c4635798fb274a1ab670a1ee16733",
+      "size_bytes": 273427
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-shared-video-dag/evidence/hardware_resource_samples.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "81846ea7207644ad2055629273ae3c60d5e920c5c3d03c165d3ce3e053abe852",
+      "size_bytes": 1014023
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-shared-video-dag/evidence/ingress_ledger.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "c9ddf3e1e1f7a071797ceb4ab40ea0413fd2935e96f7f3e6ddbc7a14f6e32331",
+      "size_bytes": 733398
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-shared-video-dag/evidence/policy_decisions.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "09b3f0c42835b7e649b5fb8392d229bc6bfb8558257c2c003de19e09bbf7f80e",
+      "size_bytes": 7678152
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-shared-video-dag/evidence/publication_policy_decisions.jsonl",
+      "physical_full_bytes_match": true,
+      "sha256": "16cc7d0674365e19f01fd96c204e1fa8a266b708103c14c3b7fd228cc2a12569",
+      "size_bytes": 20420882
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-shared-video-dag/evidence/reset_evidence.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "41ea849a9323282535cbd5233f92d07efa9fa3213b66ce47393cb421f1e6899d",
+      "size_bytes": 6420
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-shared-video-dag/evidence/resource_events.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "9c16c414fea79a0bf1865b2ec95fb00758d236ec2daac4906cfb738b6f2b40a6",
+      "size_bytes": 4188504
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-shared-video-dag/evidence/resource_intervals.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "6f96ee654671b10a17a3e9cc927788a3d8d46a764d13d76d6865ef4315b8bf1e",
+      "size_bytes": 8118801
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-shared-video-dag/evidence/stage_contracts.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "7503d3073374a5dc38bbbb28df66de7122de4d6ddfbe1706f585e8a61aefb2ab",
+      "size_bytes": 19770
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-shared-video-dag/evidence/topology_events.csv",
+      "physical_full_bytes_match": true,
+      "sha256": "13f7fd9c3626982c1b7efe94fa26b8b098911c7bce2d775ac67a2ab0d958a2a6",
+      "size_bytes": 12416286
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-shared-video-dag/component_arm_result.v1.json",
+      "physical_full_bytes_match": true,
+      "sha256": "0328487a21dc633e92479ae3a02d64270623dfbfd526733c0f28f6bb3558ca90",
+      "size_bytes": 14150
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_frozen_replay_v1.py",
+      "physical_full_bytes_match": true,
+      "sha256": "df03b7706ec354aab21714c09c9d0d95e7aa5a7124aefac574637f07e3d5d051",
+      "size_bytes": 21538
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_contract.py",
+      "physical_full_bytes_match": true,
+      "sha256": "276c15284c46b99ae32ae99653cc10f9f65e09d49d69498322c906614d1ba8a1",
+      "size_bytes": 40143
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_projection_v1.py",
+      "physical_full_bytes_match": true,
+      "sha256": "449eb645a6014cabfeb0e016edb476454b61368cdefbc71543459facacfa0cb9",
+      "size_bytes": 29622
+    },
+    {
+      "path": "/home/s-a-balashov/.cache/matplotlib/fontlist-v3.11.0.json",
+      "physical_full_bytes_match": true,
+      "sha256": "0724fda53f218ca775dcb998f0b27f587d5f0cc9cbcfbb0540fd718857d82e18",
+      "size_bytes": 64333
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/__init__.py",
+      "physical_full_bytes_match": true,
+      "sha256": "5b9d9dbfb0cd52e0ee4185f1c46f17f8c105a442e2d3367dfa7186c421952a1c",
+      "size_bytes": 56123
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/font_manager.py",
+      "physical_full_bytes_match": true,
+      "sha256": "c74b56aa853001b159c521a0524bf63c334d45788ce754ccedde788adfc1904c",
+      "size_bytes": 65642
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/_api/deprecation.py",
+      "physical_full_bytes_match": true,
+      "sha256": "364d069a9bcdf2b10f2f641220717baaa4e5c9b8e25fbe150cd9895f2f8542d2",
+      "size_bytes": 20733
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/_api/__init__.py",
+      "physical_full_bytes_match": true,
+      "sha256": "7e262cedd8ce1a1660c2e2caa63adeb078c29e36bd541b8e6f773cfed4c3c782",
+      "size_bytes": 17391
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/_version.py",
+      "physical_full_bytes_match": true,
+      "sha256": "34ef08968daea7ee67536d19ace69df899633d595b790160841edebe7e34bb74",
+      "size_bytes": 19
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/_c_internal_utils.cpython-312-x86_64-linux-gnu.so",
+      "physical_full_bytes_match": true,
+      "sha256": "9f881a98dc78359d1d8124a542bfaa37184672dabb2dda1614f48d46c9b949dc",
+      "size_bytes": 294784
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/_docstring.py",
+      "physical_full_bytes_match": true,
+      "sha256": "bbdc89a2b262748f24d56f12d3548832a36687954e31573e02ac844bae8411d9",
+      "size_bytes": 4435
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/mlab.py",
+      "physical_full_bytes_match": true,
+      "sha256": "e7b07f18a5b452029bfc7b460828f4709d8b3a6c3fcdc21e46ee2b664c5bb30a",
+      "size_bytes": 30951
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/cbook.py",
+      "physical_full_bytes_match": true,
+      "sha256": "a61f98353ad778da526867fd6417bc18b300bb5a1d8d39d00476e4144113af11",
+      "size_bytes": 85424
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/backends/registry.py",
+      "physical_full_bytes_match": true,
+      "sha256": "33604784129b509f04d81d901317d57fc35b00ae1916126d98a45e9416590e1e",
+      "size_bytes": 15480
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/backends/__init__.py",
+      "physical_full_bytes_match": true,
+      "sha256": "268c097beb43ad404c3494e22404e0884b800a981dc6c2a744261afa70b6e790",
+      "size_bytes": 206
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/_cm.py",
+      "physical_full_bytes_match": true,
+      "sha256": "44dc9e0f2801d1a04a4abc9f88bbea672ebcf2e1fd9efc4fac49e8fea9ed4f96",
+      "size_bytes": 70285
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/_path.cpython-312-x86_64-linux-gnu.so",
+      "physical_full_bytes_match": true,
+      "sha256": "95fbaaae15bfeed168382dcebfa58ea9294c403d30be43537bff2f043a5a917b",
+      "size_bytes": 522648
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/bezier.py",
+      "physical_full_bytes_match": true,
+      "sha256": "63c35b802a45c7147a3c62683f28066c0fc85ec6322f02257ef2c001f8b8a54e",
+      "size_bytes": 21728
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/path.py",
+      "physical_full_bytes_match": true,
+      "sha256": "5c726cf2765c7c4549de79d3327adabd5613dba0dd4e9bf208fafb48799ee12f",
+      "size_bytes": 43936
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/transforms.py",
+      "physical_full_bytes_match": true,
+      "sha256": "109bd2c25aa8395cd25c11a94a3ac78a6f0c6da3db04500f486cc3967a6be0e8",
+      "size_bytes": 102198
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/ticker.py",
+      "physical_full_bytes_match": true,
+      "sha256": "49d4586a18a4488387411b168d8064bb60e1f59d478e139965e2f7cef509e2ad",
+      "size_bytes": 114435
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/scale.py",
+      "physical_full_bytes_match": true,
+      "sha256": "4800482469b280454eb6e7a48f866ae7b146b27d1395644ffc09df0e91c9d7c1",
+      "size_bytes": 35495
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/_color_data.py",
+      "physical_full_bytes_match": true,
+      "sha256": "93ec1d4e2e80ac9c64b2a05f313fbb532daa5b3f175f84e1e60b237f7d82c263",
+      "size_bytes": 34780
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/colors.py",
+      "physical_full_bytes_match": true,
+      "sha256": "8c9c07cca125cfa2d5bfc68940a6f9d27ee38fa6f115c356ed7f224c5296e7d3",
+      "size_bytes": 158777
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py",
+      "physical_full_bytes_match": true,
+      "sha256": "2dd0b57722c56d814672fa6be8afd8705a42f229875ce8098658b50dbf9e68a4",
+      "size_bytes": 4368
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/_enums.py",
+      "physical_full_bytes_match": true,
+      "sha256": "1116f62584847c6771a97a83945f7b5863f82d3f81efd937ac3bb42a29957969",
+      "size_bytes": 6175
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/rcsetup.py",
+      "physical_full_bytes_match": true,
+      "sha256": "a052eac4af21ce8cdb58ee49c3ab952af4c2ff5e18f36cc8b741793fa79b5f59",
+      "size_bytes": 119207
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/ft2font.cpython-312-x86_64-linux-gnu.so",
+      "physical_full_bytes_match": true,
+      "sha256": "45b46e1286f0430d82df4926f405ee0b8d0b300291e53802da5f7574d59c3526",
+      "size_bytes": 3398248
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/artist.py",
+      "physical_full_bytes_match": true,
+      "sha256": "c55a81d86db60ab7b22fcd6e70401aa84558de5d1ba6e40a16c60f6f1f03be7a",
+      "size_bytes": 65786
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/colorizer.py",
+      "physical_full_bytes_match": true,
+      "sha256": "f96873348d3e895b9cb46ef61d29fa0a19b2eb4f28d2ad890762d80b76b77868",
+      "size_bytes": 33983
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/_cm_listed.py",
+      "physical_full_bytes_match": true,
+      "sha256": "ddad3698f5129ceb1792a445371286c08bc9080298e657b3054aea19c9659ef9",
+      "size_bytes": 135004
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/_cm_multivar.py",
+      "physical_full_bytes_match": true,
+      "sha256": "d148cd156ed2cad8f5b77d500fdf5e6dfafe6a5ecd982a5684a50ecaaf55ccaf",
+      "size_bytes": 6630
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/_cm_bivar.py",
+      "physical_full_bytes_match": true,
+      "sha256": "45222de5e5aeb0406429211816ae61e8c1a556259b11ded44092d196bf21cfdc",
+      "size_bytes": 95704
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/cm.py",
+      "physical_full_bytes_match": true,
+      "sha256": "5198fc377caf46ac1b2fc92a624764ca3a4b3f9da758b151235ec581b7aaa051",
+      "size_bytes": 8136
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/_image.cpython-312-x86_64-linux-gnu.so",
+      "physical_full_bytes_match": true,
+      "sha256": "cb0a175f18bcf3a5255c19e4d97deaa6e961ea8e98114db3bc40cb2a7261abe9",
+      "size_bytes": 631272
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/_pylab_helpers.py",
+      "physical_full_bytes_match": true,
+      "sha256": "ed67266f7f6c85c9659d323fb8808a5b4bcc07b908f1c66bf2643cc6087bd083",
+      "size_bytes": 4424
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/backend_tools.py",
+      "physical_full_bytes_match": true,
+      "sha256": "0af4522c66044d002cf2bca8278822cde24e8fb40bcdb58f7d2953d7b01c8876",
+      "size_bytes": 33379
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/_mathtext_data.py",
+      "physical_full_bytes_match": true,
+      "sha256": "90d4cad58ce1f1b2682ea785103ad5a86e2a34396d02aab386a0ccf193910b6c",
+      "size_bytes": 68787
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/_afm.py",
+      "physical_full_bytes_match": true,
+      "sha256": "978e8978e42410621de036e5a2b82611e902f321c6dbaa5f18364a6e42592736",
+      "size_bytes": 16637
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/hatch.py",
+      "physical_full_bytes_match": true,
+      "sha256": "d04ee0319685305fef2d88e3506eec3eadfa7b6c36783203b823cb8f8711c80d",
+      "size_bytes": 8206
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/markers.py",
+      "physical_full_bytes_match": true,
+      "sha256": "f5c37113436f798a67afbb855e10f701cc3e690fc9f1aec0ef384356d7fc540d",
+      "size_bytes": 33695
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/lines.py",
+      "physical_full_bytes_match": true,
+      "sha256": "a69e8c364b28c7ba45de1e06ec64a6116bd177185691bff08f4ce1093991d1ae",
+      "size_bytes": 58892
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/patches.py",
+      "physical_full_bytes_match": true,
+      "sha256": "67025999c757190e759f3b11d7e655bbacd7513cad2e7f99fd8db9fa0fc92e86",
+      "size_bytes": 171468
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/_text_helpers.py",
+      "physical_full_bytes_match": true,
+      "sha256": "0b138f18bc658f4c5c23d9993d2d06ea92621d69528558e71d2174e51a8fccad",
+      "size_bytes": 1600
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/dviread.py",
+      "physical_full_bytes_match": true,
+      "sha256": "7a4edf2b62bd454c61ba56368db70de12056c2be9caf13e98bdfaa474af97571",
+      "size_bytes": 53612
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/_mathtext.py",
+      "physical_full_bytes_match": true,
+      "sha256": "35e409a5a774db5351c122363d602de1a12851c96db1d1da1ac3c4aa0d7e693d",
+      "size_bytes": 116736
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/mathtext.py",
+      "physical_full_bytes_match": true,
+      "sha256": "4363d785fdf94c06244bf24496b7b24414c5866b1da837165cac7c2025246757",
+      "size_bytes": 5108
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/texmanager.py",
+      "physical_full_bytes_match": true,
+      "sha256": "dfda9b07bc26d8e30170514345106f53aa9c8e90e3fe05f68c4e6570c17dc806",
+      "size_bytes": 15489
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/textpath.py",
+      "physical_full_bytes_match": true,
+      "sha256": "658c532b23d51c43b01d1ed104eef6dcbd82613a9354f0a61b00b14dcebe4612",
+      "size_bytes": 12709
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/text.py",
+      "physical_full_bytes_match": true,
+      "sha256": "0e1f015d7843f27af6cbe909bbce36dc8f602fcf3ae07df6c3e33ae54caf0b9b",
+      "size_bytes": 81539
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/_tight_bbox.py",
+      "physical_full_bytes_match": true,
+      "sha256": "b2cc0d684f48715c08be15107c052adc2749658bac2967972b3f83c34257cb6b",
+      "size_bytes": 2821
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/collections.py",
+      "physical_full_bytes_match": true,
+      "sha256": "4d05bab88613758c8abf0f7c6e01ffd595d676c7ec0bc891897a37bd66141bfc",
+      "size_bytes": 103169
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/widgets.py",
+      "physical_full_bytes_match": true,
+      "sha256": "a6e1796cf8941a93a38895af65933d3f5bb71b6b8e10f6b14298d19811e60356",
+      "size_bytes": 165109
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/backend_managers.py",
+      "physical_full_bytes_match": true,
+      "sha256": "45085e08efdc40195a5ac60c6c09acc2ed143ca53b6e62d32392c4160a2d9250",
+      "size_bytes": 11795
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/_layoutgrid.py",
+      "physical_full_bytes_match": true,
+      "sha256": "98507d6ac655a25d9a57d84b069767b6e1b9c758ac294ada8c5fb74d484282ca",
+      "size_bytes": 21676
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/_constrained_layout.py",
+      "physical_full_bytes_match": true,
+      "sha256": "b841f5967099cff1519a9d9a1adb778833c7194c3a49d6f7f2bf86bdef36b51e",
+      "size_bytes": 33041
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/_tight_layout.py",
+      "physical_full_bytes_match": true,
+      "sha256": "037bd92819b1722ef0df938ef65c607d4aab44a813afe37f754cdad0cd395b11",
+      "size_bytes": 12675
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/layout_engine.py",
+      "physical_full_bytes_match": true,
+      "sha256": "9b044d875de6210fb0a63415801681fcb58a3750224135a5760f97f672e65689",
+      "size_bytes": 11433
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/backend_bases.py",
+      "physical_full_bytes_match": true,
+      "sha256": "bc333e4020c47cd3861854c171792e20e25a96b240e119ebc7d1ebf657f4f72d",
+      "size_bytes": 138474
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/image.py",
+      "physical_full_bytes_match": true,
+      "sha256": "56f56b29f9c56fa30d05d6384dc57eb45e1487d847d3cc8acbe71cadae7fb738",
+      "size_bytes": 73466
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/style/__init__.py",
+      "physical_full_bytes_match": true,
+      "sha256": "3f9d56df270014a56ce7478d8963b12d578391c182539bafb0c1b07c989eda29",
+      "size_bytes": 8970
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/_blocking_input.py",
+      "physical_full_bytes_match": true,
+      "sha256": "54736cc6f5f6993c7fc41927777d0c4a27159515d2e1d0837bd84372d6d5e6b9",
+      "size_bytes": 1224
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/offsetbox.py",
+      "physical_full_bytes_match": true,
+      "sha256": "e6bc09eb70fdcc10cccdd1d0dc71db0cd4ffd55dddd96d3dcdcaa2db9c76d19c",
+      "size_bytes": 57758
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/units.py",
+      "physical_full_bytes_match": true,
+      "sha256": "ecefa595cf24dc6a5da2d52cdad59c1068285071d7f98ee8d11edffb526f7b79",
+      "size_bytes": 6429
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/axis.py",
+      "physical_full_bytes_match": true,
+      "sha256": "f7bff99d2cffae77e75eea0fb942a2dd0d0fc28c702eccb540691bca736432b0",
+      "size_bytes": 111990
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/gridspec.py",
+      "physical_full_bytes_match": true,
+      "sha256": "df8395306765d9b93f98d6b2e867836a9b2b0786cf5b39a26103309c4331afde",
+      "size_bytes": 30513
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/spines.py",
+      "physical_full_bytes_match": true,
+      "sha256": "443a8d8354a87c2e04aa441b7d67f0d0d7cf4d3befdd8475737bb928e3192744",
+      "size_bytes": 22227
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/table.py",
+      "physical_full_bytes_match": true,
+      "sha256": "06133cbd954fe0ceb4cf8257951f687083c53538e5f258d4ccf3bb5a7b353dbf",
+      "size_bytes": 28171
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/axes/_base.py",
+      "physical_full_bytes_match": true,
+      "sha256": "61946cf7f16f02d0110e72599fd0bb9781a7c5909ab796ebd86bcfd301fbc262",
+      "size_bytes": 197697
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/category.py",
+      "physical_full_bytes_match": true,
+      "sha256": "52c67cadb003007f7a61fa630fe3750cb4dc4bf710c25b332084366516a25a6e",
+      "size_bytes": 7377
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/contour.py",
+      "physical_full_bytes_match": true,
+      "sha256": "475af6fab1e0cd78be40f4353afaa7668bce5b61d951530a91736528a74d92c8",
+      "size_bytes": 70635
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/dates.py",
+      "physical_full_bytes_match": true,
+      "sha256": "fb8d673fbc57c2499f2dd138c87c6c9520a59b38b60b01a6d59d5eb6540ef233",
+      "size_bytes": 66406
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/inset.py",
+      "physical_full_bytes_match": true,
+      "sha256": "28efbcdb9db42dc75c09a07af1ddc678575424680db64bf1e9c0c1e0d67483d7",
+      "size_bytes": 11281
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/container.py",
+      "physical_full_bytes_match": true,
+      "sha256": "51ec7d58698dc5a06ef339c9e0895832b105d0f3a613bb809c25a949ede446e4",
+      "size_bytes": 8132
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/legend_handler.py",
+      "physical_full_bytes_match": true,
+      "sha256": "572d5ecfbf43b149eca2774380e32caa77afc0be018772af8d659611e5d9bfac",
+      "size_bytes": 29820
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/legend.py",
+      "physical_full_bytes_match": true,
+      "sha256": "17a0bbd32ace3eb8172160eea55fbb3c1492c659d0f805ecf03126ebcb072a44",
+      "size_bytes": 56894
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/quiver.py",
+      "physical_full_bytes_match": true,
+      "sha256": "5bece2c435a70aced09c3489090794b82c673776f89d562f25d532d25707e381",
+      "size_bytes": 49106
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/_style_helpers.py",
+      "physical_full_bytes_match": true,
+      "sha256": "2de4e34b44502eb4e8e4fa2c4ec157835cee906092329cc92d68910941c63e8c",
+      "size_bytes": 1781
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/stackplot.py",
+      "physical_full_bytes_match": true,
+      "sha256": "ddcf626e707038e9d89f5a41bb24b1a159d4ac78fc44931ee6dec757ceac60ad",
+      "size_bytes": 4833
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/streamplot.py",
+      "physical_full_bytes_match": true,
+      "sha256": "b69641fe9acfe3b41a67cfbd83d44561bf615d0448eb18991a8ef866f1e5ea37",
+      "size_bytes": 26778
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/tri/_triangulation.py",
+      "physical_full_bytes_match": true,
+      "sha256": "52bda528c3b1e0dad9c70ca2d2105e06757389cb8a68291ed0d92b6677929253",
+      "size_bytes": 9784
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/tri/_tricontour.py",
+      "physical_full_bytes_match": true,
+      "sha256": "cb1787f10801b9bd674eaf6a6cee488a2cfcd5b70b5c378c7091d44b60219a7b",
+      "size_bytes": 10220
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/tri/_trifinder.py",
+      "physical_full_bytes_match": true,
+      "sha256": "de05332590c8c1f76c489504f2120ab28f5ed7e506bf29d437d1f16aa0b51047",
+      "size_bytes": 3522
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/tri/_tritools.py",
+      "physical_full_bytes_match": true,
+      "sha256": "c02f4a544e94aa45951e9c96f4553885076a455455989961681175117b1a0fc5",
+      "size_bytes": 10575
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/tri/_triinterpolate.py",
+      "physical_full_bytes_match": true,
+      "sha256": "c78aca74cfd6daba68da8f196d62a76d2b5e82221223593055fcee99d0051171",
+      "size_bytes": 62445
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/tri/_tripcolor.py",
+      "physical_full_bytes_match": true,
+      "sha256": "47acff5dbd7c9e3b8b06e903622e73d070d539431f60977928cfa94a8b5a5312",
+      "size_bytes": 6818
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/tri/_triplot.py",
+      "physical_full_bytes_match": true,
+      "sha256": "8e51d2cf7e99e52d7ccc129ceb7f4f952a9d85f97b8c7a25f04c6575d26e0c8e",
+      "size_bytes": 3102
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/tri/_trirefine.py",
+      "physical_full_bytes_match": true,
+      "sha256": "64c956ca989108ed89e793793e9f52ea6e41953a07c7ec6a0c114ca45cceb1b0",
+      "size_bytes": 13179
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/tri/__init__.py",
+      "physical_full_bytes_match": true,
+      "sha256": "6ac9df79f291a49bfbb066df75d08cc9b9c92275433f082987b8349a9a21daee",
+      "size_bytes": 820
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/axes/_secondary_axes.py",
+      "physical_full_bytes_match": true,
+      "sha256": "b2aaaae077e03ff6538d1a4bf8a69c3476eed0e27120aa567de138c794599a93",
+      "size_bytes": 12922
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/axes/_axes.py",
+      "physical_full_bytes_match": true,
+      "sha256": "f246237d5c9edf1b8993b2cd1fa5dccb8831e091fd721b66503e258156711cad",
+      "size_bytes": 372908
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/axes/__init__.py",
+      "physical_full_bytes_match": true,
+      "sha256": "68713fcc88e98482645b8ff57f2a05b845936fb80245ec0ae633595891c47603",
+      "size_bytes": 351
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/projections/geo.py",
+      "physical_full_bytes_match": true,
+      "sha256": "7de4767726c2ca5864eb17be333c41aff7bc31d6e955cf2d06d090409d15d9ca",
+      "size_bytes": 17605
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/projections/polar.py",
+      "physical_full_bytes_match": true,
+      "sha256": "81c50495f1c18e3b6353a957427702bcde4f370a6364a4938e9b7a16fac5094f",
+      "size_bytes": 55135
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/projections/__init__.py",
+      "physical_full_bytes_match": true,
+      "sha256": "374b93de84c11e6967c04b6278ace7160db7b249034335f6eeec9eaf20482f67",
+      "size_bytes": 4467
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/colorbar.py",
+      "physical_full_bytes_match": true,
+      "sha256": "0a7f24bbeb1255cc2b8a6e4b8ade14649397a21a334e70017c820939f124ad93",
+      "size_bytes": 61667
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/figure.py",
+      "physical_full_bytes_match": true,
+      "sha256": "b440ab0a5be03cb39b13529a2fec497d2d96deb083e3e56d6220593e3ec567da",
+      "size_bytes": 144757
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/pyplot.py",
+      "physical_full_bytes_match": true,
+      "sha256": "17b87d443dfefe523e2ae1ff5c6a11889d4922e7e6a3f5f6692090b0e8a7d72e",
+      "size_bytes": 155851
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans.ttf",
+      "physical_full_bytes_match": true,
+      "sha256": "3fdf69cabf06049ea70a00b5919340e2ce1e6d02b0cc3c4b44fb6801bd1e0d22",
+      "size_bytes": 756072
+    }
+  ],
+  "all_CSV_fields_exactly_match_exports": true,
+  "all_four72_field_summary_comparisons_match_original_candidate_arm_cold_metadata": true,
+  "baseline_benchmark_commit": "a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+  "blocking_findings": [],
+  "current_four_arm_metrics": [
+    {
+      "c_obs_in_ms_per_ingress": 14286.587037037,
+      "c_obs_is_partial": true,
+      "completion_coverage": 0.4777777777777778,
+      "frames": 516,
+      "latency_p50_ms": 5727.5,
+      "measurement_admitted": 1080,
+      "measurement_dropped": 564,
+      "on_time_completed": 0,
+      "on_time_ingress_coverage": 0.0,
+      "resource": "cpu",
+      "scenario": "checkpoint_independent_processes_baseline"
+    },
+    {
+      "c_obs_in_ms_per_ingress": 7613.101851852,
+      "c_obs_is_partial": true,
+      "completion_coverage": 0.6148148148148148,
+      "frames": 664,
+      "latency_p50_ms": 3621.0,
+      "measurement_admitted": 1080,
+      "measurement_dropped": 416,
+      "on_time_completed": 0,
+      "on_time_ingress_coverage": 0.0,
+      "resource": "cpu",
+      "scenario": "checkpoint_video_dag_shared"
+    },
+    {
+      "c_obs_in_ms_per_ingress": 10291.312962963,
+      "c_obs_is_partial": true,
+      "completion_coverage": 0.9907407407407407,
+      "frames": 1070,
+      "latency_p50_ms": 2127.0,
+      "measurement_admitted": 1080,
+      "measurement_dropped": 10,
+      "on_time_completed": 3,
+      "on_time_ingress_coverage": 0.002777777777777778,
+      "resource": "gpu",
+      "scenario": "checkpoint_independent_processes_baseline"
+    },
+    {
+      "c_obs_in_ms_per_ingress": 2984.164814815,
+      "c_obs_is_partial": true,
+      "completion_coverage": 0.9953703703703703,
+      "frames": 1075,
+      "latency_p50_ms": 2168.0,
+      "measurement_admitted": 1080,
+      "measurement_dropped": 5,
+      "on_time_completed": 1,
+      "on_time_ingress_coverage": 0.000925925925925926,
+      "resource": "gpu",
+      "scenario": "checkpoint_video_dag_shared"
+    }
+  ],
+  "four_exact15_leaf_namespaces_current_equal": true,
+  "fresh_peer_process_scans": null,
+  "hardware_acceptance": false,
+  "limits": [
+    "Original wrapper records one postterminal process/group scan and no numeric FD count; no second scan or numeric FD restoration is invented.",
+    "Windows physical reads establish full SHA/size equality and preserve original Linux220 epoch records; they do not recreate Linux stat identities.",
+    "Only original science-owned outputs and custody-listed inputs were read; no model/engine/device/test/Git operation or raw contract/numeric reducer rerun.",
+    "CPU zero on-time completions remain explicit; GPU on-time3/1 of1080. One descriptive pair/resource, completed-only latency and partial attributed C_obs do not establish causal overload, true NVDEC busy time, processor work, energy, accuracy/population/noninferiority or full campaign acceptance."
+  ],
+  "measurement_acceptance": false,
+  "original_Linux220_before_after_seven_epoch_records_equal": true,
+  "original_custody": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision28-four-arm-science-preparation-v1\\attempt01\\custody-and-comparison.v1.json",
+    "sha256": "ca10b71ea56d6ad29ce1b060699ff37b79341ddb911b88168a58e73b3d0e4cd9",
+    "size_bytes": 206365
+  },
+  "original_exports": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision28-four-arm-science-preparation-v1\\attempt01\\exports-and-interpretation.v1.json",
+    "sha256": "eec885d67f1d1aaf88ec932bf696790ea247e551caa0798341cc216f9eccf3bc",
+    "size_bytes": 11420
+  },
+  "original_independent_FD_close_record": true,
+  "original_numeric_FD_balance": null,
+  "original_recomputed_summaries": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision28-four-arm-science-preparation-v1\\attempt01\\recomputed-summaries.v1.json",
+    "sha256": "2a7a70ddfd9f00c37bfd92ab3681ee7040cbd56e6942d8d7ecbce4424c4a4c98",
+    "size_bytes": 70771
+  },
+  "original_recorded_process_group_scan_count": 1,
+  "original_root_closure": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision28-four-arm-science-preparation-v1\\attempt01\\root-original-science-closure.v1.json",
+    "sha256": "0d8c6dab6237e9e1d7b16197c9000bb4da2343bf2f61d8dcbd7e3d397e6da199",
+    "size_bytes": 7398
+  },
+  "original_terminal": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision28-four-arm-science-preparation-v1\\attempt01\\terminal.v1.json",
+    "sha256": "2414255a1c671db6c11d6c6c6340d2fc56d84a438d902cfcc12e9a23b279f329",
+    "size_bytes": 4319
+  },
+  "physical_read_bytes": 239657386,
+  "reviewable": true,
+  "reviewer": "/root/decision28_source_peer",
+  "reviewer_handles_released": true,
+  "schema_version": 1,
+  "source_and_original_EOF_reap_and_final_late_metadata_join": true,
+  "target_reducer_renderer_contract_or_test_rerun": false
+}

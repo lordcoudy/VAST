@@ -1,0 +1,193 @@
+{
+  "all_observer_handles_released": true,
+  "archive_complete": false,
+  "close_errors": [],
+  "conformance_acceptance": false,
+  "elapsed_s": 0.023936625046189874,
+  "facts": {
+    "actual_counts": {
+      "deferred_integration": 9,
+      "discovered": 3001,
+      "error": 0,
+      "expected_failure": 0,
+      "failure": 0,
+      "selected": 2992,
+      "skip": 86,
+      "success": 2906,
+      "unexpected_success": 0
+    },
+    "late_companion_paths_absent": [
+      "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-prerequisite-capture-preparation-v1/original-full-ci-prerequisite-attempt01/late-failure.v1.json",
+      "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-local-ci-D-prerequisite-result-review-preparation-v1/original-prerequisite-review-attempt01/late-failure.v1.json"
+    ],
+    "mandatory_local_CI_pass": true,
+    "native_success_ids": [
+      "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_client_regression",
+      "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_policy_topology_regression",
+      "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_reset_queue_level_regression"
+    ],
+    "original_CI_disposition": "SUCCESS",
+    "original_owners_from_actual_records": [
+      {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 6673,
+        "pid": 6673,
+        "session": 6673,
+        "startticks": 51238226,
+        "uid": 1000
+      },
+      {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 6687,
+        "pid": 6687,
+        "session": 6687,
+        "startticks": 51238236,
+        "uid": 1000
+      },
+      {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 6999,
+        "pid": 6999,
+        "session": null,
+        "startticks": 51239773,
+        "uid": 1000
+      },
+      {
+        "boot_id": null,
+        "gid": null,
+        "pgid": null,
+        "pid": 10965,
+        "session": null,
+        "startticks": null,
+        "uid": null
+      }
+    ],
+    "review": {
+      "epoch7": [
+        69,
+        1407374885980509,
+        33279,
+        1,
+        119285,
+        1791032750233587000,
+        1791032750233587000
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-local-ci-D-prerequisite-result-review-preparation-v1/original-prerequisite-review-attempt01/review.v1.json",
+      "sha256": "5a58508acf35f71d3c2934a022de1bff2e60eb44a39b6f85bd48cc3715ab7c60",
+      "size_bytes": 119285
+    },
+    "six_builds": [
+      "vast_native_gst_probe",
+      "vast_checkpoint_source",
+      "gstadaptivescheduler",
+      "gstvastanalyticsterminal",
+      "gstvastanalyticsqueue",
+      "gstvastcheckpointprefixqueue"
+    ],
+    "source_table_rows": 5577,
+    "two_fresh_process_scans": [
+      {
+        "at_monotonic_ns": 515635395745188,
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "errors": [],
+        "matched_owned_PID_PGID_session_members": [],
+        "original_PID_paths_absent": {
+          "10965": true,
+          "6673": true,
+          "6687": true,
+          "6999": true
+        }
+      },
+      {
+        "at_monotonic_ns": 515635397437161,
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "errors": [],
+        "matched_owned_PID_PGID_session_members": [],
+        "original_PID_paths_absent": {
+          "10965": true,
+          "6673": true,
+          "6687": true,
+          "6999": true
+        }
+      }
+    ],
+    "wrapper_dispatch": {
+      "epoch7": [
+        69,
+        1407374885980416,
+        33279,
+        1,
+        5426,
+        1791030051846443600,
+        1791030051846443600
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-prerequisite-capture-preparation-v1/original-full-ci-prerequisite-attempt01/dispatch.v1.json",
+      "sha256": "68f7184244fd4343317a75e0390ee5851110033628acf77022cdf0c819fc2bdc",
+      "size_bytes": 5426
+    },
+    "wrapper_terminal": {
+      "epoch7": [
+        69,
+        1407374885980458,
+        33279,
+        1,
+        964,
+        1791032167044463500,
+        1791032167044463500
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-prerequisite-capture-preparation-v1/original-full-ci-prerequisite-attempt01/terminal.v1.json",
+      "sha256": "3edd982ef6967a065fc52f1bf266fc0614fe4e69b64b6d875ccfc47ec98d658b",
+      "size_bytes": 964
+    }
+  },
+  "fd_after": 6,
+  "fd_before": 6,
+  "first_error": null,
+  "hardware_acceptance": false,
+  "kind": "original_corrected_local_CI_reader_owner_late_closure_v1",
+  "limits": [
+    "Original observer6999 session was not recorded; its actual PID/PGID/startticks/UID/GID/boot are retained and only observed fields are scanned.",
+    "Original independent reader10965 birth/group/session/UID/GID/boot were not recorded in its report. Both fresh scans prove its PID path absent, not an unobserved group absent.",
+    "Fresh scans cover only recorded original process/group/session identities; no global descendant absence claim.",
+    "This observer cannot prove its own absence while live; its actual owner/parent are retained for a separate parent postterminal gate.",
+    "Old failed local D remains failed. Actual corrected CI success does not itself accept hardware, SLO achievement, conformance, archive or merge."
+  ],
+  "no_CI_test_reader_engine_model_replay": true,
+  "observer": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "observed_parent": {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 10982,
+      "pid": 10982,
+      "ppid": 10981,
+      "session": 10982,
+      "startticks": 51563532,
+      "uid": 1000
+    },
+    "pgid": 10982,
+    "pid": 10983,
+    "ppid": 10982,
+    "session": 10982,
+    "startticks": 51563532,
+    "uid": 1000
+  },
+  "original_root_tool_outcomes": {
+    "basis": "Parent genuine original completion notifications, not fabricated wrapper capture",
+    "full_CI": {
+      "returncode": 0,
+      "terminal_cell": "3db5dc"
+    },
+    "independent_reader": {
+      "returncode": 0,
+      "terminal_cell": "35ac22"
+    }
+  },
+  "schema_version": 1,
+  "source_commit_D": "3c025b29b3c1d5275c2ec693410e4b83700583de",
+  "status": "verified"
+}

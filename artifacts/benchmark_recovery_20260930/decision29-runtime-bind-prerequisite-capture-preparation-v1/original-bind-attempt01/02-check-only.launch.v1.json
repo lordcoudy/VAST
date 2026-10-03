@@ -1,0 +1,82 @@
+{
+  "argv": [
+    "/usr/bin/timeout",
+    "--signal=TERM",
+    "--kill-after=10s",
+    "30s",
+    "/usr/bin/bash",
+    "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/mount_publication_runtime_wsl.sh",
+    "--check-only",
+    "--source-runtime",
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1",
+    "--project-root",
+    "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D",
+    "--project-runtime-mount",
+    ".publication-runtime/full-publication-cp312-v1"
+  ],
+  "capture_owner": {
+    "argv": [
+      "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+      "-I",
+      "-B",
+      "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-prerequisite-capture-preparation-v1/capture_stock_runtime_bind_v2.py"
+    ],
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 0,
+    "observed_parent": {
+      "argv": [
+        "/usr/bin/timeout",
+        "--signal=TERM",
+        "--kill-after=10s",
+        "120s",
+        "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+        "-I",
+        "-B",
+        "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-prerequisite-capture-preparation-v1/capture_stock_runtime_bind_v2.py"
+      ],
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 0,
+      "pgid": 6530,
+      "pid": 6530,
+      "ppid": 6529,
+      "session": 6530,
+      "startticks": 51155127,
+      "state": "S",
+      "uid": 0
+    },
+    "pgid": 6530,
+    "pid": 6531,
+    "ppid": 6530,
+    "session": 6530,
+    "startticks": 51155127,
+    "state": "R",
+    "uid": 0
+  },
+  "child_owner": {
+    "argv": [
+      "/usr/bin/timeout",
+      "--signal=TERM",
+      "--kill-after=10s",
+      "30s",
+      "/usr/bin/bash",
+      "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/mount_publication_runtime_wsl.sh",
+      "--check-only",
+      "--source-runtime",
+      "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1",
+      "--project-root",
+      "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D",
+      "--project-runtime-mount",
+      ".publication-runtime/full-publication-cp312-v1"
+    ],
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 0,
+    "pgid": 6563,
+    "pid": 6563,
+    "ppid": 6531,
+    "session": 6563,
+    "startticks": 51155140,
+    "state": "R",
+    "uid": 0
+  },
+  "started_at_ns": 1791029220970433907
+}
