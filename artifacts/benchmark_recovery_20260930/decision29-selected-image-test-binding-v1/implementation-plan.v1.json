@@ -1,0 +1,44 @@
+{
+  "actual_original_RED_hosted": [
+    "C37114105253/111177442716 sole AssertionError",
+    "P37111719589/111170763707 sole AssertionError"
+  ],
+  "after": {
+    "sha256": "216b2b76686c396a88fdd6a51d404d3ea01856abbe3cdb982c29d791644386e1",
+    "size_bytes": 23567
+  },
+  "approved_existing_tasks": [
+    "18.11",
+    "19.5",
+    "20.6",
+    "24.4"
+  ],
+  "before": {
+    "sha256": "ba158ae63c8e8c3fea9ff65c36d11d2dbe0d82046eef2e9407a4364e4bc5db8a",
+    "size_bytes": 23561
+  },
+  "exact_inverse": true,
+  "future_focused_result": null,
+  "literal_pairs": [
+    [
+      "selected-gstreamer-build-a4e145b7-v1/gstreamer_custom.runtime.freeze.json",
+      "decision28-selected-original-build-copy-v1/gstreamer_custom.runtime.freeze.json"
+    ],
+    [
+      "self.assertEqual(len(payload), 7049)",
+      "self.assertEqual(len(payload), 7001)"
+    ],
+    [
+      "61874c718d6140d0d5cf745988bc301b916077af8f80e96742184f80a0805db7",
+      "0b8a34e67773572a27885b931c50427de8bbd59b23eba837c5d2319ea7e9abca"
+    ]
+  ],
+  "original_receipt": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision28-selected-original-build-copy-v1\\gstreamer_custom.runtime.freeze.json",
+    "sha256": "0b8a34e67773572a27885b931c50427de8bbd59b23eba837c5d2319ea7e9abca",
+    "size_bytes": 7001
+  },
+  "schema_version": 1,
+  "scope": "Repair exactly3 literals in the existing current selected-image static test to the genuine original Decision28 receipt already committed at C. Every existing assertion, other test, decorator, CI selection, production/source/native/worker input remains unchanged. No new design or scientific criterion.",
+  "time_utc": "2026-10-03T10:22:59.333229+00:00"
+}

@@ -1,0 +1,708 @@
+{
+  "Popen_AST_and_argv_unchanged": true,
+  "actual95_full_SHA_size_equal_count": 95,
+  "all_other_function_ASTs_unchanged": [
+    "test_deepstream_child_failure_diagnostic_is_bounded_and_single_line",
+    "test_fix_benchmark_patch_matches_exact_runtime_constants",
+    "test_current_qualification_fragments_match_physical_receipts",
+    "test_runtime_input_materializer_inspects_the_candidate_reference_not_only_id",
+    "test_deepstream_dynamic_image_contract_keeps_exact_frozen_base_and_entrypoint",
+    "test_savant_native_builder_is_the_frozen_attempt14_builder",
+    "test_openvino_current_runtime_is_exactly_refrozen",
+    "test_live_fix_benchmark_preflight_matches_runtime_materializer"
+  ],
+  "all_runner_function_and_class_ASTs_unchanged": [
+    {
+      "kind": "FunctionDef",
+      "name": "pin"
+    },
+    {
+      "kind": "FunctionDef",
+      "name": "save"
+    },
+    {
+      "kind": "FunctionDef",
+      "name": "owner"
+    },
+    {
+      "kind": "ClassDef",
+      "name": "Result"
+    },
+    {
+      "kind": "FunctionDef",
+      "name": "drain"
+    },
+    {
+      "kind": "FunctionDef",
+      "name": "startTest"
+    },
+    {
+      "kind": "FunctionDef",
+      "name": "stopTest"
+    }
+  ],
+  "assertion_preservation": "Exactly three existing receipt path/size/full-SHA literal operands change in the current selected-image method. All assertions, expressions, decorators, methods and every other byte are preserved by the exact inverse; no new assertion or selection exception.",
+  "before_snapshots": [
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-selected-image-test-binding-v1\\test.before.raw",
+      "sha256": "ba158ae63c8e8c3fea9ff65c36d11d2dbe0d82046eef2e9407a4364e4bc5db8a",
+      "size_bytes": 23561
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-selected-image-test-binding-v1\\original-focused-controller.raw",
+      "sha256": "03d722b05e54eaaf2149a29043b36aed3b86e7e3ccd3a4055da9f62ec2cf41a5",
+      "size_bytes": 6901
+    }
+  ],
+  "blocking_findings": [],
+  "changed_function": "test_gstreamer_current_runtime_is_exactly_refrozen",
+  "changed_test_absent_from_95_and_selected73": true,
+  "changed_test_absent_from_all_ten_source_groups": {
+    "analytics_worker_openvino": true,
+    "analytics_worker_tensorrt": true,
+    "deepstream": true,
+    "gstreamer_custom": true,
+    "host87": true,
+    "native_probe_deepstream": true,
+    "native_probe_openvino": true,
+    "native_probe_savant": true,
+    "openvino_gva": true,
+    "savant": true
+  },
+  "considered_author_metadata": [
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-selected-image-test-binding-v1\\implementation-plan.v1.json",
+      "sha256": "7c2cce2f8ec35dd1838517dfb11ec646b5510fdab03dc1ce81b880da1c432165",
+      "size_bytes": 1742
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-selected-image-test-binding-v1\\controller-preparation.v1.json",
+      "sha256": "0522c52f6a3fc7a1b4e1fc86ff5993d5d7ad133cba877aed00748d02cc12d999",
+      "size_bytes": 1653
+    }
+  ],
+  "current_host_literal_fields_matched": {
+    "EXPECTED_EMBEDDED_ARTIFACTS": "embedded_files",
+    "EXPECTED_IMAGE_ENTRYPOINT": "entrypoint",
+    "EXPECTED_IMAGE_ID": "image_id",
+    "EXPECTED_IMAGE_INSPECT_PROJECTION_SHA256": "inspect_projection_sha256",
+    "EXPECTED_IMAGE_LABELS": "labels",
+    "EXPECTED_IMAGE_REFERENCE": "final_reference",
+    "EXPECTED_IMAGE_USER": "user",
+    "EXPECTED_REPOSITORY_DIGEST": "canonical_repository_digest"
+  },
+  "current_host_source": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\scripts\\checkpoint_gstreamer_publication_runtime_v3.py",
+    "sha256": "0fee418bfa0c7e0e89f9c74210f107fa950d14cf65844d82b1a91330a398aa1c",
+    "size_bytes": 59624
+  },
+  "elapsed_s": 0.7779441000893712,
+  "existing_assertion_call_count_before_and_after": 82,
+  "fresh_distinct_leaf_descriptors": [
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\.local\\state\\vast\\publication\\runtime\\full-publication-cp312-v1\\bin\\python",
+      "sha256": "1643dacd9feaedc58f3cc581e4d22577dfe25c09b10282936186ccf0f2e61118",
+      "size_bytes": 8020928
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\artifacts\\benchmark_recovery_20260930\\decision28-gstreamer-build-2a6a42c9-v1\\gstreamer_custom.runtime.freeze.json",
+      "sha256": "0b8a34e67773572a27885b931c50427de8bbd59b23eba837c5d2319ea7e9abca",
+      "size_bytes": 7001
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\artifacts\\benchmark_recovery_20260930\\decision28-host-cpu08-final-binding-v1\\run_original_cpu_component_pair_ext4_decision28_v4.py",
+      "sha256": "445535a2ea9176effbe97e5de1db53aae614645e40db65bc1debf74489371f36",
+      "size_bytes": 23631
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\artifacts\\fix_benchmark_preparations_20260928g\\worker_images\\analytics-worker.freeze.json",
+      "sha256": "ff7dca7f25ffa9856cf0afdf97569e9ced3292866251e2523db00aa23875ef96",
+      "size_bytes": 3963
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\artifacts\\gstreamer_component_release_20260930_a4e145b7\\host\\execution-code-closure.ext4-decision28.v4.json",
+      "sha256": "3c91339d43f6154dd76afe8a89c02d82f60a4b1e5da16623039f691fdc6701f2",
+      "size_bytes": 30266
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\artifacts\\publication_policy_qualification_v2_fix_benchmark_20260928g\\bootstrap\\checkpoint_policy_qualification_bootstrap_calibration.gstreamer_custom.v2.json",
+      "sha256": "8f984df897f12f6269e68a2a1dda6ffe5fc112c5729f5f46fd9f7079bde96b15",
+      "size_bytes": 2512
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\artifacts\\publication_policy_qualification_v2_fix_benchmark_20260928g\\candidate\\checkpoint_policy_capability_candidate_manifest.json",
+      "sha256": "3c921a062345d571c836eed6e40de6b3bf4b7be798e24b792c10c1d1df3c1494",
+      "size_bytes": 63455
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\configs\\checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260928g.accepted.acceptance_receipt.json",
+      "sha256": "6f50d92e74ab7750f262d2697b0fceeb979d4f221eda90a0223cce4d5ff7a169",
+      "size_bytes": 20686
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\deploy\\gstreamer_custom\\publication\\Dockerfile",
+      "sha256": "5d10aec4076e67218905b2c71ae32553e6843810d6d176b8e31c0c3be9dffe78",
+      "size_bytes": 8169
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\deploy\\gstreamer_custom\\publication\\runtime-source-allowlist.txt",
+      "sha256": "111c8d3a517a4ab350fbb2753a3c01965e6645eeaad72c24f1b9f1266659e600",
+      "size_bytes": 3538
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\deploy\\gstreamer_custom\\publication\\vast_gstreamer_custom_publication_runtime_v3",
+      "sha256": "2f241d0fbf8e250d09f3dc8c6c97999910991c8649c44e56ee69d4f1cb38b8e7",
+      "size_bytes": 117
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\deploy\\native_gst_probe\\checkpoint_admission_transport.hpp",
+      "sha256": "54e9aa0a05b50aacd9372fa6a2a660fb7f31f37d68b76d349362dad34e87e48d",
+      "size_bytes": 9551
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\deploy\\native_gst_probe\\checkpoint_analytics_execution_client.hpp",
+      "sha256": "d531893e2586bb02432d69edfae7bb2ec08a04711c2c8e22353efda678ae461a",
+      "size_bytes": 41004
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\deploy\\native_gst_probe\\checkpoint_analytics_terminal_transport.hpp",
+      "sha256": "1133706b13443ada600105f3b6897a82e7cf2d3493b04937b58fe4f4a24bf98d",
+      "size_bytes": 11004
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\deploy\\native_gst_probe\\checkpoint_gstreamer_analytics_bridge.hpp",
+      "sha256": "18f53922dc6af25d4e24c1c35a11603122d80c04261bfe67c5db149e300e44a6",
+      "size_bytes": 4868
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\deploy\\native_gst_probe\\checkpoint_native_policy_client.hpp",
+      "sha256": "85d2b64ccc977a76b6a9c250fd77ea8f02029382cc6121c52ff7ec3bc57acc0c",
+      "size_bytes": 22257
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\deploy\\native_gst_probe\\checkpoint_resource_interval_emitter.hpp",
+      "sha256": "6eb7c3b5f6cd31820727b6cd0808707873b9b01a45547a5549b8dde9b7b728b6",
+      "size_bytes": 19721
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\deploy\\native_gst_probe\\checkpoint_runtime_emitter.hpp",
+      "sha256": "2fd34309bfcbdce6b96f4023c198453dbcbbbef59351a4e5e06f0f2be9d8bc9b",
+      "size_bytes": 11207
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\deploy\\native_gst_probe\\vast_native_gst_probe.cpp",
+      "sha256": "c0e3f80ec32bdf539815ca59b5eee1b121c87905240e28b14ab0ba4b360d4c6f",
+      "size_bytes": 167521
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\analytics_execution_bindings.py",
+      "sha256": "d356f9a945bde5e1d6a6753b89e551a14371aa27e84886014f3c2807d98b2ff2",
+      "size_bytes": 17341
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\analytics_execution_capability.py",
+      "sha256": "5622726cb4a261b42509678c1ec6fd6c065923515a4d25ee6cb5b5f2d0824279",
+      "size_bytes": 16264
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\analytics_execution_endpoint.py",
+      "sha256": "acf5861d59efac7026ea89f28e1b4d550bd1254e8cdbea4df41eb874c7b5466b",
+      "size_bytes": 6756
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\analytics_execution_protocol.py",
+      "sha256": "283fa34b91e4fbf5953f78509f7da3a38f92731c696878774104f193576831d9",
+      "size_bytes": 18555
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\analytics_execution_worker.py",
+      "sha256": "04b59f3c5a1fa94d764f3b0e71fcb2cd0d7b0e2ad915573529019e2d2f32f00d",
+      "size_bytes": 38433
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\analytics_model_contract.py",
+      "sha256": "fdf779ce50ada84e5adbaad75c95455618f5ce3ece7c3fc759fe56e635d38c62",
+      "size_bytes": 15765
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\backend_publication_dispatch.py",
+      "sha256": "f065d22176edcd37cbf7ba68983119d3871362f9d01ee6a112976941d7c405d0",
+      "size_bytes": 17104
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\backend_publication_dispatch_v3.py",
+      "sha256": "b755230a19c8ab3e46dbe49aa2fa3e7054a79a7e7e4e98f91ceed560fada2740",
+      "size_bytes": 41765
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\backend_publication_launcher_invocation_v3.py",
+      "sha256": "ac10258c97fcdd58da02236f7a36974b2ba5060ce2f935955db05b5a9f422ba5",
+      "size_bytes": 7230
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\backend_publication_output_receipt.py",
+      "sha256": "159e307319d8e6f41e1684cd9ba871097de54747bd9013cb7b71e370e1b0cec5",
+      "size_bytes": 34431
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\backend_publication_process_supervisor_v3.py",
+      "sha256": "99f772665d0d271b24d98f2393a50a0f9e0bbfe5c2840e5ccce65d89a84ed13e",
+      "size_bytes": 124707
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\backend_publication_runtime_authority.py",
+      "sha256": "ba633140e27fe78cb6bfec97093f60e476f2bd8c43f50a0998a6b80532ffb56c",
+      "size_bytes": 44628
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\backend_runtime_grant.py",
+      "sha256": "c90c726c00f14d5a198304ec8b74fecff8d1a4a21c41afd266073b80733b4c9f",
+      "size_bytes": 51402
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\backend_runtime_qualification_v3.py",
+      "sha256": "c4fbd3e2afa99d5ca83130622857bbbaa3ceb0d60796d3d5a761345a32f764a4",
+      "size_bytes": 54917
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\benchmark_contract.py",
+      "sha256": "04cd9c75a7c405e960bdb7e4f2dea9759d839a333d43f79bd9b2b4aacaace17b",
+      "size_bytes": 344569
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\checkpoint_acceptance_metadata_binding.py",
+      "sha256": "9429cc4843d085e54daa7023b8bab9a5e9361a20204d20ba4e2dad0f1c2a3908",
+      "size_bytes": 20605
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\checkpoint_admission.py",
+      "sha256": "4db82ea10118d942457901393f447ebcf7602577b77fd1c0be9084f54366b7f7",
+      "size_bytes": 19971
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\checkpoint_deepstream_protocol_bridge.py",
+      "sha256": "356e9171fb772f217c785632d3f57e96430da7138a146fe8720c56b1decd68ae",
+      "size_bytes": 53754
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\checkpoint_deepstream_publication_runtime_v3.py",
+      "sha256": "d3c1753df6d7ddcf40e3971066a5dfc9d4f71572c5bd3f18961460903b5aef0a",
+      "size_bytes": 41888
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\checkpoint_deepstream_qualification_fragment_v1.py",
+      "sha256": "2e1a9778481288a6dc9f0b3fe881454e329a3d377758130086166a2923d8b9fe",
+      "size_bytes": 40419
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\checkpoint_gstreamer_analytics_bridge.py",
+      "sha256": "d0ff1e5910e41815e116988757ad5eb3b6c9ea6bc1cc56219d00be0b23e2da43",
+      "size_bytes": 39243
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\checkpoint_gstreamer_analytics_sidecar.py",
+      "sha256": "4a853d79fe4296882d1f3e28774ccabb458e030c55d474b1bf34918b897f7fd6",
+      "size_bytes": 299261
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\checkpoint_gstreamer_custom_container_coordinator_v3.py",
+      "sha256": "7f70138de1e87ab43dfab1e37674979c551dd24ee02fba205cd9905790b060c5",
+      "size_bytes": 759
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\checkpoint_gstreamer_publication_runtime_v3.py",
+      "sha256": "0fee418bfa0c7e0e89f9c74210f107fa950d14cf65844d82b1a91330a398aa1c",
+      "size_bytes": 59624
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\checkpoint_gstreamer_runtime.py",
+      "sha256": "36cbd08613a4420f8b1aa516f297f0019d05ce7df58b17e4ca8e5f2bac498f97",
+      "size_bytes": 156160
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\checkpoint_model_parity.py",
+      "sha256": "ecb4d10ee878fe77fef30ca7df9990e5e2cc8a959c6aa6e285736a489b71d17c",
+      "size_bytes": 97548
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\checkpoint_model_parity_acceptance.py",
+      "sha256": "660071f68ae3378f704c497aab78ffa3b2c6d20a976ca52402ebe2c7b4bbeea4",
+      "size_bytes": 39938
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\checkpoint_model_parity_acceptance_v4.py",
+      "sha256": "cda34465993fccd9acff9833b4db52292e7e58fce5286eda44ceb62dcab71cda",
+      "size_bytes": 31392
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\checkpoint_model_parity_v4.py",
+      "sha256": "34474de61e19a8f3b1167ff8b52f11f33514e1d9483220abf693456ec840cf9c",
+      "size_bytes": 35800
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\checkpoint_native_policy_runtime.py",
+      "sha256": "76de5fa2bc52eb1a11b34abbfb93dd144d0769b802351dec992c92e0d1610c95",
+      "size_bytes": 73421
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\checkpoint_openvino_gva_publication_runtime_v3.py",
+      "sha256": "428e600aca23616e6e43e49331c54ac7b1f58e7784f5f79a03fdf8392a34b17d",
+      "size_bytes": 62909
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\checkpoint_publication_launcher_adapter_v3.py",
+      "sha256": "ddb0779a0142962fbdd5dbada6127f748d854204b4b1939734ee64eddb60e12d",
+      "size_bytes": 30501
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\checkpoint_publication_launcher_guard_v3.py",
+      "sha256": "29dcbd607858118ad7e5e4a221a58034ac07ea4f819bede4831d23852f41a97f",
+      "size_bytes": 13961
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\checkpoint_publication_runtime.py",
+      "sha256": "8d389885bf48aedfcdcc65519db41ee2a962da3e77c2ca224c477b8d7742b055",
+      "size_bytes": 55785
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\checkpoint_qualification_pilot_acceptance_v1.py",
+      "sha256": "5de1c97482b5de0584847b727861b5a59868ddf001ff0c79c7331c8283a3d1a2",
+      "size_bytes": 65596
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\checkpoint_runtime.py",
+      "sha256": "fb91d24e69385d37fc59b68c116829163cc3e29ed6b1403276b0b0676af90135",
+      "size_bytes": 94557
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\checkpoint_runtime_plan.py",
+      "sha256": "1de5f88c0939f3d9c38744e8248e5c0268159909393a4712af0e25e6d8462890",
+      "size_bytes": 30727
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\checkpoint_savant_publication_runtime_v3.py",
+      "sha256": "1bb0a25726543870d4e7705c1148ebaa1028fb6ab7d05e0ab2cc3b85eac8bba7",
+      "size_bytes": 42019
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\collect_metrics.py",
+      "sha256": "f2db6624aa56970dd09cd8cf3dcb97c5c55ab47f3c20c54cf5c26cc2263d70dc",
+      "size_bytes": 13324
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\extract_kpp_legacy_iss.py",
+      "sha256": "4a491283963629f6c3ed2f1649d62b1a2945241edeb1e735b90144eb3f41f6fe",
+      "size_bytes": 73654
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\formal_aw_heft_reference.py",
+      "sha256": "812c18bdd6fe648d8939de8e00e0dd864cba84d4e96b1f6bcbc753f932d4fa34",
+      "size_bytes": 70898
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\freeze_kpp_frozen_reconstruction_v1.py",
+      "sha256": "44c3cbf660aac5db5a29556e7cbc717acc01acd26f115c4c5591d3ded7f2d4f1",
+      "size_bytes": 28006
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\freeze_kpp_iss_publication_v3.py",
+      "sha256": "73cb1726532df1c4fdd4249673c471cceb035906f78bf68e250f1706c08dcffa",
+      "size_bytes": 43081
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\freeze_kpp_legacy_iss_v2_transcodes.py",
+      "sha256": "d4ab7bf4497e48d4e04f4cd49f0b97606a46457ac516fabfc456dd09a3f64c33",
+      "size_bytes": 69386
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\full_resource_contract.py",
+      "sha256": "2eb73e379287e65776049e3a98c530a5c3a0e9e81749a7a9f2ae8d4c80b52a7c",
+      "size_bytes": 21340
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\kpp_frozen_reconstruction_v1_dataset.py",
+      "sha256": "d4d0dfe352249316c9c5b72136bea326947b77b7952ce1ff5add5ab502bad19d",
+      "size_bytes": 15206
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\kpp_iss_publication_v3_dataset.py",
+      "sha256": "6ad62418f36f5e0dcfee55d43c117a9faa7e82f82c3388f53b1e7bf85049909d",
+      "size_bytes": 23901
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\kpp_legacy_iss_v2_manifest.py",
+      "sha256": "c5a2c67a6a5f1293f0b5939980534d87f7089dd221542c88eed4bf95650cfc42",
+      "size_bytes": 29663
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\model_parity_grant.py",
+      "sha256": "bb5598b8917e0662d7cb933196be43c332c4fec6363691d971b64ae1a53127bb",
+      "size_bytes": 14740
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\production_arm_evidence_finalizer_v1.py",
+      "sha256": "e360b386f94712c0737b56f0a224b7979bbab1865e7cbffaebcc72462209f193",
+      "size_bytes": 27296
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\publication_acceptance_evidence.py",
+      "sha256": "fdd2491e874e21b02586f13d6a4f0c1c34ca3b78ce837ede1779ac7d964ea8d6",
+      "size_bytes": 2263
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\publication_benchmark_native_diagnostic_v1.py",
+      "sha256": "4b308d6727168b211b4eca7917e18c7516247e77d41329856566e343b9bd9c53",
+      "size_bytes": 13329
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\publication_child_evidence_materializer_v1.py",
+      "sha256": "056654b0a019720164bc478a83f584ab4f4121b5c8570e44d2358dbfa6a71bc9",
+      "size_bytes": 21544
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\publication_gstreamer_component_authority_v1.py",
+      "sha256": "9f0e0e56a238ad26f8ab525bc9f3bc0ebdd0e136b7bc0f8853ab3a0745342c6f",
+      "size_bytes": 27355
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\publication_gstreamer_component_cli_v1.py",
+      "sha256": "4cce487a0f224a90b14c9c83a2fd47b1712d20d1631ec3a67766ed6f515b426b",
+      "size_bytes": 40969
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\publication_gstreamer_component_inputs_v1.py",
+      "sha256": "1390b429025478799a03065ebe031cb07dac2669f716f05f97f074735e5e75d1",
+      "size_bytes": 34510
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\publication_gstreamer_component_runtime_v1.py",
+      "sha256": "aecd556db7f1485eec79ea2971362e88da2d5a49fd3ea797cb5ad7d787b72014",
+      "size_bytes": 69372
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\publication_guardian_accepted_policy_preprocessing_contract_v1.py",
+      "sha256": "e488da96ba0f52589c8c594fd1ac7f1a3e397bed09416bd9c4d63a556dc8bf5b",
+      "size_bytes": 48963
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\publication_guardian_component_preprocessing_contract_v1.py",
+      "sha256": "7aa52f62ddd5651559737f31dc75dadbefedd1759c8d528b185666262775c990",
+      "size_bytes": 19178
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\publication_guardian_operational_recorder_v1.py",
+      "sha256": "130130ba64079f6a80ef4762a45c9969f4b3a425432a70d082ecc5a59004169d",
+      "size_bytes": 24563
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\publication_guardian_preprocessing_contract_v1.py",
+      "sha256": "19dfff21eae9ad8cc3781b2fe47bdb6d9eb55c430962983d2f7553e04a5c529d",
+      "size_bytes": 68402
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\publication_guardian_runtime_expectations_v1.py",
+      "sha256": "6ef8cca85130ea16c4b90dd9cdc1001955abaa73763e2436da8a3660ba84fa4f",
+      "size_bytes": 7872
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\publication_image_build_v1.py",
+      "sha256": "a27c2daaebb8fe8cad0fecfbcc60dc29f041835f8ae01e673dd321b3df1ea50e",
+      "size_bytes": 32116
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\publication_immutable_directory_v1.py",
+      "sha256": "3154cae593782ca64adf7318d615c7c5185ff1d8b06098647e50f00940edcd42",
+      "size_bytes": 11639
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\publication_operational_capture_plan_v1.py",
+      "sha256": "1019d8ca5aae7ec23315e08bafef0c4842350e55fedfb209453785b793c4ac95",
+      "size_bytes": 25882
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\publication_operational_container_custody_v1.py",
+      "sha256": "036805ad328ddc6c63377c942f86bf3e26a0bf6de2a83847c4bc9801d5d8d334",
+      "size_bytes": 38235
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\publication_operational_process_custody_v1.py",
+      "sha256": "dc92e20512cc2e3e7265e75bfd3c01de0146f29cfd4720e1a6f1b199ceb52d97",
+      "size_bytes": 51141
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\publication_operational_request_domain_v1.py",
+      "sha256": "5df1071402080957c312acddb85e0285c589c4a7d1948d51e9bf5e274727f0b9",
+      "size_bytes": 25997
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\publication_operational_request_reconciliation_v1.py",
+      "sha256": "7036af860c587e3b93f6835ac3c0992643daa754693867c342a97a63aac9a51d",
+      "size_bytes": 28069
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\publication_operational_runtime_context_v1.py",
+      "sha256": "20a470135fef1d6fc37b76585623197f18b2b20e4f192ba61ace45fcac5bdb51",
+      "size_bytes": 11192
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\publication_operational_stock_operations_v1.py",
+      "sha256": "1edcd2813f3bedbac4416d7e7d69b9e959ecc044aee710f248721b06e81f0689",
+      "size_bytes": 24380
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\publication_owned_staging_cleanup_v1.py",
+      "sha256": "d601fb4460bc44b27cb2d38fd70e73a388fb137c95139fa10d4eefca944def92",
+      "size_bytes": 39390
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\publication_physical_io_v1.py",
+      "sha256": "bc8a28239d86f1913a66757a497d9d5398dd1b17757c6f17725ae72bc01961ed",
+      "size_bytes": 132238
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\publication_policy_contract.py",
+      "sha256": "276c15284c46b99ae32ae99653cc10f9f65e09d49d69498322c906614d1ba8a1",
+      "size_bytes": 40143
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\publication_policy_frozen_replay_v1.py",
+      "sha256": "df03b7706ec354aab21714c09c9d0d95e7aa5a7124aefac574637f07e3d5d051",
+      "size_bytes": 21538
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\publication_policy_projection_v1.py",
+      "sha256": "449eb645a6014cabfeb0e016edb476454b61368cdefbc71543459facacfa0cb9",
+      "size_bytes": 29622
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\publication_policy_qualification.py",
+      "sha256": "529a5ed62e57dba014dd781fa8e2a6b1a24b63812cd5a53aefb8ae279d9948e3",
+      "size_bytes": 63279
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\publication_policy_qualification_bootstrap_v2.py",
+      "sha256": "1f248748d16ead95def536bf7d2815e7b79a8754696c8a37aba51018ba8a75f6",
+      "size_bytes": 82531
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\publication_policy_qualification_execution_closure_v1.py",
+      "sha256": "5a9039a86e1abb2ce84f189217cd77e0885f86cba71cc1d6aca09b89df638304",
+      "size_bytes": 147846
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\publication_policy_qualification_execution_code_closure_v1.py",
+      "sha256": "984dd840a768b08462db82ea96cb7cdce4b9f6e3e1ca20605b258771f665a30c",
+      "size_bytes": 19176
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\publication_policy_qualification_fragments_from_authority_v2.py",
+      "sha256": "ac2857c78d2069a5641b7ec73c4dbf5a9e067c069b3b22d7ebef205e169e45c4",
+      "size_bytes": 67876
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\publication_policy_qualification_index_v2.py",
+      "sha256": "16326c3b793b0535a34e6ee7995146388456011eabdb2454b5a1e2ed45a59a27",
+      "size_bytes": 31765
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\publication_policy_qualification_pilot_executor_v2.py",
+      "sha256": "419074d4cb65c6170f3cb33922d769b3c781cb1f24609e762c955dca72d0a09a",
+      "size_bytes": 179864
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\publication_policy_qualification_runtime_inputs_v2.py",
+      "sha256": "a4358e759a24cbf49652cecbbb7a30199476d0c3539be5e1c9dd87b972aeb2f8",
+      "size_bytes": 136988
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\publication_policy_qualification_transaction_v2.py",
+      "sha256": "b85710fc0277339773775e8082f518026b14493b53330d7b142b4aa42d2bb14b",
+      "size_bytes": 45015
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\publication_qualification_image_refreeze_v1.py",
+      "sha256": "38757bd592fed2c137325f0f4b320812145ac64a2a78550a85e549bf0a0cbb8a",
+      "size_bytes": 65676
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\resource_interval_contract.py",
+      "sha256": "c004770b75f07ca929877c1034eb34bdef00f0fdb9b37d2dfeef0f70ff4d1f7a",
+      "size_bytes": 33557
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\scripts\\topology_contract.py",
+      "sha256": "b7ec477419946c1cd0102ffb0eaacca5e54ed04cb5e60f9d0802a9c46c72ef2a",
+      "size_bytes": 18707
+    }
+  ],
+  "future_focused_outcome": null,
+  "genuine_original_receipt": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision28-selected-original-build-copy-v1\\gstreamer_custom.runtime.freeze.json",
+    "sha256": "0b8a34e67773572a27885b931c50427de8bbd59b23eba837c5d2319ea7e9abca",
+    "size_bytes": 7001
+  },
+  "limits": [
+    "Source-only review; no model/engine/image/namespace/policy/test operation. One future original static test is the proposed scope.",
+    "Original hosted P/C remain failed. This correction does not turn original provider results into success.",
+    "Fresh Windows/UNC reads prove full bytes and sizes; they do not constitute new Linux seven-epoch custody, benchmark renewal or a CI/scientific acceptance."
+  ],
+  "owned_source_pins": [
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\tests\\test_publication_runtime_frozen_identity_constants_v1.py",
+      "sha256": "216b2b76686c396a88fdd6a51d404d3ea01856abbe3cdb982c29d791644386e1",
+      "size_bytes": 23567
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-selected-image-test-binding-v1\\run_focused_v1.py",
+      "sha256": "37693e853d1f358a5b06d18dd207829b58a7572cc819050e0d5a1b1b9eeb453e",
+      "size_bytes": 6951
+    }
+  ],
+  "reviewable": true,
+  "reviewed_commit": "04a5d1c7b90274af71f4ff2456ec3013107c2bb3",
+  "reviewer": "/root/decision28_source_peer",
+  "reviewer_handles_released": true,
+  "runner_bounds_unchanged": {
+    "cleanup_s": 10,
+    "each_channel_bytes": 1048576,
+    "work_s": 120
+  },
+  "runner_exact_forward_and_inverse": true,
+  "runner_literal_changes_exactly": [
+    [
+      "NAMES=['scripts/ci_namespace_diagnostic_v1.py','scripts/ci_userns_profile_v1.py','tests/test_ci_namespace_diagnostic_v1.py','tests/test_ci_userns_profile_v1.py']",
+      "NAMES=['scripts/checkpoint_gstreamer_publication_runtime_v3.py','tests/test_publication_runtime_frozen_identity_constants_v1.py','artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/gstreamer_custom.runtime.freeze.json']"
+    ],
+    [
+      " ids=['test_ci_userns_profile_v1.AuditClockTests.test_coarse_lag_beyond_original_fine_tolerance_joins_actual_clock_bins'] if scope=='red' else ['test_ci_userns_profile_v1','test_ci_namespace_diagnostic_v1']",
+      " ids=['test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_gstreamer_current_runtime_is_exactly_refrozen']"
+    ],
+    [
+      "explicit synthetic original-denial clocks and ordinary original-wrapper/file/pipe/process fixtures; no live namespace/profile/journal",
+      "Existing static selected-image literal binding against genuine frozen receipt; no live image grant, engine, namespace, model or measurement"
+    ]
+  ],
+  "schema_version": 1,
+  "selected73_full_SHA_size_equal_count": 73,
+  "source_inventory_proof": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-ci-clock-independent-source-review-v1\\source-impact.v1.json",
+    "sha256": "dcdc63621620f579653574d0a1380baac2d683c117d83b8b194b46e67abb2a41",
+    "size_bytes": 160709
+  },
+  "target_sources_imported_compiled_or_executed": false,
+  "test_exact_forward_and_inverse": true,
+  "test_literal_changes_exactly": [
+    [
+      "selected-gstreamer-build-a4e145b7-v1/gstreamer_custom.runtime.freeze.json",
+      "decision28-selected-original-build-copy-v1/gstreamer_custom.runtime.freeze.json"
+    ],
+    [
+      "self.assertEqual(len(payload), 7049)",
+      "self.assertEqual(len(payload), 7001)"
+    ],
+    [
+      "61874c718d6140d0d5cf745988bc301b916077af8f80e96742184f80a0805db7",
+      "0b8a34e67773572a27885b931c50427de8bbd59b23eba837c5d2319ea7e9abca"
+    ]
+  ]
+}

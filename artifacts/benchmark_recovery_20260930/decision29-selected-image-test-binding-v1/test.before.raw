@@ -326,13 +326,13 @@ class PublicationRuntimeFrozenIdentityConstantsV1Tests(unittest.TestCase):
         # The two original full-patch equality methods keep their real domain.
         receipt_path = ROOT / (
             "artifacts/benchmark_recovery_20260930/"
-            "decision28-selected-original-build-copy-v1/gstreamer_custom.runtime.freeze.json"
+            "selected-gstreamer-build-a4e145b7-v1/gstreamer_custom.runtime.freeze.json"
         )
         payload = receipt_path.read_bytes()
-        self.assertEqual(len(payload), 7001)
+        self.assertEqual(len(payload), 7049)
         self.assertEqual(
             hashlib.sha256(payload).hexdigest(),
-            "0b8a34e67773572a27885b931c50427de8bbd59b23eba837c5d2319ea7e9abca",
+            "61874c718d6140d0d5cf745988bc301b916077af8f80e96742184f80a0805db7",
         )
         receipt = json.loads(payload)
         self.assertEqual(receipt["schema_version"], 1)

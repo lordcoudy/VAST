@@ -1,3 +1,11 @@
+Current execution plan - 2026-10-03 10:24 UTC
+
+Actual CPU08/GPU02 and current four-arm stock reduction are closed and independently accepted at benchmarkB; genuine science is descriptive and the100ms target remains overwhelmingly missed. CI-only checkpointC04a5d1c7 is pushed. Fresh actual95 post-setup v2 audit6cf623/rootccbe854a passed fullSHA/sevenepochs/allcloses/FD6/6/6/two error-free17-owner scans.
+
+Original hosted C39 failed only the stale current-image test after2992 selected tests (2903 successes,88 skips,1 failure,0 errors); real version2 coarse clock denial join/profile load/unload worked. P38 has the same stale test failure after2978 selected. Both actual original4 provider leaves are retained. A three-literal exact existing-test receipt correction is authored from committedC, retaining every assertion. Original local C fullCIcd2125/159b17 failed18.998s before builds/tests because original asset00 HTTP200 body read timed out; no retry or success relabeling.
+
+Remaining: independently review and execute focused static binding check; checkpoint/push finite test-only repair; prepare clean successor CI and preserve original local failure while resolving immutable asset cache/network prerequisites without bypassing checks; complete actual hosted/ext4 full selection/native/source/skip evidence; generate and review current20requirements/118scenarios conformance with explicit manual gaps; finalize runbook/own and fresh review; supported same-PR archive/latest checks/exact final review/authorized merge. No current final gate is presumed complete. Earlier dated entries below remain historical.
+
 Current execution plan - 2026-10-03 09:38 UTC
 
 Current selected GStreamer component at benchmark source B=a00aa57f7d9534f8e7920f14f70d6a75a23570ed has independently closed genuine CPU08 and GPU02 pairs. Both authenticated guardian cleanups, released20GiB reserves, all95 full hashes/seven epochs, original CLI0/all-phase cold results and process/FD/EOF closure are verified. No full qualification/Q4/publication campaign is claimed.

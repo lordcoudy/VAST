@@ -1,0 +1,29 @@
+{
+  "changes": [
+    [
+      "NAMES=['scripts/ci_namespace_diagnostic_v1.py','scripts/ci_userns_profile_v1.py','tests/test_ci_namespace_diagnostic_v1.py','tests/test_ci_userns_profile_v1.py']",
+      "NAMES=['scripts/checkpoint_gstreamer_publication_runtime_v3.py','tests/test_publication_runtime_frozen_identity_constants_v1.py','artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/gstreamer_custom.runtime.freeze.json']"
+    ],
+    [
+      " ids=['test_ci_userns_profile_v1.AuditClockTests.test_coarse_lag_beyond_original_fine_tolerance_joins_actual_clock_bins'] if scope=='red' else ['test_ci_userns_profile_v1','test_ci_namespace_diagnostic_v1']",
+      " ids=['test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_gstreamer_current_runtime_is_exactly_refrozen']"
+    ],
+    [
+      "explicit synthetic original-denial clocks and ordinary original-wrapper/file/pipe/process fixtures; no live namespace/profile/journal",
+      "Existing static selected-image literal binding against genuine frozen receipt; no live image grant, engine, namespace, model or measurement"
+    ]
+  ],
+  "controller": {
+    "sha256": "37693e853d1f358a5b06d18dd207829b58a7572cc819050e0d5a1b1b9eeb453e",
+    "size_bytes": 6951
+  },
+  "exact_known_literal_source_adaptation": true,
+  "independent_source_review_required_before_execution": true,
+  "original_controller": {
+    "sha256": "03d722b05e54eaaf2149a29043b36aed3b86e7e3ccd3a4055da9f62ec2cf41a5",
+    "size_bytes": 6901
+  },
+  "original_functions_preserved": true,
+  "schema_version": 1,
+  "source_only_controller_unexecuted": true
+}

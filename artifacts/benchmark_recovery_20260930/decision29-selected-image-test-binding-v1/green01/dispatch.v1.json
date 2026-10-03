@@ -1,0 +1,81 @@
+{
+  "argv": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-selected-image-test-binding-v1/run_focused_v1.py",
+    "child",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-selected-image-test-binding-v1/green01",
+    "green"
+  ],
+  "cleanup_s": 10,
+  "execution_s": 120,
+  "original_scope": "green",
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 94992,
+    "pid": 94993,
+    "ppid": 94992,
+    "startticks": 50573329,
+    "uid": 1000
+  },
+  "source_before": [
+    {
+      "epoch": [
+        69,
+        1125899909260130,
+        33279,
+        1,
+        59624,
+        1791011812724832300,
+        1791011812724832300
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+      "sha256": "0fee418bfa0c7e0e89f9c74210f107fa950d14cf65844d82b1a91330a398aa1c",
+      "size_bytes": 59624
+    },
+    {
+      "epoch": [
+        69,
+        1125899909260136,
+        33279,
+        1,
+        23567,
+        1791022979345389900,
+        1791022979345389900
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_runtime_frozen_identity_constants_v1.py",
+      "sha256": "216b2b76686c396a88fdd6a51d404d3ea01856abbe3cdb982c29d791644386e1",
+      "size_bytes": 23567
+    },
+    {
+      "epoch": [
+        69,
+        1970324839400594,
+        33279,
+        1,
+        7001,
+        1791011659837841900,
+        1791011659837841900
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/gstreamer_custom.runtime.freeze.json",
+      "sha256": "0b8a34e67773572a27885b931c50427de8bbd59b23eba837c5d2319ea7e9abca",
+      "size_bytes": 7001
+    },
+    {
+      "epoch": [
+        69,
+        1407374885980079,
+        33279,
+        1,
+        6951,
+        1791022979346393700,
+        1791022979346393700
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-selected-image-test-binding-v1/run_focused_v1.py",
+      "sha256": "37693e853d1f358a5b06d18dd207829b58a7572cc819050e0d5a1b1b9eeb453e",
+      "size_bytes": 6951
+    }
+  ]
+}
