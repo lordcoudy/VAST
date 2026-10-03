@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "independent_exact_final_release_source_evidence_review_v1",
+  "reviewer": "/root/final_release_review",
+  "source_commit": "41498f172bd5264fcd06128d82524fb5ec063ed2",
+  "CI_runtime_source_commit": "3c025b29b3c1d5275c2ec693410e4b83700583de",
+  "measurement_source_commit": "a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+  "reviewable": true,
+  "reviewer_handles_released": true,
+  "final_approval": false,
+  "merge_approval": false,
+  "read_only_source_Git_runtime": true,
+  "source_evidence_findings": [],
+  "owned_raw_checks": {
+    "freeze_size_bytes": 268469,
+    "freeze_sha256": "ceeabe2294bcaa17c2ef517a24bbd65a8dbc81936f5c96c085537e5d3aade691",
+    "freeze_owned_leaves": 620,
+    "owned_with_freeze": 621,
+    "owned_physical_and_index_and_commit_bytes": 66795842,
+    "all_size_sha256_and_Git100644_modes_equal": true,
+    "all_unowned_index_entries_exact_D": true,
+    "raw_no_renames_D_to_E_changed_paths": 619,
+    "old_tracked_archive_deletions": 17,
+    "production_test_CI_config_policy_changes_from_D": []
+  },
+  "archive_checks": {
+    "archive_path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec",
+    "leaves": 18,
+    "schema_yaml_preserved": true,
+    "main_and_archive_complete_requirement_text_equal": true,
+    "requirements": 20,
+    "scenarios": 118,
+    "active_task_snapshot_checked": 69,
+    "active_task_snapshot_total": 74,
+    "pending_composite_process_ids": [
+      "18.13",
+      "18.14",
+      "22.3",
+      "23.5",
+      "24.4"
+    ]
+  },
+  "accepted_retained_evidence": {
+    "CPU08_audit_sha256": "1f5abb9e8b2c5c2fdd9898bd121ab365a9719513b361486833612e4fca151330",
+    "GPU02_audit_sha256": "a125010eae25262ead16a37ae4b47f6e21e637cc15da89399242f824e5b21283",
+    "four_arm_science_review_sha256": "93acbd3a82afbaf6ca796d34ff1907dc868bd5605df9c0dcb4101d287350947b",
+    "D_hosted_CI_review_sha256": "05019c9b277292ae29c4b60dee2839c9ae4c8d61456254da2796f89ca4cf4f98",
+    "D_local_CI_review_sha256": "5a58508acf35f71d3c2934a022de1bff2e60eb44a39b6f85bd48cc3715ab7c60",
+    "current_conformance_review_sha256": "af861006d56d00e466648cf2479f1536925f7b33f5a246916e924c067abec202",
+    "supported_sync_archive_review_sha256": "0265c63fab9a43e6a482350d8b581f8e7875f95f7a9d8e95eeef6d58c418b07a",
+    "owned_cleanup_original_review_sha256": "6bce0a592b114b824ccee6deb6ee16b0ef381dbfeeea892ea458a17fceac7b34"
+  },
+  "warnings_retained": [
+    "Manual R5/S5,R12/S1,R14/S2,R20/S1",
+    "R13/S6 every-full-consumer direct negative execution incomplete; some workdirs created before kind rejection",
+    "One baseline-first pair per resource; replicas of two recordings; NVDEC in CPU and GPU analytics modes; opaque topology/load proxy",
+    "Different completed subsets prevent matched causal latency speedup; partial overlapping C_obs is attributed elapsed, not processor work/energy/decoder busy/accuracy",
+    "88 hosted and86 local approved skips plus9 deferred physical integrations are nonexecution",
+    "Historical72 tasks/82 scenarios and112 complete clauses retained; full32/Q4/1120/5600 campaigns unexecuted",
+    "CPU07 underlying EPIPE disconnect cause unknown; historical failures remain failures",
+    "Original science has one process scan/no numeric FD baseline; no stronger closure claimed"
+  ],
+  "blocking_findings": [
+    {
+      "priority": 1,
+      "title": "Exact E required hosted CI failed before builds/tests",
+      "evidence_basis": "Actual root original-tool notification; not independently read provider original by this reviewer yet",
+      "run_id": 37130749820,
+      "CPU_job_id": 111225187600,
+      "host_job_id": 111225187732,
+      "CPU_conclusion": "failure",
+      "host_conclusion": "success",
+      "failed_gate": "OpenSpec archived strict validation: five pending tasks69/74",
+      "root_local_exact_validation_tool": "32ef70",
+      "resolution": "Retain E failure, independently review exact chronological task/release-gate metadata correction, then require original required checks on the actual corrected latest commit. D success and this review do not replace that CI."
+    }
+  ],
+  "limitations": [
+    "No target code import, engine/model/test/CI/measurement or mutation of tracked source/Git state by reviewer.",
+    "Physical Windows SHA/size checks do not reconstruct original Linux inode/seven-epoch custody. Retained independent originals remain authoritative for that scope.",
+    "No final CI/merge approval; pending release amendment is not yet approved.",
+    "Read-only summary printing once failed from Windows cp1251 Unicode output; no source/Git/runtime writes occurred; corrected UTF8 printing only."
+  ]
+}

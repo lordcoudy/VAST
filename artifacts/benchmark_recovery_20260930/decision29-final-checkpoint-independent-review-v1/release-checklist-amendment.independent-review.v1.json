@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "independent_exact_release_checklist_chronology_amendment_review_v1",
+  "reviewer": "/root/final_release_review",
+  "source_commit": "41498f172bd5264fcd06128d82524fb5ec063ed2",
+  "reviewable": true,
+  "blocking_findings": [],
+  "reviewer_handles_released": true,
+  "amendment_approved_for_exact_candidate_application": true,
+  "approval_scope": "Only the five exact pinned documentation candidates. No production/test/CI/spec-source change; no final CI/release/merge approval.",
+  "candidate_manifest": {
+    "path": "artifacts/benchmark_recovery_20260930/decision29-final-checkpoint-preparation-v1/release-checklist-amendment-v1/candidate-manifest.v1.json",
+    "size_bytes": 2268,
+    "sha256": "cddbfe1d9b9eba45e124acf6201f33668cd007c5c8b9cab8514f73922d84b019"
+  },
+  "candidate_pins": [
+    {
+      "candidate": "artifacts/benchmark_recovery_20260930/decision29-final-checkpoint-preparation-v1/release-checklist-amendment-v1/tasks.md.candidate",
+      "target": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/tasks.md",
+      "bytes": 36279,
+      "sha256": "832e445ba8e466fd1991ef30051410afb525bdc811cf92e3deb17f405dcf7da3"
+    },
+    {
+      "candidate": "artifacts/benchmark_recovery_20260930/decision29-final-checkpoint-preparation-v1/release-checklist-amendment-v1/release-gates.md.candidate",
+      "target": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/release-gates.md",
+      "bytes": 3229,
+      "sha256": "cd7cfd3ef3652a214ecd8f83e0a87b22bdf8e6038587bd48ab7b3567163ab21a"
+    },
+    {
+      "candidate": "artifacts/benchmark_recovery_20260930/decision29-final-checkpoint-preparation-v1/release-checklist-amendment-v1/design.md.candidate",
+      "target": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/design.md",
+      "bytes": 45628,
+      "sha256": "c05f313262fc7a876ca16b58b496e9ea2d609285696626a4fd9a5ca4ba42c123"
+    },
+    {
+      "candidate": "artifacts/benchmark_recovery_20260930/decision29-final-checkpoint-preparation-v1/release-checklist-amendment-v1/implementation-closure.md.candidate",
+      "target": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/implementation-closure.md",
+      "bytes": 10188,
+      "sha256": "5a485cd613f7b1cb05192bdafedc9285dd30cfe897ec5d912a87451124f4093f"
+    },
+    {
+      "candidate": "artifacts/benchmark_recovery_20260930/decision29-final-checkpoint-preparation-v1/release-checklist-amendment-v1/BENCHMARK_RECOVERY_PLAN.md.candidate",
+      "target": "BENCHMARK_RECOVERY_PLAN.md",
+      "bytes": 138689,
+      "sha256": "3cd9e8de01e2b12dca969fd97307d1caff519bda4ae53ff40cc7bd0975ee320e"
+    }
+  ],
+  "exact_original_E_tasks": {
+    "size_bytes": 36740,
+    "sha256": "4dadfcb3e06881211cc188f2f017cf1bb490421c1dd81107cc7fbe41432d4bf8",
+    "all69_checked_complete_raw_lines_in_same_order_preserved": true,
+    "all5_pending_complete_raw_lines_in_same_order_preserved": true,
+    "old_and_candidate_task_and_gate_CR_count": 0,
+    "inherited_historical_checked": 31,
+    "current_checked": 38,
+    "active18x_obligations": 14,
+    "active18x_implementation_completed": 12,
+    "active18x_pending_gates": 2
+  },
+  "chronology_assessment": "The scope note explicitly applies R16 in its declared sequence: completed component and implementation CI/conformance before archive; actual latest archived-commit checks and exact final review before merge. Five originals stay active and unchecked rather than being certified by the69-record implementation counter.",
+  "no_hidden_incomplete_prearchive_implementation": "Moved22.3/23.5/24.4 component/cold/cleanup/science/retention/runbook/native/portable/source/skip/current20-118 conformance/self-review clauses are backed by the retained independent originals reviewed at E. Their later archive/latest-check/exact-final-review/authorized-merge clauses remain active pending. Historical31 records retain their original scope.",
+  "unchanged_contracts": [
+    "main/archive20 complete requirements and118 scenarios",
+    "R12 final-CI truth and R16 final release/archive/merge sequence",
+    "legacy72 task/82 scenario and112-clause register",
+    "strict archived/main CI and all required actual builds/tests/native/source/skip gates",
+    "selected95/image/native/worker/model/scientific workload and sourceB",
+    "four manual rows,R13/S6 direct all-consumer negative gap/workdir effects",
+    "9 deferred physical integrations and all full32/Q4/1120/5600 obligations"
+  ],
+  "independent_E_CI_original_read": {
+    "path": "artifacts/benchmark_recovery_20260930/decision29-final-checkpoint-independent-review-v1/E-failed-CPU-job.original-connector.v1.json",
+    "size_bytes": 29857,
+    "sha256": "6bc6dd89e34501f212493ce2bbd57ece1d89150e3bcafe12a7a6921d9e4ff4ae",
+    "provider_decoded_connector_envelope_fully_parsed": true,
+    "not_claimed_raw_ZIP_or_binary_log": true,
+    "exact_E_checkout_confirmed": true,
+    "failed_archived_gate": "5 incomplete tasks (69/74 completed)",
+    "gate_terminal_time_UTC": "2026-10-03T14:45:51.0657990Z",
+    "job_original_exit1_time_UTC": "2026-10-03T14:45:51.0722217Z",
+    "builds_tests_not_started_before_gate_failure": true,
+    "run_and_job_identity_root_original_notification": {
+      "run_id": 37130749820,
+      "CPU_job_id": 111225187600,
+      "host_job_id": 111225187732
+    },
+    "failed_E_stays_failed": true
+  },
+  "remaining_required_gates": [
+    "Apply only exact reviewed candidates and preserve failed originals",
+    "Verify actual bounded successor diff/raw bytes/strict main and archive validation",
+    "Commit/push same branch/change/PR and pass all actual required checks on exact successor",
+    "Independent exact successor final review and warning disposition",
+    "Only then authorized expected-SHA merge"
+  ],
+  "final_approval": false,
+  "merge_approval": false,
+  "component_release_complete": false,
+  "limits": [
+    "Read-only Git/source/runtime review; only this small uncommitted postcheckpoint metadata written.",
+    "No model, engine, measurement, test, CI or validator replay by reviewer.",
+    "This candidate review does not attest to later application, validation, commit, push or checks."
+  ]
+}
