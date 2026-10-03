@@ -1,0 +1,89 @@
+{
+  "bounds": {
+    "each_archive_uncompressed_max_bytes": 16777216,
+    "each_member_max_bytes": 8388608,
+    "external_kill_after_s": 10,
+    "external_timeout_s": 120,
+    "file_max_bytes": 8388608,
+    "internal_receipt_last_s": 120
+  },
+  "capture_argv": [
+    "/usr/bin/setsid",
+    "--wait",
+    "/usr/bin/timeout",
+    "--signal=TERM",
+    "--kill-after=10s",
+    "120s",
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-9d47-original-host-independent-review-v1/inspect_hosted34_v4.py"
+  ],
+  "cpu_job_id": 110181019042,
+  "execution_performed": false,
+  "hardware_acceptance": false,
+  "host_job_id": 110181019292,
+  "original_tool_namespace": "attempt02-original-tool",
+  "output_namespace": "attempt02",
+  "preserved_first_failed_original": {
+    "capture_limit": "setsid without --wait original tool status0 is not a captured original reader returncode; retained failed report and two absent-PID/group scans are separate.",
+    "report": {
+      "sha256": "25210033883eb9d72cf097953c562ba770db030efb655aba0901a96aac3a32eb",
+      "size_bytes": 1353
+    },
+    "two_scan_closure": {
+      "sha256": "f319a6471dd52ca7397c82dfcfd4c06345cb3cc0bc2786501340b661b293a9b6",
+      "size_bytes": 5079
+    }
+  },
+  "proper_root_diagnosis": {
+    "diagnostic_view_CRLF_only": true,
+    "normalization_performed": false,
+    "only_raw_anchor": "tests/test_benchmark_contract.py",
+    "original_raw_Git_blob_sha1": "ff311ef1e5bd712602624cf895444742ba055fad",
+    "original_sha256": "cd79cd27ba7265783fcacbab7879a01f8fb61aed8441ed64b4bcc135874014e7",
+    "path": "attempt01-original-tool/proper-root-source-diagnosis.v1.json",
+    "sha256": "8227ad53b76cef1a595005ecc6ad8474f8bce0f2b7829e3ece0a3bb6387a39f4",
+    "size_bytes": 2590,
+    "size_bytes_original": 248960
+  },
+  "run_id": 36802923013,
+  "schema_version": 1,
+  "selected_ROOT_read_scope": {
+    "no_CPU07_outputs_model_payload_or_host87_source_reads": true,
+    "no_selected_root_mutation": true,
+    "only_two_selected_root_control_leaves": [
+      "/home/s-a-balashov/work/vast-component-release-20260930-d27/tests/test_benchmark_contract.py",
+      "/home/s-a-balashov/work/vast-component-release-20260930-d27/.git/HEAD"
+    ],
+    "other37_control_source_anchors_use_original_matching_Windows_raw_bytes": true
+  },
+  "source": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-9d47-original-host-independent-review-v1/inspect_hosted34_v4.py",
+    "sha256": "809941650bda699e28a3e39e50af59b4102a2533bca47d534721c3ae9342ea47",
+    "size_bytes": 24668
+  },
+  "source_commit": "9d47e99b623df44816f7b0a0b73b249a940f7723",
+  "status": "prepared_unexecuted_read_only_hosted34_evidence",
+  "v1_preserved_unexecuted": {
+    "corrections_before_sourcepeer": [
+      "Actual report canonical_python is a path string; retain original executableSHA descriptor without claiming independentbinarypayload.",
+      "Actual fixed profile has ABI header + unquoted exact safely validated executable path; compare exact source literal.",
+      "Explicitly require sealed recovery peer samecommit/approved/FDreleased so all5039 map provenance is not mere fieldpresence."
+    ],
+    "source": {
+      "path": "artifacts/benchmark_recovery_20260930/ci-9d47-original-host-independent-review-v1/inspect_hosted34_v1.py",
+      "sha256": "8b9d5d122149267bdbb810df7440b01bf0aa42cbec8f5a4b31b5a6c831105d1d",
+      "size_bytes": 22881
+    }
+  },
+  "v2_preserved_unexecuted": {
+    "only_v3_change": "Recheck all already-held ancestor directory FD/named device/inode/mode identities at the final leaf verification boundary. No other predicates, scope, output namespace or caps changed.",
+    "source": {
+      "path": "inspect_hosted34_v2.py",
+      "sha256": "add12a311c7b4dcb37c8b8891f52e7b57d1be2f8150de5ea41cdd85bba4af75b",
+      "size_bytes": 23161
+    }
+  },
+  "whole_source_join": "All5039 original CI snapshot SHA+sizes equal the closed actualsamecommit recovery tracked-after03c8101a fullraw Git/byte table, physically sealed under recovery7952 and independentactualpeeraf910. No234MB data replay."
+}

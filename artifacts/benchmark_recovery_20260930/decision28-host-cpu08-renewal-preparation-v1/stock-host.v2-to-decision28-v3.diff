@@ -1,0 +1,20 @@
+--- immutable-original
++++ prepared-successor
+@@ -7,7 +7,7 @@
+ HARD_DEADLINE = DEADLINE+10
+ MAX_CHANNEL = 1024*1024
+ ROOT = Path('/home/s-a-balashov/work/vast-component-release-20260930-d27')
+-OUTPUT = ROOT/'artifacts/benchmark_recovery_20260930/component-supervisor-host-closure-ext4-v2-original'
++OUTPUT = ROOT/'artifacts/benchmark_recovery_20260930/decision28-host-closure-ext4-v3-original'
+ BASE = ROOT/'artifacts/gstreamer_component_release_20260930_a4e145b7/host'
+ ORIGINAL = BASE/'execution-code-closure.ext4.v1.json'
+ ORIGINAL_SHA = 'adbcb638a5f104e43c95b84e4d16388a8111d39321afb3e8e7a26f2ef537b498'
+@@ -168,7 +168,7 @@
+     return record
+ 
+ 
+-receipt = BASE/'execution-code-closure.ext4-supervisor.v2.json'
++receipt = BASE/'execution-code-closure.ext4-decision28.v3.json'
+ try:
+     clock()
+     canonical_directory(ROOT)

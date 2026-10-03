@@ -1,0 +1,36 @@
+{
+  "built_targets": [
+    "vast_native_gst_probe",
+    "vast_checkpoint_source",
+    "gstadaptivescheduler",
+    "gstvastanalyticsterminal",
+    "gstvastanalyticsqueue",
+    "gstvastcheckpointprefixqueue"
+  ],
+  "changed_tracked_paths": [],
+  "counts": {
+    "deferred_integration": 9,
+    "discovered": 2972,
+    "documented_skips": 88,
+    "errors": 0,
+    "expected_failures": 0,
+    "failures": 0,
+    "missing_required_successes": 0,
+    "portable_executed": 2963,
+    "successes": 2875,
+    "unexpected_successes": 0
+  },
+  "cpu_job_id": 110181019042,
+  "elapsed_s": 1456.8388914690001,
+  "hardware_acceptance": false,
+  "host_job_id": 110181019292,
+  "original_report_member": {
+    "sha256": "921f3eb8aca3bddf23b834577f104bcfc177ddea9dcdacf5ee67bea7bc6f457e",
+    "size_bytes": 1814967
+  },
+  "raw_checkout_bytes_match_commit": true,
+  "run_id": 36802923013,
+  "scope": "Root typed original hostedreport observation; whole-provider/ZIP/profile/source peer still pending",
+  "source_commit": "9d47e99b623df44816f7b0a0b73b249a940f7723",
+  "whole_evidence_accepted_by_independent_peer": false
+}

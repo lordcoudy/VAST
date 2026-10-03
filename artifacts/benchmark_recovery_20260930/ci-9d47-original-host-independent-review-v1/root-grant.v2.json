@@ -1,0 +1,39 @@
+{
+  "CPU07_success": false,
+  "argv": [
+    "/usr/bin/setsid",
+    "--wait",
+    "/usr/bin/timeout",
+    "--signal=TERM",
+    "--kill-after=10s",
+    "120s",
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-9d47-original-host-independent-review-v1/inspect_hosted34_v4.py"
+  ],
+  "authorizing_sender": "/root",
+  "hardware_acceptance": false,
+  "only_execution_count": 1,
+  "original_capture_dir": "attempt02-original-tool",
+  "original_root_grant_payload": "ROOT grants ONE genuine attempt02 execution of the exact inspect_hosted34_v4.py (24668B809941650bda699e28a3e39e50af59b4102a2533bca47d534721c3ae9342ea47), prepv5(4235B1aaaf0997d3deeb5e75775551887b8cad215e5cc3ca3dd2f055ac61e8afbb825), peer3806Bad9c72b3f65ff4a95b98f545a266e6930a98a12d293b57e75d508f42070cb66c. I have read full saved source and approve the one ext4 raw control/HEAD correction, strict other37 Windows anchors, unchanged originals and caps. Execute pinned LinuxCP312 -I -B under setsid --wait timeout120+10; actual exit/EOF, own exact identities two post-tool scans and allFD releases required. Preserve attempt01 failed/no capture exit authority and any new failure. No test/native/model/engine/CI rerun or Git mutation. Save this grant as finite evidence, execute rather than stopping ready, then send actual report+closure for peer review.",
+  "preparation": {
+    "path": "preparation.v5.json",
+    "sha256": "1aaaf0997d3deeb5e75775551887b8cad215e5cc3ca3dd2f055ac61e8afbb825",
+    "size_bytes": 4235
+  },
+  "prior_attempt01_failed_preserved": true,
+  "received_at_utc": "2026-10-01T03:37:33.715549+00:00",
+  "schema_version": 1,
+  "source": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-9d47-original-host-independent-review-v1/inspect_hosted34_v4.py",
+    "sha256": "809941650bda699e28a3e39e50af59b4102a2533bca47d534721c3ae9342ea47",
+    "size_bytes": 24668
+  },
+  "source_peer": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-9d47-original-host-independent-source-review-v1/review.v2.json",
+    "sha256": "ad9c72b3f65ff4a95b98f545a266e6930a98a12d293b57e75d508f42070cb66c",
+    "size_bytes": 3806
+  },
+  "status": "root_authorized_once_before_successor_original_dispatch"
+}

@@ -1,0 +1,94 @@
+--- scripts/publication_operational_process_custody_v1.py.before
++++ scripts/publication_operational_process_custody_v1.py
+@@ -411,6 +411,42 @@
+     return descriptor
+ 
+ 
++def _write_failure_channel(capture, path, raw):
++    """Retain only actual failed-measurement bytes, including an empty channel."""
++    label = "immutable failed original measurement channel"
++    _require(type(raw) is bytes and len(raw) <= MAX_CAPTURE_BYTES, "failed original channel exceeds source bound")
++    if raw:
++        descriptor = capture.custody.write_exclusive(path, raw, label=label, mode=0o444)
++        descriptor["path"] = str(path)
++        validate_descriptor_v1(descriptor)
++        capture.inputs.read(descriptor, MAX_CAPTURE_BYTES)
++        return descriptor
++    # Shared publication descriptors intentionally require nonempty bytes.
++    # Only this nonauthorizing zero-byte channel uses the existing POSIX
++    # O_EXCL primitive and exact created-inode durability barrier.
++    relative = capture.custody._relative(path, label=label)
++    descriptor, identity = capture.custody._write_exclusive_posix(
++        relative, raw, label=label, mode=0o444, create_parents=False)
++    fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_CLOEXEC)
++    try:
++        info = os.fstat(fd)
++        _require(stat.S_ISREG(info.st_mode) and info.st_nlink == 1 and info.st_size == 0
++            and stat.S_IMODE(info.st_mode) == 0o444 and (info.st_dev, info.st_ino) == identity
++            and info.st_uid == capture.controller["uid"] and info.st_gid == capture.controller["gid"]
++            and _epoch(info) == _epoch(_path(path).lstat()), "empty failed original channel custody drifted")
++        observed, observed_identity = capture.custody.adopt_exact_durable_identity(
++            path, raw, label=label, mode=0o444, expected_identity=identity, allow_empty=True)
++        _require(observed == descriptor and observed_identity == identity
++            and _epoch(os.fstat(fd)) == _epoch(info), "empty failed original channel durability drifted")
++        capture.empty_failure_channels.append((fd, path, _epoch(info)))
++        fd = -1
++    finally:
++        if fd >= 0:
++            os.close(fd)
++    descriptor["path"] = str(path)
++    return descriptor
++
++
+ class _Capture:
+     def __init__(self, custody, inputs, output_dir, operation_id, original, context, image):
+         _require(type(operation_id) is str and 0 < len(operation_id) <= 128 and operation_id.isascii(), "original operation ID invalid")
+@@ -431,6 +467,7 @@
+         custody.ensure_directory(self.output_dir, label="separate original engine process evidence")
+         self.controller, self.started = _owner(os.getpid()), time.time_ns()
+         self.calls, self.engines, self.failure = [], [], None
++        self.empty_failure_channels = []
+         self.receipt_descriptor = None
+         self.native_transfer = None
+         self.lock = threading.RLock()
+@@ -442,6 +479,11 @@
+     def verify(self):
+         self.inputs.verify()
+         _require(_owner(os.getpid()) == self.controller, "original engine controller identity changed")
++        for fd, path, epoch in self.empty_failure_channels:
++            _require(_epoch(os.fstat(fd)) == epoch == _epoch(_path(path).lstat()), "held empty failed original channel changed")
++            self.custody.adopt_exact_durable_identity(path, b"", label="held empty failed original channel",
++                mode=0o444, expected_identity=(epoch[0], epoch[1]), allow_empty=True)
++            _require(_epoch(os.fstat(fd)) == epoch, "held empty failed original channel durability changed")
+         for fd, path, epoch, descriptor, socket in self.engines:
+             _require(_epoch(os.fstat(fd)) == epoch == _epoch(_path(path).lstat()), "original held engine identity changed")
+             _require(_hash_fd(fd, MAX_ENGINE_BYTES) == (descriptor["size_bytes"], descriptor["sha256"]), "original held engine bytes changed")
+@@ -474,6 +516,8 @@
+     def close(self):
+         for row in self.engines:
+             os.close(row[0])
++        for fd, _, _ in self.empty_failure_channels:
++            os.close(fd)
+ 
+ 
+ def current_original_engine_capture_v1():
+@@ -603,6 +647,19 @@
+             row["terminal"] = descriptor
+             if process.returncode != 0 or timed_out or capture_exceeded or capture_drain_failed:
+                 capture.fail("original_engine_terminal_failed")
++                if row["phase"] == "measurement":
++                    channels = {name: _write_failure_channel(capture,
++                        capture.output_dir / f"engine_{row['call_seq']:02d}.failure.{name}.raw", raw)
++                        for name, raw in (("stdout", stdout), ("stderr", stderr))}
++                    adjunct = {"schema_version": 1, "artifact_kind": "vast_original_engine_measurement_failure_v1",
++                        "operation_id": capture.operation_id, "call_seq": row["call_seq"], "phase": row["phase"],
++                        "launch_descriptor": row["launch"], "terminal_descriptor": descriptor,
++                        **channels, "returncode": process.returncode, "timed_out": timed_out,
++                        "capture_exceeded": capture_exceeded, "capture_drain_failed": capture_drain_failed,
++                        "authorizing": False, "accepted": False, "publication_ready": False}
++                    adjunct_descriptor = _write(capture.custody,
++                        capture.output_dir / f"engine_{row['call_seq']:02d}.failure.v1.json", adjunct, MAX_TERMINAL_BYTES)
++                    capture.inputs.read(adjunct_descriptor, MAX_TERMINAL_BYTES)
+         except BaseException:
+             capture.fail("original_engine_terminal_observation_failed")
+             raise

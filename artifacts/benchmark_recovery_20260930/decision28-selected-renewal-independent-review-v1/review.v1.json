@@ -1,0 +1,84 @@
+{
+  "all_seven_original_function_ASTs_equal": true,
+  "approved_scope": {
+    "base_image": "sha256:b102aafc0f88f8cfad92349e6a55d0f9755a3f5bff109a70ebdb8936d4a8e84c",
+    "fresh_tag_and_namespace": "decision28-first8_of_exactcommit",
+    "original_boundaries": {
+      "build_capture_bytes": 16777216,
+      "cleanup_s": 15,
+      "ordinary_capture_bytes": 1048576,
+      "other_engine_s": 60,
+      "stock_capture_s": 180,
+      "stock_two_build_s": 900,
+      "whole_s": 1200
+    },
+    "required_future_source_and_two_repair_peer_before_build": true,
+    "root": "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+    "source_commit": "future explicit exact40lowerhex runtime argument; no present HEAD claim"
+  },
+  "benchmark_accepted": false,
+  "blocking_findings": [
+    {
+      "finding": "Channel files/selector acquisition begins before the command try; resource finalization is serial without independent catches. A partial acquisition or flush/fsync/close error can skip later handles and overwrite the original command failure. Top-level pin retirement similarly stops at the first error.",
+      "lines": [
+        66,
+        68,
+        104,
+        106,
+        107,
+        180
+      ],
+      "minimal_remedy": "Register each acquired resource immediately inside cleanup-protected ownership, latch the original body error first, attempt every retirement independently, retain bounded additional errors and keep capture unsuccessful on any finalization error. No command, schema, channel or time bound expansion.",
+      "priority": 1
+    },
+    {
+      "finding": "Operation terminal is saved before held input FD retirement. A later close failure exits without a truthful final failure companion; an elapsed deadline after print/close returns78 with original operation.failure=null and no explicit sticky late descriptor.",
+      "lines": [
+        175,
+        180,
+        181
+      ],
+      "minimal_remedy": "Keep the original terminal immutable if saved; finish every owned close and final clock check, then publish an exclusive bounded nonauthorizing failure/late companion and return nonzero when closure or time fails. Receipt facts must distinguish pre-finalization terminal from final actual completion.",
+      "priority": 1
+    }
+  ],
+  "engine_commands_executed_by_reviewer": 0,
+  "exact_five_literal_inverse": true,
+  "next_gate": "Root-owned immutable minimal source repair and exact peer before ONE original build grant after actual source commit. Future images/owners/receipts remain unset.",
+  "other_review_observations": [
+    "DEST.mkdir is exclusive and outside receipt-writing try, so an occupied namespace cannot be overwritten; output ownership must remain explicit in any repair.",
+    "Global1200s clamps per-command work/cleanup;900s two-build and180s stock capture are unchanged. No new measurement/model/hardware authority arises.",
+    "Source/fullbyte pins currently use held leaf FD plus named full7epoch and physicalhash checks; input membership/manifests and Docker socket are rebound only through actual future execution. No capacity or readiness inferred from this prepared source.",
+    "Original group scanner suppresses read/parse errors; empty group lists alone cannot certify uncertain group absence. Future actual original postterminal metadata gate should retain scan errors. Engine backend quiescence is already explicitly not inferred from frontend status.",
+    "Partial image/tag/backend effects after a failed build must remain failed observations; this preparation does not grant cleanup mutation or automated retry."
+  ],
+  "production_source_or_Git_mutated_by_reviewer": false,
+  "reviewable": false,
+  "reviewed_at_UTC": "2026-10-01T04:11:16.084371+00:00",
+  "reviewer_handles_released": true,
+  "schema_version": 1,
+  "source_pins": [
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision28-selected-renewal-preparation-v1\\run_original_selected_build_ext4_v1.py",
+      "sha256": "44b0f2236379704f5e7f71ad15c1abeaeb7682ee877b096a7e8de45dd3fb9639",
+      "size_bytes": 11692
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision28-selected-renewal-preparation-v1\\preparation.v1.json",
+      "sha256": "84320fb54fa2ee5603c7b6f066970e70a100f4579737856bd9683841aace01ff",
+      "size_bytes": 2758
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision28-selected-renewal-preparation-v1\\prepare_stock_build_v1.py",
+      "sha256": "389986ad40e42f195dcebd8a3da6bca6eecebf4e370de3189a0fa3f3df9bbafc",
+      "size_bytes": 3085
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\selected-gstreamer-image-schema-preparation-v1\\run_selected_build_v1.py",
+      "sha256": "9d08cc70716b5149c895ed87af4d398fd6d19666977bc552879613f8d7a65bd1",
+      "size_bytes": 11630
+    }
+  ],
+  "status": "prepared_unexecuted_source_review_blocked_on_narrow_resource_and_receipt_closure",
+  "tests_builds_engine_model_native_executed_by_reviewer": false
+}

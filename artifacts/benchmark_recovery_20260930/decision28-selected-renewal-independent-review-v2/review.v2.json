@@ -1,0 +1,193 @@
+{
+  "all_preparation_physical_descriptor_joins_verified": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-selected-renewal-preparation-v2/source.v1-to-v2.diff",
+      "sha256": "5361cd1777f541df8e67c798ca6137c9f55f86260dd04ebc1d1981d023d5d9ce",
+      "size_bytes": 19726
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-selected-renewal-preparation-v1/run_original_selected_build_ext4_v1.py",
+      "sha256": "44b0f2236379704f5e7f71ad15c1abeaeb7682ee877b096a7e8de45dd3fb9639",
+      "size_bytes": 11692
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-selected-renewal-preparation-v1/preparation.v1.json",
+      "sha256": "84320fb54fa2ee5603c7b6f066970e70a100f4579737856bd9683841aace01ff",
+      "size_bytes": 2758
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-selected-renewal-independent-review-v1/review.v1.json",
+      "sha256": "b4fe14c8207672fc1f7492f0a50e3d9cba19b52110f908707cf19788986e5b91",
+      "size_bytes": 5282
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/selected-gstreamer-image-schema-preparation-v1/run_selected_build_v1.py",
+      "sha256": "9d08cc70716b5149c895ed87af4d398fd6d19666977bc552879613f8d7a65bd1",
+      "size_bytes": 11630
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-selected-renewal-preparation-v2/prepare_stock_build_v2.py",
+      "sha256": "8b30190f95fe181a96836462540ca5af545ca076e2583bd5fa4c8648d0818001",
+      "size_bytes": 25643
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-selected-renewal-preparation-v2/run_original_selected_build_ext4_v2.py",
+      "sha256": "35e1ef122e96a6bec3ead1e09e158866ba4a30c9b5dec660593bf91fe7598b05",
+      "size_bytes": 22381
+    }
+  ],
+  "artifact_kind": "decision28_selected_renewal_independent_source_review_v2",
+  "baseline_commit": "958a036bc5a55821c712204577fdf4c51c2181c7",
+  "benchmark_accepted": false,
+  "blocking_findings": [],
+  "checkout_head_observed_at_review": "958a036bc5a55821c712204577fdf4c51c2181c7",
+  "engine_commands_executed_by_reviewer": 0,
+  "future_execution_gate": "Exact two-repair source peer and physical/index/committed checkpointA equality, actual pushed full40hex commit, ROOT exact-source ext4 renewal and explicit one-original execution grant remain required. This source review permits preparation only and does not supply a future image/owner/terminal.",
+  "future_explicit_source_COMMIT": null,
+  "future_image_receipt": null,
+  "future_original_owner": null,
+  "immutable_comparison_inputs": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-selected-renewal-preparation-v1/run_original_selected_build_ext4_v1.py",
+      "sha256": "44b0f2236379704f5e7f71ad15c1abeaeb7682ee877b096a7e8de45dd3fb9639",
+      "size_bytes": 11692
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-selected-renewal-preparation-v1/preparation.v1.json",
+      "sha256": "84320fb54fa2ee5603c7b6f066970e70a100f4579737856bd9683841aace01ff",
+      "size_bytes": 2758
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-selected-renewal-independent-review-v1/review.v1.json",
+      "sha256": "b4fe14c8207672fc1f7492f0a50e3d9cba19b52110f908707cf19788986e5b91",
+      "size_bytes": 5282
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/selected-gstreamer-image-schema-preparation-v1/run_selected_build_v1.py",
+      "sha256": "9d08cc70716b5149c895ed87af4d398fd6d19666977bc552879613f8d7a65bd1",
+      "size_bytes": 11630
+    }
+  ],
+  "independent_static_inverse_proof": {
+    "added_functions": [
+      "record_error",
+      "fd_count",
+      "scan_original_group"
+    ],
+    "changed_original_function_ASTs": [
+      "physical",
+      "pin",
+      "write",
+      "command"
+    ],
+    "engine_operation_body_AST_equal_except_pre_pin_fd_baseline": true,
+    "exact7_replacement_v2_to_v1_inverse": true,
+    "exact_forward_generated_v2_text_matches_physical_source": true,
+    "exact_original5_relocation_v1_to_legacy_inverse": true,
+    "method": "AST literal evaluation of7 declarative replacements only; no target/generator import or execution",
+    "original_Popen_AST_equal": true,
+    "unchanged_function_ASTs": [
+      "epoch",
+      "check_pins",
+      "owner"
+    ]
+  },
+  "limits": [
+    "Static source/control-flow/literal-inverse review only. No helper import/target execution, tests, build, Docker/engine, native/model or benchmark operation was run.",
+    "Future two process scans/EOF/FD restoration/source checks must be evidenced by the genuine once-only operation. This review does not invent an executed scan or successful cleanup.",
+    "Actual source checkpointA40hex was unknown during this review. Future original owner, image and stock receipt remain null.",
+    "Partial image/tag/backend effects of any future failed build remain failed observations; this helper does not grant cleanup mutation or an automatic retry.",
+    "CPU07 remains FAILED and frontend-disconnect cause unknown; historical CPU06/GPU01/science do not become current.",
+    "No finalCI/conformance/archive/GitHubapproval/merge or benchmark acceptance is established.",
+    "Only this NEW independent review receipt was written; source/production/tests/CI/Git/oldpeer/author files remain unedited; all review read handles and awaited Git process are released."
+  ],
+  "owned_source_pins": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-selected-renewal-preparation-v2/run_original_selected_build_ext4_v2.py",
+      "sha256": "35e1ef122e96a6bec3ead1e09e158866ba4a30c9b5dec660593bf91fe7598b05",
+      "size_bytes": 22381
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-selected-renewal-preparation-v2/preparation.v2.json",
+      "sha256": "2d27d19d8c7c0fd0a8961e02e6576a4487cd6ab74227511a79a5b1a7d66dc114",
+      "size_bytes": 5756
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-selected-renewal-preparation-v2/prepare_stock_build_v2.py",
+      "sha256": "8b30190f95fe181a96836462540ca5af545ca076e2583bd5fa4c8648d0818001",
+      "size_bytes": 25643
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-selected-renewal-preparation-v2/source.v1-to-v2.diff",
+      "sha256": "5361cd1777f541df8e67c798ca6137c9f55f86260dd04ebc1d1981d023d5d9ce",
+      "size_bytes": 19726
+    }
+  ],
+  "preserved_scope": {
+    "DEST": "artifacts/benchmark_recovery_20260930/decision28-gstreamer-build-<actual_commit_first8>-v1",
+    "TAG": "vast/gstreamer-custom-publication-runtime-v3:decision28-<actual_commit_first8>",
+    "base_image": "sha256:b102aafc0f88f8cfad92349e6a55d0f9755a3f5bff109a70ebdb8936d4a8e84c",
+    "build_capture_bytes": 16777216,
+    "cleanup_s": 15,
+    "diagnostic_error_records_max": 64,
+    "late_failure_companion_max_bytes": 65536,
+    "ordinary_capture_bytes": 1048576,
+    "ordinary_engine_query_s": 60,
+    "root": "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+    "stock_capture_s": 180,
+    "stock_two_build_s": 900,
+    "typed_COMMIT": "exactly40 lowercase hexadecimal runtime argument; ROOT.git actual HEAD must equal argument",
+    "whole_s": 1200
+  },
+  "production_source_or_Git_mutated_by_reviewer": false,
+  "publication_ready": false,
+  "reviewable": true,
+  "reviewed_at_utc": "2026-10-03T06:42:47.249355+00:00",
+  "reviewer": "/root/decision28_source_peer independent fresh-context reviewer; helper author is ROOT",
+  "reviewer_handles_released": true,
+  "schema_version": 2,
+  "source_checkpoint_A_commit": null,
+  "source_findings": [
+    "Original command failure is latched through record_error before cleanup, including nonzero actual returncode. Later retirement/persistence errors preserve the first failure and contribute bounded error records.",
+    "Real original child owner PID/PGID/startticks facts are obtained after Popen. Both cleanup scans inspect /proc, retain read/parse/enumeration/deadline errors, count vanished races, and require no original PID/group members and no uncertain errors for successful command return. No frontend/engine backend quiescence is inferred.",
+    "Cleanup remains clamped by original15s and whole1200s. The default physical reader keeps whole deadline checks and full hashes; seven stat epochs remain mandatory before/after name/heldFD checks and at finalization.",
+    "Partial pin acquisition is represented explicitly; its FD remains registered for operation-wide independent retirement. All pin closure attempts finish before operation terminal. Actual FD counts are checked before and after terminal metadata; closure error remains failed.",
+    "Raw channel files retain original exclusive xb capture and1MiB ordinary/16MiB build caps. Failed partial resources are independently retired; no automatic retry or occupied output overwrite occurs.",
+    "Normal terminal remains exclusive and bounded1MiB. Only bounded<=64KiB nonauthorizing finalization failure/late companion metadata can be verified after deadline; source byte hashing, model/engine command budgets and gates are not relaxed.",
+    "Operation terminal is immutable and records pre-finalization facts honestly; a later terminal/report/FD/clock failure latches first failure and emits an exclusive companion where writing is possible. sys.exit0 requires failure still None.",
+    "The exact stock two-build/capture/queries/engine operation body/Popen argv are AST-identical except the required initial FD baseline. Base image, ROOT, TAG,newDEST,typed future40lowerhex COMMIT and input/manifest/environment checks retain the reviewed v1 relocation."
+  ],
+  "status": "prepared_unexecuted_source_review_passed_pending_actual_exact_source_checkpoint_and_root_execution_grant",
+  "tests_builds_engine_model_native_executed_by_reviewer": false,
+  "v1_blocking_findings_closed": [
+    {
+      "closure": "All raw channels and selector are acquired inside command try. Pin custody row is registered before leaf FD acquisition. Original body/write error is recorded before cleanup. Every selector/pipe/channel flush/fsync/close and every held pin close has an independent catch; additional errors are bounded and sticky unsuccessful.",
+      "original_finding": {
+        "finding": "Channel files/selector acquisition begins before the command try; resource finalization is serial without independent catches. A partial acquisition or flush/fsync/close error can skip later handles and overwrite the original command failure. Top-level pin retirement similarly stops at the first error.",
+        "lines": [
+          66,
+          68,
+          104,
+          106,
+          107,
+          180
+        ],
+        "minimal_remedy": "Register each acquired resource immediately inside cleanup-protected ownership, latch the original body error first, attempt every retirement independently, retain bounded additional errors and keep capture unsuccessful on any finalization error. No command, schema, channel or time bound expansion.",
+        "priority": 1
+      }
+    },
+    {
+      "closure": "Operation terminal follows final full7epoch/fullSHA source checks, all pin close attempts and actual pre-pin FD-baseline equality. Postterminal/report/clock errors cannot yield success; exclusive bounded nonauthorizing failure/late companions preserve the original immutable terminal and actual failure where persistence is possible.",
+      "original_finding": {
+        "finding": "Operation terminal is saved before held input FD retirement. A later close failure exits without a truthful final failure companion; an elapsed deadline after print/close returns78 with original operation.failure=null and no explicit sticky late descriptor.",
+        "lines": [
+          175,
+          180,
+          181
+        ],
+        "minimal_remedy": "Keep the original terminal immutable if saved; finish every owned close and final clock check, then publish an exclusive bounded nonauthorizing failure/late companion and return nonzero when closure or time fails. Receipt facts must distinguish pre-finalization terminal from final actual completion.",
+        "priority": 1
+      }
+    }
+  ]
+}

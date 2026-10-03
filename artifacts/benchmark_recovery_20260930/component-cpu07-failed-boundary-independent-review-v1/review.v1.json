@@ -1,0 +1,404 @@
+{
+  "benchmark_accepted": false,
+  "capacity_reserve_released_and_absent": true,
+  "causal_limit": "Original retained Broken pipe inference failure and failed native measurement precede the later guardian-stop /proc custody diagnostic. No first failing native stderr bytes or failed /proc field snapshot are reconstructed; host PID absence does not establish hidden worker-container cleanup.",
+  "close_errors": [],
+  "container_id": "17c2b6bb3b742f04b6ecf3b2eff466a91799515b0748baf8b3de27fad5216226",
+  "container_quiescence_verified": false,
+  "elapsed_after_close_s": 0.049192645004950464,
+  "fd_after": 6,
+  "fd_before": 6,
+  "fresh_two_actual_process_scans": [
+    {
+      "at_ns": 1790824167761883309,
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "errors": [],
+      "members": [],
+      "pids_absent": {
+        "59894": true,
+        "59896": true,
+        "60156": true,
+        "63720": true,
+        "63736": true,
+        "63751": true,
+        "63767": true,
+        "63783": true,
+        "63967": true,
+        "63980": true,
+        "64081": true,
+        "64096": true
+      }
+    },
+    {
+      "at_ns": 1790824167763311197,
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "errors": [],
+      "members": [],
+      "pids_absent": {
+        "59894": true,
+        "59896": true,
+        "60156": true,
+        "63720": true,
+        "63736": true,
+        "63751": true,
+        "63767": true,
+        "63783": true,
+        "63967": true,
+        "63980": true,
+        "64081": true,
+        "64096": true
+      }
+    }
+  ],
+  "full_publication_accepted": false,
+  "gpu_accepted": false,
+  "guardian_authenticated_stop": false,
+  "guardian_container_cleanup_verified": false,
+  "guardian_lifecycle_cleanup_errors": [
+    "operational_accounting:guardian service failure: ProtocolError",
+    "connection_failures:1",
+    "request_failures:17",
+    "guardian_stop_attestation_missing"
+  ],
+  "guardian_lifecycle_failure": {
+    "message": "failed to send analytics execution datagram: [Errno 32] Broken pipe; protocol_diagnostic=protocol_failure_diagnostic.v1.json; sha256=41c930a0f93d828dcb90116bd8fb31eca7cf83c5efb54f824c2c3b05b3c71e2c",
+    "type": "ProtocolError"
+  },
+  "guardian_original": {
+    "argv": [
+      "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+      "-I",
+      "-B",
+      "-c",
+      "import runpy,sys;sys.path.insert(0,'/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts');runpy.run_path('/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_gstreamer_analytics_sidecar.py',run_name='__main__')",
+      "--production-guardian",
+      "--project-root",
+      "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+      "--config",
+      "/home/s-a-balashov/work/vast-component-release-20260930-d27/configs/analytics_execution_layer.refreshed.v4.fix-benchmark-20260928g.json",
+      "--binding-set",
+      "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/bindings",
+      "--policy-capability-manifest",
+      "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g/candidate/checkpoint_policy_capability_candidate_manifest.json",
+      "--preprocessing-contract",
+      "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-07/preprocessing/guardian-preprocessing-contract.v1.json",
+      "--preprocessing-contract-receipt",
+      "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-07/preprocessing/guardian-component-preprocessing-receipt.v1.json",
+      "--operational-accounting-context",
+      "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-07/operations/capture-plan/guardian_capture_context.v1.json",
+      "--runtime-dir",
+      "/tmp/vast-component-c0feb4423c9c66a2/guardian",
+      "--front-socket",
+      "/tmp/vast-component-c0feb4423c9c66a2/guardian/analytics-execution.sock",
+      "--evidence-root",
+      "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-07/guardian",
+      "--max-connections",
+      "202560",
+      "--max-requests-per-connection",
+      "4320000",
+      "--max-total-requests",
+      "29168640000",
+      "--startup-timeout-seconds",
+      "120.0",
+      "--shutdown-timeout-seconds",
+      "10"
+    ],
+    "authenticated_stop": false,
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "cleanup_errors": [
+      {
+        "message": "analytics production owner /proc custody drifted",
+        "type": "SidecarError"
+      }
+    ],
+    "container_cleanup_verified": false,
+    "original_child_pid": 60156,
+    "original_engine": {
+      "path": "/usr/bin/docker",
+      "sha256": "a429e235ef670ea83357a5c8c7451f0a69d485a6fee49f9032fd938a0ab4969d",
+      "size_bytes": 45570705
+    },
+    "original_engine_socket": "unix:///run/docker.sock",
+    "original_process_group": 60156,
+    "owner_process": {
+      "gid": 1000,
+      "pid": 60156,
+      "proc_stat_starttime_ticks": 30562577,
+      "uid": 1000
+    },
+    "process_quiescent": true,
+    "returncode": 78
+  },
+  "input_count": 6,
+  "model_or_engine_or_native_or_test_operation": false,
+  "native_container_positive_terminal_exit_or_OOM": null,
+  "original95_bytes_full7epochs_before_after_current_equal": true,
+  "original95_count": 95,
+  "original_container_commands": [
+    {
+      "argv": [
+        "/proc/self/fd/534",
+        "info",
+        "--format",
+        "{{json .ID}}"
+      ],
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pid": 63783,
+        "ppid": 59896,
+        "proc_stat_starttime_ticks": 30568162,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "role": "daemon_before",
+      "started_at_ns": 1790823366278750874,
+      "streams": {
+        "stderr": "",
+        "stdout": "\"aa8f3d33-e1dc-4ed2-ad06-488b46b332d0\"\n"
+      },
+      "terminal_at_ns": 1790823366359827646
+    },
+    {
+      "argv": [
+        "/proc/self/fd/534",
+        "container",
+        "inspect",
+        "--format",
+        "{\"Id\":{{json .Id}},\"Name\":{{json .Name}},\"Image\":{{json .Image}},\"Created\":{{json .Created}},\"Running\":{{json .State.Running}},\"OOMKilled\":{{json .State.OOMKilled}},\"ExitCode\":{{json .State.ExitCode}},\"Pid\":{{json .State.Pid}},\"StartedAt\":{{json .State.StartedAt}},\"FinishedAt\":{{json .State.FinishedAt}},\"Operation\":{{json (index .Config.Labels \"vast.operational-custody\")}}}",
+        "vast-op-fff5b40d439c464f8cd5167c9f4b8b60"
+      ],
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pid": 63967,
+        "ppid": 59896,
+        "proc_stat_starttime_ticks": 30568215,
+        "uid": 1000
+      },
+      "returncode": 1,
+      "role": "reservation_absence",
+      "started_at_ns": 1790823366806345085,
+      "streams": {
+        "stderr": "Error response from daemon: No such container: vast-op-fff5b40d439c464f8cd5167c9f4b8b60\n",
+        "stdout": "\n"
+      },
+      "terminal_at_ns": 1790823366822877228
+    },
+    {
+      "argv": [
+        "/proc/self/fd/534",
+        "container",
+        "inspect",
+        "--format",
+        "{\"Id\":{{json .Id}},\"Name\":{{json .Name}},\"Image\":{{json .Image}},\"Created\":{{json .Created}},\"Running\":{{json .State.Running}},\"OOMKilled\":{{json .State.OOMKilled}},\"ExitCode\":{{json .State.ExitCode}},\"Pid\":{{json .State.Pid}},\"StartedAt\":{{json .State.StartedAt}},\"FinishedAt\":{{json .State.FinishedAt}},\"Operation\":{{json (index .Config.Labels \"vast.operational-custody\")}}}",
+        "17c2b6bb3b742f04b6ecf3b2eff466a91799515b0748baf8b3de27fad5216226"
+      ],
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pid": 64081,
+        "ppid": 59896,
+        "proc_stat_starttime_ticks": 30589847,
+        "uid": 1000
+      },
+      "returncode": 1,
+      "role": "original_terminal",
+      "started_at_ns": 1790823583120941312,
+      "streams": {
+        "stderr": "Error response from daemon: No such container: 17c2b6bb3b742f04b6ecf3b2eff466a91799515b0748baf8b3de27fad5216226\n",
+        "stdout": "\n"
+      },
+      "terminal_at_ns": 1790823583139173210
+    },
+    {
+      "argv": [
+        "/proc/self/fd/534",
+        "info",
+        "--format",
+        "{{json .ID}}"
+      ],
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pid": 64096,
+        "ppid": 59896,
+        "proc_stat_starttime_ticks": 30589907,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "role": "daemon_after",
+      "started_at_ns": 1790823583714778564,
+      "streams": {
+        "stderr": "",
+        "stdout": "\"aa8f3d33-e1dc-4ed2-ad06-488b46b332d0\"\n"
+      },
+      "terminal_at_ns": 1790823583787469472
+    }
+  ],
+  "original_container_custody_failure": "original_measurement_failed",
+  "original_engine_calls": [
+    {
+      "launch": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-07/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/engine_01.launch.v1.json",
+        "sha256": "c02d88ebbf08166e03b4213f8e09809565e8e67a4444b970b014a4549052dede",
+        "size_bytes": 1806
+      },
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pid": 63720,
+        "ppid": 59896,
+        "proc_stat_starttime_ticks": 30566436,
+        "uid": 1000
+      },
+      "phase": "image_inspect",
+      "returncode": 0,
+      "terminal": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-07/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/engine_01.terminal.v1.json",
+        "sha256": "73e124d485f01da4563ac704b0d42026c05f17b5e386d9fcac5a0548c187c5d7",
+        "size_bytes": 939
+      },
+      "timed_out": false
+    },
+    {
+      "launch": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-07/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/engine_02.launch.v1.json",
+        "sha256": "ce645e621ae43728983b2629cb0834458e76e1a5d3dff29d726db6f29fa4c36a",
+        "size_bytes": 2736
+      },
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pid": 63736,
+        "ppid": 59896,
+        "proc_stat_starttime_ticks": 30567276,
+        "uid": 1000
+      },
+      "phase": "embedded_artifact_probe",
+      "returncode": 0,
+      "terminal": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-07/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/engine_02.terminal.v1.json",
+        "sha256": "981de22714d2fd09478d21327b56864556bfa5ae2563756fa8fccfcea2078ce4",
+        "size_bytes": 939
+      },
+      "timed_out": false
+    },
+    {
+      "launch": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-07/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/engine_03.launch.v1.json",
+        "sha256": "f98c73ba8d3c4dc1dca7a80de160108772f0c8cad703537d7cb99f62415d80b1",
+        "size_bytes": 2588
+      },
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pid": 63751,
+        "ppid": 59896,
+        "proc_stat_starttime_ticks": 30567552,
+        "uid": 1000
+      },
+      "phase": "openvino_device_probe",
+      "returncode": 0,
+      "terminal": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-07/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/engine_03.terminal.v1.json",
+        "sha256": "d01a0a91d86933b530a0910540202d0f0742d6b8a89cb8dc191c2c1c1db614a4",
+        "size_bytes": 938
+      },
+      "timed_out": false
+    },
+    {
+      "launch": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-07/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/engine_04.launch.v1.json",
+        "sha256": "77d1bfee572863e82f6f36337ac8cd7bdcc023a533aace54edeaa9afde6dfbd5",
+        "size_bytes": 2206
+      },
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pid": 63767,
+        "ppid": 59896,
+        "proc_stat_starttime_ticks": 30567865,
+        "uid": 1000
+      },
+      "phase": "nvidia_device_probe",
+      "returncode": 0,
+      "terminal": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-07/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/engine_04.terminal.v1.json",
+        "sha256": "5d7bdeecfbfe06bd1cc565d1eaaa1ea4691ba4172ebfdfafe0b41a09b56fb8ea",
+        "size_bytes": 937
+      },
+      "timed_out": false
+    },
+    {
+      "launch": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-07/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/engine_05.launch.v1.json",
+        "sha256": "20a9b00dd12a78e1b49e8a9565beb0ba60b23337cc708140d3933ac0f47fd732",
+        "size_bytes": 8022
+      },
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pid": 63980,
+        "ppid": 59896,
+        "proc_stat_starttime_ticks": 30568262,
+        "uid": 1000
+      },
+      "phase": "measurement",
+      "returncode": 1,
+      "terminal": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-07/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/engine_05.terminal.v1.json",
+        "sha256": "48db893068e2d9e606ab94bcaaa171af0f49d4106d622eb6e8f2a98da053bdc4",
+        "size_bytes": 940
+      },
+      "timed_out": false
+    }
+  ],
+  "original_outer_elapsed_s": 365.7573304119869,
+  "original_returncode": 78,
+  "outer_terminal": {
+    "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-07-original-controller/original.terminal.v1.json",
+    "sha256": "e83d65c50d80f79efc9339dfab07d38618cf0995de4f9420bb6dbe190bf51a85",
+    "size_bytes": 88208
+  },
+  "protocol_diagnostic": {
+    "arm_id": "a62831a9fa5d056fd584542d3de7b6bb2c79325d5d1954610cc36a4482f589f6",
+    "artifact_kind": "vast_gstreamer_analytics_protocol_failure_diagnostic_v1",
+    "attribution": "validated",
+    "branch": "vehicle_type",
+    "expected": {
+      "byte_length": 691200,
+      "seals": 15,
+      "sha256": "07baca69a732ac2b40117f786c1f78ae1b5e9524139c565e3c0350cc520172d8"
+    },
+    "failure_stage": "inference",
+    "identity": {
+      "algorithm": "sha256",
+      "sha256": "355a051685850994594951e7da2fd959c8c5b41f42d99a97acea72a530b9533d"
+    },
+    "lifecycle_id": "f5a8e4aa391f4df1b51562e60271fb07",
+    "observed": {
+      "byte_length": 691200,
+      "seals": 15,
+      "sha256": "07baca69a732ac2b40117f786c1f78ae1b5e9524139c565e3c0350cc520172d8"
+    },
+    "observed_at_utc": "2026-10-01T02:59:42.125144+00:00",
+    "protocol_mode": "gstreamer",
+    "request_id": "edf739962630fd9cc16e41d5291746d57060c2af31bb5d4f90de4ec8db97328f",
+    "resource": "cpu",
+    "run_id": "qualification-v2-gstreamer_custom-cpu-h264-independent-processes",
+    "schema_version": 1,
+    "service_authority_sha256": "47dfc299fe4ddfa53bd86d4b15b7f67dfaa69718b68e3187523e7d5e2ea02de8"
+  },
+  "reviewer_fds_released": true,
+  "schema_version": 1,
+  "source_commit": "9d47e99b623df44816f7b0a0b73b249a940f7723",
+  "source_count": 87,
+  "status": "closed_failed_original_cpu07",
+  "task_18_8_complete": false,
+  "witness": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-failed-boundary-independent-review-v1/witness.v1.json",
+    "sha256": "47e536bf4b04553c2fe8e0cb4948543349871a819f47ab982772d5983d5e5171",
+    "size_bytes": 105694
+  }
+}

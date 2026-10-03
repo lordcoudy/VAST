@@ -1,0 +1,85 @@
+{
+  "accepted": false,
+  "cause_proven": false,
+  "evidence": {
+    "engine_observation_is_ready": false,
+    "engine_observation_to_terminal_ns": 215583684325,
+    "failed_front_journal_review": {
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/failed-front-record-review.v1.json",
+      "sha256": "00802c6e9ecb8fa046d2977fec1841e02d44537e5a7df5b5c7193ef8816602c6",
+      "size_bytes": 4381
+    },
+    "failed_pts_ns": 210000000000,
+    "front_begin_to_failed_send_ns": 715363426,
+    "native_stderr_body_retained": false,
+    "response_digest_nonnull": true
+  },
+  "facts": [
+    {
+      "anchors": [
+        1174,
+        1189,
+        2761,
+        2850,
+        2887
+      ],
+      "path": "deploy/native_gst_probe/vast_native_gst_probe.cpp",
+      "statement": "checkpoint_state_drained requires empty policy execution entries. External policy execution registers before infer and erases after terminal; ordinary DRAINED does not permit this pending entry."
+    },
+    {
+      "anchors": [
+        1226,
+        1241,
+        1244,
+        1283,
+        385,
+        407
+      ],
+      "path": "deploy/native_gst_probe/vast_native_gst_probe.cpp",
+      "statement": "At real drain deadline finish_checkpoint_drain(true) reports CENSORED and quits main loop without independently settling entries; run then aborts ingress and NULLs pipelines."
+    },
+    {
+      "anchors": [
+        1704,
+        1797,
+        1816,
+        1847
+      ],
+      "path": "scripts/checkpoint_runtime.py",
+      "statement": "STOP POLLIN is consumed before HUP rejection; timeout resets after READY. A child nonzero also initiates peer containment."
+    },
+    {
+      "anchors": [
+        1099,
+        1122
+      ],
+      "path": "deploy/native_gst_probe/vast_native_gst_probe.cpp",
+      "statement": "Native STOP reader consumes POLLIN STOP before rejecting HUP, so the ordinary parent STOP then close is supported."
+    }
+  ],
+  "historical_correction": "v1 source-only receipt used an incorrect client filename and attributed the STOP/HUP source anchors to Python; this v2 corrects those source pointers, without changing causal interpretation.",
+  "interpretation": "Front EPIPE after an inference response is proven. CENSORED drain or another native failure could disconnect an in-flight front, but original READY/STOP/DRAINED/CENSORED/native stderr is unavailable; no particular stop path or cause is established. No cancellation, time budget, counter or success predicate change is authorized by this diagnosis.",
+  "kind": "bounded_original_cpu07_source_diagnosis",
+  "source_pins": [
+    {
+      "path": "deploy/native_gst_probe/vast_native_gst_probe.cpp",
+      "sha256": "c0e3f80ec32bdf539815ca59b5eee1b121c87905240e28b14ab0ba4b360d4c6f",
+      "size_bytes": 167521
+    },
+    {
+      "path": "scripts/checkpoint_runtime.py",
+      "sha256": "fb91d24e69385d37fc59b68c116829163cc3e29ed6b1403276b0b0676af90135",
+      "size_bytes": 94557
+    },
+    {
+      "path": "scripts/checkpoint_gstreamer_runtime.py",
+      "sha256": "36cbd08613a4420f8b1aa516f297f0019d05ce7df58b17e4ca8e5f2bac498f97",
+      "size_bytes": 156160
+    },
+    {
+      "path": "deploy\\native_gst_probe\\checkpoint_analytics_execution_client.hpp",
+      "sha256": "d531893e2586bb02432d69edfae7bb2ec08a04711c2c8e22353efda678ae461a",
+      "size_bytes": 41004
+    }
+  ]
+}

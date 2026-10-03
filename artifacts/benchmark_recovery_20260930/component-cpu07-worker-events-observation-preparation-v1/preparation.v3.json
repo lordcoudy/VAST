@@ -1,0 +1,135 @@
+{
+  "accepted": false,
+  "author_validation": "AST parsed under pinned CPython3.12.3; no project imports, tests or engine commands executed",
+  "branch": "vehicle_type",
+  "cleanup_backstop_s": 10,
+  "command_kill_wait_s": 1,
+  "command_timeout_s": 2,
+  "current_daemon_identity": "not requeried by this one-command observer; matching pinned original socket and engine independently checked",
+  "exact_name": "vast-gst-analytics-f5a8e4aa391f4df1-vehicle-type-cpu",
+  "external_recipe": [
+    "/usr/bin/timeout",
+    "--signal=TERM",
+    "--kill-after=10s",
+    "30s",
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/observe_original_primary_worker_events_v4.py"
+  ],
+  "host": "unix:///run/docker.sock",
+  "input_count": 6,
+  "lifecycle_id": "f5a8e4aa391f4df1b51562e60271fb07",
+  "limitations": [
+    "Original worker CID terminal record missing. Original daemon-ID is retained by physical command_01 output; exact lifecycle-derived primary name and actual image are validated.",
+    "Empty events cannot prove no worker death/OOM",
+    "Die137 alone is not OOM proof",
+    "Unknown event cause remains unknown; source/descriptor facts cannot turn failed CLI into accepted pair"
+  ],
+  "max_projected_records": 32,
+  "official_reference": {
+    "claims": [
+      "Unix seconds.nanoseconds timestamps supported",
+      "container name or ID filter",
+      "only last256 daemon events returned"
+    ],
+    "url": "https://docs.docker.com/reference/cli/docker/system/events/"
+  },
+  "original_daemon_id": "aa8f3d33-e1dc-4ed2-ad06-488b46b332d0",
+  "original_inputs": [
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-07/component_cli_terminal.v1.json",
+      "sha256": "54f850f9625dc9cc6cbc8527bb17891274a09d6e820ac18e941e5930bdf196cb",
+      "size_bytes": 8938
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-07/guardian/service_lifecycle.v1.json",
+      "sha256": "103e648055b54d1d901e807bc73bab1a6dc1833548aeab99bca0fd72bc2f8a0a",
+      "size_bytes": 9776
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-07/guardian/service_authority.v1.json",
+      "sha256": "5834435d3f80ae8c72b4d1271bf6bf09261fac4be47fb2a41f7f95898515cc80",
+      "size_bytes": 16312
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-07/guardian/protocol_failure_diagnostic.v1.json",
+      "sha256": "41c930a0f93d828dcb90116bd8fb31eca7cf83c5efb54f824c2c3b05b3c71e2c",
+      "size_bytes": 999
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-07/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_01.v1.json",
+      "sha256": "3fc1b07e3c01c6ecc7ba7179812cd5663615165a1e8ffa7e0d3c52d936eecf5b",
+      "size_bytes": 1905
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-07/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_01.stdout",
+      "sha256": "72318ad181fc0cb712d05507368d7b559d41302aa02f067ea632ff9a6e1cd55e",
+      "size_bytes": 312
+    }
+  ],
+  "output_absent_before_dispatch": true,
+  "output_directory": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/original-observation-attempt01",
+  "peer_requested_repairs": [
+    "ancestor FD registered before assertion; leaf-open first cause latched before independent close",
+    "selector/pipes/raw/held/ancestor handles independently close with sticky first cause",
+    "two scans retain all non-vanishing parse/permission errors and explicit original-PID absence; uncertain closure cannot pass"
+  ],
+  "primary_source_path": [
+    "analytics_execution_worker.py:687-695 send original sealed input then receive worker response",
+    "checkpoint_gstreamer_analytics_bridge.py:748-749 per-route serial client infer",
+    "checkpoint_gstreamer_analytics_sidecar.py:5467-5511 guarded payload and inference",
+    "checkpoint_gstreamer_analytics_sidecar.py:5052-5075 first failure persisted and stop set",
+    "checkpoint_gstreamer_analytics_sidecar.py:4647-4693 termination only when poll completed",
+    "checkpoint_gstreamer_analytics_sidecar.py:5686-5771 shutdown does not persist termination facts"
+  ],
+  "prior_v1_source": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/observe_original_worker_events_v1.py",
+    "sha256": "241b23b64a0ae1a0edd9cefb8c1eb934101a0c4338dd5d0e118d2f2db6dd00a9",
+    "size_bytes": 12432,
+    "state": "unexecuted eight-name preparation superseded before peer/dispatch by root single-primary query scope"
+  },
+  "prior_v2_source": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/observe_original_primary_worker_events_v2.py",
+    "sha256": "0a9946ecd6108b39ded6ad417254f62d4961f906fa00f3dc87f7597ed2e9962f",
+    "size_bytes": 12352,
+    "state": "unexecuted source; superseded to bind known actual original daemon observation and terminal physical hash"
+  },
+  "prior_v3_source": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/observe_original_primary_worker_events_v3.py",
+    "sha256": "ff3ef2f3c35ba6f0730b0e1d6d8faf49a64fc80522eb01416e785c285304fcfa",
+    "size_bytes": 12971,
+    "state": "unexecuted preserved source before requested cleanup-only repair"
+  },
+  "query_count": 1,
+  "read_only_query_argv": [
+    "/proc/self/fd/<actualheldenginefd>",
+    "--host",
+    "unix:///run/docker.sock",
+    "events",
+    "--since",
+    "1790823221.323071118",
+    "--until",
+    "1790823586.186876374",
+    "--filter",
+    "type=container",
+    "--filter",
+    "container=vast-gst-analytics-f5a8e4aa391f4df1-vehicle-type-cpu",
+    "--format",
+    "projected exact8 fields from source FORMAT"
+  ],
+  "resource": "cpu",
+  "scope": "artifact-only single read-only daemon events observer; no workloads, mutations, current inventory, or production source changes",
+  "since": "1790823221.323071118",
+  "source": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/observe_original_primary_worker_events_v4.py",
+    "sha256": "dfe892ea547de7fa8c4a1f24b2da0d9299ab2cad6deb8ef7212c6b7117583d5a",
+    "size_bytes": 14053
+  },
+  "source_commit": "9d47e99b623df44816f7b0a0b73b249a940f7723",
+  "status": "prepared_unexecuted",
+  "stderr_cap_bytes": 1024,
+  "stdout_cap_bytes": 8192,
+  "until": "1790823586.186876374",
+  "work_deadline_s": 30
+}

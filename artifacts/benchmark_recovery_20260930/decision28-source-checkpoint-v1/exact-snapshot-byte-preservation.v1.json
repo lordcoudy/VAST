@@ -1,0 +1,25 @@
+{
+  "added_exact_rules": "\n# Preserve the two immutable original sidecar source snapshots exactly.\n/artifacts/benchmark_recovery_20260930/decision28-sidecar-failure-observability-v1/before/scripts/checkpoint_gstreamer_analytics_sidecar.py -text !eol\n/artifacts/benchmark_recovery_20260930/decision28-sidecar-failure-observability-v1/before/tests/test_publication_worker_termination_facts_v1.py -text !eol\n",
+  "after_clean_ids": {
+    "artifacts/benchmark_recovery_20260930/decision28-sidecar-failure-observability-v1/before/scripts/checkpoint_gstreamer_analytics_sidecar.py": {
+      "false": "11edb3a828a293f725dfe412a7025e11e9640f16",
+      "true": "11edb3a828a293f725dfe412a7025e11e9640f16"
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-sidecar-failure-observability-v1/before/tests/test_publication_worker_termination_facts_v1.py": {
+      "false": "40f177b876c2fac225a3c985de9aed35e38944b6",
+      "true": "40f177b876c2fac225a3c985de9aed35e38944b6"
+    }
+  },
+  "artifact_kind": "decision28_exact_snapshot_byte_preservation_v1",
+  "final_attributes": {
+    "sha256": "109eef60f5ed87e35b18a663c0e112cfc4040fe898dc09d38923d16de803c392",
+    "size_bytes": 17102
+  },
+  "first_read_only_guard_sha256": "401cdc536d0f83ab6d54a5273322dcba21a4abd40d2fee73b3d0d57fdf2c76ee",
+  "immutable_snapshot_bytes_unchanged": true,
+  "independent_review_pending": true,
+  "original_attributes_prefix_unchanged": true,
+  "schema_version": 1,
+  "source_test_or_CI_semantics_changed": false,
+  "staging_or_commit": false
+}

@@ -1,0 +1,49 @@
+{
+  "actual_execution_reviewed": false,
+  "coherent_scope": {
+    "cleanup_seconds": 10,
+    "command_seconds": 2,
+    "exact_name": "vast-gst-analytics-f5a8e4aa391f4df1-vehicle-type-cpu",
+    "max_events": 32,
+    "original_envelope_ns": [
+      1790823221323071118,
+      1790823586186876374
+    ],
+    "queries": 1,
+    "stderr_cap_bytes": 1024,
+    "stdout_cap_bytes": 8192,
+    "work_seconds": 30
+  },
+  "findings": [
+    {
+      "issue": "All process read/parse errors are silently suppressed and original PID absence is not separately observed; an empty group list can conceal uncertain custody.",
+      "location": "scan",
+      "required_fix": "Retain bounded scan errors and explicit original PID observation; refuse uncertain final closure. Vanished process entries may be classified separately."
+    },
+    {
+      "issue": "Ancestor FD is not registered before identity assertion; multiple cleanup close calls can abort remaining handle retirement and failure persistence.",
+      "location": "hold and final cleanup",
+      "required_fix": "Close newly acquired ancestor on failed assertion; independently retire selector/pipes/raw streams/held leaf and ancestor descriptors, latching close errors without replacing first cause."
+    }
+  ],
+  "limits": [
+    "Original daemon identity is pinned by retained original command metadata/output; current daemon identity is not reobserved by this one query.",
+    "Historical events availability is neither contemporaneous worker terminal nor benchmark acceptance.",
+    "CPU07 remains failed; empty events or die137 alone do not prove absence or OOM."
+  ],
+  "review_scope": "Read-only source peer of one original-envelope primary vehicle_type/cpu Docker events observer. No target source execution, Docker query, tests or workload.",
+  "source_hold_released": true,
+  "sources": [
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\component-cpu07-worker-events-observation-preparation-v1\\observe_original_primary_worker_events_v3.py",
+      "sha256": "ff3ef2f3c35ba6f0730b0e1d6d8faf49a64fc80522eb01416e785c285304fcfa",
+      "size_bytes": 12971
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\component-cpu07-worker-events-observation-preparation-v1\\preparation.v2.json",
+      "sha256": "b00611da9c9b8a239a3024220255ef170755ee3480d94841df1fe48ba5dde05b",
+      "size_bytes": 6809
+    }
+  ],
+  "status": "changes_requested_prepared_unexecuted"
+}

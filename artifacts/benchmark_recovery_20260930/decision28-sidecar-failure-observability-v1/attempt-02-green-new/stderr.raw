@@ -1,0 +1,23 @@
+test_response_send_epipe_captures_live_validated_worker_before_teardown (test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_response_send_epipe_captures_live_validated_worker_before_teardown) ... ERROR
+test_inference_failure_snapshot_retains_first_route_when_diagnostic_write_fails (test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_inference_failure_snapshot_retains_first_route_when_diagnostic_write_fails) ... ok
+test_inference_stage_and_observer_refusal_do_not_replace_or_repeat_primary_failure (test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_inference_stage_and_observer_refusal_do_not_replace_or_repeat_primary_failure) ... ok
+test_first_failure_route_is_selected_under_persistence_lock_and_later_route_is_not_observed (test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_first_failure_route_is_selected_under_persistence_lock_and_later_route_is_not_observed) ... ok
+test_unattributed_first_failure_does_not_borrow_later_validated_route (test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_unattributed_first_failure_does_not_borrow_later_validated_route) ... ok
+test_real_shared_capture_offset_is_preserved_for_the_original_writer (test_publication_worker_termination_facts_v1.TerminationTests.test_real_shared_capture_offset_is_preserved_for_the_original_writer) ... ok
+test_bytesio_capture_does_not_change_fixture_cursor_and_pipe_is_unavailable (test_publication_worker_termination_facts_v1.TerminationTests.test_bytesio_capture_does_not_change_fixture_cursor_and_pipe_is_unavailable) ... ok
+test_terminal_event_argv_is_original_cid_only_and_unchanged_bounded (test_publication_worker_termination_facts_v1.TerminationTests.test_terminal_event_argv_is_original_cid_only_and_unchanged_bounded) ... ok
+test_live_frontend_is_snapshot_and_healthcheck_event_is_not_terminal (test_publication_worker_termination_facts_v1.TerminationTests.test_live_frontend_is_snapshot_and_healthcheck_event_is_not_terminal) ... ok
+
+======================================================================
+ERROR: test_response_send_epipe_captures_live_validated_worker_before_teardown (test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_response_send_epipe_captures_live_validated_worker_before_teardown)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_checkpoint_gstreamer_analytics_sidecar.py", line 1653, in test_response_send_epipe_captures_live_validated_worker_before_teardown
+    self.assertEqual(diagnostic["route"], {"branch": route[0], "resource": route[1]})
+                     ~~~~~~~~~~^^^^^^^^^
+KeyError: 'route'
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.458s
+
+FAILED (errors=1)

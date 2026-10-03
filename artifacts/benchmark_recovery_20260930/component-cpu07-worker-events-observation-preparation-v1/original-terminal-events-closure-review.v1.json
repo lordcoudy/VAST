@@ -1,0 +1,466 @@
+{
+  "all_held_fds_released": true,
+  "benchmark_accepted": false,
+  "close_errors": [],
+  "elapsed_s": 0.08167902601417154,
+  "events": [
+    {
+      "action": "die",
+      "exit_code": "0",
+      "id": "893b2b02a18906c5d7f840e2515e8f2fb8253c396cf4c2a3756efd1513f166aa",
+      "image": "sha256:ce138982695ea6d8218a9137bb858090a782e83e687be8fc252a32dc0bd9d5f9",
+      "name": "vast-gst-analytics-f5a8e4aa391f4df1-vehicle-type-cpu",
+      "signal": "",
+      "time_ns": 1790823583350994229,
+      "type": "container"
+    },
+    {
+      "action": "destroy",
+      "exit_code": "",
+      "id": "893b2b02a18906c5d7f840e2515e8f2fb8253c396cf4c2a3756efd1513f166aa",
+      "image": "sha256:ce138982695ea6d8218a9137bb858090a782e83e687be8fc252a32dc0bd9d5f9",
+      "name": "vast-gst-analytics-f5a8e4aa391f4df1-vehicle-type-cpu",
+      "signal": "",
+      "time_ns": 1790823583609320428,
+      "type": "container"
+    }
+  ],
+  "fd_after": 6,
+  "fd_before": 6,
+  "input_witnesses": [
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/close_original_observation_v1.py",
+        "sha256": "1140c43f0e4df36270a6e6483276340b1fa621e24bd0c76eaf0ad6bc4bce81b6",
+        "size_bytes": 8410
+      },
+      "epoch": [
+        69,
+        1970324839399886,
+        33279,
+        1,
+        8410,
+        1790825810023076400,
+        1790825810023076400
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/original-terminal-events-observation-outer-attempt01/capture.v1.json",
+        "sha256": "b8b23a2af3b5dfcab88f9cbb2a0d5aed129fa1a5688bcb933c76f2841d48e6dc",
+        "size_bytes": 4658
+      },
+      "epoch": [
+        69,
+        2251799816110573,
+        33279,
+        1,
+        4658,
+        1790826261297420400,
+        1790826261297420400
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/original-terminal-events-observation-outer-attempt01/launch.v1.json",
+        "sha256": "e737070598068dfc7693ea4a8ec6be07921dd66f174fadc1f6b1bbf26458b032",
+        "size_bytes": 2278
+      },
+      "epoch": [
+        69,
+        1407374885978598,
+        33279,
+        1,
+        2278,
+        1790826261137794200,
+        1790826261137794200
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/original-terminal-events-observation-attempt01/execution.v1.json",
+        "sha256": "c266d6766613af9be157c1839035238d607f4fed62c133a4b8f3a1f18c6f47d6",
+        "size_bytes": 2939
+      },
+      "epoch": [
+        69,
+        1407374885978604,
+        33279,
+        1,
+        2939,
+        1790826261260139000,
+        1790826261260139000
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/original-terminal-events-observation-attempt01/launch.v1.json",
+        "sha256": "e037730dcd3b9afed9f495ac8a000763eaaf23480327889f9d535843d351452d",
+        "size_bytes": 1088
+      },
+      "epoch": [
+        69,
+        1407374885978603,
+        33279,
+        1,
+        1088,
+        1790826261206439800,
+        1790826261206439800
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/original-terminal-events-observation-attempt01/dispatch.v1.json",
+        "sha256": "59a08c2f592b79d4cbacba1df032760c852e885099a2a1c0c0c86d2d0045bcc0",
+        "size_bytes": 6787
+      },
+      "epoch": [
+        69,
+        1688849862689256,
+        33279,
+        1,
+        6787,
+        1790826261203009500,
+        1790826261203009500
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/original-terminal-events-observation-attempt01/stdout.raw",
+        "sha256": "7e99e4a394ca5268001dceee6e055e40d6d67bb362e6644bf3cb3f415afc1057",
+        "size_bytes": 623
+      },
+      "epoch": [
+        69,
+        1407374885978601,
+        33279,
+        1,
+        623,
+        1790826261220278000,
+        1790826261220278000
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/original-terminal-events-observation-attempt01/stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "epoch": [
+        69,
+        1970324839399914,
+        33279,
+        1,
+        0,
+        1790826261205436300,
+        1790826261205436300
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/original-terminal-events-observation-outer-attempt01/stdout.raw",
+        "sha256": "7df8b8eb54c3890211d36c9551720c8394afd21ca63937ae05ef6d72a426068c",
+        "size_bytes": 369
+      },
+      "epoch": [
+        69,
+        1407374885978596,
+        33279,
+        1,
+        369,
+        1790826261285866700,
+        1790826261285866700
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/original-terminal-events-observation-outer-attempt01/stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "epoch": [
+        69,
+        1407374885978597,
+        33279,
+        1,
+        0,
+        1790826261135594300,
+        1790826261135594300
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/observe_original_primary_worker_terminal_events_v5.py",
+        "sha256": "312d3ea99ff396b2e9074cbc1c1f9958ef3d8ceb6dd29ec01cc57dc71a4fed1d",
+        "size_bytes": 15049
+      },
+      "epoch": [
+        69,
+        1407374885978590,
+        33279,
+        1,
+        15049,
+        1790825998448925200,
+        1790825998448925200
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/capture_terminal_events_v1.py",
+        "sha256": "1ae5a35f2cf279ad8df157ca7db783deb9b72ea1218c10baa77e9c4a60115bf6",
+        "size_bytes": 6534
+      },
+      "epoch": [
+        69,
+        1407374885978593,
+        33279,
+        1,
+        6534,
+        1790826247362652500,
+        1790826247362652500
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/root-one-terminal-events-grant.v1.json",
+        "sha256": "19510d90cd15d85d2ebc50c8b8bd8dc61425e4859dc6936fff2c16f6c60ab12f",
+        "size_bytes": 1550
+      },
+      "epoch": [
+        69,
+        1407374885978594,
+        33279,
+        1,
+        1550,
+        1790826248344687600,
+        1790826248344687600
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/preparation.v4.json",
+        "sha256": "e6d57e23c7f53610a6237199b58f451f95d2e9b130c2fea7a48976ec01592bbb",
+        "size_bytes": 8186
+      },
+      "epoch": [
+        69,
+        1970324839399903,
+        33279,
+        1,
+        8186,
+        1790825998457128400,
+        1790825998457128400
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-independent-source-review-v1/review.v3.json",
+        "sha256": "3d119d99cc00ac1e4337865d22a1ead83e28f0864d5ee4923e4d1c9c5e97d459",
+        "size_bytes": 3424
+      },
+      "epoch": [
+        69,
+        1407374885978592,
+        33279,
+        1,
+        3424,
+        1790826102330123100,
+        1790826102330123100
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-07/guardian/protocol_failure_diagnostic.v1.json",
+        "sha256": "41c930a0f93d828dcb90116bd8fb31eca7cf83c5efb54f824c2c3b05b3c71e2c",
+        "size_bytes": 999
+      },
+      "epoch": [
+        2096,
+        577583,
+        33024,
+        1,
+        999,
+        1790823582121166038,
+        1790823582121166038
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-07/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/engine_05.terminal.v1.json",
+        "sha256": "48db893068e2d9e606ab94bcaaa171af0f49d4106d622eb6e8f2a98da053bdc4",
+        "size_bytes": 940
+      },
+      "epoch": [
+        2096,
+        577584,
+        33060,
+        1,
+        940,
+        1790823582973209936,
+        1790823582973209936
+      ]
+    }
+  ],
+  "late_failure_absent": [
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/original-terminal-events-observation-attempt01/late-failure.v1.json",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/original-terminal-events-observation-outer-attempt01/late-failure.v1.json"
+  ],
+  "limits": [
+    "Later daemon query is subject to last256-event retention.",
+    "No returned oom/kill event is not proof of absence.",
+    "Container die0 after the protocol failure does not identify the earlier socket-close mechanism.",
+    "Original first all-events query remains failed and immutable.",
+    "Original native stderr raw body was not retained; its digest is not substituted with this observation."
+  ],
+  "observation_valid": true,
+  "original_outer_seconds": 0.1718885480077006,
+  "original_query_seconds": 0.10053777100984007,
+  "process_scans": [
+    {
+      "at_ns": 1790826419684665049,
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "group_members": [],
+      "owners": [
+        {
+          "observed_at_numeric_pid": null,
+          "original": {
+            "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+            "gid": 1000,
+            "pgid": 65609,
+            "pid": 65609,
+            "ppid": 65605,
+            "startticks": 30857656,
+            "uid": 1000
+          },
+          "original_pid_path_absent": true
+        },
+        {
+          "observed_at_numeric_pid": null,
+          "original": {
+            "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+            "gid": 1000,
+            "pgid": 65610,
+            "pid": 65610,
+            "ppid": 65609,
+            "startticks": 30857662,
+            "uid": 1000
+          },
+          "original_pid_path_absent": true
+        },
+        {
+          "observed_at_numeric_pid": null,
+          "original": {
+            "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+            "gid": 1000,
+            "pgid": 65610,
+            "pid": 65611,
+            "ppid": 65610,
+            "startticks": 30857662,
+            "state": "R",
+            "uid": 1000
+          },
+          "original_pid_path_absent": true
+        },
+        {
+          "observed_at_numeric_pid": null,
+          "original": {
+            "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+            "gid": 1000,
+            "pgid": 65612,
+            "pid": 65612,
+            "ppid": 65611,
+            "startticks": 30857669,
+            "state": "R",
+            "uid": 1000
+          },
+          "original_pid_path_absent": true
+        }
+      ],
+      "scan_errors": []
+    },
+    {
+      "at_ns": 1790826419736755825,
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "group_members": [],
+      "owners": [
+        {
+          "observed_at_numeric_pid": null,
+          "original": {
+            "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+            "gid": 1000,
+            "pgid": 65609,
+            "pid": 65609,
+            "ppid": 65605,
+            "startticks": 30857656,
+            "uid": 1000
+          },
+          "original_pid_path_absent": true
+        },
+        {
+          "observed_at_numeric_pid": null,
+          "original": {
+            "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+            "gid": 1000,
+            "pgid": 65610,
+            "pid": 65610,
+            "ppid": 65609,
+            "startticks": 30857662,
+            "uid": 1000
+          },
+          "original_pid_path_absent": true
+        },
+        {
+          "observed_at_numeric_pid": null,
+          "original": {
+            "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+            "gid": 1000,
+            "pgid": 65610,
+            "pid": 65611,
+            "ppid": 65610,
+            "startticks": 30857662,
+            "state": "R",
+            "uid": 1000
+          },
+          "original_pid_path_absent": true
+        },
+        {
+          "observed_at_numeric_pid": null,
+          "original": {
+            "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+            "gid": 1000,
+            "pgid": 65612,
+            "pid": 65612,
+            "ppid": 65611,
+            "startticks": 30857669,
+            "state": "R",
+            "uid": 1000
+          },
+          "original_pid_path_absent": true
+        }
+      ],
+      "scan_errors": []
+    }
+  ],
+  "scanner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 65638,
+    "pid": 65639,
+    "ppid": 65638,
+    "startticks": 30873511,
+    "state": "R",
+    "uid": 1000
+  },
+  "schema_version": 1,
+  "scope": "finite metadata-only physical closure of separately granted original exact-CID terminal event observation",
+  "source_before_after_equal": true,
+  "timeline": {
+    "die_after_native_cli_terminal_ns": 373561010,
+    "die_after_protocol_failure_ns": 1225850229,
+    "earliest_retained_protocol_failure_at_ns": 1790823582125144000,
+    "native_cli_terminal_at_ns": 1790823582977433219,
+    "worker_destroy_at_ns": 1790823583609320428,
+    "worker_die_at_ns": 1790823583350994229
+  },
+  "worker_socket_close_cause": null
+}

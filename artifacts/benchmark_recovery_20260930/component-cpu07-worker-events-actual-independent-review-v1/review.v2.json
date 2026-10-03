@@ -1,0 +1,256 @@
+{
+  "CPU07_original_remains_failed": true,
+  "actual_query": {
+    "EOF_both": true,
+    "elapsed_s": 0.10053777100984007,
+    "events": [
+      {
+        "action": "die",
+        "exit_code": "0",
+        "id": "893b2b02a18906c5d7f840e2515e8f2fb8253c396cf4c2a3756efd1513f166aa",
+        "image": "sha256:ce138982695ea6d8218a9137bb858090a782e83e687be8fc252a32dc0bd9d5f9",
+        "name": "vast-gst-analytics-f5a8e4aa391f4df1-vehicle-type-cpu",
+        "signal": "",
+        "time_ns": 1790823583350994229,
+        "type": "container"
+      },
+      {
+        "action": "destroy",
+        "exit_code": "",
+        "id": "893b2b02a18906c5d7f840e2515e8f2fb8253c396cf4c2a3756efd1513f166aa",
+        "image": "sha256:ce138982695ea6d8218a9137bb858090a782e83e687be8fc252a32dc0bd9d5f9",
+        "name": "vast-gst-analytics-f5a8e4aa391f4df1-vehicle-type-cpu",
+        "signal": "",
+        "time_ns": 1790823583609320428,
+        "type": "container"
+      }
+    ],
+    "original_CID": "893b2b02a18906c5d7f840e2515e8f2fb8253c396cf4c2a3756efd1513f166aa",
+    "original_image": "sha256:ce138982695ea6d8218a9137bb858090a782e83e687be8fc252a32dc0bd9d5f9",
+    "original_interval_ns": [
+      1790823221323071118,
+      1790823586186876374
+    ],
+    "original_name": "vast-gst-analytics-f5a8e4aa391f4df1-vehicle-type-cpu",
+    "outer_FDs_before_after": [
+      6,
+      6
+    ],
+    "outer_elapsed_s": 0.1718885480077006,
+    "outer_returncode": 0,
+    "query_FDs_before_after": [
+      4,
+      4
+    ],
+    "returncode": 0,
+    "source_before_after_equal": true,
+    "stderr_bytes": 0,
+    "stdout_bytes": 623,
+    "timeout_overflow_signals_failures": false
+  },
+  "benchmark_accepted": false,
+  "blocking_findings": [],
+  "input_descriptors": [
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\component-cpu07-worker-events-observation-preparation-v1\\original-terminal-events-observation-attempt01\\execution.v1.json",
+      "sha256": "c266d6766613af9be157c1839035238d607f4fed62c133a4b8f3a1f18c6f47d6",
+      "size_bytes": 2939
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\component-cpu07-worker-events-observation-preparation-v1\\original-terminal-events-observation-attempt01\\dispatch.v1.json",
+      "sha256": "59a08c2f592b79d4cbacba1df032760c852e885099a2a1c0c0c86d2d0045bcc0",
+      "size_bytes": 6787
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\component-cpu07-worker-events-observation-preparation-v1\\original-terminal-events-observation-attempt01\\launch.v1.json",
+      "sha256": "e037730dcd3b9afed9f495ac8a000763eaaf23480327889f9d535843d351452d",
+      "size_bytes": 1088
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\component-cpu07-worker-events-observation-preparation-v1\\original-terminal-events-observation-attempt01\\stdout.raw",
+      "sha256": "7e99e4a394ca5268001dceee6e055e40d6d67bb362e6644bf3cb3f415afc1057",
+      "size_bytes": 623
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\component-cpu07-worker-events-observation-preparation-v1\\original-terminal-events-observation-attempt01\\stderr.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\component-cpu07-worker-events-observation-preparation-v1\\original-terminal-events-observation-outer-attempt01\\capture.v1.json",
+      "sha256": "b8b23a2af3b5dfcab88f9cbb2a0d5aed129fa1a5688bcb933c76f2841d48e6dc",
+      "size_bytes": 4658
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\component-cpu07-worker-events-observation-preparation-v1\\original-terminal-events-observation-outer-attempt01\\launch.v1.json",
+      "sha256": "e737070598068dfc7693ea4a8ec6be07921dd66f174fadc1f6b1bbf26458b032",
+      "size_bytes": 2278
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\component-cpu07-worker-events-observation-preparation-v1\\original-terminal-events-closure-review.v1.json",
+      "sha256": "9a816b3e2c3d8d6a2f1a3b95824a4f72153b1807db2419d50b6c9082ff89457f",
+      "size_bytes": 15610
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\component-cpu07-worker-events-observation-preparation-v1\\original-terminal-events-later-process-closure.v1.json",
+      "sha256": "0c205296acba7ce5f32e4aaddae45789c45f7df256911d2f5f56d56541bb0e6c",
+      "size_bytes": 6388
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\component-cpu07-worker-events-observation-preparation-v1\\root-one-terminal-events-grant.v1.json",
+      "sha256": "19510d90cd15d85d2ebc50c8b8bd8dc61425e4859dc6936fff2c16f6c60ab12f",
+      "size_bytes": 1550
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\component-cpu07-worker-events-observation-preparation-v1\\preparation.v4.json",
+      "sha256": "e6d57e23c7f53610a6237199b58f451f95d2e9b130c2fea7a48976ec01592bbb",
+      "size_bytes": 8186
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\component-cpu07-worker-events-observation-preparation-v1\\observe_original_primary_worker_terminal_events_v5.py",
+      "sha256": "312d3ea99ff396b2e9074cbc1c1f9958ef3d8ceb6dd29ec01cc57dc71a4fed1d",
+      "size_bytes": 15049
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\component-cpu07-worker-events-observation-preparation-v1\\capture_terminal_events_v1.py",
+      "sha256": "1ae5a35f2cf279ad8df157ca7db783deb9b72ea1218c10baa77e9c4a60115bf6",
+      "size_bytes": 6534
+    }
+  ],
+  "interpretation": [
+    "Exactly die(exit0) and destroy were returned for the original exact CID/name/image in the original envelope. Both follow the retained EPIPE and native failed terminal; they cannot identify the earlier socket failure mechanism.",
+    "No returned oom/kill is not an absence proof under daemon last256-event retention. The original daemon ID was retained from command01; no current daemon-ID query occurred.",
+    "Original inference label covers worker invocation and front reply in unchanged source; this event observation does not locate the failed endpoint.",
+    "The earlier broad-name cap failure/raw8192 prefix remains failed and immutable. Original native stderr50490 bytes were not retained; events do not reconstruct that body.",
+    "All original source/image/measurement/CPU/GPU/CI/scientific/archive predicates and pending gates remain. No successful CPU07 or retry grant follows."
+  ],
+  "physical_small_input_witnesses_verified": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/close_original_observation_v1.py",
+      "sha256": "1140c43f0e4df36270a6e6483276340b1fa621e24bd0c76eaf0ad6bc4bce81b6",
+      "size_bytes": 8410
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/original-terminal-events-observation-outer-attempt01/capture.v1.json",
+      "sha256": "b8b23a2af3b5dfcab88f9cbb2a0d5aed129fa1a5688bcb933c76f2841d48e6dc",
+      "size_bytes": 4658
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/original-terminal-events-observation-outer-attempt01/launch.v1.json",
+      "sha256": "e737070598068dfc7693ea4a8ec6be07921dd66f174fadc1f6b1bbf26458b032",
+      "size_bytes": 2278
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/original-terminal-events-observation-attempt01/execution.v1.json",
+      "sha256": "c266d6766613af9be157c1839035238d607f4fed62c133a4b8f3a1f18c6f47d6",
+      "size_bytes": 2939
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/original-terminal-events-observation-attempt01/launch.v1.json",
+      "sha256": "e037730dcd3b9afed9f495ac8a000763eaaf23480327889f9d535843d351452d",
+      "size_bytes": 1088
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/original-terminal-events-observation-attempt01/dispatch.v1.json",
+      "sha256": "59a08c2f592b79d4cbacba1df032760c852e885099a2a1c0c0c86d2d0045bcc0",
+      "size_bytes": 6787
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/original-terminal-events-observation-attempt01/stdout.raw",
+      "sha256": "7e99e4a394ca5268001dceee6e055e40d6d67bb362e6644bf3cb3f415afc1057",
+      "size_bytes": 623
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/original-terminal-events-observation-attempt01/stderr.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/original-terminal-events-observation-outer-attempt01/stdout.raw",
+      "sha256": "7df8b8eb54c3890211d36c9551720c8394afd21ca63937ae05ef6d72a426068c",
+      "size_bytes": 369
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/original-terminal-events-observation-outer-attempt01/stderr.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/observe_original_primary_worker_terminal_events_v5.py",
+      "sha256": "312d3ea99ff396b2e9074cbc1c1f9958ef3d8ceb6dd29ec01cc57dc71a4fed1d",
+      "size_bytes": 15049
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/capture_terminal_events_v1.py",
+      "sha256": "1ae5a35f2cf279ad8df157ca7db783deb9b72ea1218c10baa77e9c4a60115bf6",
+      "size_bytes": 6534
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/root-one-terminal-events-grant.v1.json",
+      "sha256": "19510d90cd15d85d2ebc50c8b8bd8dc61425e4859dc6936fff2c16f6c60ab12f",
+      "size_bytes": 1550
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/preparation.v4.json",
+      "sha256": "e6d57e23c7f53610a6237199b58f451f95d2e9b130c2fea7a48976ec01592bbb",
+      "size_bytes": 8186
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-independent-source-review-v1/review.v3.json",
+      "sha256": "3d119d99cc00ac1e4337865d22a1ead83e28f0864d5ee4923e4d1c9c5e97d459",
+      "size_bytes": 3424
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-07/guardian/protocol_failure_diagnostic.v1.json",
+      "sha256": "41c930a0f93d828dcb90116bd8fb31eca7cf83c5efb54f824c2c3b05b3c71e2c",
+      "size_bytes": 999
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-07/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/engine_05.terminal.v1.json",
+      "sha256": "48db893068e2d9e606ab94bcaaa171af0f49d4106d622eb6e8f2a98da053bdc4",
+      "size_bytes": 940
+    }
+  ],
+  "prior_failed_query_peer": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\component-cpu07-worker-events-actual-independent-review-v1\\review.v1.json",
+    "sha256": "016937e52ce4ba0f00449f95983c537cee8c58d6107006c3db18433bcf6bfc3d",
+    "size_bytes": 7010
+  },
+  "process_and_FD_closure": {
+    "late_companions_absent": true,
+    "later_closed_metadata_scanner_and_timeout_PIDs": [
+      65639,
+      65638
+    ],
+    "metadata_timeout_startticks_unavailable_explicit": true,
+    "no_global_container_or_engine_quiescence_claim": true,
+    "original_held_handles_released": true,
+    "original_query_controller_timeout_observer_PIDs": [
+      65609,
+      65610,
+      65611,
+      65612
+    ],
+    "original_startticks": [
+      30857656,
+      30857662,
+      30857662,
+      30857669
+    ],
+    "reviewer_handles_released": true,
+    "two_actual_original_and_later_scans_absent_empty_groups_without_errors": true
+  },
+  "publication_ready": false,
+  "reviewable": true,
+  "reviewed_at_UTC": "2026-10-01T03:59:06.925886+00:00",
+  "schema_version": 1,
+  "scope": "Independent closed metadata/raw/source/owner joins only. No command replay, Docker operation, model read, source mutation, process launch or new authority. Windows/UNC physical raw hashes checked; original WSL epoch custody is evidenced by reviewed original closure, not conflated with Windows stat values.",
+  "status": "closed_valid_original_historical_terminal_events_observation",
+  "timeline": {
+    "destroy_after_protocol_failure_ns": 1484176428,
+    "die_after_native_terminal_ns": 373561010,
+    "die_after_protocol_failure_ns": 1225850229,
+    "earliest_retained_protocol_failure_ns": 1790823582125144000,
+    "native_terminal_ns": 1790823582977433219
+  }
+}

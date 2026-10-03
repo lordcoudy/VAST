@@ -1,0 +1,149 @@
+{
+  "all_capture_fds_closed": true,
+  "capture": {
+    "exceeded": false,
+    "read_errors": [],
+    "stderr_eof": true,
+    "stdout_eof": true
+  },
+  "elapsed_s": 1.6463204229949042,
+  "hardware_acceptance": false,
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 65761,
+    "pid": 65761,
+    "ppid": 65754,
+    "startticks": 30990670,
+    "uid": 1000
+  },
+  "process_scans": [
+    {
+      "owned_group_members": [],
+      "read_errors": []
+    },
+    {
+      "owned_group_members": [],
+      "read_errors": []
+    }
+  ],
+  "returncode": 1,
+  "source_after": [
+    {
+      "epoch": [
+        69,
+        1407374885973190,
+        33279,
+        1,
+        47271,
+        1790724976212369600,
+        1790724976212369600
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_process_custody_v1.py",
+      "sha256": "5ea8477e527bf57438ce81cea9b8b19fb628c555cb808711438e2036bcaee923",
+      "size_bytes": 47271
+    },
+    {
+      "epoch": [
+        69,
+        1407374885973191,
+        33279,
+        1,
+        40204,
+        1790827467483600500,
+        1790827467483600500
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_process_custody_v1.py",
+      "sha256": "f5588d88deae6a2393bf677a6ae3d14b371054496ddeb2f0cddf0b5bbae642f6",
+      "size_bytes": 40204
+    },
+    {
+      "epoch": [
+        69,
+        1407374885978675,
+        33279,
+        1,
+        6271,
+        1790827580737181400,
+        1790827580737181400
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-native-failure-raw-repair-v1/run_focused_v1.py",
+      "sha256": "1bf7566f9d1f0f9a72221452c674f48ed283ead73bc5f2bb35e1e82fa554dd58",
+      "size_bytes": 6271
+    }
+  ],
+  "source_before": [
+    {
+      "epoch": [
+        69,
+        1407374885973190,
+        33279,
+        1,
+        47271,
+        1790724976212369600,
+        1790724976212369600
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_process_custody_v1.py",
+      "sha256": "5ea8477e527bf57438ce81cea9b8b19fb628c555cb808711438e2036bcaee923",
+      "size_bytes": 47271
+    },
+    {
+      "epoch": [
+        69,
+        1407374885973191,
+        33279,
+        1,
+        40204,
+        1790827467483600500,
+        1790827467483600500
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_process_custody_v1.py",
+      "sha256": "f5588d88deae6a2393bf677a6ae3d14b371054496ddeb2f0cddf0b5bbae642f6",
+      "size_bytes": 40204
+    },
+    {
+      "epoch": [
+        69,
+        1407374885978675,
+        33279,
+        1,
+        6271,
+        1790827580737181400,
+        1790827580737181400
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-native-failure-raw-repair-v1/run_focused_v1.py",
+      "sha256": "1bf7566f9d1f0f9a72221452c674f48ed283ead73bc5f2bb35e1e82fa554dd58",
+      "size_bytes": 6271
+    }
+  ],
+  "sources_unchanged": true,
+  "stderr": {
+    "epoch": [
+      69,
+      1407374885978679,
+      33279,
+      1,
+      10215,
+      1790827592745400700,
+      1790827592745400700
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-native-failure-raw-repair-v1/red-01/stderr.raw",
+    "sha256": "36a0efac2fb4591d609ecf9d9e9a3ef3fbcf5714d4a4ce6083f411d59ea2f9a1",
+    "size_bytes": 10215
+  },
+  "stdout": {
+    "epoch": [
+      69,
+      1688849862689334,
+      33279,
+      1,
+      0,
+      1790827591147367600,
+      1790827591147367600
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-native-failure-raw-repair-v1/red-01/stdout.raw",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size_bytes": 0
+  },
+  "timed_out": false
+}

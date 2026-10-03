@@ -1,0 +1,107 @@
+test_failed_measurement_retains_actual_binary_channels_and_unchanged_terminal (test_publication_operational_process_custody_v1.ProcessCustodyTests.test_failed_measurement_retains_actual_binary_channels_and_unchanged_terminal) ... ERROR
+test_success_and_nonmeasurement_failure_write_no_measurement_adjunct (test_publication_operational_process_custody_v1.ProcessCustodyTests.test_success_and_nonmeasurement_failure_write_no_measurement_adjunct) ... ok
+test_failed_measurement_empty_channels_and_actual_timeout_are_retained (test_publication_operational_process_custody_v1.ProcessCustodyTests.test_failed_measurement_empty_channels_and_actual_timeout_are_retained) ... ERROR
+test_failed_measurement_capture_flags_keep_original_prefix_and_bounds (test_publication_operational_process_custody_v1.ProcessCustodyTests.test_failed_measurement_capture_flags_keep_original_prefix_and_bounds) ... ERROR
+test_failed_measurement_exclusive_collision_preserves_primary_and_written_channel (test_publication_operational_process_custody_v1.ProcessCustodyTests.test_failed_measurement_exclusive_collision_preserves_primary_and_written_channel) ... 
+  test_failed_measurement_exclusive_collision_preserves_primary_and_written_channel (test_publication_operational_process_custody_v1.ProcessCustodyTests.test_failed_measurement_exclusive_collision_preserves_primary_and_written_channel) (occupied=b'foreign') ... ERROR
+test_failed_measurement_exclusive_collision_preserves_primary_and_written_channel (test_publication_operational_process_custody_v1.ProcessCustodyTests.test_failed_measurement_exclusive_collision_preserves_primary_and_written_channel) ... ERROR
+test_failed_measurement_adjunct_persistence_error_keeps_original_wrapper_error (test_publication_operational_process_custody_v1.ProcessCustodyTests.test_failed_measurement_adjunct_persistence_error_keeps_original_wrapper_error) ... FAIL
+
+======================================================================
+ERROR: test_failed_measurement_retains_actual_binary_channels_and_unchanged_terminal (test_publication_operational_process_custody_v1.ProcessCustodyTests.test_failed_measurement_retains_actual_binary_channels_and_unchanged_terminal)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_process_custody_v1.py", line 314, in test_failed_measurement_retains_actual_binary_channels_and_unchanged_terminal
+    adjunct = self._assert_failed_measurement_raw(capture, stdout, stderr)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_process_custody_v1.py", line 279, in _assert_failed_measurement_raw
+    adjunct = json.loads(adjunct_path.read_bytes())
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1021, in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1015, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmpokjit5bn/outputs/process/engine_01.failure.v1.json'
+
+======================================================================
+ERROR: test_failed_measurement_empty_channels_and_actual_timeout_are_retained (test_publication_operational_process_custody_v1.ProcessCustodyTests.test_failed_measurement_empty_channels_and_actual_timeout_are_retained)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_process_custody_v1.py", line 334, in test_failed_measurement_empty_channels_and_actual_timeout_are_retained
+    adjunct = self._assert_failed_measurement_raw(capture, b"", b"")
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_process_custody_v1.py", line 279, in _assert_failed_measurement_raw
+    adjunct = json.loads(adjunct_path.read_bytes())
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1021, in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1015, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmpiiqioks3/outputs/empty-0/engine_01.failure.v1.json'
+
+======================================================================
+ERROR: test_failed_measurement_capture_flags_keep_original_prefix_and_bounds (test_publication_operational_process_custody_v1.ProcessCustodyTests.test_failed_measurement_capture_flags_keep_original_prefix_and_bounds)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_process_custody_v1.py", line 349, in test_failed_measurement_capture_flags_keep_original_prefix_and_bounds
+    adjunct = self._assert_failed_measurement_raw(capture, stdout, stderr)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_process_custody_v1.py", line 279, in _assert_failed_measurement_raw
+    adjunct = json.loads(adjunct_path.read_bytes())
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1021, in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1015, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmpcmooipbs/outputs/flags-0/engine_01.failure.v1.json'
+
+======================================================================
+ERROR: test_failed_measurement_exclusive_collision_preserves_primary_and_written_channel (test_publication_operational_process_custody_v1.ProcessCustodyTests.test_failed_measurement_exclusive_collision_preserves_primary_and_written_channel) (occupied=b'foreign')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_process_custody_v1.py", line 364, in test_failed_measurement_exclusive_collision_preserves_primary_and_written_channel
+    with self.capture(output_dir=self.root / f"outputs/collision-{ordinal}") as capture, \
+  File "/usr/lib/python3.12/contextlib.py", line 144, in __exit__
+    next(self.gen)
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_process_custody_v1.py", line 501, in capture_original_engine_processes_v1
+    capture.finish(error)
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_process_custody_v1.py", line 472, in finish
+    _require(self.failure is None, "original engine capture failed: " + str(self.failure))
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_process_custody_v1.py", line 54, in _require
+    raise ValueError(message)
+ValueError: original engine capture failed: original_engine_terminal_failed
+
+======================================================================
+ERROR: test_failed_measurement_exclusive_collision_preserves_primary_and_written_channel (test_publication_operational_process_custody_v1.ProcessCustodyTests.test_failed_measurement_exclusive_collision_preserves_primary_and_written_channel)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_process_custody_v1.py", line 372, in test_failed_measurement_exclusive_collision_preserves_primary_and_written_channel
+    self.assertEqual((capture.output_dir / "engine_01.failure.stdout.raw").read_bytes(), stdout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1021, in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1015, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmptp7_ox3i/outputs/collision-0/engine_01.failure.stdout.raw'
+
+======================================================================
+FAIL: test_failed_measurement_adjunct_persistence_error_keeps_original_wrapper_error (test_publication_operational_process_custody_v1.ProcessCustodyTests.test_failed_measurement_adjunct_persistence_error_keeps_original_wrapper_error)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_process_custody_v1.py", line 390, in test_failed_measurement_adjunct_persistence_error_keeps_original_wrapper_error
+    with self.assertRaisesRegex(OSError, "adjunct persistence"):
+AssertionError: OSError not raised
+Original process capture finalization failed: original engine capture failed: original_engine_terminal_failed
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.377s
+
+FAILED (failures=1, errors=5)

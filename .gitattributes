@@ -239,3 +239,10 @@ deploy/native_gst_probe/vast_native_gst_probe.cpp text eol=lf
 
 # Captured forensic raw streams are byte evidence; disable automatic EOL conversion.
 /artifacts/benchmark_recovery_20260930/**/*.raw -text !eol
+
+# Preserve this reviewed CRLF test source exactly under either checkout setting.
+/tests/test_publication_worker_termination_facts_v1.py -text !eol
+
+# Preserve the two immutable original sidecar source snapshots exactly.
+/artifacts/benchmark_recovery_20260930/decision28-sidecar-failure-observability-v1/before/scripts/checkpoint_gstreamer_analytics_sidecar.py -text !eol
+/artifacts/benchmark_recovery_20260930/decision28-sidecar-failure-observability-v1/before/tests/test_publication_worker_termination_facts_v1.py -text !eol

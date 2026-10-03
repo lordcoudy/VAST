@@ -1,0 +1,155 @@
+{
+  "CPU07_success": false,
+  "actual_CI_scope": {
+    "ZIP_members_CRC_SHA_checked_by_exact_reviewed_actual_reader": 248,
+    "control_anchors": 38,
+    "counts": {
+      "discovered": 2972,
+      "errors": 0,
+      "failures": 0,
+      "integration_deferred_nonexecution": 9,
+      "missing_required_successes": 0,
+      "portable_executed": 2963,
+      "skips_nonexecution": 88,
+      "successes": 2875
+    },
+    "native_builds": [
+      "vast_native_gst_probe",
+      "vast_checkpoint_source",
+      "gstadaptivescheduler",
+      "gstvastanalyticsterminal",
+      "gstvastanalyticsqueue",
+      "gstvastcheckpointprefixqueue"
+    ],
+    "observer_limit": "not established by original-child status",
+    "observer_request_start_complete_counts": [
+      23,
+      23,
+      23
+    ],
+    "original_fullbyte_provenance": {
+      "actual_peer": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-supervisor-renewal-recovery-actual-independent-review-v1/review.v1.json",
+        "sha256": "af9100991c6b79102fb47dc2ed41e8515e3b1d901537bb9b4b0533fa3369d723",
+        "size_bytes": 10446
+      },
+      "execution": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-supervisor-renewal-recovery-preparation-v1/original-checkout-recovery-attempt01/execution.v1.json",
+        "sha256": "7952a8243c0275d193f976736000f922ab7587439638db33eb4667cfdd0ac087",
+        "size_bytes": 13862
+      },
+      "tracked_after": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-supervisor-renewal-recovery-preparation-v1/original-checkout-recovery-attempt01/tracked-after.v1.json",
+        "sha256": "03c8101aec854cb927e0aad5af1ea4bb55697b0c8ca0d13558948b0b2b4430ec",
+        "size_bytes": 2787538
+      }
+    },
+    "original_logs_joined": 2,
+    "original_source_rows_before_after_equal": 5039,
+    "profile": {
+      "actual_subject_pid": 3951,
+      "capability": "sys_admin",
+      "denial_pid": 3940,
+      "expected_actual_label_equal": true,
+      "generic_unknown_flags_retained": true,
+      "held_FDs_released": true,
+      "joined_boot": "97fa081c-19be-4f8b-a9ad-1572e40f0912",
+      "operation": "open:/proc/self/setgroups",
+      "owned_add_present_label_remove_absence": true,
+      "unique_name": "vast-ci-userns-954a78d0b250407996d4cd023c6d7e30"
+    },
+    "provider_jobs": [
+      {
+        "completed_at": "2026-10-01T02:14:48Z",
+        "conclusion": "success",
+        "head_sha": "9d47e99b623df44816f7b0a0b73b249a940f7723",
+        "id": 110181019042,
+        "name": "cpu-checks",
+        "started_at": "2026-10-01T01:49:31Z"
+      },
+      {
+        "completed_at": "2026-10-01T01:50:26Z",
+        "conclusion": "success",
+        "head_sha": "9d47e99b623df44816f7b0a0b73b249a940f7723",
+        "id": 110181019292,
+        "name": "Original host prerequisite diagnostics",
+        "started_at": "2026-10-01T01:49:31Z"
+      }
+    ],
+    "required_native_success_IDs": [
+      "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_client_regression",
+      "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_policy_topology_regression",
+      "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_reset_queue_level_regression"
+    ],
+    "run_id": 36802923013,
+    "run_number": 34,
+    "source_bytes": 234676224,
+    "source_commit": "9d47e99b623df44816f7b0a0b73b249a940f7723"
+  },
+  "actual_reader": {
+    "FD_counts": [
+      6,
+      6
+    ],
+    "all_FDs_released": true,
+    "both_raw_channels_EOF": true,
+    "close_errors": [],
+    "late_companion_absent": true,
+    "outer_elapsed_s": 2.3794076,
+    "reader_elapsed_s": 1.244262880005408,
+    "reader_pid": 65565,
+    "returncode": 0,
+    "timeout_pgid": 65564,
+    "tool_chunk": "3bf112",
+    "two_saved_actual_scans_empty": true
+  },
+  "hardware_acceptance": false,
+  "method": "Read physical closed report/launch/tool/raw/two-scan artifacts and exact descriptor joins against previously reviewed frozen actual reader. No reader replay, ZIP decompression or234MB/model replay.",
+  "pins": [
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\ci-9d47-original-host-independent-review-v1\\attempt02\\review.v1.json",
+      "sha256": "77ad41f11e56688ecb28e7f46083cd9620d1e2d07bad4f192c23aabd8f7844cb",
+      "size_bytes": 111727
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\ci-9d47-original-host-independent-review-v1\\attempt02\\launch.v1.json",
+      "sha256": "71c3dade619cec4d96af31debb3be4da2daf11346ba9483d76b85aca5bbfab15",
+      "size_bytes": 727
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\ci-9d47-original-host-independent-review-v1\\attempt02-original-tool\\original-tool-terminal.v1.json",
+      "sha256": "334d941f322f5cbcbacf87af40bd56ff152de1e3edc5fcade41174462b9cb8a5",
+      "size_bytes": 4195
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\ci-9d47-original-host-independent-review-v1\\attempt02-original-tool\\postterminal-process-closure.v1.json",
+      "sha256": "ca5ee6b7c39afc2efdc652e09028ca9c618ff4e757b162532d6f6daa17ae6f70",
+      "size_bytes": 5770
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\ci-9d47-original-host-independent-review-v1\\attempt02-original-tool\\stdout.raw",
+      "sha256": "ca4342db80175d710f112fe56ce18c37793b76ddf0d561b4d52997411134c2d3",
+      "size_bytes": 404
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\ci-9d47-original-host-independent-review-v1\\attempt02-original-tool\\stderr.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    }
+  ],
+  "reviewer_preliminary_check": "A first small metadata check expected stdout key report instead of actual review and stopped before writing an artifact; corrected after reading original404-byte stdout. No producer/reader execution or input changes.",
+  "reviewer_read_handles_released": true,
+  "scope_limits": [
+    "88 skips and9 integrations are nonexecution, not success.",
+    "Portable/native/build CI success does not grant hardware/model/current pair/scientific/full-campaign/archive acceptance.",
+    "Generic policy_denial_proven/postexec executable fields remain originalfalse; strict fresh profile chain is separate.",
+    "No global hosted descendant quiescence claim.",
+    "Failed originalattempt01 remains immutable; actualattempt02 succeeds separately."
+  ],
+  "source_peer": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\ci-9d47-original-host-independent-source-review-v1\\review.v2.json",
+    "sha256": "ad9c72b3f65ff4a95b98f545a266e6930a98a12d293b57e75d508f42070cb66c",
+    "size_bytes": 3806
+  },
+  "status": "closed_actual_hosted34_reader_and_scoped_CI_evidence_peer_pass"
+}

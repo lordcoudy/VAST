@@ -1,0 +1,30 @@
+{
+  "at_ns": 1790826248335182300,
+  "authorization": "ROOT grants ONE actual historical terminal events observation. Delegated standing human authorization; source peer closed before this execution. No retry if this observation fails.",
+  "future_actual_result": null,
+  "independent_peer": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\component-cpu07-worker-events-independent-source-review-v1\\review.v3.json",
+    "sha256": "3d119d99cc00ac1e4337865d22a1ead83e28f0864d5ee4923e4d1c9c5e97d459",
+    "size_bytes": 3424
+  },
+  "limits": {
+    "cleanup_s": 10,
+    "command_s": 2,
+    "records": 32,
+    "stderr_bytes": 1024,
+    "stdout_bytes": 8192,
+    "work_s": 30
+  },
+  "preparation": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\component-cpu07-worker-events-observation-preparation-v1\\preparation.v4.json",
+    "sha256": "e6d57e23c7f53610a6237199b58f451f95d2e9b130c2fea7a48976ec01592bbb",
+    "size_bytes": 8186
+  },
+  "schema_version": 1,
+  "scope": "same original CID/name/image/time; die,oom,kill,destroy only",
+  "source": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\component-cpu07-worker-events-observation-preparation-v1\\observe_original_primary_worker_terminal_events_v5.py",
+    "sha256": "312d3ea99ff396b2e9074cbc1c1f9958ef3d8ceb6dd29ec01cc57dc71a4fed1d",
+    "size_bytes": 15049
+  }
+}

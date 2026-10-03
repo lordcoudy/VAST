@@ -1,0 +1,38 @@
+{
+  "argv": [
+    "/proc/self/fd/38",
+    "--host",
+    "unix:///run/docker.sock",
+    "events",
+    "--since",
+    "1790823221.323071118",
+    "--until",
+    "1790823586.186876374",
+    "--filter",
+    "type=container",
+    "--filter",
+    "container=893b2b02a18906c5d7f840e2515e8f2fb8253c396cf4c2a3756efd1513f166aa",
+    "--filter",
+    "event=die",
+    "--filter",
+    "event=oom",
+    "--filter",
+    "event=kill",
+    "--filter",
+    "event=destroy",
+    "--format",
+    "{\"type\":{{json .Type}},\"action\":{{json .Action}},\"id\":{{json .Actor.ID}},\"name\":{{json (index .Actor.Attributes \"name\")}},\"image\":{{json (index .Actor.Attributes \"image\")}},\"exit_code\":{{json (index .Actor.Attributes \"exitCode\")}},\"signal\":{{json (index .Actor.Attributes \"signal\")}},\"time_ns\":{{.TimeNano}}}"
+  ],
+  "at_ns": 1790826261207402051,
+  "original_child_pid": 65612,
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 65612,
+    "pid": 65612,
+    "ppid": 65611,
+    "startticks": 30857669,
+    "state": "R",
+    "uid": 1000
+  }
+}

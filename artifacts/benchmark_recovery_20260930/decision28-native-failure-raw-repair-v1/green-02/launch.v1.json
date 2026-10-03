@@ -1,0 +1,66 @@
+{
+  "argv": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-native-failure-raw-repair-v1/run_focused_v1.py",
+    "child",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-native-failure-raw-repair-v1/green-02",
+    "green"
+  ],
+  "cleanup_s": 10,
+  "execution_s": 120,
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 66129,
+    "pid": 66129,
+    "ppid": 66128,
+    "startticks": 31027125,
+    "uid": 1000
+  },
+  "source_before": [
+    {
+      "epoch": [
+        69,
+        1407374885973190,
+        33279,
+        1,
+        51141,
+        1790827898416832200,
+        1790827898416832200
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_process_custody_v1.py",
+      "sha256": "dc92e20512cc2e3e7265e75bfd3c01de0146f29cfd4720e1a6f1b199ceb52d97",
+      "size_bytes": 51141
+    },
+    {
+      "epoch": [
+        69,
+        1407374885973191,
+        33279,
+        1,
+        40344,
+        1790827898418742900,
+        1790827898418742900
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_process_custody_v1.py",
+      "sha256": "690212c96e47cb2a037e5b26ed24de9637e349515df3fb99b3ddc7d49c7b04c8",
+      "size_bytes": 40344
+    },
+    {
+      "epoch": [
+        69,
+        1407374885978675,
+        33279,
+        1,
+        6271,
+        1790827580737181400,
+        1790827580737181400
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-native-failure-raw-repair-v1/run_focused_v1.py",
+      "sha256": "1bf7566f9d1f0f9a72221452c674f48ed283ead73bc5f2bb35e1e82fa554dd58",
+      "size_bytes": 6271
+    }
+  ]
+}

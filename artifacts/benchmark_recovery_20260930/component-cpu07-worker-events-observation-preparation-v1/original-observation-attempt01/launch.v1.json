@@ -1,0 +1,30 @@
+{
+  "argv": [
+    "/proc/self/fd/36",
+    "--host",
+    "unix:///run/docker.sock",
+    "events",
+    "--since",
+    "1790823221.323071118",
+    "--until",
+    "1790823586.186876374",
+    "--filter",
+    "type=container",
+    "--filter",
+    "container=vast-gst-analytics-f5a8e4aa391f4df1-vehicle-type-cpu",
+    "--format",
+    "{\"type\":{{json .Type}},\"action\":{{json .Action}},\"id\":{{json .Actor.ID}},\"name\":{{json (index .Actor.Attributes \"name\")}},\"image\":{{json (index .Actor.Attributes \"image\")}},\"exit_code\":{{json (index .Actor.Attributes \"exitCode\")}},\"signal\":{{json (index .Actor.Attributes \"signal\")}},\"time_ns\":{{.TimeNano}}}"
+  ],
+  "at_ns": 1790825363353694065,
+  "original_child_pid": 65514,
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 65514,
+    "pid": 65514,
+    "ppid": 65513,
+    "startticks": 30767879,
+    "state": "R",
+    "uid": 1000
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "accepted": false,
+  "additional_errors": [],
+  "argv": [
+    "/usr/bin/timeout",
+    "--signal=TERM",
+    "--kill-after=10s",
+    "30s",
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/observe_original_primary_worker_terminal_events_v5.py"
+  ],
+  "channels": {
+    "stderr": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/original-terminal-events-observation-outer-attempt01/stderr.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "stdout": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/original-terminal-events-observation-outer-attempt01/stdout.raw",
+      "sha256": "7df8b8eb54c3890211d36c9551720c8394afd21ca63937ae05ef6d72a426068c",
+      "size_bytes": 369
+    }
+  },
+  "controller": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 65609,
+    "pid": 65609,
+    "ppid": 65605,
+    "startticks": 30857656,
+    "uid": 1000
+  },
+  "elapsed_s": 0.1718885480077006,
+  "eof": {
+    "stderr": true,
+    "stdout": true
+  },
+  "failure": null,
+  "fd_after": 6,
+  "fd_before": 6,
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 65610,
+    "pid": 65610,
+    "ppid": 65609,
+    "startticks": 30857662,
+    "uid": 1000
+  },
+  "returncode": 0,
+  "scope": "once-only historical exact-CID terminal events original outer capture",
+  "signals": [],
+  "source_after": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/observe_original_primary_worker_terminal_events_v5.py",
+      "sha256": "312d3ea99ff396b2e9074cbc1c1f9958ef3d8ceb6dd29ec01cc57dc71a4fed1d",
+      "size_bytes": 15049
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/preparation.v4.json",
+      "sha256": "e6d57e23c7f53610a6237199b58f451f95d2e9b130c2fea7a48976ec01592bbb",
+      "size_bytes": 8186
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/root-one-terminal-events-grant.v1.json",
+      "sha256": "19510d90cd15d85d2ebc50c8b8bd8dc61425e4859dc6936fff2c16f6c60ab12f",
+      "size_bytes": 1550
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-independent-source-review-v1/review.v3.json",
+      "sha256": "3d119d99cc00ac1e4337865d22a1ead83e28f0864d5ee4923e4d1c9c5e97d459",
+      "size_bytes": 3424
+    }
+  ],
+  "source_before": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/observe_original_primary_worker_terminal_events_v5.py",
+      "sha256": "312d3ea99ff396b2e9074cbc1c1f9958ef3d8ceb6dd29ec01cc57dc71a4fed1d",
+      "size_bytes": 15049
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/preparation.v4.json",
+      "sha256": "e6d57e23c7f53610a6237199b58f451f95d2e9b130c2fea7a48976ec01592bbb",
+      "size_bytes": 8186
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/root-one-terminal-events-grant.v1.json",
+      "sha256": "19510d90cd15d85d2ebc50c8b8bd8dc61425e4859dc6936fff2c16f6c60ab12f",
+      "size_bytes": 1550
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-independent-source-review-v1/review.v3.json",
+      "sha256": "3d119d99cc00ac1e4337865d22a1ead83e28f0864d5ee4923e4d1c9c5e97d459",
+      "size_bytes": 3424
+    }
+  ]
+}

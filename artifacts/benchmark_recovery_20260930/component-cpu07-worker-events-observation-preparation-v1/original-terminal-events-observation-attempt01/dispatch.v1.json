@@ -1,0 +1,150 @@
+{
+  "argv": [
+    "/proc/self/fd/38",
+    "--host",
+    "unix:///run/docker.sock",
+    "events",
+    "--since",
+    "1790823221.323071118",
+    "--until",
+    "1790823586.186876374",
+    "--filter",
+    "type=container",
+    "--filter",
+    "container=893b2b02a18906c5d7f840e2515e8f2fb8253c396cf4c2a3756efd1513f166aa",
+    "--filter",
+    "event=die",
+    "--filter",
+    "event=oom",
+    "--filter",
+    "event=kill",
+    "--filter",
+    "event=destroy",
+    "--format",
+    "{\"type\":{{json .Type}},\"action\":{{json .Action}},\"id\":{{json .Actor.ID}},\"name\":{{json (index .Actor.Attributes \"name\")}},\"image\":{{json (index .Actor.Attributes \"image\")}},\"exit_code\":{{json (index .Actor.Attributes \"exitCode\")}},\"signal\":{{json (index .Actor.Attributes \"signal\")}},\"time_ns\":{{.TimeNano}}}"
+  ],
+  "channel_caps": {
+    "stderr": 1024,
+    "stdout": 8192
+  },
+  "cleanup_seconds": 10,
+  "command_seconds": 2,
+  "controller": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 65610,
+    "pid": 65611,
+    "ppid": 65610,
+    "startticks": 30857662,
+    "state": "R",
+    "uid": 1000
+  },
+  "end_ns": 1790823586186876374,
+  "engine": {
+    "path": "/usr/bin/docker",
+    "sha256": "a429e235ef670ea83357a5c8c7451f0a69d485a6fee49f9032fd938a0ab4969d",
+    "size_bytes": 45570705
+  },
+  "input_descriptors": {
+    "component_cli_terminal.v1.json": {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-07/component_cli_terminal.v1.json",
+      "sha256": "54f850f9625dc9cc6cbc8527bb17891274a09d6e820ac18e941e5930bdf196cb",
+      "size_bytes": 8938
+    },
+    "guardian/protocol_failure_diagnostic.v1.json": {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-07/guardian/protocol_failure_diagnostic.v1.json",
+      "sha256": "41c930a0f93d828dcb90116bd8fb31eca7cf83c5efb54f824c2c3b05b3c71e2c",
+      "size_bytes": 999
+    },
+    "guardian/service_authority.v1.json": {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-07/guardian/service_authority.v1.json",
+      "sha256": "5834435d3f80ae8c72b4d1271bf6bf09261fac4be47fb2a41f7f95898515cc80",
+      "size_bytes": 16312
+    },
+    "guardian/service_lifecycle.v1.json": {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-07/guardian/service_lifecycle.v1.json",
+      "sha256": "103e648055b54d1d901e807bc73bab1a6dc1833548aeab99bca0fd72bc2f8a0a",
+      "size_bytes": 9776
+    },
+    "operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_01.stdout": {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-07/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_01.stdout",
+      "sha256": "72318ad181fc0cb712d05507368d7b559d41302aa02f067ea632ff9a6e1cd55e",
+      "size_bytes": 312
+    },
+    "operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_01.v1.json": {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-07/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_01.v1.json",
+      "sha256": "3fc1b07e3c01c6ecc7ba7179812cd5663615165a1e8ffa7e0d3c52d936eecf5b",
+      "size_bytes": 1905
+    }
+  },
+  "names": {
+    "vast-gst-analytics-f5a8e4aa391f4df1-damage-cpu": {
+      "branch": "damage",
+      "image_id": "sha256:ce138982695ea6d8218a9137bb858090a782e83e687be8fc252a32dc0bd9d5f9",
+      "resource": "cpu"
+    },
+    "vast-gst-analytics-f5a8e4aa391f4df1-damage-gpu": {
+      "branch": "damage",
+      "image_id": "sha256:e0af692307f5edebcfb768d6805cb2e76f32948e77144fbf5f10fcdac85b2870",
+      "resource": "gpu"
+    },
+    "vast-gst-analytics-f5a8e4aa391f4df1-foreign-object-cpu": {
+      "branch": "foreign_object",
+      "image_id": "sha256:ce138982695ea6d8218a9137bb858090a782e83e687be8fc252a32dc0bd9d5f9",
+      "resource": "cpu"
+    },
+    "vast-gst-analytics-f5a8e4aa391f4df1-foreign-object-gpu": {
+      "branch": "foreign_object",
+      "image_id": "sha256:e0af692307f5edebcfb768d6805cb2e76f32948e77144fbf5f10fcdac85b2870",
+      "resource": "gpu"
+    },
+    "vast-gst-analytics-f5a8e4aa391f4df1-plate-number-cpu": {
+      "branch": "plate_number",
+      "image_id": "sha256:ce138982695ea6d8218a9137bb858090a782e83e687be8fc252a32dc0bd9d5f9",
+      "resource": "cpu"
+    },
+    "vast-gst-analytics-f5a8e4aa391f4df1-plate-number-gpu": {
+      "branch": "plate_number",
+      "image_id": "sha256:e0af692307f5edebcfb768d6805cb2e76f32948e77144fbf5f10fcdac85b2870",
+      "resource": "gpu"
+    },
+    "vast-gst-analytics-f5a8e4aa391f4df1-vehicle-type-cpu": {
+      "branch": "vehicle_type",
+      "image_id": "sha256:ce138982695ea6d8218a9137bb858090a782e83e687be8fc252a32dc0bd9d5f9",
+      "resource": "cpu"
+    },
+    "vast-gst-analytics-f5a8e4aa391f4df1-vehicle-type-gpu": {
+      "branch": "vehicle_type",
+      "image_id": "sha256:e0af692307f5edebcfb768d6805cb2e76f32948e77144fbf5f10fcdac85b2870",
+      "resource": "gpu"
+    }
+  },
+  "observed_cid": "893b2b02a18906c5d7f840e2515e8f2fb8253c396cf4c2a3756efd1513f166aa",
+  "observer_source": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/observe_original_primary_worker_terminal_events_v5.py",
+    "sha256": "312d3ea99ff396b2e9074cbc1c1f9958ef3d8ceb6dd29ec01cc57dc71a4fed1d",
+    "size_bytes": 15049
+  },
+  "original_daemon_id": "aa8f3d33-e1dc-4ed2-ad06-488b46b332d0",
+  "original_partial_prefix": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/original-observation-attempt01/stdout.raw",
+    "sha256": "9deb990e0bb431026ca5781c8cbf4c3d3898545806a9c9dd5052280e45e05978",
+    "size_bytes": 8192
+  },
+  "scope": "one read-only original vehicle_type/cpu CID terminal-events historical query; original daemon-ID retained; single query does not independently reobserve current daemon ID",
+  "socket": [
+    61,
+    1944,
+    49584,
+    0,
+    1001
+  ],
+  "start_ns": 1790823221323071118,
+  "terminal_action_filters": [
+    "die",
+    "oom",
+    "kill",
+    "destroy"
+  ],
+  "whole_work_seconds": 30
+}

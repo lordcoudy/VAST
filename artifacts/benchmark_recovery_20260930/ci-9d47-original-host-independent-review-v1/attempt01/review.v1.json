@@ -1,0 +1,17 @@
+{
+  "all_review_FDs_released": true,
+  "close_errors": [],
+  "elapsed_after_close_s": 0.27204813703428954,
+  "failure": {
+    "message": "",
+    "traceback": "Traceback (most recent call last):\n  File \"/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-9d47-original-host-independent-review-v1/inspect_hosted34_v3.py\", line 87, in <module>\n    assert name in before;row=pin(ROOT/name,before[name]);source_rows.append({'role':name,'descriptor':row['descriptor'],'epoch':row['epoch']})\n                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-9d47-original-host-independent-review-v1/inspect_hosted34_v3.py\", line 31, in pin\n    assert row['descriptor']['sha256']==expected['sha256'] and row['descriptor']['size_bytes']==expected['size_bytes']\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+    "type": "AssertionError"
+  },
+  "fd_count_after": 6,
+  "fd_count_before": 6,
+  "hardware_acceptance": false,
+  "original_run_id": 36802923013,
+  "schema_version": 1,
+  "source_commit": "9d47e99b623df44816f7b0a0b73b249a940f7723",
+  "status": "failed_no_CI_evidence_acceptance"
+}

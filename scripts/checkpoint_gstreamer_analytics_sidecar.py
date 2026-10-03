@@ -3749,9 +3749,20 @@ class DockerWorkerHandle:
     def _capture_tail(capture: Any, *, maximum_bytes: int = 2048) -> str:
         try:
             capture.flush()
-            end = int(capture.seek(0, os.SEEK_END))
-            capture.seek(max(0, end - maximum_bytes), os.SEEK_SET)
-            payload = capture.read(maximum_bytes)
+            try:
+                descriptor = capture.fileno()
+            except (OSError, ValueError, AttributeError):
+                # BytesIO fixtures have no shared file description. getvalue()
+                # observes their bytes without moving the fixture cursor.
+                payload = capture.getvalue()[-maximum_bytes:]
+            else:
+                metadata = os.fstat(descriptor)
+                if not stat.S_ISREG(metadata.st_mode):
+                    return "capture_unavailable"
+                payload = os.pread(
+                    descriptor, maximum_bytes,
+                    max(0, int(metadata.st_size) - maximum_bytes),
+                )
         except (OSError, ValueError, AttributeError):
             return "capture_unavailable"
         if not isinstance(payload, bytes):
@@ -3813,7 +3824,10 @@ class DockerWorkerHandle:
         if self._container_id is not None:
             try:
                 completed = self._observe(["docker", "events", "--since", self._launched_at_utc,
-                    "--until", observed_at, "--filter", "container=" + self._container_id,
+                    "--until", observed_at, "--filter", "type=container",
+                    "--filter", "container=" + self._container_id,
+                    "--filter", "event=die", "--filter", "event=oom",
+                    "--filter", "event=kill", "--filter", "event=destroy",
                     "--format", '{"action":{{json .Action}},"id":{{json .Actor.ID}},"timeNano":{{.TimeNano}}}'])
                 _require(completed.returncode == 0 and len(completed.stdout.encode("utf-8")) <= 8192,
                          "engine events unavailable")
@@ -3825,7 +3839,8 @@ class DockerWorkerHandle:
                     event = json.loads(line)
                     _require(type(event) is dict and set(event) == {"action", "id", "timeNano"}
                              and event["id"] == self._container_id and type(event["action"]) is str
-                             and len(event["action"]) <= 64 and type(event["timeNano"]) is int,
+                             and event["action"] in {"die", "oom", "kill", "destroy"}
+                             and type(event["timeNano"]) is int,
                              "engine event identity invalid")
                     records.append(event)
                 events = {"status": "observed", "records": records}
@@ -4325,6 +4340,7 @@ class GStreamerAnalyticsSidecar:
         self._operational_group = None
         self._worker_termination_lock = threading.Lock()
         self._worker_termination_descriptors = {}
+        self._worker_termination_attempted: set[tuple[str, str]] = set()
         if self._production:
             _require(
                 self.preprocessing_contract is not None
@@ -4473,6 +4489,7 @@ class GStreamerAnalyticsSidecar:
         self._production_threads_lock = threading.Lock()
         self._production_failure: BaseException | None = None
         self._production_failure_lock = threading.Lock()
+        self._production_failure_route: tuple[str, str] | None = None
         self._production_failure_diagnostic: dict[str, Any] | None = None
         self._production_failure_diagnostic_error = False
         self._guardian_stop_requested = threading.Event()
@@ -4649,8 +4666,11 @@ class GStreamerAnalyticsSidecar:
         if not callable(observer):
             return None
         with self._worker_termination_lock:
-            if key in self._worker_termination_descriptors:
-                return self._worker_termination_descriptors[key]
+            if key in self._worker_termination_attempted:
+                return self._worker_termination_descriptors.get(key)
+            # A failed observation is still the one original bounded attempt;
+            # later health checks or cleanup must not replace its unknown fate.
+            self._worker_termination_attempted.add(key)
             value = dict(observer())
             value["observed_service_phase"] = phase
             materialized = self._production_materialized
@@ -5051,11 +5071,17 @@ class GStreamerAnalyticsSidecar:
 
     def _record_production_failure(
         self, error: BaseException, *, diagnostic: Mapping[str, Any] | None = None,
+        validated_route: tuple[str, str] | None = None,
     ) -> None:
         _require(self._production, "engineering sidecar cannot record a production service failure")
         with self._production_failure_lock:
             if self._production_failure is None:
                 self._production_failure = error
+                if (type(validated_route) is tuple and len(validated_route) == 2
+                        and all(type(item) is str for item in validated_route)
+                        and validated_route in EXPECTED_KEYS
+                        and validated_route in self._handles):
+                    self._production_failure_route = validated_route
                 # Selection and persistence share the first-failure lock. A
                 # diagnostic error must never replace the original failure.
                 try:
@@ -5321,8 +5347,10 @@ class GStreamerAnalyticsSidecar:
         worker_route: tuple[str, str] | None = None
         handled_requests = 0
         failure_diagnostic: dict[str, Any] | None = None
+        failure_validated_route: tuple[str, str] | None = None
         try:
             while handled_requests < self.max_requests_per_connection:
+                failure_validated_route = None
                 try:
                     message, descriptors = receive_packet(endpoint)
                 except PeerClosed:
@@ -5512,6 +5540,7 @@ class GStreamerAnalyticsSidecar:
                         )
                         self._call_manifests.append(manifest)
                     operational_send = "failed"
+                    failure_stage = "response_send"
                     if protocol_mode == "worker":
                         _require(
                             output is not None,
@@ -5560,6 +5589,8 @@ class GStreamerAnalyticsSidecar:
                         except Exception as recorder_error:
                             self._operational_recorder.fail(str(recorder_error))
                     if self._production:
+                        if attributed_request is not None:
+                            failure_validated_route = request_route
                         try:
                             failure_diagnostic = self._protocol_failure_diagnostic(
                                 protocol_mode=protocol_mode, request=attributed_request,
@@ -5589,7 +5620,10 @@ class GStreamerAnalyticsSidecar:
             if self._production:
                 if not self._stop.is_set():
                     failed = True
-                    self._record_production_failure(error, diagnostic=failure_diagnostic)
+                    self._record_production_failure(
+                        error, diagnostic=failure_diagnostic,
+                        validated_route=failure_validated_route,
+                    )
             else:
                 with errors_lock:
                     errors.append(error)
@@ -5683,12 +5717,29 @@ class GStreamerAnalyticsSidecar:
                 "analytics front service thread survived bounded shutdown",
             )
 
+    def _capture_first_failed_worker(self) -> list[str]:
+        if not self._production:
+            return []
+        with self._production_failure_lock:
+            route = self._production_failure_route
+        if route is None:
+            return []
+        try:
+            self._capture_worker_termination(
+                route, self._handles[route],
+                phase="first_validated_failure_before_teardown",
+            )
+        except BaseException as error:
+            return [f"worker_termination_capture:{route[0]}/{route[1]}:{error}"]
+        return []
+
     def _shutdown(self) -> list[str]:
         errors: list[str] = []
         try:
             self._verify_runtime_directory_custody()
         except BaseException as error:
             errors.append(f"runtime_directory_custody:{error}")
+        errors.extend(self._capture_first_failed_worker())
         self._stop.set()
         self._close_front_connections()
         for owned in tuple(reversed(self._owned_sockets)):
@@ -6320,7 +6371,10 @@ class GStreamerAnalyticsProductionService(GStreamerAnalyticsSidecar):
         )
         self._production_state = "stopping"
         self._stop.set()
-        thread_errors = self._join_service_threads()
+        # Joining may force-close surviving front transports. Observe the first
+        # validated failed route before that teardown, not only dead frontends.
+        observation_errors = self._capture_first_failed_worker()
+        thread_errors = [*observation_errors, *self._join_service_threads()]
         cleanup_errors = self._shutdown()
         try:
             self._verify_runtime_directory_custody()

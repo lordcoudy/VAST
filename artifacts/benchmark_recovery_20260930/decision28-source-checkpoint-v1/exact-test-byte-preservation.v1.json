@@ -1,0 +1,36 @@
+{
+  "after_clean_ids": {
+    "false": "0866f01d0ca111109d73c8d02ee8db4117d83d5f",
+    "true": "0866f01d0ca111109d73c8d02ee8db4117d83d5f"
+  },
+  "artifact_kind": "decision28_exact_test_byte_preservation_v1",
+  "authority": "Existing exact physical source preservation requirement; no production/test semantics changed.",
+  "baseline_commit": "958a036bc5a55821c712204577fdf4c51c2181c7",
+  "before_clean_ids": {
+    "false": "0866f01d0ca111109d73c8d02ee8db4117d83d5f",
+    "true": "67aff95ce32851b14ac8e8dae22ac7474249a76f"
+  },
+  "candidate_attributes": {
+    "sha256": "308732b799007aa683beb23499dfef0956f44f2a14afb484092f81475f11203d",
+    "size_bytes": 16723
+  },
+  "original_attribute_prefix_unchanged": true,
+  "original_attributes": {
+    "sha256": "f2a113e232566f8110dc5c282bbec1adf10499c2dc61d499e2bbf9a7fdb4b01e",
+    "size_bytes": 16575
+  },
+  "raw_git_blob_id": "0866f01d0ca111109d73c8d02ee8db4117d83d5f",
+  "review_pending": true,
+  "runtime_image_or_hardware_execution": false,
+  "schema_version": 1,
+  "single_exact_added_rule": "\n# Preserve this reviewed CRLF test source exactly under either checkout setting.\n/tests/test_publication_worker_termination_facts_v1.py -text !eol\n",
+  "staging_or_commit": false,
+  "test": {
+    "bare_lf": 0,
+    "crlf": 120,
+    "path": "tests/test_publication_worker_termination_facts_v1.py",
+    "physical_bytes_unchanged": true,
+    "sha256": "149127245376786f398234edefbb197e03656cb11f98a6e7f6f86cb1ce98afd3",
+    "size_bytes": 6599
+  }
+}

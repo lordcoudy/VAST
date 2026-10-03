@@ -1,0 +1,100 @@
+{
+  "added_module_functions": [
+    "fd_count",
+    "record_error",
+    "scan_original_group"
+  ],
+  "author_review": [
+    "All channel files and selector are acquired inside command try; held pin row is registered before fd acquisition.",
+    "Original body/write failure is latched before independent selector, pipe, flush, fsync, channel, and pin close attempts.",
+    "Two independent process observations retain real scan/read/parse errors and count proc disappearance races; uncertain absence blocks and each scan is clamped by the original15s cleanup and whole1200 deadline.",
+    "Full held-source hashes and all seven stat epochs remain mandatory; default physical source checks keep the global1200 deadline.",
+    "Operation terminal follows final source checks, every pin close attempt, and actual FD count equality to the pre-pin baseline.",
+    "A late deadline or final terminal persistence/report error is sticky and produces an exclusive <=64KiB nonauthorizing companion where persistence is possible.",
+    "Existing stock two-build/capture/query argv, future exact40lowerhex COMMIT, TAG, DEST, base image, and all old time/channel bounds are unchanged.",
+    "No engine backend quiescence, image binding, model grant, benchmark success, readiness, or acceptance is inferred."
+  ],
+  "bounds": {
+    "build_capture_bytes": 16777216,
+    "cleanup_s": 15,
+    "diagnostic_error_records": 64,
+    "late_failure_companion_bytes": 65536,
+    "ordinary_capture_bytes": 1048576,
+    "other_engine_s": 60,
+    "stock_capture_s": 180,
+    "stock_two_build_s": 900,
+    "whole_s": 1200
+  },
+  "engine_commands_executed": 0,
+  "engine_operation_body_AST_unchanged_after_FD_baseline": true,
+  "exact_diff": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision28-selected-renewal-preparation-v2\\source.v1-to-v2.diff",
+    "sha256": "5361cd1777f541df8e67c798ca6137c9f55f86260dd04ebc1d1981d023d5d9ce",
+    "size_bytes": 19726
+  },
+  "exact_v2_to_legacy_inverse_after_original_five_relocations": true,
+  "exact_v2_to_v1_inverse": true,
+  "future_image_receipt": null,
+  "future_original_owner": null,
+  "immutable_inputs": [
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision28-selected-renewal-preparation-v1\\run_original_selected_build_ext4_v1.py",
+      "sha256": "44b0f2236379704f5e7f71ad15c1abeaeb7682ee877b096a7e8de45dd3fb9639",
+      "size_bytes": 11692
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision28-selected-renewal-preparation-v1\\preparation.v1.json",
+      "sha256": "84320fb54fa2ee5603c7b6f066970e70a100f4579737856bd9683841aace01ff",
+      "size_bytes": 2758
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision28-selected-renewal-independent-review-v1\\review.v1.json",
+      "sha256": "b4fe14c8207672fc1f7492f0a50e3d9cba19b52110f908707cf19788986e5b91",
+      "size_bytes": 5282
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\selected-gstreamer-image-schema-preparation-v1\\run_selected_build_v1.py",
+      "sha256": "9d08cc70716b5149c895ed87af4d398fd6d19666977bc552879613f8d7a65bd1",
+      "size_bytes": 11630
+    }
+  ],
+  "next_gate": "independent exact-source peer review and ROOT grant at actual future source commit before one original selected build",
+  "old_function_ASTs_changed_only_for_required_closure": [
+    "command",
+    "physical",
+    "pin",
+    "write"
+  ],
+  "old_function_ASTs_unchanged": [
+    "check_pins",
+    "epoch",
+    "owner"
+  ],
+  "original_Popen_AST_unchanged": true,
+  "preparer": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision28-selected-renewal-preparation-v2\\prepare_stock_build_v2.py",
+    "sha256": "8b30190f95fe181a96836462540ca5af545ca076e2583bd5fa4c8648d0818001",
+    "size_bytes": 25643
+  },
+  "production_source_tests_CI_or_Git_mutated": false,
+  "replacement_reasons": [
+    "sticky first-error latch, actual FD counts, and explicit independent process observations",
+    "default source full hash/7-epoch remains; only <=64KiB nonauthorizing final metadata may be verified after deadline",
+    "register partially acquired source FD for protected operation-wide retirement without replacing its original acquisition error",
+    "receipt acquisition and close protected; original write/flush/fsync error wins; exclusive bounded late companion supported",
+    "protected acquisitions and independent retirement, sticky primary before cleanup, two explicit original PID/group absence observations",
+    "FD baseline before any held source pins",
+    "all source checks and independent FD retirement before actual terminal; explicit sticky late/failure companions"
+  ],
+  "reviewer_handles_released": true,
+  "schema_version": 1,
+  "scope": "immutable minimal original selected deterministic two-build/capture helper repair; prepared only",
+  "source": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision28-selected-renewal-preparation-v2\\run_original_selected_build_ext4_v2.py",
+    "sha256": "35e1ef122e96a6bec3ead1e09e158866ba4a30c9b5dec660593bf91fe7598b05",
+    "size_bytes": 22381
+  },
+  "source_commit_argument": null,
+  "status": "prepared_unexecuted_pending_exact_source_commit_and_independent_peer_grant",
+  "target_imported_or_executed": false
+}

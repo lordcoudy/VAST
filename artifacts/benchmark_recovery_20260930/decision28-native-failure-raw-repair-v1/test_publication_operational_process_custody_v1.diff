@@ -1,0 +1,139 @@
+--- tests/test_publication_operational_process_custody_v1.py.before
++++ tests/test_publication_operational_process_custody_v1.py
+@@ -266,6 +266,136 @@
+             original_process_validator_v1(project_root=self.root, receipt_path=other, expected_descriptor=capture.receipt_descriptor,
+                 operation_id="original-1", original_operation_descriptor=self.original, native_context_descriptor=self.context,
+                 expected_container_image=self.image)
++
++    def _assert_failed_measurement_raw(self, capture, stdout, stderr):
++        receipt = json.loads(Path(capture.receipt_descriptor["path"]).read_bytes())
++        self.assertEqual(set(receipt), observer.RECEIPT_FIELDS)
++        self.assertEqual(receipt["failure"], "original_engine_terminal_failed")
++        self.assertEqual(set(receipt["calls"][0]), {"call_seq", "phase", "launch", "terminal"})
++        row = receipt["calls"][0]
++        terminal = json.loads(Path(row["terminal"]["path"]).read_bytes())
++        self.assertEqual(set(terminal), observer.TERMINAL_FIELDS)
++        adjunct_path = capture.output_dir / "engine_01.failure.v1.json"
++        adjunct = json.loads(adjunct_path.read_bytes())
++        self.assertLessEqual(adjunct_path.stat().st_size, 4096)
++        self.assertEqual(adjunct["sha256"], payload_with_sha256_v1(adjunct)["sha256"])
++        self.assertEqual(adjunct["operation_id"], capture.operation_id)
++        self.assertEqual((adjunct["call_seq"], adjunct["phase"]), (1, "measurement"))
++        self.assertEqual(adjunct["launch_descriptor"], row["launch"])
++        self.assertEqual(adjunct["terminal_descriptor"], row["terminal"])
++        for key in ("returncode", "timed_out", "capture_exceeded", "capture_drain_failed"):
++            self.assertEqual(adjunct[key], terminal[key])
++        for channel, expected in (("stdout", stdout), ("stderr", stderr)):
++            descriptor = adjunct[channel]
++            path = Path(descriptor["path"])
++            self.assertEqual(path.read_bytes(), expected)
++            self.assertEqual(descriptor["size_bytes"], len(expected))
++            self.assertEqual(descriptor["sha256"], hashlib.sha256(expected).hexdigest())
++            self.assertEqual({key: descriptor[key] for key in ("size_bytes", "sha256")}, terminal[channel])
++            self.assertEqual(path.stat().st_nlink, 1)
++            self.assertEqual(path.stat().st_mode & 0o777, 0o444)
++        self.assertFalse(adjunct["authorizing"])
++        self.assertFalse(adjunct["accepted"])
++        self.assertFalse(adjunct["publication_ready"])
++        self.assertEqual(receipt["status"], "failed_original_cli_capture")
++        with self.assertRaises(ValueError):
++            self.validate(capture)
++        return adjunct
++
++    def test_failed_measurement_retains_actual_binary_channels_and_unchanged_terminal(self):
++        stdout, stderr = b"\x00original-out\xff\n", b"\x00original-error\xfe\n"
++        program = ("import sys;sys.stdout.buffer.write(" + repr(stdout) + ");"
++                   "sys.stderr.buffer.write(" + repr(stderr) + ");raise SystemExit(7)")
++        with self.assertRaisesRegex(ValueError, "original_engine_terminal_failed"):
++            with self.capture() as capture:
++                pid, observed_out, observed_err = self.run_child(program)
++        self.assertEqual((observed_out, observed_err), (stdout, stderr))
++        self.assertFalse(Path(f"/proc/{pid}").exists())
++        adjunct = self._assert_failed_measurement_raw(capture, stdout, stderr)
++        self.assertEqual(adjunct["returncode"], 7)
++        self.assertFalse(adjunct["timed_out"])
++
++    def test_success_and_nonmeasurement_failure_write_no_measurement_adjunct(self):
++        with self.capture() as capture:
++            self.run_child()
++        self.validate(capture)
++        self.assertEqual(list(capture.output_dir.glob("*.failure.*")), [])
++        with self.assertRaises(ValueError):
++            with self.capture(output_dir=self.root / "outputs/probe-failure") as capture:
++                self.run_child("raise SystemExit(7)", phase="image_inspect")
++        self.assertEqual(list(capture.output_dir.glob("*.failure.*")), [])
++
++    def test_failed_measurement_empty_channels_and_actual_timeout_are_retained(self):
++        for ordinal, (program, timeout) in enumerate((("raise SystemExit(7)", None),
++                ("import time;time.sleep(2)", 0.03))):
++            with self.subTest(timeout=timeout), self.assertRaises(ValueError):
++                with self.capture(output_dir=self.root / f"outputs/empty-{ordinal}") as capture:
++                    self.run_child(program, timeout=timeout)
++            adjunct = self._assert_failed_measurement_raw(capture, b"", b"")
++            self.assertEqual(adjunct["timed_out"], timeout is not None)
++            self.assertEqual(adjunct["stdout"]["size_bytes"], 0)
++            self.assertEqual(adjunct["stderr"]["size_bytes"], 0)
++
++    def test_failed_measurement_capture_flags_keep_original_prefix_and_bounds(self):
++        # Flag transport is an explicit wrapper fixture; these are genuine
++        # original children, not a claim of actual pipe overflow/drain failure.
++        for ordinal, flags in enumerate(((False, True, False), (False, False, True))):
++            with self.subTest(flags=flags), self.assertRaises(ValueError):
++                with self.capture(output_dir=self.root / f"outputs/flags-{ordinal}") as capture, \
++                        original_engine_phase_v1("measurement"), self.process("print('prefix')") as (process, argv):
++                    token = engine_process_started_v1(process, self.engine, self.socket_pin, argv)
++                    stdout, stderr = process.communicate()
++                    engine_process_terminal_v1(token, process, stdout, stderr, *flags)
++            adjunct = self._assert_failed_measurement_raw(capture, stdout, stderr)
++            self.assertEqual(tuple(adjunct[key] for key in ("timed_out", "capture_exceeded", "capture_drain_failed")), flags)
++        with self.assertRaisesRegex(ValueError, "captures exceed source bounds"):
++            with self.capture(output_dir=self.root / "outputs/over-bound") as capture, \
++                    original_engine_phase_v1("measurement"), self.process("raise SystemExit(7)") as (process, argv):
++                token = engine_process_started_v1(process, self.engine, self.socket_pin, argv)
++                process.communicate()
++                engine_process_terminal_v1(token, process, b"x" * (observer.MAX_CAPTURE_BYTES + 1), b"", False, False, False)
++        self.assertEqual(list(capture.output_dir.glob("*.failure.*")), [])
++
++    def test_failed_measurement_exclusive_collision_preserves_primary_and_written_channel(self):
++        # A nonempty and a genuinely empty already occupied raw leaf must both
++        # refuse adoption; stdout written first survives the stderr collision.
++        for ordinal, occupied in enumerate((b"foreign", b"")):
++            with self.subTest(occupied=occupied), self.assertRaises(observer.PublicationPhysicalIoV1Error):
++                with self.capture(output_dir=self.root / f"outputs/collision-{ordinal}") as capture, \
++                        original_engine_phase_v1("measurement"), self.process("print('original');raise SystemExit(7)") as (process, argv):
++                    token = engine_process_started_v1(process, self.engine, self.socket_pin, argv)
++                    stdout, stderr = process.communicate()
++                    collision = capture.output_dir / "engine_01.failure.stderr.raw"
++                    collision.write_bytes(occupied)
++                    engine_process_terminal_v1(token, process, stdout, stderr, False, False, False)
++            self.assertEqual(collision.read_bytes(), occupied)
++            self.assertEqual((capture.output_dir / "engine_01.failure.stdout.raw").read_bytes(), stdout)
++            self.assertFalse((capture.output_dir / "engine_01.failure.v1.json").exists())
++            receipt = json.loads(Path(capture.receipt_descriptor["path"]).read_bytes())
++            self.assertEqual(receipt["failure"], "original_engine_terminal_failed")
++            self.assertIsNotNone(receipt["calls"][0]["terminal"])
++
++    def test_failed_measurement_adjunct_persistence_error_keeps_original_wrapper_error(self):
++        real_write = observer._write
++        def fault(custody, path, value, maximum):
++            if path.name.endswith(".failure.v1.json"):
++                raise OSError("actual adjunct persistence fixture")
++            return real_write(custody, path, value, maximum)
++        with self.assertRaisesRegex(RuntimeError, "original wrapper body"):
++            with self.capture() as capture, original_engine_phase_v1("measurement"), \
++                    self.process("raise SystemExit(7)") as (process, argv):
++                token = engine_process_started_v1(process, self.engine, self.socket_pin, argv)
++                stdout, stderr = process.communicate()
++                with mock.patch.object(observer, "_write", side_effect=fault):
++                    with self.assertRaisesRegex(OSError, "adjunct persistence"):
++                        engine_process_terminal_v1(token, process, stdout, stderr, False, False, False)
++                raise RuntimeError("original wrapper body")
++        receipt = json.loads(Path(capture.receipt_descriptor["path"]).read_bytes())
++        self.assertEqual(receipt["failure"], "original_engine_terminal_failed")
++        self.assertEqual(receipt["body_error"]["type"], "RuntimeError")
++        self.assertEqual((capture.output_dir / "engine_01.failure.stdout.raw").read_bytes(), b"")
++        self.assertEqual((capture.output_dir / "engine_01.failure.stderr.raw").read_bytes(), b"")
++        self.assertFalse((capture.output_dir / "engine_01.failure.v1.json").exists())
+ 
+     def _capacity_ready(self, process):
+         import select

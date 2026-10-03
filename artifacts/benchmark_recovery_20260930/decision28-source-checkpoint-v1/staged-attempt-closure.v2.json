@@ -1,0 +1,40 @@
+{
+  "all201_original_staged_physical_index_and_frozen_bytes_epochs_equal": true,
+  "artifact_kind": "decision28_staged_checkpoint_attempt_closure_v2",
+  "authored_code_test_docs_paths": [
+    ".gitattributes",
+    "BENCHMARK_RECOVERY_PLAN.md",
+    "openspec/changes/fix-benchmark-preparations-spec/tasks.md",
+    "scripts/checkpoint_gstreamer_analytics_sidecar.py",
+    "scripts/publication_operational_process_custody_v1.py",
+    "tests/test_checkpoint_gstreamer_analytics_sidecar.py",
+    "tests/test_publication_operational_process_custody_v1.py",
+    "tests/test_publication_worker_termination_facts_v1.py"
+  ],
+  "authored_whitespace_check_returncode": 0,
+  "authored_whitespace_policy": "blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol; explicit CR matches reviewed existing byte contracts.",
+  "baseline_commit": "958a036bc5a55821c712204577fdf4c51c2181c7",
+  "benchmark_or_fullCI_accepted": false,
+  "new_diagnostic_label": "New read-only observation at the unchanged staged index; not original execution stdout.",
+  "new_unscoped_diagnostic_returncode": 2,
+  "new_unscoped_stderr": {
+    "path": "artifacts/benchmark_recovery_20260930/decision28-source-checkpoint-v1/new-unscoped-whitespace-diagnostic.stderr.raw",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size_bytes": 0
+  },
+  "new_unscoped_stdout": {
+    "path": "artifacts/benchmark_recovery_20260930/decision28-source-checkpoint-v1/new-unscoped-whitespace-diagnostic.stdout.raw",
+    "sha256": "1a53500c2379fd8b6e85670c29b255a0f7dcd352daac5eeb9b1424dc00148ecd",
+    "size_bytes": 3111331
+  },
+  "original_failed_stage_immutable": true,
+  "original_failure": "Final unscoped whitespace check treated immutable retained logs/source snapshots/diffs as newly authored source and CR as trailing whitespace; all201 physical/index joins had completed.",
+  "original_final_Git_diff_check_returncode": 2,
+  "original_staging_script_exit_code": 1,
+  "original_staging_script_tool_session": 4382,
+  "original_unscoped_full_stdout_retained": false,
+  "retained_forensic_evidence_whitespace_normalized": false,
+  "schema_version": 2,
+  "source_test_snapshot_bytes_modified": false,
+  "status": "closed_finite_stage_with_scoped_authored_whitespace_check"
+}

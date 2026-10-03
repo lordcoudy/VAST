@@ -1,0 +1,61 @@
+{
+  "actual_successor_execution_performed": false,
+  "blocking_findings": [],
+  "eight_function_ASTs_equal_to_reviewed_v4": true,
+  "independent_failed_original_peer": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\component-cpu07-worker-events-actual-independent-review-v1\\review.v1.json",
+    "sha256": "016937e52ce4ba0f00449f95983c537cee8c58d6107006c3db18433bcf6bfc3d",
+    "size_bytes": 7010
+  },
+  "later_process_closure": {
+    "errors": [],
+    "first_metadata_reader_and_timeout_absent": true,
+    "metadata_timeout_startticks_missing_limit_retained": true,
+    "original_query_capture_owners_absent": true,
+    "scans": 2
+  },
+  "limits": [
+    "Original query remains failed; later historical query needs a distinct concrete root grant.",
+    "Current daemon ID is not independently queried; original daemon ID and same pinned CLI/socket provenance retained.",
+    "Daemon retention/empty results do not prove original absence; die137 alone does not prove OOM.",
+    "No production/protocol/image/model/measurement change or benchmark acceptance."
+  ],
+  "original_bounds_unchanged": {
+    "cleanup_seconds": 10,
+    "command_seconds": 2,
+    "records": 32,
+    "stderr_bytes": 1024,
+    "stdout_bytes": 8192,
+    "whole_work_seconds": 30
+  },
+  "original_interval_ns": [
+    1790823221323071118,
+    1790823586186876374
+  ],
+  "pins": [
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\component-cpu07-worker-events-observation-preparation-v1\\observe_original_primary_worker_terminal_events_v5.py",
+      "sha256": "312d3ea99ff396b2e9074cbc1c1f9958ef3d8ceb6dd29ec01cc57dc71a4fed1d",
+      "size_bytes": 15049
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\component-cpu07-worker-events-observation-preparation-v1\\preparation.v4.json",
+      "sha256": "e6d57e23c7f53610a6237199b58f451f95d2e9b130c2fea7a48976ec01592bbb",
+      "size_bytes": 8186
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\component-cpu07-worker-events-observation-preparation-v1\\original-observation-later-process-closure.v1.json",
+      "sha256": "e459d4fe37f791416cd5131a5d1c48f1ea10443cbc3203b7bb3e394b3578687e",
+      "size_bytes": 6384
+    }
+  ],
+  "reviewer_handles_released": true,
+  "source_delta": [
+    "Exclusive new original-terminal-events output; failed first-query outputs untouched.",
+    "Exact original CID893b2b02a18906c5d7f840e2515e8f2fb8253c396cf4c2a3756efd1513f166aa replaces name-only container query filter; only event=die,oom,kill,destroy requested. Every complete returned record must retain exact original CID/name/image/envelope and requested action.",
+    "Original8192-byte prefix held by exact raw SHA, seven epochs/name/ancestor custody, and24 complete original CID/name/image/time rows verified before query. Truncated tail is not accepted as a record or terminal fate.",
+    "Body error is latched before cleanup, preserving first error while cleanup errors remain additional.",
+    "Dispatch accurately records prefix descriptor, recovered CID, exact action filters and narrower scope."
+  ],
+  "status": "approved_prepared_narrow_successor_source_only"
+}

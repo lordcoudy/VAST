@@ -1,0 +1,160 @@
+{
+  "accepted": false,
+  "artifact_kind": "vast_cpu07_failure_source_observability_review_v1",
+  "dependency_implication": "Both proposed changed helpers are in host87 and all4 runtime source/COPY paths including selected73, but outside native3/worker2 sources. Any implementation requires reviewed planning and fresh affected selected image/host bindings; no old CPU07, model/image receipt or pair grant may be rebound. Unselected full campaign is not renewed by this note.",
+  "known_limits": [
+    "worker/backend exit mechanism unknown before exact event query",
+    "later owner/proc custody refusal is secondary cleanup, not the demonstrated primary",
+    "29,168,640,000 worker request allowance exceeds actual1,052 vehicle_type CPU starts",
+    "per-route bridge locks serialize genuine worker client requests"
+  ],
+  "lost_evidence": [
+    {
+      "behavior": "Termination facts are persisted only after completed Docker frontend poll during a health check; first EPIPE sets stop and shutdown never persists existing termination observer, leaving no original worker exit/tail fact.",
+      "source": "scripts/checkpoint_gstreamer_analytics_sidecar.py:4647-4693,5052-5075,5686-5771"
+    },
+    {
+      "behavior": "Engine terminal records only stdout/stderr length and SHA. Nonzero native runtime bypasses evidence copy then ephemeral materialized directory closes; original50490B stderr body is unavailable.",
+      "source": "scripts/publication_operational_process_custody_v1.py:582-607; scripts/checkpoint_gstreamer_publication_runtime_v3.py:1441-1449"
+    }
+  ],
+  "next_gate": "Peer and root concrete grant for the one fixed-primary-name original-envelope read-only event query; preserve unknown mechanism if events unavailable.",
+  "not_executed": [
+    "engine event observer",
+    "source edits",
+    "unit tests",
+    "model/worker/benchmark/image operations"
+  ],
+  "original_primary": {
+    "diagnostic_sha256": "41c930a0f93d828dcb90116bd8fb31eca7cf83c5efb54f824c2c3b05b3c71e2c",
+    "exception": "ProtocolError",
+    "input_payload_validated": {
+      "bytes": 691200,
+      "seals": 15,
+      "sha256": "07baca69a732ac2b40117f786c1f78ae1b5e9524139c565e3c0350cc520172d8"
+    },
+    "message": "failed to send analytics execution datagram: [Errno32] Broken pipe",
+    "route": "vehicle_type/cpu"
+  },
+  "possible_narrow_future_changes_not_implemented": [
+    {
+      "path": "scripts/checkpoint_gstreamer_analytics_sidecar.py",
+      "proposal": "Capture existing termination_facts exactly once for the independently validated failed worker route before teardown, even if Docker frontend poll is still None. Preserve original ProtocolError and strict failure state; observer/state/event/tail unavailable stays explicit; existing2s/8KiB command and16KiB artifact bounds remain. Distinguish running/nonterminal facts from a terminal exit."
+    },
+    {
+      "path": "scripts/publication_operational_process_custody_v1.py",
+      "proposal": "Persist failure-only measurement stdout/stderr as exclusive nonauthorizing raw leaves plus small adjunct bound to unchanged original launch/terminal descriptors, with existing8MiB/channel captured-byte caps and exactly-one measured call. Keep terminal schema/digests/cold success rules unchanged; retain any incomplete prefix/capture flags and sticky persistence failure honestly."
+    }
+  ],
+  "schema_version": 1,
+  "scope_limit": "Small source/metadata reads only. Historical inventory is used as a path-domain map, not fresh all-byte closure certification. Current host87 and selected73 sets checked independently.",
+  "source_commit": "9d47e99b623df44816f7b0a0b73b249a940f7723",
+  "source_memberships": [
+    {
+      "current_host87": true,
+      "current_selected73": true,
+      "historical_finite_group_path_memberships": {
+        "analytics_worker_openvino": false,
+        "analytics_worker_tensorrt": false,
+        "deepstream": true,
+        "gstreamer_custom": true,
+        "host87": true,
+        "native_probe_deepstream": false,
+        "native_probe_openvino": false,
+        "native_probe_savant": false,
+        "openvino_gva": true,
+        "savant": true
+      },
+      "original_copy_inventory_membership": true,
+      "path": "scripts/checkpoint_gstreamer_analytics_sidecar.py",
+      "sha256": "0a0ff1d67e536d42258d8d53f8ed511283db478aba30442411b607bb849970ef",
+      "size_bytes": 296398,
+      "windows_ext4_bytes_equal": true
+    },
+    {
+      "current_host87": true,
+      "current_selected73": true,
+      "historical_finite_group_path_memberships": {
+        "analytics_worker_openvino": false,
+        "analytics_worker_tensorrt": false,
+        "deepstream": true,
+        "gstreamer_custom": true,
+        "host87": true,
+        "native_probe_deepstream": false,
+        "native_probe_openvino": false,
+        "native_probe_savant": false,
+        "openvino_gva": true,
+        "savant": true
+      },
+      "original_copy_inventory_membership": true,
+      "path": "scripts/publication_operational_process_custody_v1.py",
+      "sha256": "5ea8477e527bf57438ce81cea9b8b19fb628c555cb808711438e2036bcaee923",
+      "size_bytes": 47271,
+      "windows_ext4_bytes_equal": true
+    },
+    {
+      "current_host87": true,
+      "current_selected73": false,
+      "historical_finite_group_path_memberships": {
+        "analytics_worker_openvino": false,
+        "analytics_worker_tensorrt": false,
+        "deepstream": false,
+        "gstreamer_custom": false,
+        "host87": true,
+        "native_probe_deepstream": false,
+        "native_probe_openvino": false,
+        "native_probe_savant": false,
+        "openvino_gva": false,
+        "savant": false
+      },
+      "original_copy_inventory_membership": true,
+      "path": "scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+      "sha256": "ee0476b574e012b213bdc603a7a930234c0bb27d929859ef03acfdb99eb7a241",
+      "size_bytes": 59640,
+      "windows_ext4_bytes_equal": true
+    },
+    {
+      "current_host87": true,
+      "current_selected73": true,
+      "historical_finite_group_path_memberships": {
+        "analytics_worker_openvino": true,
+        "analytics_worker_tensorrt": true,
+        "deepstream": true,
+        "gstreamer_custom": true,
+        "host87": true,
+        "native_probe_deepstream": false,
+        "native_probe_openvino": false,
+        "native_probe_savant": false,
+        "openvino_gva": true,
+        "savant": true
+      },
+      "original_copy_inventory_membership": true,
+      "path": "scripts/analytics_execution_worker.py",
+      "sha256": "04b59f3c5a1fa94d764f3b0e71fcb2cd0d7b0e2ad915573529019e2d2f32f00d",
+      "size_bytes": 38433,
+      "windows_ext4_bytes_equal": true
+    },
+    {
+      "current_host87": false,
+      "current_selected73": false,
+      "historical_finite_group_path_memberships": {
+        "analytics_worker_openvino": true,
+        "analytics_worker_tensorrt": false,
+        "deepstream": false,
+        "gstreamer_custom": false,
+        "host87": false,
+        "native_probe_deepstream": false,
+        "native_probe_openvino": false,
+        "native_probe_savant": false,
+        "openvino_gva": false,
+        "savant": false
+      },
+      "original_copy_inventory_membership": true,
+      "path": "deploy/analytics_execution/openvino_worker.py",
+      "sha256": "ab7b50ef7143485594bf7426225a464b7d0299490ad7c3b75195b150547c53da",
+      "size_bytes": 17063,
+      "windows_ext4_bytes_equal": true
+    }
+  ],
+  "status": "source_diagnosis_not_cause_or_acceptance"
+}

@@ -1,0 +1,50 @@
+{
+  "argv": [
+    "/usr/bin/timeout",
+    "--signal=TERM",
+    "--kill-after=10s",
+    "30s",
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/observe_original_primary_worker_events_v4.py"
+  ],
+  "at_ns": 1790825363288880829,
+  "cleanup_s": 10,
+  "controller": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 65511,
+    "pid": 65511,
+    "ppid": 65507,
+    "startticks": 30767868,
+    "uid": 1000
+  },
+  "source_before": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/observe_original_primary_worker_events_v4.py",
+      "sha256": "dfe892ea547de7fa8c4a1f24b2da0d9299ab2cad6deb8ef7212c6b7117583d5a",
+      "size_bytes": 14053
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/preparation.v3.json",
+      "sha256": "11d39a83a9873b290af9aec79139783b3809c7d6475f14f66fba0b1ce2b74801",
+      "size_bytes": 7609
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/root-one-primary-events-grant.v1.json",
+      "sha256": "5bc63b2fbadb327305e4edf3df0cf9dfe46d962b1d8c1032ec3ddef8c8fb7d9a",
+      "size_bytes": 1468
+    }
+  ],
+  "timeout_owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 65512,
+    "pid": 65512,
+    "ppid": 65511,
+    "startticks": 30767872,
+    "uid": 1000
+  },
+  "work_s": 30
+}

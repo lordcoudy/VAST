@@ -1,0 +1,16 @@
+{
+  "actual_command": "wsl.exe -d Ubuntu -- /usr/bin/timeout --verbose --signal=TERM --kill-after=10s 120s /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-failed-boundary-independent-review-v1/audit_failed_cpu07_v1.py",
+  "artifact_kind": "vast_cpu07_failed_audit_original_tool_return_v1",
+  "original_tool_result": {
+    "chunk_id": "6dba2f",
+    "exit_code": 0,
+    "original_token_count": 137,
+    "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000{\"path\": \"/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-failed-boundary-independent-review-v1/review.v1.json\", \"size_bytes\": 16997, \"sha256\": \"85b668c7510641ab3d7fd2455b1f7cd0f9e7b83ae9ef37531a6949ed46403d3d\"}\n",
+    "wall_time_seconds": 1.0090309
+  },
+  "provenance_limit": "Actual inline tool dispatch and combined tool-return text retained. No saved prelaunch external wrapper or independently separated raw stdout/stderr is invented. Original proxy warning includes NUL characters and is preserved in JSON.",
+  "schema_version": 1,
+  "scope": "one original explicitly authorized failure-specific closed artifact reader",
+  "source_sha256": "74807a616dc612de0b6dd6c01f3e41b67d1e9e36abec1c76ded57c4549fb7c83",
+  "source_size_bytes": 11378
+}

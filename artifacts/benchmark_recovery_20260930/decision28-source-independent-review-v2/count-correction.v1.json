@@ -1,0 +1,184 @@
+{
+  "artifact_kind": "decision28_source_independent_review_count_correction_v1",
+  "baseline_commit": "958a036bc5a55821c712204577fdf4c51c2181c7",
+  "blocking_findings": [],
+  "corrected_test_method_audit": [
+    {
+      "all_original_methods_AST_identical": true,
+      "before": {
+        "path": "artifacts/benchmark_recovery_20260930/decision28-sidecar-failure-observability-v1/before/tests/test_checkpoint_gstreamer_analytics_sidecar.py",
+        "sha256": "08aecf8478eb3148ab5e4a051eb4ae81529f79a778e11c30383832a94e64e1b6",
+        "size_bytes": 126015
+      },
+      "original_method_names": [
+        "GStreamerAnalyticsSidecarTests.test_production_readiness_parent_swap_never_redirects_write",
+        "GStreamerAnalyticsSidecarTests.test_production_lifecycle_parent_swap_preserves_attacker_canary",
+        "GStreamerAnalyticsSidecarTests.test_full_lifecycle_attests_exact_eight_and_persists_raw_call",
+        "GStreamerAnalyticsSidecarTests.test_incomplete_materialized_binding_set_fails_before_process_start",
+        "GStreamerAnalyticsSidecarTests.test_binding_index_digest_drift_is_rejected",
+        "GStreamerAnalyticsSidecarTests.test_peer_pid_drift_fails_closed_and_cleans_every_owned_node",
+        "GStreamerAnalyticsSidecarTests.test_startup_worker_crash_fails_closed",
+        "GStreamerAnalyticsSidecarTests.test_runtime_worker_crash_interrupts_front_service",
+        "GStreamerAnalyticsSidecarTests.test_worker_crash_interrupts_idle_client_and_leaves_no_service_thread",
+        "GStreamerAnalyticsSidecarTests.test_bridge_failure_is_fatal_and_raw_socket_nodes_are_removed",
+        "GStreamerAnalyticsSidecarTests.test_front_collision_is_preserved_and_workers_are_drained",
+        "GStreamerAnalyticsSidecarTests.test_atomic_front_publish_collision_preserves_canary_and_hidden_node_absent",
+        "GStreamerAnalyticsSidecarTests.test_atomic_front_publish_uses_direct_bind_without_link_cleanup",
+        "GStreamerAnalyticsSidecarTests.test_atomic_front_publish_post_bind_failure_never_unlinks_node",
+        "GStreamerAnalyticsSidecarTests.test_owned_socket_retirement_never_deletes_raced_node",
+        "GStreamerAnalyticsSidecarTests.test_retired_socket_post_stat_swap_is_nondestructive_and_fails_cold",
+        "GStreamerAnalyticsSidecarTests.test_runtime_symlink_is_rejected_without_touching_canary",
+        "GStreamerAnalyticsSidecarTests.test_running_guardian_fails_closed_if_runtime_directory_is_rebound",
+        "GStreamerAnalyticsSidecarTests.test_production_integrity_failure_keeps_request_diagnostic",
+        "GStreamerAnalyticsSidecarTests.test_production_rejection_diagnostics_keep_untrusted_fields_unattributed",
+        "GStreamerAnalyticsSidecarTests.test_worker_protocol_integrity_failure_is_attributed",
+        "GStreamerAnalyticsSidecarTests.test_diagnostic_persistence_failure_preserves_original_integrity_error",
+        "GStreamerAnalyticsSidecarTests.test_pre_authority_failure_cannot_commit_an_orphan_diagnostic",
+        "GStreamerAnalyticsSidecarTests.test_diagnostic_does_not_read_oversized_or_unsafe_descriptors",
+        "GStreamerAnalyticsSidecarTests.test_concurrent_terminal_failures_commit_only_first_diagnostic",
+        "GStreamerAnalyticsSidecarTests.test_production_service_has_stable_authority_clean_eof_and_rolling_lifecycle",
+        "GStreamerAnalyticsSidecarTests.test_retired_socket_validator_binds_exact_count_and_sibling_path",
+        "GStreamerAnalyticsSidecarTests.test_cached_stop_cold_revalidates_retired_socket_ledger",
+        "GStreamerAnalyticsSidecarTests.test_strict_authority_assert_rejects_distinct_valid_expected_identities",
+        "GStreamerAnalyticsSidecarTests.test_production_preprocessing_contract_checks_all_bindings_before_worker_start",
+        "GStreamerAnalyticsSidecarTests.test_production_rejects_external_runtime_expectation_drift_before_worker_start",
+        "GStreamerAnalyticsSidecarTests.test_production_preprocessing_receipt_binds_runtime_candidate_manifest",
+        "GStreamerAnalyticsSidecarTests.test_production_capacity_is_contract_derived_and_not_one_million",
+        "GStreamerAnalyticsSidecarTests.test_production_per_connection_bound_exhaustion_fails_closed",
+        "GStreamerAnalyticsSidecarTests.test_production_authority_rejects_hash_inode_and_owner_drift",
+        "GStreamerAnalyticsSidecarTests.test_production_start_is_one_shot_and_does_not_replace_front_inode",
+        "GStreamerAnalyticsSidecarTests.test_guardian_authenticated_stop_unblocks_foreground_wait",
+        "GStreamerAnalyticsSidecarTests.test_guardian_stores_stop_attestation_before_acknowledgement",
+        "GStreamerAnalyticsSidecarTests.test_guardian_stop_attestation_tamper_fails_closed",
+        "GStreamerAnalyticsSidecarTests.test_signal_or_direct_stop_is_failed_and_non_authorizing",
+        "GStreamerAnalyticsSidecarTests.test_guardian_status_fails_closed_after_any_worker_dies",
+        "GStreamerAnalyticsSidecarTests.test_guardian_status_and_bounded_stop_cli_use_readiness_authority",
+        "GStreamerAnalyticsSidecarTests.test_guardian_stop_cli_rejects_acknowledgement_binding_drift",
+        "GStreamerAnalyticsSidecarTests.test_foreground_guardian_cli_commits_readiness_then_waits_for_stop",
+        "GStreamerAnalyticsSidecarTests.test_foreground_guardian_cli_requires_preprocessing_receipt",
+        "GStreamerAnalyticsSidecarTests.test_authority_loader_rejects_named_file_swap_during_fd_read",
+        "GStreamerAnalyticsSidecarTests.test_cli_contract_is_explicit_and_requires_bounded_counts",
+        "GStreamerAnalyticsSidecarTests.test_cli_modes_reject_incompatible_arguments_before_input_reads",
+        "GStreamerAnalyticsSidecarTests.test_front_socket_is_requested_as_atomic_publish_only_after_bridge",
+        "GStreamerAnalyticsSidecarTests.test_docker_factory_plan_is_pinned_no_network_and_gpu_explicit"
+      ],
+      "original_unittest_test_prefix_method_count": 50,
+      "path": "tests/test_checkpoint_gstreamer_analytics_sidecar.py",
+      "source": {
+        "path": "tests/test_checkpoint_gstreamer_analytics_sidecar.py",
+        "sha256": "47f74ffd43d81dff567b7f04576446fab9f246fb3937d6c97a92b73bff90a78d",
+        "size_bytes": 138071
+      }
+    },
+    {
+      "all_original_methods_AST_identical": true,
+      "before": {
+        "path": "artifacts/benchmark_recovery_20260930/decision28-sidecar-failure-observability-v1/before/tests/test_publication_worker_termination_facts_v1.py",
+        "sha256": "698c118aa705f66b3f58e97e29392ab4be7d371c15a489068991b5567242b55e",
+        "size_bytes": 3296
+      },
+      "original_method_names": [
+        "TerminationTests.test137_engine_removed_retains_original_id_and_oom_unknown",
+        "TerminationTests.test_engine_reported_oom_true_retained_as_fact",
+        "TerminationTests.test_engine_reported_oom_false_does_not_infer_actor"
+      ],
+      "original_unittest_test_prefix_method_count": 3,
+      "path": "tests/test_publication_worker_termination_facts_v1.py",
+      "source": {
+        "path": "tests/test_publication_worker_termination_facts_v1.py",
+        "sha256": "149127245376786f398234edefbb197e03656cb11f98a6e7f6f86cb1ce98afd3",
+        "size_bytes": 6599
+      }
+    },
+    {
+      "all_original_methods_AST_identical": true,
+      "before": {
+        "path": "artifacts/benchmark_recovery_20260930/decision28-native-failure-raw-repair-v1/before/tests/test_publication_operational_process_custody_v1.py",
+        "sha256": "8ba4f9b93e00b368712cc3f84855b648ff98d54ff887de25f99d4208e11a97d1",
+        "size_bytes": 30982
+      },
+      "original_method_names": [
+        "ProcessCustodyTests.test_genuine_original_process_launch_and_terminal_are_physically_bound",
+        "ProcessCustodyTests.test_inactive_observer_changes_nothing_and_does_not_require_mock_identity",
+        "ProcessCustodyTests.test_nonzero_and_timeout_cannot_emit_success",
+        "ProcessCustodyTests.test_missing_phase_and_mock_pid_are_failures",
+        "ProcessCustodyTests.test_missing_terminal_duplicate_measurement_and_source_drift_are_rejected",
+        "ProcessCustodyTests.test_legitimate_output_sibling_does_not_change_declared_original_custody",
+        "ProcessCustodyTests.test_cold_validator_rejects_resealed_timeout_and_owner_substitution",
+        "ProcessCustodyTests.test_phase_probe_then_exactly_one_measurement_and_duplicate_terminal",
+        "ProcessCustodyTests.test_sticky_launch_persistence_failure_preserves_original_body_error",
+        "ProcessCustodyTests.test_capture_bound_and_foreign_receipt_descriptor_are_rejected",
+        "ProcessCustodyTests.test_capacity_fixture_failed_ready_child_never_registers",
+        "ProcessCustodyTests.test_caught_invalid_phase_remains_sticky_and_call_capacity_is_bounded",
+        "ProcessCustodyTests.test_real_fast_zombie_preserves_actual_owner_without_inventing_executable_match",
+        "ProcessCustodyTests.test_stock_two_transfer_chain_accepts_retired_first_output_and_rejects_foreign_source",
+        "ProcessCustodyTests.test_cold_rejects_resealed_detached_context_mount_and_executable_enum",
+        "ProcessCustodyTests.test_actual_measurement_rejects_detached_context_bytes_before_launch_record",
+        "ProcessCustodyTests.test_missing_native_transfer_cannot_emit_success",
+        "ProcessCustodyTests.test_sdk_image_contract_survives_original_capture_and_cold_validation",
+        "ProcessCustodyTests.test_actual_stock_inspector_image_contracts_survive_original_capture",
+        "ProcessCustodyTests.test_gva_three_field_contract_rejects_missing_extra_and_invalid_projection",
+        "ProcessCustodyTests.test_cold_native_transfer_hash_is_streamed_above_supplemental_memory_budget"
+      ],
+      "original_unittest_test_prefix_method_count": 21,
+      "path": "tests/test_publication_operational_process_custody_v1.py",
+      "source": {
+        "path": "tests/test_publication_operational_process_custody_v1.py",
+        "sha256": "690212c96e47cb2a037e5b26ed24de9637e349515df3fb99b3ddc7d49c7b04c8",
+        "size_bytes": 40344
+      }
+    }
+  ],
+  "correction": "The review.v2 source_AST_and_raw_Git_audit counted names starting test_ and reported2 legacy TerminationTests methods, omitting the runnable unittest-prefix test137_engine_removed_retains_original_id_and_oom_unknown. Its AST was already included and unchanged in the all-function comparison. Correct unittest discovery prefix is test. Correct original counts are50 sidecar+3 termination=53 focused old methods and21 native. This addendum replaces that metadata count; the source verdict and all physical pins remain unchanged.",
+  "focused_original_sidecar_plus_termination_methods": 53,
+  "limits": [
+    "This is a read-only AST/source counting correction; no test target imports or executions.",
+    "The original independent review.v2 is retained immutable and must be read together with this explicit correction.",
+    "No hardware/build/CI/GitHub approval or merge evidence is added."
+  ],
+  "original_native_methods": 21,
+  "owned_source_pins": [
+    {
+      "path": "scripts/checkpoint_gstreamer_analytics_sidecar.py",
+      "sha256": "4a853d79fe4296882d1f3e28774ccabb458e030c55d474b1bf34918b897f7fd6",
+      "size_bytes": 299261
+    },
+    {
+      "path": "tests/test_checkpoint_gstreamer_analytics_sidecar.py",
+      "sha256": "47f74ffd43d81dff567b7f04576446fab9f246fb3937d6c97a92b73bff90a78d",
+      "size_bytes": 138071
+    },
+    {
+      "path": "tests/test_publication_worker_termination_facts_v1.py",
+      "sha256": "149127245376786f398234edefbb197e03656cb11f98a6e7f6f86cb1ce98afd3",
+      "size_bytes": 6599
+    },
+    {
+      "path": "scripts/publication_operational_process_custody_v1.py",
+      "sha256": "dc92e20512cc2e3e7265e75bfd3c01de0146f29cfd4720e1a6f1b199ceb52d97",
+      "size_bytes": 51141
+    },
+    {
+      "path": "tests/test_publication_operational_process_custody_v1.py",
+      "sha256": "690212c96e47cb2a037e5b26ed24de9637e349515df3fb99b3ddc7d49c7b04c8",
+      "size_bytes": 40344
+    },
+    {
+      "path": ".gitattributes",
+      "sha256": "109eef60f5ed87e35b18a663c0e112cfc4040fe898dc09d38923d16de803c392",
+      "size_bytes": 17102
+    }
+  ],
+  "parent_independent_review": {
+    "path": "artifacts/benchmark_recovery_20260930/decision28-source-independent-review-v2/review.v2.json",
+    "sha256": "7de1386fc628424e90af3cbc21aea5ecdf6e433e9f9e594a86f9f83bf1c4e662",
+    "size_bytes": 26462
+  },
+  "reviewable": true,
+  "reviewed_at_utc": "2026-10-03T06:44:00.595132+00:00",
+  "reviewer": "/root/decision28_source_peer",
+  "reviewer_handles_released": true,
+  "schema_version": 1,
+  "source_test_author_or_v2_receipt_edited": false,
+  "tests_rerun": false
+}

@@ -1,0 +1,549 @@
+{
+  "Git_mutation_by_reviewer": false,
+  "artifact_kind": "decision28_source_independent_review_v2",
+  "author_evidence_joins": [
+    {
+      "all_joins_equal": true,
+      "physical_descriptor_joins_verified": 46,
+      "receipt": {
+        "path": "artifacts/benchmark_recovery_20260930/decision28-sidecar-failure-observability-v1/author-review.v1.json",
+        "sha256": "a71d828c420a1935c7ff1b2e6c91f1d7f0977eb582d68c1bda84ed0055d4920e",
+        "size_bytes": 23576
+      }
+    },
+    {
+      "all_joins_equal": true,
+      "physical_descriptor_joins_verified": 25,
+      "receipt": {
+        "path": "artifacts/benchmark_recovery_20260930/decision28-native-failure-raw-repair-v1/author-review.v1.json",
+        "sha256": "9356d0f8d36af2e9c79b7ca87303bfafc6cbd3e60e900e8eb17a18917c38bad5",
+        "size_bytes": 10155
+      }
+    }
+  ],
+  "baseline_commit": "958a036bc5a55821c712204577fdf4c51c2181c7",
+  "benchmark_accepted": false,
+  "blocking_findings": [],
+  "current_recovery_plan": {
+    "path": "BENCHMARK_RECOVERY_PLAN.md",
+    "sha256": "db6e2ac4535d5fc572ee02b2dd9761de6fa01ba26e56c8147789fcf110323305",
+    "size_bytes": 113257
+  },
+  "exact_byte_preservation": {
+    "exactly_three_added_rules": [
+      "/tests/test_publication_worker_termination_facts_v1.py -text !eol",
+      "/artifacts/benchmark_recovery_20260930/decision28-sidecar-failure-observability-v1/before/scripts/checkpoint_gstreamer_analytics_sidecar.py -text !eol",
+      "/artifacts/benchmark_recovery_20260930/decision28-sidecar-failure-observability-v1/before/tests/test_publication_worker_termination_facts_v1.py -text !eol"
+    ],
+    "final_attributes": {
+      "path": ".gitattributes",
+      "sha256": "109eef60f5ed87e35b18a663c0e112cfc4040fe898dc09d38923d16de803c392",
+      "size_bytes": 17102
+    },
+    "original_guard_preserved": {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-source-checkpoint-v1/finite-candidate-guard.v1.json",
+      "sha256": "401cdc536d0f83ab6d54a5273322dcba21a4abd40d2fee73b3d0d57fdf2c76ee",
+      "size_bytes": 114957
+    },
+    "original_prefix": {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-source-checkpoint-v1/original-attributes.raw",
+      "sha256": "f2a113e232566f8110dc5c282bbec1adf10499c2dc61d499e2bbf9a7fdb4b01e",
+      "size_bytes": 16575
+    },
+    "original_prefix_raw_Git_equal": true,
+    "preservation_receipts": [
+      {
+        "path": "artifacts/benchmark_recovery_20260930/decision28-source-checkpoint-v1/exact-test-byte-preservation.v1.json",
+        "sha256": "1e2ab073f139a51729d779377f40873e408be818dc58db71d5998f9046c11f7b",
+        "size_bytes": 1491
+      },
+      {
+        "path": "artifacts/benchmark_recovery_20260930/decision28-source-checkpoint-v1/exact-snapshot-byte-preservation.v1.json",
+        "sha256": "39886fc309ebeb2a226b28baab5fc1fdc43557c4d79914cbeac3f4fcd1bafca3",
+        "size_bytes": 1525
+      }
+    ],
+    "raw_clean_equal_under_both_checkout_settings": [
+      {
+        "clean_ids": {
+          "false": "0866f01d0ca111109d73c8d02ee8db4117d83d5f",
+          "true": "0866f01d0ca111109d73c8d02ee8db4117d83d5f"
+        },
+        "raw_blob_id": "0866f01d0ca111109d73c8d02ee8db4117d83d5f",
+        "source": {
+          "path": "tests/test_publication_worker_termination_facts_v1.py",
+          "sha256": "149127245376786f398234edefbb197e03656cb11f98a6e7f6f86cb1ce98afd3",
+          "size_bytes": 6599
+        }
+      },
+      {
+        "clean_ids": {
+          "false": "11edb3a828a293f725dfe412a7025e11e9640f16",
+          "true": "11edb3a828a293f725dfe412a7025e11e9640f16"
+        },
+        "raw_blob_id": "11edb3a828a293f725dfe412a7025e11e9640f16",
+        "source": {
+          "path": "artifacts/benchmark_recovery_20260930/decision28-sidecar-failure-observability-v1/before/scripts/checkpoint_gstreamer_analytics_sidecar.py",
+          "sha256": "0a0ff1d67e536d42258d8d53f8ed511283db478aba30442411b607bb849970ef",
+          "size_bytes": 296398
+        }
+      },
+      {
+        "clean_ids": {
+          "false": "40f177b876c2fac225a3c985de9aed35e38944b6",
+          "true": "40f177b876c2fac225a3c985de9aed35e38944b6"
+        },
+        "raw_blob_id": "40f177b876c2fac225a3c985de9aed35e38944b6",
+        "source": {
+          "path": "artifacts/benchmark_recovery_20260930/decision28-sidecar-failure-observability-v1/before/tests/test_publication_worker_termination_facts_v1.py",
+          "sha256": "698c118aa705f66b3f58e97e29392ab4be7d371c15a489068991b5567242b55e",
+          "size_bytes": 3296
+        }
+      }
+    ]
+  },
+  "findings": [
+    "First error and internally validated exact known route are selected under the same first-failure lock; an unattributed first error cannot borrow a later validated route.",
+    "Attributed request is set only after internal request/route checks. Completed worker response then front transmission has response_send; worker invocation failure retains inference.",
+    "Original first route observation precedes service-thread join/forced front close, bridge teardown and worker termination even when frontend poll is None. Attempt is latched before observer/persistence; an unknown/error snapshot cannot be overwritten or retried.",
+    "Real capture tail uses fstat/pread without moving the shared file description offset. BytesIO fixtures and unavailable nonregular captures are explicitly limited.",
+    "Engine events use originalCID/type=container/die,oom,kill,destroy under unchanged2s/8192+1024/32/16KiB bounds. Running state/missingOOM/137 do not establish terminal fate or cause.",
+    "Unchanged original native terminal is written and first failure latched before failure-only measurement raw channels. Raw stdout/stderr exclusive8MiB bounds, launch/terminal/hash/flags joins and receipt-last<=4KiB false-authorizing adjunct are preserved.",
+    "Zero channels use existing private O_EXCL POSIX creation and exact created-inode durable adoption; held nofollow/nonblocking FD, regular one-link/mode/UID/GID/full7epoch checks remain until capture close. Shared nonempty grant descriptor validators are unchanged.",
+    "Success and nonmeasurement calls write no failed-measurement adjunct. Collisions/persistence/partial prefix retain original terminal failure and committed exclusive prefix; no successful receipt is granted.",
+    "Final62 includes53 original test methods unchanged. Source AST independently verifies50 sidecar+3 termination original test methods. Native27 contains21 old methods unchanged. Final loaded39/52 source pins physically join current frozen bytes.",
+    "The only planning tasks delta from reviewed958 is completed23.1 with concrete peer/commit/PR proof; pending23.2-.5 and all prior task text/state are unchanged.",
+    "Both repaired helpers belong to host87/selected73/all4runtimeCOPY and require fresh selectedimage/host authority; native3/worker2 repair-source membership is false."
+  ],
+  "independent_GitHub_approval": false,
+  "limits": [
+    "No tests were rerun; this review inspects source/control flow, retained actual focused proofs, raw evidence/hash joins and schema/AST equality.",
+    "Overflow/drain flags and persistence errors are explicit fixtures; actual timeout/nonzero/rawbinary children are genuine controlled processes, not Docker/model/hardware acceptance.",
+    "Interim sidecarattempt02 has1 actual error and remains failed; finalattempt03 is62 tests/0errors. All original failed evidence is preserved.",
+    "CPU07 remains genuinelyFAILED; original frontend-disconnect cause remains unknown. CPU06/GPU01/science at0ad are historical.",
+    "No checkpointA/image/currentCPU-GPU/fullCI/conformance/archive/finalGitHubapproval/merge is established.",
+    "Only this independently owned new receipt was written. No source/tests/engine/workload/Git/author/oldpeer file was edited; all read handles and awaited Git processes are closed."
+  ],
+  "original_focused_RED_interim_and_GREEN": [
+    {
+      "classification": "genuine controlled socket/FD/CPython child fixtures; not Docker/model/hardware",
+      "current_physical_final_source_joins_verified": false,
+      "errors": 2,
+      "execution": {
+        "path": "artifacts/benchmark_recovery_20260930/decision28-sidecar-failure-observability-v1/attempt-01-red/execution.v1.json",
+        "sha256": "55c886d43980c5f5c2f51e49c2fdb609af7997976d26bc5873343767f8e3157e",
+        "size_bytes": 5374
+      },
+      "failures": 7,
+      "loaded_source_count": 39,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 65821,
+        "pid": 65821,
+        "ppid": 65820,
+        "startticks": 31008902,
+        "uid": 1000
+      },
+      "per_test_FD_counts_equal": true,
+      "returncode": 1,
+      "run": "decision28-sidecar-failure-observability-v1/attempt-01-red",
+      "skips": 0,
+      "source_before_after_bytes_and_epochs_equal": true,
+      "tests_run": 9,
+      "two_zero_error_original_group_absence_scans": true,
+      "unit": {
+        "path": "artifacts/benchmark_recovery_20260930/decision28-sidecar-failure-observability-v1/attempt-01-red/unit-result.v1.json",
+        "sha256": "10df03ca112bf95c67355a819af65d95fc44135d2eddbc50cae779dbe53eecb9",
+        "size_bytes": 44275
+      }
+    },
+    {
+      "classification": "genuine controlled socket/FD/CPython child fixtures; not Docker/model/hardware",
+      "current_physical_final_source_joins_verified": false,
+      "errors": 1,
+      "execution": {
+        "path": "artifacts/benchmark_recovery_20260930/decision28-sidecar-failure-observability-v1/attempt-02-green-new/execution.v1.json",
+        "sha256": "f1b405295999f045b8a96dfad166e88911d12d7c7cbf7bd7b9c41b47cdf6cb3d",
+        "size_bytes": 5386
+      },
+      "failures": 0,
+      "loaded_source_count": 39,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 66035,
+        "pid": 66035,
+        "ppid": 66034,
+        "startticks": 31025816,
+        "uid": 1000
+      },
+      "per_test_FD_counts_equal": true,
+      "returncode": 1,
+      "run": "decision28-sidecar-failure-observability-v1/attempt-02-green-new",
+      "skips": 0,
+      "source_before_after_bytes_and_epochs_equal": true,
+      "tests_run": 9,
+      "two_zero_error_original_group_absence_scans": true,
+      "unit": {
+        "path": "artifacts/benchmark_recovery_20260930/decision28-sidecar-failure-observability-v1/attempt-02-green-new/unit-result.v1.json",
+        "sha256": "e094fb9839e1c96b3f9b8fae04f0c8febc67ea1a3a9a9e6b3247967ce357d90f",
+        "size_bytes": 37813
+      }
+    },
+    {
+      "classification": "genuine controlled socket/FD/CPython child fixtures; not Docker/model/hardware",
+      "current_physical_final_source_joins_verified": true,
+      "errors": 0,
+      "execution": {
+        "path": "artifacts/benchmark_recovery_20260930/decision28-sidecar-failure-observability-v1/attempt-03-green-all/execution.v1.json",
+        "sha256": "75f8e96e4e9805934b9d268eb54cd85d65aff0e3fe44382ab15ca6db756d822d",
+        "size_bytes": 5387
+      },
+      "failures": 0,
+      "loaded_source_count": 39,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 66248,
+        "pid": 66248,
+        "ppid": 66247,
+        "startticks": 31033057,
+        "uid": 1000
+      },
+      "per_test_FD_counts_equal": true,
+      "returncode": 0,
+      "run": "decision28-sidecar-failure-observability-v1/attempt-03-green-all",
+      "skips": 0,
+      "source_before_after_bytes_and_epochs_equal": true,
+      "tests_run": 62,
+      "two_zero_error_original_group_absence_scans": true,
+      "unit": {
+        "path": "artifacts/benchmark_recovery_20260930/decision28-sidecar-failure-observability-v1/attempt-03-green-all/unit-result.v1.json",
+        "sha256": "c76b777004a54b2ecaba578d90f452c997892cd69ab2fdd5ae444e6d825bd0e4",
+        "size_bytes": 51808
+      }
+    },
+    {
+      "classification": "genuine controlled socket/FD/CPython child fixtures; not Docker/model/hardware",
+      "current_physical_final_source_joins_verified": false,
+      "errors": 5,
+      "execution": {
+        "path": "artifacts/benchmark_recovery_20260930/decision28-native-failure-raw-repair-v1/red-01/execution.v1.json",
+        "sha256": "ee23937f0475f4cf6357ecdb42b153906b8b87837e8f2b98505d16e6e6709198",
+        "size_bytes": 4225
+      },
+      "failures": 1,
+      "loaded_source_count": 52,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 65761,
+        "pid": 65761,
+        "ppid": 65754,
+        "startticks": 30990670,
+        "uid": 1000
+      },
+      "per_test_FD_counts_equal": true,
+      "returncode": 1,
+      "run": "decision28-native-failure-raw-repair-v1/red-01",
+      "skips": 0,
+      "source_before_after_bytes_and_epochs_equal": true,
+      "tests_run": 6,
+      "two_zero_error_original_group_absence_scans": true,
+      "unit": {
+        "path": "artifacts/benchmark_recovery_20260930/decision28-native-failure-raw-repair-v1/red-01/unit-result.v1.json",
+        "sha256": "15fc68723fc0efb7137fb7917287bcd05c58b96cdcdbe1f630cc320d0a6aaf59",
+        "size_bytes": 53294
+      }
+    },
+    {
+      "classification": "genuine controlled socket/FD/CPython child fixtures; not Docker/model/hardware",
+      "current_physical_final_source_joins_verified": false,
+      "errors": 0,
+      "execution": {
+        "path": "artifacts/benchmark_recovery_20260930/decision28-native-failure-raw-repair-v1/green-01/execution.v1.json",
+        "sha256": "0c23744bff492fd35013011e9a117183f4d7db9a7d7369a019ec8807a2bcfc97",
+        "size_bytes": 4226
+      },
+      "failures": 0,
+      "loaded_source_count": 52,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 65900,
+        "pid": 65900,
+        "ppid": 65899,
+        "startticks": 31009348,
+        "uid": 1000
+      },
+      "per_test_FD_counts_equal": true,
+      "returncode": 0,
+      "run": "decision28-native-failure-raw-repair-v1/green-01",
+      "skips": 0,
+      "source_before_after_bytes_and_epochs_equal": true,
+      "tests_run": 27,
+      "two_zero_error_original_group_absence_scans": true,
+      "unit": {
+        "path": "artifacts/benchmark_recovery_20260930/decision28-native-failure-raw-repair-v1/green-01/unit-result.v1.json",
+        "sha256": "5483d13d9aceaadfacab186f219bdb4259e3af7f91b8a92d264ecddb2403bd8a",
+        "size_bytes": 53235
+      }
+    },
+    {
+      "classification": "genuine controlled socket/FD/CPython child fixtures; not Docker/model/hardware",
+      "current_physical_final_source_joins_verified": true,
+      "errors": 0,
+      "execution": {
+        "path": "artifacts/benchmark_recovery_20260930/decision28-native-failure-raw-repair-v1/green-02/execution.v1.json",
+        "sha256": "9dae8853d9f64a5b354f616135eb7ca97497fb59b396ce941f9903dbd1097a9c",
+        "size_bytes": 4227
+      },
+      "failures": 0,
+      "loaded_source_count": 52,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 66129,
+        "pid": 66129,
+        "ppid": 66128,
+        "startticks": 31027125,
+        "uid": 1000
+      },
+      "per_test_FD_counts_equal": true,
+      "returncode": 0,
+      "run": "decision28-native-failure-raw-repair-v1/green-02",
+      "skips": 0,
+      "source_before_after_bytes_and_epochs_equal": true,
+      "tests_run": 27,
+      "two_zero_error_original_group_absence_scans": true,
+      "unit": {
+        "path": "artifacts/benchmark_recovery_20260930/decision28-native-failure-raw-repair-v1/green-02/unit-result.v1.json",
+        "sha256": "0acd9f3c1fb488f17ba359d8eb3f53ce3c96bddbbe2fa160dfe7a0bf1d9e92ee",
+        "size_bytes": 53235
+      }
+    }
+  ],
+  "owned_source_pins": [
+    {
+      "path": "scripts/checkpoint_gstreamer_analytics_sidecar.py",
+      "sha256": "4a853d79fe4296882d1f3e28774ccabb458e030c55d474b1bf34918b897f7fd6",
+      "size_bytes": 299261
+    },
+    {
+      "path": "tests/test_checkpoint_gstreamer_analytics_sidecar.py",
+      "sha256": "47f74ffd43d81dff567b7f04576446fab9f246fb3937d6c97a92b73bff90a78d",
+      "size_bytes": 138071
+    },
+    {
+      "path": "tests/test_publication_worker_termination_facts_v1.py",
+      "sha256": "149127245376786f398234edefbb197e03656cb11f98a6e7f6f86cb1ce98afd3",
+      "size_bytes": 6599
+    },
+    {
+      "path": "scripts/publication_operational_process_custody_v1.py",
+      "sha256": "dc92e20512cc2e3e7265e75bfd3c01de0146f29cfd4720e1a6f1b199ceb52d97",
+      "size_bytes": 51141
+    },
+    {
+      "path": "tests/test_publication_operational_process_custody_v1.py",
+      "sha256": "690212c96e47cb2a037e5b26ed24de9637e349515df3fb99b3ddc7d49c7b04c8",
+      "size_bytes": 40344
+    },
+    {
+      "path": ".gitattributes",
+      "sha256": "109eef60f5ed87e35b18a663c0e112cfc4040fe898dc09d38923d16de803c392",
+      "size_bytes": 17102
+    }
+  ],
+  "planning_authorization_reference": "https://github.com/lordcoudy/VAST/pull/2#issuecomment-5924440005",
+  "planning_commit": "958a036bc5a55821c712204577fdf4c51c2181c7",
+  "planning_context": [
+    {
+      "actual_physical": {
+        "path": "openspec/changes/fix-benchmark-preparations-spec/proposal.md",
+        "sha256": "5971d2a50337373c70f2414946976aabe51cb54223ca7c1f0acd29e099494c5e",
+        "size_bytes": 16049
+      },
+      "committed958": {
+        "path": "openspec/changes/fix-benchmark-preparations-spec/proposal.md",
+        "sha256": "5971d2a50337373c70f2414946976aabe51cb54223ca7c1f0acd29e099494c5e",
+        "size_bytes": 16049
+      },
+      "only_known_postcommit_23_1_completion_annotation": false,
+      "raw_equal": true
+    },
+    {
+      "actual_physical": {
+        "path": "openspec/changes/fix-benchmark-preparations-spec/design.md",
+        "sha256": "83d73b96d9f2b6dac10043633b7108afe2549d6304fa798f62fedd7095d57ebb",
+        "size_bytes": 40041
+      },
+      "committed958": {
+        "path": "openspec/changes/fix-benchmark-preparations-spec/design.md",
+        "sha256": "83d73b96d9f2b6dac10043633b7108afe2549d6304fa798f62fedd7095d57ebb",
+        "size_bytes": 40041
+      },
+      "only_known_postcommit_23_1_completion_annotation": false,
+      "raw_equal": true
+    },
+    {
+      "actual_physical": {
+        "path": "openspec/changes/fix-benchmark-preparations-spec/tasks.md",
+        "sha256": "3eb2dc17f30b24fa0be14ef77fdf8ca46d00c75d19a9160754f98b58e7211a26",
+        "size_bytes": 32821
+      },
+      "committed958": {
+        "path": "openspec/changes/fix-benchmark-preparations-spec/tasks.md",
+        "sha256": "b7cae9fa692df7da6f03c1d8d6d5a918fff72af2b8c073def6629dfee16b89af",
+        "size_bytes": 32570
+      },
+      "only_known_postcommit_23_1_completion_annotation": true,
+      "raw_equal": false
+    },
+    {
+      "actual_physical": {
+        "path": "openspec/changes/fix-benchmark-preparations-spec/specs/benchmark-launch-preparation/spec.md",
+        "sha256": "e42fa4a5c5931aaf82c0e2fac408c5a3930d80a4a110c6c4fcc1a889d455ec90",
+        "size_bytes": 72946
+      },
+      "committed958": {
+        "path": "openspec/changes/fix-benchmark-preparations-spec/specs/benchmark-launch-preparation/spec.md",
+        "sha256": "e42fa4a5c5931aaf82c0e2fac408c5a3930d80a4a110c6c4fcc1a889d455ec90",
+        "size_bytes": 72946
+      },
+      "only_known_postcommit_23_1_completion_annotation": false,
+      "raw_equal": true
+    }
+  ],
+  "production_baseline_commit": "9d47e99b623df44816f7b0a0b73b249a940f7723",
+  "reviewable": true,
+  "reviewed_at_utc": "2026-10-03T06:38:20.874523+00:00",
+  "reviewer": "/root/decision28_source_peer independent fresh-context reviewer, neither source author",
+  "reviewer_handles_released": true,
+  "schema_version": 2,
+  "shared_nonempty_validator_and_durability_raw_Git_equality": [
+    {
+      "path": "scripts/publication_physical_io_v1.py",
+      "sha256": "bc8a28239d86f1913a66757a497d9d5398dd1b17757c6f17725ae72bc01961ed",
+      "size_bytes": 132238
+    },
+    {
+      "path": "scripts/publication_operational_request_domain_v1.py",
+      "sha256": "5df1071402080957c312acddb85e0285c589c4a7d1948d51e9bf5e274727f0b9",
+      "size_bytes": 25997
+    }
+  ],
+  "source_AST_and_raw_Git_audit": [
+    {
+      "all_original_test_method_ASTs_unchanged": true,
+      "before": {
+        "path": "artifacts/benchmark_recovery_20260930/decision28-sidecar-failure-observability-v1/before/scripts/checkpoint_gstreamer_analytics_sidecar.py",
+        "sha256": "0a0ff1d67e536d42258d8d53f8ed511283db478aba30442411b607bb849970ef",
+        "size_bytes": 296398
+      },
+      "before_equals_raw_Git958": true,
+      "changed_original_functions": [
+        "DockerWorkerHandle._capture_tail",
+        "DockerWorkerHandle.termination_facts",
+        "GStreamerAnalyticsSidecar.__init__",
+        "GStreamerAnalyticsSidecar._capture_worker_termination",
+        "GStreamerAnalyticsSidecar._record_production_failure",
+        "GStreamerAnalyticsSidecar._serve_connection",
+        "GStreamerAnalyticsSidecar._shutdown",
+        "GStreamerAnalyticsProductionService.stop"
+      ],
+      "new_functions": [
+        "GStreamerAnalyticsSidecar._capture_first_failed_worker"
+      ],
+      "path": "scripts/checkpoint_gstreamer_analytics_sidecar.py",
+      "unchanged_original_test_methods": 0
+    },
+    {
+      "all_original_test_method_ASTs_unchanged": true,
+      "before": {
+        "path": "artifacts/benchmark_recovery_20260930/decision28-sidecar-failure-observability-v1/before/tests/test_checkpoint_gstreamer_analytics_sidecar.py",
+        "sha256": "08aecf8478eb3148ab5e4a051eb4ae81529f79a778e11c30383832a94e64e1b6",
+        "size_bytes": 126015
+      },
+      "before_equals_raw_Git958": true,
+      "changed_original_functions": [],
+      "new_functions": [
+        "GStreamerAnalyticsSidecarTests.test_response_send_epipe_captures_live_validated_worker_before_teardown",
+        "GStreamerAnalyticsSidecarTests.test_response_send_epipe_captures_live_validated_worker_before_teardown.execute",
+        "GStreamerAnalyticsSidecarTests.test_response_send_epipe_captures_live_validated_worker_before_teardown.observe",
+        "GStreamerAnalyticsSidecarTests.test_inference_failure_snapshot_retains_first_route_when_diagnostic_write_fails",
+        "GStreamerAnalyticsSidecarTests.test_inference_stage_and_observer_refusal_do_not_replace_or_repeat_primary_failure",
+        "GStreamerAnalyticsSidecarTests.test_first_failure_route_is_selected_under_persistence_lock_and_later_route_is_not_observed",
+        "GStreamerAnalyticsSidecarTests.test_first_failure_route_is_selected_under_persistence_lock_and_later_route_is_not_observed.persist",
+        "GStreamerAnalyticsSidecarTests.test_first_failure_route_is_selected_under_persistence_lock_and_later_route_is_not_observed.record",
+        "GStreamerAnalyticsSidecarTests.test_unattributed_first_failure_does_not_borrow_later_validated_route"
+      ],
+      "path": "tests/test_checkpoint_gstreamer_analytics_sidecar.py",
+      "unchanged_original_test_methods": 50
+    },
+    {
+      "all_original_test_method_ASTs_unchanged": true,
+      "before": {
+        "path": "artifacts/benchmark_recovery_20260930/decision28-sidecar-failure-observability-v1/before/tests/test_publication_worker_termination_facts_v1.py",
+        "sha256": "698c118aa705f66b3f58e97e29392ab4be7d371c15a489068991b5567242b55e",
+        "size_bytes": 3296
+      },
+      "before_equals_raw_Git958": true,
+      "changed_original_functions": [],
+      "new_functions": [
+        "TerminationTests.test_real_shared_capture_offset_is_preserved_for_the_original_writer",
+        "TerminationTests.test_bytesio_capture_does_not_change_fixture_cursor_and_pipe_is_unavailable",
+        "TerminationTests.test_terminal_event_argv_is_original_cid_only_and_unchanged_bounded",
+        "TerminationTests.test_live_frontend_is_snapshot_and_healthcheck_event_is_not_terminal",
+        "TerminationTests.test_live_frontend_is_snapshot_and_healthcheck_event_is_not_terminal.runner"
+      ],
+      "path": "tests/test_publication_worker_termination_facts_v1.py",
+      "unchanged_original_test_methods": 2
+    },
+    {
+      "all_original_test_method_ASTs_unchanged": true,
+      "before": {
+        "path": "artifacts/benchmark_recovery_20260930/decision28-native-failure-raw-repair-v1/before/scripts/publication_operational_process_custody_v1.py",
+        "sha256": "5ea8477e527bf57438ce81cea9b8b19fb628c555cb808711438e2036bcaee923",
+        "size_bytes": 47271
+      },
+      "before_equals_raw_Git958": true,
+      "changed_original_functions": [
+        "_Capture.__init__",
+        "_Capture.verify",
+        "_Capture.close",
+        "engine_process_terminal_v1"
+      ],
+      "new_functions": [
+        "_write_failure_channel"
+      ],
+      "path": "scripts/publication_operational_process_custody_v1.py",
+      "unchanged_original_test_methods": 0
+    },
+    {
+      "all_original_test_method_ASTs_unchanged": true,
+      "before": {
+        "path": "artifacts/benchmark_recovery_20260930/decision28-native-failure-raw-repair-v1/before/tests/test_publication_operational_process_custody_v1.py",
+        "sha256": "8ba4f9b93e00b368712cc3f84855b648ff98d54ff887de25f99d4208e11a97d1",
+        "size_bytes": 30982
+      },
+      "before_equals_raw_Git958": true,
+      "changed_original_functions": [],
+      "new_functions": [
+        "ProcessCustodyTests._assert_failed_measurement_raw",
+        "ProcessCustodyTests.test_failed_measurement_retains_actual_binary_channels_and_unchanged_terminal",
+        "ProcessCustodyTests.test_success_and_nonmeasurement_failure_write_no_measurement_adjunct",
+        "ProcessCustodyTests.test_failed_measurement_empty_channels_and_actual_timeout_are_retained",
+        "ProcessCustodyTests.test_failed_measurement_capture_flags_keep_original_prefix_and_bounds",
+        "ProcessCustodyTests.test_failed_measurement_exclusive_collision_preserves_primary_and_written_channel",
+        "ProcessCustodyTests.test_failed_measurement_adjunct_persistence_error_keeps_original_wrapper_error",
+        "ProcessCustodyTests.test_failed_measurement_adjunct_persistence_error_keeps_original_wrapper_error.fault"
+      ],
+      "path": "tests/test_publication_operational_process_custody_v1.py",
+      "unchanged_original_test_methods": 21
+    }
+  ],
+  "tests_build_engine_model_native_executed_by_reviewer": false,
+  "unchanged_native_module_constants_and_schema_fields_AST": true
+}

@@ -1,0 +1,70 @@
+{
+  "CI_evidence_acceptance": false,
+  "FD_count_before_after": [
+    6,
+    6
+  ],
+  "artifacts": [
+    {
+      "path": "root-grant.v1.json",
+      "sha256": "52247cb044da5f6b2d48fbf8b278e16a33e01625b291fb3a42f1629c74366780",
+      "size_bytes": 2292
+    },
+    {
+      "path": "inspect_hosted34_v3.py",
+      "sha256": "629ad711d0b1fe4de83eb5626d54cbdeddb5fe1e2d4a5725b183ca1889e5c61a",
+      "size_bytes": 23380
+    },
+    {
+      "path": "attempt01/launch.v1.json",
+      "sha256": "0deb2b1b930c475ced23ee0a8efb40b4fc1126477ce1d47a28940841d3629975",
+      "size_bytes": 727
+    },
+    {
+      "path": "attempt01/review.v1.json",
+      "sha256": "25210033883eb9d72cf097953c562ba770db030efb655aba0901a96aac3a32eb",
+      "size_bytes": 1353
+    },
+    {
+      "path": "attempt01-original-tool/stdout.raw",
+      "sha256": "8bb4b5f555be44775be3b756a581eabb3d3ae402c44ffcddf45abfd9fa684e2e",
+      "size_bytes": 378
+    },
+    {
+      "path": "attempt01-original-tool/stderr.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "attempt01-original-tool/postterminal-process-closure.v1.json",
+      "sha256": "f319a6471dd52ca7397c82dfcfd4c06345cb3cc0bc2786501340b661b293a9b6",
+      "size_bytes": 5079
+    },
+    {
+      "path": "attempt01-original-tool/control-source-diagnosis.v1.json",
+      "sha256": "0bd4115b19e59cc88dd3e313564ffd56ad821b6c5282b41af04c5812bd3c722f",
+      "size_bytes": 26978
+    },
+    {
+      "path": "attempt01-original-tool/proper-root-source-diagnosis.v1.json",
+      "sha256": "8227ad53b76cef1a595005ecc6ad8474f8bce0f2b7829e3ece0a3bb6387a39f4",
+      "size_bytes": 2590
+    }
+  ],
+  "capture_limitation": "setsid without --wait launcher returned0; that is not observed original child CLI0. Source failed report and stdout show failed_no_CI_evidence_acceptance. No inferred original child returncode.",
+  "genuine_original_reader_returncode": null,
+  "hardware_acceptance": false,
+  "late_companion_absent": true,
+  "observed_tool_exit_code": 0,
+  "original_reader_PID": 65367,
+  "original_reader_all_input_FDs_released": true,
+  "original_reader_elapsed_s": 0.27204813703428954,
+  "original_timeout_PID_PGID": 65366,
+  "originals_overwritten": false,
+  "raw_child_stdout_stderr_separate": true,
+  "schema_version": 1,
+  "status": "closed_first_failed_original_reader_tool_companion",
+  "tool_chunk_id": "360ca4",
+  "tool_elapsed_s": 0.9709132,
+  "two_later_scans_original_PIDs_groups_absent": true
+}

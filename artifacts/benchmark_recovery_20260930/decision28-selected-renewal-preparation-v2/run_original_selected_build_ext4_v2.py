@@ -1,0 +1,392 @@
+"""Once-only original stock selected build/capture; no model/benchmark grant."""
+import hashlib, json, os, selectors, signal, stat, subprocess, sys, time
+from pathlib import Path
+
+ROOT = Path('/home/s-a-balashov/work/vast-component-release-20260930-d27')
+assert len(sys.argv) == 2, 'one exact reviewed source commit required'
+COMMIT = sys.argv[1]
+assert len(COMMIT) == 40 and all(c in '0123456789abcdef' for c in COMMIT)
+TAG = 'vast/gstreamer-custom-publication-runtime-v3:decision28-' + COMMIT[:8]
+BASE = 'sha256:b102aafc0f88f8cfad92349e6a55d0f9755a3f5bff109a70ebdb8936d4a8e84c'
+DEST = ROOT / ('artifacts/benchmark_recovery_20260930/decision28-gstreamer-build-' + COMMIT[:8] + '-v1')
+NATIVE = ROOT / 'artifacts/fix_benchmark_preparations_20260928g/native-a/native_probe.freeze.json'
+START = time.monotonic()
+DEADLINE = START + 1200
+pins = []
+commands = []
+failure = None
+image_id = None
+error_records = []
+error_record_overflow = 0
+fd_before = None
+fd_after = None
+socket = None
+socket_epoch = None
+
+def record_error(phase, exc):
+    global failure, error_record_overflow
+    text = f'{type(exc).__name__}: {exc}'
+    if failure is None:
+        failure = text
+    if len(error_records) < 64:
+        error_records.append({'phase':phase,'error':text[:4096],
+            'error_sha256':hashlib.sha256(text.encode()).hexdigest(),'at_ns':time.time_ns()})
+    else:
+        error_record_overflow += 1
+    return text
+
+def fd_count():
+    return len(os.listdir('/proc/self/fd'))
+
+def scan_original_group(original, cleanup_deadline):
+    observed = {'original_pid':original['pid'],'original_pgid':original['pgid'],
+        'original_startticks':original.get('startticks'),'original_pid_identity':'absent',
+        'members':[],'errors':[],'error_overflow':0,'vanished_during_scan':0,
+        'started_at_ns':time.time_ns()}
+    def scan_error(phase, exc):
+        if len(observed['errors']) < 64:
+            observed['errors'].append({'phase':phase,'error':f'{type(exc).__name__}: {exc}'[:4096]})
+        else:
+            observed['error_overflow'] += 1
+    try:
+        entries = os.listdir('/proc')
+    except BaseException as exc:
+        scan_error('enumeration',exc)
+        entries = []
+    for entry in entries:
+        if not entry.isdigit():
+            continue
+        if time.monotonic() >= min(DEADLINE,cleanup_deadline):
+            scan_error('deadline',TimeoutError('original bounded cleanup deadline during group scan'))
+            break
+        try:
+            parts = Path('/proc',entry,'stat').read_text().rsplit(')',1)[1].split()
+            pid = int(entry)
+            pgid = int(parts[2])
+            startticks = int(parts[19])
+            if pid == original['pid']:
+                observed['original_pid_identity'] = (
+                    'original_present' if startticks==original.get('startticks') else 'different_startticks')
+            if pgid == original['pgid']:
+                observed['members'].append({'pid':pid,'startticks':startticks,'state':parts[0]})
+        except (FileNotFoundError,ProcessLookupError):
+            observed['vanished_during_scan'] += 1
+        except BaseException as exc:
+            scan_error('pid:'+entry,exc)
+    observed['finished_at_ns'] = time.time_ns()
+    return observed
+
+def epoch(s):
+    return [s.st_dev,s.st_ino,s.st_mode,s.st_nlink,s.st_size,s.st_mtime_ns,s.st_ctime_ns]
+
+def physical(path, late_metadata=False):
+    p = Path(path); before = p.lstat(); digest = hashlib.sha256()
+    assert stat.S_ISREG(before.st_mode) and before.st_nlink == 1 and not p.is_symlink()
+    if late_metadata:
+        assert before.st_size <= 65536, 'bounded final failure companion'
+    stream=None;primary=None
+    try:
+        stream=p.open('rb')
+        while block := stream.read(1048576):
+            if not late_metadata:
+                assert time.monotonic() < DEADLINE, 'whole original build/capture deadline'
+            digest.update(block)
+    except BaseException as exc:
+        primary=exc;record_error('physical:'+str(p),exc)
+    finally:
+        if stream is not None:
+            try:stream.close()
+            except BaseException as exc:
+                record_error('physical_close:'+str(p),exc)
+                if primary is None:primary=exc
+    if primary is not None:
+        raise primary
+    assert epoch(before) == epoch(p.lstat()), 'physical input changed while hashing'
+    return {'path':str(p),'size_bytes':before.st_size,'sha256':digest.hexdigest()}
+
+def pin(path):
+    p=Path(path).resolve(strict=True)
+    row={'descriptor':None,'epoch':None,'fd':None}
+    pins.append(row)
+    row['fd']=os.open(p,os.O_RDONLY|os.O_NOFOLLOW)
+    row['descriptor']=physical(p)
+    row['epoch']=epoch(os.fstat(row['fd']))
+    assert row['epoch']==epoch(p.lstat())
+    return row
+
+def check_pins():
+    for row in pins:
+        p=Path(row['descriptor']['path'])
+        assert epoch(os.fstat(row['fd']))==row['epoch']==epoch(p.lstat())
+        assert physical(p)==row['descriptor'], 'original held bytes changed'
+    assert epoch(socket.lstat())==socket_epoch, 'engine socket changed'
+
+def owner(pid):
+    fields=Path(f'/proc/{pid}/stat').read_text().rsplit(')',1)[1].split()
+    rows=dict(line.split(':',1) for line in Path(f'/proc/{pid}/status').read_text().splitlines() if ':' in line)
+    result={'pid':pid,'ppid':int(fields[1]),'pgid':int(fields[2]),'startticks':int(fields[19]),
+        'uid':int(rows['Uid'].split()[0]),'gid':int(rows['Gid'].split()[0]),
+        'boot_id':Path('/proc/sys/kernel/random/boot_id').read_text().strip()}
+    try:result['executable_realpath']=os.readlink(f'/proc/{pid}/exe')
+    except OSError:result['executable_observation']='unavailable at original observation'
+    return result
+
+def write(name,value,late_metadata=False):
+    raw=(json.dumps(value,sort_keys=True,indent=2)+'\n').encode()
+    assert len(raw) <= (65536 if late_metadata else 1048576), 'bounded metadata receipt'
+    stream=None; primary=None
+    try:
+        stream=(DEST/name).open('xb')
+        assert stream.write(raw)==len(raw), 'short metadata receipt write'
+        stream.flush();os.fsync(stream.fileno())
+    except BaseException as exc:
+        primary=exc;record_error('write:'+name,exc)
+    finally:
+        if stream is not None:
+            try:
+                stream.close()
+            except BaseException as exc:
+                record_error('close:'+name,exc)
+                if primary is None:
+                    primary=exc
+    if primary is not None:
+        raise primary
+    return physical(DEST/name,late_metadata=late_metadata)
+
+def command(name,argv,timeout,limit=1048576,pass_fds=()):
+    check_pins(); began=time.monotonic(); wall=time.time_ns(); timed_out=False; exceeded=False
+    files={}; selector=None; child=None; own=None; rc=None; primary=None
+    cleanup_errors=[]; scans=[]; counts={'stdout':0,'stderr':0}
+    def cleanup_error(phase,exc):
+        text=record_error(name+':'+phase,exc)
+        if len(cleanup_errors)<64:
+            cleanup_errors.append({'phase':phase,'error':text[:4096]})
+    try:
+        for key in ('stdout','stderr'):
+            files[key]=(DEST/(name+'.'+key+'.raw')).open('xb')
+        selector=selectors.DefaultSelector()
+        child=subprocess.Popen(argv,cwd=ROOT,env=ENV,stdin=subprocess.DEVNULL,
+            stdout=subprocess.PIPE,stderr=subprocess.PIPE,start_new_session=True,pass_fds=pass_fds)
+        own=owner(child.pid)
+        write(name+'.launch.v1.json',{'argv':argv,'owner':own,'started_at_ns':wall,'commit':COMMIT})
+        print(json.dumps({'phase':name+'_started','owner':own,'output_dir':str(DEST)}),flush=True)
+        for key,pipe in (('stdout',child.stdout),('stderr',child.stderr)):
+            os.set_blocking(pipe.fileno(),False);selector.register(pipe,selectors.EVENT_READ,key)
+        next_update=began+30
+        while selector.get_map():
+            now=time.monotonic()
+            if now>=min(DEADLINE,began+timeout):timed_out=True;raise TimeoutError('original bounded command deadline')
+            for key,_ in selector.select(.1):
+                raw=os.read(key.fd,65536)
+                if not raw:selector.unregister(key.fileobj);continue
+                available=limit-counts[key.data]
+                if available>0:files[key.data].write(raw[:available]);counts[key.data]+=min(len(raw),available)
+                if len(raw)>available:exceeded=True;raise RuntimeError('original channel cap; retained prefix')
+            if now>=next_update:
+                print(json.dumps({'phase':name+'_running','pid':child.pid,'elapsed_s':round(now-began,1),'channels':counts}),flush=True)
+                next_update=now+30
+        rc=child.wait(timeout=max(0,min(DEADLINE,began+timeout)-time.monotonic()))
+        if rc!=0:
+            raise RuntimeError(name+' original exited rc='+str(rc)+'; no retry')
+    except BaseException as exc:
+        primary=record_error(name+':body',exc)
+    finally:
+        cleanup_deadline=min(DEADLINE,time.monotonic()+15)
+        if child is not None:
+            running=True
+            try:running=child.poll() is None
+            except BaseException as exc:cleanup_error('owned_process_initial_poll',exc)
+            if running:
+                try:os.killpg(child.pid,signal.SIGTERM)
+                except BaseException as exc:cleanup_error('owned_process_SIGTERM',exc)
+                reaped=False
+                try:
+                    child.wait(timeout=max(0,min(1,cleanup_deadline-time.monotonic())));reaped=True
+                except subprocess.TimeoutExpired:
+                    pass
+                except BaseException as exc:cleanup_error('owned_process_TERM_wait',exc)
+                if not reaped:
+                    try:os.killpg(child.pid,signal.SIGKILL)
+                    except BaseException as exc:cleanup_error('owned_process_SIGKILL',exc)
+                    try:child.wait(timeout=max(0,cleanup_deadline-time.monotonic()))
+                    except BaseException as exc:cleanup_error('owned_process_KILL_wait',exc)
+        if selector is not None:
+            try:selector.close()
+            except BaseException as exc:cleanup_error('selector_close',exc)
+        if child is not None:
+            for key,pipe in (('stdout',child.stdout),('stderr',child.stderr)):
+                if pipe is not None:
+                    try:pipe.close()
+                    except BaseException as exc:cleanup_error(key+'_pipe_close',exc)
+            try:rc=child.poll()
+            except BaseException as exc:cleanup_error('child_poll',exc)
+        for key,stream in files.items():
+            try:stream.flush()
+            except BaseException as exc:cleanup_error(key+'_flush',exc)
+            try:os.fsync(stream.fileno())
+            except BaseException as exc:cleanup_error(key+'_fsync',exc)
+            try:stream.close()
+            except BaseException as exc:cleanup_error(key+'_close',exc)
+        if child is not None:
+            original=own or {'pid':child.pid,'pgid':child.pid,'startticks':None}
+            if own is None:
+                cleanup_error('owner_identity',RuntimeError('original process owner identity unavailable'))
+            for scan_index in range(2):
+                try:
+                    scan=scan_original_group(original,cleanup_deadline);scans.append(scan)
+                    if scan['errors'] or scan['error_overflow']:
+                        cleanup_error('group_scan_'+str(scan_index),RuntimeError('original group absence scan is uncertain'))
+                    if scan['original_pid_identity']=='original_present' or scan['members']:
+                        cleanup_error('group_scan_'+str(scan_index),RuntimeError('original PID or process group remains'))
+                except BaseException as exc:
+                    cleanup_error('group_scan_'+str(scan_index),exc)
+        channels={}
+        for key in ('stdout','stderr'):
+            try:channels[key]=physical(DEST/(name+'.'+key+'.raw'))
+            except BaseException as exc:
+                channels[key]=None;cleanup_error(key+'_physical',exc)
+        if time.monotonic()>=cleanup_deadline:
+            cleanup_error('cleanup_deadline',TimeoutError('original bounded15s cleanup deadline'))
+        receipt={'argv':argv,'owner':own,'returncode':rc,'timed_out':timed_out,'capture_exceeded':exceeded,
+            'failure':primary,'cleanup_errors':cleanup_errors,'started_at_ns':wall,'finished_at_ns':time.time_ns(),
+            'elapsed_s':time.monotonic()-began,'process_group_scans':scans,
+            'process_group_members_at_terminal':scans[-1]['members'] if scans else None,
+            'stdout':channels['stdout'],'stderr':channels['stderr'],
+            'engine_backend_quiescence':'not inferred from original CLI status'}
+        try:commands.append(write(name+'.terminal.v1.json',receipt))
+        except BaseException as exc:cleanup_error('terminal_persist',exc)
+    check_pins()
+    if primary or cleanup_errors or rc!=0 or len(scans)!=2:
+        raise RuntimeError(name+' original failed; no retry; first failure='+str(failure))
+    return (DEST/(name+'.stdout.raw')).read_bytes()
+
+assert subprocess.check_output(['/usr/bin/git','-c','core.longpaths=true','--git-dir=' + str(ROOT/'.git'),
+    '--work-tree='+str(ROOT),'rev-parse','HEAD'],timeout=10,text=True).strip()==COMMIT
+DEST.mkdir(mode=0o700)
+try:
+    fd_before=fd_count()
+    inputs={NATIVE,Path(__file__),ROOT/'scripts/build_gstreamer_custom_publication_runtime_v3.sh',
+        ROOT/'scripts/publication_qualification_image_refreeze_v1.py',ROOT/'scripts/publication_image_build_v1.py',
+        ROOT/'configs/publication_image_build_v1.json',ROOT/'configs/publication_qualification_image_refreeze_v1.json'}
+    for name in ('runtime-source-allowlist.txt','runtime-dependency-allowlist.txt','runtime-build-context-allowlist.txt'):
+        manifest=ROOT/'deploy/gstreamer_custom/publication'/name;inputs.add(manifest)
+        inputs.update(ROOT/line for line in manifest.read_text().splitlines() if line and not line.startswith('#'))
+    for p in sorted(inputs,key=str):pin(p)
+    engine=pin('/usr/bin/docker');shell=pin('/usr/bin/bash');python=pin(sys.executable)
+    socket=Path('/run/docker.sock').resolve(strict=True);socket_epoch=epoch(socket.lstat())
+    assert stat.S_ISSOCK(socket.lstat().st_mode)
+    ENV={'PATH':'/usr/bin:/bin','LANG':'C','LC_ALL':'C','DOCKER_HOST':'unix://'+str(socket),
+        'VAST_OPENVINO_NATIVE_PROBE_IMAGE':'vast/openvino-native-probe:dlstreamer-2026.1',
+        'VAST_OPENVINO_NATIVE_PROBE_IMAGE_ID':BASE,'VAST_GSTREAMER_RUNTIME_IMAGE':TAG}
+    write('prelaunch.v1.json',{'commit':COMMIT,'controller':owner(os.getpid()),'environment':ENV,
+        'engine':engine['descriptor'],'shell':shell['descriptor'],'python':python['descriptor'],
+        'socket':{'path':str(socket),'epoch':socket_epoch},'inputs':[{'descriptor':p['descriptor'],'epoch':p['epoch']} for p in pins],
+        'deadline_monotonic_s':DEADLINE,'accepted':False,'publication_ready':False})
+    def docker(name,args):return command(name,[f'/proc/self/fd/{engine["fd"]}',*args],60,pass_fds=(engine['fd'],))
+    daemon=docker('daemon-before',['info','--format','{{json .ID}}'])
+    base=json.loads(docker('base-before',['image','inspect','vast/openvino-native-probe:dlstreamer-2026.1']))
+    assert len(base)==1 and base[0]['Id']==BASE
+    for i,ref in enumerate((TAG,TAG+'-determinism-a',TAG+'-determinism-b')):
+        assert docker('tag-reservation-'+str(i),['image','ls','--filter','reference='+ref,'--format','{{json .}}'])==b'', 'candidate tag occupied'
+    build=command('stock-two-build',['/usr/bin/bash',str(ROOT/'scripts/build_gstreamer_custom_publication_runtime_v3.sh')],900,16*1048576)
+    fields=dict(line.split('=',1) for line in build.decode().splitlines() if '=' in line)
+    image_id=fields['image_id'];assert fields['image_ref']==TAG and fields['base_image_id']==BASE
+    assert image_id.startswith('sha256:') and len(image_id)==71
+    current=json.loads(docker('image-after',['image','inspect',TAG,TAG+'-determinism-a',TAG+'-determinism-b']))
+    assert len(current)==3 and all(row['Id']==image_id for row in current)
+    capture=[sys.executable,'-B',str(ROOT/'scripts/publication_qualification_image_refreeze_v1.py'),'capture',
+        '--project-root',str(ROOT),'--registry',str(ROOT/'configs/publication_qualification_image_refreeze_v1.json'),
+        '--system','gstreamer_custom','--native-receipt',str(NATIVE),'--candidate-final-reference',TAG,
+        '--receipt-output',str(DEST/'gstreamer_custom.runtime.freeze.json'),'--docker','/usr/bin/docker']
+    command('stock-selected-capture',capture,180,1048576)
+    receipt=json.loads((DEST/'gstreamer_custom.runtime.freeze.json').read_bytes())
+    assert receipt['candidate_binding_eligible'] is True and receipt['blockers']==[]
+    assert receipt['physical_identity']['image_id']==image_id
+    assert docker('candidate-container-terminal',['container','ls','--all','--filter','ancestor='+image_id,'--format','{{json .}}'])==b''
+    assert docker('daemon-after',['info','--format','{{json .ID}}'])==daemon
+    check_pins()
+except BaseException as exc:
+    record_error('operation_body',exc)
+finally:
+    source_checks=[]; pin_closes=[]
+    for index,p in enumerate(pins):
+        if p['descriptor'] is None or p['epoch'] is None or p['fd'] is None:
+            source_checks.append({'pin_index':index,'verified':False,'reason':'acquisition incomplete'})
+            continue
+        try:
+            path=Path(p['descriptor']['path'])
+            assert epoch(os.fstat(p['fd']))==p['epoch']==epoch(path.lstat())
+            assert physical(path)==p['descriptor'], 'original held bytes changed at finalization'
+            source_checks.append({'pin_index':index,'verified':True})
+        except BaseException as exc:
+            source_checks.append({'pin_index':index,'verified':False})
+            record_error('source_final_check:'+str(index),exc)
+    if socket is not None and socket_epoch is not None:
+        try:assert epoch(socket.lstat())==socket_epoch, 'engine socket changed at finalization'
+        except BaseException as exc:record_error('socket_final_check',exc)
+    for index,p in enumerate(pins):
+        if p['fd'] is None:
+            continue
+        try:
+            os.close(p['fd']);p['fd']=None
+            pin_closes.append({'pin_index':index,'closed':True})
+        except BaseException as exc:
+            pin_closes.append({'pin_index':index,'closed':False})
+            record_error('pin_close:'+str(index),exc)
+    try:
+        fd_after=fd_count()
+        assert fd_before is not None and fd_after==fd_before, 'owned source/command FD baseline was not restored'
+    except BaseException as exc:
+        record_error('final_fd_count',exc)
+    before_receipt=time.monotonic()
+    late=before_receipt>=DEADLINE
+    if late:
+        record_error('whole_deadline_before_terminal',TimeoutError('whole original build/capture deadline'))
+    terminal=None
+    terminal_failure=failure
+    terminal_error_count=len(error_records)
+    terminal_error_overflow=error_record_overflow
+    try:
+        terminal=write('operation.terminal.v1.json',{'commit':COMMIT,'image_id':image_id,'tag':TAG,'failure':failure,
+            'commands':commands,'elapsed_s':time.monotonic()-START,'accepted':False,'publication_ready':False,
+            'source_checks':source_checks,'pin_closes':pin_closes,
+            'fd_before':fd_before,'fd_after':fd_after,'fd_delta':None if fd_before is None or fd_after is None else fd_after-fd_before,
+            'error_records':error_records,'error_record_overflow':error_record_overflow,
+            'deadline_reached_before_terminal':late,'all_pin_close_attempts_finished':True,
+            'classification':'original selected offline image build/capture only; no model/hardware/scientific acceptance'})
+        print(json.dumps({'phase':'selected_build_capture_terminal','failure':failure,'receipt':terminal}),flush=True)
+    except BaseException as exc:
+        record_error('operation_terminal_persist_or_report',exc)
+    try:
+        fd_after=fd_count()
+        assert fd_before is not None and fd_after==fd_before, 'final metadata FD baseline was not restored'
+    except BaseException as exc:
+        record_error('post_terminal_fd_count',exc)
+    if time.monotonic()>=DEADLINE:
+        late=True
+        record_error('whole_deadline_after_terminal',TimeoutError('whole original build/capture deadline at actual finalization'))
+    if terminal is None or failure!=terminal_failure or len(error_records)!=terminal_error_count or error_record_overflow!=terminal_error_overflow or late:
+        try:
+            write('operation.failure.v2.json',{'commit':COMMIT,'tag':TAG,'failure':failure,'terminal':terminal,
+                'terminal_path':str(DEST/'operation.terminal.v1.json'),'late':late,
+                'fd_before':fd_before,'fd_after':fd_after,'all_pin_close_attempts_finished':True,
+                'recent_error_records':error_records[-8:],'error_record_overflow':error_record_overflow,
+                'accepted':False,'publication_ready':False,'record_kind':'bounded exclusive finalization failure companion'},late_metadata=True)
+        except BaseException as exc:
+            record_error('failure_companion_persist',exc)
+            try:
+                print(json.dumps({'phase':'selected_build_capture_failed_finalization','failure':failure[:4096],
+                    'companion_error':f'{type(exc).__name__}: {exc}'[:4096],'accepted':False}),file=sys.stderr,flush=True)
+            except BaseException as report_exc:
+                record_error('failure_companion_report',report_exc)
+    if time.monotonic()>=DEADLINE and not late:
+        late=True
+        record_error('whole_deadline_after_companion',TimeoutError('whole original build/capture deadline after final metadata'))
+        try:
+            write('operation.late.v2.json',{'commit':COMMIT,'tag':TAG,'failure':failure,'late':True,
+                'accepted':False,'publication_ready':False,'record_kind':'bounded exclusive late finalization companion'},late_metadata=True)
+        except BaseException as exc:
+            record_error('late_companion_persist',exc)
+            try:print(json.dumps({'phase':'selected_build_capture_late_unpersisted','failure':failure[:4096],'accepted':False}),file=sys.stderr,flush=True)
+            except BaseException as report_exc:record_error('late_companion_report',report_exc)
+sys.exit(0 if failure is None else 78)
