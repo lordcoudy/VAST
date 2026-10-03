@@ -1,0 +1,224 @@
+{
+  "artifact_kind": "decision29_exact_planning_independent_review_v1",
+  "baseline_planning_pins_from_existing_original_B_checkout_without_Git": [
+    {
+      "path": "//wsl.localhost/Ubuntu/home/s-a-balashov/work/vast-component-release-20260930-d27/openspec/changes/fix-benchmark-preparations-spec/proposal.md",
+      "sha256": "5971d2a50337373c70f2414946976aabe51cb54223ca7c1f0acd29e099494c5e",
+      "size_bytes": 16049
+    },
+    {
+      "path": "//wsl.localhost/Ubuntu/home/s-a-balashov/work/vast-component-release-20260930-d27/openspec/changes/fix-benchmark-preparations-spec/design.md",
+      "sha256": "83d73b96d9f2b6dac10043633b7108afe2549d6304fa798f62fedd7095d57ebb",
+      "size_bytes": 40041
+    },
+    {
+      "path": "//wsl.localhost/Ubuntu/home/s-a-balashov/work/vast-component-release-20260930-d27/openspec/changes/fix-benchmark-preparations-spec/tasks.md",
+      "sha256": "a0c53df0fecda7a8d4b07d4a00fcd7914ad7dbfacc12bd697ae77d1917730d30",
+      "size_bytes": 33634
+    },
+    {
+      "path": "//wsl.localhost/Ubuntu/home/s-a-balashov/work/vast-component-release-20260930-d27/openspec/changes/fix-benchmark-preparations-spec/specs/benchmark-launch-preparation/spec.md",
+      "sha256": "e42fa4a5c5931aaf82c0e2fac408c5a3930d80a4a110c6c4fcc1a889d455ec90",
+      "size_bytes": 72946
+    }
+  ],
+  "blocking_findings": [],
+  "change": "fix-benchmark-preparations-spec",
+  "considered_original_evidence": [
+    {
+      "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-ci-B-original-retention-v1/diagnosis.v1.json",
+      "sha256": "51b9a6ed2b924848f590fc19564b7a7620ee5e911c91fab3ae1c898be201d639",
+      "size_bytes": 61088
+    },
+    {
+      "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-ci-A-original-retention-v1/retention-review.v1.json",
+      "sha256": "9fa50fdc32d4e383064c2413108eaab7c745edcf230a892673543962cb745a29",
+      "size_bytes": 29535
+    },
+    {
+      "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-clock-research-v1/critique.v1.json",
+      "sha256": "ab9465ceb25558d608d66fa56ffa8f70034538657bb46f80edd086ccbd1b740e",
+      "size_bytes": 8153
+    }
+  ],
+  "disposition": "approved_exact_planning_artifacts_before_checkpoint",
+  "elapsed_s": 0.05176040006335825,
+  "findings": [
+    "Proposal, design, same existing CPU-CI requirement scenarios and four pending tasks coherently limit the amendment to the demonstrated CI audit-event clock mismatch. Existing selected runtime/scientific/campaign requirements remain intact.",
+    "The live consumer must require the new version from trusted known producer/capture source context. Record absence cannot choose legacy: removing both declaration and samples fails before profile operations. Historical/pure legacy must be explicitly selected and still reject original B under the original strict2ms predicate.",
+    "The producer samples actual clockid5 CLOCK_REALTIME_COARSE before original unshare starts and after failed setgroups-open terminal facts are captured. Typed non-bool ns, phase/PID/boot and monotonic start/end order join the unchanged operations inside genuine capture/job bounds; original errors and cancellation are preserved without another syscall/thread/deadline.",
+    "The audit MESSAGE remains immutable. Its millisecond bin must lie inclusively between the millisecond-floored observed coarse endpoints; equal endpoints are valid. Partial/unavailable/unknown/malformed/foreign/reversed/outside evidence cannot admit a profile. Existing journal reception clocks and all owner/executable/label/operation/capability/policy predicates remain required.",
+    "Upstream Linuxv6.17 audit fallback and syscall context both use coarse realtime, and serialization floors milliseconds. systemd reception fields are distinct. The documents correctly qualify this as clock-design evidence, not attestation of the patched azure kernel/systemd binary or a reconstruction of absent B samples.",
+    "No guessed tolerance, resolution-derived allowance or dropped provenance is introduced. All existing20+10/row/channel/report/job caps, native builds/successes, full portable discovery/source/report/skip rules remain mandatory. Fixtures are explicit synthetic contract examples without real profile authority.",
+    "The actual CPU08 witness95 excludes the three currently considered CI modules. This is a present dependency fact; the required final implementation source-impact proof must cover every actual changed source/test/packaging path before retaining runtime authority.",
+    "Task24.1 remains pending until actual commit/push/PR exact-commit recording. Tasks24.2-.4 remain pending. This peer artifact review is not an actual checkpoint, implementation, focused-test success, green latest CI, scientific reduction, release conformance, archive or merge approval."
+  ],
+  "future_planning_commit": null,
+  "no_code_test_CI_engine_Git_mutation": true,
+  "original_facts": {
+    "A_B_kernel_release": "6.17.0-1022-azure",
+    "A_commit": "2a6a42c924ae3447ceda4bd9d1b6db33765c6466",
+    "A_discovered": 2987,
+    "A_documented_skips": 88,
+    "A_physical_integration_deferred": 9,
+    "A_portable": 2978,
+    "A_provider_conclusion": "success",
+    "A_run": 37105302376,
+    "A_successes": 2890,
+    "B_CPU_job_conclusion": "failure",
+    "B_commit": "a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+    "B_host_job_conclusion": "success",
+    "B_journal_reception_wall_and_monotonic_predicates_pass": true,
+    "B_profile_and_full_suite_not_dispatched": true,
+    "B_provider_conclusion": "failure",
+    "B_rejecting_predicate": "audit MESSAGE timestamp below unshare high-resolution wall start minus2ms by187040ns",
+    "B_run": 37107524802,
+    "original_B_outcome_never_reclassified": true
+  },
+  "owned_source_pins": [
+    {
+      "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/openspec/changes/fix-benchmark-preparations-spec/proposal.md",
+      "sha256": "969aa4ac3bae9b742b268333070b1266c22abc5c7bce9b204a63b6f750c0f6d6",
+      "size_bytes": 17599
+    },
+    {
+      "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/openspec/changes/fix-benchmark-preparations-spec/design.md",
+      "sha256": "112ec56dca4445e3e753899ff116203604094b37ffafcac4f7e8d28ea350afce",
+      "size_bytes": 44659
+    },
+    {
+      "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/openspec/changes/fix-benchmark-preparations-spec/tasks.md",
+      "sha256": "f32e8e7011392d0b593e06cdcff6caef6ad7e5090d3ef34b679046646ead80c5",
+      "size_bytes": 35434
+    },
+    {
+      "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/openspec/changes/fix-benchmark-preparations-spec/specs/benchmark-launch-preparation/spec.md",
+      "sha256": "383e90694a5f4a2ed81ff8d53fc7ee4a35dc67767f17b35fd8e5bffde4751ed9",
+      "size_bytes": 75100
+    }
+  ],
+  "preservation": {
+    "all_existing_bytes_and_lines_preserved": true,
+    "all_original_requirement_names_unchanged": true,
+    "checked_tasks": 59,
+    "insertions": [
+      {
+        "insertions": [
+          {
+            "current_end_line": 82,
+            "current_start_line": 77,
+            "inserted_text": "\n## Decision29 amendment: compare audit timestamps on their observed clock\n\nOriginal hosted B run37 failed before discovery with `original kernel denial outside exact syscall/clock interval`; all eight frozen model downloads and six native targets completed, and original source bytes remained unchanged. The retained kernel MESSAGE timestamp is187040ns below the existing fine-clock lower bound; the journal reception predicates pass. Original A run36 completed2987 discovered/2978 portable/2890 successes/88 documented skips. Preserve both original outcomes and distinguish A verification from unexecuted B tests.\n\nRecord a versioned CI-only coarse-clock observation around the original unshare/setgroups sequence and compare the unmodified millisecond audit timestamp with that observed same-clock bracket. The live consumer requires the new contract from its trusted producer/capture source context; removing the declaration and samples cannot downgrade a current execution to legacy. Keep every existing original owner/PID/boot/executable/label/capability/operation/chronology, journal reception, policy ownership, bounds and mandatory-test rule. Missing or invalid new observations cannot authorize a profile; explicitly selected historical or pure legacy records retain their original strict behavior. This refines Decision24's clock join and changes no selected runtime95 input, scientific setting, model, image, production namespace or campaign scope. Exact same-PR planning review precedes implementation under standing user authorization.\n",
+            "original_line_before": 77
+          }
+        ],
+        "original_bytes_unchanged": true,
+        "path": "proposal.md"
+      },
+      {
+        "insertions": [
+          {
+            "current_end_line": 176,
+            "current_start_line": 165,
+            "inserted_text": "\n## Decision29 amendment: explicit coarse-clock evidence for the CI denial join\n\nContext: see the original retained A/B CI diagnostics and proposal. Both original host-facts records identify6.17.0-1022-azure. The B audit MESSAGE time is2.187040ms earlier than its unshare start, exceeding the current2ms allowance; journal reception realtime and monotonic comparisons pass. A matches the original join. No B test suite/profile load occurred. The preliminary301257ns journal-realtime lag is a real observation but is not the rejecting predicate; retain its explicit dispatch addendum.\n\nUpstream Linuxv6.17 [audit.c](https://github.com/torvalds/linux/blob/v6.17/kernel/audit.c#L1724) uses a coarse realtime stamp when no syscall-context stamp is available and formats milliseconds by integer division; [auditsc.c](https://github.com/torvalds/linux/blob/v6.17/kernel/auditsc.c#L1905) also samples coarse realtime at syscall entry. [The documented coarse accessor](https://www.kernel.org/doc/html/v6.17/core-api/timekeeping.html#coarse-and-fast-ns-access) corresponds to userspace CLOCK_REALTIME_COARSE and reflects the last timer tick. [LinuxUAPI](https://github.com/torvalds/linux/blob/v6.17/include/uapi/linux/time.h#L43) defines clockid5. [systemd's journal field definitions](https://github.com/systemd/systemd/blob/v255/man/systemd.journal-fields.xml) distinguish reception realtime/monotonic from message origin. These sources justify the clock design; they do not attest the exact patched running kernel/systemd binary or retrospectively establish B's unrecorded coarse samples.\n\nThe new original_ready record declares a distinct namespace clock contract version. The live consumer supplies an expected new version from its trusted known producer/capture source context; it never infers permission to use legacy from absence in an untrusted record. Explicit historical or pure callers may select the legacy contract. In the new contract, take one available-or-unavailable CLOCK_REALTIME_COARSE sample before the original unshare observation starts and one after the original failed /proc/self/setgroups open's existing terminal timestamps are obtained. Each available sample carries exact non-bool integer nanoseconds, clockid5/name, phase, original PID/boot and monotonic sampling start/end. The monotonic order must prove that these observations enclose the unchanged original operations, inside the original capture and job interval. Retain an actual capture terminal-monotonic field; no deadline is reset. Sampling errors remain explicit unavailable facts and cannot mask or replace the original syscall result/exception, trigger a second call, or create a thread. Cancellation exceptions propagate. Restrict added observations to this admitted denial sequence and preserve original byte/row/report limits.\n\nFor the expected new contract, floor the two observed coarse endpoints to1ms and require the unchanged audit MESSAGE millisecond timestamp to lie inclusively between them. Equal endpoints are valid. Removing both sample fields and the record declaration still fails the live expected-new join; partial/unknown-version/unavailable/foreign/malformed/reversed/outside-capture observations fail before privileged profile operations. Preserve all original joins and the existing journal reception realtime/monotonic guards. Only expressly selected genuinely legacy records lacking the new contract and fields use the original strict2ms audit-wall predicate; original B remains failed. Return the actual clock basis and endpoints as nonauthorizing join evidence. Live clock resolution is unnecessary for this same-clock-bin join and must not generate a tolerance.\n\nA larger guessed fine-clock tolerance or dropping the audit check would obscure clock semantics and is rejected. The measured bracket preserves explicit original clock provenance; missing/late facts intentionally still fail CI. Focused portable tests must prove coarse lag over2ms can join only with genuine-format valid sample fixtures, equal/boundary bins, foreign/missing/partial/malformed/reversed/unknown/unavailable/out-of-bracket rejection, original journal guards, legacy B rejection and original delegate-once/error precedence. Fixtures are not real policy denials or profile authority. Current exact-source hosted and ext4 complete portable/native/source/skip checks remain mandatory. CI-only paths are outside the actually observed selected95; preserve source/image scientific authority and immutable current CPU/GPU results after explicit final source-impact proof. No benchmark replay is justified by an unrelated CI-only change.\n",
+            "original_line_before": 165
+          }
+        ],
+        "original_bytes_unchanged": true,
+        "path": "design.md"
+      },
+      {
+        "insertions": [
+          {
+            "current_end_line": 130,
+            "current_start_line": 124,
+            "inserted_text": "\n## 24. Decision29 original audit-clock observation\n\n- [ ] 24.1 Independently review the exact coherent four-artifact Decision29 amendment and retained original A/B CI cause/clock research; commit/push the same PR and record standing authorization with the reviewed commit before dependent CI source/test edits. Preserve the original failed B result and preliminary diagnostic correction; no runtime95/image/scientific authority changes.\n- [ ] 24.2 Add the versioned before-unshare/after-failed-open coarse-clock observations and exact same-clock millisecond-bin join, preserving original delegate-once/error precedence, cancellation propagation, actual capture/job monotonic ordering, all identity/operation/journal/policy predicates and unchanged limits. Require the new live contract from trusted producer/capture context even if both declaration and samples are removed; admit expressly selected historical/pure legacy only under its original strict join. Unavailable/partial/malformed/foreign/reversed/unknown/outside evidence cannot grant profile authority.\n- [ ] 24.3 Run meaningful focused portable coarse-lag/boundary/equal-bin and rejection/legacy/exception regressions with explicit synthetic fixtures; independently review source/test effects and unchanged original predicates/bounds, and prove these CI-only edits do not alter current selected95/image inputs. Focused success alone cannot complete current final CI.\n- [ ] 24.4 Complete actual latest-source hosted and ext4 portable/native/source/skip gates and amended conformance, resolving original clock findings without rerun relabeling, test skips, global policy or widened budgets. Complete all existing current benchmark/science/runbook/self/fresh-review/archive/latest-check/merge obligations before claiming release completion.\n",
+            "original_line_before": 124
+          }
+        ],
+        "original_bytes_unchanged": true,
+        "path": "tasks.md"
+      },
+      {
+        "insertions": [
+          {
+            "current_end_line": 474,
+            "current_start_line": 462,
+            "inserted_text": "\n#### Scenario: Original audit clock differs from the fine syscall clock\n- **WHEN** the new declared namespace clock contract observes the original unshare and failed setgroups-open sequence\n- **THEN** it SHALL retain available-or-unavailable clockid5 CLOCK_REALTIME_COARSE samples before unshare starts and after the failed open's original terminal timestamps, with exact integer values, phase, original PID/boot and monotonic sampling intervals enclosing those operations within the original capture/job. The unmodified millisecond audit MESSAGE timestamp SHALL join the inclusively millisecond-floored observed coarse endpoints, including equal endpoints, while all original identity/operation/chronology, journal reception and policy ownership/bounds remain required. No arbitrary larger tolerance, extra thread, repeated syscall or deadline reset SHALL substitute.\n\n#### Scenario: New coarse-clock evidence is missing or inconsistent\n- **WHEN** the live consumer expects the new contract from its trusted producer/capture source context but a denial record lacks both declaration and observations, or has missing, partial, unavailable, unknown-version, malformed, foreign, reversed, out-of-capture or out-of-bracket coarse-clock observations\n- **THEN** CI SHALL fail before profile operations, retaining explicit original failure/unavailability without generic-errno authorization or fallback to a legacy clock join. Sampling failure SHALL preserve the original delegated syscall/result/exception; channel, row, report, diagnostic20+10 and whole-job limits SHALL remain unchanged.\n\n#### Scenario: A legacy denial record has no new clock contract\n- **WHEN** an explicitly selected historical or pure legacy context processes genuinely legacy retained records lacking the new namespace clock declaration and observations\n- **THEN** their original strict fine-clock audit predicate SHALL remain required and every original failed outcome SHALL remain failed. New observations SHALL NOT be fabricated for earlier records, and fixture or later current CI success SHALL NOT relabel original B run37 or establish patched kernel/systemd binary provenance.\n\n",
+            "original_line_before": 462
+          }
+        ],
+        "original_bytes_unchanged": true,
+        "path": "specs/benchmark-launch-preparation/spec.md"
+      }
+    ],
+    "new_scenarios": [
+      "Original audit clock differs from the fine syscall clock",
+      "New coarse-clock evidence is missing or inconsistent",
+      "A legacy denial record has no new clock contract"
+    ],
+    "new_tasks_all_pending": [
+      "24.1",
+      "24.2",
+      "24.3",
+      "24.4"
+    ],
+    "original70_task_texts_ids_states_unchanged": true,
+    "original_requirement_count": 20,
+    "original_scenario_count": 115,
+    "task_count": 74
+  },
+  "requirement_scenario_task_join": [
+    {
+      "design": "Observed same-clock millisecond bracket with exact identity and monotonic capture/job enclosure; equal/boundary bins and >2ms coarse-lag fixtures.",
+      "scenario": "Original audit clock differs from the fine syscall clock",
+      "tasks": [
+        "24.2",
+        "24.3"
+      ]
+    },
+    {
+      "design": "Trusted expected-new contract; deletion cannot downgrade; typed sampling/unavailability/error precedence and complete rejection cases.",
+      "scenario": "New coarse-clock evidence is missing or inconsistent",
+      "tasks": [
+        "24.2",
+        "24.3"
+      ]
+    },
+    {
+      "design": "Explicit historical/pure legacy selection retains strict original2ms join and immutable B failure.",
+      "scenario": "A legacy denial record has no new clock contract",
+      "tasks": [
+        "24.2",
+        "24.3"
+      ]
+    },
+    {
+      "design": "Exact planning checkpoint precedes code; latest hosted/ext4 source/native/portable/skip/conformance and current benchmark/science/archive/final gates remain distinct.",
+      "scenario": "Existing complete CI/repository and component gates",
+      "tasks": [
+        "24.1",
+        "24.4",
+        "18.11",
+        "18.12",
+        "18.13",
+        "18.14",
+        "23.5"
+      ]
+    }
+  ],
+  "reviewable": true,
+  "reviewed_baseline_commit": "a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+  "reviewer": "/root/decision28_source_peer",
+  "reviewer_handles_released": true,
+  "same_PR": "https://github.com/lordcoudy/VAST/pull/2",
+  "schema": "spec-driven",
+  "schema_version": 1,
+  "scope_limits": [
+    "All four current artifacts were read completely, with retained original A/B diagnosis and primary-source clock critique. Exact raw comparison uses B checkout planning bytes without Git invocation.",
+    "Metadata-only Windows reads and hashes do not claim Linux FD epoch custody or future runtime authority. No target helper import/compile/execution, engine/model/device/workload/test/Git operation or source95 mutation.",
+    "Known sourceB and raw baseline pins are joined from the existing original B checkout; no Git HEAD/index was independently queried in this scoped review.",
+    "This independent review assesses ROOT-authored planning. The reviewer-authored research is considered supporting evidence; it is not separately self-certified as independent kernel-binary or runtime proof.",
+    "GPU02 is an already separately authorized original running operation; this review neither restarts it nor reads/mutates active scientific outputs.",
+    "Actual implementation must enforce expected-new from trusted live context, preserve original guard bodies/limits, and satisfy meaningful regressions plus latest-source CI; planning text alone proves none of those executions."
+  ]
+}

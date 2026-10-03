@@ -1,0 +1,82 @@
+{
+  "actual_CI_or_benchmark_acceptance": false,
+  "actual_retention_owner_or_terminal": null,
+  "all_function_and_class_ASTs_equal": true,
+  "blocking_findings": [],
+  "bounds_unchanged": {
+    "HTTP_timeout_s_max": 45,
+    "ZIP_bytes": 8388608,
+    "ZIP_members": 4096,
+    "credential_timeout_s": 20,
+    "decoded_ZIP_bytes": 67108864,
+    "job_log_bytes": 33554432,
+    "work_s": 180
+  },
+  "credentials_and_signed_redirects_memory_only": true,
+  "expected_job_conclusions": {
+    "111158872804": "success",
+    "111158873062": "failure"
+  },
+  "expected_provider_conclusion": "failure",
+  "immutable_original_source_copy": {
+    "path": "artifacts/benchmark_recovery_20260930/decision28-ci-B-original-retention-v1/original-source.raw",
+    "sha256": "51e9206f45236b1ca18b9c344f472c597376a4d974d93a39cbca2aecdb13d01d",
+    "size_bytes": 5912
+  },
+  "literal_pairs": [
+    [
+      "ci-9d47-original-host-retention-v1",
+      "decision28-ci-B-original-retention-v1"
+    ],
+    [
+      "RUN=36802923013",
+      "RUN=37107524802"
+    ],
+    [
+      "CPU=110181019042",
+      "CPU=111158873062"
+    ],
+    [
+      "HOST=110181019292",
+      "HOST=111158872804"
+    ],
+    [
+      "EXPECTED='9d47e99b623df44816f7b0a0b73b249a940f7723'",
+      "EXPECTED='a00aa57f7d9534f8e7920f14f70d6a75a23570ed'"
+    ],
+    [
+      "run['conclusion']=='success'",
+      "run['conclusion']=='failure'"
+    ],
+    [
+      "all(j['run_id']==RUN and j['conclusion']=='success' for j in jobs['jobs'])",
+      "all(j['run_id']==RUN and j['conclusion']==('failure' if j['id']==CPU else 'success') for j in jobs['jobs'])"
+    ],
+    [
+      "'provider_run_success':True",
+      "'provider_run_success':False,'provider_expected_conclusion':'failure','expected_job_conclusions':{str(CPU):'failure',str(HOST):'success'}"
+    ]
+  ],
+  "original_CRC_SHA_provider_digest_and_path_guards_unchanged": true,
+  "original_source": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-9d47-original-host-retention-v1/retain_originals_v1.py",
+    "sha256": "51e9206f45236b1ca18b9c344f472c597376a4d974d93a39cbca2aecdb13d01d",
+    "size_bytes": 5912
+  },
+  "owned_source_pins": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ci-B-original-retention-v1/retain_originals_v1.py",
+      "sha256": "3895c7e42bdfd10780da256e960559659389e475d4e7a8484b5813e9945733c5",
+      "size_bytes": 6058
+    }
+  ],
+  "raw_inverse_equal": true,
+  "review_scope": "Static literal comparison against original retained-source helper; new literals authored and audited by the same reviewer, not an independent review of an own algorithm change.",
+  "reviewable": true,
+  "reviewer": "/root/decision28_source_peer",
+  "reviewer_handles_released": true,
+  "run_id": 37107524802,
+  "schema_version": 1,
+  "source_commit": "a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+  "workflow_rerun_cancel_or_write": null
+}

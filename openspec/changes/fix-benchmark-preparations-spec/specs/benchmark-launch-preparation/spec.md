@@ -459,6 +459,19 @@ CPU CI observation SHALL preserve the pinned Python3.12.3, full discovered selec
 - **WHEN** focused observer or conditional policy regressions pass
 - **THEN** current complete hosted source-before/after/report/full-selection/required-native and final ext4/conformance gates SHALL still be required; Decision23 four-arm physical/cold/scientific/repository acceptance and original unchecked campaign scopes SHALL remain unchanged and incomplete until actually verified.
 
+
+#### Scenario: Original audit clock differs from the fine syscall clock
+- **WHEN** the new declared namespace clock contract observes the original unshare and failed setgroups-open sequence
+- **THEN** it SHALL retain available-or-unavailable clockid5 CLOCK_REALTIME_COARSE samples before unshare starts and after the failed open's original terminal timestamps, with exact integer values, phase, original PID/boot and monotonic sampling intervals enclosing those operations within the original capture/job. The unmodified millisecond audit MESSAGE timestamp SHALL join the inclusively millisecond-floored observed coarse endpoints, including equal endpoints, while all original identity/operation/chronology, journal reception and policy ownership/bounds remain required. No arbitrary larger tolerance, extra thread, repeated syscall or deadline reset SHALL substitute.
+
+#### Scenario: New coarse-clock evidence is missing or inconsistent
+- **WHEN** the live consumer expects the new contract from its trusted producer/capture source context but a denial record lacks both declaration and observations, or has missing, partial, unavailable, unknown-version, malformed, foreign, reversed, out-of-capture or out-of-bracket coarse-clock observations
+- **THEN** CI SHALL fail before profile operations, retaining explicit original failure/unavailability without generic-errno authorization or fallback to a legacy clock join. Sampling failure SHALL preserve the original delegated syscall/result/exception; channel, row, report, diagnostic20+10 and whole-job limits SHALL remain unchanged.
+
+#### Scenario: A legacy denial record has no new clock contract
+- **WHEN** an explicitly selected historical or pure legacy context processes genuinely legacy retained records lacking the new namespace clock declaration and observations
+- **THEN** their original strict fine-clock audit predicate SHALL remain required and every original failed outcome SHALL remain failed. New observations SHALL NOT be fabricated for earlier records, and fixture or later current CI success SHALL NOT relabel original B run37 or establish patched kernel/systemd binary provenance.
+
 ### Requirement: CI executes explicit portable contracts and preserves physical integration obligations
 
 The active release's prior full hosted/ext4 selection references SHALL mean complete default-discovery inventory plus complete mandatory portable execution under the original external observer/one actual canonical Python3.12.3 child, original source-before/after/report/90m/600000/615000 and native-task/namespace predicates. All six CPU builds and three original required native successes SHALL remain mandatory. A versioned finite manifest MAY declare only exact individual physical integration IDs with source-derived reasons/required real-data or grant capabilities; every other discovered ID SHALL be mandatory portable by default. Complete sorted discovered/selected/integration inventories, manifest identity, exact outcomes and explicit unexecuted integration obligations SHALL be retained. The separately executed Decision23 four-arm model/source/resource/guardian/cold evidence SHALL remain required; no fixture/portable success SHALL confer full eligibility or execute a deferred campaign.

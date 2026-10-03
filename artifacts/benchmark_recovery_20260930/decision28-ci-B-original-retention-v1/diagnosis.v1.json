@@ -1,0 +1,1460 @@
+{
+  "A_success_is_not_B_full_suite_execution": true,
+  "B_nonexecuted_checks": [
+    "Conditional profile was not admitted/loaded; no original load/remove phase is evidenced.",
+    "External full-suite observer and unittest discovery were never dispatched.",
+    "No B unittest success/failure/skip/discovery count is claimed.",
+    "Host diagnostic job executes its two named diagnostic tests only; it is not full CI or hardware/scientific acceptance."
+  ],
+  "CI_source_test_or_workflow_modified": false,
+  "Linux_kernel_and_journald_clock_semantics_require_primary_source_research": true,
+  "all_review_read_handles_released": true,
+  "blocking_findings": [],
+  "constraints": [
+    "Original provider/ZIP/member CRC and SHA joins preserved; no archive member extracted or executed.",
+    "Credentials and signed redirect URLs remain memory-only; retained provider references are public/API run/job/artifact identifiers.",
+    "Original helper records no Linux owner/FD scans; actual once-only tool completion0 is preserved without inventing such facts.",
+    "Provider A reports a successful full CPU suite atA; no complete independent CI conformance or benchmark/science approval is inferred here."
+  ],
+  "diagnosis_elapsed_s": 0.064126200042665,
+  "exact_rejecting_guard": {
+    "function": "join_original_userns_denial_v1",
+    "line_1based": 170,
+    "source": {
+      "path": "scripts/ci_userns_profile_v1.py",
+      "sha256": "2b268daa1f6b1c7095e2ad35aa333cfc88998dfc7f024e39cee04d178334a578",
+      "size_bytes": 25945
+    },
+    "unchanged_A_B_original_source_inventory": true
+  },
+  "first_actual_CPU_driver_exception": "RuntimeError at CI-only conditional-profile denial clock join; original MESSAGE audit wall timestamp is187040ns below the literal unshare-start-minus2ms lower bound.",
+  "first_actual_namespace_failure": "Original namespace PID3944 completed unshare(CLONE_NEWUSER), then open(/proc/self/setgroups) failed with errno13.",
+  "latest_B_mandatory_CI_success_blocked": true,
+  "owned_retention_source_pins": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ci-A-original-retention-v1/retain_originals_v1.py",
+      "sha256": "dca000311559b03ac7411353d5abfbaf5aa828eb3e28c7f3b3daf993d8952dd3",
+      "size_bytes": 5915
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ci-B-original-retention-v1/retain_originals_v1.py",
+      "sha256": "3895c7e42bdfd10780da256e960559659389e475d4e7a8484b5813e9945733c5",
+      "size_bytes": 6058
+    }
+  ],
+  "preliminary_journal_lag_correction": "The301257ns journal realtime lag after syscall terminal is an original observation, but does not reject this guard; predicate1 checks the whole capture and predicate3 permits2ms. Predicate2 alone fails.",
+  "reviewable": true,
+  "reviewer": "/root/decision28_source_peer",
+  "runs": {
+    "A": {
+      "CPU_report": {
+        "built_targets": [
+          "vast_native_gst_probe",
+          "vast_checkpoint_source",
+          "gstadaptivescheduler",
+          "gstvastanalyticsterminal",
+          "gstvastanalyticsqueue",
+          "gstvastcheckpointprefixqueue"
+        ],
+        "changed_tracked_paths": [],
+        "elapsed_s": 1532.97533843,
+        "failure": null,
+        "hardware_acceptance": false,
+        "namespace_profile": {
+          "attempted": true,
+          "held_fds_released": true,
+          "load_phase": {
+            "cleanup_deadline_ns": 144598747065,
+            "execution_deadline_ns": 134598747065,
+            "started_monotonic_ns": 114598747065
+          },
+          "load_terminal": {
+            "capture_completed": true,
+            "failure": null,
+            "returncode": 0,
+            "timed_out": false
+          },
+          "load_verified": true,
+          "name": "vast-ci-userns-8fc796bd35be4d3da45f88bc692c19b4",
+          "profile": {
+            "epoch": [
+              2049,
+              9187613,
+              33152,
+              1,
+              158,
+              1791011335856758104,
+              1791011335856758104
+            ],
+            "path": "/home/runner/work/_temp/vast-cpu-checks/namespace-profile/owned.profile",
+            "sha256": "c827d46e16a7893c3637948fae6717b8ef6482e0df4e4b77f87db6bbd3eddddd",
+            "size_bytes": 158,
+            "stat": {
+              "st_dev": 2049,
+              "st_gid": 1001,
+              "st_ino": 9187613,
+              "st_mode": 33152,
+              "st_nlink": 1,
+              "st_size": 158,
+              "st_uid": 1001
+            }
+          },
+          "status": "completed",
+          "unload_phase": {
+            "cleanup_deadline_ns": 1646029964803,
+            "execution_deadline_ns": 1636029964803,
+            "started_monotonic_ns": 1616029964803
+          },
+          "unload_terminal": {
+            "capture_completed": true,
+            "failure": null,
+            "returncode": 0,
+            "timed_out": false
+          },
+          "unload_verified": true
+        },
+        "observer_present": true,
+        "raw_checkout_bytes_match_commit": true,
+        "successful": true,
+        "unittest_reported": {
+          "discovered": 2987,
+          "documented_skip_audit": 88,
+          "errors": 0,
+          "expected_failures": 0,
+          "failures": 0,
+          "missing_required_successes": 0,
+          "observed_profile": {
+            "actual_label": {
+              "path": "/proc/self/attr/current",
+              "value": "vast-ci-userns-8fc796bd35be4d3da45f88bc692c19b4 (unconfined)"
+            },
+            "boot_id": "06179ffb-3aee-43c6-8c47-19d7171d947b",
+            "executable": "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python3.12",
+            "expected_profile": "vast-ci-userns-8fc796bd35be4d3da45f88bc692c19b4 (unconfined)",
+            "pid": 3968
+          },
+          "selection_keys": [
+            "allowed_portable_skips",
+            "counts",
+            "discovered_ids",
+            "hardware_acceptance",
+            "integration_declarations",
+            "integration_executed",
+            "manifest_path",
+            "manifest_sha256",
+            "portable_ids",
+            "schema_version"
+          ],
+          "skips": 88,
+          "successful": true,
+          "successful_test_ids": 2890,
+          "tests_run": 2978,
+          "unexpected_successes": 0
+        }
+      },
+      "analyzed_original_members": [
+        {
+          "artifact_id": 11267924845,
+          "artifact_name": "vast-cpu-checks-2a6a42c924ae3447ceda4bd9d1b6db33765c6466",
+          "crc32": 1401720421,
+          "name": "report.json",
+          "original_ZIP": {
+            "path": "artifacts/benchmark_recovery_20260930/decision28-ci-A-original-retention-v1/artifact-11267924845.original.zip",
+            "sha256": "31a415410b9ce914bbf2ce7d85a54f5edd2260d67a3d1fb41b9f2b98a03c80d5",
+            "size_bytes": 2069134
+          },
+          "sha256": "a401d801db1070511e8847b691a46d5ce14f729f12d5f961257a424950f9eedc",
+          "size_bytes": 1824200
+        },
+        {
+          "artifact_id": 11267924845,
+          "artifact_name": "vast-cpu-checks-2a6a42c924ae3447ceda4bd9d1b6db33765c6466",
+          "crc32": 1472572933,
+          "name": "namespace-diagnostic/capture.json",
+          "original_ZIP": {
+            "path": "artifacts/benchmark_recovery_20260930/decision28-ci-A-original-retention-v1/artifact-11267924845.original.zip",
+            "sha256": "31a415410b9ce914bbf2ce7d85a54f5edd2260d67a3d1fb41b9f2b98a03c80d5",
+            "size_bytes": 2069134
+          },
+          "sha256": "2ad0f39147ac543bb01bb653c240d022d02073051be5cbee56b623ae7b4acd8e",
+          "size_bytes": 946
+        },
+        {
+          "artifact_id": 11267924845,
+          "artifact_name": "vast-cpu-checks-2a6a42c924ae3447ceda4bd9d1b6db33765c6466",
+          "crc32": 4158628876,
+          "name": "namespace-diagnostic/stdout.raw",
+          "original_ZIP": {
+            "path": "artifacts/benchmark_recovery_20260930/decision28-ci-A-original-retention-v1/artifact-11267924845.original.zip",
+            "sha256": "31a415410b9ce914bbf2ce7d85a54f5edd2260d67a3d1fb41b9f2b98a03c80d5",
+            "size_bytes": 2069134
+          },
+          "sha256": "712935d20c48449e44be0ea2057af9c95c81cc7ac3baa0e72ffacaeb71b9f409",
+          "size_bytes": 1410
+        },
+        {
+          "artifact_id": 11267924845,
+          "artifact_name": "vast-cpu-checks-2a6a42c924ae3447ceda4bd9d1b6db33765c6466",
+          "crc32": 550619234,
+          "name": "namespace-diagnostic/kernel-denial.json",
+          "original_ZIP": {
+            "path": "artifacts/benchmark_recovery_20260930/decision28-ci-A-original-retention-v1/artifact-11267924845.original.zip",
+            "sha256": "31a415410b9ce914bbf2ce7d85a54f5edd2260d67a3d1fb41b9f2b98a03c80d5",
+            "size_bytes": 2069134
+          },
+          "sha256": "b9bc7765cef621a33f7bcfcfa7540548ea12854652f761621f1e093683705e03",
+          "size_bytes": 1553
+        },
+        {
+          "artifact_id": 11267924845,
+          "artifact_name": "vast-cpu-checks-2a6a42c924ae3447ceda4bd9d1b6db33765c6466",
+          "crc32": 2336065094,
+          "name": "namespace-diagnostic/kernel-query/stdout.raw",
+          "original_ZIP": {
+            "path": "artifacts/benchmark_recovery_20260930/decision28-ci-A-original-retention-v1/artifact-11267924845.original.zip",
+            "sha256": "31a415410b9ce914bbf2ce7d85a54f5edd2260d67a3d1fb41b9f2b98a03c80d5",
+            "size_bytes": 2069134
+          },
+          "sha256": "81fe926d1f2fa3f685360a41401a22a15108648f1fb6b7f1538696a9dd62663c",
+          "size_bytes": 772
+        },
+        {
+          "artifact_id": 11267924845,
+          "artifact_name": "vast-cpu-checks-2a6a42c924ae3447ceda4bd9d1b6db33765c6466",
+          "crc32": 3450269126,
+          "name": "namespace-diagnostic/kernel-query/capture.json",
+          "original_ZIP": {
+            "path": "artifacts/benchmark_recovery_20260930/decision28-ci-A-original-retention-v1/artifact-11267924845.original.zip",
+            "sha256": "31a415410b9ce914bbf2ce7d85a54f5edd2260d67a3d1fb41b9f2b98a03c80d5",
+            "size_bytes": 2069134
+          },
+          "sha256": "359eed74c37cee06c15fed92b5a65fdba595f4b5011e90413d285981d9945f76",
+          "size_bytes": 1259
+        },
+        {
+          "artifact_id": 11267924845,
+          "artifact_name": "vast-cpu-checks-2a6a42c924ae3447ceda4bd9d1b6db33765c6466",
+          "crc32": 983341107,
+          "name": "tracked-source.before.json",
+          "original_ZIP": {
+            "path": "artifacts/benchmark_recovery_20260930/decision28-ci-A-original-retention-v1/artifact-11267924845.original.zip",
+            "sha256": "31a415410b9ce914bbf2ce7d85a54f5edd2260d67a3d1fb41b9f2b98a03c80d5",
+            "size_bytes": 2069134
+          },
+          "sha256": "1d5877adb6a6d0c10df4c4a0326a861e6a1e35f563a82608293bb4f4eda1940b",
+          "size_bytes": 1191578
+        },
+        {
+          "artifact_id": 11267924845,
+          "artifact_name": "vast-cpu-checks-2a6a42c924ae3447ceda4bd9d1b6db33765c6466",
+          "crc32": 983341107,
+          "name": "tracked-source.after.json",
+          "original_ZIP": {
+            "path": "artifacts/benchmark_recovery_20260930/decision28-ci-A-original-retention-v1/artifact-11267924845.original.zip",
+            "sha256": "31a415410b9ce914bbf2ce7d85a54f5edd2260d67a3d1fb41b9f2b98a03c80d5",
+            "size_bytes": 2069134
+          },
+          "sha256": "1d5877adb6a6d0c10df4c4a0326a861e6a1e35f563a82608293bb4f4eda1940b",
+          "size_bytes": 1191578
+        },
+        {
+          "artifact_id": 11267924845,
+          "artifact_name": "vast-cpu-checks-2a6a42c924ae3447ceda4bd9d1b6db33765c6466",
+          "crc32": 4044118691,
+          "name": "host-facts.original.json",
+          "original_ZIP": {
+            "path": "artifacts/benchmark_recovery_20260930/decision28-ci-A-original-retention-v1/artifact-11267924845.original.zip",
+            "sha256": "31a415410b9ce914bbf2ce7d85a54f5edd2260d67a3d1fb41b9f2b98a03c80d5",
+            "size_bytes": 2069134
+          },
+          "sha256": "9944aca6b26aa9a006b25d6197d045ae54ad4b482f84446787abf92fc3db0d67",
+          "size_bytes": 1274
+        },
+        {
+          "artifact_id": 11267924845,
+          "artifact_name": "vast-cpu-checks-2a6a42c924ae3447ceda4bd9d1b6db33765c6466",
+          "crc32": 123836627,
+          "name": "model-acquisition/report.json",
+          "original_ZIP": {
+            "path": "artifacts/benchmark_recovery_20260930/decision28-ci-A-original-retention-v1/artifact-11267924845.original.zip",
+            "sha256": "31a415410b9ce914bbf2ce7d85a54f5edd2260d67a3d1fb41b9f2b98a03c80d5",
+            "size_bytes": 2069134
+          },
+          "sha256": "1b861f774463685a670d39da209874e405d17d4571b4b3aa54a36b5395f90d01",
+          "size_bytes": 3468
+        },
+        {
+          "artifact_id": 11267924845,
+          "artifact_name": "vast-cpu-checks-2a6a42c924ae3447ceda4bd9d1b6db33765c6466",
+          "crc32": 2029878607,
+          "name": "namespace-profile/joined-denial.json",
+          "original_ZIP": {
+            "path": "artifacts/benchmark_recovery_20260930/decision28-ci-A-original-retention-v1/artifact-11267924845.original.zip",
+            "sha256": "31a415410b9ce914bbf2ce7d85a54f5edd2260d67a3d1fb41b9f2b98a03c80d5",
+            "size_bytes": 2069134
+          },
+          "sha256": "d8c8a093901a4266295c3dc391ebbfc3c7ccbf9821dc7db77cbfeb5de263f1f0",
+          "size_bytes": 1463
+        },
+        {
+          "artifact_id": 11268096359,
+          "artifact_name": "vast-host-diagnostics-2a6a42c924ae3447ceda4bd9d1b6db33765c6466",
+          "crc32": 1970055740,
+          "name": "report.json",
+          "original_ZIP": {
+            "path": "artifacts/benchmark_recovery_20260930/decision28-ci-A-original-retention-v1/artifact-11268096359.original.zip",
+            "sha256": "d318e5db3722fa0a51f50d2017cff692b4b9fae1253cf13a7a4d7f2909372dd0",
+            "size_bytes": 450790
+          },
+          "sha256": "f21749ac7a13c96900bcf724f073529bd5c83dfec394c8684212a432b1f0d15e",
+          "size_bytes": 1487
+        }
+      ],
+      "host_diagnostic": {
+        "changed_tracked_paths": [],
+        "commit": "2a6a42c924ae3447ceda4bd9d1b6db33765c6466",
+        "diagnostic_passed": true,
+        "diagnostic_tests_only": true,
+        "full_ci_successful": false,
+        "hardware_acceptance": false,
+        "kind": "vast_cpu_host_diagnostics_v1",
+        "original_process": {
+          "argv": [
+            "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python",
+            "-I",
+            "-B",
+            "-c",
+            "import sys,unittest; sys.path[:0]=sys.argv[1:3]; import run_ci_checks as checks; suite=unittest.defaultTestLoader.loadTestsFromNames(sys.argv[3:]); result=unittest.TextTestRunner(verbosity=2,resultclass=checks.RecordedResult).run(suite); sys.exit(0 if result.wasSuccessful() and result.testsRun==2 and set(sys.argv[3:])<=set(result.successes) else 1)",
+            "/home/runner/work/VAST/VAST/tests",
+            "/home/runner/work/VAST/VAST/scripts",
+            "test_analytics_model_contract.AnalyticsModelContractTests.test_repository_manifest_is_complete_and_hash_bound",
+            "test_analytics_peer_identity.AnalyticsPeerIdentityAuthorityTests.test_observer_reads_exact_proc_file_and_small_docker_projection"
+          ],
+          "cleanup_error": null,
+          "elapsed_s": 1.1172062369999907,
+          "returncode": 0,
+          "timed_out": false
+        },
+        "test_ids": [
+          "test_analytics_model_contract.AnalyticsModelContractTests.test_repository_manifest_is_complete_and_hash_bound",
+          "test_analytics_peer_identity.AnalyticsPeerIdentityAuthorityTests.test_observer_reads_exact_proc_file_and_small_docker_projection"
+        ]
+      },
+      "metadata": {
+        "path": "artifacts/benchmark_recovery_20260930/decision28-ci-A-original-retention-v1/original-provider-metadata.v1.json",
+        "sha256": "a9b4aa0c8c0c5f961d813ce68d6a14be04d4aabacdb92f5e315297c51e6f8f1f",
+        "size_bytes": 26786
+      },
+      "model_acquisition_report_keys": [
+        "assets",
+        "elapsed_s",
+        "hardware_acceptance",
+        "inputs",
+        "requires_original_exit_zero",
+        "schema_version",
+        "status"
+      ],
+      "original_host_kernel_release": "6.17.0-1022-azure",
+      "original_kernel_query_capture": {
+        "argv": [
+          "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python3.12",
+          "-I",
+          "-B",
+          "-c",
+          "import os,sys;position=sys.argv.index(\"--start-gate-fd\");fd=int(sys.argv[position+1]);command=sys.argv[1:position];assert os.read(fd,1)==b\"1\";os.close(fd);os.execv(command[0],command)",
+          "/usr/bin/journalctl",
+          "--dmesg",
+          "--since",
+          "@1791011334",
+          "--until",
+          "@1791011336",
+          "--no-pager",
+          "--output=json",
+          "--lines=32",
+          "--case-sensitive=no",
+          "--grep=apparmor=.*DENIED.*(userns|unshare|capable)",
+          "--start-gate-fd",
+          "3"
+        ],
+        "capture_completed": true,
+        "capture_exceeded": false,
+        "cleanup_deadline_ns": 115578168463,
+        "elapsed_s": 0.033822408,
+        "eof": {
+          "stderr": true,
+          "stdout": true
+        },
+        "execution_deadline_ns": 116559728109,
+        "failure": null,
+        "original_group_absent": true,
+        "original_group_members": [],
+        "owner": {
+          "boot_id": "06179ffb-3aee-43c6-8c47-19d7171d947b",
+          "executable_realpath": "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python3.12",
+          "executable_stat": {
+            "st_dev": 2049,
+            "st_gid": 1001,
+            "st_ino": 2438936,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 17744,
+            "st_uid": 1001
+          },
+          "gid": 1001,
+          "pgid": 3958,
+          "pid": 3958,
+          "ppid": 3649,
+          "startticks": 11455,
+          "uid": 1001
+        },
+        "returncode": 0,
+        "signal_failures": [],
+        "started_monotonic_ns": 114559728109,
+        "started_wall_time_ns": 1791011335818494142,
+        "terminal_wall_time_ns": 1791011335852314567,
+        "timed_out": false
+      },
+      "original_namespace_capture": {
+        "argv": [
+          "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python3.12",
+          "-I",
+          "-B",
+          "/home/runner/work/VAST/VAST/scripts/ci_namespace_diagnostic_v1.py",
+          "--worker",
+          "--start-gate-fd",
+          "3"
+        ],
+        "capture_completed": true,
+        "capture_exceeded": false,
+        "cleanup_deadline_ns": 124542816799,
+        "elapsed_s": 0.371946819,
+        "eof": {
+          "stderr": true,
+          "stdout": true
+        },
+        "execution_deadline_ns": 134186864111,
+        "failure": null,
+        "original_group_absent": true,
+        "original_group_members": [],
+        "owner": {
+          "boot_id": "06179ffb-3aee-43c6-8c47-19d7171d947b",
+          "executable_realpath": "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python3.12",
+          "executable_stat": {
+            "st_dev": 2049,
+            "st_gid": 1001,
+            "st_ino": 2438936,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 17744,
+            "st_uid": 1001
+          },
+          "gid": 1001,
+          "pgid": 3957,
+          "pid": 3957,
+          "ppid": 3649,
+          "startticks": 11418,
+          "uid": 1001
+        },
+        "returncode": 1,
+        "signal_failures": [],
+        "started_monotonic_ns": 114186864111,
+        "started_wall_time_ns": 1791011335445632279,
+        "terminal_wall_time_ns": 1791011335817574479,
+        "timed_out": false
+      },
+      "original_tool": {
+        "path": "artifacts/benchmark_recovery_20260930/decision28-ci-A-original-retention-v1/original-tool-terminal.v1.json",
+        "sha256": "577dcadc46f048a099d370150dba7a40eb3dc6de4038439701f9d8a3ef02101a",
+        "size_bytes": 1735
+      },
+      "originals": [
+        {
+          "job_id": 111152507333,
+          "kind": "original_job_log",
+          "path": "artifacts/benchmark_recovery_20260930/decision28-ci-A-original-retention-v1/job-111152507333.original.log",
+          "sha256": "157befd24196c89a20956b60ecc395168ac5e57322ba02106304b7db65fdf367",
+          "size_bytes": 91947
+        },
+        {
+          "job_id": 111152507519,
+          "kind": "original_job_log",
+          "path": "artifacts/benchmark_recovery_20260930/decision28-ci-A-original-retention-v1/job-111152507519.original.log",
+          "sha256": "165cfb80446d3e6e4c60c27095a6a62badb94e239530a12d82bab272029f2cdb",
+          "size_bytes": 33952
+        },
+        {
+          "all_member_crc_verified": true,
+          "artifact_id": 11268096359,
+          "artifact_name": "vast-host-diagnostics-2a6a42c924ae3447ceda4bd9d1b6db33765c6466",
+          "decoded_size_bytes": 2418609,
+          "kind": "original_artifact",
+          "member_count": 51,
+          "path": "artifacts/benchmark_recovery_20260930/decision28-ci-A-original-retention-v1/artifact-11268096359.original.zip",
+          "provider_digest_matched": true,
+          "sha256": "d318e5db3722fa0a51f50d2017cff692b4b9fae1253cf13a7a4d7f2909372dd0",
+          "size_bytes": 450790
+        },
+        {
+          "all_member_crc_verified": true,
+          "artifact_id": 11267924845,
+          "artifact_name": "vast-cpu-checks-2a6a42c924ae3447ceda4bd9d1b6db33765c6466",
+          "decoded_size_bytes": 10915925,
+          "kind": "original_artifact",
+          "member_count": 197,
+          "path": "artifacts/benchmark_recovery_20260930/decision28-ci-A-original-retention-v1/artifact-11267924845.original.zip",
+          "provider_digest_matched": true,
+          "sha256": "31a415410b9ce914bbf2ce7d85a54f5edd2260d67a3d1fb41b9f2b98a03c80d5",
+          "size_bytes": 2069134
+        }
+      ],
+      "provider": {
+        "commit": "2a6a42c924ae3447ceda4bd9d1b6db33765c6466",
+        "conclusion": "success",
+        "jobs": [
+          {
+            "conclusion": "success",
+            "job_id": 111152507333,
+            "name": "cpu-checks",
+            "steps": [
+              {
+                "conclusion": "success",
+                "name": "Set up job",
+                "number": 1
+              },
+              {
+                "conclusion": "success",
+                "name": "Record the original CPU job clock",
+                "number": 2
+              },
+              {
+                "conclusion": "success",
+                "name": "Check out the actual PR head or push commit",
+                "number": 3
+              },
+              {
+                "conclusion": "success",
+                "name": "Preserve exact source bytes",
+                "number": 4
+              },
+              {
+                "conclusion": "success",
+                "name": "Run actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+                "number": 5
+              },
+              {
+                "conclusion": "success",
+                "name": "Run actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38",
+                "number": 6
+              },
+              {
+                "conclusion": "success",
+                "name": "Install the agreed OpenSpec version in this ephemeral runner",
+                "number": 7
+              },
+              {
+                "conclusion": "success",
+                "name": "Validate OpenSpec structure, including completed archives",
+                "number": 8
+              },
+              {
+                "conclusion": "success",
+                "name": "Install CPU build prerequisites in this ephemeral runner",
+                "number": 9
+              },
+              {
+                "conclusion": "success",
+                "name": "Install the recorded CPU test dependencies",
+                "number": 10
+              },
+              {
+                "conclusion": "success",
+                "name": "Verify installed dependency consistency",
+                "number": 11
+              },
+              {
+                "conclusion": "success",
+                "name": "Check source, build six CPU targets and execute test discovery",
+                "number": 12
+              },
+              {
+                "conclusion": "success",
+                "name": "Preserve original CPU logs and explicit hardware gaps",
+                "number": 13
+              },
+              {
+                "conclusion": "success",
+                "name": "Post Run actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38",
+                "number": 24
+              },
+              {
+                "conclusion": "success",
+                "name": "Post Run actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+                "number": 25
+              },
+              {
+                "conclusion": "success",
+                "name": "Post Check out the actual PR head or push commit",
+                "number": 26
+              },
+              {
+                "conclusion": "success",
+                "name": "Complete job",
+                "number": 27
+              }
+            ],
+            "url": "https://github.com/lordcoudy/VAST/actions/runs/37105302376/job/111152507333"
+          },
+          {
+            "conclusion": "success",
+            "job_id": 111152507519,
+            "name": "Original host prerequisite diagnostics",
+            "steps": [
+              {
+                "conclusion": "success",
+                "name": "Set up job",
+                "number": 1
+              },
+              {
+                "conclusion": "success",
+                "name": "Check out the same actual head for the independent diagnostic",
+                "number": 2
+              },
+              {
+                "conclusion": "success",
+                "name": "Preserve exact source bytes",
+                "number": 3
+              },
+              {
+                "conclusion": "success",
+                "name": "Run actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+                "number": 4
+              },
+              {
+                "conclusion": "success",
+                "name": "Install the same pinned diagnostic dependencies",
+                "number": 5
+              },
+              {
+                "conclusion": "success",
+                "name": "Verify installed dependency consistency",
+                "number": 6
+              },
+              {
+                "conclusion": "success",
+                "name": "Retain the two original prerequisite and host outcomes",
+                "number": 7
+              },
+              {
+                "conclusion": "success",
+                "name": "Preserve original diagnostics even on failure",
+                "number": 8
+              },
+              {
+                "conclusion": "success",
+                "name": "Post Run actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+                "number": 15
+              },
+              {
+                "conclusion": "success",
+                "name": "Post Check out the same actual head for the independent diagnostic",
+                "number": 16
+              },
+              {
+                "conclusion": "success",
+                "name": "Complete job",
+                "number": 17
+              }
+            ],
+            "url": "https://github.com/lordcoudy/VAST/actions/runs/37105302376/job/111152507519"
+          }
+        ],
+        "run_id": 37105302376,
+        "url": "https://github.com/lordcoudy/VAST/actions/runs/37105302376"
+      },
+      "provider_step_error_lines": [],
+      "retention_elapsed_s": 8.514466060965788,
+      "retention_terminal": {
+        "path": "artifacts/benchmark_recovery_20260930/decision28-ci-A-original-retention-v1/original-retention-terminal.v1.json",
+        "sha256": "7fa78bab177beeb0d377c62596300541452dfe6225fe7052aa6f29130c385940",
+        "size_bytes": 59799
+      },
+      "selected_source_inventory_rows": {
+        "scripts/checkpoint_gstreamer_analytics_sidecar.py": {
+          "sha256": "4a853d79fe4296882d1f3e28774ccabb458e030c55d474b1bf34918b897f7fd6",
+          "size_bytes": 299261
+        },
+        "scripts/checkpoint_gstreamer_publication_runtime_v3.py": {
+          "sha256": "ee0476b574e012b213bdc603a7a930234c0bb27d929859ef03acfdb99eb7a241",
+          "size_bytes": 59640
+        },
+        "scripts/ci_namespace_diagnostic_v1.py": {
+          "sha256": "4f7e10d2decd1411f4c31281ceda4374d4d8cf1971fcb36497d11cfca10d8cc0",
+          "size_bytes": 23980
+        },
+        "scripts/ci_userns_profile_v1.py": {
+          "sha256": "2b268daa1f6b1c7095e2ad35aa333cfc88998dfc7f024e39cee04d178334a578",
+          "size_bytes": 25945
+        },
+        "scripts/publication_operational_process_custody_v1.py": {
+          "sha256": "dc92e20512cc2e3e7265e75bfd3c01de0146f29cfd4720e1a6f1b199ceb52d97",
+          "size_bytes": 51141
+        },
+        "scripts/run_ci_checks.py": {
+          "sha256": "ce375eca51164a76ab6a88cf02b92804077f08c6b8401d68b48e293020c27a2c",
+          "size_bytes": 29477
+        }
+      },
+      "source": {
+        "path": "artifacts/benchmark_recovery_20260930/decision28-ci-A-original-retention-v1/retain_originals_v1.py",
+        "sha256": "dca000311559b03ac7411353d5abfbaf5aa828eb3e28c7f3b3daf993d8952dd3",
+        "size_bytes": 5915
+      },
+      "source_review": {
+        "path": "artifacts/benchmark_recovery_20260930/decision28-ci-A-original-retention-v1/source-review.v1.json",
+        "sha256": "7fa95b7318a18f01b300693edbeeb8a3f3d2f6a05e9d23bf858b6c23ac56d7af",
+        "size_bytes": 2371
+      },
+      "suite_profile_member_absence": {
+        "external-test-observer/launch.v1.json": false,
+        "external-test-observer/terminal.v1.json": false,
+        "namespace-profile/joined-denial.json": false,
+        "namespace-profile/load/capture.json": false,
+        "namespace-profile/unload/capture.json": false,
+        "unittest-child.report.json": false,
+        "unittest.original.log": false
+      },
+      "timestamp_join": {
+        "audit_MESSAGE_minus_lower_bound_ns": 1064074,
+        "audit_MESSAGE_wall_allowed_interval_ns": [
+          1791011335787935926,
+          1791011335792152972
+        ],
+        "audit_MESSAGE_wall_ns": 1791011335789000000,
+        "capture_wall_interval_ns": [
+          1791011335445632279,
+          1791011335817574479
+        ],
+        "journal_monotonic_allowed_interval_ns": [
+          114529170704,
+          114533387911
+        ],
+        "journal_monotonic_minus_failed_syscall_terminal_ns": 844089,
+        "journal_realtime_minus_failed_syscall_terminal_ns": 844028,
+        "journal_receive_monotonic_ns": 114532232000,
+        "journal_receive_realtime_ns": 1791011335790997000,
+        "literal_allowance_ns": 2000000,
+        "original_first_failed_syscall": {
+          "errno": 13,
+          "error": "[Errno 13] Permission denied: '/proc/self/setgroups'",
+          "error_type": "PermissionError",
+          "event": "syscall_failed",
+          "flags": 655361,
+          "monotonic_ns": 114531311738,
+          "original_pid": 3957,
+          "path": "/proc/self/setgroups",
+          "pid": 3957,
+          "stock_tolerated_missing_setgroups": false,
+          "syscall": "open",
+          "terminal_monotonic_ns": 114531387911,
+          "terminal_wall_time_ns": 1791011335790152972,
+          "wall_time_ns": 1791011335790076850
+        },
+        "original_record": {
+          "MESSAGE": "audit: type=1400 audit(1791011335.789:128): apparmor=\"DENIED\" operation=\"capable\" class=\"cap\" profile=\"unprivileged_userns\" pid=3957 comm=\"python3.12\" capability=21  capname=\"sys_admin\"",
+          "PRIORITY": "5",
+          "SYSLOG_FACILITY": "0",
+          "SYSLOG_IDENTIFIER": "kernel",
+          "_BOOT_ID": "06179ffb3aee43c68c4719d7171d947b",
+          "_HOSTNAME": "runnervm8df0l",
+          "_MACHINE_ID": "bb9ebc7b4ed8498385fd3b7f0a389054",
+          "_RUNTIME_SCOPE": "system",
+          "_SOURCE_MONOTONIC_TIMESTAMP": "114617426",
+          "_TRANSPORT": "kernel",
+          "__CURSOR": "s=98e0db5e3c094a6b8b6a8b0c2c672dbc;i=47fd;b=06179ffb3aee43c68c4719d7171d947b;m=6d39f88;t=65cea52756195;x=f914a96d63a415ea",
+          "__MONOTONIC_TIMESTAMP": "114532232",
+          "__REALTIME_TIMESTAMP": "1791011335790997",
+          "__SEQNUM": "18429",
+          "__SEQNUM_ID": "98e0db5e3c094a6b8b6a8b0c2c672dbc"
+        },
+        "original_unshare_started": {
+          "event": "syscall_started",
+          "flags": 268435456,
+          "monotonic_ns": 114531170704,
+          "original_pid": 3957,
+          "pid": 3957,
+          "syscall": "unshare",
+          "wall_time_ns": 1791011335789935926
+        },
+        "predicate_1_journal_realtime_inside_original_capture": true,
+        "predicate_2_audit_MESSAGE_wall_inside_literal_interval": true,
+        "predicate_3_journal_monotonic_inside_literal_interval": true,
+        "unshare_start_minus_audit_MESSAGE_ns": 935926
+      },
+      "tool_chunk_id": "556096",
+      "tool_elapsed_s": 9.4627648,
+      "tool_exit_code": 0,
+      "tracked_inventory_count": 5239
+    },
+    "B": {
+      "CPU_report": {
+        "built_targets": [
+          "vast_native_gst_probe",
+          "vast_checkpoint_source",
+          "gstadaptivescheduler",
+          "gstvastanalyticsterminal",
+          "gstvastanalyticsqueue",
+          "gstvastcheckpointprefixqueue"
+        ],
+        "changed_tracked_paths": [],
+        "elapsed_s": 32.472927872,
+        "failure": "RuntimeError: original kernel denial outside exact syscall/clock interval",
+        "hardware_acceptance": false,
+        "namespace_profile": null,
+        "observer_present": false,
+        "raw_checkout_bytes_match_commit": true,
+        "successful": false,
+        "unittest_reported": null
+      },
+      "analyzed_original_members": [
+        {
+          "artifact_id": 11267619345,
+          "artifact_name": "vast-cpu-checks-a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+          "crc32": 4025249482,
+          "name": "report.json",
+          "original_ZIP": {
+            "path": "artifacts/benchmark_recovery_20260930/decision28-ci-B-original-retention-v1/artifact-11267619345.original.zip",
+            "sha256": "60496544bba9ab7152c6a54c46ad7f92ee38d6cbee898e594dc0e04e05feb833",
+            "size_bytes": 1317511
+          },
+          "sha256": "d1fd1d54a9ddd6625c1bf49a0271a234ba71b0893ab0eba8a052ddd41fc97455",
+          "size_bytes": 38547
+        },
+        {
+          "artifact_id": 11267619345,
+          "artifact_name": "vast-cpu-checks-a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+          "crc32": 3319107898,
+          "name": "namespace-diagnostic/capture.json",
+          "original_ZIP": {
+            "path": "artifacts/benchmark_recovery_20260930/decision28-ci-B-original-retention-v1/artifact-11267619345.original.zip",
+            "sha256": "60496544bba9ab7152c6a54c46ad7f92ee38d6cbee898e594dc0e04e05feb833",
+            "size_bytes": 1317511
+          },
+          "sha256": "345a692563fe9b97bdbe9e7e2a71580d6df280bfde1db6d3c6e643ca61fc6613",
+          "size_bytes": 946
+        },
+        {
+          "artifact_id": 11267619345,
+          "artifact_name": "vast-cpu-checks-a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+          "crc32": 1926698658,
+          "name": "namespace-diagnostic/stdout.raw",
+          "original_ZIP": {
+            "path": "artifacts/benchmark_recovery_20260930/decision28-ci-B-original-retention-v1/artifact-11267619345.original.zip",
+            "sha256": "60496544bba9ab7152c6a54c46ad7f92ee38d6cbee898e594dc0e04e05feb833",
+            "size_bytes": 1317511
+          },
+          "sha256": "cc2ca4bd665c51db05dec058cb10aa1063abb9ad80d9fbec972689a5fc9e1382",
+          "size_bytes": 1410
+        },
+        {
+          "artifact_id": 11267619345,
+          "artifact_name": "vast-cpu-checks-a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+          "crc32": 1505330813,
+          "name": "namespace-diagnostic/kernel-denial.json",
+          "original_ZIP": {
+            "path": "artifacts/benchmark_recovery_20260930/decision28-ci-B-original-retention-v1/artifact-11267619345.original.zip",
+            "sha256": "60496544bba9ab7152c6a54c46ad7f92ee38d6cbee898e594dc0e04e05feb833",
+            "size_bytes": 1317511
+          },
+          "sha256": "9a9588b6537c938bca9261652ddcd3afa55f16301b8226ff6f157981118038cf",
+          "size_bytes": 1553
+        },
+        {
+          "artifact_id": 11267619345,
+          "artifact_name": "vast-cpu-checks-a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+          "crc32": 2246953748,
+          "name": "namespace-diagnostic/kernel-query/stdout.raw",
+          "original_ZIP": {
+            "path": "artifacts/benchmark_recovery_20260930/decision28-ci-B-original-retention-v1/artifact-11267619345.original.zip",
+            "sha256": "60496544bba9ab7152c6a54c46ad7f92ee38d6cbee898e594dc0e04e05feb833",
+            "size_bytes": 1317511
+          },
+          "sha256": "4fe9ea60deed90ce85bcc11a373611ac25912ca7b9a2e99934c9c42d96ad9a9b",
+          "size_bytes": 772
+        },
+        {
+          "artifact_id": 11267619345,
+          "artifact_name": "vast-cpu-checks-a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+          "crc32": 1184937207,
+          "name": "namespace-diagnostic/kernel-query/capture.json",
+          "original_ZIP": {
+            "path": "artifacts/benchmark_recovery_20260930/decision28-ci-B-original-retention-v1/artifact-11267619345.original.zip",
+            "sha256": "60496544bba9ab7152c6a54c46ad7f92ee38d6cbee898e594dc0e04e05feb833",
+            "size_bytes": 1317511
+          },
+          "sha256": "c0a7c0ebc47d42cfd26620c8dfc9778dae2ed2545a2904223218e8331a60e77b",
+          "size_bytes": 1258
+        },
+        {
+          "artifact_id": 11267619345,
+          "artifact_name": "vast-cpu-checks-a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+          "crc32": 2185024694,
+          "name": "tracked-source.before.json",
+          "original_ZIP": {
+            "path": "artifacts/benchmark_recovery_20260930/decision28-ci-B-original-retention-v1/artifact-11267619345.original.zip",
+            "sha256": "60496544bba9ab7152c6a54c46ad7f92ee38d6cbee898e594dc0e04e05feb833",
+            "size_bytes": 1317511
+          },
+          "sha256": "bae3a38abd9c2f140be8a8eab7972dfca2649bc06f94b4f98cfdd9df6dc1b13d",
+          "size_bytes": 1222506
+        },
+        {
+          "artifact_id": 11267619345,
+          "artifact_name": "vast-cpu-checks-a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+          "crc32": 2185024694,
+          "name": "tracked-source.after.json",
+          "original_ZIP": {
+            "path": "artifacts/benchmark_recovery_20260930/decision28-ci-B-original-retention-v1/artifact-11267619345.original.zip",
+            "sha256": "60496544bba9ab7152c6a54c46ad7f92ee38d6cbee898e594dc0e04e05feb833",
+            "size_bytes": 1317511
+          },
+          "sha256": "bae3a38abd9c2f140be8a8eab7972dfca2649bc06f94b4f98cfdd9df6dc1b13d",
+          "size_bytes": 1222506
+        },
+        {
+          "artifact_id": 11267619345,
+          "artifact_name": "vast-cpu-checks-a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+          "crc32": 1911911209,
+          "name": "host-facts.original.json",
+          "original_ZIP": {
+            "path": "artifacts/benchmark_recovery_20260930/decision28-ci-B-original-retention-v1/artifact-11267619345.original.zip",
+            "sha256": "60496544bba9ab7152c6a54c46ad7f92ee38d6cbee898e594dc0e04e05feb833",
+            "size_bytes": 1317511
+          },
+          "sha256": "6f646d45b989b3f640d48879644b62a609dda06e44b0fd528dac5eb5d74a45ed",
+          "size_bytes": 1274
+        },
+        {
+          "artifact_id": 11267619345,
+          "artifact_name": "vast-cpu-checks-a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+          "crc32": 801133014,
+          "name": "model-acquisition/report.json",
+          "original_ZIP": {
+            "path": "artifacts/benchmark_recovery_20260930/decision28-ci-B-original-retention-v1/artifact-11267619345.original.zip",
+            "sha256": "60496544bba9ab7152c6a54c46ad7f92ee38d6cbee898e594dc0e04e05feb833",
+            "size_bytes": 1317511
+          },
+          "sha256": "aef8762dbde53dca1ed6c49f45cd20dc030ad0647cf1b869d814b5a1dfe5344c",
+          "size_bytes": 3469
+        },
+        {
+          "artifact_id": 11268277088,
+          "artifact_name": "vast-host-diagnostics-a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+          "crc32": 3317562582,
+          "name": "report.json",
+          "original_ZIP": {
+            "path": "artifacts/benchmark_recovery_20260930/decision28-ci-B-original-retention-v1/artifact-11268277088.original.zip",
+            "sha256": "31868c2e33c751ed951d2267a8194b9ea2e82782ead90cf4ce743671754042e4",
+            "size_bytes": 461278
+          },
+          "sha256": "dbe012d34a0671ccada3db177a0321e7cb56acf6dde8868f8c1592cc3efd1a23",
+          "size_bytes": 1487
+        }
+      ],
+      "host_diagnostic": {
+        "changed_tracked_paths": [],
+        "commit": "a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+        "diagnostic_passed": true,
+        "diagnostic_tests_only": true,
+        "full_ci_successful": false,
+        "hardware_acceptance": false,
+        "kind": "vast_cpu_host_diagnostics_v1",
+        "original_process": {
+          "argv": [
+            "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python",
+            "-I",
+            "-B",
+            "-c",
+            "import sys,unittest; sys.path[:0]=sys.argv[1:3]; import run_ci_checks as checks; suite=unittest.defaultTestLoader.loadTestsFromNames(sys.argv[3:]); result=unittest.TextTestRunner(verbosity=2,resultclass=checks.RecordedResult).run(suite); sys.exit(0 if result.wasSuccessful() and result.testsRun==2 and set(sys.argv[3:])<=set(result.successes) else 1)",
+            "/home/runner/work/VAST/VAST/tests",
+            "/home/runner/work/VAST/VAST/scripts",
+            "test_analytics_model_contract.AnalyticsModelContractTests.test_repository_manifest_is_complete_and_hash_bound",
+            "test_analytics_peer_identity.AnalyticsPeerIdentityAuthorityTests.test_observer_reads_exact_proc_file_and_small_docker_projection"
+          ],
+          "cleanup_error": null,
+          "elapsed_s": 1.3205849779999994,
+          "returncode": 0,
+          "timed_out": false
+        },
+        "test_ids": [
+          "test_analytics_model_contract.AnalyticsModelContractTests.test_repository_manifest_is_complete_and_hash_bound",
+          "test_analytics_peer_identity.AnalyticsPeerIdentityAuthorityTests.test_observer_reads_exact_proc_file_and_small_docker_projection"
+        ]
+      },
+      "metadata": {
+        "path": "artifacts/benchmark_recovery_20260930/decision28-ci-B-original-retention-v1/original-provider-metadata.v1.json",
+        "sha256": "679a78521375d99060cf6bb0e26f2ffeaedbb0243b7c485be0af79ded3d43ab3",
+        "size_bytes": 26793
+      },
+      "model_acquisition_report_keys": [
+        "assets",
+        "elapsed_s",
+        "hardware_acceptance",
+        "inputs",
+        "requires_original_exit_zero",
+        "schema_version",
+        "status"
+      ],
+      "original_host_kernel_release": "6.17.0-1022-azure",
+      "original_kernel_query_capture": {
+        "argv": [
+          "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python3.12",
+          "-I",
+          "-B",
+          "-c",
+          "import os,sys;position=sys.argv.index(\"--start-gate-fd\");fd=int(sys.argv[position+1]);command=sys.argv[1:position];assert os.read(fd,1)==b\"1\";os.close(fd);os.execv(command[0],command)",
+          "/usr/bin/journalctl",
+          "--dmesg",
+          "--since",
+          "@1791013749",
+          "--until",
+          "@1791013752",
+          "--no-pager",
+          "--output=json",
+          "--lines=32",
+          "--case-sensitive=no",
+          "--grep=apparmor=.*DENIED.*(userns|unshare|capable)",
+          "--start-gate-fd",
+          "3"
+        ],
+        "capture_completed": true,
+        "capture_exceeded": false,
+        "cleanup_deadline_ns": 115276597130,
+        "elapsed_s": 0.03309966,
+        "eof": {
+          "stderr": true,
+          "stdout": true
+        },
+        "execution_deadline_ns": 116258304721,
+        "failure": null,
+        "original_group_absent": true,
+        "original_group_members": [],
+        "owner": {
+          "boot_id": "f969d47a-6304-4d38-8cc4-6976ad94bdcf",
+          "executable_realpath": "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python3.12",
+          "executable_stat": {
+            "st_dev": 2049,
+            "st_gid": 1001,
+            "st_ino": 2439077,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 17744,
+            "st_uid": 1001
+          },
+          "gid": 1001,
+          "pgid": 3945,
+          "pid": 3945,
+          "ppid": 3637,
+          "startticks": 11425,
+          "uid": 1001
+        },
+        "returncode": 0,
+        "signal_failures": [],
+        "started_monotonic_ns": 114258304721,
+        "started_wall_time_ns": 1791013751345767112,
+        "terminal_wall_time_ns": 1791013751378864608,
+        "timed_out": false
+      },
+      "original_namespace_capture": {
+        "argv": [
+          "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python3.12",
+          "-I",
+          "-B",
+          "/home/runner/work/VAST/VAST/scripts/ci_namespace_diagnostic_v1.py",
+          "--worker",
+          "--start-gate-fd",
+          "3"
+        ],
+        "capture_completed": true,
+        "capture_exceeded": false,
+        "cleanup_deadline_ns": 124241180670,
+        "elapsed_s": 0.378435852,
+        "eof": {
+          "stderr": true,
+          "stdout": true
+        },
+        "execution_deadline_ns": 133877936380,
+        "failure": null,
+        "original_group_absent": true,
+        "original_group_members": [],
+        "owner": {
+          "boot_id": "f969d47a-6304-4d38-8cc4-6976ad94bdcf",
+          "executable_realpath": "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python3.12",
+          "executable_stat": {
+            "st_dev": 2049,
+            "st_gid": 1001,
+            "st_ino": 2439077,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 17744,
+            "st_uid": 1001
+          },
+          "gid": 1001,
+          "pgid": 3944,
+          "pid": 3944,
+          "ppid": 3637,
+          "startticks": 11387,
+          "uid": 1001
+        },
+        "returncode": 1,
+        "signal_failures": [],
+        "started_monotonic_ns": 113877936380,
+        "started_wall_time_ns": 1791013750965400514,
+        "terminal_wall_time_ns": 1791013751343832288,
+        "timed_out": false
+      },
+      "original_tool": {
+        "path": "artifacts/benchmark_recovery_20260930/decision28-ci-B-original-retention-v1/original-tool-terminal.v1.json",
+        "sha256": "4886ec3bb6108903880e9dc68f9de511b439cab0c393fdf9d45e23fe72e906cf",
+        "size_bytes": 1734
+      },
+      "originals": [
+        {
+          "job_id": 111158873062,
+          "kind": "original_job_log",
+          "path": "artifacts/benchmark_recovery_20260930/decision28-ci-B-original-retention-v1/job-111158873062.original.log",
+          "sha256": "59b10b2042406424c98f2e4ea78d56b3d14164da9aab365fcfcf2e993f223138",
+          "size_bytes": 82469
+        },
+        {
+          "job_id": 111158872804,
+          "kind": "original_job_log",
+          "path": "artifacts/benchmark_recovery_20260930/decision28-ci-B-original-retention-v1/job-111158872804.original.log",
+          "sha256": "9b55cab818b45f8cb10569a8eafa3479ebd11031087a9f96763a1b8b4dbd51b0",
+          "size_bytes": 33957
+        },
+        {
+          "all_member_crc_verified": true,
+          "artifact_id": 11268277088,
+          "artifact_name": "vast-host-diagnostics-a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+          "decoded_size_bytes": 2480440,
+          "kind": "original_artifact",
+          "member_count": 51,
+          "path": "artifacts/benchmark_recovery_20260930/decision28-ci-B-original-retention-v1/artifact-11268277088.original.zip",
+          "provider_digest_matched": true,
+          "sha256": "31868c2e33c751ed951d2267a8194b9ea2e82782ead90cf4ce743671754042e4",
+          "size_bytes": 461278
+        },
+        {
+          "all_member_crc_verified": true,
+          "artifact_id": 11267619345,
+          "artifact_name": "vast-cpu-checks-a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+          "decoded_size_bytes": 5327835,
+          "kind": "original_artifact",
+          "member_count": 171,
+          "path": "artifacts/benchmark_recovery_20260930/decision28-ci-B-original-retention-v1/artifact-11267619345.original.zip",
+          "provider_digest_matched": true,
+          "sha256": "60496544bba9ab7152c6a54c46ad7f92ee38d6cbee898e594dc0e04e05feb833",
+          "size_bytes": 1317511
+        }
+      ],
+      "provider": {
+        "commit": "a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+        "conclusion": "failure",
+        "jobs": [
+          {
+            "conclusion": "success",
+            "job_id": 111158872804,
+            "name": "Original host prerequisite diagnostics",
+            "steps": [
+              {
+                "conclusion": "success",
+                "name": "Set up job",
+                "number": 1
+              },
+              {
+                "conclusion": "success",
+                "name": "Check out the same actual head for the independent diagnostic",
+                "number": 2
+              },
+              {
+                "conclusion": "success",
+                "name": "Preserve exact source bytes",
+                "number": 3
+              },
+              {
+                "conclusion": "success",
+                "name": "Run actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+                "number": 4
+              },
+              {
+                "conclusion": "success",
+                "name": "Install the same pinned diagnostic dependencies",
+                "number": 5
+              },
+              {
+                "conclusion": "success",
+                "name": "Verify installed dependency consistency",
+                "number": 6
+              },
+              {
+                "conclusion": "success",
+                "name": "Retain the two original prerequisite and host outcomes",
+                "number": 7
+              },
+              {
+                "conclusion": "success",
+                "name": "Preserve original diagnostics even on failure",
+                "number": 8
+              },
+              {
+                "conclusion": "success",
+                "name": "Post Run actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+                "number": 15
+              },
+              {
+                "conclusion": "success",
+                "name": "Post Check out the same actual head for the independent diagnostic",
+                "number": 16
+              },
+              {
+                "conclusion": "success",
+                "name": "Complete job",
+                "number": 17
+              }
+            ],
+            "url": "https://github.com/lordcoudy/VAST/actions/runs/37107524802/job/111158872804"
+          },
+          {
+            "conclusion": "failure",
+            "job_id": 111158873062,
+            "name": "cpu-checks",
+            "steps": [
+              {
+                "conclusion": "success",
+                "name": "Set up job",
+                "number": 1
+              },
+              {
+                "conclusion": "success",
+                "name": "Record the original CPU job clock",
+                "number": 2
+              },
+              {
+                "conclusion": "success",
+                "name": "Check out the actual PR head or push commit",
+                "number": 3
+              },
+              {
+                "conclusion": "success",
+                "name": "Preserve exact source bytes",
+                "number": 4
+              },
+              {
+                "conclusion": "success",
+                "name": "Run actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+                "number": 5
+              },
+              {
+                "conclusion": "success",
+                "name": "Run actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38",
+                "number": 6
+              },
+              {
+                "conclusion": "success",
+                "name": "Install the agreed OpenSpec version in this ephemeral runner",
+                "number": 7
+              },
+              {
+                "conclusion": "success",
+                "name": "Validate OpenSpec structure, including completed archives",
+                "number": 8
+              },
+              {
+                "conclusion": "success",
+                "name": "Install CPU build prerequisites in this ephemeral runner",
+                "number": 9
+              },
+              {
+                "conclusion": "success",
+                "name": "Install the recorded CPU test dependencies",
+                "number": 10
+              },
+              {
+                "conclusion": "success",
+                "name": "Verify installed dependency consistency",
+                "number": 11
+              },
+              {
+                "conclusion": "failure",
+                "name": "Check source, build six CPU targets and execute test discovery",
+                "number": 12
+              },
+              {
+                "conclusion": "success",
+                "name": "Preserve original CPU logs and explicit hardware gaps",
+                "number": 13
+              },
+              {
+                "conclusion": "skipped",
+                "name": "Post Run actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38",
+                "number": 24
+              },
+              {
+                "conclusion": "skipped",
+                "name": "Post Run actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+                "number": 25
+              },
+              {
+                "conclusion": "success",
+                "name": "Post Check out the actual PR head or push commit",
+                "number": 26
+              },
+              {
+                "conclusion": "success",
+                "name": "Complete job",
+                "number": 27
+              }
+            ],
+            "url": "https://github.com/lordcoudy/VAST/actions/runs/37107524802/job/111158873062"
+          }
+        ],
+        "run_id": 37107524802,
+        "url": "https://github.com/lordcoudy/VAST/actions/runs/37107524802"
+      },
+      "provider_step_error_lines": [
+        {
+          "line_1based": 855,
+          "text": "2026-10-03T07:49:11.8804585Z ##[error]Process completed with exit code 1."
+        }
+      ],
+      "retention_elapsed_s": 6.96990070794709,
+      "retention_terminal": {
+        "path": "artifacts/benchmark_recovery_20260930/decision28-ci-B-original-retention-v1/original-retention-terminal.v1.json",
+        "sha256": "781dfc90a7e7ed54bdfa6235144523c2e3134b61e48468d43cf5eed6fdc2f220",
+        "size_bytes": 54087
+      },
+      "selected_source_inventory_rows": {
+        "scripts/checkpoint_gstreamer_analytics_sidecar.py": {
+          "sha256": "4a853d79fe4296882d1f3e28774ccabb458e030c55d474b1bf34918b897f7fd6",
+          "size_bytes": 299261
+        },
+        "scripts/checkpoint_gstreamer_publication_runtime_v3.py": {
+          "sha256": "0fee418bfa0c7e0e89f9c74210f107fa950d14cf65844d82b1a91330a398aa1c",
+          "size_bytes": 59624
+        },
+        "scripts/ci_namespace_diagnostic_v1.py": {
+          "sha256": "4f7e10d2decd1411f4c31281ceda4374d4d8cf1971fcb36497d11cfca10d8cc0",
+          "size_bytes": 23980
+        },
+        "scripts/ci_userns_profile_v1.py": {
+          "sha256": "2b268daa1f6b1c7095e2ad35aa333cfc88998dfc7f024e39cee04d178334a578",
+          "size_bytes": 25945
+        },
+        "scripts/publication_operational_process_custody_v1.py": {
+          "sha256": "dc92e20512cc2e3e7265e75bfd3c01de0146f29cfd4720e1a6f1b199ceb52d97",
+          "size_bytes": 51141
+        },
+        "scripts/run_ci_checks.py": {
+          "sha256": "ce375eca51164a76ab6a88cf02b92804077f08c6b8401d68b48e293020c27a2c",
+          "size_bytes": 29477
+        }
+      },
+      "source": {
+        "path": "artifacts/benchmark_recovery_20260930/decision28-ci-B-original-retention-v1/retain_originals_v1.py",
+        "sha256": "3895c7e42bdfd10780da256e960559659389e475d4e7a8484b5813e9945733c5",
+        "size_bytes": 6058
+      },
+      "source_review": {
+        "path": "artifacts/benchmark_recovery_20260930/decision28-ci-B-original-retention-v1/source-review.v1.json",
+        "sha256": "803b3a85b4ae3c4750ad8ae2275fc6df48f1d108abfe59e3786de9dc6a1a7568",
+        "size_bytes": 2868
+      },
+      "suite_profile_member_absence": {
+        "external-test-observer/launch.v1.json": true,
+        "external-test-observer/terminal.v1.json": true,
+        "namespace-profile/joined-denial.json": true,
+        "namespace-profile/load/capture.json": true,
+        "namespace-profile/unload/capture.json": true,
+        "unittest-child.report.json": true,
+        "unittest.original.log": true
+      },
+      "timestamp_join": {
+        "audit_MESSAGE_minus_lower_bound_ns": -187040,
+        "audit_MESSAGE_wall_allowed_interval_ns": [
+          1791013751314187040,
+          1791013751318338743
+        ],
+        "audit_MESSAGE_wall_ns": 1791013751314000000,
+        "capture_wall_interval_ns": [
+          1791013750965400514,
+          1791013751343832288
+        ],
+        "journal_monotonic_allowed_interval_ns": [
+          114226725441,
+          114230877194
+        ],
+        "journal_monotonic_minus_failed_syscall_terminal_ns": 301806,
+        "journal_realtime_minus_failed_syscall_terminal_ns": 301257,
+        "journal_receive_monotonic_ns": 114229179000,
+        "journal_receive_realtime_ns": 1791013751316640000,
+        "literal_allowance_ns": 2000000,
+        "original_first_failed_syscall": {
+          "errno": 13,
+          "error": "[Errno 13] Permission denied: '/proc/self/setgroups'",
+          "error_type": "PermissionError",
+          "event": "syscall_failed",
+          "flags": 655361,
+          "monotonic_ns": 114228825207,
+          "original_pid": 3944,
+          "path": "/proc/self/setgroups",
+          "pid": 3944,
+          "stock_tolerated_missing_setgroups": false,
+          "syscall": "open",
+          "terminal_monotonic_ns": 114228877194,
+          "terminal_wall_time_ns": 1791013751316338743,
+          "wall_time_ns": 1791013751316286847
+        },
+        "original_record": {
+          "MESSAGE": "audit: type=1400 audit(1791013751.314:128): apparmor=\"DENIED\" operation=\"capable\" class=\"cap\" profile=\"unprivileged_userns\" pid=3944 comm=\"python3.12\" capability=21  capname=\"sys_admin\"",
+          "PRIORITY": "5",
+          "SYSLOG_FACILITY": "0",
+          "SYSLOG_IDENTIFIER": "kernel",
+          "_BOOT_ID": "f969d47a63044d388cc46976ad94bdcf",
+          "_HOSTNAME": "runnervm8df0l",
+          "_MACHINE_ID": "bb9ebc7b4ed8498385fd3b7f0a389054",
+          "_RUNTIME_SCOPE": "system",
+          "_SOURCE_MONOTONIC_TIMESTAMP": "114309488",
+          "_TRANSPORT": "kernel",
+          "__CURSOR": "s=1d424d43faaa4398b8f6df7d1079f01a;i=4805;b=f969d47a63044d388cc46976ad94bdcf;m=6ceffbb;t=65ceae26f60a0;x=a4ad0c125c685a54",
+          "__MONOTONIC_TIMESTAMP": "114229179",
+          "__REALTIME_TIMESTAMP": "1791013751316640",
+          "__SEQNUM": "18437",
+          "__SEQNUM_ID": "1d424d43faaa4398b8f6df7d1079f01a"
+        },
+        "original_unshare_started": {
+          "event": "syscall_started",
+          "flags": 268435456,
+          "monotonic_ns": 114228725441,
+          "original_pid": 3944,
+          "pid": 3944,
+          "syscall": "unshare",
+          "wall_time_ns": 1791013751316187040
+        },
+        "predicate_1_journal_realtime_inside_original_capture": true,
+        "predicate_2_audit_MESSAGE_wall_inside_literal_interval": false,
+        "predicate_3_journal_monotonic_inside_literal_interval": true,
+        "unshare_start_minus_audit_MESSAGE_ns": 2187040
+      },
+      "tool_chunk_id": "395d7f",
+      "tool_elapsed_s": 7.9151101,
+      "tool_exit_code": 0,
+      "tracked_inventory_count": 5368
+    }
+  },
+  "schema_version": 1,
+  "selected_benchmark_source_blocked_by_this_CI_only_failure": false,
+  "selected_benchmark_source_verdict_basis": "Failure occurs in unchanged CI-only policy join before suite execution; the retained A/B inventories join identical CI-driver/namespace/profile and two Decision28 repaired runtime sources. B host wrapper is its intentionally reviewed image-constant renewal. This diagnosis does not issue an execution grant or prove benchmark/hardware acceptance.",
+  "status": "original_B_failure_diagnosed_A_success_preserved",
+  "timestamp_or_tolerance_rewritten": false,
+  "workflow_action": null
+}

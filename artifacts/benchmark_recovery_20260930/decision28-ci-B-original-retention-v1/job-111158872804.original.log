@@ -1,0 +1,362 @@
+﻿2026-10-03T07:47:44.5071029Z Current runner version: '2.337.0'
+2026-10-03T07:47:44.5095592Z ##[group]Runner Image Provisioner
+2026-10-03T07:47:44.5096770Z Hosted Compute Agent
+2026-10-03T07:47:44.5097367Z Version: 20260901.588
+2026-10-03T07:47:44.5098579Z Commit: f88ec8081b781fac6c440065ac7ff9e710ce3d0b
+2026-10-03T07:47:44.5100067Z Build Date: 2026-09-01T19:56:44Z
+2026-10-03T07:47:44.5101153Z Worker ID: {b3fdb483-0c68-4c78-af04-61e2d987c681}
+2026-10-03T07:47:44.5102474Z Azure Region: eastus2
+2026-10-03T07:47:44.5103372Z ##[endgroup]
+2026-10-03T07:47:44.5105325Z ##[group]Operating System
+2026-10-03T07:47:44.5106097Z Ubuntu
+2026-10-03T07:47:44.5106652Z 24.04.5
+2026-10-03T07:47:44.5107143Z LTS
+2026-10-03T07:47:44.5107741Z ##[endgroup]
+2026-10-03T07:47:44.5108515Z ##[group]Runner Image
+2026-10-03T07:47:44.5109185Z Image: ubuntu-24.04
+2026-10-03T07:47:44.5109790Z Version: 20260927.320.1
+2026-10-03T07:47:44.5111123Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260927.320/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-03T07:47:44.5112700Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260927.320
+2026-10-03T07:47:44.5113738Z ##[endgroup]
+2026-10-03T07:47:44.5114882Z ##[group]GITHUB_TOKEN Permissions
+2026-10-03T07:47:44.5117128Z Contents: read
+2026-10-03T07:47:44.5118479Z Metadata: read
+2026-10-03T07:47:44.5119041Z ##[endgroup]
+2026-10-03T07:47:44.5122121Z Secret source: Actions
+2026-10-03T07:47:44.5123038Z Cache mode: write
+2026-10-03T07:47:44.5124281Z Prepare workflow directory
+2026-10-03T07:47:44.5512519Z Prepare all required actions
+2026-10-03T07:47:44.5560083Z Getting action download info
+2026-10-03T07:47:44.8169773Z Download action repository 'actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803' (SHA:d23441a48e516b6c34aea4fa41551a30e30af803)
+2026-10-03T07:47:44.9154500Z Download action repository 'actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1' (SHA:ece7cb06caefa5fff74198d8649806c4678c61a1)
+2026-10-03T07:47:44.9923717Z Download action repository 'actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f' (SHA:b7c566a772e6b6bfb58ed0dc250532a479d7789f)
+2026-10-03T07:47:45.2358302Z Complete job name: Original host prerequisite diagnostics
+2026-10-03T07:47:45.3127627Z ##[group]Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+2026-10-03T07:47:45.3128940Z with:
+2026-10-03T07:47:45.3129418Z   ref: a00aa57f7d9534f8e7920f14f70d6a75a23570ed
+2026-10-03T07:47:45.3130025Z   persist-credentials: false
+2026-10-03T07:47:45.3130544Z   repository: lordcoudy/VAST
+2026-10-03T07:47:45.3134563Z   token: ***
+2026-10-03T07:47:45.3134990Z   ssh-strict: true
+2026-10-03T07:47:45.3135424Z   ssh-user: git
+2026-10-03T07:47:45.3135834Z   clean: true
+2026-10-03T07:47:45.3136267Z   sparse-checkout-cone-mode: true
+2026-10-03T07:47:45.3136784Z   fetch-depth: 1
+2026-10-03T07:47:45.3137200Z   fetch-tags: false
+2026-10-03T07:47:45.3137633Z   show-progress: true
+2026-10-03T07:47:45.3138384Z   lfs: false
+2026-10-03T07:47:45.3138802Z   submodules: false
+2026-10-03T07:47:45.3139246Z   set-safe-directory: true
+2026-10-03T07:47:45.3139757Z   allow-unsafe-pr-checkout: false
+2026-10-03T07:47:45.3140543Z env:
+2026-10-03T07:47:45.3140968Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-03T07:47:45.3141483Z   MPLBACKEND: Agg
+2026-10-03T07:47:45.3141895Z ##[endgroup]
+2026-10-03T07:47:45.4138932Z Syncing repository: lordcoudy/VAST
+2026-10-03T07:47:45.4141173Z ##[group]Getting Git version info
+2026-10-03T07:47:45.4142297Z Working directory is '/home/runner/work/VAST/VAST'
+2026-10-03T07:47:45.4143941Z [command]/usr/bin/git version
+2026-10-03T07:47:45.4237092Z git version 2.55.0
+2026-10-03T07:47:45.4262621Z ##[endgroup]
+2026-10-03T07:47:45.4278498Z Temporarily overriding HOME='/home/runner/work/_temp/f93c71a1-d872-4977-8ad4-f3fb7b6b3dca' before making global git config changes
+2026-10-03T07:47:45.4280940Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-03T07:47:45.4284051Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/VAST/VAST
+2026-10-03T07:47:45.4341156Z Deleting the contents of '/home/runner/work/VAST/VAST'
+2026-10-03T07:47:45.4346868Z ##[group]Determining repository object format
+2026-10-03T07:47:45.4349307Z ##[endgroup]
+2026-10-03T07:47:45.4350231Z ##[group]Initializing the repository
+2026-10-03T07:47:45.4354155Z [command]/usr/bin/git init /home/runner/work/VAST/VAST
+2026-10-03T07:47:45.4493988Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-03T07:47:45.4495366Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-03T07:47:45.4497038Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-03T07:47:45.4498904Z hint: call:
+2026-10-03T07:47:45.4499634Z hint:
+2026-10-03T07:47:45.4500309Z hint: 	git config --global init.defaultBranch <name>
+2026-10-03T07:47:45.4501337Z hint:
+2026-10-03T07:47:45.4501961Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-03T07:47:45.4503695Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-03T07:47:45.4504614Z hint:
+2026-10-03T07:47:45.4505343Z hint: 	git branch -m <name>
+2026-10-03T07:47:45.4506125Z hint:
+2026-10-03T07:47:45.4506781Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-03T07:47:45.4507772Z Initialized empty Git repository in /home/runner/work/VAST/VAST/.git/
+2026-10-03T07:47:45.4511884Z [command]/usr/bin/git remote add origin https://github.com/lordcoudy/VAST
+2026-10-03T07:47:45.4567239Z ##[endgroup]
+2026-10-03T07:47:45.4568374Z ##[group]Disabling automatic garbage collection
+2026-10-03T07:47:45.4571987Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-03T07:47:45.4603391Z ##[endgroup]
+2026-10-03T07:47:45.4604350Z ##[group]Setting up auth
+2026-10-03T07:47:45.4604886Z Removing SSH command configuration
+2026-10-03T07:47:45.4613379Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-03T07:47:45.4647584Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-03T07:47:45.5091748Z Removing HTTP extra header
+2026-10-03T07:47:45.5100288Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-03T07:47:45.5140525Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-03T07:47:45.5383590Z Removing includeIf entries pointing to credentials config files
+2026-10-03T07:47:45.5389399Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T07:47:45.5429935Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-03T07:47:45.5711782Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-3cb2461c-9287-48a0-afa8-5e046a8dbe8f.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-03T07:47:45.5747618Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/VAST/VAST/.git.path /home/runner/work/_temp/git-credentials-3cb2461c-9287-48a0-afa8-5e046a8dbe8f.config
+2026-10-03T07:47:45.5785456Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/VAST/VAST/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-3cb2461c-9287-48a0-afa8-5e046a8dbe8f.config
+2026-10-03T07:47:45.5826462Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-3cb2461c-9287-48a0-afa8-5e046a8dbe8f.config
+2026-10-03T07:47:45.5860874Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-3cb2461c-9287-48a0-afa8-5e046a8dbe8f.config
+2026-10-03T07:47:45.5899527Z ##[endgroup]
+2026-10-03T07:47:45.5901016Z ##[group]Fetching the repository
+2026-10-03T07:47:45.5907533Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin a00aa57f7d9534f8e7920f14f70d6a75a23570ed
+2026-10-03T07:47:49.2382276Z From https://github.com/lordcoudy/VAST
+2026-10-03T07:47:49.2384349Z  * branch            a00aa57f7d9534f8e7920f14f70d6a75a23570ed -> FETCH_HEAD
+2026-10-03T07:47:49.2390812Z [command]/usr/bin/git rev-parse --verify --quiet a00aa57f7d9534f8e7920f14f70d6a75a23570ed^{object}
+2026-10-03T07:47:49.2419037Z a00aa57f7d9534f8e7920f14f70d6a75a23570ed
+2026-10-03T07:47:49.2423863Z ##[endgroup]
+2026-10-03T07:47:49.2425338Z ##[group]Determining the checkout info
+2026-10-03T07:47:49.2426680Z ##[endgroup]
+2026-10-03T07:47:49.2429943Z [command]/usr/bin/git sparse-checkout disable
+2026-10-03T07:47:49.2485773Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-03T07:47:49.2519569Z ##[group]Checking out the ref
+2026-10-03T07:47:49.2522713Z [command]/usr/bin/git checkout --progress --force a00aa57f7d9534f8e7920f14f70d6a75a23570ed
+2026-10-03T07:47:50.1377171Z Note: switching to 'a00aa57f7d9534f8e7920f14f70d6a75a23570ed'.
+2026-10-03T07:47:50.1379644Z 
+2026-10-03T07:47:50.1380216Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-03T07:47:50.1381252Z changes and commit them, and you can discard any commits you make in this
+2026-10-03T07:47:50.1382259Z state without impacting any branches by switching back to a branch.
+2026-10-03T07:47:50.1382800Z 
+2026-10-03T07:47:50.1383192Z If you want to create a new branch to retain commits you create, you may
+2026-10-03T07:47:50.1384132Z do so (now or later) by using -c with the switch command. Example:
+2026-10-03T07:47:50.1384640Z 
+2026-10-03T07:47:50.1384888Z   git switch -c <new-branch-name>
+2026-10-03T07:47:50.1385265Z 
+2026-10-03T07:47:50.1385513Z Or undo this operation with:
+2026-10-03T07:47:50.1385835Z 
+2026-10-03T07:47:50.1386025Z   git switch -
+2026-10-03T07:47:50.1470703Z 
+2026-10-03T07:47:50.1471219Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-03T07:47:50.1472012Z 
+2026-10-03T07:47:50.1472660Z HEAD is now at a00aa57 Renew selected image host identity from the verified build
+2026-10-03T07:47:50.1474338Z ##[endgroup]
+2026-10-03T07:47:50.1515880Z [command]/usr/bin/git log -1 --format=%H
+2026-10-03T07:47:50.1542861Z a00aa57f7d9534f8e7920f14f70d6a75a23570ed
+2026-10-03T07:47:50.1554828Z ##[group]Removing auth
+2026-10-03T07:47:50.1555527Z Removing SSH command configuration
+2026-10-03T07:47:50.1560407Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-03T07:47:50.1597007Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-03T07:47:50.1826653Z Removing HTTP extra header
+2026-10-03T07:47:50.1833311Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-03T07:47:50.1871430Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-03T07:47:50.2095092Z Removing includeIf entries pointing to credentials config files
+2026-10-03T07:47:50.2100388Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T07:47:50.2129848Z includeif.gitdir:/home/runner/work/VAST/VAST/.git.path
+2026-10-03T07:47:50.2130572Z includeif.gitdir:/home/runner/work/VAST/VAST/.git/worktrees/*.path
+2026-10-03T07:47:50.2131125Z includeif.gitdir:/github/workspace/.git.path
+2026-10-03T07:47:50.2131648Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-03T07:47:50.2139561Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/VAST/VAST/.git.path
+2026-10-03T07:47:50.2164925Z /home/runner/work/_temp/git-credentials-3cb2461c-9287-48a0-afa8-5e046a8dbe8f.config
+2026-10-03T07:47:50.2175256Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/VAST/VAST/.git.path /home/runner/work/_temp/git-credentials-3cb2461c-9287-48a0-afa8-5e046a8dbe8f.config
+2026-10-03T07:47:50.2212722Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/VAST/VAST/.git/worktrees/*.path
+2026-10-03T07:47:50.2236826Z /home/runner/work/_temp/git-credentials-3cb2461c-9287-48a0-afa8-5e046a8dbe8f.config
+2026-10-03T07:47:50.2246263Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/VAST/VAST/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-3cb2461c-9287-48a0-afa8-5e046a8dbe8f.config
+2026-10-03T07:47:50.2289975Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-10-03T07:47:50.2315425Z /github/runner_temp/git-credentials-3cb2461c-9287-48a0-afa8-5e046a8dbe8f.config
+2026-10-03T07:47:50.2323794Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-3cb2461c-9287-48a0-afa8-5e046a8dbe8f.config
+2026-10-03T07:47:50.2364898Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-03T07:47:50.2390623Z /github/runner_temp/git-credentials-3cb2461c-9287-48a0-afa8-5e046a8dbe8f.config
+2026-10-03T07:47:50.2398706Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-3cb2461c-9287-48a0-afa8-5e046a8dbe8f.config
+2026-10-03T07:47:50.2432130Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-03T07:47:50.2655131Z Removing credentials config '/home/runner/work/_temp/git-credentials-3cb2461c-9287-48a0-afa8-5e046a8dbe8f.config'
+2026-10-03T07:47:50.2664128Z ##[endgroup]
+2026-10-03T07:47:50.2866466Z ##[group]Run git config core.autocrlf false
+2026-10-03T07:47:50.2866997Z [36;1mgit config core.autocrlf false[0m
+2026-10-03T07:47:50.3250734Z shell: /usr/bin/bash -e {0}
+2026-10-03T07:47:50.3251123Z env:
+2026-10-03T07:47:50.3251427Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-03T07:47:50.3251796Z   MPLBACKEND: Agg
+2026-10-03T07:47:50.3252104Z ##[endgroup]
+2026-10-03T07:47:50.3526257Z ##[group]Run actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+2026-10-03T07:47:50.3526847Z with:
+2026-10-03T07:47:50.3527171Z   python-version: 3.12.3
+2026-10-03T07:47:50.3527534Z   check-latest: false
+2026-10-03T07:47:50.3530861Z   token: ***
+2026-10-03T07:47:50.3531219Z   update-environment: true
+2026-10-03T07:47:50.3531595Z   allow-prereleases: false
+2026-10-03T07:47:50.3531960Z   freethreaded: false
+2026-10-03T07:47:50.3532288Z env:
+2026-10-03T07:47:50.3532603Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-03T07:47:50.3532973Z   MPLBACKEND: Agg
+2026-10-03T07:47:50.3533299Z ##[endgroup]
+2026-10-03T07:47:50.4810739Z ##[group]Installed versions
+2026-10-03T07:47:50.4832600Z Version 3.12.3 was not found in the local cache
+2026-10-03T07:47:51.0345283Z Version 3.12.3 is available for downloading
+2026-10-03T07:47:51.0347345Z Download from "https://github.com/actions/python-versions/releases/download/3.12.3-11057844995/python-3.12.3-linux-24.04-x64.tar.gz"
+2026-10-03T07:47:51.6267156Z Extract downloaded archive
+2026-10-03T07:47:51.6403081Z [command]/usr/bin/tar xz --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/a139d7cd-0759-4252-807a-6038979cb253 -f /home/runner/work/_temp/c797d99f-59df-4199-a09e-201dc08d7677
+2026-10-03T07:47:53.7118092Z Execute installation script
+2026-10-03T07:47:53.7209798Z Check if Python hostedtoolcache folder exist...
+2026-10-03T07:47:53.7210864Z Create Python 3.12.3 folder
+2026-10-03T07:47:53.7223798Z Copy Python binaries to hostedtoolcache folder
+2026-10-03T07:47:54.2436357Z Create additional symlinks (Required for the UsePythonVersion Azure Pipelines task and the setup-python GitHub Action)
+2026-10-03T07:47:54.2476344Z Upgrading pip...
+2026-10-03T07:47:56.9861782Z Looking in links: /tmp/tmpmygrlvf1
+2026-10-03T07:47:56.9871312Z Requirement already satisfied: pip in /opt/hostedtoolcache/Python/3.12.3/x64/lib/python3.12/site-packages (24.0)
+2026-10-03T07:47:58.7011405Z Collecting pip
+2026-10-03T07:47:58.7501868Z Downloading pip-26.2.1-py3-none-any.whl.metadata (4.6 kB)
+2026-10-03T07:47:58.7614330Z Downloading pip-26.2.1-py3-none-any.whl (1.8 MB)
+2026-10-03T07:47:58.8589611Z ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.8/1.8 MB 19.1 MB/s eta 0:00:00
+2026-10-03T07:47:58.8610693Z 
+2026-10-03T07:47:58.8774612Z Installing collected packages: pip
+2026-10-03T07:47:58.8776307Z Attempting uninstall: pip
+2026-10-03T07:47:58.8801103Z Found existing installation: pip 24.0
+2026-10-03T07:47:58.9227702Z Uninstalling pip-24.0:
+2026-10-03T07:47:58.9291555Z Successfully uninstalled pip-24.0
+2026-10-03T07:47:59.9640686Z Successfully installed pip-26.2.1
+2026-10-03T07:48:00.0219130Z Create complete file
+2026-10-03T07:48:00.0254493Z Successfully set up CPython (3.12.3)
+2026-10-03T07:48:00.0255419Z ##[endgroup]
+2026-10-03T07:48:00.0405486Z ##[group]Run python -m pip install --no-deps --requirement .ci/requirements.txt
+2026-10-03T07:48:00.0406123Z [36;1mpython -m pip install --no-deps --requirement .ci/requirements.txt[0m
+2026-10-03T07:48:00.0474325Z shell: /usr/bin/bash -e {0}
+2026-10-03T07:48:00.0474614Z env:
+2026-10-03T07:48:00.0474832Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-03T07:48:00.0475106Z   MPLBACKEND: Agg
+2026-10-03T07:48:00.0475387Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-10-03T07:48:00.0475844Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.3/x64/lib/pkgconfig
+2026-10-03T07:48:00.0476269Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-10-03T07:48:00.0476655Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-10-03T07:48:00.0477035Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-10-03T07:48:00.0477419Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.3/x64/lib
+2026-10-03T07:48:00.0477741Z ##[endgroup]
+2026-10-03T07:48:00.9827483Z Collecting PyYAML==6.0.3 (from -r .ci/requirements.txt (line 3))
+2026-10-03T07:48:01.0392344Z   Downloading pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)
+2026-10-03T07:48:01.1126811Z Collecting contourpy==1.3.3 (from -r .ci/requirements.txt (line 4))
+2026-10-03T07:48:01.1199503Z   Downloading contourpy-1.3.3-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (5.5 kB)
+2026-10-03T07:48:01.1355704Z Collecting cycler==0.12.1 (from -r .ci/requirements.txt (line 5))
+2026-10-03T07:48:01.1423566Z   Downloading cycler-0.12.1-py3-none-any.whl.metadata (3.8 kB)
+2026-10-03T07:48:01.3146172Z Collecting fonttools==4.63.0 (from -r .ci/requirements.txt (line 6))
+2026-10-03T07:48:01.3215124Z   Downloading fonttools-4.63.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (118 kB)
+2026-10-03T07:48:01.4164088Z Collecting kiwisolver==1.5.0 (from -r .ci/requirements.txt (line 7))
+2026-10-03T07:48:01.4237184Z   Downloading kiwisolver-1.5.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (5.1 kB)
+2026-10-03T07:48:01.5630683Z Collecting matplotlib==3.11.1 (from -r .ci/requirements.txt (line 8))
+2026-10-03T07:48:01.5706617Z   Downloading matplotlib-3.11.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (80 kB)
+2026-10-03T07:48:01.7888773Z Collecting numpy==2.5.2 (from -r .ci/requirements.txt (line 9))
+2026-10-03T07:48:01.7968051Z   Downloading numpy-2.5.2-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (6.6 kB)
+2026-10-03T07:48:01.8132005Z Collecting nvidia-ml-py==13.610.43 (from -r .ci/requirements.txt (line 10))
+2026-10-03T07:48:01.8229636Z   Downloading nvidia_ml_py-13.610.43-py3-none-any.whl.metadata (9.7 kB)
+2026-10-03T07:48:01.8406115Z Collecting packaging==26.3 (from -r .ci/requirements.txt (line 11))
+2026-10-03T07:48:01.8473056Z   Downloading packaging-26.3-py3-none-any.whl.metadata (3.5 kB)
+2026-10-03T07:48:01.9659239Z Collecting pandas==3.0.5 (from -r .ci/requirements.txt (line 12))
+2026-10-03T07:48:01.9739209Z   Downloading pandas-3.0.5-cp312-cp312-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl.metadata (79 kB)
+2026-10-03T07:48:02.1818639Z Collecting pillow==12.3.0 (from -r .ci/requirements.txt (line 13))
+2026-10-03T07:48:02.1892488Z   Downloading pillow-12.3.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (9.1 kB)
+2026-10-03T07:48:02.2581087Z Collecting psutil==7.2.2 (from -r .ci/requirements.txt (line 14))
+2026-10-03T07:48:02.2651998Z   Downloading psutil-7.2.2-cp36-abi3-manylinux2010_x86_64.manylinux_2_12_x86_64.manylinux_2_28_x86_64.whl.metadata (22 kB)
+2026-10-03T07:48:02.2949681Z Collecting pyparsing==3.3.2 (from -r .ci/requirements.txt (line 15))
+2026-10-03T07:48:02.3017744Z   Downloading pyparsing-3.3.2-py3-none-any.whl.metadata (5.8 kB)
+2026-10-03T07:48:02.3175259Z Collecting python-dateutil==2.9.0.post0 (from -r .ci/requirements.txt (line 16))
+2026-10-03T07:48:02.3244565Z   Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl.metadata (8.4 kB)
+2026-10-03T07:48:02.3403221Z Collecting seaborn==0.13.2 (from -r .ci/requirements.txt (line 17))
+2026-10-03T07:48:02.3471184Z   Downloading seaborn-0.13.2-py3-none-any.whl.metadata (5.4 kB)
+2026-10-03T07:48:02.3642504Z Collecting six==1.17.0 (from -r .ci/requirements.txt (line 18))
+2026-10-03T07:48:02.3712484Z   Downloading six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)
+2026-10-03T07:48:02.4362686Z Collecting zstandard==0.25.0 (from -r .ci/requirements.txt (line 19))
+2026-10-03T07:48:02.4435830Z   Downloading zstandard-0.25.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (3.3 kB)
+2026-10-03T07:48:02.4587274Z Downloading pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (807 kB)
+2026-10-03T07:48:02.4966805Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 807.9/807.9 kB 22.6 MB/s  0:00:00
+2026-10-03T07:48:02.5037113Z Downloading contourpy-1.3.3-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (362 kB)
+2026-10-03T07:48:02.5238165Z Downloading cycler-0.12.1-py3-none-any.whl (8.3 kB)
+2026-10-03T07:48:02.5327350Z Downloading fonttools-4.63.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (5.0 MB)
+2026-10-03T07:48:02.6394835Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 5.0/5.0 MB 48.7 MB/s  0:00:00
+2026-10-03T07:48:02.6467272Z Downloading kiwisolver-1.5.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (1.5 MB)
+2026-10-03T07:48:02.6676950Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.5/1.5 MB 72.2 MB/s  0:00:00
+2026-10-03T07:48:02.6766427Z Downloading matplotlib-3.11.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (10.0 MB)
+2026-10-03T07:48:02.7648353Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 10.0/10.0 MB 115.3 MB/s  0:00:00
+2026-10-03T07:48:02.7719071Z Downloading numpy-2.5.2-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (16.7 MB)
+2026-10-03T07:48:02.8740516Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 16.7/16.7 MB 165.6 MB/s  0:00:00
+2026-10-03T07:48:02.8818581Z Downloading nvidia_ml_py-13.610.43-py3-none-any.whl (53 kB)
+2026-10-03T07:48:02.8905670Z Downloading packaging-26.3-py3-none-any.whl (129 kB)
+2026-10-03T07:48:02.8997223Z Downloading pandas-3.0.5-cp312-cp312-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl (11.0 MB)
+2026-10-03T07:48:02.9588206Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 11.0/11.0 MB 193.2 MB/s  0:00:00
+2026-10-03T07:48:02.9662811Z Downloading pillow-12.3.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (6.9 MB)
+2026-10-03T07:48:02.9949132Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 6.9/6.9 MB 260.1 MB/s  0:00:00
+2026-10-03T07:48:03.0020138Z Downloading psutil-7.2.2-cp36-abi3-manylinux2010_x86_64.manylinux_2_12_x86_64.manylinux_2_28_x86_64.whl (155 kB)
+2026-10-03T07:48:03.0108171Z Downloading pyparsing-3.3.2-py3-none-any.whl (122 kB)
+2026-10-03T07:48:03.0198630Z Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)
+2026-10-03T07:48:03.0290427Z Downloading seaborn-0.13.2-py3-none-any.whl (294 kB)
+2026-10-03T07:48:03.0395732Z Downloading six-1.17.0-py2.py3-none-any.whl (11 kB)
+2026-10-03T07:48:03.0487539Z Downloading zstandard-0.25.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (5.5 MB)
+2026-10-03T07:48:03.0698780Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 5.5/5.5 MB 290.9 MB/s  0:00:00
+2026-10-03T07:48:03.2443638Z Installing collected packages: nvidia-ml-py, zstandard, six, seaborn, PyYAML, python-dateutil, pyparsing, psutil, pillow, pandas, packaging, numpy, matplotlib, kiwisolver, fonttools, cycler, contourpy
+2026-10-03T07:48:13.3512565Z 
+2026-10-03T07:48:13.3533876Z Successfully installed PyYAML-6.0.3 contourpy-1.3.3 cycler-0.12.1 fonttools-4.63.0 kiwisolver-1.5.0 matplotlib-3.11.1 numpy-2.5.2 nvidia-ml-py-13.610.43 packaging-26.3 pandas-3.0.5 pillow-12.3.0 psutil-7.2.2 pyparsing-3.3.2 python-dateutil-2.9.0.post0 seaborn-0.13.2 six-1.17.0 zstandard-0.25.0
+2026-10-03T07:48:13.4306471Z ##[group]Run python -m pip check
+2026-10-03T07:48:13.4306815Z [36;1mpython -m pip check[0m
+2026-10-03T07:48:13.4370983Z shell: /usr/bin/bash -e {0}
+2026-10-03T07:48:13.4371263Z env:
+2026-10-03T07:48:13.4371479Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-03T07:48:13.4371735Z   MPLBACKEND: Agg
+2026-10-03T07:48:13.4372014Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-10-03T07:48:13.4372463Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.3/x64/lib/pkgconfig
+2026-10-03T07:48:13.4372896Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-10-03T07:48:13.4373273Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-10-03T07:48:13.4373653Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-10-03T07:48:13.4374042Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.3/x64/lib
+2026-10-03T07:48:13.4374360Z ##[endgroup]
+2026-10-03T07:48:14.0773804Z No broken requirements found.
+2026-10-03T07:48:14.1091437Z ##[group]Run python -B scripts/run_ci_host_diagnostics.py --expected-commit "a00aa57f7d9534f8e7920f14f70d6a75a23570ed" --output-dir "$RUNNER_TEMP/vast-host-diagnostics"
+2026-10-03T07:48:14.1092652Z [36;1mpython -B scripts/run_ci_host_diagnostics.py --expected-commit "a00aa57f7d9534f8e7920f14f70d6a75a23570ed" --output-dir "$RUNNER_TEMP/vast-host-diagnostics"[0m
+2026-10-03T07:48:14.1156584Z shell: /usr/bin/bash -e {0}
+2026-10-03T07:48:14.1156838Z env:
+2026-10-03T07:48:14.1157042Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-03T07:48:14.1157288Z   MPLBACKEND: Agg
+2026-10-03T07:48:14.1157563Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-10-03T07:48:14.1158144Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.3/x64/lib/pkgconfig
+2026-10-03T07:48:14.1158584Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-10-03T07:48:14.1158962Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-10-03T07:48:14.1159371Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-10-03T07:48:14.1159747Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.3/x64/lib
+2026-10-03T07:48:14.1160063Z ##[endgroup]
+2026-10-03T07:48:26.7342527Z {"changed_tracked_paths": [], "commit": "a00aa57f7d9534f8e7920f14f70d6a75a23570ed", "diagnostic_passed": true, "diagnostic_tests_only": true, "full_ci_successful": false, "hardware_acceptance": false, "kind": "vast_cpu_host_diagnostics_v1", "original_process": {"argv": ["/opt/hostedtoolcache/Python/3.12.3/x64/bin/python", "-I", "-B", "-c", "import sys,unittest; sys.path[:0]=sys.argv[1:3]; import run_ci_checks as checks; suite=unittest.defaultTestLoader.loadTestsFromNames(sys.argv[3:]); result=unittest.TextTestRunner(verbosity=2,resultclass=checks.RecordedResult).run(suite); sys.exit(0 if result.wasSuccessful() and result.testsRun==2 and set(sys.argv[3:])<=set(result.successes) else 1)", "/home/runner/work/VAST/VAST/tests", "/home/runner/work/VAST/VAST/scripts", "test_analytics_model_contract.AnalyticsModelContractTests.test_repository_manifest_is_complete_and_hash_bound", "test_analytics_peer_identity.AnalyticsPeerIdentityAuthorityTests.test_observer_reads_exact_proc_file_and_small_docker_projection"], "cleanup_error": null, "elapsed_s": 1.3205849779999994, "returncode": 0, "timed_out": false}, "test_ids": ["test_analytics_model_contract.AnalyticsModelContractTests.test_repository_manifest_is_complete_and_hash_bound", "test_analytics_peer_identity.AnalyticsPeerIdentityAuthorityTests.test_observer_reads_exact_proc_file_and_small_docker_projection"]}
+2026-10-03T07:48:26.7557214Z ##[group]Run actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+2026-10-03T07:48:26.7557642Z with:
+2026-10-03T07:48:26.7558171Z   name: vast-host-diagnostics-a00aa57f7d9534f8e7920f14f70d6a75a23570ed
+2026-10-03T07:48:26.7558621Z   path: /home/runner/work/_temp/vast-host-diagnostics
+2026-10-03T07:48:26.7558931Z   if-no-files-found: warn
+2026-10-03T07:48:26.7559162Z   retention-days: 7
+2026-10-03T07:48:26.7559368Z   compression-level: 6
+2026-10-03T07:48:26.7559577Z   overwrite: false
+2026-10-03T07:48:26.7559788Z   include-hidden-files: false
+2026-10-03T07:48:26.7560016Z env:
+2026-10-03T07:48:26.7560209Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-03T07:48:26.7560445Z   MPLBACKEND: Agg
+2026-10-03T07:48:26.7560723Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-10-03T07:48:26.7561132Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.3/x64/lib/pkgconfig
+2026-10-03T07:48:26.7561552Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-10-03T07:48:26.7561945Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-10-03T07:48:26.7562312Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-10-03T07:48:26.7562690Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.3/x64/lib
+2026-10-03T07:48:26.7563008Z ##[endgroup]
+2026-10-03T07:48:26.9276581Z With the provided path, there will be 51 files uploaded
+2026-10-03T07:48:26.9281735Z Artifact name is valid!
+2026-10-03T07:48:26.9282678Z Root directory input is valid!
+2026-10-03T07:48:27.1256311Z Beginning upload of artifact content to blob storage
+2026-10-03T07:48:27.2670288Z Uploaded bytes 461278
+2026-10-03T07:48:27.2772002Z Finished uploading artifact content to blob storage!
+2026-10-03T07:48:27.2773887Z SHA256 digest of uploaded artifact zip is 31868c2e33c751ed951d2267a8194b9ea2e82782ead90cf4ce743671754042e4
+2026-10-03T07:48:27.2775674Z Finalizing artifact upload
+2026-10-03T07:48:27.5077361Z Artifact vast-host-diagnostics-a00aa57f7d9534f8e7920f14f70d6a75a23570ed.zip successfully finalized. Artifact ID 11268277088
+2026-10-03T07:48:27.5079464Z Artifact vast-host-diagnostics-a00aa57f7d9534f8e7920f14f70d6a75a23570ed has been successfully uploaded! Final size is 461278 bytes. Artifact ID is 11268277088
+2026-10-03T07:48:27.5082813Z Artifact download URL: https://github.com/lordcoudy/VAST/actions/runs/37107524802/artifacts/11268277088
+2026-10-03T07:48:27.5251704Z Post job cleanup.
+2026-10-03T07:48:27.6671496Z Post job cleanup.
+2026-10-03T07:48:27.7638728Z [command]/usr/bin/git version
+2026-10-03T07:48:27.7698628Z git version 2.55.0
+2026-10-03T07:48:27.7754139Z Temporarily overriding HOME='/home/runner/work/_temp/f7d9c8a1-90e1-486b-ae80-851d0cef4bc0' before making global git config changes
+2026-10-03T07:48:27.7755723Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-03T07:48:27.7762861Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/VAST/VAST
+2026-10-03T07:48:27.7778662Z Removing SSH command configuration
+2026-10-03T07:48:27.7783033Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-03T07:48:27.7827231Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-03T07:48:27.8247450Z Removing HTTP extra header
+2026-10-03T07:48:27.8248674Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-03T07:48:27.8275115Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-03T07:48:27.8635837Z Removing includeIf entries pointing to credentials config files
+2026-10-03T07:48:27.8640918Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T07:48:27.8698286Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-03T07:48:27.9104690Z Cleaning up orphan processes
